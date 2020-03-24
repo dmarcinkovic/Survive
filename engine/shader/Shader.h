@@ -10,9 +10,9 @@
 class Shader
 {
 private:
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint program;
+    GLuint m_VertexShader;
+    GLuint m_FragmentShader;
+    GLuint m_Program;
 
     static GLuint loadShader(const char *filename, GLenum type);
 

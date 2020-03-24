@@ -12,9 +12,9 @@
 class Texture
 {
 private:
-    GLuint vao;
-    size_t vertexCount;
-    GLuint textureId;
+    GLuint m_Vao;
+    size_t m_VertexCount;
+    GLuint m_TextureID;
 
 public:
     Texture(const Model &model, GLuint textureId);

@@ -21,9 +21,9 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
 
 Loader::~Loader()
 {
-    glDeleteVertexArrays(vaos.size(), vaos.data());
-    glDeleteBuffers(vbos.size(), vbos.data());
-    glDeleteTextures(1, textures.data());
+    glDeleteVertexArrays(m_Vaos.size(), m_Vaos.data());
+    glDeleteBuffers(m_Vbos.size(), m_Vbos.data());
+    glDeleteTextures(1, m_Textures.data());
 }
 
 void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size)
@@ -35,7 +35,7 @@ void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(attributeNumber, size, GL_FLOAT, GL_FALSE, 0, nullptr);
-    vbos.emplace_back(vbo);
+    m_Vbos.emplace_back(vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -47,7 +47,7 @@ void Loader::createIndexBuffer(const std::vector<unsigned> &indices)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned), indices.data(), GL_STATIC_DRAW);
 
-    vbos.emplace_back(indexBuffer);
+    m_Vbos.emplace_back(indexBuffer);
 }
 
 GLuint Loader::createVao()
@@ -56,7 +56,7 @@ GLuint Loader::createVao()
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
-    vaos.emplace_back(vao);
+    m_Vaos.emplace_back(vao);
 
     return vao;
 }
@@ -91,7 +91,7 @@ GLuint Loader::loadTexture(const char *texture) noexcept
     loadImage(texture);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    textures.emplace_back(textureId);
+    m_Textures.emplace_back(textureId);
     return textureId;
 }
 

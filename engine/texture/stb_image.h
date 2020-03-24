@@ -3471,7 +3471,7 @@ static void stbi__YCbCr_to_RGB_simd(stbi_uc *out, stbi_uc const *y, stbi_uc cons
 
 #ifdef STBI_SSE2
    // step == 3 is pretty ugly on the final interleave, and i'm not convinced
-   // it's useful in practice (you wouldn't use it for textures, for example).
+   // it's useful in practice (you wouldn't use it for m_Textures, for example).
    // so just accelerate step == 4 case.
    if (step == 4) {
       // this is a fairly straightforward implementation and not super-optimized.
@@ -4178,7 +4178,7 @@ static int stbi__parse_zlib_header(stbi__zbuf *a)
    if ((cmf*256+flg) % 31 != 0) return stbi__err("bad zlib header","Corrupt PNG"); // zlib spec
    if (flg & 32) return stbi__err("no preset dict","Corrupt PNG"); // preset dictionary not allowed in png
    if (cm != 8) return stbi__err("bad compression","Corrupt PNG"); // DEFLATE required for png
-   // window = 1 << (8 + cinfo)... but who cares, we fully buffer output
+   // m_Window = 1 << (8 + cinfo)... but who cares, we fully buffer output
    return 1;
 }
 
@@ -4331,7 +4331,7 @@ STBIDEF int stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const char
 //      - no CRC checking
 //      - allocates lots of intermediate memory
 //        - avoids problem of streaming data between subsystems
-//        - avoids explicit window management
+//        - avoids explicit m_Window management
 //    performance
 //      - uses stb_zlib, a PD zlib implementation with fast huffman decoding
 

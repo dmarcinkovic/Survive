@@ -10,30 +10,30 @@
 
 Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
 {
-    vertexShader = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
-    fragmentShader = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
+    m_VertexShader = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
+    m_FragmentShader = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
 
-    program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
+    m_Program = glCreateProgram();
+    glAttachShader(m_Program, m_VertexShader);
+    glAttachShader(m_Program, m_FragmentShader);
 
-    glLinkProgram(program);
-    glValidateProgram(program);
+    glLinkProgram(m_Program);
+    glValidateProgram(m_Program);
 }
 
 Shader::~Shader()
 {
-    glDetachShader(program, vertexShader);
-    glDetachShader(program, fragmentShader);
+    glDetachShader(m_Program, m_VertexShader);
+    glDetachShader(m_Program, m_FragmentShader);
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteProgram(program);
+    glDeleteShader(m_VertexShader);
+    glDeleteShader(m_FragmentShader);
+    glDeleteProgram(m_Program);
 }
 
 void Shader::start()
 {
-    glUseProgram(program);
+    glUseProgram(m_Program);
 }
 
 void Shader::stop()

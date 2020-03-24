@@ -13,30 +13,30 @@ Display::Display(int width, int height, const char *title)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-    glfwMakeContextCurrent(window);
+    m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+    glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(1);
 
     glewInit();
 
-    glfwSetWindowSizeCallback(window, windowResizeCallback);
+    glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
 }
 
 Display::~Display()
 {
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
 
 void Display::update()
 {
     glfwPollEvents();
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(m_Window);
 }
 
 bool Display::isRunning() const
 {
-    return !glfwWindowShouldClose(window);
+    return !glfwWindowShouldClose(m_Window);
 }
 
 void Display::clearWindow()

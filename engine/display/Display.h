@@ -11,7 +11,7 @@
 class Display
 {
 private:
-    GLFWwindow *window;
+    GLFWwindow *m_Window;
 
     static void windowResizeCallback(GLFWwindow *window, int width,int height);
 

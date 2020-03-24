@@ -20,9 +20,9 @@ struct Model
 class Loader
 {
 private:
-    std::vector<GLuint> vaos;
-    std::vector<GLuint> vbos;
-    std::vector<GLuint> textures;
+    std::vector<GLuint> m_Vaos;
+    std::vector<GLuint> m_Vbos;
+    std::vector<GLuint> m_Textures;
 
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
 

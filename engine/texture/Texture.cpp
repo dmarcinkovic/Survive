@@ -5,16 +5,16 @@
 #include "Texture.h"
 
 Texture::Texture(const Model &model, GLuint textureId)
-    : vao(model.vao), textureId(textureId), vertexCount(model.vertexCount)
+    : m_Vao(model.vao), m_TextureID(textureId), m_VertexCount(model.vertexCount)
 {
 
 }
 
 void Texture::bindTexture()
 {
-    glBindVertexArray(vao);
+    glBindVertexArray(m_Vao);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureId);
+    glBindTexture(GL_TEXTURE_2D, m_TextureID);
 }
 
 void Texture::unbindTexture()
