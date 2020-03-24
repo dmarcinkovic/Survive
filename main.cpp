@@ -1,29 +1,20 @@
-#include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
+#include "engine/display/Display.h"
 
 int main()
 {
-    glfwInit();
+    constexpr int width = 800;
+    constexpr int height = 800;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    Display display(width, height,"Survive");
 
-    GLFWwindow *window = glfwCreateWindow(800, 800, "Survive", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-
-    glewInit();
-
-    while (!glfwWindowShouldClose(window))
+    while (display.isRunning())
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        Display::clearWindow();
 
 
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        display.update();
     }
 
     return 0;
