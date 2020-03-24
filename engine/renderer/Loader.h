@@ -21,6 +21,7 @@ class Loader
 private:
     std::vector<GLuint> vaos;
     std::vector<GLuint> vbos;
+    std::vector<GLuint> textures;
 
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
 
@@ -34,6 +35,11 @@ public:
     ~Loader();
 
     static void unbindVao();
+
+    Model loadTexture(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
+                        const std::vector<float> &textureCoordinates, size_t size);
+
+    GLuint loadTexture(const char *texture) noexcept;
 };
 
 
