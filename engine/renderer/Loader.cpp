@@ -23,6 +23,7 @@ Loader::~Loader()
 {
     glDeleteVertexArrays(vaos.size(), vaos.data());
     glDeleteBuffers(vbos.size(), vbos.data());
+    glDeleteTextures(1, textures.data());
 }
 
 void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size)
