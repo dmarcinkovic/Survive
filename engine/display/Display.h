@@ -7,16 +7,26 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <functional>
+
+using Listener = std::function<void(int, int)>;
 
 class Display
 {
 private:
     GLFWwindow *m_Window;
 
-    static void windowResizeCallback(GLFWwindow *window, int width,int height);
+    static std::vector<Listener> keyEventListeners;
+    static std::vector<Listener> mouseEventListeners;
+
+    static void windowResizeCallback(GLFWwindow *window, int width, int height);
+
+    static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
+
+    static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
 
 public:
-    Display(int width, int height, const char* title);
+    Display(int width, int height, const char *title);
 
     ~Display();
 
@@ -25,6 +35,10 @@ public:
     static void clearWindow();
 
     [[nodiscard]] bool isRunning() const;
+
+    static void addKeyListener(const Listener& listener);
+
+    static void addMouseListener(const Listener& listener);
 };
 
 

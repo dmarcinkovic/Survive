@@ -20,6 +20,8 @@ Display::Display(int width, int height, const char *title)
     glewInit();
 
     glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
+    glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
+    glfwSetKeyCallback(m_Window, keyEventCallback);
 }
 
 Display::~Display()
@@ -53,4 +55,30 @@ void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
     glOrtho(0, width, 0, height, -1.5, 1.5);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods)
+{
+    for (auto const &listener : keyEventListeners)
+    {
+        listener(key, action);
+    }
+}
+
+void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int mods)
+{
+    for (auto const &listener : mouseEventListeners)
+    {
+        listener(button, action);
+    }
+}
+
+void Display::addKeyListener(const Listener &listener)
+{
+    keyEventListeners.emplace_back(listener);
+}
+
+void Display::addMouseListener(const Listener &listener)
+{
+    mouseEventListeners.emplace_back(listener);
 }
