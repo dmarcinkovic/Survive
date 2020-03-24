@@ -36,7 +36,7 @@ int main()
 
         Shader::stop();
 
-        Texture::unbindTexture()
+        Texture::unbindTexture();
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(0);
         Loader::unbindVao();
