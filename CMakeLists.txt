@@ -15,8 +15,4 @@ target_link_libraries(Survive ${OpenGlLinkers})
 
 include_directories(${GLFW_INCLUDE_DIRS})
 target_link_libraries(Survive ${GLFW_LIBRARIES})
-target_link_libraries(Survive
-        ${OPENGL_LIBRARIES}
-        ${GLFW3_LIBRARY}
-        ${GLEW_LIBRARY}
-        Xxf86vm pthread Xrandr Xinerama Xi Xcursor)
+target_link_libraries(Survive ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY})

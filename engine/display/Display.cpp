@@ -18,6 +18,8 @@ Display::Display(int width, int height, const char *title)
     glfwSwapInterval(1);
 
     glewInit();
+
+    glfwSetWindowSizeCallback(window, windowResizeCallback);
 }
 
 Display::~Display()
@@ -40,4 +42,15 @@ bool Display::isRunning() const
 void Display::clearWindow()
 {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+}
+
+void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glOrtho(0, width, 0, height, -1.5, 1.5);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }

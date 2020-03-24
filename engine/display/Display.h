@@ -13,6 +13,8 @@ class Display
 private:
     GLFWwindow *window;
 
+    static void windowResizeCallback(GLFWwindow *window, int width,int height);
+
 public:
     Display(int width, int height, const char* title);
 
