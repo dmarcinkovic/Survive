@@ -8,9 +8,9 @@
 
 #include "Shader.h"
 
-Shader::Shader(const char* vertexShaderFile, const char* fragmentShaderFile)
+Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
 {
-    vertexShader = loadShader(vertexShaderFile,GL_VERTEX_SHADER);
+    vertexShader = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
     fragmentShader = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
 
     program = glCreateProgram();
@@ -49,8 +49,8 @@ GLuint Shader::loadShader(const char *filename, GLenum type)
 
     GLuint shader = glCreateShader(type);
 
-    const char* shaderSource = source.c_str();
-    glShaderSource(shader, 1, &shaderSource,nullptr);
+    const char *shaderSource = source.c_str();
+    glShaderSource(shader, 1, &shaderSource, nullptr);
     glCompileShader(shader);
 
     debug(shader);

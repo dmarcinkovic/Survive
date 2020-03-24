@@ -4,8 +4,20 @@
 
 #include "Texture.h"
 
-Texture::Texture(GLuint vao, GLuint textureId, size_t vertexCount)
-    : vao(vao),textureId(textureId), vertexCount(vertexCount)
+Texture::Texture(const Model &model, GLuint textureId)
+    : vao(model.vao), textureId(textureId), vertexCount(model.vertexCount)
 {
 
+}
+
+void Texture::bindTexture()
+{
+    glBindVertexArray(vao);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+}
+
+void Texture::unbindTexture()
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
 }

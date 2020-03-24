@@ -2,6 +2,10 @@
 
 out vec4 outColor;
 
-void main() {
-    outColor = vec4(1.0);
+uniform sampler2D image;
+in vec2 textureCoords;
+
+void main()
+{
+    outColor = texture(image, textureCoords);
 }

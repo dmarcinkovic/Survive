@@ -5,16 +5,23 @@
 #ifndef SURVIVE_TEXTURE_H
 #define SURVIVE_TEXTURE_H
 
-
 #include <GL/glew.h>
 
-struct Texture
+#include "../renderer/Loader.h"
+
+class Texture
 {
+private:
     GLuint vao;
     size_t vertexCount;
     GLuint textureId;
 
-    Texture(GLuint vao, GLuint textureId, size_t vertexCount);
+public:
+    Texture(const Model &model, GLuint textureId);
+
+    void bindTexture();
+
+    static void unbindTexture();
 };
 
 

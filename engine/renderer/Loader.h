@@ -6,6 +6,7 @@
 #define SURVIVE_LOADER_H
 
 #include <vector>
+#include <tuple>
 #include <GL/glew.h>
 
 struct Model
@@ -29,6 +30,8 @@ private:
 
     GLuint createVao();
 
+    static void loadImage(const char *texture) noexcept;
+
 public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
 
@@ -36,8 +39,8 @@ public:
 
     static void unbindVao();
 
-    Model loadTexture(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-                        const std::vector<float> &textureCoordinates, size_t size);
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
+                    const std::vector<float> &textureCoordinates, size_t size);
 
     GLuint loadTexture(const char *texture) noexcept;
 };

@@ -2,6 +2,7 @@
 // Created by david on 24. 03. 2020..
 //
 
+#include <iostream>
 #include "Loader.h"
 #include "../texture/stb_image.h"
 #include "../texture/Texture.h"
@@ -28,6 +29,7 @@ void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<
 {
     GLuint vbo;
     glGenBuffers(1, &vbo);
+    glEnableVertexAttribArray(attributeNumber);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
@@ -52,7 +54,6 @@ GLuint Loader::createVao()
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-    glEnableVertexAttribArray(0);
 
     vaos.emplace_back(vao);
 
@@ -64,25 +65,21 @@ void Loader::unbindVao()
     glBindVertexArray(0);
 }
 
-Model Loader::loadTexture(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-                            const std::vector<float> &textureCoordinates, size_t size)
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
+                        const std::vector<float> &textureCoordinates, size_t size)
 {
-    Model model = loadToVao(vertices, indices, size);
+    GLuint vao = createVao();
 
+    createIndexBuffer(indices);
+    storeDataInAttributeList(0, vertices,2);
     storeDataInAttributeList(1, textureCoordinates, 2);
     unbindVao();
 
-    return model;
+    return Model(vao, indices.size());
 }
 
 GLuint Loader::loadTexture(const char *texture) noexcept
 {
-    stbi_set_flip_vertically_on_load(1);
-
-    int width, height, BPP;
-
-    unsigned char *image = stbi_load(texture, &width, &height, &BPP, 4);
-
     GLuint textureId;
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_2D, textureId);
@@ -90,13 +87,27 @@ GLuint Loader::loadTexture(const char *texture) noexcept
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    loadImage(texture);
     glBindTexture(GL_TEXTURE_2D, 0);
-
-    stbi_image_free(image);
 
     textures.emplace_back(textureId);
     return textureId;
+}
+
+void Loader::loadImage(const char *texture) noexcept
+{
+    stbi_set_flip_vertically_on_load(1);
+
+    int width, height, BPP;
+    unsigned char *image = stbi_load(texture, &width, &height, &BPP, 4);
+
+    if (!image)
+    {
+        std::cout << "Error while loading image\n";
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    stbi_image_free(image);
 }
 
 Model::Model(GLuint vao, size_t vertexCount)
