@@ -4,6 +4,9 @@
 
 #include "Display.h"
 
+std::vector<Listener> Display::keyEventListeners;
+std::vector<Listener> Display::mouseEventListeners;
+
 Display::Display(int width, int height, const char *title)
 {
     glfwInit();
