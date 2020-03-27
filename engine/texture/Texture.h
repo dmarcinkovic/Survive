@@ -22,6 +22,8 @@ public:
     void bindTexture() const;
 
     static void unbindTexture();
+
+    [[nodiscard]] size_t vertexCount() const;
 };
 
 

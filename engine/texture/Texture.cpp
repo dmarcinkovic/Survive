@@ -21,3 +21,8 @@ void Texture::unbindTexture()
 {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+size_t Texture::vertexCount() const
+{
+    return m_VertexCount;
+}
