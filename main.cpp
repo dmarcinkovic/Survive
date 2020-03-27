@@ -20,8 +20,8 @@ int main()
     Texture texture(loader.loadToVao(vertices, indices, textureCoordinates, 2),
                     loader.loadTexture("res/texture.jpg"));
 
-    Shader shader("engine/shader/VertexShader.glsl",
-                  "engine/shader/FragmentShader.glsl");
+    Shader shader("engine/shader/sources/VertexShader.glsl",
+                  "engine/shader/sources/FragmentShader.glsl");
 
     Renderer2D renderer(shader);
 
