@@ -3,3 +3,9 @@
 //
 
 #include "GuiShader.h"
+
+GuiShader::GuiShader()
+    : Shader(VERTEX_FILE, FRAGMENT_FILE)
+{
+
+}
