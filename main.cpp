@@ -3,6 +3,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/shader/Shader.h"
 #include "engine/texture/Texture.h"
+#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -22,24 +23,16 @@ int main()
     Shader shader("engine/shader/VertexShader.glsl",
                   "engine/shader/FragmentShader.glsl");
 
+    Renderer2D renderer(shader);
+
+    std::vector<Entity2D> entities;
+    entities.emplace_back(Entity2D(texture));
+
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        shader.start();
-        texture.bindTexture();
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        Shader::stop();
-
-        Texture::unbindTexture();
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(0);
-        Loader::unbindVao();
+        renderer.render(entities);
 
         display.update();
     }
