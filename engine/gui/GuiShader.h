@@ -6,8 +6,17 @@
 #define SURVIVE_GUISHADER_H
 
 
-class GuiShader
+#include "../shader/Shader.h"
+
+class GuiShader : public Shader
 {
+private:
+    constexpr static const char* VERTEX_FILE = "";
+    constexpr static const char* FRAGMENT_FILE = "";
+
+public:
+    GuiShader();
+
 
 };
 
