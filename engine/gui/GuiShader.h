@@ -11,12 +11,11 @@
 class GuiShader : public Shader
 {
 private:
-    constexpr static const char* VERTEX_FILE = "";
-    constexpr static const char* FRAGMENT_FILE = "";
+    constexpr static const char* VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
+    constexpr static const char* FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
 
 public:
     GuiShader();
-
 
 };
 
