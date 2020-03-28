@@ -11,11 +11,7 @@
 
 class Gui
 {
-private:
-    GuiRenderer renderer;
 
-public:
-    Gui(const char *textureFile, const Renderer2D &renderer2D, Loader &loader);
 };
 
 
