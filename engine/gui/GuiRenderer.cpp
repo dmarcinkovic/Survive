@@ -6,21 +6,24 @@
 
 void GuiRenderer::render()
 {
+    m_Shader.start();
     for (auto const&[texture, batch] : entities)
     {
+        prepareRendering(texture);
+
         for (auto const &entity2D : batch)
         {
-            prepareRendering(entity2D);
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-            finishRendering();
         }
+
+        finishRendering();
     }
+    Shader::stop();
 }
 
-void GuiRenderer::prepareRendering(const Entity2D &entity2D) const
+void GuiRenderer::prepareRendering(const Texture &texture) const
 {
-    m_Shader.start();
-    entity2D.m_Texture.bindTexture();
+    texture.bindTexture();
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -28,7 +31,6 @@ void GuiRenderer::prepareRendering(const Entity2D &entity2D) const
 
 void GuiRenderer::finishRendering()
 {
-    Shader::stop();
     Texture::unbindTexture();
 
     glDisableVertexAttribArray(1);
