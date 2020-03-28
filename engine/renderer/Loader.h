@@ -6,7 +6,6 @@
 #define SURVIVE_LOADER_H
 
 #include <vector>
-#include <tuple>
 #include <GL/glew.h>
 
 struct Model
