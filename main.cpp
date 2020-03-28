@@ -3,7 +3,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/shader/Shader.h"
 #include "engine/texture/Texture.h"
-#include "engine/renderer/Renderer2D.h"
+#include "engine/gui/GuiRenderer.h"
 
 int main()
 {
@@ -20,19 +20,13 @@ int main()
     Texture texture(loader.loadToVao(vertices, indices, textureCoordinates, 2),
                     loader.loadTexture("res/texture.jpg"));
 
-    Shader shader("engine/shader/sources/VertexShader.glsl",
-                  "engine/shader/sources/FragmentShader.glsl");
-
-    Renderer2D renderer(shader);
-
-    std::vector<Entity2D> entities;
-    entities.emplace_back(Entity2D(texture));
+    GuiRenderer renderer;
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render(entities);
+        renderer.render(Entity2D(texture));
 
         display.update();
     }

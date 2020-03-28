@@ -7,9 +7,6 @@
 
 #include <vector>
 
-#include "../shader/Shader.h"
-#include "../entity/Entity2D.h"
-
 class Renderer2D
 {
 

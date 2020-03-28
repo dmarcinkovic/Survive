@@ -24,6 +24,18 @@ public:
     static void unbindTexture();
 
     [[nodiscard]] size_t vertexCount() const;
+
+    bool operator==(const Texture &rhs) const;
+
+    friend class TextureHash;
+};
+
+struct TextureHash
+{
+    std::size_t operator()(const Texture& texture) const noexcept
+    {
+        return texture.m_Vao ^ texture.m_TextureID ^ texture.m_VertexCount;
+    }
 };
 
 
