@@ -16,14 +16,8 @@ class Display
 private:
     GLFWwindow *m_Window;
 
-    static std::vector<Listener> keyEventListeners;
-    static std::vector<Listener> mouseEventListeners;
-
-    static void windowResizeCallback(GLFWwindow *window, int width, int height);
-
-    static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
-
-    static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
+    static std::vector<Listener> m_KeyEventListeners;
+    static std::vector<Listener> m_MouseEventListeners;
 
 public:
     Display(int width, int height, const char *title);
@@ -39,6 +33,13 @@ public:
     static void addKeyListener(const Listener& listener);
 
     static void addMouseListener(const Listener& listener);
+
+private:
+    static void windowResizeCallback(GLFWwindow *window, int width, int height);
+
+    static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
+
+    static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
 };
 
 

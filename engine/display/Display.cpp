@@ -4,8 +4,8 @@
 
 #include "Display.h"
 
-std::vector<Listener> Display::keyEventListeners;
-std::vector<Listener> Display::mouseEventListeners;
+std::vector<Listener> Display::m_KeyEventListeners;
+std::vector<Listener> Display::m_MouseEventListeners;
 
 Display::Display(int width, int height, const char *title)
 {
@@ -62,7 +62,7 @@ void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
 
 void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods)
 {
-    for (auto const &listener : keyEventListeners)
+    for (auto const &listener : m_KeyEventListeners)
     {
         listener(key, action);
     }
@@ -70,7 +70,7 @@ void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int actio
 
 void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    for (auto const &listener : mouseEventListeners)
+    for (auto const &listener : m_MouseEventListeners)
     {
         listener(button, action);
     }
@@ -78,10 +78,10 @@ void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int
 
 void Display::addKeyListener(const Listener &listener)
 {
-    keyEventListeners.emplace_back(listener);
+    m_KeyEventListeners.emplace_back(listener);
 }
 
 void Display::addMouseListener(const Listener &listener)
 {
-    mouseEventListeners.emplace_back(listener);
+    m_MouseEventListeners.emplace_back(listener);
 }
