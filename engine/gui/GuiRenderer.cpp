@@ -7,11 +7,11 @@
 
 void GuiRenderer::render()
 {
-    m_Shader.start();
+    prepareRendering();
+
     for (auto const&[texture, batch] : entities)
     {
-        prepareRendering(texture);
-
+        prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
             m_Shader.loadTransformationMatrix(
@@ -19,26 +19,23 @@ void GuiRenderer::render()
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
-        finishRendering();
+        finishRenderingEntity();
     }
-    Shader::stop();
+
+    finishRendering();
 }
 
-void GuiRenderer::prepareRendering(const Texture &texture) const
+void GuiRenderer::prepareRendering() const
 {
-    texture.bindTexture();
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+    m_Shader.start();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GuiRenderer::finishRendering()
 {
-    Texture::unbindTexture();
-
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
-    Loader::unbindVao();
+    Shader::stop();
+    glDisable(GL_BLEND);
 }
 
 void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
@@ -46,4 +43,20 @@ void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
     std::vector<Entity2D> &batch = entities[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
+}
+
+void GuiRenderer::prepareEntity(const Texture &texture) const
+{
+    texture.bindTexture();
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+}
+
+void GuiRenderer::finishRenderingEntity()
+{
+    Texture::unbindTexture();
+
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
+    Loader::unbindVao();
 }

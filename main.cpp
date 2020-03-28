@@ -17,7 +17,7 @@ int main()
 
     Loader loader;
     Texture texture(loader.loadToVao(vertices, indices, 2),
-                    loader.loadTexture("res/texture.jpg"));
+                    loader.loadTexture("res/apple.png"));
 
     GuiRenderer renderer;
     renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
