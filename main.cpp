@@ -21,12 +21,13 @@ int main()
                     loader.loadTexture("res/texture.jpg"));
 
     GuiRenderer renderer;
+    renderer.addEntity(Entity2D(texture));
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render(Entity2D(texture));
+        renderer.render();
 
         display.update();
     }

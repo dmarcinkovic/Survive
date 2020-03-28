@@ -4,13 +4,17 @@
 
 #include "GuiRenderer.h"
 
-void GuiRenderer::render(const Entity2D &entity2D)
+void GuiRenderer::render()
 {
-    prepareRendering(entity2D);
-
-    glDrawElements(GL_TRIANGLES, entity2D.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-
-    finishRendering();
+    for (auto const&[texture, batch] : entities)
+    {
+        for (auto const &entity2D : batch)
+        {
+            prepareRendering(entity2D);
+            glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+            finishRendering();
+        }
+    }
 }
 
 void GuiRenderer::prepareRendering(const Entity2D &entity2D) const
@@ -30,4 +34,11 @@ void GuiRenderer::finishRendering()
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     Loader::unbindVao();
+}
+
+void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
+{
+    std::vector<Entity2D> &batch = entities[entity2D.m_Texture];
+
+    batch.emplace_back(entity2D);
 }
