@@ -21,7 +21,8 @@ int main()
                     loader.loadTexture("res/texture.jpg"));
 
     GuiRenderer renderer;
-    renderer.addEntity(Entity2D(texture));
+    renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5,0.0}, 0.3));
+    renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5,0.0}, 0.3));
 
     while (display.isRunning())
     {
