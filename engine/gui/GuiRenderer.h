@@ -5,7 +5,6 @@
 #ifndef SURVIVE_GUIRENDERER_H
 #define SURVIVE_GUIRENDERER_H
 
-#include <functional>
 #include <unordered_map>
 
 #include "../entity/Entity2D.h"

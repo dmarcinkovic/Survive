@@ -2,7 +2,6 @@
 // Created by david on 24. 03. 2020..
 //
 
-#include <alloca.h>
 #include <iostream>
 #include <fstream>
 
