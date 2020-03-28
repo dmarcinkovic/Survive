@@ -6,6 +6,7 @@
 #define SURVIVE_RENDERER2D_H
 
 #include <vector>
+
 #include "../gui/GuiRenderer.h"
 
 class Renderer2D
