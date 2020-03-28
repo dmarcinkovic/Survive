@@ -19,7 +19,7 @@ private:
 public:
     Texture(const Model &model, GLuint textureId);
 
-    void bindTexture();
+    void bindTexture() const;
 
     static void unbindTexture();
 };

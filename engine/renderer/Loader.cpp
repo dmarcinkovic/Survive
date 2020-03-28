@@ -105,6 +105,7 @@ void Loader::loadImage(const char *texture) noexcept
     if (!image)
     {
         std::cout << "Error while loading image\n";
+        return;
     }
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);

@@ -23,7 +23,7 @@ public:
 
     ~Shader();
 
-    void start();
+    void start() const;
 
     static void stop();
 };

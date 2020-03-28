@@ -10,7 +10,7 @@ Texture::Texture(const Model &model, GLuint textureId)
 
 }
 
-void Texture::bindTexture()
+void Texture::bindTexture() const
 {
     glBindVertexArray(m_Vao);
     glActiveTexture(GL_TEXTURE0);

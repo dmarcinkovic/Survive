@@ -33,7 +33,7 @@ Display::~Display()
     glfwTerminate();
 }
 
-void Display::update()
+void Display::update() const
 {
     glfwPollEvents();
     glfwSwapBuffers(m_Window);

@@ -30,7 +30,7 @@ public:
 
     ~Display();
 
-    void update();
+    void update() const;
 
     static void clearWindow();
 
