@@ -18,7 +18,11 @@ private:
     GuiShader m_Shader{};
     std::unordered_map<Texture, std::vector<Entity2D>, TextureHash> entities;
 
-    void prepareRendering(const Texture &texture) const;
+    void prepareRendering() const;
+
+    void prepareEntity(const Texture &texture) const;
+
+    static void finishRenderingEntity();
 
     static void finishRendering();
 
