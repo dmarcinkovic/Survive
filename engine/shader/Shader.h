@@ -6,20 +6,24 @@
 #define SURVIVE_SHADER_H
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 class Shader
 {
-private:
+protected:
     GLuint m_VertexShader;
     GLuint m_FragmentShader;
     GLuint m_Program;
 
+    static void loadMatrix(GLuint location, const glm::mat4 &matrix);
+
+private:
     static GLuint loadShader(const char *filename, GLenum type);
 
     static void debug(GLuint shaderId);
 
 public:
-    Shader(const char* vertexShaderFile, const char* fragmentShaderFile);
+    Shader(const char *vertexShaderFile, const char *fragmentShaderFile);
 
     ~Shader();
 
