@@ -12,17 +12,7 @@
 
 class Renderer2D
 {
-private:
-    Shader m_Shader;
 
-    void prepareRendering(const Entity2D &entity2D);
-
-    static void finishRendering();
-
-public:
-    explicit Renderer2D(const Shader &shader);
-
-    void render(const std::vector<Entity2D> &entities);
 };
 
 
