@@ -14,6 +14,8 @@ void GuiRenderer::render()
 
         for (auto const &entity2D : batch)
         {
+            m_Shader.loadTransformationMatrix(
+                    Maths::createTransformationMatrix(entity2D.position, entity2D.scale));
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
@@ -25,8 +27,6 @@ void GuiRenderer::render()
 void GuiRenderer::prepareRendering(const Texture &texture) const
 {
     texture.bindTexture();
-    m_Shader.loadTransformationMatrix(
-            Maths::createTransformationMatrix(glm::vec3{-0.5, 0.5, 0}, 0.3));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
