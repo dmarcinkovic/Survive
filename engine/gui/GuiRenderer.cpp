@@ -3,6 +3,7 @@
 //
 
 #include "GuiRenderer.h"
+#include "../../math/Maths.h"
 
 void GuiRenderer::render()
 {
@@ -24,6 +25,8 @@ void GuiRenderer::render()
 void GuiRenderer::prepareRendering(const Texture &texture) const
 {
     texture.bindTexture();
+    m_Shader.loadTransformationMatrix(
+            Maths::createTransformationMatrix(glm::vec3{-0.5, 0.5, 0}, 0.3));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);

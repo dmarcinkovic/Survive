@@ -15,5 +15,4 @@ private:
 
 };
 
-
 #endif //SURVIVE_RENDERER2D_H
