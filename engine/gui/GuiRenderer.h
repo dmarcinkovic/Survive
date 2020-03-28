@@ -6,9 +6,20 @@
 #define SURVIVE_GUIRENDERER_H
 
 
+#include "../entity/Entity2D.h"
+#include "GuiShader.h"
+
 class GuiRenderer
 {
+private:
+    GuiShader m_Shader{};
 
+    void prepareRendering(const Entity2D &entity2D) const;
+
+    static void finishRendering();
+
+public:
+    void render(const Entity2D &entity2D);
 };
 
 
