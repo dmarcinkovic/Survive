@@ -12,17 +12,16 @@ int main()
 
     Display display(width, height, "Survive");
 
-    std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
+    std::vector<float> vertices = {-1, -1, 1, -1, 1, 1, -1, 1};
     std::vector<unsigned> indices = {0, 1, 3, 3, 1, 2};
-    std::vector<float> textureCoordinates = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0};
 
     Loader loader;
-    Texture texture(loader.loadToVao(vertices, indices, textureCoordinates, 2),
+    Texture texture(loader.loadToVao(vertices, indices, 2),
                     loader.loadTexture("res/texture.jpg"));
 
     GuiRenderer renderer;
-    renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5,0.0}, 0.3));
-    renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5,0.0}, 0.3));
+    renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
+    renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
 
     while (display.isRunning())
     {
