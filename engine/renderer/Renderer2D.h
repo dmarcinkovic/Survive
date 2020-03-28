@@ -11,8 +11,20 @@
 class Renderer2D
 {
 private:
+    const std::vector<float> m_Vertices{-1, -1, 1, -1, 1, 1, -1, 1};
+    const std::vector<unsigned> m_Indices{0, 1, 3, 3, 1, 2};
+    const Model m_Model;
+
     GuiRenderer m_GuiRenderer{};
 
+public:
+    explicit Renderer2D(Loader &loader);
+
+    void render() const;
+
+    void addEntity(const Entity2D &entity2D) noexcept;
+
+    const Model &getModel() const;
 };
 
 #endif //SURVIVE_RENDERER2D_H

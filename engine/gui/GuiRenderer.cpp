@@ -5,7 +5,7 @@
 #include "GuiRenderer.h"
 #include "../../math/Maths.h"
 
-void GuiRenderer::render()
+void GuiRenderer::render() const
 {
     prepareRendering();
 
