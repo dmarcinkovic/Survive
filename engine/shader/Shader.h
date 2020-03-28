@@ -15,8 +15,6 @@ protected:
     GLuint m_FragmentShader;
     GLuint m_Program;
 
-    static void loadMatrix(GLuint location, const glm::mat4 &matrix);
-
 private:
     static GLuint loadShader(const char *filename, GLenum type);
 
@@ -30,6 +28,10 @@ public:
     void start() const;
 
     static void stop();
+
+protected:
+    static void loadMatrix(GLuint location, const glm::mat4 &matrix);
+
 };
 
 

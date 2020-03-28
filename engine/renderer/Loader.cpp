@@ -113,7 +113,7 @@ void Loader::loadImage(const char *texture) noexcept
 }
 
 Model::Model(GLuint vao, size_t vertexCount)
-        : vao(vao), vertexCount(vertexCount)
+        : m_Vao(vao), m_VertexCount(vertexCount)
 {
 
 }

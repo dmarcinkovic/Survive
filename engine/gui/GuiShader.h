@@ -12,17 +12,18 @@
 class GuiShader : public Shader
 {
 private:
-    constexpr static const char* VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
-    constexpr static const char* FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
+    constexpr static const char *VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
+    constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
 
-    GLuint locationTransformationMatrix{};
-
-    void getUniformLocations();
+    GLuint m_LocationTransformationMatrix{};
 
 public:
     GuiShader();
 
     void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+private:
+    void getUniformLocations();
 };
 
 
