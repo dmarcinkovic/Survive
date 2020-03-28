@@ -1,9 +1,6 @@
-
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/shader/Shader.h"
 #include "engine/texture/Texture.h"
-#include "engine/gui/GuiRenderer.h"
 #include "engine/renderer/Renderer2D.h"
 
 int main()
