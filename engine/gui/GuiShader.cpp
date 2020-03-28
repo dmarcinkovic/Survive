@@ -12,10 +12,10 @@ GuiShader::GuiShader()
 
 void GuiShader::getUniformLocations()
 {
-    locationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+    m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 }
 
 void GuiShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
-    loadMatrix(locationTransformationMatrix, transformationMatrix);
+    loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }

@@ -5,7 +5,7 @@
 #include "Texture.h"
 
 Texture::Texture(const Model &model, GLuint textureId)
-        : m_Vao(model.vao), m_TextureID(textureId), m_VertexCount(model.vertexCount)
+        : m_Vao(model.m_Vao), m_TextureID(textureId), m_VertexCount(model.m_VertexCount)
 {
 
 }

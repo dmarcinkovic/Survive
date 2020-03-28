@@ -9,13 +9,13 @@ void GuiRenderer::render()
 {
     prepareRendering();
 
-    for (auto const&[texture, batch] : entities)
+    for (auto const&[texture, batch] : m_Entities)
     {
         prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(entity2D.position, entity2D.scale));
+                    Maths::createTransformationMatrix(entity2D.m_Position, entity2D.m_Scale));
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
@@ -40,7 +40,7 @@ void GuiRenderer::finishRendering()
 
 void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
 {
-    std::vector<Entity2D> &batch = entities[entity2D.m_Texture];
+    std::vector<Entity2D> &batch = m_Entities[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
 }
