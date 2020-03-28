@@ -16,7 +16,7 @@ void Renderer2D::render(const std::vector<Entity2D> &entities)
     {
         prepareRendering(entity2D);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, entity2D.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
         finishRendering();
     }
