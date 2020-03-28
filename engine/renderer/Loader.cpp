@@ -72,7 +72,7 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
     GLuint vao = createVao();
 
     createIndexBuffer(indices);
-    storeDataInAttributeList(0, vertices,2);
+    storeDataInAttributeList(0, vertices, size);
     storeDataInAttributeList(1, textureCoordinates, 2);
     unbindVao();
 

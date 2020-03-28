@@ -5,7 +5,7 @@
 #include "Texture.h"
 
 Texture::Texture(const Model &model, GLuint textureId)
-    : m_Vao(model.vao), m_TextureID(textureId), m_VertexCount(model.vertexCount)
+        : m_Vao(model.vao), m_TextureID(textureId), m_VertexCount(model.vertexCount)
 {
 
 }
@@ -25,4 +25,11 @@ void Texture::unbindTexture()
 size_t Texture::vertexCount() const
 {
     return m_VertexCount;
+}
+
+bool Texture::operator==(const Texture &rhs) const
+{
+    return m_Vao == rhs.m_Vao &&
+           m_VertexCount == rhs.m_VertexCount &&
+           m_TextureID == rhs.m_TextureID;
 }
