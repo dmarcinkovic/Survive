@@ -4,6 +4,7 @@
 #include "engine/shader/Shader.h"
 #include "engine/texture/Texture.h"
 #include "engine/gui/GuiRenderer.h"
+#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -12,17 +13,12 @@ int main()
 
     Display display(width, height, "Survive");
 
-    std::vector<float> vertices = {-1, -1, 1, -1, 1, 1, -1, 1};
-    std::vector<unsigned> indices = {0, 1, 3, 3, 1, 2};
-
     Loader loader;
-    Texture texture(loader.loadToVao(vertices, indices, 2),
-                    loader.loadTexture("res/apple.png"));
+    Renderer2D renderer(loader);
 
-    Texture texture1(loader.loadToVao(vertices, indices,2),
-            loader.loadTexture("res/texture.jpg"));
+    Texture texture(renderer.getModel(),loader.loadTexture("res/apple.png"));
+    Texture texture1(renderer.getModel(),loader.loadTexture("res/texture.jpg"));
 
-    GuiRenderer renderer;
     renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
     renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
     renderer.addEntity(Entity2D(texture1, glm::vec3{0.5, -0.5, 0.0}, 0.3));

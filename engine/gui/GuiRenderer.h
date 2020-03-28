@@ -7,9 +7,10 @@
 
 #include <unordered_map>
 
+#include "../renderer/Loader.h"
 #include "../entity/Entity2D.h"
-#include "GuiShader.h"
 #include "../texture/Texture.h"
+#include "GuiShader.h"
 
 class GuiRenderer
 {
@@ -18,7 +19,7 @@ private:
     std::unordered_map<Texture, std::vector<Entity2D>, TextureHash> m_Entities;
 
 public:
-    void render();
+    void render() const;
 
     void addEntity(const Entity2D &entity2D) noexcept;
 
@@ -30,7 +31,6 @@ private:
     static void finishRenderingEntity();
 
     static void finishRendering();
-
 };
 
 
