@@ -6,9 +6,16 @@
 #define SURVIVE_TEXTSHADER_H
 
 
-class TextShader
-{
+#include "../shader/Shader.h"
 
+class TextShader : public Shader
+{
+private:
+    constexpr static const char* VERTEX_FILE = "";
+    constexpr static const char* FRAGMENT_FILE = "";
+
+public:
+    TextShader();
 };
 
 

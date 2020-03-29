@@ -2,6 +2,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
 #include "engine/renderer/Renderer2D.h"
+#include "engine/text/Font.h"
 
 int main()
 {
@@ -13,7 +14,8 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-
+    Font font;
+    font.loadFontFromFntFile("res/arial.fnt");
 
     while (display.isRunning())
     {

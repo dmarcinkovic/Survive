@@ -5,14 +5,14 @@
 #ifndef SURVIVE_FONT_H
 #define SURVIVE_FONT_H
 
+#include <unordered_map>
 
-#include <vector>
 #include "Character.h"
 
 class Font
 {
 private:
-    std::vector<Character> m_Characters;
+    std::unordered_map<int, Character> m_Characters;
 
 public:
     void loadFontFromFntFile(const char* fntFile);

@@ -24,7 +24,7 @@ public:
 
     void addEntity(Entity2D &entity2D) noexcept;
 
-private:
+protected:
     void prepareRendering(const Shader &shader) const;
 
     void prepareEntity(const Texture &texture) const;

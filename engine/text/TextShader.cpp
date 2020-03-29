@@ -3,3 +3,9 @@
 //
 
 #include "TextShader.h"
+
+TextShader::TextShader()
+        : Shader(VERTEX_FILE, FRAGMENT_FILE)
+{
+
+}

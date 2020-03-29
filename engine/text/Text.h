@@ -5,10 +5,15 @@
 #ifndef SURVIVE_TEXT_H
 #define SURVIVE_TEXT_H
 
+#include <string>
 
-class Text
+#include "../entity/Entity2D.h"
+
+struct Text : public Entity2D
 {
+    const std::string m_Text;
 
+    Text(std::string text, const Texture &texture, const glm::vec3 &position, float scale = 1.0);
 };
 
 
