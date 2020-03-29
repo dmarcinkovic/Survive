@@ -5,6 +5,7 @@
 #ifndef SURVIVE_SPRITESRENDERER_H
 #define SURVIVE_SPRITESRENDERER_H
 
+#include <functional>
 
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
@@ -14,12 +15,12 @@ class SpritesRenderer : public GuiRenderer
 {
 private:
     SpritesShader m_Shader{};
-    std::unordered_map<Texture, std::vector<Sprite>, TextureHash> m_Sprites;
+    std::unordered_map<Texture, std::vector<std::reference_wrapper<Sprite>>, TextureHash> m_Sprites;
 
 public:
     void renderSprite() const;
 
-    void addSprite(const Sprite &sprite) noexcept;
+    void addSprite(Sprite &sprite) noexcept;
 
 private:
     void animate(const Sprite &sprite) const;

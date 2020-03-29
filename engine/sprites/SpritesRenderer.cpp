@@ -15,8 +15,8 @@ void SpritesRenderer::renderSprite() const
         for (auto const &sprite : batch)
         {
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(sprite.m_Position, sprite.m_Scale));
-            animate(sprite);
+                    Maths::createTransformationMatrix(sprite.get().m_Position, sprite.get().m_Scale));
+             animate(sprite.get());
 
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
@@ -27,9 +27,9 @@ void SpritesRenderer::renderSprite() const
     finishRendering();
 }
 
-void SpritesRenderer::addSprite(const Sprite &sprite) noexcept
+void SpritesRenderer::addSprite(Sprite &sprite) noexcept
 {
-    std::vector<Sprite> &batch = m_Sprites[sprite.m_Texture];
+    std::vector<std::reference_wrapper<Sprite>> &batch = m_Sprites[sprite.m_Texture];
 
     batch.emplace_back(sprite);
 }
