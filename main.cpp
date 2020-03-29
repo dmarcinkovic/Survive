@@ -15,12 +15,10 @@ int main()
 
     Texture texture2(renderer.getModel(), loader.loadTexture("res/walking.png"));
 
-    Sprite sprite(texture2, glm::vec3{-0.5, 0.5, 0.0}, 0.3, 1, 8);
-    sprite.drawSprite(0,7);
-    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 1, 8);
+    float x = 0.5;
+    Sprite sprite2(texture2, glm::vec3{x, 0.5, 0.0}, 0.3, 1, 8);
     sprite2.drawSprite(0, 3);
 
-    renderer.addSprite(sprite);
     renderer.addSprite(sprite2);
 
     sprite2.animate(10);
@@ -28,6 +26,13 @@ int main()
     while (display.isRunning())
     {
         Display::clearWindow();
+
+        x += 0.01;
+        if (x >= 1.0)
+        {
+            x = -1.0;
+        }
+        sprite2.m_Position = glm::vec3{x,0.5, 0.0};
 
         renderer.render();
 
