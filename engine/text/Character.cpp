@@ -14,5 +14,21 @@ Character::Character(int id, float x, float y, float width, float height, float 
 
 void Character::calculateTextureCoordinates(float scaleW, float scaleH)
 {
-    
+    float minX = m_X / scaleW;
+    float maxX = (m_X + m_Width) / scaleW;
+    float minY = (scaleH - m_Height - m_Y) / scaleH;
+    float maxY = (scaleH - m_Y) / scaleH;
+
+    m_TextureCoords.emplace_back(minX);
+    m_TextureCoords.emplace_back(maxY);
+    m_TextureCoords.emplace_back(minX);
+    m_TextureCoords.emplace_back(minY);
+    m_TextureCoords.emplace_back(maxX);
+    m_TextureCoords.emplace_back(minY);
+    m_TextureCoords.emplace_back(maxX);
+    m_TextureCoords.emplace_back(minY);
+    m_TextureCoords.emplace_back(maxX);
+    m_TextureCoords.emplace_back(maxY);
+    m_TextureCoords.emplace_back(minX);
+    m_TextureCoords.emplace_back(maxY);
 }
