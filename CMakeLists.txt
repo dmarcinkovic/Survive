@@ -9,7 +9,7 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 find_package(GLEW REQUIRED STATIC)
 
-add_executable(Survive main.cpp engine/texture/stb_image.h engine/texture/stb_image.cpp engine/display/Display.cpp engine/display/Display.h engine/renderer/Loader.cpp engine/renderer/Loader.h engine/shader/Shader.cpp engine/shader/Shader.h engine/texture/Texture.cpp engine/texture/Texture.h engine/renderer/Renderer2D.cpp engine/renderer/Renderer2D.h engine/entity/Entity2D.cpp engine/entity/Entity2D.h engine/gui/GuiShader.cpp engine/gui/GuiShader.h engine/gui/GuiRenderer.cpp engine/gui/GuiRenderer.h math/Maths.cpp math/Maths.h)
+add_executable(Survive main.cpp engine/texture/stb_image.h engine/texture/stb_image.cpp engine/display/Display.cpp engine/display/Display.h engine/renderer/Loader.cpp engine/renderer/Loader.h engine/shader/Shader.cpp engine/shader/Shader.h engine/texture/Texture.cpp engine/texture/Texture.h engine/renderer/Renderer2D.cpp engine/renderer/Renderer2D.h engine/entity/Entity2D.cpp engine/entity/Entity2D.h engine/gui/GuiShader.cpp engine/gui/GuiShader.h engine/gui/GuiRenderer.cpp engine/gui/GuiRenderer.h math/Maths.cpp math/Maths.h engine/text/Text.cpp engine/text/Text.h engine/text/TextShader.cpp engine/text/TextShader.h engine/text/TextRenderer.cpp engine/text/TextRenderer.h)
 
 target_link_libraries(Survive ${OpenGlLinkers})
 
