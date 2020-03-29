@@ -19,8 +19,7 @@ private:
     GLuint m_LocationTransformationMatrix{};
     GLuint m_LocationRow{};
     GLuint m_LocationCol{};
-    GLuint m_LocationCurrentRow{};
-    GLuint m_LocationCurrentCol{};
+    GLuint m_LocationSpriteIndex{};
 
 public:
     SpritesShader();
@@ -29,7 +28,7 @@ public:
 
     void loadSpriteSize(int row, int col) const;
 
-    void loadSpritePosition(int currentRow, int currentCol) const;
+    void loadSpritePosition(int currentIndex) const;
 
 private:
     void getUniformLocations();

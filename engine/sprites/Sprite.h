@@ -5,19 +5,17 @@
 #ifndef SURVIVE_SPRITE_H
 #define SURVIVE_SPRITE_H
 
-
 #include "../entity/Entity2D.h"
 
 class Sprite : public Entity2D
 {
 private:
-    int m_LastFrameIndex{};
-    int m_CurrentFrameIndex{};
     double m_Time{};
+    int m_EndRow{}, m_EndCol{};
 
 public:
+    int m_CurrentFrameIndex{};
     const int m_Row, m_Col;
-    int m_CurrentRow{}, m_CurrentCol{};
     bool m_Animate{};
 
     int m_SpritesInSecond{};
@@ -26,9 +24,14 @@ public:
 
     void animate(int spritesInSecond, int startRow = 0, int startCol = 0);
 
+    void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol);
+
     void drawSprite(int row, int col);
 
     void animate();
+
+private:
+    int calculateFrameIndex(int startIndex, int endIndex);
 };
 
 

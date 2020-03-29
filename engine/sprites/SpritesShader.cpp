@@ -20,8 +20,7 @@ void SpritesShader::getUniformLocations()
     m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
     m_LocationCol = glGetUniformLocation(m_Program, "col");
     m_LocationRow = glGetUniformLocation(m_Program, "row");
-    m_LocationCurrentRow = glGetUniformLocation(m_Program,"currentRow");
-    m_LocationCurrentCol = glGetUniformLocation(m_Program,"currentCol");
+    m_LocationSpriteIndex = glGetUniformLocation(m_Program, "spriteIndex");
 }
 
 void SpritesShader::loadSpriteSize(int row, int col) const
@@ -30,8 +29,7 @@ void SpritesShader::loadSpriteSize(int row, int col) const
     loadInteger(m_LocationCol, col);
 }
 
-void SpritesShader::loadSpritePosition(int currentRow, int currentCol) const
+void SpritesShader::loadSpritePosition(int currentIndex) const
 {
-    loadInteger(m_LocationCurrentRow, currentRow);
-    loadInteger(m_LocationCurrentCol, currentCol);
+    loadInteger(m_LocationSpriteIndex, currentIndex);
 }
