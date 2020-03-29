@@ -15,7 +15,7 @@ void Renderer2D::render() const
     m_GuiRenderer.render();
 }
 
-void Renderer2D::addEntity(const Entity2D &entity2D) noexcept
+void Renderer2D::addEntity(Entity2D &entity2D) noexcept
 {
     m_GuiRenderer.addEntity(entity2D);
 }

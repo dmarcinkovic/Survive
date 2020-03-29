@@ -16,9 +16,13 @@ int main()
     Texture texture(renderer.getModel(),loader.loadTexture("res/apple.png"));
     Texture texture1(renderer.getModel(),loader.loadTexture("res/texture.jpg"));
 
-    renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
-    renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
-    renderer.addEntity(Entity2D(texture1, glm::vec3{0.5, -0.5, 0.0}, 0.3));
+    Entity2D entity1(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3);
+    Entity2D entity2(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3);
+    Entity2D entity3(texture1, glm::vec3{-0.5, -0.5, 0.0}, 0.3);
+
+    renderer.addEntity(entity1);
+    renderer.addEntity(entity2);
+    renderer.addEntity(entity3);
 
     while (display.isRunning())
     {
