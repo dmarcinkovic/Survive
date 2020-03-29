@@ -7,7 +7,7 @@
 
 void GuiRenderer::render() const
 {
-    prepareRendering();
+    prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Entities)
     {
