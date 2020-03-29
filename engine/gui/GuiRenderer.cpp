@@ -3,7 +3,7 @@
 //
 
 #include "GuiRenderer.h"
-#include "../../math/Maths.h"
+#include "../math/Maths.h"
 
 void GuiRenderer::render() const
 {
