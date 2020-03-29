@@ -4,6 +4,12 @@
 
 #include "TextRenderer.h"
 
+TextRenderer::TextRenderer(Loader &loader)
+        : m_Model(loader.loadToVao(m_Vertices, m_TextureCoords, 2))
+{
+
+}
+
 void TextRenderer::renderText() const
 {
     prepareRendering(m_Shader);
@@ -13,7 +19,6 @@ void TextRenderer::renderText() const
         prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
-            // TODO draw text
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 
@@ -27,4 +32,9 @@ void TextRenderer::addText(Text &text)
 {
     auto &texts = m_Texts[text.m_Texture];
     texts.emplace_back(text);
+}
+
+const Model &TextRenderer::getModel() const
+{
+    return m_Model;
 }

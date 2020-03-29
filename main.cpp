@@ -3,6 +3,7 @@
 #include "engine/texture/Texture.h"
 #include "engine/renderer/Renderer2D.h"
 #include "engine/text/Font.h"
+#include "engine/text/TextRenderer.h"
 
 int main()
 {
@@ -17,11 +18,17 @@ int main()
     Font font;
     font.loadFontFromFntFile("res/arial.fnt");
 
+    TextRenderer textRenderer(loader);
+    Texture texture(textRenderer.getModel(), loader.loadTexture("res/arial.png"));
+    Text text("Text", texture, glm::vec3{0,0,0});
+    textRenderer.addText(text);
+
     while (display.isRunning())
     {
         Display::clearWindow();
 
         renderer.render();
+        textRenderer.renderText();
 
         display.update();
     }
