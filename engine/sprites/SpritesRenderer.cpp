@@ -36,6 +36,6 @@ void SpritesRenderer::addSprite(const Sprite &sprite) noexcept
 
 void SpritesRenderer::animate(const Sprite &sprite) const
 {
-    m_Shader.loadSpriteSize(sprite.m_Row,sprite.m_Col);
+    m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
     m_Shader.loadSpritePosition(sprite.m_CurrentRow, sprite.m_CurrentCol);
 }
