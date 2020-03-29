@@ -30,12 +30,14 @@ void GuiRenderer::prepareRendering(const Shader &shader) const
     shader.start();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void GuiRenderer::finishRendering()
 {
     Shader::stop();
     glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
