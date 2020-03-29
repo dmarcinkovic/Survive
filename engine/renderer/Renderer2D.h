@@ -23,7 +23,7 @@ public:
 
     void render() const;
 
-    void addEntity(const Entity2D &entity2D) noexcept;
+    void addEntity(Entity2D &entity2D) noexcept;
 
     const Model &getModel() const;
 };

@@ -15,7 +15,7 @@ void GuiRenderer::render() const
         for (auto const &entity2D : batch)
         {
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(entity2D.m_Position, entity2D.m_Scale));
+                    Maths::createTransformationMatrix(entity2D.get().m_Position, entity2D.get().m_Scale));
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
@@ -38,9 +38,9 @@ void GuiRenderer::finishRendering()
     glDisable(GL_BLEND);
 }
 
-void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
+void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
 {
-    std::vector<Entity2D> &batch = m_Entities[entity2D.m_Texture];
+    std::vector<std::reference_wrapper<Entity2D>> &batch = m_Entities[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
 }

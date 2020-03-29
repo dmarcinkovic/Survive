@@ -5,6 +5,7 @@
 #ifndef SURVIVE_GUIRENDERER_H
 #define SURVIVE_GUIRENDERER_H
 
+#include <functional>
 #include <unordered_map>
 
 #include "../renderer/Loader.h"
@@ -16,12 +17,12 @@ class GuiRenderer
 {
 private:
     GuiShader m_Shader{};
-    std::unordered_map<Texture, std::vector<Entity2D>, TextureHash> m_Entities;
+    std::unordered_map<Texture, std::vector<std::reference_wrapper<Entity2D>>, TextureHash> m_Entities;
 
 public:
     void render() const;
 
-    void addEntity(const Entity2D &entity2D) noexcept;
+    void addEntity(Entity2D &entity2D) noexcept;
 
 private:
     void prepareRendering() const;
