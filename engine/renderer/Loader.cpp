@@ -79,6 +79,17 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
     return Model(vao, indices.size());
 }
 
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)
+{
+    GLuint vao = createVao();
+
+    storeDataInAttributeList(0, vertices, size);
+    storeDataInAttributeList(1, textureCoordinates, 2);
+    unbindVao();
+
+    return Model(vao, vertices.size() / size);
+}
+
 GLuint Loader::loadTexture(const char *texture) noexcept
 {
     GLuint textureId;

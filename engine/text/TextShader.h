@@ -11,8 +11,8 @@
 class TextShader : public Shader
 {
 private:
-    constexpr static const char* VERTEX_FILE = "";
-    constexpr static const char* FRAGMENT_FILE = "";
+    constexpr static const char* VERTEX_FILE = "engine/shader/sources/TextVertexShader.glsl";
+    constexpr static const char* FRAGMENT_FILE = "engine/shader/sources/TextFragmentShader.glsl";
 
 public:
     TextShader();
