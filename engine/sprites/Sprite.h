@@ -8,16 +8,19 @@
 
 #include "../entity/Entity2D.h"
 
-class Sprite : public Entity2D
+struct Sprite : public Entity2D
 {
-private:
-    int row;
-    int col;
+    int m_Row;
+    int m_Col;
+    int m_CurrentRow{};
+    int m_CurrentCol{};
 
 public:
     Sprite(const Texture &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
 
-    void animate();
+    void animate(int spritesInSecond, int startRow = 0, int startCol = 0);
+
+    void drawSprite(int row, int col);
 };
 
 

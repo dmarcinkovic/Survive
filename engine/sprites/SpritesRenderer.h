@@ -20,6 +20,9 @@ public:
     void renderSprite() const;
 
     void addSprite(const Sprite &sprite) noexcept;
+
+private:
+    void animate(const Sprite &sprite) const;
 };
 
 

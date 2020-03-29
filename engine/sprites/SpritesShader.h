@@ -19,13 +19,17 @@ private:
     GLuint m_LocationTransformationMatrix{};
     GLuint m_LocationRow{};
     GLuint m_LocationCol{};
+    GLuint m_LocationCurrentRow{};
+    GLuint m_LocationCurrentCol{};
 
 public:
     SpritesShader();
 
     void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-    void loadSpritePosition(int row, int col);
+    void loadSpriteSize(int row, int col) const;
+
+    void loadSpritePosition(int currentRow, int currentCol) const;
 
 private:
     void getUniformLocations();
