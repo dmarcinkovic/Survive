@@ -7,6 +7,9 @@
 std::vector<Listener> Display::m_KeyEventListeners;
 std::vector<Listener> Display::m_MouseEventListeners;
 
+double Display::m_LastFrameTime{};
+double Display::m_DeltaTime{};
+
 Display::Display(int width, int height, const char *title)
 {
     glfwInit();
@@ -25,6 +28,8 @@ Display::Display(int width, int height, const char *title)
     glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
     glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
     glfwSetKeyCallback(m_Window, keyEventCallback);
+
+    m_LastFrameTime = glfwGetTime();
 }
 
 Display::~Display()
@@ -35,6 +40,10 @@ Display::~Display()
 
 void Display::update() const
 {
+    double currentTime = glfwGetTime();
+    m_DeltaTime = currentTime - m_LastFrameTime;
+    m_LastFrameTime = currentTime;
+
     glfwPollEvents();
     glfwSwapBuffers(m_Window);
 }
@@ -84,4 +93,9 @@ void Display::addKeyListener(const Listener &listener)
 void Display::addMouseListener(const Listener &listener)
 {
     m_MouseEventListeners.emplace_back(listener);
+}
+
+double Display::getFrameTime()
+{
+    return m_DeltaTime;
 }

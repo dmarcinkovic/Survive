@@ -19,6 +19,9 @@ private:
     static std::vector<Listener> m_KeyEventListeners;
     static std::vector<Listener> m_MouseEventListeners;
 
+    static double m_LastFrameTime;
+    static double m_DeltaTime;
+
 public:
     Display(int width, int height, const char *title);
 
@@ -33,6 +36,8 @@ public:
     static void addKeyListener(const Listener& listener);
 
     static void addMouseListener(const Listener& listener);
+
+    static double getFrameTime();
 
 private:
     static void windowResizeCallback(GLFWwindow *window, int width, int height);
