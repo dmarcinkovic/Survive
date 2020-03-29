@@ -25,9 +25,9 @@ void GuiRenderer::render() const
     finishRendering();
 }
 
-void GuiRenderer::prepareRendering() const
+void GuiRenderer::prepareRendering(const Shader &shader) const
 {
-    m_Shader.start();
+    shader.start();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
