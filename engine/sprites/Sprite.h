@@ -15,7 +15,9 @@ private:
     int col;
 
 public:
-    Sprite(const Texture &texture, const glm::vec3 &position, float scale, int row = 0, int col = 0);
+    Sprite(const Texture &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
+
+    void animate();
 };
 
 
