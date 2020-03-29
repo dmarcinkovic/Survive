@@ -12,7 +12,7 @@ std::vector<std::string> Util::split(const std::string &string, const std::strin
     std::sregex_token_iterator end;
 
     std::vector<std::string> result;
-    std::copy(begin, end, std::back_inserter(result));
+    std::copy(std::make_move_iterator(begin), std::make_move_iterator(end), std::back_inserter(result));
 
     return result;
 }

@@ -14,7 +14,7 @@ void TextRenderer::renderText() const
         for (auto const &entity2D : batch)
         {
             // TODO draw text
-//            glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 
         finishRenderingEntity();
@@ -25,5 +25,6 @@ void TextRenderer::renderText() const
 
 void TextRenderer::addText(Text &text)
 {
-
+    auto &texts = m_Texts[text.m_Texture];
+    texts.emplace_back(text);
 }
