@@ -5,7 +5,7 @@
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
-    : m_Model(loader.loadToVao(m_Vertices,m_Indices,2))
+        : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2))
 {
 
 }
@@ -15,7 +15,7 @@ void Renderer2D::render() const
     m_GuiRenderer.render();
 }
 
-void Renderer2D::addEntity(Entity2D &entity2D) noexcept
+void Renderer2D::addGui(Entity2D &entity2D) noexcept
 {
     m_GuiRenderer.addEntity(entity2D);
 }
