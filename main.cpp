@@ -13,14 +13,9 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    Texture texture(renderer.getModel(),loader.loadTexture("res/apple.png"));
-    Texture texture1(renderer.getModel(),loader.loadTexture("res/texture.jpg"));
     Texture texture2(renderer.getModel(), loader.loadTexture("res/walking.png"));
 
-    renderer.addGui(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
-    renderer.addGui(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
-    renderer.addGui(Entity2D(texture1, glm::vec3{0.5, -0.5, 0.0}, 0.3));
-    renderer.addSprite(Entity2D(texture2, glm::vec3{-0.5, -0.5, 0.0}, 0.3));
+    renderer.addSprite(Entity2D(texture2, glm::vec3{-0.5, -0.1, 0.0}, 0.5));
 
     while (display.isRunning())
     {

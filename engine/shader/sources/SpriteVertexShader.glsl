@@ -4,6 +4,8 @@ in vec2 position;
 
 out vec2 textureCoords;
 
+uniform int row;
+uniform int col;
 uniform mat4 transformationMatrix;
 
 void main()

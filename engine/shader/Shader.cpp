@@ -80,3 +80,8 @@ void Shader::loadMatrix(GLuint location, const glm::mat4 &matrix)
 {
     glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
+
+void Shader::loadInteger(GLuint location, int value)
+{
+    glUniform1i(location, value);
+}
