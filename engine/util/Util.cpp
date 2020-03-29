@@ -17,22 +17,22 @@ std::vector<std::string> Util::split(const std::string &string, const std::strin
     return result;
 }
 
-int Util::getNumber(const std::string &string)
+float Util::getNumber(const std::string &string)
 {
     int index = string.find('=');
-    return std::stoi(string.substr(index + 1));
+    return std::stof(string.substr(index + 1));
 }
 
-Character Util::getCharacter(const std::vector<std::string> &line)
+Character Util::getCharacter(const std::vector<std::string> &line, float w, float h)
 {
-    int id = getNumber(line[1]);
-    int x = getNumber(line[2]);
-    int y = getNumber(line[3]);
-    int width = getNumber(line[4]);
-    int height = getNumber(line[5]);
-    int xOffset = getNumber(line[6]);
-    int yOffset = getNumber(line[7]);
-    int advance = getNumber(line[8]);
+    float id = getNumber(line[1]);
+    float x = getNumber(line[2]);
+    float y = getNumber(line[3]);
+    float width = getNumber(line[4]);
+    float height = getNumber(line[5]);
+    float xOffset = getNumber(line[6]);
+    float yOffset = getNumber(line[7]);
+    float advance = getNumber(line[8]);
 
-    return Character(id, x, y, width, height, xOffset, yOffset,advance);
+    return Character(id, x, y, width, height, xOffset, yOffset, advance, w, h);
 }

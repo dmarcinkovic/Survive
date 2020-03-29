@@ -5,16 +5,22 @@
 #ifndef SURVIVE_CHARACTER_H
 #define SURVIVE_CHARACTER_H
 
+#include <vector>
 
 struct Character
 {
     int m_Id;
-    int m_X, m_Y;
-    int m_Width, m_Height;
-    int m_XOffset, m_YOffset;
-    int m_Advance;
+    float m_X, m_Y;
+    float m_Width, m_Height;
+    float m_XOffset, m_YOffset;
+    float m_Advance;
+    std::vector<float> m_TextureCoords;
 
-    Character(int id, int x, int y, int width, int height, int xOffset, int yOffset, int advance);
+    Character(int id, float x, float y, float width, float height, float xOffset, float yOffset, float advance, float scaleW,
+              float scaleH);
+
+private:
+    void calculateTextureCoordinates(float scaleW, float scaleH);
 };
 
 

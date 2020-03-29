@@ -14,8 +14,8 @@ class TextRenderer : public GuiRenderer
 private:
     const std::vector<float> m_Vertices = {-0.5, 0.5, -0.5, -0.5, 0.5, -0.5,
                                            0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-    const std::vector<float> m_TextureCoords = {0, 1, 0, 0, 1, 0,
-                                                1, 0, 1, 1, 0, 1};
+    const std::vector<float> m_TextureCoords = {0, 1, 0, 0.84375, 0.15234375, 0.84375,
+                                                0.15234375, 0.84375, 0.15234375, 1, 0, 1};
 
     TextShader m_Shader{};
     std::unordered_map<Texture, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;

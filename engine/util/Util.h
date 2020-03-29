@@ -12,13 +12,12 @@
 
 class Util
 {
-private:
-    static int getNumber(const std::string& string);
-
 public:
+    static float getNumber(const std::string& string);
+
     static std::vector<std::string> split(const std::string &string, const std::string &delimiter);
 
-    static Character getCharacter(const std::vector<std::string> &line);
+    static Character getCharacter(const std::vector<std::string> &line, float w, float h);
 };
 
 
