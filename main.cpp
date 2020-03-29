@@ -23,6 +23,8 @@ int main()
     renderer.addSprite(sprite);
     renderer.addSprite(sprite2);
 
+    sprite2.animate(10);
+
     while (display.isRunning())
     {
         Display::clearWindow();

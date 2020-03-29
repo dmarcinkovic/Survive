@@ -14,9 +14,10 @@ void SpritesRenderer::renderSprite() const
         prepareEntity(texture);
         for (auto const &sprite : batch)
         {
+            Sprite &s = sprite.get();
             m_Shader.loadTransformationMatrix(
                     Maths::createTransformationMatrix(sprite.get().m_Position, sprite.get().m_Scale));
-             animate(sprite.get());
+            animate(s);
 
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
@@ -34,8 +35,13 @@ void SpritesRenderer::addSprite(Sprite &sprite) noexcept
     batch.emplace_back(sprite);
 }
 
-void SpritesRenderer::animate(const Sprite &sprite) const
+void SpritesRenderer::animate(Sprite &sprite) const
 {
+    if (sprite.m_Animate)
+    {
+        sprite.animate();
+    }
+
     m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
     m_Shader.loadSpritePosition(sprite.m_CurrentRow, sprite.m_CurrentCol);
 }

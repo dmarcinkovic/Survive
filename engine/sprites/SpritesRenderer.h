@@ -23,7 +23,7 @@ public:
     void addSprite(Sprite &sprite) noexcept;
 
 private:
-    void animate(const Sprite &sprite) const;
+    void animate(Sprite &sprite) const;
 };
 
 
