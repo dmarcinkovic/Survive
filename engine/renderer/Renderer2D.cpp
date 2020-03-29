@@ -12,16 +12,22 @@ Renderer2D::Renderer2D(Loader &loader)
 
 void Renderer2D::render() const
 {
-    m_GuiRenderer.render();
+    m_GuiRenderer.renderGui();
+    m_SpriteRenderer.renderSprite();
 }
 
-void Renderer2D::addEntity(const Entity2D &entity2D) noexcept
+void Renderer2D::addGui(const Entity2D &entity2D) noexcept
 {
-    m_GuiRenderer.addEntity(entity2D);
+    m_GuiRenderer.addGui(entity2D);
 }
 
 const Model &Renderer2D::getModel() const
 {
     return m_Model;
+}
+
+void Renderer2D::addSprite(const Entity2D &entity2D) noexcept
+{
+    m_SpriteRenderer.addSprite(entity2D);
 }
 

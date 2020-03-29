@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../gui/GuiRenderer.h"
+#include "../sprites/SpritesRenderer.h"
 
 class Renderer2D
 {
@@ -17,13 +18,16 @@ private:
     const Model m_Model;
 
     GuiRenderer m_GuiRenderer{};
+    SpritesRenderer m_SpriteRenderer{};
 
 public:
     explicit Renderer2D(Loader &loader);
 
     void render() const;
 
-    void addEntity(const Entity2D &entity2D) noexcept;
+    void addGui(const Entity2D &entity2D) noexcept;
+
+    void addSprite(const Entity2D &entity2D) noexcept;
 
     const Model &getModel() const;
 };

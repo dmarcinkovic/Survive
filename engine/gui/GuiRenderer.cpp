@@ -5,11 +5,11 @@
 #include "GuiRenderer.h"
 #include "../math/Maths.h"
 
-void GuiRenderer::render() const
+void GuiRenderer::renderGui() const
 {
-    prepareRendering();
+    prepareRendering(m_Shader);
 
-    for (auto const&[texture, batch] : m_Entities)
+    for (auto const&[texture, batch] : m_Guis)
     {
         prepareEntity(texture);
         for (auto const &entity2D : batch)
@@ -25,9 +25,9 @@ void GuiRenderer::render() const
     finishRendering();
 }
 
-void GuiRenderer::prepareRendering() const
+void GuiRenderer::prepareRendering(const Shader &shader) const
 {
-    m_Shader.start();
+    shader.start();
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -38,9 +38,9 @@ void GuiRenderer::finishRendering()
     glDisable(GL_BLEND);
 }
 
-void GuiRenderer::addEntity(const Entity2D &entity2D) noexcept
+void GuiRenderer::addGui(const Entity2D &entity2D) noexcept
 {
-    std::vector<Entity2D> &batch = m_Entities[entity2D.m_Texture];
+    std::vector<Entity2D> &batch = m_Guis[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
 }

@@ -15,10 +15,12 @@ int main()
 
     Texture texture(renderer.getModel(),loader.loadTexture("res/apple.png"));
     Texture texture1(renderer.getModel(),loader.loadTexture("res/texture.jpg"));
+    Texture texture2(renderer.getModel(), loader.loadTexture("res/walking.png"));
 
-    renderer.addEntity(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
-    renderer.addEntity(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
-    renderer.addEntity(Entity2D(texture1, glm::vec3{0.5, -0.5, 0.0}, 0.3));
+    renderer.addGui(Entity2D(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3));
+    renderer.addGui(Entity2D(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3));
+    renderer.addGui(Entity2D(texture1, glm::vec3{0.5, -0.5, 0.0}, 0.3));
+    renderer.addSprite(Entity2D(texture2, glm::vec3{-0.5, -0.5, 0.0}, 0.3));
 
     while (display.isRunning())
     {
