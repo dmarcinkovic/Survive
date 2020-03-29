@@ -20,7 +20,7 @@ int main()
 
     TextRenderer textRenderer(loader);
     Texture texture(textRenderer.getModel(), loader.loadTexture("res/arial.png"));
-    Text text("Text", texture, glm::vec3{0,0,0});
+    Text text("Text", font, texture, glm::vec3{0, 0, 0});
     textRenderer.addText(text);
 
     while (display.isRunning())

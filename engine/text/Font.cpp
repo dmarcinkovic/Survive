@@ -30,3 +30,8 @@ void Font::loadFontFromFntFile(const char *fntFile)
 
     reader.close();
 }
+
+const Character &Font::getCharacter(int ascii) const
+{
+    return m_Characters.at(ascii);
+}

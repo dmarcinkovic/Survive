@@ -16,6 +16,8 @@ private:
 
 public:
     void loadFontFromFntFile(const char* fntFile);
+
+    const Character &getCharacter(int ascii) const;
 };
 
 
