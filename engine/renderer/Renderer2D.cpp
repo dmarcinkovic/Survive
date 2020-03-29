@@ -26,8 +26,8 @@ const Model &Renderer2D::getModel() const
     return m_Model;
 }
 
-void Renderer2D::addSprite(const Entity2D &entity2D) noexcept
+void Renderer2D::addSprite(const Sprite &sprite) noexcept
 {
-    m_SpriteRenderer.addSprite(entity2D);
+    m_SpriteRenderer.addSprite(sprite);
 }
 

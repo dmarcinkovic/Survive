@@ -27,7 +27,7 @@ public:
 
     void addGui(const Entity2D &entity2D) noexcept;
 
-    void addSprite(const Entity2D &entity2D) noexcept;
+    void addSprite(const Sprite &sprite) noexcept;
 
     const Model &getModel() const;
 };

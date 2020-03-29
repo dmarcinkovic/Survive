@@ -15,7 +15,7 @@ int main()
 
     Texture texture2(renderer.getModel(), loader.loadTexture("res/walking.png"));
 
-    renderer.addSprite(Entity2D(texture2, glm::vec3{-0.5, -0.1, 0.0}, 0.5));
+    renderer.addSprite(Sprite(texture2, glm::vec3{-0.5, -0.1, 0.0}, 0.5));
 
     while (display.isRunning())
     {

@@ -8,17 +8,18 @@
 
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
+#include "Sprite.h"
 
 class SpritesRenderer : public GuiRenderer
 {
 private:
     SpritesShader m_Shader{};
-    std::unordered_map<Texture, std::vector<Entity2D>, TextureHash> m_Sprites;
+    std::unordered_map<Texture, std::vector<Sprite>, TextureHash> m_Sprites;
 
 public:
     void renderSprite() const;
 
-    void addSprite(const Entity2D &entity2D) noexcept;
+    void addSprite(const Sprite &sprite) noexcept;
 };
 
 
