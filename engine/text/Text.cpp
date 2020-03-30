@@ -23,6 +23,10 @@ void Text::calculateVertices()
 
         addVertices(character, cursorX, cursorY);
 
+        auto const &textureCoordinates = character.m_TextureCoords;
+        m_TextureCoordinates.insert(m_TextureCoordinates.end(),
+                                    textureCoordinates.begin(), textureCoordinates.end());
+
         cursorX += character.m_Advance / 512; // TODO do not hard code this
     }
 }
@@ -34,16 +38,16 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
     float maxY = cursorY + character.m_YOffset / 512;
     float minY = maxY - character.m_Height / 512;
 
-    vertices.emplace_back(minX);
-    vertices.emplace_back(maxY);
-    vertices.emplace_back(minX);
-    vertices.emplace_back(minY);
-    vertices.emplace_back(maxX);
-    vertices.emplace_back(minY);
-    vertices.emplace_back(maxX);
-    vertices.emplace_back(minY);
-    vertices.emplace_back(maxX);
-    vertices.emplace_back(maxY);
-    vertices.emplace_back(minX);
-    vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(maxY);
 }

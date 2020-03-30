@@ -16,7 +16,8 @@ class Text : public Entity2D
 private:
     const std::string m_Text;
     const Font m_Font;
-    std::vector<float> vertices;
+    std::vector<float> m_Vertices;
+    std::vector<float> m_TextureCoordinates;
 
 public:
     Text(std::string text, Font font, const Texture &texture, const glm::vec3 &position, float scale = 1.0);
