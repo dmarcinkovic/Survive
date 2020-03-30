@@ -37,6 +37,8 @@ private:
     Model calculateVertices(Loader &loader);
 
     void addVertices(const Character &character, float cursorX, float cursorY);
+
+    void alignText(float start, float end);
 };
 
 

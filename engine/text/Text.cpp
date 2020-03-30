@@ -32,6 +32,8 @@ Model Text::calculateVertices(Loader &loader)
         cursorX += character.m_Advance / character.m_ScaleW;
     }
 
+    if (m_Centered) alignText(m_Vertices.front(), m_Vertices[m_Vertices.size() - 2]);
+
     return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }
 
@@ -69,4 +71,13 @@ void Text::centerText()
 const glm::vec3 &Text::color() const
 {
     return m_Color;
+}
+
+void Text::alignText(float start, float end)
+{
+    float middle = (end - start) / 2;
+    for (int i = 0; i < m_Vertices.size(); i += 2)
+    {
+        m_Vertices[i] -= middle;
+    }
 }
