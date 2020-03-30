@@ -17,8 +17,9 @@ void TextRenderer::renderText() const
     for (auto const&[texture, batch] : m_Texts)
     {
         prepareEntity(texture);
-        for (auto const &entity2D : batch)
+        for (auto const &text : batch)
         {
+            m_Shader.loadColor(text.get().color());
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 

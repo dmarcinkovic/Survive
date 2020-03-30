@@ -14,8 +14,15 @@ private:
     constexpr static const char* VERTEX_FILE = "engine/shader/sources/TextVertexShader.glsl";
     constexpr static const char* FRAGMENT_FILE = "engine/shader/sources/TextFragmentShader.glsl";
 
+    GLuint m_LocationColor{};
+
 public:
     TextShader();
+
+    void loadColor(const glm::vec3 &color) const;
+
+private:
+    void getUniformLocations();
 };
 
 

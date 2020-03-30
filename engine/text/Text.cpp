@@ -6,8 +6,9 @@
 
 #include <utility>
 
-Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position, float scale)
-        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile)
+Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position,
+           const glm::vec3 &color, float scale)
+        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile), m_Color(color)
 {
     m_Position = position;
     m_Scale = scale;
@@ -63,4 +64,9 @@ void Text::loadTexture(Loader &loader)
 void Text::centerText()
 {
     m_Centered = true;
+}
+
+const glm::vec3 &Text::color() const
+{
+    return m_Color;
 }

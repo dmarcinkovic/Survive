@@ -5,7 +5,9 @@ uniform sampler2D textureAtlas;
 in vec2 textureCoords;
 out vec4 outColor;
 
+uniform vec3 color;
+
 void main()
 {
-    outColor = vec4(1.0, 0.0, 0.0, texture(textureAtlas, textureCoords).a);
+    outColor = vec4(color, texture(textureAtlas, textureCoords).a);
 }

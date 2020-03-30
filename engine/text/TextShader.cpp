@@ -7,5 +7,15 @@
 TextShader::TextShader()
         : Shader(VERTEX_FILE, FRAGMENT_FILE)
 {
+    getUniformLocations();
+}
 
+void TextShader::getUniformLocations()
+{
+    m_LocationColor = glGetUniformLocation(m_Program, "color");
+}
+
+void TextShader::loadColor(const glm::vec3 &color) const
+{
+    loadVector3(m_LocationColor, color);
 }
