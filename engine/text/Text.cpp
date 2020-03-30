@@ -38,7 +38,7 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
 {
     float minX = cursorX + character.m_XOffset / character.m_ScaleW;
     float maxX = minX + character.m_Width / character.m_ScaleW;
-    float maxY = cursorY + character.m_YOffset / character.m_ScaleH;
+    float maxY = cursorY - character.m_YOffset / character.m_ScaleH;
     float minY = maxY - character.m_Height / character.m_ScaleH;
 
     m_Vertices.emplace_back(minX);
