@@ -16,9 +16,10 @@ int main()
     Renderer2D renderer(loader);
 
     Font font;
-    font.loadFontFromFntFile("res/arial.fnt");
+//    font.loadFontFromFntFile("res/arial.fnt");
+    font.loadFontFromJsonFile("res/font.json");
 
-    Text text("David", font, "res/arial.png", glm::vec3{0, 0, 0}, glm::vec3{1,1,1,}, 4);
+    Text text("David", font, "res/font.png", glm::vec3{0, 0, 0});
     text.centerText();
     renderer.addText(text);
 

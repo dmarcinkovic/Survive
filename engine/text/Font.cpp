@@ -19,12 +19,31 @@ void Font::loadFontFromFntFile(const char *fntFile)
         auto result = Util::split(line, R"([^\s+]+)");
         if (!result.empty() && result[0] == "char")
         {
-            Character c = Util::getCharacter(result, w, h);
+            Character c = Util::getCharacterFromFntFile(result, w, h);
             m_Characters.insert({c.m_Id, c});
         } else if (!result.empty() && result[0] == "common")
         {
             w = Util::getNumber(result[3]);
             h = Util::getNumber(result[4]);
+        }
+    }
+
+    reader.close();
+}
+
+void Font::loadFontFromJsonFile(const char *jsonFile)
+{
+    std::ifstream reader(jsonFile);
+
+    float w = 1039, h = 350; // TODO do not hard code this
+
+    std::string line;
+    while (std::getline(reader, line))
+    {
+        Character c = Util::getCharacterFromJsonFile(line, w, h);
+        if (c.m_ScaleW != 0)
+        {
+            m_Characters.insert({c.m_Id, c});
         }
     }
 

@@ -17,6 +17,8 @@ private:
 public:
     void loadFontFromFntFile(const char* fntFile);
 
+    void loadFontFromJsonFile(const char* jsonFile);
+
     const Character &getCharacter(int ascii) const;
 };
 
