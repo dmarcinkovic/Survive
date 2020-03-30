@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <regex>
+#include <optional>
 
 #include "../text/Character.h"
 
@@ -17,13 +18,13 @@ private:
     static Character getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH);
 
 public:
-    static float getNumber(const std::string &string);
+    static float getNumber(const std::string &string, char delimiter = '=');
 
     static std::vector<std::string> split(const std::string &string, const std::string &delimiter);
 
     static Character getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h);
 
-    static Character getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
+    static std::optional<Character> getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
 };
 
 

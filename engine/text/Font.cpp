@@ -35,15 +35,21 @@ void Font::loadFontFromJsonFile(const char *jsonFile)
 {
     std::ifstream reader(jsonFile);
 
-    float w = 1039, h = 350; // TODO do not hard code this
+    float scaleW = 0, scaleH = 0;
 
     std::string line;
     while (std::getline(reader, line))
     {
-        Character c = Util::getCharacterFromJsonFile(line, w, h);
-        if (c.m_ScaleW != 0)
+        auto c = Util::getCharacterFromJsonFile(line, scaleW, scaleH);
+        if (c)
         {
-            m_Characters.insert({c.m_Id, c});
+            m_Characters.insert({c.value().m_Id, c.value()});
+        } else if (line.find("width") != -1)
+        {
+            scaleW = Util::getNumber(line, ':');
+        } else if (line.find("height") != -1)
+        {
+            scaleH = Util::getNumber(line, ':');
         }
     }
 

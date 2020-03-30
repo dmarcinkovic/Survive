@@ -18,9 +18,9 @@ std::vector<std::string> Util::split(const std::string &string, const std::strin
     return result;
 }
 
-float Util::getNumber(const std::string &string)
+float Util::getNumber(const std::string &string, char delimiter)
 {
-    int index = string.find('=');
+    int index = string.find(delimiter);
     return std::stof(string.substr(index + 1));
 }
 
@@ -38,18 +38,17 @@ Character Util::getCharacterFromFntFile(const std::vector<std::string> &line, fl
     return Character(id, x, y, width, height, xOffset, yOffset, advance, w, h);
 }
 
-Character Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
+std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
 {
     std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
                           R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
     std::regex regex(pattern);
     std::smatch result;
-
     std::regex_search(line, result, regex);
 
     if (result.empty())
     {
-        return Character(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        return {};
     }
 
     return getCharacterFromJsonFile(result, scaleW, scaleH);
