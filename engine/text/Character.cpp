@@ -7,7 +7,7 @@
 Character::Character(int id, float x, float y, float width, float height, float xOffset, float yOffset, float advance, float scaleW,
                      float scaleH)
         : m_Id(id), m_X(x), m_Y(y), m_Width(width), m_Height(height), m_XOffset(xOffset), m_YOffset(yOffset),
-          m_Advance(advance)
+          m_Advance(advance), m_ScaleW(scaleW), m_ScaleH(scaleH)
 {
     calculateTextureCoordinates(scaleW, scaleH);
 }

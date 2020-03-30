@@ -28,7 +28,7 @@ Model Text::calculateVertices(Loader &loader)
         m_TextureCoordinates.insert(m_TextureCoordinates.end(),
                                     textureCoordinates.begin(), textureCoordinates.end());
 
-        cursorX += character.m_Advance / 512; // TODO do not hard code this
+        cursorX += character.m_Advance / character.m_ScaleW;
     }
 
     return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
@@ -36,10 +36,10 @@ Model Text::calculateVertices(Loader &loader)
 
 void Text::addVertices(const Character &character, float cursorX, float cursorY)
 {
-    float minX = cursorX + character.m_XOffset / 512;
-    float maxX = minX + character.m_Width / 512;
-    float maxY = cursorY + character.m_YOffset / 512;
-    float minY = maxY - character.m_Height / 512;
+    float minX = cursorX + character.m_XOffset / character.m_ScaleW;
+    float maxX = minX + character.m_Width / character.m_ScaleW;
+    float maxY = cursorY + character.m_YOffset / character.m_ScaleH;
+    float minY = maxY - character.m_Height / character.m_ScaleH;
 
     m_Vertices.emplace_back(minX);
     m_Vertices.emplace_back(maxY);

@@ -14,6 +14,8 @@ struct Character
     float m_Width, m_Height;
     float m_XOffset, m_YOffset;
     float m_Advance;
+    float m_ScaleW;
+    float m_ScaleH;
     std::vector<float> m_TextureCoords;
 
     Character(int id, float x, float y, float width, float height, float xOffset, float yOffset, float advance, float scaleW,
