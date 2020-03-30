@@ -32,7 +32,7 @@ Model Text::calculateVertices(Loader &loader)
         cursorX += character.m_Advance / character.m_ScaleW;
     }
 
-    if (m_Centered) alignText(m_Vertices.front(), m_Vertices[m_Vertices.size() - 2]);
+    if (m_Centered) alignText(m_Vertices.front(), m_Vertices[m_Vertices.size() - 4]);
 
     return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }

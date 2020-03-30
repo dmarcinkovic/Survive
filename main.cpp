@@ -18,7 +18,7 @@ int main()
     Font font;
     font.loadFontFromFntFile("res/arial.fnt");
 
-    Text text("David", font, "res/arial.png", glm::vec3{0, 0, 0});
+    Text text("David", font, "res/arial.png", glm::vec3{0, 0, 0}, glm::vec3{1,1,1,}, 4);
     text.centerText();
     renderer.addText(text);
 
