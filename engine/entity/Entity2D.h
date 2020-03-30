@@ -16,6 +16,8 @@ struct Entity2D
     float m_Scale;
 
     Entity2D(const Texture &texture, const glm::vec3 &position, float scale);
+
+    Entity2D() = default;
 };
 
 

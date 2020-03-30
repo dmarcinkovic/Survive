@@ -19,6 +19,8 @@ private:
 public:
     Texture(const Model &model, GLuint textureId);
 
+    Texture() = default;
+
     void bindTexture() const;
 
     static void unbindTexture();
@@ -32,7 +34,7 @@ public:
 
 struct TextureHash
 {
-    std::size_t operator()(const Texture& texture) const noexcept
+    std::size_t operator()(const Texture &texture) const noexcept
     {
         return texture.m_Vao ^ texture.m_TextureID ^ texture.m_VertexCount;
     }

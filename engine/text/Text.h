@@ -16,14 +16,18 @@ class Text : public Entity2D
 private:
     const std::string m_Text;
     const Font m_Font;
+    const char *textureAtlas;
+
     std::vector<float> m_Vertices;
     std::vector<float> m_TextureCoordinates;
 
 public:
-    Text(std::string text, Font font, const Texture &texture, const glm::vec3 &position, float scale = 1.0);
+    Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position, float scale = 1.0);
+
+    void loadTexture(Loader &loader);
 
 private:
-    void calculateVertices();
+    Model calculateVertices(Loader &loader);
 
     void addVertices(const Character &character, float cursorX, float cursorY);
 };

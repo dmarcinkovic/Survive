@@ -18,17 +18,14 @@ int main()
     Font font;
     font.loadFontFromFntFile("res/arial.fnt");
 
-    TextRenderer textRenderer(loader);
-    Texture texture(textRenderer.getModel(), loader.loadTexture("res/arial.png"));
-    Text text("Text", font, texture, glm::vec3{0, 0, 0});
-    textRenderer.addText(text);
+    Text text("Text", font, "res/arial.png", glm::vec3{0, 0, 0});
+    renderer.addText(text);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
         renderer.render();
-        textRenderer.renderText();
 
         display.update();
     }

@@ -5,7 +5,7 @@
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
-        : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2))
+        : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2)), m_Loader(loader), m_TextRenderer(loader)
 {
 
 }
@@ -13,6 +13,7 @@ Renderer2D::Renderer2D(Loader &loader)
 void Renderer2D::render() const
 {
     m_GuiRenderer.render();
+    m_TextRenderer.renderText();
 }
 
 void Renderer2D::addGui(Entity2D &entity2D) noexcept
@@ -23,5 +24,11 @@ void Renderer2D::addGui(Entity2D &entity2D) noexcept
 const Model &Renderer2D::getModel() const
 {
     return m_Model;
+}
+
+void Renderer2D::addText(Text &text) noexcept
+{
+    text.loadTexture(m_Loader);
+    m_TextRenderer.addText(text);
 }
 

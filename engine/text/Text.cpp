@@ -6,13 +6,14 @@
 
 #include <utility>
 
-Text::Text(std::string text, Font font, const Texture &texture, const glm::vec3 &position, float scale)
-        : Entity2D(texture, position, scale), m_Text(std::move(text)), m_Font(std::move(font))
+Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position, float scale)
+        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile)
 {
-    calculateVertices();
+    m_Position = position;
+    m_Scale = scale;
 }
 
-void Text::calculateVertices()
+Model Text::calculateVertices(Loader &loader)
 {
     float cursorX = m_Position.x;
     float cursorY = m_Position.y;
@@ -29,6 +30,8 @@ void Text::calculateVertices()
 
         cursorX += character.m_Advance / 512; // TODO do not hard code this
     }
+
+    return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }
 
 void Text::addVertices(const Character &character, float cursorX, float cursorY)
@@ -50,4 +53,9 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
     m_Vertices.emplace_back(maxY);
     m_Vertices.emplace_back(minX);
     m_Vertices.emplace_back(maxY);
+}
+
+void Text::loadTexture(Loader &loader)
+{
+    m_Texture = Texture(calculateVertices(loader), loader.loadTexture(textureAtlas));
 }
