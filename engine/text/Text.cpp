@@ -41,21 +41,26 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
     float maxY = cursorY - character.m_YOffset / character.m_ScaleH;
     float minY = maxY - character.m_Height / character.m_ScaleH;
 
-    m_Vertices.emplace_back(minX);
-    m_Vertices.emplace_back(maxY);
-    m_Vertices.emplace_back(minX);
-    m_Vertices.emplace_back(minY);
-    m_Vertices.emplace_back(maxX);
-    m_Vertices.emplace_back(minY);
-    m_Vertices.emplace_back(maxX);
-    m_Vertices.emplace_back(minY);
-    m_Vertices.emplace_back(maxX);
-    m_Vertices.emplace_back(maxY);
-    m_Vertices.emplace_back(minX);
-    m_Vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX * m_Scale);
+    m_Vertices.emplace_back(maxY * m_Scale);
+    m_Vertices.emplace_back(minX * m_Scale);
+    m_Vertices.emplace_back(minY * m_Scale);
+    m_Vertices.emplace_back(maxX * m_Scale);
+    m_Vertices.emplace_back(minY * m_Scale);
+    m_Vertices.emplace_back(maxX * m_Scale);
+    m_Vertices.emplace_back(minY * m_Scale);
+    m_Vertices.emplace_back(maxX * m_Scale);
+    m_Vertices.emplace_back(maxY * m_Scale);
+    m_Vertices.emplace_back(minX * m_Scale);
+    m_Vertices.emplace_back(maxY * m_Scale);
 }
 
 void Text::loadTexture(Loader &loader)
 {
     m_Texture = Texture(calculateVertices(loader), loader.loadTexture(textureAtlas));
+}
+
+void Text::centerText()
+{
+    m_Centered = true;
 }

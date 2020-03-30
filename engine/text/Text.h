@@ -17,6 +17,8 @@ private:
     const std::string m_Text;
     const Font m_Font;
     const char *textureAtlas;
+    bool m_Centered{};
+
 
     std::vector<float> m_Vertices;
     std::vector<float> m_TextureCoordinates;
@@ -25,6 +27,8 @@ public:
     Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position, float scale = 1.0);
 
     void loadTexture(Loader &loader);
+
+    void centerText();
 
 private:
     Model calculateVertices(Loader &loader);
