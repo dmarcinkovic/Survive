@@ -5,7 +5,7 @@
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
-        : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2)), m_Loader(loader), m_TextRenderer(loader)
+        : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2)), m_Loader(loader)
 {
 
 }
