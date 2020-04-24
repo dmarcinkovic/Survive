@@ -5,7 +5,7 @@
 #ifndef SURVIVE_GUISHADER_H
 #define SURVIVE_GUISHADER_H
 
-#include <glm/detail/type_mat.hpp>
+#include <glm/glm.hpp>
 
 #include "../shader/Shader.h"
 
