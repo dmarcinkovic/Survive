@@ -5,8 +5,8 @@
 #ifndef SURVIVE_GUISHADER_H
 #define SURVIVE_GUISHADER_H
 
+#include <glm/glm.hpp>
 
-#include <glm/detail/type_mat.hpp>
 #include "../shader/Shader.h"
 
 class GuiShader : public Shader
