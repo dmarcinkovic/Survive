@@ -13,12 +13,12 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    Texture texture2(renderer.getModel(), loader.loadTexture("res/boy.png"));
+    Texture texture2(renderer.getModel(), loader.loadTexture("res/walking.png"));
 
-    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 2, 4);
+    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 1, 8);
     renderer.addSprite(sprite2);
 
-    sprite2.animate(6, 1, 0, 1, 3);
+    sprite2.animate(12);
 
     while (display.isRunning())
     {

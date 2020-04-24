@@ -6,7 +6,7 @@
 #define SURVIVE_SPRITESSHADER_H
 
 #include <GL/glew.h>
-#include <glm/detail/type_mat.hpp>
+#include <glm/glm.hpp>
 
 #include "../shader/Shader.h"
 
