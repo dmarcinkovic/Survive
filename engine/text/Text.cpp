@@ -5,6 +5,7 @@
 #include "Text.h"
 
 #include <utility>
+#include <iostream>
 
 Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position,
            const glm::vec3 &color, float scale)
@@ -32,7 +33,7 @@ Model Text::calculateVertices(Loader &loader)
         cursorX += character.m_Advance / character.m_ScaleW + PADDING / character.m_ScaleW;
     }
 
-    if (m_Centered) alignText(m_Vertices.front(), m_Vertices[m_Vertices.size() - 4]);
+    if (m_Centered) alignText();
 
     return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }
@@ -73,11 +74,33 @@ const glm::vec3 &Text::color() const
     return m_Color;
 }
 
-void Text::alignText(float start, float end)
+void Text::alignText()
 {
-    float middle = (end - start) / 2;
+    float startX = m_Vertices.front();
+    float endX = m_Vertices[m_Vertices.size() - 4];
+
+    auto[startY, endY] = minMax();
+
+    float middleX = (endX - startX) / 2;
+    float middleY = (endY - startY) / 2;
+
     for (int i = 0; i < m_Vertices.size(); i += 2)
     {
-        m_Vertices[i] -= middle;
+        m_Vertices[i] -= middleX;
+        m_Vertices[i + 1] += middleY;
     }
+}
+
+std::pair<float, float> Text::minMax() const
+{
+    float max = -1.0f;
+    float min = std::numeric_limits<float>::infinity();
+
+    for (int i = 1; i < m_Vertices.size(); i += 2)
+    {
+        min = std::min(min, m_Vertices[i]);
+        max = std::max(max, m_Vertices[i]);
+    }
+
+    return {min, max};
 }

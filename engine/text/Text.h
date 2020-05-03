@@ -40,7 +40,9 @@ private:
 
     void addVertices(const Character &character, float cursorX, float cursorY);
 
-    void alignText(float start, float end);
+    void alignText();
+
+    std::pair<float, float> minMax() const;
 };
 
 

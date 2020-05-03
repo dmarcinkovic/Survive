@@ -7,7 +7,14 @@ out vec4 outColor;
 
 uniform vec3 color;
 
+const float width = 0.5f;
+const float edge = 0.1f;
+
 void main()
 {
-    outColor = vec4(color, texture(textureAtlas, textureCoords).a);
+    float distance = 1.0f - texture(textureAtlas, textureCoords).a;
+
+    float alpha = 1.0f - smoothstep(width, width + edge, distance);
+
+    outColor = vec4(color, alpha);
 }
