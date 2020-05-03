@@ -17,9 +17,9 @@ int main()
 
     Font font;
 //    font.loadFontFromFntFile("res/arial.fnt");
-    font.loadFontFromJsonFile("res/font.json");
+    font.loadFontFromJsonFile("res/fontDistanceField.json");
 
-    Text text("David", font, "res/font.png", glm::vec3{0, 0, 0});
+    Text text("David", font, "res/fontDistanceField.png", glm::vec3{0, 0, 0});
     text.centerText();
     renderer.addText(text);
 

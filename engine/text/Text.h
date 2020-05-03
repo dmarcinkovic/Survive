@@ -14,6 +14,8 @@
 class Text : public Entity2D
 {
 private:
+    constexpr static float PADDING = 15.0f;
+
     const std::string m_Text;
     const Font m_Font;
     const char *textureAtlas;

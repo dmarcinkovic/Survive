@@ -29,7 +29,7 @@ Model Text::calculateVertices(Loader &loader)
         m_TextureCoordinates.insert(m_TextureCoordinates.end(),
                                     textureCoordinates.begin(), textureCoordinates.end());
 
-        cursorX += character.m_Advance / character.m_ScaleW;
+        cursorX += character.m_Advance / character.m_ScaleW + PADDING / character.m_ScaleW;
     }
 
     if (m_Centered) alignText(m_Vertices.front(), m_Vertices[m_Vertices.size() - 4]);
