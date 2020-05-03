@@ -14,11 +14,6 @@ void ButtonRenderer::render() const
     {
         RendererUtil::prepareEntity(button.get().m_Texture);
 
-        m_Shader.loadTransformationMatrix(
-                Maths::createTransformationMatrix(button.get().m_Position,
-                                                  button.get().m_ScaleX, button.get().m_ScaleY));
-
-        m_Shader.loadColor(button.get().m_Color);
         glDrawElements(GL_TRIANGLES, button.get().m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
         RendererUtil::finishRenderingEntity();
@@ -29,5 +24,18 @@ void ButtonRenderer::render() const
 
 void ButtonRenderer::addButton(Button &button)
 {
+    loadUniforms(button);
+
     m_Buttons.emplace_back(button);
+}
+
+void ButtonRenderer::loadUniforms(Button &button) const
+{
+    m_Shader.start();
+
+    m_Shader.loadColor(button.m_Color);
+    m_Shader.loadTransformationMatrix(
+            Maths::createTransformationMatrix(button.m_Position, button.m_ScaleX, button.m_ScaleY));
+
+    Shader::stop();
 }
