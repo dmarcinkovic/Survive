@@ -16,10 +16,10 @@ int main()
     Renderer2D renderer(loader);
 
     Font font;
-//    font.loadFontFromFntFile("res/arial.fnt");
-    font.loadFontFromJsonFile("res/fontDistanceField.json");
+    font.loadFontFromFntFile("res/candara.fnt");
+//    font.loadFontFromJsonFile("res/fontDistanceField.json");
 
-    Text text("David", font, "res/fontDistanceField.png", glm::vec3{0, 0, 0});
+    Text text("David", font, "res/candara.png", glm::vec3{0, 0, 0});
     text.centerText();
     renderer.addText(text);
 
