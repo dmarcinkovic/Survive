@@ -8,15 +8,10 @@
 
 #include "../../entity/Entity2D.h"
 
-class Button
+class Button : public Entity2D
 {
-private:
-    Entity2D m_Entity{};
-
 public:
-    explicit Button(const Entity2D &entity2D);
-
-    [[nodiscard]] const Entity2D &getMEntity() const;
+    explicit Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY);
 };
 
 

@@ -12,13 +12,13 @@ void ButtonRenderer::render() const
 
     for (auto const &button : m_Buttons)
     {
-        RendererUtil::prepareEntity(button.get().getMEntity().m_Texture);
+        RendererUtil::prepareEntity(button.get().m_Texture);
 
-        const Entity2D &entity = button.get().getMEntity();
         m_Shader.loadTransformationMatrix(
-                Maths::createTransformationMatrix(entity.m_Position, entity.m_ScaleX, entity.m_ScaleY));
+                Maths::createTransformationMatrix(button.get().m_Position,
+                                                  button.get().m_ScaleX, button.get().m_ScaleY));
 
-        glDrawElements(GL_TRIANGLES, entity.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, button.get().m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
         RendererUtil::finishRenderingEntity();
     }

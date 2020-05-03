@@ -4,13 +4,8 @@
 
 #include "Button.h"
 
-Button::Button(const Entity2D &entity2D)
-    : m_Entity(entity2D)
+Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY)
+        : Entity2D(texture, position, scaleX, scaleY)
 {
 
-}
-
-const Entity2D &Button::getMEntity() const
-{
-    return m_Entity;
 }
