@@ -4,7 +4,7 @@
 
 #include "Maths.h"
 
-glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float scale,
+glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float scaleX, float scaleY, float scaleZ,
                                             float rotationX, float rotationY, float rotationZ)
 {
     glm::mat4 matrix{1.0f};
@@ -15,7 +15,7 @@ glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float 
     matrix = glm::rotate(matrix, glm::radians(rotationY), glm::vec3{0, 1, 0});
     matrix = glm::rotate(matrix, glm::radians(rotationZ), glm::vec3{0, 0, 1});
 
-    matrix = glm::scale(matrix, glm::vec3{scale, scale, scale});
+    matrix = glm::scale(matrix, glm::vec3{scaleX, scaleY, scaleZ});
 
     return matrix;
 }

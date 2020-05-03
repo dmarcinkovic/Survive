@@ -15,8 +15,10 @@ void GuiRenderer::render() const
         RendererUtil::prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
+            const Entity2D &e = entity2D.get();
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(entity2D.get().m_Position, entity2D.get().m_Scale));
+                    Maths::createTransformationMatrix(e.m_Position, e.m_ScaleX));
+
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 

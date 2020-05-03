@@ -11,7 +11,8 @@
 class Maths
 {
 public:
-    static glm::mat4 createTransformationMatrix(const glm::vec3 &translation, float scale = 1.0f,
+    static glm::mat4 createTransformationMatrix(const glm::vec3 &translation, float scaleX = 1.0f,
+                                                float scaleY = 1.0f, float scaleZ = 1.0f,
                                                 float rotationX = 0.0f, float rotationY = 0.0f, float rotationZ = 0.0f);
 };
 

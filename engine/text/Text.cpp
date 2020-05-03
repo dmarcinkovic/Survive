@@ -13,7 +13,8 @@ Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm:
           m_BorderColor(color)
 {
     m_Position = position;
-    m_Scale = scale;
+    m_ScaleX = scale;
+    m_ScaleY = scale;
 }
 
 Model Text::calculateVertices(Loader &loader)
@@ -46,18 +47,18 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
     float maxY = cursorY + character.m_YOffset / character.m_ScaleH;
     float minY = maxY - character.m_Height / character.m_ScaleH;
 
-    m_Vertices.emplace_back(minX * m_Scale);
-    m_Vertices.emplace_back(maxY * m_Scale);
-    m_Vertices.emplace_back(minX * m_Scale);
-    m_Vertices.emplace_back(minY * m_Scale);
-    m_Vertices.emplace_back(maxX * m_Scale);
-    m_Vertices.emplace_back(minY * m_Scale);
-    m_Vertices.emplace_back(maxX * m_Scale);
-    m_Vertices.emplace_back(minY * m_Scale);
-    m_Vertices.emplace_back(maxX * m_Scale);
-    m_Vertices.emplace_back(maxY * m_Scale);
-    m_Vertices.emplace_back(minX * m_Scale);
-    m_Vertices.emplace_back(maxY * m_Scale);
+    m_Vertices.emplace_back(minX * m_ScaleX);
+    m_Vertices.emplace_back(maxY * m_ScaleY);
+    m_Vertices.emplace_back(minX * m_ScaleX);
+    m_Vertices.emplace_back(minY * m_ScaleY);
+    m_Vertices.emplace_back(maxX * m_ScaleX);
+    m_Vertices.emplace_back(minY * m_ScaleY);
+    m_Vertices.emplace_back(maxX * m_ScaleX);
+    m_Vertices.emplace_back(minY * m_ScaleY);
+    m_Vertices.emplace_back(maxX * m_ScaleX);
+    m_Vertices.emplace_back(maxY * m_ScaleY);
+    m_Vertices.emplace_back(minX * m_ScaleX);
+    m_Vertices.emplace_back(maxY * m_ScaleY);
 }
 
 void Text::loadTexture(Loader &loader)
