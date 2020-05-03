@@ -15,11 +15,15 @@ private:
     constexpr static const char* FRAGMENT_FILE = "engine/shader/sources/TextFragmentShader.glsl";
 
     GLuint m_LocationColor{};
+    GLuint m_LocationBorderWidth{};
+    GLuint m_LocationBorderColor{};
 
 public:
     TextShader();
 
     void loadColor(const glm::vec3 &color) const;
+
+    void loadBorder(const glm::vec3 &borderColor, float borderWidth) const;
 
 private:
     void getUniformLocations();

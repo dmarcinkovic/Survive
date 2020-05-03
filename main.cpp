@@ -17,10 +17,12 @@ int main()
 
     Font font;
     font.loadFontFromFntFile("res/candara.fnt");
-//    font.loadFontFromJsonFile("res/fontDistanceField.json");
 
-    Text text("D", font, "res/candara.png", glm::vec3{0, 0, 0}, glm::vec3{1,1,1}, 10.0);
+    Text text("D", font, "res/candara.png",
+              glm::vec3{0, 0, 0}, glm::vec3{1, 1, 1}, 10.0);
     text.centerText();
+    text.addBorder(0.5, glm::vec3{1, 0, 0});
+
     renderer.addText(text);
 
     while (display.isRunning())

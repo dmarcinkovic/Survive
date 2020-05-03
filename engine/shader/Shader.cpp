@@ -85,3 +85,8 @@ void Shader::loadVector3(GLuint location, const glm::vec3 &vector)
 {
     glUniform3f(location, vector.x, vector.y, vector.z);
 }
+
+void Shader::loadFloat(GLuint location, float value)
+{
+    glUniform1f(location, value);
+}

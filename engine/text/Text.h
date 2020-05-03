@@ -22,6 +22,9 @@ private:
     bool m_Centered{};
     glm::vec3 m_Color{};
 
+    glm::vec3 m_BorderColor;
+    float m_BorderWidth{};
+
     std::vector<float> m_Vertices;
     std::vector<float> m_TextureCoordinates;
 
@@ -34,6 +37,12 @@ public:
     void centerText();
 
     const glm::vec3 &color() const;
+
+    const glm::vec3 &getMBorderColor() const;
+
+    float getMBorderWidth() const;
+
+    void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
 private:
     Model calculateVertices(Loader &loader);

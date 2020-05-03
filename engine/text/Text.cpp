@@ -9,7 +9,8 @@
 
 Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position,
            const glm::vec3 &color, float scale)
-        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile), m_Color(color)
+        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile), m_Color(color),
+          m_BorderColor(color)
 {
     m_Position = position;
     m_Scale = scale;
@@ -103,4 +104,20 @@ std::pair<float, float> Text::minMax() const
     }
 
     return {min, max};
+}
+
+void Text::addBorder(float borderWidth, const glm::vec3 &borderColor)
+{
+    m_BorderWidth = borderWidth;
+    m_BorderColor = borderColor;
+}
+
+const glm::vec3 &Text::getMBorderColor() const
+{
+    return m_BorderColor;
+}
+
+float Text::getMBorderWidth() const
+{
+    return m_BorderWidth;
 }

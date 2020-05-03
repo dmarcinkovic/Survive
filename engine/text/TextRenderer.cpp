@@ -15,6 +15,8 @@ void TextRenderer::renderText() const
         for (auto const &text : batch)
         {
             m_Shader.loadColor(text.get().color());
+            m_Shader.loadBorder(text.get().getMBorderColor(), text.get().getMBorderWidth());
+
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 
