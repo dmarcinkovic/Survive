@@ -11,6 +11,9 @@ Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, 
 {
     auto mouseListener = [](int button, int action){
         std::cout << "Mouse pressed\n";
+        auto[x, y] = Display::getMousePosition();
+
+        std::cout << x << ' ' << y << '\n';
     };
 
     Display::addMouseListener(mouseListener);

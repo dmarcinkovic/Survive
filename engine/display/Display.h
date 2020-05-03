@@ -22,6 +22,9 @@ private:
     static double m_LastFrameTime;
     static double m_DeltaTime;
 
+    static double m_MouseX;
+    static double m_MouseY;
+
 public:
     Display(int width, int height, const char *title);
 
@@ -38,6 +41,8 @@ public:
     static void addMouseListener(const Listener& listener);
 
     static double getFrameTime();
+
+    static std::pair<double, double> getMousePosition();
 
 private:
     static void windowResizeCallback(GLFWwindow *window, int width, int height);

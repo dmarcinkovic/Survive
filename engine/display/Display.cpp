@@ -10,6 +10,9 @@ std::vector<Listener> Display::m_MouseEventListeners;
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
 
+double Display::m_MouseX{};
+double Display::m_MouseY{};
+
 Display::Display(int width, int height, const char *title)
 {
     glfwInit();
@@ -80,6 +83,8 @@ void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int actio
 
 void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int mods)
 {
+    glfwGetCursorPos(window, &m_MouseX, &m_MouseY);
+
     for (auto const &listener : m_MouseEventListeners)
     {
         listener(button, action);
@@ -99,4 +104,9 @@ void Display::addMouseListener(const Listener &listener)
 double Display::getFrameTime()
 {
     return m_DeltaTime;
+}
+
+std::pair<double, double> Display::getMousePosition()
+{
+    return {m_MouseX, m_MouseY};
 }
