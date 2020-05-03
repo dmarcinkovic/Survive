@@ -35,6 +35,8 @@ protected:
     static void loadVector3(GLuint location, const glm::vec3 &vector);
 
     static void loadFloat(GLuint location, float value);
+
+    static void loadVector4(GLuint location, const glm::vec4 &vector);
 };
 
 

@@ -5,13 +5,16 @@
 #ifndef SURVIVE_BUTTON_H
 #define SURVIVE_BUTTON_H
 
+#include <glm/glm.hpp>
 
 #include "../../entity/Entity2D.h"
 
-class Button : public Entity2D
+struct Button : public Entity2D
 {
-public:
-    explicit Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY);
+    glm::vec4 m_Color;
+
+    explicit Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY,
+                    const glm::vec4 &color);
 };
 
 

@@ -3,6 +3,8 @@
 out vec4 outColor;
 in vec3 pos;
 
+uniform vec4 color;
+
 const float radius = 0.08;
 
 vec3 position = (pos + 1) / 2.0;
@@ -13,7 +15,7 @@ void colorEdges(float x, float y)
 
     if (length(edgePosition) < radius)
     {
-        outColor = vec4(1.0, 0, 0, 1.0);
+        outColor = vec4(color);
     } else
     {
         outColor = vec4(0);
@@ -36,6 +38,6 @@ void main()
         colorEdges(1 - radius, 1 - radius);
     } else
     {
-        outColor = vec4(1.0, 0, 0, 1.0);
+        outColor = vec4(color);
     }
 }

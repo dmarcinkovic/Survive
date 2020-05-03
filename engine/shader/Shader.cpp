@@ -90,3 +90,8 @@ void Shader::loadFloat(GLuint location, float value)
 {
     glUniform1f(location, value);
 }
+
+void Shader::loadVector4(GLuint location, const glm::vec4 &vector)
+{
+    glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+}

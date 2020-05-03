@@ -10,12 +10,18 @@ ButtonShader::ButtonShader()
     getUniformLocations();
 }
 
+void ButtonShader::getUniformLocations()
+{
+    m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+    m_LocationColor = glGetUniformLocation(m_Program, "color");
+}
+
 void ButtonShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
     loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void ButtonShader::getUniformLocations()
+void ButtonShader::loadColor(const glm::vec4 &color) const
 {
-    m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+    loadVector4(m_LocationColor, color);
 }

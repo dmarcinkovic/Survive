@@ -15,11 +15,14 @@ private:
     constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/ButtonFragmentShader.glsl";
 
     GLuint m_LocationTransformationMatrix{};
+    GLuint m_LocationColor{};
 
 public:
     ButtonShader();
 
     void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+    void loadColor(const glm::vec4 &color) const;
 
 private:
     void getUniformLocations();
