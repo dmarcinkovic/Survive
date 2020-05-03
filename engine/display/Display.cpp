@@ -55,6 +55,7 @@ bool Display::isRunning() const
 
 void Display::clearWindow()
 {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
