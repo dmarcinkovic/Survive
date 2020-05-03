@@ -4,14 +4,15 @@
 
 #include "GuiRenderer.h"
 #include "../math/Maths.h"
+#include "../renderer/RendererUtil.h"
 
 void GuiRenderer::render() const
 {
-    prepareRendering(m_Shader);
+    RendererUtil::prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Entities)
     {
-        prepareEntity(texture);
+        RendererUtil::prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
             m_Shader.loadTransformationMatrix(
@@ -19,25 +20,10 @@ void GuiRenderer::render() const
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
-        finishRenderingEntity();
+        RendererUtil::finishRenderingEntity();
     }
 
-    finishRendering();
-}
-
-void GuiRenderer::prepareRendering(const Shader &shader)
-{
-    shader.start();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDisable(GL_DEPTH_TEST);
-}
-
-void GuiRenderer::finishRendering()
-{
-    Shader::stop();
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+    RendererUtil::finishRendering();
 }
 
 void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
@@ -45,20 +31,4 @@ void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
     std::vector<std::reference_wrapper<Entity2D>> &batch = m_Entities[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
-}
-
-void GuiRenderer::prepareEntity(const Texture &texture)
-{
-    texture.bindTexture();
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-}
-
-void GuiRenderer::finishRenderingEntity()
-{
-    Texture::unbindTexture();
-
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
-    Loader::unbindVao();
 }

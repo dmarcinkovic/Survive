@@ -3,24 +3,25 @@
 //
 
 #include "TextRenderer.h"
+#include "../renderer/RendererUtil.h"
 
 void TextRenderer::renderText() const
 {
-    prepareRendering(m_Shader);
+    RendererUtil::prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Texts)
     {
-        prepareEntity(texture);
+        RendererUtil ::prepareEntity(texture);
         for (auto const &text : batch)
         {
             m_Shader.loadColor(text.get().color());
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 
-        finishRenderingEntity();
+        RendererUtil::finishRenderingEntity();
     }
 
-    finishRendering();
+    RendererUtil::finishRendering();
 }
 
 void TextRenderer::addText(Text &text)

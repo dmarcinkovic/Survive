@@ -5,11 +5,12 @@
 #ifndef SURVIVE_TEXTRENDERER_H
 #define SURVIVE_TEXTRENDERER_H
 
-#include "../gui/GuiRenderer.h"
 #include "TextShader.h"
 #include "Text.h"
 
-class TextRenderer : public GuiRenderer
+#include <functional>
+
+class TextRenderer
 {
 private:
     TextShader m_Shader{};
