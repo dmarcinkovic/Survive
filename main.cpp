@@ -14,8 +14,8 @@ int main()
     Renderer2D renderer(loader);
 
     Texture texture(renderer.getModel(), 0);
-    Button button(texture, glm::vec3{0, 0, 0}, 0.5, 0.5,
-                  glm::vec4{1, 0, 0, 0.7});
+    Button button(texture, glm::vec3{0, 0, 0}, 0.4, 0.1,
+                  glm::vec4{1, 0, 0, 0.9});
 
     renderer.addButton(button);
 
