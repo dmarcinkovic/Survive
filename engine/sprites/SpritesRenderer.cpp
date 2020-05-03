@@ -4,14 +4,15 @@
 
 #include "SpritesRenderer.h"
 #include "../math/Maths.h"
+#include "../renderer/RendererUtil.h"
 
 void SpritesRenderer::renderSprite() const
 {
-    prepareRendering(m_Shader);
+    RendererUtil::prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Sprites)
     {
-        prepareEntity(texture);
+        RendererUtil::prepareEntity(texture);
         for (auto const &sprite : batch)
         {
             m_Shader.loadTransformationMatrix(
@@ -21,10 +22,10 @@ void SpritesRenderer::renderSprite() const
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
-        finishRenderingEntity();
+        RendererUtil::finishRenderingEntity();
     }
 
-    finishRendering();
+    RendererUtil::finishRendering();
 }
 
 void SpritesRenderer::addSprite(Sprite &sprite) noexcept

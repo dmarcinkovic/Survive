@@ -11,7 +11,7 @@
 #include "SpritesShader.h"
 #include "Sprite.h"
 
-class SpritesRenderer : public GuiRenderer
+class SpritesRenderer
 {
 private:
     SpritesShader m_Shader{};

@@ -23,14 +23,6 @@ public:
 
     void addGui(const Entity2D &entity2D) noexcept;
 
-protected:
-    void prepareRendering(const Shader &shader) const;
-
-    void prepareEntity(const Texture &texture) const;
-
-    static void finishRenderingEntity();
-
-    static void finishRendering();
 };
 
 
