@@ -16,7 +16,7 @@ void ButtonRenderer::render() const
 
         const Entity2D &entity = button.get().getMEntity();
         m_Shader.loadTransformationMatrix(
-                Maths::createTransformationMatrix(entity.m_Position, entity.m_Scale));
+                Maths::createTransformationMatrix(entity.m_Position, entity.m_ScaleX, entity.m_ScaleY));
 
         glDrawElements(GL_TRIANGLES, entity.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
