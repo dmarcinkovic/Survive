@@ -25,7 +25,7 @@ void GuiRenderer::render() const
     finishRendering();
 }
 
-void GuiRenderer::prepareRendering(const Shader &shader) const
+void GuiRenderer::prepareRendering(const Shader &shader)
 {
     shader.start();
     glEnable(GL_BLEND);
@@ -47,7 +47,7 @@ void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
     batch.emplace_back(entity2D);
 }
 
-void GuiRenderer::prepareEntity(const Texture &texture) const
+void GuiRenderer::prepareEntity(const Texture &texture)
 {
     texture.bindTexture();
     glEnableVertexAttribArray(0);
