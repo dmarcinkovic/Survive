@@ -2,8 +2,6 @@
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
 #include "engine/renderer/Renderer2D.h"
-#include "engine/text/Font.h"
-#include "engine/text/TextRenderer.h"
 
 int main()
 {
@@ -15,6 +13,10 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
+    Texture texture(renderer.getModel(), 0);
+    Button button(Entity2D(texture, glm::vec3{0, 0, 0}, 0.4));
+
+    renderer.addButton(button);
 
     while (display.isRunning())
     {

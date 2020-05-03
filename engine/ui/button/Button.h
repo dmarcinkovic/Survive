@@ -6,9 +6,17 @@
 #define SURVIVE_BUTTON_H
 
 
+#include "../../entity/Entity2D.h"
+
 class Button
 {
+private:
+    Entity2D m_Entity{};
 
+public:
+    explicit Button(const Entity2D &entity2D);
+
+    [[nodiscard]] const Entity2D &getMEntity() const;
 };
 
 

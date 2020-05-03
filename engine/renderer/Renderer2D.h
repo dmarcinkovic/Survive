@@ -10,6 +10,8 @@
 #include "../gui/GuiRenderer.h"
 #include "../text/TextRenderer.h"
 #include "../text/Text.h"
+#include "../ui/button/Button.h"
+#include "../ui/button/ButtonRenderer.h"
 
 class Renderer2D
 {
@@ -21,6 +23,7 @@ private:
 
     GuiRenderer m_GuiRenderer{};
     TextRenderer m_TextRenderer;
+    ButtonRenderer m_ButtonRenderer{};
 
 public:
     explicit Renderer2D(Loader &loader);
@@ -32,6 +35,8 @@ public:
     const Model &getModel() const;
 
     void addText(Text &text) noexcept;
+
+    void addButton(Button &button) noexcept;
 };
 
 #endif //SURVIVE_RENDERER2D_H

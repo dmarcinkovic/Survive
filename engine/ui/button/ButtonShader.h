@@ -14,8 +14,15 @@ private:
     constexpr static const char *VERTEX_FILE = "engine/shader/sources/ButtonVertexShader.glsl";
     constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/ButtonFragmentShader.glsl";
 
+    GLuint m_LocationTransformationMatrix{};
+
 public:
     ButtonShader();
+
+    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+private:
+    void getUniformLocations();
 };
 
 
