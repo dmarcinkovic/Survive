@@ -8,7 +8,7 @@ uniform vec4 color;
 const float radius = 0.12;
 
 vec3 position = (pos + 1) / 2.0;
-float alpha = color.a - 0.9 * clamp(position.x, 0, color.a);
+float alpha = color.a -  clamp(position.x, 0, color.a);
 
 void colorEdges(float x, float y)
 {

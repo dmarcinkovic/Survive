@@ -13,7 +13,7 @@ struct Button : public Entity2D
 {
     glm::vec4 m_Color;
 
-    explicit Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY,
+    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY,
                     const glm::vec4 &color);
 };
 
