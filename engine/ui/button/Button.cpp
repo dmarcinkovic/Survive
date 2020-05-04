@@ -10,15 +10,13 @@
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color)
 {
-    auto mouseListener = [&](int button, int action, double x, double y)
-    {
-        convertToScreenSpace();
+   addMouseListener();
+}
 
-        if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
-        {
-            std::cout << "Inside button\n";
-        }
-    };
+void Button::addMouseListener()
+{
+    auto listener = std::mem_fn(&Button::mouseListener);
+    auto mouseListener = std::bind_front(listener, this);
 
     Display::addMouseListener(mouseListener);
 }
@@ -48,5 +46,15 @@ bool Button::isInsideButton(double x, double y) const
 
     return x >= buttonX && x <= buttonX + m_Width &&
            y >= buttonY && y <= buttonY + m_Height;
+}
+
+void Button::mouseListener(int button, int action, double x, double y)
+{
+    convertToScreenSpace();
+
+    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
+    {
+        std::cout << "Inside button\n";
+    }
 }
 

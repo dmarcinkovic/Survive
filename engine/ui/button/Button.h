@@ -19,7 +19,7 @@ public:
     glm::vec4 m_Color;
 
     Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY,
-                    const glm::vec4 &color);
+           const glm::vec4 &color);
 
 private:
     void convertToScreenSpace();
@@ -27,6 +27,10 @@ private:
     static float convertPoint(float point, float size);
 
     [[nodiscard]] bool isInsideButton(double x, double y) const;
+
+    void mouseListener(int button, int action, double x, double y);
+
+    void addMouseListener();
 };
 
 
