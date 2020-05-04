@@ -15,9 +15,13 @@ int main()
 
     Texture texture(renderer.getModel(), 0);
     Button button(texture, glm::vec3{0, 0.25, 0}, 0.4, 0.1,
-                  glm::vec4{1, 0, 0, 1});
+                  glm::vec4{0.235, 0.23, 0.24, 1});
+
+    Button button2(texture, glm::vec3{0, -0.1, 0}, 0.4, 0.1,
+            glm::vec4{1, 0, 0, 1});
 
     renderer.addButton(button);
+    renderer.addButton(button2);
 
     while (display.isRunning())
     {

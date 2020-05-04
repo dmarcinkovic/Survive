@@ -23,9 +23,6 @@ public:
     void render() const;
 
     void addButton(Button &button);
-
-private:
-    void loadUniforms(Button &button) const;
 };
 
 
