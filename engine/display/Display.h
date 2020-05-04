@@ -22,8 +22,8 @@ private:
     static double m_LastFrameTime;
     static double m_DeltaTime;
 
-    static double m_MouseX;
-    static double m_MouseY;
+    static double m_MouseX, m_MouseY;
+    static int m_Width, m_Height;
 
 public:
     Display(int width, int height, const char *title);
@@ -43,6 +43,8 @@ public:
     static double getFrameTime();
 
     static std::pair<double, double> getMousePosition();
+
+    static std::pair<int, int> getWindowSize();
 
 private:
     static void windowResizeCallback(GLFWwindow *window, int width, int height);

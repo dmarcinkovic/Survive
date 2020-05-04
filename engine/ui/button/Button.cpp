@@ -9,11 +9,10 @@
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color)
 {
-    convertToScreenSpace();
-
     auto mouseListener = [&](int button, int action)
     {
         auto[x, y] = Display::getMousePosition();
+        convertToScreenSpace();
 
         if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
         {
@@ -26,9 +25,7 @@ Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, 
 
 void Button::convertToScreenSpace()
 {
-    // TODO do not hard code this
-    float width = 800;
-    float height = 800;
+    auto[width, height] = Display::getWindowSize();
 
     int newX = static_cast<int>(convertPoint(m_Position.x, width));
     int newY = static_cast<int>(convertPoint(-m_Position.y, height));

@@ -10,8 +10,11 @@ std::vector<Listener> Display::m_MouseEventListeners;
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
 
-double Display::m_MouseX{};
-double Display::m_MouseY{};
+double Display::m_MouseX;
+double Display::m_MouseY;
+
+int Display::m_Width;
+int Display::m_Height;
 
 Display::Display(int width, int height, const char *title)
 {
@@ -33,6 +36,9 @@ Display::Display(int width, int height, const char *title)
     glfwSetKeyCallback(m_Window, keyEventCallback);
 
     m_LastFrameTime = glfwGetTime();
+
+    m_Width = width;
+    m_Height = height;
 }
 
 Display::~Display()
@@ -71,6 +77,9 @@ void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
     glOrtho(0, width, 0, height, -1.5, 1.5);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    m_Width = width;
+    m_Height = height;
 }
 
 void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods)
@@ -109,4 +118,9 @@ double Display::getFrameTime()
 std::pair<double, double> Display::getMousePosition()
 {
     return {m_MouseX, m_MouseY};
+}
+
+std::pair<int, int> Display::getWindowSize()
+{
+    return {m_Width, m_Height};
 }
