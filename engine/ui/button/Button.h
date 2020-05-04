@@ -22,7 +22,7 @@ public:
            const glm::vec4 &color);
 
 private:
-    void convertToScreenSpace();
+    void convertToScreenSpace(float width, float height);
 
     static float convertPoint(float point, float size);
 

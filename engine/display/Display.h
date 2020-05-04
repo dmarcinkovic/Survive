@@ -12,6 +12,7 @@
 using KeyListener = std::function<void(int, int)>;
 using MouseListener = std::function<void(int, int, double, double)>;
 using MouseMovedListener = std::function<void(double, double)>;
+using WindowListener = std::function<void(int, int)>;
 
 class Display
 {
@@ -21,6 +22,7 @@ private:
     static std::vector<KeyListener> m_KeyEventListeners;
     static std::vector<MouseListener> m_MouseEventListeners;
     static std::vector<MouseMovedListener> m_MouseMoveListeners;
+    static std::vector<WindowListener> m_WindowListeners;
 
     static double m_LastFrameTime;
     static double m_DeltaTime;
@@ -43,6 +45,8 @@ public:
     static void addMouseListener(const MouseListener &listener);
 
     static void addMouseMovedListener(const MouseMovedListener &listener);
+
+    static void addWindowResizeListener(const WindowListener &listener);
 
     static double getFrameTime();
 

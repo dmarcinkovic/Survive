@@ -10,6 +10,15 @@
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color)
 {
+    auto[width, height] = Display::getWindowSize();
+    convertToScreenSpace(width, height);
+
+    auto windowResizeListener = [&](int width, int height)
+    {
+        convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
+    };
+    Display::addWindowResizeListener(windowResizeListener);
+
     addMouseListener();
     addMouseMovedListener();
 }
@@ -22,10 +31,8 @@ void Button::addMouseListener()
     Display::addMouseListener(mouseListener);
 }
 
-void Button::convertToScreenSpace()
+void Button::convertToScreenSpace(float width, float height)
 {
-    auto[width, height] = Display::getWindowSize();
-
     int newX = static_cast<int>(convertPoint(m_Position.x, width));
     int newY = static_cast<int>(convertPoint(-m_Position.y, height));
 
@@ -51,8 +58,6 @@ bool Button::isInsideButton(double x, double y) const
 
 void Button::mouseListener(int button, int action, double x, double y)
 {
-    convertToScreenSpace();
-
     if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
     {
         std::cout << "Button pressed\n";
@@ -63,8 +68,6 @@ void Button::mouseMovedListener(double x, double y)
 {
     static const float scaleX = m_ScaleX;
     static const float scaleY = m_ScaleY;
-
-    convertToScreenSpace();
 
     if (isInsideButton(x, y))
     {

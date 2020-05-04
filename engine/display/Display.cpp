@@ -8,6 +8,7 @@
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
 std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
+std::vector<WindowListener > Display::m_WindowListeners;
 
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
@@ -80,6 +81,11 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
 
     m_Width = width;
     m_Height = height;
+
+    for (auto const& listener : m_WindowListeners)
+    {
+        listener(width, height);
+    }
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
@@ -132,4 +138,9 @@ void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 void Display::addMouseMovedListener(const MouseMovedListener &listener)
 {
     m_MouseMoveListeners.emplace_back(listener);
+}
+
+void Display::addWindowResizeListener(const WindowListener &listener)
+{
+    m_WindowListeners.emplace_back(listener);
 }
