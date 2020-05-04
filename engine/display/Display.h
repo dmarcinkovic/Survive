@@ -9,20 +9,20 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 
-using Listener = std::function<void(int, int)>;
+using KeyListener = std::function<void(int, int)>;
+using MouseListener = std::function<void(int, int, double, double)>;
 
 class Display
 {
 private:
     GLFWwindow *m_Window;
 
-    static std::vector<Listener> m_KeyEventListeners;
-    static std::vector<Listener> m_MouseEventListeners;
+    static std::vector<KeyListener> m_KeyEventListeners;
+    static std::vector<MouseListener> m_MouseEventListeners;
 
     static double m_LastFrameTime;
     static double m_DeltaTime;
 
-    static double m_MouseX, m_MouseY;
     static int m_Width, m_Height;
 
 public:
@@ -36,13 +36,11 @@ public:
 
     [[nodiscard]] bool isRunning() const;
 
-    static void addKeyListener(const Listener& listener);
+    static void addKeyListener(const KeyListener &listener);
 
-    static void addMouseListener(const Listener& listener);
+    static void addMouseListener(const MouseListener &listener);
 
     static double getFrameTime();
-
-    static std::pair<double, double> getMousePosition();
 
     static std::pair<int, int> getWindowSize();
 

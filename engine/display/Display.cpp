@@ -4,14 +4,11 @@
 
 #include "Display.h"
 
-std::vector<Listener> Display::m_KeyEventListeners;
-std::vector<Listener> Display::m_MouseEventListeners;
+std::vector<KeyListener> Display::m_KeyEventListeners;
+std::vector<MouseListener> Display::m_MouseEventListeners;
 
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
-
-double Display::m_MouseX;
-double Display::m_MouseY;
 
 int Display::m_Width;
 int Display::m_Height;
@@ -92,20 +89,21 @@ void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int actio
 
 void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int mods)
 {
-    glfwGetCursorPos(window, &m_MouseX, &m_MouseY);
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
 
     for (auto const &listener : m_MouseEventListeners)
     {
-        listener(button, action);
+        listener(button, action, mouseX, mouseY);
     }
 }
 
-void Display::addKeyListener(const Listener &listener)
+void Display::addKeyListener(const KeyListener &listener)
 {
     m_KeyEventListeners.emplace_back(listener);
 }
 
-void Display::addMouseListener(const Listener &listener)
+void Display::addMouseListener(const MouseListener &listener)
 {
     m_MouseEventListeners.emplace_back(listener);
 }
@@ -113,11 +111,6 @@ void Display::addMouseListener(const Listener &listener)
 double Display::getFrameTime()
 {
     return m_DeltaTime;
-}
-
-std::pair<double, double> Display::getMousePosition()
-{
-    return {m_MouseX, m_MouseY};
 }
 
 std::pair<int, int> Display::getWindowSize()

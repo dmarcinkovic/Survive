@@ -3,15 +3,15 @@
 //
 
 #include <iostream>
+
 #include "Button.h"
 #include "../../display/Display.h"
 
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color)
 {
-    auto mouseListener = [&](int button, int action)
+    auto mouseListener = [&](int button, int action, double x, double y)
     {
-        auto[x, y] = Display::getMousePosition();
         convertToScreenSpace();
 
         if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
