@@ -30,7 +30,11 @@ private:
 
     void mouseListener(int button, int action, double x, double y);
 
+    void mouseMovedListener(double x, double y);
+
     void addMouseListener();
+
+    void addMouseMovedListener();
 };
 
 
