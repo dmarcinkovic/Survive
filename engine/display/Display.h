@@ -11,6 +11,7 @@
 
 using KeyListener = std::function<void(int, int)>;
 using MouseListener = std::function<void(int, int, double, double)>;
+using MouseMovedListener = std::function<void(double, double)>;
 
 class Display
 {
@@ -19,6 +20,7 @@ private:
 
     static std::vector<KeyListener> m_KeyEventListeners;
     static std::vector<MouseListener> m_MouseEventListeners;
+    static std::vector<MouseMovedListener> m_MouseMoveListeners;
 
     static double m_LastFrameTime;
     static double m_DeltaTime;
@@ -40,6 +42,8 @@ public:
 
     static void addMouseListener(const MouseListener &listener);
 
+    static void addMouseMovedListener(const MouseMovedListener &listener);
+
     static double getFrameTime();
 
     static std::pair<int, int> getWindowSize();
@@ -50,6 +54,8 @@ private:
     static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
 
     static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
+
+    static void mousePositionCallback(GLFWwindow *window, double mouseX, double mouseY);
 };
 
 
