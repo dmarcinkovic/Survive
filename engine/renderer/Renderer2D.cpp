@@ -28,7 +28,6 @@ const Model &Renderer2D::getModel() const
 
 void Renderer2D::addText(Text &text) noexcept
 {
-    text.loadTexture(m_Loader);
-    m_TextRenderer.addText(text);
+    m_TextRenderer.addText(text, m_Loader);
 }
 

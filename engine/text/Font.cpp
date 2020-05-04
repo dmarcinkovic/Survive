@@ -7,6 +7,11 @@
 #include "Font.h"
 #include "../util/Util.h"
 
+Font::Font(const char *textureAtlas, Loader &loader)
+{
+    m_TextureId = loader.loadTexture(textureAtlas);
+}
+
 void Font::loadFontFromFntFile(const char *fntFile)
 {
     std::ifstream reader(fntFile);
@@ -59,4 +64,9 @@ void Font::loadFontFromJsonFile(const char *jsonFile)
 const Character &Font::getCharacter(int ascii) const
 {
     return m_Characters.at(ascii);
+}
+
+GLuint Font::getMTextureId() const
+{
+    return m_TextureId;
 }

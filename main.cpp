@@ -15,15 +15,19 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    Font font;
+    Font font("res/candara.png", loader);
     font.loadFontFromFntFile("res/candara.fnt");
 
-    Text text("D", font, "res/candara.png",
-              glm::vec3{0, 0, 0}, glm::vec3{1, 1, 1}, 10.0);
+    Text text("D", font, glm::vec3{0, 0, 0}, glm::vec3{1, 0, 1}, 10.0);
     text.centerText();
     text.addBorder(0.5, glm::vec3{1, 0, 0});
 
+    Text text2("Maja", font, glm::vec3{0, 0.25, 0}, glm::vec3{1, 0, 0}, 3);
+    text2.addBorder(0.5, glm::vec3{0, 1, 0});
+    text2.centerText();
+
     renderer.addText(text);
+    renderer.addText(text2);
 
     while (display.isRunning())
     {
