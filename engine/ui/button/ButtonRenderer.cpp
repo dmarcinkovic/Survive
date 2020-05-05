@@ -1,6 +1,7 @@
 //
-// Created by david on 03. 05. 2020..
+// Created by david on 05. 05. 2020..
 //
+
 
 #include "ButtonRenderer.h"
 #include "../../renderer/RendererUtil.h"
@@ -9,24 +10,24 @@
 void ButtonRenderer::render() const
 {
     RendererUtil::prepareRendering(m_Shader);
+    RendererUtil::prepareEntity(m_Buttons[0].get().m_Texture);
 
-    for (auto const &button : m_Buttons)
+    for (auto const &buttons : m_Buttons)
     {
-        RendererUtil::prepareEntity(button.get().m_Texture);
+        const Button &button = buttons.get();
 
-        m_Shader.loadColor(button.get().m_Color);
+        m_Shader.loadColor(button.m_Color);
         m_Shader.loadTransformationMatrix(
-                Maths::createTransformationMatrix(button.get().m_Position, button.get().m_ScaleX,
-                                                  button.get().m_ScaleY));
-        glDrawElements(GL_TRIANGLES, button.get().m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+                Maths::createTransformationMatrix(button.m_Position, button.m_ScaleX, button.m_ScaleY));
 
-        RendererUtil::finishRenderingEntity();
+        glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
     }
 
+    RendererUtil::finishRenderingEntity();
     RendererUtil::finishRendering();
 }
 
-void ButtonRenderer::addButton(Button &button)
+void ButtonRenderer::addButton(Button &button) noexcept
 {
     m_Buttons.emplace_back(button);
 }

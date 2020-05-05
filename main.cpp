@@ -2,6 +2,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
 #include "engine/renderer/Renderer2D.h"
+#include "engine/ui/button/Button.h"
 
 int main()
 {
@@ -13,15 +14,15 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    Texture texture(renderer.getModel(), 0);
-    Button button(texture, glm::vec3{0, 0.25, 0}, 0.4, 0.1,
-                  glm::vec4{0.235, 0.23, 0.24, 1});
+    Texture texture(renderer.getModel(), 1);
 
-    Button button2(texture, glm::vec3{0, -0.1, 0}, 0.4, 0.1,
-            glm::vec4{1, 0, 0, 1});
+    Button button(texture, glm::vec3{0, 0.5, 0}, 0.4, 0.2, glm::vec4{1, 0, 0, 1});
+    Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1, glm::vec4{0, 1, 0, 1});
+    Button button3(texture, glm::vec3{-0.2, -0.4, 0}, 0.7, 0.15, glm::vec4{0, 0, 1, 1});
 
     renderer.addButton(button);
     renderer.addButton(button2);
+    renderer.addButton(button3);
 
     while (display.isRunning())
     {

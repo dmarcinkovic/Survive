@@ -1,34 +1,19 @@
 //
-// Created by david on 03. 05. 2020..
+// Created by david on 05. 05. 2020..
 //
-
-#include <iostream>
 
 #include "Button.h"
 #include "../../display/Display.h"
 
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
-        : Entity2D(texture, position, scaleX, scaleY), m_Color(color)
+        : Entity2D(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
+          m_OriginalScaleY(scaleY)
 {
     auto[width, height] = Display::getWindowSize();
     convertToScreenSpace(width, height);
 
-    auto windowResizeListener = [&](int width, int height)
-    {
-        convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
-    };
-    Display::addWindowResizeListener(windowResizeListener);
-
-    addMouseListener();
-    addMouseMovedListener();
-}
-
-void Button::addMouseListener()
-{
-    auto listener = std::mem_fn(&Button::mouseListener);
-    auto mouseListener = std::bind_front(listener, this);
-
-    Display::addMouseListener(mouseListener);
+    addMouseMoveListener();
+    addWindowResizeListener();
 }
 
 void Button::convertToScreenSpace(float width, float height)
@@ -56,35 +41,30 @@ bool Button::isInsideButton(double x, double y) const
            y >= buttonY && y <= buttonY + m_Height;
 }
 
-void Button::mouseListener(int button, int action, double x, double y)
+void Button::addMouseMoveListener()
 {
-    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT && isInsideButton(x, y))
+    auto mouseListener = [&](double x, double y)
     {
-        std::cout << "Button pressed\n";
-    }
+        if (isInsideButton(x, y))
+        {
+            m_ScaleX = m_OriginalScaleX * 1.05;
+            m_ScaleY = m_OriginalScaleY * 1.05;
+        } else
+        {
+            m_ScaleX = m_OriginalScaleX;
+            m_ScaleY = m_OriginalScaleY;
+        }
+    };
+
+    Display::addMouseMovedListener(mouseListener);
 }
 
-void Button::mouseMovedListener(double x, double y)
+void Button::addWindowResizeListener()
 {
-    static const float scaleX = m_ScaleX;
-    static const float scaleY = m_ScaleY;
-
-    if (isInsideButton(x, y))
+    auto windowResizeListener = [&](int width, int height)
     {
-        m_ScaleX = scaleX * 1.05f;
-        m_ScaleY = scaleY * 1.05f;
-    } else
-    {
-        m_ScaleY = scaleY;
-        m_ScaleX = scaleX;
-    }
+        convertToScreenSpace(width, height);
+    };
+
+    Display::addWindowResizeListener(windowResizeListener);
 }
-
-void Button::addMouseMovedListener()
-{
-    auto listener = std::mem_fn(&Button::mouseMovedListener);
-    auto mouseMovedListener = std::bind_front(listener, this);
-
-    Display::addMouseMovedListener(mouseMovedListener);
-}
-
