@@ -40,7 +40,7 @@ Character Util::getCharacterFromFntFile(const std::vector<std::string> &line, fl
 
 std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
 {
-    std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
+    static std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
                           R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
     static std::regex regex(pattern);
     std::smatch result;
