@@ -47,8 +47,8 @@ void Button::addMouseMoveListener()
     {
         if (isInsideButton(x, y))
         {
-            m_ScaleX = m_OriginalScaleX * 1.05;
-            m_ScaleY = m_OriginalScaleY * 1.05;
+            m_ScaleX = m_OriginalScaleX * 1.05f;
+            m_ScaleY = m_OriginalScaleY * 1.05f;
         } else
         {
             m_ScaleX = m_OriginalScaleX;
@@ -63,7 +63,7 @@ void Button::addWindowResizeListener()
 {
     auto windowResizeListener = [&](int width, int height)
     {
-        convertToScreenSpace(width, height);
+        convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
     };
 
     Display::addWindowResizeListener(windowResizeListener);

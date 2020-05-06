@@ -12,20 +12,19 @@
 struct Button : public Entity2D
 {
     glm::vec4 m_Color;
-    glm::ivec2 m_Center;
+    glm::ivec2 m_Center{};
 
     const float m_OriginalScaleX;
     const float m_OriginalScaleY;
 
-    int m_Width, m_Height;
+    int m_Width{}, m_Height{};
 
-public:
     Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
 
 private:
     bool isInsideButton(double x, double y) const;
 
-    float convertPoint(float point, float size);
+    static float convertPoint(float point, float size);
 
     void convertToScreenSpace(float width, float height);
 
