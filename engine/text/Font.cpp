@@ -16,7 +16,7 @@ void Font::loadFontFromFntFile(const char *fntFile)
     std::string line;
     while (std::getline(reader, line))
     {
-        auto result = Util::split(line, R"([^\s+]+)");
+        auto result = Util::splitByRegex(line);
         if (!result.empty() && result[0] == "char")
         {
             Character c = Util::getCharacterFromFntFile(result, w, h);

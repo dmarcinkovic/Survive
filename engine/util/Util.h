@@ -20,7 +20,7 @@ private:
 public:
     static float getNumber(const std::string &string, char delimiter = '=');
 
-    static std::vector<std::string> split(const std::string &string, const std::string &delimiter);
+    static std::vector<std::string> splitByRegex(const std::string &string);
 
     static Character getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h);
 

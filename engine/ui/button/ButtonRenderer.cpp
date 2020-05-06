@@ -10,7 +10,7 @@
 void ButtonRenderer::render() const
 {
     if (m_Buttons.empty()) return;
-    
+
     RendererUtil::prepareRendering(m_Shader);
     RendererUtil::prepareEntity(m_Buttons[0].get().m_Texture);
 

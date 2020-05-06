@@ -6,9 +6,9 @@
 
 #include "Util.h"
 
-std::vector<std::string> Util::split(const std::string &string, const std::string &delimiter)
+std::vector<std::string> Util::splitByRegex(const std::string &string)
 {
-    std::regex pattern(delimiter);
+    static std::regex pattern(R"([^\s+]+)");
     std::sregex_token_iterator begin(string.begin(), string.end(), pattern);
     std::sregex_token_iterator end;
 
@@ -42,7 +42,7 @@ std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line,
 {
     std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
                           R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
-    std::regex regex(pattern);
+    static std::regex regex(pattern);
     std::smatch result;
     std::regex_search(line, result, regex);
 
