@@ -7,12 +7,11 @@
 
 #include <glm/glm.hpp>
 
-class Camera
+struct Camera
 {
-private:
     glm::vec3 m_Position;
-    glm::vec3 m_Rotation;
-
+    float m_Pitch;
+    float  m_Yaw;
 
 };
 
