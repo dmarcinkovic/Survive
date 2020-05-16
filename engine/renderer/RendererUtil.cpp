@@ -24,12 +24,14 @@ void RendererUtil::prepareEntity(const Texture &texture)
     texture.bindTexture();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 }
 
 void RendererUtil::finishRenderingEntity()
 {
     Texture::unbindTexture();
 
+    glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     Loader::unbindVao();

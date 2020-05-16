@@ -3,6 +3,7 @@
 //
 
 #include "Maths.h"
+#include "../display/Display.h"
 
 glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float scaleX, float scaleY, float scaleZ,
                                             float rotationX, float rotationY, float rotationZ)
@@ -18,4 +19,11 @@ glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float 
     matrix = glm::scale(matrix, glm::vec3{scaleX, scaleY, scaleZ});
 
     return matrix;
+}
+
+glm::mat4 Maths::createProjectionMatrix(float fieldOfView, float near, float far)
+{
+    auto[width, height] = Display::getWindowSize();
+    float aspectRatio = static_cast<float>(width) / static_cast<float >(height);
+    return glm::perspective(fieldOfView, aspectRatio, near, far);
 }
