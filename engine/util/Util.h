@@ -17,6 +17,8 @@ class Util
 private:
     static Character getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH);
 
+    static void removeTrailingSpaces(std::string &string);
+
 public:
     static float getNumber(const std::string &string, char delimiter = '=');
 
@@ -25,6 +27,8 @@ public:
     static Character getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h);
 
     static std::optional<Character> getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
+
+    static std::vector<std::string> split(std::string string, char delimiter);
 };
 
 

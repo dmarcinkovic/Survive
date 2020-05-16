@@ -68,3 +68,32 @@ Character Util::getCharacterFromJsonFile(const std::smatch &result, float scaleW
     return Character(id, x, y, width, height, xOffset, yOffset, advance, scaleW, scaleH);
 }
 
+std::vector<std::string> Util::split(std::string string, char delimiter)
+{
+    std::vector<std::string> result;
+    removeTrailingSpaces(string);
+
+    int index;
+    while((index = string.find(delimiter)) != -1)
+    {
+        result.emplace_back(string.substr(0, index));
+        string = string.substr(index + 1);
+    }
+
+    if (!string.empty())
+    {
+        result.emplace_back(string);
+    }
+
+    return result;
+}
+
+void Util::removeTrailingSpaces(std::string &string)
+{
+    while(isspace(string.back()))
+    {
+        string.pop_back();
+    }
+}
+
+
