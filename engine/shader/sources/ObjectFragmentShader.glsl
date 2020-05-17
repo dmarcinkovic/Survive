@@ -25,6 +25,5 @@ void main()
 
     vec3 totalColor = (diffuse + ambient) * textureColor.rgb;
 
-//    totalColor = textureColor.xyz;
     outColor = vec4(totalColor, 1.0);
 }

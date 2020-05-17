@@ -8,7 +8,7 @@
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
 std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
-std::vector<WindowListener > Display::m_WindowListeners;
+std::vector<WindowListener> Display::m_WindowListeners;
 
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
@@ -31,15 +31,21 @@ Display::Display(int width, int height, const char *title)
 
     glewInit();
 
-    glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
-    glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
-    glfwSetKeyCallback(m_Window, keyEventCallback);
-    glfwSetCursorPosCallback(m_Window, mousePositionCallback);
+    addCallbacks();
 
     m_LastFrameTime = glfwGetTime();
 
     m_Width = width;
     m_Height = height;
+}
+
+void Display::addCallbacks() const
+{
+    glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
+    glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
+    glfwSetKeyCallback(m_Window, keyEventCallback);
+    glfwSetCursorPosCallback(m_Window, mousePositionCallback);
+    glfwSetScrollCallback(m_Window, scrollCallback);
 }
 
 Display::~Display()
@@ -66,7 +72,8 @@ bool Display::isRunning() const
 void Display::clearWindow()
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void Display::windowResizeCallback(GLFWwindow *, int width, int height)
@@ -82,7 +89,7 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
     m_Width = width;
     m_Height = height;
 
-    for (auto const& listener : m_WindowListeners)
+    for (auto const &listener : m_WindowListeners)
     {
         listener(width, height);
     }
@@ -143,4 +150,17 @@ void Display::addMouseMovedListener(const MouseMovedListener &listener)
 void Display::addWindowResizeListener(const WindowListener &listener)
 {
     m_WindowListeners.emplace_back(listener);
+}
+
+void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
+{
+    for (auto const &listener : m_ScrollListeners)
+    {
+        listener(xOffset, yOffset);
+    }
+}
+
+void Display::addScrollListener(const ScrollListener &listener)
+{
+    m_ScrollListeners.emplace_back(listener);
 }

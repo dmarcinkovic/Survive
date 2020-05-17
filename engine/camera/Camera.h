@@ -15,7 +15,8 @@ struct Camera
 
     glm::vec3 m_Rotation{};
 
-    Camera() = default;
+    Camera();
+
 
 
 };
