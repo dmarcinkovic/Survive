@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <iostream>
 
 #include "ObjLoader.h"
 #include "../util/Util.h"
@@ -55,10 +56,9 @@ Model ObjLoader::loadObj(const char *objFile, Loader &loader)
 Model ObjLoader::processIndices(std::ifstream &reader, Loader &loader, const std::vector<glm::vec3> &points,
                                 const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textureCoordinates)
 {
-    std::vector<float> resultPoints(points.size() * 3);
-    std::vector<float> resultNormals(points.size() * 3);
-    std::vector<float> resultTextures(points.size() * 2);
-    std::vector<unsigned> indices;
+    std::vector<float> resultPoints;
+    std::vector<float> resultNormals;
+    std::vector<float> resultTextures;
 
     std::string line;
     while (std::getline(reader, line))
@@ -66,23 +66,20 @@ Model ObjLoader::processIndices(std::ifstream &reader, Loader &loader, const std
         if (line.starts_with('f'))
         {
             auto numbers = Util::split(line, ' ');
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, indices,
-                          numbers[1]);
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, indices,
-                          numbers[2]);
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, indices,
-                          numbers[3]);
+            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[1]);
+            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[2]);
+            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[3]);
         }
     }
 
     reader.close();
-    return loader.loadToVao(resultPoints, indices, resultTextures, resultNormals);
+    return loader.loadToVao(resultPoints, resultTextures, resultNormals);
 }
 
 void ObjLoader::processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
                               const std::vector<glm::vec2> &textureCoordinates, std::vector<float> &resultPoints,
                               std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-                              std::vector<unsigned> &indices, const std::string &line)
+                              const std::string &line)
 {
     auto index = Util::split(line, '/');
 
@@ -90,19 +87,17 @@ void ObjLoader::processVertex(const std::vector<glm::vec3> &points, const std::v
     unsigned textureIndex = std::stoi(index[1]) - 1;
     unsigned normalIndex = std::stoi(index[2]) - 1;
 
-    indices.emplace_back(vertexIndex);
-
     const auto &point = points[vertexIndex];
-    resultPoints[3 * vertexIndex] = point.x;
-    resultPoints[3 * vertexIndex + 1] = point.y;
-    resultPoints[3 * vertexIndex + 2] = point.z;
+    resultPoints.emplace_back(point.x);
+    resultPoints.emplace_back(point.y);
+    resultPoints.emplace_back(point.z);
 
     const auto &texture = textureCoordinates[textureIndex];
-    resultTextures[2 * vertexIndex] = texture.x;
-    resultTextures[2 * vertexIndex + 1] = texture.y;
+    resultTextures.emplace_back(texture.x);
+    resultTextures.emplace_back(texture.y);
 
     const auto &normal = normals[normalIndex];
-    resultNormals[3 * vertexIndex] = normal.x;
-    resultNormals[3 * vertexIndex + 1] = normal.y;
-    resultNormals[3 * vertexIndex + 2] = normal.z;
+    resultNormals.emplace_back(normal.x);
+    resultNormals.emplace_back(normal.y);
+    resultNormals.emplace_back(normal.z);
 }

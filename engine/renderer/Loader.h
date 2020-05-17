@@ -33,8 +33,8 @@ public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
                     const std::vector<float> &textureCoordinates, size_t size);
 
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-                    const std::vector<float> &textureCoordinates, const std::vector<float> &normals);
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+                    const std::vector<float> &normals);
 
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 

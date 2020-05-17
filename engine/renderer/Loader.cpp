@@ -79,18 +79,17 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
     return Model(vao, indices.size());
 }
 
-Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned int> &indices,
-                        const std::vector<float> &textureCoordinates, const std::vector<float> &normals)
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+                        const std::vector<float> &normals)
 {
     GLuint vao = createVao();
 
-    createIndexBuffer(indices);
     storeDataInAttributeList(0, vertices, 3);
     storeDataInAttributeList(1, textureCoordinates, 2);
     storeDataInAttributeList(2, normals, 3);
     unbindVao();
 
-    return Model(vao, indices.size());
+    return Model(vao, vertices.size() / 3);
 }
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)

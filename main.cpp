@@ -16,7 +16,7 @@ int main()
     Loader loader;
 
     Model model = ObjLoader::loadObj("res/house.obj", loader);
-    Texture texture{model, loader.loadTexture("res/house2.png")};
+    Texture texture{model, loader.loadTexture("res/house.png")};
 
     Entity2D entity2D{texture, glm::vec3{0, 0, 0}, 1};
 
@@ -30,16 +30,25 @@ int main()
     shader.loadProjectionMatrix(Maths::createProjectionMatrix(70, 0.1, 1000));
     ObjectShader::stop();
 
+    float  angle = 0.0f;
     while (display.isRunning())
     {
         Display::clearWindow();
 
+        glEnable(GL_DEPTH_TEST);
+//        glEnable(GL_CULL_FACE);
+//        glCullFace(GL_BACK);
+
         shader.start();
         RendererUtil::prepareEntity(texture);
 
-        shader.loadTransformationMatrix(Maths::createTransformationMatrix(glm::vec3{0, 0,-25}));
+        shader.loadTransformationMatrix(Maths::createTransformationMatrix(
+                glm::vec3{0, -3, -25}, 1, 1, 1, 0, angle));
+        angle += 0.1f;
         shader.loadViewMatrix(Maths::createViewMatrix(camera));
-        glDrawElements(GL_TRIANGLES, model.m_VertexCount, GL_UNSIGNED_INT, nullptr);
+
+        glDrawArrays(GL_TRIANGLES, 0, model.m_VertexCount);
+
         RendererUtil::finishRenderingEntity();
         ObjectShader::stop();
 
