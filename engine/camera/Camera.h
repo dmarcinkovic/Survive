@@ -11,14 +11,22 @@ struct Camera
 {
     glm::vec3 m_Position{};
     float m_Pitch{};
-    float  m_Yaw{};
+    float m_Yaw{};
 
     glm::vec3 m_Rotation{};
 
     Camera();
 
+private:
+    bool m_MousePressed{};
+    glm::vec2 m_MousePos{};
+    glm::vec3 m_CurrentRotation{};
 
+    void addScrollListener();
 
+    void addMousePressedListener();
+
+    void addMouseMovedListener();
 };
 
 

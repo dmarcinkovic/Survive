@@ -9,6 +9,7 @@ std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
 std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
 std::vector<WindowListener> Display::m_WindowListeners;
+std::vector<ScrollListener> Display::m_ScrollListeners;
 
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
