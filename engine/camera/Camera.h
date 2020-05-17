@@ -13,6 +13,11 @@ struct Camera
     float m_Pitch{};
     float  m_Yaw{};
 
+    glm::vec3 m_Rotation{};
+
+    Camera() = default;
+
+
 };
 
 

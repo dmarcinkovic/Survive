@@ -5,7 +5,7 @@
 #include "ObjectShader.h"
 
 ObjectShader::ObjectShader()
-    : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+        : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
     loadUniformLocations();
 }
@@ -30,4 +30,13 @@ void ObjectShader::loadUniformLocations()
     m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
     m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
     m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+
+    m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
+    m_LocationLightPos = glGetUniformLocation(m_Program, "lightPosition");
+}
+
+void ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const
+{
+    loadVector3(m_LocationLightPos, lightPos);
+    loadVector3(m_LocationLightColor, lightColor);
 }

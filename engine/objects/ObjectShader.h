@@ -18,6 +18,9 @@ private:
     GLuint m_LocationProjectionMatrix{};
     GLuint m_LocationViewMatrix{};
 
+    GLuint m_LocationLightColor{};
+    GLuint m_LocationLightPos{};
+
 public:
     ObjectShader();
 
@@ -26,6 +29,8 @@ public:
     void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
     void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+    void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const;
 
 private:
     void loadUniformLocations() ;

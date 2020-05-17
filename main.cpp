@@ -5,6 +5,7 @@
 #include "engine/math/Maths.h"
 #include "engine/objects/ObjectRenderer.h"
 #include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
 
 int main()
 {
@@ -15,16 +16,17 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/lamp.obj", loader),
-                    loader.loadTexture("res/lamp.jpg")};
+    Texture texture{ObjLoader::loadObj("res/cube.obj", loader),
+                    loader.loadTexture("res/house.png")};
 
-    Entity entity2D{texture, glm::vec3{0, -10, -30}, 1};
+    Object3D object(texture, glm::vec3{0, 0, -5}, glm::vec3{0, 30, 0});
 
     Camera camera{};
     ObjectRenderer renderer;
-    renderer.add3DObject(entity2D);
+    renderer.add3DObject(object);
 
     Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 0.2});
+    renderer.setLight(light);
 
     while (display.isRunning())
     {
