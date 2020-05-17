@@ -6,7 +6,7 @@
 #include "../../display/Display.h"
 
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
-        : Entity2D(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
+        : Entity(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
           m_OriginalScaleY(scaleY)
 {
     auto[width, height] = Display::getWindowSize();

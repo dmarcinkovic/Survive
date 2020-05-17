@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "../entity/Entity2D.h"
+#include "../entity/Entity.h"
 #include "Font.h"
 
-class Text : public Entity2D
+class Text : public Entity
 {
 private:
     constexpr static float PADDING = 5.0f;

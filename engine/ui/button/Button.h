@@ -7,9 +7,9 @@
 
 #include <glm/glm.hpp>
 
-#include "../../entity/Entity2D.h"
+#include "../../entity/Entity.h"
 
-struct Button : public Entity2D
+struct Button : public Entity
 {
     glm::vec4 m_Color;
     glm::ivec2 m_Center{};

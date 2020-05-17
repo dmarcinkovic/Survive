@@ -8,10 +8,6 @@ ObjectShader::ObjectShader()
     : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
     loadUniformLocations();
-
-    glBindAttribLocation(m_Program, 0, "position");
-    glBindAttribLocation(m_Program, 1, "textureCoordinates");
-    glBindAttribLocation(m_Program, 2, "normal");
 }
 
 void ObjectShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const

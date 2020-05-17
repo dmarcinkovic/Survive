@@ -18,7 +18,7 @@ void Renderer2D::render() const
     m_ButtonRenderer.render();
 }
 
-void Renderer2D::addGui(Entity2D &entity2D) noexcept
+void Renderer2D::addGui(Entity &entity2D) noexcept
 {
     m_GuiRenderer.addEntity(entity2D);
 }

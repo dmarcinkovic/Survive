@@ -4,33 +4,33 @@
 
 #include "GuiRenderer.h"
 #include "../math/Maths.h"
-#include "../renderer/RendererUtil.h"
+#include "../renderer/Renderer2DUtil.h"
 
 void GuiRenderer::render() const
 {
-    RendererUtil::prepareRendering(m_Shader);
+    Renderer2DUtil::prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Entities)
     {
-        RendererUtil::prepareEntity(texture);
+        Renderer2DUtil::prepareEntity(texture);
         for (auto const &entity2D : batch)
         {
-            const Entity2D &e = entity2D.get();
+            const Entity &e = entity2D.get();
             m_Shader.loadTransformationMatrix(
                     Maths::createTransformationMatrix(e.m_Position, e.m_ScaleX));
 
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }
 
-        RendererUtil::finishRenderingEntity();
+        Renderer2DUtil::finishRenderingEntity();
     }
 
-    RendererUtil::finishRendering();
+    Renderer2DUtil::finishRendering();
 }
 
-void GuiRenderer::addEntity(Entity2D &entity2D) noexcept
+void GuiRenderer::addEntity(Entity &entity2D) noexcept
 {
-    std::vector<std::reference_wrapper<Entity2D>> &batch = m_Entities[entity2D.m_Texture];
+    std::vector<std::reference_wrapper<Entity>> &batch = m_Entities[entity2D.m_Texture];
 
     batch.emplace_back(entity2D);
 }

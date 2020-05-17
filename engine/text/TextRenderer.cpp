@@ -3,15 +3,15 @@
 //
 
 #include "TextRenderer.h"
-#include "../renderer/RendererUtil.h"
+#include "../renderer/Renderer2DUtil.h"
 
 void TextRenderer::renderText() const
 {
-    RendererUtil::prepareRendering(m_Shader);
+    Renderer2DUtil::prepareRendering(m_Shader);
 
     for (auto const&[texture, batch] : m_Texts)
     {
-        RendererUtil ::prepareEntity(texture);
+        Renderer2DUtil ::prepareEntity(texture);
         for (auto const &text : batch)
         {
             m_Shader.loadColor(text.get().color());
@@ -20,10 +20,10 @@ void TextRenderer::renderText() const
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
         }
 
-        RendererUtil::finishRenderingEntity();
+        Renderer2DUtil::finishRenderingEntity();
     }
 
-    RendererUtil::finishRendering();
+    Renderer2DUtil::finishRendering();
 }
 
 void TextRenderer::addText(Text &text)

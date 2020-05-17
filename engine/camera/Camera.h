@@ -9,9 +9,9 @@
 
 struct Camera
 {
-    glm::vec3 m_Position;
-    float m_Pitch;
-    float  m_Yaw;
+    glm::vec3 m_Position{};
+    float m_Pitch{};
+    float  m_Yaw{};
 
 };
 

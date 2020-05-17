@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "../renderer/Loader.h"
-#include "../entity/Entity2D.h"
+#include "../entity/Entity.h"
 #include "../texture/Texture.h"
 #include "GuiShader.h"
 
@@ -17,12 +17,12 @@ class GuiRenderer
 {
 private:
     GuiShader m_Shader{};
-    std::unordered_map<Texture, std::vector<std::reference_wrapper<Entity2D>>, TextureHash> m_Entities;
+    std::unordered_map<Texture, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Entities;
 
 public:
     void render() const;
 
-    void addEntity(Entity2D &entity2D) noexcept;
+    void addEntity(Entity &entity2D) noexcept;
 
 };
 

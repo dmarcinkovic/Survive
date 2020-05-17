@@ -4,15 +4,15 @@
 
 
 #include "ButtonRenderer.h"
-#include "../../renderer/RendererUtil.h"
+#include "../../renderer/Renderer2DUtil.h"
 #include "../../math/Maths.h"
 
 void ButtonRenderer::render() const
 {
     if (m_Buttons.empty()) return;
 
-    RendererUtil::prepareRendering(m_Shader);
-    RendererUtil::prepareEntity(m_Buttons[0].get().m_Texture);
+    Renderer2DUtil::prepareRendering(m_Shader);
+    Renderer2DUtil::prepareEntity(m_Buttons[0].get().m_Texture);
 
     for (auto const &buttons : m_Buttons)
     {
@@ -25,8 +25,8 @@ void ButtonRenderer::render() const
         glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
     }
 
-    RendererUtil::finishRenderingEntity();
-    RendererUtil::finishRendering();
+    Renderer2DUtil::finishRenderingEntity();
+    Renderer2DUtil::finishRendering();
 }
 
 void ButtonRenderer::addButton(Button &button) noexcept

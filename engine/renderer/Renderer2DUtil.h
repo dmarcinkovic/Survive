@@ -2,14 +2,14 @@
 // Created by david on 03. 05. 2020..
 //
 
-#ifndef SURVIVE_RENDERERUTIL_H
-#define SURVIVE_RENDERERUTIL_H
+#ifndef SURVIVE_RENDERER2DUTIL_H
+#define SURVIVE_RENDERER2DUTIL_H
 
 
 #include "../texture/Texture.h"
 #include "../shader/Shader.h"
 
-class RendererUtil
+class Renderer2DUtil
 {
 public:
     static void prepareRendering(const Shader &shader) ;
@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif //SURVIVE_RENDERERUTIL_H
+#endif //SURVIVE_RENDERER2DUTIL_H

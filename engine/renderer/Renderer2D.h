@@ -30,7 +30,7 @@ public:
 
     void render() const;
 
-    void addGui(Entity2D &entity2D) noexcept;
+    void addGui(Entity &entity2D) noexcept;
 
     const Model &getModel() const;
 

@@ -2,9 +2,9 @@
 // Created by david on 03. 05. 2020..
 //
 
-#include "RendererUtil.h"
+#include "Renderer2DUtil.h"
 
-void RendererUtil::prepareRendering(const Shader &shader)
+void Renderer2DUtil::prepareRendering(const Shader &shader)
 {
     shader.start();
     glEnable(GL_BLEND);
@@ -12,27 +12,26 @@ void RendererUtil::prepareRendering(const Shader &shader)
     glDisable(GL_DEPTH_TEST);
 }
 
-void RendererUtil::finishRendering()
+void Renderer2DUtil::finishRendering()
 {
     Shader::stop();
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
 }
 
-void RendererUtil::prepareEntity(const Texture &texture)
+void Renderer2DUtil::prepareEntity(const Texture &texture)
 {
     texture.bindTexture();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
 }
 
-void RendererUtil::finishRenderingEntity()
+void Renderer2DUtil::finishRenderingEntity()
 {
     Texture::unbindTexture();
 
-    glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
+
     Loader::unbindVao();
 }
