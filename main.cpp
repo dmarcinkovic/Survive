@@ -14,10 +14,10 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/house.obj", loader),
-                    loader.loadTexture("res/house.png")};
+    Texture texture{ObjLoader::loadObj("res/lamp.obj", loader),
+                    loader.loadTexture("res/lamp.jpg")};
 
-    Entity entity2D{texture, glm::vec3{0, -3, -25}, 1};
+    Entity entity2D{texture, glm::vec3{0, -10, -30}, 1};
 
     Camera camera{};
     ObjectRenderer renderer;
