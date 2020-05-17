@@ -12,15 +12,22 @@
 #include "ObjectShader.h"
 #include "../texture/Texture.h"
 #include "../entity/Entity.h"
+#include "../camera/Camera.h"
 
 class ObjectRenderer
 {
 private:
+    constexpr static const float fieldOfView = 70.0f;
+    constexpr static const float near = 0.1f;
+    constexpr static const float far = 1000.0f;
+
     ObjectShader m_Shader;
     std::unordered_map<Texture, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Objects;
 
 public:
-    void render() const;
+    ObjectRenderer();
+
+    void render(const Camera &camera) const;
 
     void add3DObject(Entity &entity);
 };
