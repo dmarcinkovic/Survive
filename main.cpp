@@ -4,6 +4,7 @@
 #include "engine/objects/ObjectShader.h"
 #include "engine/entity/Entity2D.h"
 #include "engine/renderer/RendererUtil.h"
+#include "engine/math/Maths.h"
 
 int main()
 {
@@ -19,7 +20,15 @@ int main()
 
     Entity2D entity2D{texture, glm::vec3{0, 0, 0}, 1};
 
+    Camera camera{};
+    camera.m_Position = glm::vec3{0, 0, 0};
+    camera.m_Yaw = 0;
+    camera.m_Pitch = 0;
+
     ObjectShader shader{};
+    shader.start();
+    shader.loadProjectionMatrix(Maths::createProjectionMatrix(70, 0.1, 1000));
+    ObjectShader::stop();
 
     while (display.isRunning())
     {
@@ -27,6 +36,9 @@ int main()
 
         shader.start();
         RendererUtil::prepareEntity(texture);
+
+        shader.loadTransformationMatrix(Maths::createTransformationMatrix(glm::vec3{0, 0,-25}));
+        shader.loadViewMatrix(Maths::createViewMatrix(camera));
         glDrawElements(GL_TRIANGLES, model.m_VertexCount, GL_UNSIGNED_INT, nullptr);
         RendererUtil::finishRenderingEntity();
         ObjectShader::stop();
