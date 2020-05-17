@@ -16,16 +16,16 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/cube.obj", loader),
-                    loader.loadTexture("res/house.png")};
+    Texture texture{ObjLoader::loadObj("res/stall.obj", loader),
+                    loader.loadTexture("res/stall.png")};
 
-    Object3D object(texture, glm::vec3{0, 0, -5}, glm::vec3{0, 30, 0});
+    Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
     Camera camera{};
     ObjectRenderer renderer;
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
     renderer.setLight(light);
 
     while (display.isRunning())

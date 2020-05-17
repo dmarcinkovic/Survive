@@ -5,28 +5,25 @@ in vec3 surfaceNormal;
 in vec3 worldPosition;
 
 uniform sampler2D objectTexture;
-//uniform vec3 lightPosition;
-//uniform vec3 lightColor;
+uniform vec3 lightPosition;
+uniform vec3 lightColor;
 
 out vec4 outColor;
 
-const vec3 lightPosition = vec3(1.0f, 1.0f, 1.0f);
-const vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
-const vec3 objectColor = vec3(1.0f, 0.5f, 0.5f);
-
 void main()
 {
+    vec3 lightPos = normalize(lightPosition);
     vec4 textureColor = texture(objectTexture, textCoords);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPosition - worldPosition);
+    vec3 lightDirection = normalize(lightPos - worldPosition);
 
-    float diffuseFactor = max(dot(surfaceNormal, lightPosition), 0.0);
+    float diffuseFactor = max(dot(surfaceNormal, lightPos), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
-    vec3 totalColor = (diffuse + ambient) * objectColor;
+    vec3 totalColor = (diffuse + ambient) * textureColor.rgb;
 
 //    totalColor = textureColor.xyz;
     outColor = vec4(totalColor, 1.0);
