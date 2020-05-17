@@ -27,6 +27,8 @@ private:
     void addMousePressedListener();
 
     void addMouseMovedListener();
+
+    void addKeyboardListener();
 };
 
 

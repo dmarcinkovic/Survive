@@ -10,6 +10,7 @@ Camera::Camera()
     addScrollListener();
     addMousePressedListener();
     addMouseMovedListener();
+    addKeyboardListener();
 }
 
 void Camera::addScrollListener()
@@ -51,4 +52,32 @@ void Camera::addMouseMovedListener()
         m_Rotation.y = m_CurrentRotation.y + dx / 2.0;
     };
     Display::addMouseMovedListener(mouseMovedListener);
+}
+
+void Camera::addKeyboardListener()
+{
+    auto keyboardListener = [this](int key, int action)
+    {
+        if (action == GLFW_PRESS)
+        {
+            switch (key)
+            {
+                case GLFW_KEY_LEFT :
+                    m_Position.x -= 0.3;
+                    break;
+                case GLFW_KEY_RIGHT :
+                    m_Position.x += 0.3;
+                    break;
+                case GLFW_KEY_DOWN :
+                    m_Position.y += 0.3;
+                    break;
+                case GLFW_KEY_UP :
+                    m_Position.y -= 0.3;
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+    Display::addKeyListener(keyboardListener);
 }

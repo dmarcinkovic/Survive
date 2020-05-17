@@ -16,8 +16,8 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/stall.obj", loader),
-                    loader.loadTexture("res/stall.png")};
+    Texture texture{ObjLoader::loadObj("res/lamp.obj", loader),
+                    loader.loadTexture("res/lamp.jpg")};
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 

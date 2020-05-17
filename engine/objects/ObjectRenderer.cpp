@@ -15,7 +15,7 @@ ObjectRenderer::ObjectRenderer()
 
 void ObjectRenderer::render(const Camera &camera) const
 {
-    Renderer3DUtil::prepareRendering(m_Shader, false, false);
+    Renderer3DUtil::prepareRendering(m_Shader, true, false);
 
     m_Shader.loadLight(m_LightPosition, m_LightColor);
 
