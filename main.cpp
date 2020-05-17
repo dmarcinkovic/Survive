@@ -4,6 +4,7 @@
 #include "engine/entity/Entity.h"
 #include "engine/math/Maths.h"
 #include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
 
 int main()
 {
@@ -22,6 +23,8 @@ int main()
     Camera camera{};
     ObjectRenderer renderer;
     renderer.add3DObject(entity2D);
+
+    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 0.2});
 
     while (display.isRunning())
     {
