@@ -33,10 +33,17 @@ void ObjectShader::loadUniformLocations()
 
     m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
     m_LocationLightPos = glGetUniformLocation(m_Program, "lightPosition");
+
+    m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
 }
 
 void ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const
 {
     loadVector3(m_LocationLightPos, lightPos);
     loadVector3(m_LocationLightColor, lightColor);
+}
+
+void ObjectShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+{
+    loadVector3(m_LocationCameraPosition, cameraPosition);
 }

@@ -16,10 +16,10 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/lamp.obj", loader),
+    Texture texture{ObjLoader::loadObj("res/cube.obj", loader),
                     loader.loadTexture("res/lamp.jpg")};
 
-    Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
+    Object3D object(texture, glm::vec3{0, 0, -5}, glm::vec3{0, 30, 0});
 
     Camera camera{};
     ObjectRenderer renderer;

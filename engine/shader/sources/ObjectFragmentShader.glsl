@@ -7,6 +7,7 @@ in vec3 worldPosition;
 uniform sampler2D objectTexture;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
+uniform vec3 cameraPosition;
 
 out vec4 outColor;
 
@@ -23,7 +24,15 @@ void main()
     float diffuseFactor = max(dot(surfaceNormal, lightPos), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
-    vec3 totalColor = (diffuse + ambient) * textureColor.rgb;
+    vec3 toCameraVector = normalize(cameraPosition - worldPosition);
+    vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
 
+    float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
+    specularFactor = pow(specularFactor, 2);
+    const float material = 0.7;
+
+    vec3 specular = specularFactor * material * lightColor;
+
+    vec3 totalColor = (diffuse + ambient + specular) * textureColor.rgb;
     outColor = vec4(totalColor, 1.0);
 }

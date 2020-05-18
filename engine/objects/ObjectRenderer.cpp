@@ -28,6 +28,7 @@ void ObjectRenderer::render(const Camera &camera) const
 
             auto rotation = camera.m_Rotation + o.m_Rotation;
 
+            m_Shader.loadCameraPosition(camera.m_Position);
             m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
             m_Shader.loadTransformationMatrix(Maths::createTransformationMatrix(o.m_Position,
                                                                                 o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,

@@ -21,6 +21,8 @@ private:
     GLuint m_LocationLightColor{};
     GLuint m_LocationLightPos{};
 
+    GLuint m_LocationCameraPosition{};
+
 public:
     ObjectShader();
 
@@ -32,8 +34,10 @@ public:
 
     void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const;
 
+    void loadCameraPosition(const glm::vec3 &cameraPosition) const;
+
 private:
-    void loadUniformLocations() ;
+    void loadUniformLocations();
 
 };
 
