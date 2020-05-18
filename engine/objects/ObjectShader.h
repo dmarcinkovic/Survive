@@ -20,6 +20,8 @@ private:
 
     GLuint m_LocationLightColor{};
     GLuint m_LocationLightPos{};
+    GLuint m_LocationShineDamper{};
+    GLuint m_LocationMaterial{};
 
     GLuint m_LocationCameraPosition{};
 
@@ -32,7 +34,7 @@ public:
 
     void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
-    void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const;
+    void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper, int material) const;
 
     void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 

@@ -9,6 +9,9 @@ uniform vec3 lightPosition;
 uniform vec3 lightColor;
 uniform vec3 cameraPosition;
 
+uniform float shineDamper;
+uniform int material;
+
 out vec4 outColor;
 
 void main()
@@ -28,10 +31,8 @@ void main()
     vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
 
     float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
-    specularFactor = pow(specularFactor, 2);
-    const float material = 0.7;
-
-    vec3 specular = specularFactor * material * lightColor;
+    specularFactor = pow(specularFactor, material);
+    vec3 specular = specularFactor * shineDamper * lightColor;
 
     vec3 totalColor = (diffuse + ambient + specular) * textureColor.rgb;
     outColor = vec4(totalColor, 1.0);

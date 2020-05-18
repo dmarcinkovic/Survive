@@ -17,7 +17,7 @@ void ObjectRenderer::render(const Camera &camera) const
 {
     Renderer3DUtil::prepareRendering(m_Shader, true, false);
 
-    m_Shader.loadLight(m_LightPosition, m_LightColor);
+    m_Shader.loadLight(m_LightPosition, m_LightColor, 0.7, 3);
 
     for (auto const&[texture, objects] : m_Objects)
     {
