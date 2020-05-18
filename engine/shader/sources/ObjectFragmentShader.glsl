@@ -32,7 +32,14 @@ void main()
 
     float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
     specularFactor = pow(specularFactor, material);
-    vec3 specular = specularFactor * shineDamper * lightColor;
+
+    const float c0 = 1.0;
+    const float c1 = 0.0;
+    const float c2 = 0.001;
+
+    float distance = length(lightPosition - worldPosition);
+    float attenuation = c0 + distance * c1 + distance * distance * c2;
+    vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
 
     vec3 totalColor = (diffuse + ambient + specular) * textureColor.rgb;
     outColor = vec4(totalColor, 1.0);

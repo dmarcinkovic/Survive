@@ -25,7 +25,7 @@ int main()
     ObjectRenderer renderer;
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{0, 1000000, 1000000}, glm::vec3{1, 1, 0.2});
     renderer.setLight(light);
 
     while (display.isRunning())
