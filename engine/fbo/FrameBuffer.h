@@ -8,6 +8,7 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include "../renderer/Renderer3D.h"
 
 class FrameBuffer
 {
@@ -21,9 +22,7 @@ public:
 
     ~FrameBuffer();
 
-    void bindFrameBuffer() const;
-
-    static void unbindFrameBuffer();
+    void renderToFrameBuffer(const Renderer3D &renderer, const Camera &camera) const;
 
     GLuint createTexture();
 
@@ -31,6 +30,10 @@ public:
 
 private:
     void attachDepthComponent(int width, int height);
+
+    static void unbindFrameBuffer();
+
+    void bindFrameBuffer() const;
 
     GLuint createTexture(int width, int height, GLint internalFormat, GLenum format, GLenum type);
 };

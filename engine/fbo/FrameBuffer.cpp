@@ -86,3 +86,14 @@ void FrameBuffer::attachDepthComponent(int width, int height)
 
     m_RenderBuffers.emplace_back(renderBuffer);
 }
+
+void FrameBuffer::renderToFrameBuffer(const Renderer3D &renderer, const Camera &camera) const
+{
+    bindFrameBuffer();
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    renderer.render(camera);
+
+    unbindFrameBuffer();
+}

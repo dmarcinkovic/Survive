@@ -35,18 +35,17 @@ int main()
     FrameBuffer frameBuffer;
 
     Renderer2D renderer2D(loader);
-    Texture texture1(renderer2D.getModel(), frameBuffer.createTexture());
-    Entity entity(texture1, glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
+    Entity entity(Texture(renderer2D.getModel(), frameBuffer.createTexture()),
+                  glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
+
     renderer2D.addGui(entity);
 
     while (display.isRunning())
     {
-        frameBuffer.bindFrameBuffer();
         Display::clearWindow();
-        renderer.render(camera);
-        FrameBuffer::unbindFrameBuffer();
 
-        Display::clearWindow();
+        frameBuffer.renderToFrameBuffer(renderer, camera);
+
         renderer.render(camera);
         renderer2D.render();
 
