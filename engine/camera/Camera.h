@@ -18,9 +18,13 @@ struct Camera
     Camera();
 
 private:
-    bool m_MousePressed{};
+    bool m_LeftButtonPressed{};
+    bool m_RightButtonPressed{};
+
     glm::vec2 m_MousePos{};
     glm::vec3 m_CurrentRotation{};
+    float m_CurrentYaw{};
+    float m_CurrentPitch{};
 
     void addScrollListener();
 
