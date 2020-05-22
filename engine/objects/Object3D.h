@@ -11,9 +11,10 @@
 struct Object3D : public Entity
 {
     glm::vec3 m_Rotation;
+    bool m_IsTransparent;
 
     Object3D(const Texture &texture, const glm::vec3 &position, const glm::vec3 &rotation = glm::vec3{0, 0, 0},
-             float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
+             bool isTransparent = false, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
 };
 
 

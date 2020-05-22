@@ -12,13 +12,15 @@
 class Renderer3DUtil
 {
 public:
-    static void prepareRendering(const Shader &shader, bool cullFace, bool blend);
+    static void prepareRendering(const Shader &shader);
 
     static void finishRendering();
 
     static void prepareEntity(const Texture &texture);
 
     static void finishRenderingEntity();
+
+    static void addTransparency(bool cullFace, bool blend);
 };
 
 

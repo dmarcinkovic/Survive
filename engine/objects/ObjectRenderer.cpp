@@ -15,7 +15,7 @@ ObjectRenderer::ObjectRenderer()
 
 void ObjectRenderer::render(const Camera &camera) const
 {
-    Renderer3DUtil::prepareRendering(m_Shader, true, false);
+    Renderer3DUtil::prepareRendering(m_Shader);
 
     m_Shader.loadLight(m_LightPosition, m_LightColor);
 
@@ -26,6 +26,8 @@ void ObjectRenderer::render(const Camera &camera) const
         {
             const Object3D &o = object.get();
 
+            Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
+
             auto rotation = camera.m_Rotation + o.m_Rotation;
 
             m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
@@ -35,6 +37,8 @@ void ObjectRenderer::render(const Camera &camera) const
                                                                                 rotation.z));
 
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+
+            Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
         }
 
         Renderer3DUtil::finishRenderingEntity();
