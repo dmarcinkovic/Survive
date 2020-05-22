@@ -23,11 +23,10 @@ int main()
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
     Camera camera{};
-    Renderer3D renderer;
-    renderer.add3DObject(object);
-
     Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
-    renderer.addLight(light);
+
+    Renderer3D renderer(light);
+    renderer.add3DObject(object);
 
     while (display.isRunning())
     {

@@ -4,17 +4,18 @@
 
 #include "Renderer3D.h"
 
+Renderer3D::Renderer3D(const Light &light)
+        : m_Light(light)
+{
+    m_ObjectRenderer.setLight(light);
+}
+
 void Renderer3D::render(const Camera &camera) const
 {
-    objectRenderer.render(camera);
+    m_ObjectRenderer.render(camera);
 }
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-    objectRenderer.add3DObject(object3D);
-}
-
-void Renderer3D::addLight(const Light &light)
-{
-    objectRenderer.setLight(light);
+    m_ObjectRenderer.add3DObject(object3D);
 }
