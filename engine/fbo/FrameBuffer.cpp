@@ -32,7 +32,7 @@ GLuint FrameBuffer::createTexture()
     bindFrameBuffer();
 
     auto[width, height] = Display::getWindowSize();
-    GLuint texture = createTexture(width, height, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE);
+    GLuint texture = createColorTexture(width, height);
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
     attachDepthComponent(width, height);
@@ -47,11 +47,12 @@ GLuint FrameBuffer::attachToDepthBufferTexture()
 {
     bindFrameBuffer();
 
-    auto[width, height] = Display::getWindowSize();
-    GLuint texture = createTexture(width, height, GL_DEPTH_COMPONENT32, GL_DEPTH_COMPONENT, GL_FLOAT);
+    GLuint texture = createDepthTexture(SHADOW_WIDTH, SHADOW_HEIGHT);
 
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture, 0);
-    attachDepthComponent(width, height);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture, 0);
+
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
     unbindFrameBuffer();
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -59,16 +60,34 @@ GLuint FrameBuffer::attachToDepthBufferTexture()
     return texture;
 }
 
-GLuint FrameBuffer::createTexture(int width, int height, GLint internalFormat, GLenum format, GLenum type)
+GLuint FrameBuffer::createColorTexture(int width, int height)
 {
     GLuint texture;
     glGenTextures(1, &texture);
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, type, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    m_Textures.emplace_back(texture);
+    return texture;
+}
+
+GLuint FrameBuffer::createDepthTexture(int width, int height)
+{
+    GLuint texture;
+    glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     m_Textures.emplace_back(texture);
     return texture;
@@ -89,11 +108,15 @@ void FrameBuffer::attachDepthComponent(int width, int height)
 
 void FrameBuffer::renderToFrameBuffer(const Renderer3D &renderer, const Camera &camera) const
 {
+    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+
     bindFrameBuffer();
-    glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
     renderer.render(camera);
 
     unbindFrameBuffer();
+
+    auto[width, height] = Display::getWindowSize();
+    glViewport(0, 0, width, height);
 }

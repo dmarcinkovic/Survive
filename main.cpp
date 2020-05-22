@@ -7,9 +7,8 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/gui/GuiRenderer.h"
-#include "engine/renderer/Renderer2D.h"
 #include "engine/fbo/FrameBuffer.h"
+#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -29,15 +28,14 @@ int main()
     Renderer3D renderer;
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{-10000, 10000, 10000}, glm::vec3{1, 1, 0.2});
     renderer.addLight(light);
 
     FrameBuffer frameBuffer;
 
     Renderer2D renderer2D(loader);
-    Entity entity(Texture(renderer2D.getModel(), frameBuffer.createTexture()),
-                  glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
-
+    Entity entity(Texture(renderer2D.getModel(), frameBuffer.attachToDepthBufferTexture()), glm::vec3{0.5, 0.5, 0}, 0.5,
+                  0.5);
     renderer2D.addGui(entity);
 
     while (display.isRunning())

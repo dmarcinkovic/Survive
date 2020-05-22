@@ -13,6 +13,9 @@
 class FrameBuffer
 {
 private:
+    constexpr static const int SHADOW_WIDTH = 1024;
+    constexpr static const int SHADOW_HEIGHT = 1024;
+
     GLuint m_FrameBuffer{};
     std::vector<GLuint> m_Textures;
     std::vector<GLuint> m_RenderBuffers;
@@ -35,7 +38,9 @@ private:
 
     void bindFrameBuffer() const;
 
-    GLuint createTexture(int width, int height, GLint internalFormat, GLenum format, GLenum type);
+    GLuint createColorTexture(int width, int height);
+
+    GLuint createDepthTexture(int width, int height);
 };
 
 
