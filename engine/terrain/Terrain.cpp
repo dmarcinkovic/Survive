@@ -3,3 +3,9 @@
 //
 
 #include "Terrain.h"
+
+Terrain::Terrain(const Model &model, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ)
+    : Entity(Texture(model, 0), position, scaleX, scaleY, scaleZ)
+{
+
+}
