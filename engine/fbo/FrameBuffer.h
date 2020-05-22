@@ -9,7 +9,6 @@
 #include <GL/glew.h>
 #include <vector>
 
-
 class FrameBuffer
 {
 private:
@@ -35,5 +34,6 @@ private:
 
     GLuint createTexture(int width, int height, GLint internalFormat, GLenum format, GLenum type);
 };
+
 
 #endif //SURVIVE_FRAMEBUFFER_H
