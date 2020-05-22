@@ -28,7 +28,7 @@ int main()
     Renderer3D renderer;
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{-10000, 10000, 10000}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{0, 0, 0}, glm::vec3{1, 1, 0.2});
     renderer.addLight(light);
 
     FrameBuffer frameBuffer;
@@ -38,11 +38,14 @@ int main()
                   0.5);
     renderer2D.addGui(entity);
 
+    ShadowRenderer shadowRenderer;
+    shadowRenderer.add3DObject(object);
+
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        frameBuffer.renderToFrameBuffer(renderer, camera);
+        frameBuffer.renderToFrameBuffer(shadowRenderer, camera, light);
 
         renderer.render(camera);
         renderer2D.render();

@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <vector>
 #include "../renderer/Renderer3D.h"
+#include "../shadowMapping/ShadowRenderer.h"
 
 class FrameBuffer
 {
@@ -25,7 +26,7 @@ public:
 
     ~FrameBuffer();
 
-    void renderToFrameBuffer(const Renderer3D &renderer, const Camera &camera) const;
+    void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light) const;
 
     GLuint createTexture();
 
