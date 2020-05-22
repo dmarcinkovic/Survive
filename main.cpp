@@ -32,7 +32,7 @@ int main()
 
     Renderer2D r(loader);
 
-    Terrain terrain(r.getModel(), glm::vec3{0, -20, -100}, 100, 100, 1);
+    Terrain terrain(r.getModel(), glm::vec3{0, -10, -100}, 100, 100, 1);
     TerrainRenderer terrainRenderer(terrain);
 
     while (display.isRunning())
