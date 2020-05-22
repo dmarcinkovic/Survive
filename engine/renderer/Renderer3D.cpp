@@ -13,3 +13,8 @@ void Renderer3D::add3DObject(Object3D &object3D)
 {
     objectRenderer.add3DObject(object3D);
 }
+
+void Renderer3D::addLight(const Light &light)
+{
+    objectRenderer.setLight(light);
+}

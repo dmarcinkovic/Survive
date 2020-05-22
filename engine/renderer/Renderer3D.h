@@ -17,6 +17,8 @@ public:
     void render(const Camera &camera) const;
 
     void add3DObject(Object3D &object3D);
+
+    void addLight(const Light &light);
 };
 
 

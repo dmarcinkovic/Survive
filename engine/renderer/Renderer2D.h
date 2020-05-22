@@ -18,7 +18,7 @@ class Renderer2D
 private:
     const std::vector<float> m_Vertices{-1, -1, 1, -1, 1, 1, -1, 1};
     const std::vector<unsigned> m_Indices{0, 1, 3, 3, 1, 2};
-    const Model m_Model;2
+    const Model m_Model;
     Loader &m_Loader;
 
     GuiRenderer m_GuiRenderer{};
