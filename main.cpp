@@ -7,7 +7,6 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/terrain/TerrainRenderer.h"
 
 int main()
 {
@@ -23,7 +22,7 @@ int main()
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
-    Camera camera{};
+    Camera camera;
     Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
 
     Renderer3D renderer(light);
