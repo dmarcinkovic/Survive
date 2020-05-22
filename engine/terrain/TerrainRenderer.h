@@ -5,6 +5,7 @@
 #ifndef SURVIVE_TERRAINRENDERER_H
 #define SURVIVE_TERRAINRENDERER_H
 
+#include <functional>
 
 #include "TerrainShader.h"
 #include "Terrain.h"
@@ -21,9 +22,11 @@ private:
     Terrain m_Terrain;
 
 public:
-    TerrainRenderer(Terrain &terrain);
+    TerrainRenderer();
 
     void render(const Camera &camera) const;
+
+    void addTerrain(Terrain &terrain);
 };
 
 

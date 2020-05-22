@@ -6,8 +6,7 @@
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
 
-TerrainRenderer::TerrainRenderer(Terrain &terrain)
-        : m_Terrain(terrain)
+TerrainRenderer::TerrainRenderer()
 {
     m_Shader.start();
 
@@ -23,7 +22,7 @@ void TerrainRenderer::render(const Camera &camera) const
     Renderer3DUtil::prepareEntity(m_Terrain.m_Texture);
     Renderer3DUtil::addTransparency(false, true);
 
-    auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain.m_Position, m_Terrain.m_ScaleX,
+    auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain.m_Position,m_Terrain.m_ScaleX,
                                                                   m_Terrain.m_ScaleY, m_Terrain.m_ScaleZ,90);
 
     auto viewMatrix = Maths::createViewMatrix(camera);
@@ -36,4 +35,10 @@ void TerrainRenderer::render(const Camera &camera) const
     Renderer3DUtil::finishRenderingEntity();
     Renderer3DUtil::finishRendering();
 }
+
+void TerrainRenderer::addTerrain(Terrain &terrain)
+{
+    m_Terrain = terrain;
+}
+
 

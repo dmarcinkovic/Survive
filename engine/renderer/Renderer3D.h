@@ -7,11 +7,14 @@
 
 
 #include "../objects/ObjectRenderer.h"
+#include "../terrain/TerrainRenderer.h"
 
 class Renderer3D
 {
 private:
     ObjectRenderer m_ObjectRenderer;
+    TerrainRenderer m_TerrainRenderer;
+
     const Light &m_Light;
 
 public:
@@ -20,6 +23,8 @@ public:
     void render(const Camera &camera) const;
 
     void add3DObject(Object3D &object3D);
+
+    void addTerrain(Terrain &terrain);
 };
 
 

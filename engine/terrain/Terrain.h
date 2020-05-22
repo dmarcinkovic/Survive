@@ -12,6 +12,8 @@ class Terrain : public Entity
 {
 public:
     Terrain(const Model &model, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ);
+
+    Terrain() = default;
 };
 
 

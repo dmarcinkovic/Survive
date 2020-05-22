@@ -8,7 +8,6 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainRenderer.h"
-#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -31,14 +30,13 @@ int main()
     renderer.add3DObject(object);
 
     Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -100}, 100, 100, 1);
-    TerrainRenderer terrainRenderer(terrain);
+    renderer.addTerrain(terrain);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
         renderer.render(camera);
-        terrainRenderer.render(camera);
 
         display.update();
     }
