@@ -30,8 +30,6 @@ int main()
     Renderer3D renderer(light);
     renderer.add3DObject(object);
 
-    Renderer2D r(loader);
-
     Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -100}, 100, 100, 1);
     TerrainRenderer terrainRenderer(terrain);
 
