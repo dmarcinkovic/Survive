@@ -136,6 +136,14 @@ void Loader::loadImage(const char *texture) noexcept
     stbi_image_free(image);
 }
 
+Model Loader::renderQuad()
+{
+    static const std::vector<float> vertices{-1, -1, 1, -1, 1, 1, -1, 1};
+    static const std::vector<unsigned> indices{0, 1, 3, 3, 1, 2};
+
+    return Model(loadToVao(vertices, indices, 2));
+}
+
 Model::Model(GLuint vao, size_t vertexCount)
         : m_Vao(vao), m_VertexCount(vertexCount)
 {

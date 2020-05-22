@@ -40,6 +40,8 @@ public:
 
     GLuint loadTexture(const char *texture) noexcept;
 
+    Model renderQuad();
+
 private:
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
 
