@@ -12,10 +12,10 @@ Renderer2D::Renderer2D(Loader &loader)
 
 void Renderer2D::render() const
 {
-//    m_GuiRenderer.render();
+    m_GuiRenderer.render();
 //    m_TextRenderer.renderText();
 
-    m_ButtonRenderer.render();
+//    m_ButtonRenderer.render();
 }
 
 void Renderer2D::addGui(Entity &entity2D) noexcept
