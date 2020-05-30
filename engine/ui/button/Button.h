@@ -6,11 +6,15 @@
 #define SURVIVE_BUTTON_H
 
 #include <glm/glm.hpp>
+#include <string>
 
 #include "../../entity/Entity2D.h"
+#include "../../text/Font.h"
+#include "../../text/Text.h"
 
 struct Button : public Entity2D
 {
+public:
     glm::vec4 m_Color;
     glm::ivec2 m_Center{};
 
@@ -19,10 +23,11 @@ struct Button : public Entity2D
 
     int m_Width{}, m_Height{};
 
-    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
+    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
+           const std::string &text);
 
 private:
-    bool isInsideButton(double x, double y) const;
+    [[nodiscard]] bool isInsideButton(double x, double y) const;
 
     static float convertPoint(float point, float size);
 

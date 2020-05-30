@@ -3,6 +3,7 @@
 //
 
 #include "Renderer2D.h"
+#include "../display/Display.h"
 
 Renderer2D::Renderer2D(Loader &loader)
         : m_Model(loader.loadToVao(m_Vertices, m_Indices, 2)), m_Loader(loader)
@@ -12,6 +13,13 @@ Renderer2D::Renderer2D(Loader &loader)
 
 void Renderer2D::render() const
 {
+    auto[width, height] = Display::getWindowSize();
+
+    if (width == 0 || height == 0)
+    {
+        return;
+    }
+
 //    m_GuiRenderer.render();
 //    m_TextRenderer.renderText();
 
