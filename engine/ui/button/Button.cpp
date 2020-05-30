@@ -47,8 +47,8 @@ void Button::addMouseMoveListener()
     {
         if (isInsideButton(x, y))
         {
-            m_ScaleX = m_OriginalScaleX * 1.05f;
-            m_ScaleY = m_OriginalScaleY * 1.05f;
+            m_ScaleX = m_OriginalScaleX * 1.02f;
+            m_ScaleY = m_OriginalScaleY * 1.02f;
         } else
         {
             m_ScaleX = m_OriginalScaleX;
