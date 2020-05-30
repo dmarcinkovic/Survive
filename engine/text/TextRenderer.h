@@ -9,6 +9,7 @@
 #include "Text.h"
 
 #include <functional>
+#include <unordered_set>
 
 class TextRenderer
 {
@@ -19,7 +20,7 @@ private:
 public:
     void renderText() const;
 
-    void addText(Text &text);
+    void addText(Text &text, Loader &loader);
 };
 
 

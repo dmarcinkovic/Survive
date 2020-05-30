@@ -7,10 +7,10 @@
 #include <utility>
 #include <iostream>
 
-Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position,
+Text::Text(std::string text, Font font, const glm::vec3 &position,
            const glm::vec3 &color, float scale)
-        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile), m_Color(color),
-          m_BorderColor(color)
+        : Entity2D(), m_Text(std::move(text)), m_Font(std::move(font)), m_Color(color),
+          m_BorderColor(color), m_TextTexture(font.getMTextureId())
 {
     m_Position = position;
     m_ScaleX = scale;
@@ -63,7 +63,7 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
 
 void Text::loadTexture(Loader &loader)
 {
-    m_Texture = Texture(calculateVertices(loader), loader.loadTexture(textureAtlas));
+    m_Texture = Texture(calculateVertices(loader), m_TextTexture);
 }
 
 void Text::centerText()
@@ -122,3 +122,4 @@ float Text::getMBorderWidth() const
 {
     return m_BorderWidth;
 }
+
