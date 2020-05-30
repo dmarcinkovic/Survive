@@ -6,9 +6,9 @@
 #include "../../display/Display.h"
 
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-               const std::string &text, const Font &font)
+               const std::string &text, const Font &font, const glm::vec3 &textColor)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
-          m_OriginalScaleY(scaleY), m_Text(text, font, position, glm::vec3{0, 1, 0.6})
+          m_OriginalScaleY(scaleY), m_Text(text, font, position, textColor)
 {
     auto[width, height] = Display::getWindowSize();
     convertToScreenSpace(width, height);
@@ -52,10 +52,12 @@ void Button::addMouseMoveListener()
         {
             m_ScaleX = m_OriginalScaleX * 1.02f;
             m_ScaleY = m_OriginalScaleY * 1.02f;
+            m_Text.scaleFor(1.02f);
         } else
         {
             m_ScaleX = m_OriginalScaleX;
             m_ScaleY = m_OriginalScaleY;
+            m_Text.scaleFor(1);
         }
     };
 

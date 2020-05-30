@@ -29,7 +29,7 @@ public:
     int m_Width{}, m_Height{};
 
     Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-           const std::string &text, const Font &font);
+           const std::string &text, const Font &font, const glm::vec3 &textColor = glm::vec3{0, 0, 0});
 
     Text &getText();
 

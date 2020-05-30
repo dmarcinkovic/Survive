@@ -45,6 +45,10 @@ public:
 
     void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
+    float getScale() const;
+
+    void scaleFor(float scaleFactor);
+
 private:
     Model calculateVertices(Loader &loader);
 

@@ -123,3 +123,13 @@ float Text::getMBorderWidth() const
     return m_BorderWidth;
 }
 
+float Text::getScale() const
+{
+    return m_ScaleX;
+}
+
+void Text::scaleFor(float scaleFactor)
+{
+    m_ScaleX = m_ScaleY * scaleFactor;
+}
+
