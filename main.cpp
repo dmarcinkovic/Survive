@@ -15,11 +15,13 @@ int main()
     Renderer2D renderer(loader);
 
     Texture texture(renderer.getModel(), 1);
+    Font font("res/candara.png", loader);
+    font.loadFontFromFntFile("res/candara.fnt");
 
     Button button(texture, glm::vec3{0, 0.5, 0}, 0.4, 0.2,
-                  glm::vec4{1, 0, 0, 0.6}, "Button1");
+                  glm::vec4{1, 0, 0, 0.6}, "Button1", font);
     Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
-                   glm::vec4{0, 1, 0, 0.4}, "Button2");
+                   glm::vec4{0, 1, 0, 0.4}, "Button2", font);
 
     renderer.addButton(button);
     renderer.addButton(button2);

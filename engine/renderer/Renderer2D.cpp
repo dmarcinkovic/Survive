@@ -44,5 +44,6 @@ void Renderer2D::addText(Text &text) noexcept
 void Renderer2D::addButton(Button &button) noexcept
 {
     m_ButtonRenderer.addButton(button);
+    addText(button.getText());
 }
 

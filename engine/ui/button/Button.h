@@ -12,8 +12,13 @@
 #include "../../text/Font.h"
 #include "../../text/Text.h"
 
+class Renderer2D;
+
 struct Button : public Entity2D
 {
+private:
+    Text m_Text;
+
 public:
     glm::vec4 m_Color;
     glm::ivec2 m_Center{};
@@ -24,7 +29,9 @@ public:
     int m_Width{}, m_Height{};
 
     Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-           const std::string &text);
+           const std::string &text, const Font &font);
+
+    Text &getText();
 
 private:
     [[nodiscard]] bool isInsideButton(double x, double y) const;

@@ -6,15 +6,17 @@
 #include "../../display/Display.h"
 
 Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-               const std::string &text)
+               const std::string &text, const Font &font)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
-          m_OriginalScaleY(scaleY)
+          m_OriginalScaleY(scaleY), m_Text(text, font, position, glm::vec3{0, 1, 0.6})
 {
     auto[width, height] = Display::getWindowSize();
     convertToScreenSpace(width, height);
 
     addMouseMoveListener();
     addWindowResizeListener();
+
+    m_Text.centerText();
 }
 
 void Button::convertToScreenSpace(float width, float height)
@@ -68,4 +70,9 @@ void Button::addWindowResizeListener()
     };
 
     Display::addWindowResizeListener(windowResizeListener);
+}
+
+Text &Button::getText()
+{
+    return m_Text;
 }
