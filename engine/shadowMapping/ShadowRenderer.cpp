@@ -12,9 +12,8 @@ ShadowRenderer::ShadowRenderer()
 {
     m_ShadowShader.start();
 
-    glm::mat4 projectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near, far);
+    glm::mat4 projectionMatrix = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near, far);
     m_ShadowShader.loadProjectionMatrix(projectionMatrix);
-//    m_ShadowShader.loadProjectionMatrix(Maths::createProjectionMatrix(70, near, far));
 
     ShadowShader::stop();
 }
@@ -41,7 +40,6 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
             m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
             glm::mat4 viewMatrix = glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
-//            viewMatrix = Maths::createViewMatrix(camera);
             m_ShadowShader.loadViewMatrix(viewMatrix);
 
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());

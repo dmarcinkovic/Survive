@@ -19,7 +19,7 @@ int main()
 
     Loader loader;
 
-    Texture texture{ObjLoader::loadObj("res/lamp.obj", loader),
+    Texture texture{ObjLoader::loadObj("res/dragon.obj", loader),
                     loader.loadTexture("res/lamp.jpg")};
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
@@ -38,10 +38,10 @@ int main()
     Renderer2D renderer2D(loader);
     Entity entity(Texture(loader.renderQuad(), frameBuffer.attachToDepthBufferTexture()), glm::vec3{0.5, 0.5, 0}, 0.5,
                   0.5);
-    renderer2D.addGui(entity);
 
     ShadowRenderer shadowRenderer;
     shadowRenderer.add3DObject(object);
+    GLuint shadowMap = frameBuffer.attachToDepthBufferTexture();
 
     while (display.isRunning())
     {
@@ -49,8 +49,7 @@ int main()
 
         frameBuffer.renderToFrameBuffer(shadowRenderer, camera, light);
 
-        renderer.render(camera);
-        renderer2D.render();
+        renderer.render(camera, shadowMap);
 
         display.update();
     }

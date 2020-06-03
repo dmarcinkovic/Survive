@@ -8,7 +8,6 @@
 
 #include <GL/glew.h>
 #include <vector>
-#include "../renderer/Renderer3D.h"
 #include "../shadowMapping/ShadowRenderer.h"
 
 class FrameBuffer

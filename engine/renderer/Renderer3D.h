@@ -20,7 +20,7 @@ private:
 public:
     explicit Renderer3D(const Light &light);
 
-    void render(const Camera &camera) const;
+    void render(const Camera &camera, GLuint shadowMap) const;
 
     void add3DObject(Object3D &object3D);
 

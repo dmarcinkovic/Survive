@@ -10,10 +10,10 @@ Renderer3D::Renderer3D(const Light &light)
     m_ObjectRenderer.setLight(light);
 }
 
-void Renderer3D::render(const Camera &camera) const
+void Renderer3D::render(const Camera &camera, GLuint shadowMap) const
 {
     m_ObjectRenderer.render(camera);
-    m_TerrainRenderer.render(camera);
+    m_TerrainRenderer.render(camera, m_Light, shadowMap);
 }
 
 void Renderer3D::add3DObject(Object3D &object3D)

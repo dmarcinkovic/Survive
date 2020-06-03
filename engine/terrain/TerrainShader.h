@@ -18,6 +18,7 @@ private:
     GLuint m_LocationProjectionMatrix{};
     GLuint m_LocationViewMatrix{};
 
+    GLuint m_LocationLightSpaceMatrix{};
 public:
     TerrainShader();
 
@@ -26,6 +27,8 @@ public:
     void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
     void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+    void loadLightSpaceMatrix(const glm::mat4 &lightSpaceMatrix) const;
 
 private:
     void getUniformLocations();
