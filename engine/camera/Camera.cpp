@@ -26,14 +26,24 @@ void Camera::addMousePressedListener()
 {
     auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY)
     {
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        if (action == GLFW_PRESS)
         {
-            m_MousePressed = true;
+            if (button == GLFW_MOUSE_BUTTON_RIGHT)
+            {
+                m_RightButtonPressed = true;
+            } else
+            {
+                m_LeftButtonPressed = true;
+            }
+
             m_MousePos = glm::vec2{mouseX, mouseY};
             m_CurrentRotation = m_Rotation;
-        } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+            m_CurrentPitch = m_Pitch;
+            m_CurrentYaw = m_Yaw;
+        } else
         {
-            m_MousePressed = false;
+            m_LeftButtonPressed = false;
+            m_RightButtonPressed = false;
         }
     };
     Display::addMouseListener(mousePressedListener);
@@ -43,13 +53,18 @@ void Camera::addMouseMovedListener()
 {
     auto mouseMovedListener = [this](double mouseX, double mouseY)
     {
-        if (!m_MousePressed) return;
-
-        double dx = mouseX - m_MousePos.x;
         double dy = mouseY - m_MousePos.y;
+        double dx = mouseX - m_MousePos.x;
 
-        m_Rotation.x = m_CurrentRotation.x + dy / 2.0;
-        m_Rotation.y = m_CurrentRotation.y + dx / 2.0;
+        if (m_LeftButtonPressed)
+        {
+            m_Rotation.y = m_CurrentRotation.y + dx / 2.0;
+            m_Rotation.x = m_CurrentRotation.x + dy / 2.0;
+        } else if (m_RightButtonPressed)
+        {
+            m_Pitch = m_CurrentPitch + dy / 5.0;
+            m_Yaw = m_CurrentYaw + dx / 5.0;
+        }
     };
     Display::addMouseMovedListener(mouseMovedListener);
 }

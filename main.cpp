@@ -24,17 +24,19 @@ int main()
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
-    Camera camera{};
-    Renderer3D renderer;
+    Camera camera;
+    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
+
+    Renderer3D renderer(light);
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
-    renderer.addLight(light);
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -100}, 100, 100, 1);
+    renderer.addTerrain(terrain);
 
     FrameBuffer frameBuffer;
 
     Renderer2D renderer2D(loader);
-    Entity entity(Texture(renderer2D.getModel(), frameBuffer.attachToDepthBufferTexture()), glm::vec3{0.5, 0.5, 0}, 0.5,
+    Entity entity(Texture(loader.renderQuad(), frameBuffer.attachToDepthBufferTexture()), glm::vec3{0.5, 0.5, 0}, 0.5,
                   0.5);
     renderer2D.addGui(entity);
 
