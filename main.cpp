@@ -28,7 +28,7 @@ int main()
     Renderer3D renderer;
     renderer.add3DObject(object);
 
-    Light light(glm::vec3{0, 0, 0}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
     renderer.addLight(light);
 
     FrameBuffer frameBuffer;
