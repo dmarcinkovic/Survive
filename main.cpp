@@ -8,7 +8,6 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/fbo/FrameBuffer.h"
-#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -34,10 +33,6 @@ int main()
     renderer.addTerrain(terrain);
 
     FrameBuffer frameBuffer;
-
-    Renderer2D renderer2D(loader);
-    Entity entity(Texture(loader.renderQuad(), frameBuffer.attachToDepthBufferTexture()), glm::vec3{0.5, 0.5, 0}, 0.5,
-                  0.5);
 
     ShadowRenderer shadowRenderer;
     shadowRenderer.add3DObject(object);
