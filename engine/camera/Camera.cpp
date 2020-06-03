@@ -62,8 +62,8 @@ void Camera::addMouseMovedListener()
             m_Rotation.x = m_CurrentRotation.x + dy / 2.0;
         } else if (m_RightButtonPressed)
         {
-            m_Pitch = m_CurrentPitch + dy / 5.0;
-            m_Yaw = m_CurrentYaw + dx / 5.0;
+            m_Pitch = m_CurrentPitch + static_cast<float >(dy / 5.0);
+            m_Yaw = m_CurrentYaw + static_cast<float >(dx / 5.0);
         }
     };
     Display::addMouseMovedListener(mouseMovedListener);

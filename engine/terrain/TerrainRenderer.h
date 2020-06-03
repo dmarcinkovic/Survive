@@ -19,7 +19,7 @@ private:
     constexpr static const float far = 1000.0f;
 
     TerrainShader m_Shader;
-    Terrain m_Terrain;
+    Terrain m_Terrain{};
 
 public:
     TerrainRenderer();
