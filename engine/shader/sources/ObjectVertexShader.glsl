@@ -13,8 +13,19 @@ uniform mat4 viewMatrix;
 out vec2 textCoords;
 out vec3 worldPosition;
 
+uniform bool loadToShadow;
+out int loadShadow;
+
 void main()
 {
+    if (loadToShadow)
+    {
+        loadShadow = 1;
+        gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
+        return;
+    }
+
+    loadShadow = 0;
     vec4 pos = transformationMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * viewMatrix * pos;
     textCoords = textureCoordinates;

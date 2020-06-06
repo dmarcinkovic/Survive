@@ -8,10 +8,6 @@
 ObjectRenderer::ObjectRenderer(const Light &light)
         : m_Light(light)
 {
-//    m_Shader.start();
-//    // TODO load light projection matrix
-//    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(fieldOfView, near, far));
-//    Shader::stop();
 }
 
 void ObjectRenderer::render(const Camera &camera) const
@@ -45,10 +41,16 @@ void ObjectRenderer::renderToShadowMap(const Camera &camera) const
 
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadProjectionMatrix(projectionMatrix);
+    m_Shader.loadToShadowMap(true);
 
     for (auto const&[texture, objects] : m_Objects)
     {
+        glEnableVertexAttribArray(0);
+        texture.bindTexture(1);
 
+        renderScene(objects, camera);
+
+        glDisableVertexAttribArray(0);
     }
 
     Renderer3DUtil::finishRendering();

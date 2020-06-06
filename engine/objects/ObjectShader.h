@@ -5,7 +5,6 @@
 #ifndef SURVIVE_OBJECTSHADER_H
 #define SURVIVE_OBJECTSHADER_H
 
-
 #include "../shader/Shader.h"
 
 class ObjectShader : public Shader
@@ -20,6 +19,7 @@ private:
 
     GLuint m_LocationLightColor{};
     GLuint m_LocationLightPos{};
+    GLuint m_LocationLoadToShadowMap{};
 
 public:
     ObjectShader();
@@ -32,8 +32,10 @@ public:
 
     void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const;
 
+    void loadToShadowMap(bool loadToShadowMap) const;
+
 private:
-    void loadUniformLocations() ;
+    void loadUniformLocations();
 
 };
 

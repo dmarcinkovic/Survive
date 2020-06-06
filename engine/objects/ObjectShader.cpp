@@ -33,10 +33,16 @@ void ObjectShader::loadUniformLocations()
 
     m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
     m_LocationLightPos = glGetUniformLocation(m_Program, "lightPosition");
+    m_LocationLoadToShadowMap = glGetUniformLocation(m_Program, "loadToShadow");
 }
 
 void ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const
 {
     loadVector3(m_LocationLightPos, lightPos);
     loadVector3(m_LocationLightColor, lightColor);
+}
+
+void ObjectShader::loadToShadowMap(bool loadToShadowMap) const
+{
+    loadBoolean(m_LocationLoadToShadowMap, loadToShadowMap);
 }
