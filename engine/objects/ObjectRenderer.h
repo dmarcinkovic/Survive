@@ -26,18 +26,17 @@ private:
     ObjectShader m_Shader;
     std::unordered_map<Texture, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
-    glm::vec3 m_LightPosition = {1, 1, 1};
-    glm::vec3 m_LightColor = {1, 1, 1};
+    const Light &m_Light;
 
 public:
-    ObjectRenderer();
+    explicit ObjectRenderer(const Light &light);
 
     void render(const Camera &camera) const;
 
     void add3DObject(Object3D &entity);
 
-    void setLight(const Light &light);
+private:
+    void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 };
-
 
 #endif //SURVIVE_OBJECTRENDERER_H
