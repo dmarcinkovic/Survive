@@ -19,7 +19,6 @@ private:
 
     GLuint m_LocationLightColor{};
     GLuint m_LocationLightPos{};
-    GLuint m_LocationLoadToShadowMap{};
 
 public:
     ObjectShader();
@@ -31,8 +30,6 @@ public:
     void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
     void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const;
-
-    void loadToShadowMap(bool loadToShadowMap) const;
 
 private:
     void loadUniformLocations();

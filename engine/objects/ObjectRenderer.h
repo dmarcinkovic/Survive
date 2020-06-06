@@ -33,8 +33,6 @@ public:
 
     void render(const Camera &camera) const;
 
-    void renderToShadowMap(const Camera& camera) const;
-
     void add3DObject(Object3D &entity);
 
 private:

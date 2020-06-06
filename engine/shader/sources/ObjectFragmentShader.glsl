@@ -10,15 +10,8 @@ uniform vec3 lightColor;
 
 out vec4 outColor;
 
-flat in int loadShadow;
-
 void main()
 {
-    if (loadShadow == 1)
-    {
-        return;
-    }
-
     vec3 lightPos = normalize(lightPosition);
     vec4 textureColor = texture(objectTexture, textCoords);
 
