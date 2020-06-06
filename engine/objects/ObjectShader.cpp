@@ -33,10 +33,22 @@ void ObjectShader::loadUniformLocations()
 
     m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
     m_LocationLightPos = glGetUniformLocation(m_Program, "lightPosition");
+    m_LocationLightViewMatrix = glGetUniformLocation(m_Program, "lightViewMatrix");
+    m_LocationLightProjection = glGetUniformLocation(m_Program, "lightProjectionMatrix");
 }
 
 void ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor) const
 {
     loadVector3(m_LocationLightPos, lightPos);
     loadVector3(m_LocationLightColor, lightColor);
+}
+
+void ObjectShader::loadLightProjection(const glm::mat4 &lightProjection) const
+{
+    loadMatrix(m_LocationLightProjection, lightProjection);
+}
+
+void ObjectShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
+{
+    loadMatrix(m_LocationLightViewMatrix, viewMatrix);
 }

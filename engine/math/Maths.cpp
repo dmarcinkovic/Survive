@@ -4,6 +4,7 @@
 
 #include "Maths.h"
 #include "../display/Display.h"
+#include "../constant/Constants.h"
 
 glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float scaleX, float scaleY, float scaleZ,
                                             float rotationX, float rotationY, float rotationZ)
@@ -44,7 +45,8 @@ glm::mat4 Maths::createLightViewMatrix(const Light &light)
     return glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
 }
 
-glm::mat4 Maths::createLightProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
+glm::mat4 Maths::createLightProjectionMatrix(float near, float far)
 {
-    return glm::ortho(left, right, bottom, top, near, far);
+    return glm::ortho(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
+                      Constants::TOP, near, far);
 }

@@ -13,7 +13,7 @@ void Renderer3D::render(const Camera &camera) const
 {
     m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
 
-    m_ObjectRenderer.render(camera);
+    m_ObjectRenderer.render(camera, m_ShadowMap);
     m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 }
 

@@ -12,8 +12,8 @@ TerrainRenderer::TerrainRenderer()
     m_Shader.start();
 
     auto projectionMatrix = Maths::createProjectionMatrix(fieldOfView, Constants::NEAR, Constants::FAR);
-    glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
-                                                                   Constants::TOP, Constants::NEAR, Constants::FAR);
+    glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::NEAR,
+                                                                   Constants::FAR);
 
     m_Shader.loadLightProjectionMatrix(lightProjection);
     m_Shader.loadProjectionMatrix(projectionMatrix);

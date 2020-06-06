@@ -13,9 +13,16 @@ uniform mat4 viewMatrix;
 out vec2 textCoords;
 out vec3 worldPosition;
 
+uniform mat4 lightProjectionMatrix;
+uniform mat4 lightViewMatrix;
+
+out vec4 fragmentPositionInLightSpace;
+
 void main()
 {
     vec4 pos = transformationMatrix * vec4(position, 1.0);
+    fragmentPositionInLightSpace = lightProjectionMatrix * lightViewMatrix * pos;
+
     gl_Position = projectionMatrix * viewMatrix * pos;
     textCoords = textureCoordinates;
 

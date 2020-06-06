@@ -20,8 +20,6 @@ class ObjectRenderer
 {
 private:
     constexpr static const float fieldOfView = 70.0f;
-    constexpr static const float near = 0.1f;
-    constexpr static const float far = 1000.0f;
 
     ObjectShader m_Shader;
     std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
@@ -31,7 +29,7 @@ private:
 public:
     explicit ObjectRenderer(const Light &light);
 
-    void render(const Camera &camera) const;
+    void render(const Camera &camera, GLuint shadowMap) const;
 
     void add3DObject(Object3D &entity);
 

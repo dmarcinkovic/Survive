@@ -10,6 +10,8 @@ uniform vec3 lightColor;
 
 out vec4 outColor;
 
+in vec4 fragmentPositionInLightSpace;
+
 void main()
 {
     vec3 lightPos = normalize(lightPosition);

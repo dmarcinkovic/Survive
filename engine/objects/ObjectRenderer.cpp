@@ -4,24 +4,32 @@
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../constant/Constants.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
         : m_Light(light)
 {
     m_Shader.start();
-    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far);
+
+    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(fieldOfView, Constants::NEAR, Constants::FAR);
     m_Shader.loadProjectionMatrix(projectionMatrix);
+
+    const glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::NEAR, Constants::FAR);
+    m_Shader.loadLightProjection(lightProjection);
+
     Shader::stop();
 }
 
-void ObjectRenderer::render(const Camera &camera) const
+void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
 {
     Renderer3DUtil::prepareRendering(m_Shader);
 
     const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+    const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLight(m_Light.position(), m_Light.color());
+    m_Shader.loadLightViewMatrix(lightViewMatrix);
 
     for (auto const&[texture, objects] : m_Objects)
     {

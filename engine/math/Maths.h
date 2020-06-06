@@ -23,7 +23,7 @@ public:
 
     static glm::mat4 createLightViewMatrix(const Light &light);
 
-    static glm::mat4 createLightProjectionMatrix(float left, float right, float bottom, float top, float near, float far);
+    static glm::mat4 createLightProjectionMatrix(float near, float far);
 };
 
 #endif //SURVIVE_MATHS_H
