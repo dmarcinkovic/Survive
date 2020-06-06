@@ -13,7 +13,7 @@ out vec4 outColor;
 in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
 
-float shadowCalculation(vec4 lightSpacePosition,vec3 lightDirection)
+float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
     clipSpace = clipSpace * 0.5 + 0.5;
@@ -45,7 +45,7 @@ void main()
     float diffuseFactor = max(dot(surfaceNormal, lightPos), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
-    float shadow = shadowCalculation(fragmentPositionInLightSpace, lightPos);
+    float shadow = shadowCalculation(fragmentPositionInLightSpace);
 
     vec3 totalColor = (ambient + (1 - shadow) * diffuse) * textureColor.rgb;
 

@@ -34,7 +34,8 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
         {
             const Object3D &o = object.get();
 
-            Renderer3DUtil::addTransparency(true, false);
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
 
             auto rotation = o.m_Rotation + camera.m_Rotation;
             glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
@@ -42,8 +43,7 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
             m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
-
-            Renderer3DUtil::addTransparency(false, false);
+            glDisable(GL_CULL_FACE);
         }
 
         Texture::unbindTexture();
