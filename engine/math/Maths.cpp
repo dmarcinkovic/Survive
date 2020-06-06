@@ -38,3 +38,13 @@ glm::mat4 Maths::createViewMatrix(const Camera &camera)
     viewMatrix = glm::translate(viewMatrix, -camera.m_Position);
     return viewMatrix;
 }
+
+glm::mat4 Maths::createLightViewMatrix(const Light &light)
+{
+    return glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
+}
+
+glm::mat4 Maths::createLightProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
+{
+    return glm::ortho(left, right, bottom, top, near, far);
+}

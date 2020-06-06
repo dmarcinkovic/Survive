@@ -17,6 +17,9 @@ void ObjectRenderer::render(const Camera &camera) const
 {
     Renderer3DUtil::prepareRendering(m_Shader);
 
+    const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+    m_Shader.loadViewMatrix(viewMatrix);
+
     m_Shader.loadLight(m_LightPosition, m_LightColor);
 
     for (auto const&[texture, objects] : m_Objects)
@@ -25,20 +28,12 @@ void ObjectRenderer::render(const Camera &camera) const
         for (auto const &object : objects)
         {
             const Object3D &o = object.get();
-
-            Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
-
             auto rotation = camera.m_Rotation + o.m_Rotation;
 
-            m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
-            m_Shader.loadTransformationMatrix(Maths::createTransformationMatrix(o.m_Position,
-                                                                                o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
-                                                                                rotation.x, rotation.y,
-                                                                                rotation.z));
+            auto modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
+                                                                 rotation.x, rotation.y, rotation.z);
 
-            glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
-
-            Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+            renderScene(modelMatrix, o);
         }
 
         Renderer3DUtil::finishRenderingEntity();
@@ -56,4 +51,14 @@ void ObjectRenderer::setLight(const Light &light)
 {
     m_LightPosition = light.position();
     m_LightColor = light.color();
+}
+
+void ObjectRenderer::renderScene(const glm::mat4 &transformationMatrix, const Object3D &object3D) const
+{
+    m_Shader.loadTransformationMatrix(transformationMatrix);
+    Renderer3DUtil::addTransparency(!object3D.m_IsTransparent, !object3D.m_IsTransparent);
+
+    glDrawArrays(GL_TRIANGLES, 0, object3D.m_Texture.vertexCount());
+
+    Renderer3DUtil::addTransparency(object3D.m_IsTransparent, object3D.m_IsTransparent);
 }

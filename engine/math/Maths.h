@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../camera/Camera.h"
+#include "../light/Light.h"
 
 class Maths
 {
@@ -19,6 +20,10 @@ public:
     static glm::mat4 createProjectionMatrix(float fieldOfView, float near, float far);
 
     static glm::mat4 createViewMatrix(const Camera &camera);
+
+    static glm::mat4 createLightViewMatrix(const Light &light);
+
+    static glm::mat4 createLightProjectionMatrix(float left, float right, float bottom, float top, float near, float far);
 };
 
 #endif //SURVIVE_MATHS_H
