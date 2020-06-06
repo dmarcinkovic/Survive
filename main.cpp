@@ -17,16 +17,20 @@ int main()
 
     Loader loader;
 
-    TexturedModel texture{ObjLoader::loadObj("res/dragon.obj", loader),
-                    loader.loadTexture("res/lamp.jpg")};
+    Texture texture(loader.loadTexture("res/lamp.jpg"));
 
-    Object3D object(texture, glm::vec3{0, -10, -30});
+    TexturedModel dragonTexture{ObjLoader::loadObj("res/dragon.obj", loader), texture.textureId()};
+    TexturedModel lampTexture{ObjLoader::loadObj("res/lamp.obj", loader), texture.textureId()};
+
+    Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
+    Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
 
     Camera camera;
     Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
 
     Renderer3D renderer(light);
-    renderer.add3DObject(object);
+    renderer.add3DObject(dragon);
+    renderer.add3DObject(lamp);
 
     Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
     renderer.addTerrain(terrain);
