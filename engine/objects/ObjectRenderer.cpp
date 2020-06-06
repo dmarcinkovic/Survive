@@ -1,7 +1,6 @@
 //
 // Created by david on 17. 05. 2020..
 //
-
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
@@ -46,6 +45,8 @@ void ObjectRenderer::renderToShadowMap(const Camera &camera) const
     {
         
     }
+
+    Renderer3DUtil::finishRendering();
 }
 
 void ObjectRenderer::add3DObject(Object3D &entity)
@@ -72,3 +73,4 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
         Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
     }
 }
+

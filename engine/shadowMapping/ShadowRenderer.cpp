@@ -24,7 +24,7 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
 
     for (auto const&[texture, objects] : m_Objects)
     {
-        texture.bindTexture();
+        texture.bind(0);
         glEnableVertexAttribArray(0);
         for (auto const &object : objects)
         {

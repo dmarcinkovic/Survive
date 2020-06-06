@@ -6,7 +6,7 @@
 #define SURVIVE_RENDERER2DUTIL_H
 
 
-#include "../texture/Texture.h"
+#include "../texture/TexturedModel.h"
 #include "../shader/Shader.h"
 
 class Renderer2DUtil
@@ -14,7 +14,7 @@ class Renderer2DUtil
 public:
     static void prepareRendering(const Shader &shader) ;
 
-    static void prepareEntity(const Texture &texture) ;
+    static void prepareEntity(const TexturedModel &texture) ;
 
     static void finishRenderingEntity();
 

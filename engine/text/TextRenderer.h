@@ -14,7 +14,7 @@ class TextRenderer
 {
 private:
     TextShader m_Shader{};
-    std::unordered_map<Texture, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
+    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
 
 public:
     void renderText() const;

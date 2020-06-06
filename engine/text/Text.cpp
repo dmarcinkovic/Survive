@@ -63,7 +63,7 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
 
 void Text::loadTexture(Loader &loader)
 {
-    m_Texture = Texture(calculateVertices(loader), loader.loadTexture(textureAtlas));
+    m_Texture = TexturedModel(calculateVertices(loader), loader.loadTexture(textureAtlas));
 }
 
 void Text::centerText()

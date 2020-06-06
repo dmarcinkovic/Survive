@@ -21,7 +21,7 @@ private:
     constexpr static const float far = 100.0f;
 
     ShadowShader m_ShadowShader{};
-    std::unordered_map<Texture, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
 public:
     ShadowRenderer();

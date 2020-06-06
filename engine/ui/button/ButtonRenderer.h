@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "ButtonShader.h"
-#include "../../texture/Texture.h"
+#include "../../texture/TexturedModel.h"
 #include "Button.h"
 
 class ButtonRenderer

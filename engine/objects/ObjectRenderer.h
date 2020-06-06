@@ -10,7 +10,7 @@
 #include <functional>
 
 #include "ObjectShader.h"
-#include "../texture/Texture.h"
+#include "../texture/TexturedModel.h"
 #include "../entity/Entity.h"
 #include "../camera/Camera.h"
 #include "../light/Light.h"
@@ -24,7 +24,7 @@ private:
     constexpr static const float far = 1000.0f;
 
     ObjectShader m_Shader;
-    std::unordered_map<Texture, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
     const Light &m_Light;
 
@@ -40,6 +40,5 @@ public:
 private:
     void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 };
-
 
 #endif //SURVIVE_OBJECTRENDERER_H
