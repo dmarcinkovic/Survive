@@ -39,7 +39,7 @@ public:
     void setLight(const Light &light);
 
 private:
-    void renderScene(const glm::mat4 &transformationMatrix, const Object3D &object3D) const;
+    void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 };
 
 

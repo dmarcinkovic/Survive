@@ -25,16 +25,7 @@ void ObjectRenderer::render(const Camera &camera) const
     for (auto const&[texture, objects] : m_Objects)
     {
         Renderer3DUtil::prepareEntity(texture);
-        for (auto const &object : objects)
-        {
-            const Object3D &o = object.get();
-            auto rotation = camera.m_Rotation + o.m_Rotation;
-
-            auto modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
-                                                                 rotation.x, rotation.y, rotation.z);
-
-            renderScene(modelMatrix, o);
-        }
+        renderScene(objects, camera);
 
         Renderer3DUtil::finishRenderingEntity();
     }
@@ -53,12 +44,21 @@ void ObjectRenderer::setLight(const Light &light)
     m_LightColor = light.color();
 }
 
-void ObjectRenderer::renderScene(const glm::mat4 &transformationMatrix, const Object3D &object3D) const
+void
+ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
 {
-    m_Shader.loadTransformationMatrix(transformationMatrix);
-    Renderer3DUtil::addTransparency(!object3D.m_IsTransparent, !object3D.m_IsTransparent);
+    for (auto const &object : objects)
+    {
+        auto const &o = object.get();
+        auto rotation = camera.m_Rotation + o.m_Rotation;
 
-    glDrawArrays(GL_TRIANGLES, 0, object3D.m_Texture.vertexCount());
+        glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
+                                                                  rotation.x, rotation.y, rotation.z);
+        m_Shader.loadTransformationMatrix(modelMatrix);
+        Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 
-    Renderer3DUtil::addTransparency(object3D.m_IsTransparent, object3D.m_IsTransparent);
+        glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+
+        Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+    }
 }
