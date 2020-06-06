@@ -29,7 +29,7 @@ private:
     const Light &m_Light;
 
 public:
-    ObjectRenderer(const Light &light);
+    explicit ObjectRenderer(const Light &light);
 
     void render(const Camera &camera) const;
 
