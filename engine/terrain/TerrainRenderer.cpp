@@ -12,6 +12,10 @@ TerrainRenderer::TerrainRenderer()
     m_Shader.start();
 
     auto projectionMatrix = Maths::createProjectionMatrix(fieldOfView, Constants::NEAR, Constants::FAR);
+    glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
+                                                                   Constants::TOP, Constants::NEAR, Constants::FAR);
+
+    m_Shader.loadLightProjectionMatrix(lightProjection);
     m_Shader.loadProjectionMatrix(projectionMatrix);
 
     Shader::stop();
@@ -22,12 +26,10 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
     prepareRendering();
 
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain.m_Position, m_Terrain.m_ScaleX,
-                                                                  m_Terrain.m_ScaleY, m_Terrain.m_ScaleZ, 90);
+                                                                  m_Terrain.m_ScaleY, m_Terrain.m_ScaleZ, rotationX);
 
-    glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM, Constants::TOP, Constants::NEAR, Constants::FAR);
     glm::mat4 lightView = Maths::createLightViewMatrix(light);
-    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-    m_Shader.loadLightSpaceMatrix(lightSpaceMatrix);
+    m_Shader.loadLightViewMatrix(lightView);
 
     Texture texture(shadowMap);
     texture.bindTexture(0);
