@@ -21,14 +21,14 @@ void Renderer2DUtil::finishRendering()
 
 void Renderer2DUtil::prepareEntity(const TexturedModel &texture)
 {
-    texture.bindTexture();
+    texture.bind();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 }
 
 void Renderer2DUtil::finishRenderingEntity()
 {
-    TexturedModel::unbindTexture();
+    TexturedModel::unbind();
 
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);

@@ -5,21 +5,26 @@
 #include "TexturedModel.h"
 
 TexturedModel::TexturedModel(const Model &model, GLuint textureId)
-        : m_Vao(model.m_Vao), m_TextureID(textureId), m_VertexCount(model.m_VertexCount)
+        : m_Vao(model.m_Vao), m_Texture(textureId), m_VertexCount(model.m_VertexCount)
 {
 
 }
 
-void TexturedModel::bindTexture() const
+TexturedModel::TexturedModel()
+    : m_Texture(0)
+{
+
+}
+
+void TexturedModel::bind(int index) const
 {
     glBindVertexArray(m_Vao);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    m_Texture.bindTexture(index);
 }
 
-void TexturedModel::unbindTexture()
+void TexturedModel::unbind()
 {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    Texture::unbindTexture();
 }
 
 size_t TexturedModel::vertexCount() const
@@ -31,5 +36,5 @@ bool TexturedModel::operator==(const TexturedModel &rhs) const
 {
     return m_Vao == rhs.m_Vao &&
            m_VertexCount == rhs.m_VertexCount &&
-           m_TextureID == rhs.m_TextureID;
+           m_Texture.textureId() == rhs.m_Texture.textureId();
 }

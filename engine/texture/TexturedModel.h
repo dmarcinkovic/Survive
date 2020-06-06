@@ -8,22 +8,23 @@
 #include <GL/glew.h>
 
 #include "../renderer/Loader.h"
+#include "Texture.h"
 
 class TexturedModel
 {
 private:
-    GLuint m_Vao;
-    size_t m_VertexCount;
-    GLuint m_TextureID;
+    GLuint m_Vao{};
+    size_t m_VertexCount{};
+    Texture m_Texture;
 
 public:
     TexturedModel(const Model &model, GLuint textureId);
 
-    TexturedModel() = default;
+    TexturedModel();
 
-    void bindTexture() const;
+    void bind(int index) const;
 
-    static void unbindTexture();
+    static void unbind();
 
     [[nodiscard]] size_t vertexCount() const;
 
@@ -36,7 +37,7 @@ struct TextureHash
 {
     std::size_t operator()(const TexturedModel &texture) const noexcept
     {
-        return texture.m_Vao ^ texture.m_TextureID ^ texture.m_VertexCount;
+        return texture.m_Vao ^ texture.m_Texture.textureId() ^ texture.m_VertexCount;
     }
 };
 
