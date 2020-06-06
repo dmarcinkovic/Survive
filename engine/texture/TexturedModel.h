@@ -22,7 +22,9 @@ public:
 
     TexturedModel();
 
-    void bind(int index) const;
+    void bind() const;
+
+    void bindTexture(int index) const;
 
     static void unbind();
 
