@@ -23,7 +23,6 @@ void ObjectRenderer::render(const Camera &camera) const
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLight(m_Light.position(), m_Light.color());
 
-
     for (auto const&[texture, objects] : m_Objects)
     {
         Renderer3DUtil::prepareEntity(texture);

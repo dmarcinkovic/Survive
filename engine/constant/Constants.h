@@ -2,8 +2,8 @@
 // Created by david on 06. 06. 2020..
 //
 
-#ifndef SURVIVE_SHADOWMAPCONSTANTS_H
-#define SURVIVE_SHADOWMAPCONSTANTS_H
+#ifndef SURVIVE_CONSTANTS_H
+#define SURVIVE_CONSTANTS_H
 
 struct Constants
 {
@@ -15,4 +15,4 @@ struct Constants
     constexpr static float TOP = 50.0f;
 };
 
-#endif //SURVIVE_SHADOWMAPCONSTANTS_H
+#endif //SURVIVE_CONSTANTS_H

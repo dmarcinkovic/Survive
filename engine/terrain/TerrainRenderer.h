@@ -14,10 +14,10 @@ class TerrainRenderer
 {
 private:
     constexpr static const float fieldOfView = 70.0f;
-    constexpr static float rotationX = 90.0f;
+    constexpr static const float rotationX = 90.0f;
 
     TerrainShader m_Shader;
-    Terrain m_Terrain{};
+    Terrain *m_Terrain{};
 
 public:
     TerrainRenderer();
@@ -30,6 +30,8 @@ private:
     void prepareRendering() const;
 
     void finishRendering() const;
+
+    void renderShadow(GLuint shadowMap, const Light &light) const;
 };
 
 

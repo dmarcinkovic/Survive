@@ -7,7 +7,7 @@
 #include "ShadowRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
-#include "../constant/ShadowMapConstants.h"
+#include "../constant/Constants.h"
 
 ShadowRenderer::ShadowRenderer()
 {
