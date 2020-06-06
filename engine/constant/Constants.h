@@ -9,10 +9,10 @@ struct Constants
 {
     constexpr static float NEAR = 0.1f;
     constexpr static float FAR = 1000.0f;
-    constexpr static float LEFT = -50.0f;
-    constexpr static float RIGHT = 50.0f;
-    constexpr static float BOTTOM = -50.0f;
-    constexpr static float TOP = 50.0f;
+    constexpr static float LEFT = -10.0f;
+    constexpr static float RIGHT = 40.0f;
+    constexpr static float BOTTOM = -10.0f;
+    constexpr static float TOP = 40.0f;
 };
 
 #endif //SURVIVE_CONSTANTS_H
