@@ -18,7 +18,7 @@ void Renderer3DUtil::finishRendering()
 
 void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
 {
-    texture.bind();
+    texture.bind(0);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);

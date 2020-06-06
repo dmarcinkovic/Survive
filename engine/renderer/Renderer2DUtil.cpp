@@ -21,7 +21,7 @@ void Renderer2DUtil::finishRendering()
 
 void Renderer2DUtil::prepareEntity(const TexturedModel &texture)
 {
-    texture.bind();
+    texture.bind(0);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 }
