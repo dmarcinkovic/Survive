@@ -7,12 +7,15 @@
 #include "ShadowRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
+#include "../constant/ShadowMapConstants.h"
 
 ShadowRenderer::ShadowRenderer()
 {
     m_ShadowShader.start();
 
-    glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix(left, right, bottom, top, near, far);
+    glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix(Constants::LEFT, Constants::RIGHT,
+                                                                    Constants::BOTTOM, Constants::TOP, Constants::NEAR,
+                                                                    Constants::FAR);
     m_ShadowShader.loadProjectionMatrix(projectionMatrix);
 
     ShadowShader::stop();

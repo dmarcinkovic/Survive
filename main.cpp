@@ -28,7 +28,7 @@ int main()
     Renderer3D renderer(light);
     renderer.add3DObject(object);
 
-    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -100}, 100, 100, 1);
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
     renderer.addTerrain(terrain);
 
     while (display.isRunning())

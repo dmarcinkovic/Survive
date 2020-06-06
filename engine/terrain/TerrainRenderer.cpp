@@ -5,12 +5,13 @@
 #include "TerrainRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../constant/ShadowMapConstants.h"
 
 TerrainRenderer::TerrainRenderer()
 {
     m_Shader.start();
 
-    auto projectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far);
+    auto projectionMatrix = Maths::createProjectionMatrix(fieldOfView, Constants::NEAR, Constants::FAR);
     m_Shader.loadProjectionMatrix(projectionMatrix);
 
     Shader::stop();
@@ -23,13 +24,13 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain.m_Position, m_Terrain.m_ScaleX,
                                                                   m_Terrain.m_ScaleY, m_Terrain.m_ScaleZ, 90);
 
-    glm::mat4 lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, 0.1f, 100.0f);
-    glm::mat4 lightView = glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
+    glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM, Constants::TOP, Constants::NEAR, Constants::FAR);
+    glm::mat4 lightView = Maths::createLightViewMatrix(light);
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
     m_Shader.loadLightSpaceMatrix(lightSpaceMatrix);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, shadowMap);
+    Texture texture(shadowMap);
+    texture.bindTexture(0);
 
     auto viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
@@ -37,7 +38,7 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
     m_Shader.loadTransformationMatrix(transformationMatrix);
     glDrawElements(GL_TRIANGLES, m_Terrain.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    Texture::unbindTexture();
     finishRendering();
 }
 

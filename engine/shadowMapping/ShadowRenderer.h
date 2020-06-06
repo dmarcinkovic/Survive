@@ -17,13 +17,6 @@
 class ShadowRenderer
 {
 private:
-    constexpr static const float near = 0.1f;
-    constexpr static const float far = 100.0f;
-    constexpr static const float left = -50.0f;
-    constexpr static const float right = 50.0f;
-    constexpr static const float bottom = -50.0f;
-    constexpr static const float top = 50.0f;
-
     ShadowShader m_ShadowShader{};
     std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 

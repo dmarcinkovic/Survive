@@ -14,8 +14,6 @@ class TerrainRenderer
 {
 private:
     constexpr static const float fieldOfView = 70.0f;
-    constexpr static const float near = 0.1f;
-    constexpr static const float far = 1000.0f;
 
     TerrainShader m_Shader;
     Terrain m_Terrain{};
