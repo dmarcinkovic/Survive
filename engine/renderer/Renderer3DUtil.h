@@ -7,7 +7,7 @@
 
 
 #include "../shader/Shader.h"
-#include "../texture/Texture.h"
+#include "../texture/TexturedModel.h"
 
 class Renderer3DUtil
 {
@@ -16,7 +16,7 @@ public:
 
     static void finishRendering();
 
-    static void prepareEntity(const Texture &texture);
+    static void prepareEntity(const TexturedModel &texture);
 
     static void finishRenderingEntity();
 

@@ -2,14 +2,14 @@
 // Created by david on 24. 03. 2020..
 //
 
-#ifndef SURVIVE_TEXTURE_H
-#define SURVIVE_TEXTURE_H
+#ifndef SURVIVE_TEXTUREDMODEL_H
+#define SURVIVE_TEXTUREDMODEL_H
 
 #include <GL/glew.h>
 
 #include "../renderer/Loader.h"
 
-class Texture
+class TexturedModel
 {
 private:
     GLuint m_Vao;
@@ -17,9 +17,9 @@ private:
     GLuint m_TextureID;
 
 public:
-    Texture(const Model &model, GLuint textureId);
+    TexturedModel(const Model &model, GLuint textureId);
 
-    Texture() = default;
+    TexturedModel() = default;
 
     void bindTexture() const;
 
@@ -27,18 +27,18 @@ public:
 
     [[nodiscard]] size_t vertexCount() const;
 
-    bool operator==(const Texture &rhs) const;
+    bool operator==(const TexturedModel &rhs) const;
 
     friend class TextureHash;
 };
 
 struct TextureHash
 {
-    std::size_t operator()(const Texture &texture) const noexcept
+    std::size_t operator()(const TexturedModel &texture) const noexcept
     {
         return texture.m_Vao ^ texture.m_TextureID ^ texture.m_VertexCount;
     }
 };
 
 
-#endif //SURVIVE_TEXTURE_H
+#endif //SURVIVE_TEXTUREDMODEL_H

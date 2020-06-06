@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Loader.h"
 #include "../texture/stb_image.h"
-#include "../texture/Texture.h"
+#include "../texture/TexturedModel.h"
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size)
 {
