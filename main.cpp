@@ -21,7 +21,7 @@ int main()
                     loader.loadTexture("res/lamp.jpg")};
 
     Object3D object(texture, glm::vec3{0, -10, -30});
-    
+
     Camera camera;
     Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
 
