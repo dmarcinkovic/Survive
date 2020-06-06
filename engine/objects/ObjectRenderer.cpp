@@ -8,10 +8,10 @@
 ObjectRenderer::ObjectRenderer(const Light &light)
         : m_Light(light)
 {
-    m_Shader.start();
-    // TODO load light projection matrix
-    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(fieldOfView, near, far));
-    Shader::stop();
+//    m_Shader.start();
+//    // TODO load light projection matrix
+//    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(fieldOfView, near, far));
+//    Shader::stop();
 }
 
 void ObjectRenderer::render(const Camera &camera) const
@@ -19,9 +19,11 @@ void ObjectRenderer::render(const Camera &camera) const
     Renderer3DUtil::prepareRendering(m_Shader);
 
     const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-    m_Shader.loadViewMatrix(viewMatrix);
+    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far);
 
+    m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLight(m_Light.position(), m_Light.color());
+    m_Shader.loadProjectionMatrix(projectionMatrix);
 
     for (auto const&[texture, objects] : m_Objects)
     {
@@ -39,11 +41,14 @@ void ObjectRenderer::renderToShadowMap(const Camera &camera) const
     Renderer3DUtil::prepareRendering(m_Shader);
 
     const glm::mat4 viewMatrix = Maths::createLightViewMatrix(m_Light);
+    const glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix(-50.0f, 50.0f, -50.0f, 50.0f, near, far);
+
     m_Shader.loadViewMatrix(viewMatrix);
+    m_Shader.loadProjectionMatrix(projectionMatrix);
 
     for (auto const&[texture, objects] : m_Objects)
     {
-        
+
     }
 
     Renderer3DUtil::finishRendering();
