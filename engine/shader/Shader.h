@@ -38,7 +38,7 @@ protected:
 
     static void loadVector4(GLuint location, const glm::vec4 &vector);
 
-    static void loadBoolean(GLuint location, bool value);
+    static void loadInteger(GLuint location, int value);
 };
 
 

@@ -8,15 +8,15 @@ in vec4 fragmentPositionInLightSpace;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {
-    vec3 projCoords = lightSpacePosition.xyz / lightSpacePosition.w;
-    projCoords = projCoords * 0.5 + 0.5;
+    vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
+    clipSpace = clipSpace * 0.5 + 0.5;
 
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
-    float currentDepth = projCoords.z;
+    float closestDepth = texture(shadowMap, clipSpace.xy).r;
+    float currentDepth = clipSpace.z;
 
     float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
 
-    if (projCoords.z > 1.0)
+    if (clipSpace.z > 1.0)
     {
         shadow = 0.0;
     }

@@ -29,7 +29,7 @@ public:
 private:
     void prepareRendering() const;
 
-    void finishRendering() const;
+    static void finishRendering() ;
 
     void renderShadow(GLuint shadowMap, const Light &light) const;
 };

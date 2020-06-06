@@ -58,7 +58,7 @@ void TerrainRenderer::prepareRendering() const
     Renderer3DUtil::addTransparency(false, true);
 }
 
-void TerrainRenderer::finishRendering() const
+void TerrainRenderer::finishRendering()
 {
     Texture::unbindTexture();
     Renderer3DUtil::addTransparency(true, false);

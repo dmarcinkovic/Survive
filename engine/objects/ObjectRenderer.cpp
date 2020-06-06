@@ -30,10 +30,14 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLight(m_Light.position(), m_Light.color());
     m_Shader.loadLightViewMatrix(lightViewMatrix);
+    m_Shader.loadTextures();
 
-    for (auto const&[texture, objects] : m_Objects)
+    Texture texture(shadowMap);
+    texture.bindTexture(1);
+
+    for (auto const&[texturedModel, objects] : m_Objects)
     {
-        Renderer3DUtil::prepareEntity(texture);
+        Renderer3DUtil::prepareEntity(texturedModel);
         renderScene(objects, camera);
 
         Renderer3DUtil::finishRenderingEntity();
