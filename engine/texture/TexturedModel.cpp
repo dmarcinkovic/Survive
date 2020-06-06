@@ -16,9 +16,14 @@ TexturedModel::TexturedModel()
 
 }
 
-void TexturedModel::bind(int index) const
+void TexturedModel::bind() const
 {
     glBindVertexArray(m_Vao);
+    bindTexture(0);
+}
+
+void TexturedModel::bindTexture(int index) const
+{
     m_Texture.bindTexture(index);
 }
 
