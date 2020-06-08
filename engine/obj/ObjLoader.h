@@ -17,9 +17,10 @@ private:
                               std::vector<float> &resultNormals, std::vector<float> &resultTextures,
                               const std::string &line);
 
-    static Model processIndices(std::ifstream &reader, Loader &loader, const std::vector<glm::vec3> &points,
-                                const std::vector<glm::vec3> &normals,
-                                const std::vector<glm::vec2> &textureCoordinates);
+    static void processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+                               const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+                               std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+                               const std::string &line);
 
 public:
     static Model loadObj(const char *objFile, Loader &loader);

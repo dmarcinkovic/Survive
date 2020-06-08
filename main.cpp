@@ -17,7 +17,7 @@ int main()
 
     Loader loader;
 
-    TexturedModel texture{ObjLoader::loadObj("res/lamp.obj", loader),
+    TexturedModel texture{ObjLoader::loadObj("res/dragon.obj", loader),
                           loader.loadTexture("res/lamp.jpg")};
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});

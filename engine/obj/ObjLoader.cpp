@@ -16,8 +16,11 @@ Model ObjLoader::loadObj(const char *objFile, Loader &loader)
     std::vector<glm::vec2> textures;
     std::vector<glm::vec3> normals;
 
+    std::vector<float> resultPoints;
+    std::vector<float> resultNormals;
+    std::vector<float> resultTextures;
+
     std::string line;
-    bool loadingNormals = false;
     while (std::getline(reader, line))
     {
         auto numbers = Util::split(line, ' ');
@@ -28,7 +31,6 @@ Model ObjLoader::loadObj(const char *objFile, Loader &loader)
             float y = std::stof(numbers[2]);
             float z = std::stof(numbers[3]);
             normals.emplace_back(x, y, z);
-            loadingNormals = true;
         } else if (line.starts_with("vt"))
         {
             float x = std::stof(numbers[1]);
@@ -40,40 +42,32 @@ Model ObjLoader::loadObj(const char *objFile, Loader &loader)
             float y = std::stof(numbers[2]);
             float z = std::stof(numbers[3]);
             vertices.emplace_back(x, y, z);
-        } else if (loadingNormals)
+        } else if (line.starts_with('f'))
         {
-            if (line.starts_with('f'))
-            {
-                reader.seekg(-(line.size() + 1), std::ios::cur);
-            }
-            break;
-        }
-    }
-
-    return processIndices(reader, loader, vertices, normals, textures);
-}
-
-Model ObjLoader::processIndices(std::ifstream &reader, Loader &loader, const std::vector<glm::vec3> &points,
-                                const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textureCoordinates)
-{
-    std::vector<float> resultPoints;
-    std::vector<float> resultNormals;
-    std::vector<float> resultTextures;
-
-    std::string line;
-    while (std::getline(reader, line))
-    {
-        if (line.starts_with('f'))
-        {
-            auto numbers = Util::split(line, ' ');
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[1]);
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[2]);
-            processVertex(points, normals, textureCoordinates, resultPoints, resultNormals, resultTextures, numbers[3]);
+            processIndices(vertices, normals, textures, resultPoints, resultNormals, resultTextures, line);
         }
     }
 
     reader.close();
     return loader.loadToVao(resultPoints, resultTextures, resultNormals);
+}
+
+void ObjLoader::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+                               const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+                               std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+                               const std::string &line)
+{
+    auto numbers = Util::split(line, ' ');
+    processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[1]);
+    processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[2]);
+    processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[3]);
+
+    if (numbers.size() == 5)
+    {
+        processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[1]);
+        processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[3]);
+        processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[4]);
+    }
 }
 
 void ObjLoader::processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
