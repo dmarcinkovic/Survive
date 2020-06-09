@@ -10,8 +10,18 @@
 
 class DaeParser
 {
+private:
+    static Model loadGeometry(std::ifstream &reader, Loader &loader);
+
+    static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
+
+    static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
+
+    static Model parseIndices(std::string &line, const std::vector<glm::vec3> &vertices,
+                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures);
+
 public:
-    static Model loadDae(const char* daeFile, Loader &loader);
+    static Model loadDae(const char *daeFile, Loader &loader);
 };
 
 
