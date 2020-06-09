@@ -10,10 +10,12 @@
 
 struct Model
 {
-    GLuint m_Vao;
-    size_t m_VertexCount;
+    GLuint m_Vao{};
+    size_t m_VertexCount{};
 
     Model(GLuint vao, size_t vertexCount);
+
+    Model() = default;
 };
 
 class Loader

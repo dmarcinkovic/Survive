@@ -81,17 +81,7 @@ void ObjParser::processVertex(const std::vector<glm::vec3> &points, const std::v
     unsigned textureIndex = std::stoi(index[1]) - 1;
     unsigned normalIndex = std::stoi(index[2]) - 1;
 
-    const auto &point = points[vertexIndex];
-    resultPoints.emplace_back(point.x);
-    resultPoints.emplace_back(point.y);
-    resultPoints.emplace_back(point.z);
-
-    const auto &texture = textureCoordinates[textureIndex];
-    resultTextures.emplace_back(texture.x);
-    resultTextures.emplace_back(texture.y);
-
-    const auto &normal = normals[normalIndex];
-    resultNormals.emplace_back(normal.x);
-    resultNormals.emplace_back(normal.y);
-    resultNormals.emplace_back(normal.z);
+    Util::processVertex(points, normals, textureCoordinates,
+                        resultPoints, resultNormals, resultTextures,
+                        vertexIndex, textureIndex, normalIndex);
 }

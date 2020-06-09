@@ -44,7 +44,7 @@ Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
             parseTexturesLine(line, textures);
         } else if (line.find("<p>") != -1)
         {
-            return parseIndices(line, vertices, normals, textures);
+            return parseIndices(loader, line, vertices, normals, textures);
         } else if (line.find("</library_geometries>") != -1)
         {
             break;
@@ -81,7 +81,7 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
     }
 }
 
-Model DaeParser::parseIndices(std::string &line, const std::vector<glm::vec3> &vertices,
+Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
                               const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures)
 {
     int index = line.find('>');
@@ -91,7 +91,16 @@ Model DaeParser::parseIndices(std::string &line, const std::vector<glm::vec3> &v
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
 
+    for (int i = 0; i < numbers.size(); i += 3)
+    {
+        unsigned vertexIndex = std::stoi(numbers[i]);
+        unsigned textureIndex = std::stoi(numbers[i + 1]);
+        unsigned normalIndex = std::stoi(numbers[i + 2]);
 
+        Util::processVertex(vertices, normals, textures,
+                            resultPoints, resultNormals, resultTextures,
+                            vertexIndex, textureIndex, normalIndex);
+    }
 
-    return Model(0, 0);
+    return loader.loadToVao(resultPoints, resultTextures, resultNormals);
 }

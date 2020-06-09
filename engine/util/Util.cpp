@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <glm/glm.hpp>
 
 #include "Util.h"
 
@@ -41,7 +42,7 @@ Character Util::getCharacterFromFntFile(const std::vector<std::string> &line, fl
 std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
 {
     static std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
-                          R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
+                                 R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
     static std::regex regex(pattern);
     std::smatch result;
     std::regex_search(line, result, regex);
@@ -74,7 +75,7 @@ std::vector<std::string> Util::split(std::string string, char delimiter)
     removeTrailingSpaces(string);
 
     int index;
-    while((index = string.find(delimiter)) != -1)
+    while ((index = string.find(delimiter)) != -1)
     {
         result.emplace_back(string.substr(0, index));
         string = string.substr(index + 1);
@@ -90,10 +91,30 @@ std::vector<std::string> Util::split(std::string string, char delimiter)
 
 void Util::removeTrailingSpaces(std::string &string)
 {
-    while(isspace(string.back()))
+    while (isspace(string.back()))
     {
         string.pop_back();
     }
+}
+
+void Util::processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+                         const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+                         std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+                         unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex)
+{
+    const auto &point = vertices[vertexIndex];
+    resultPoints.emplace_back(point.x);
+    resultPoints.emplace_back(point.y);
+    resultPoints.emplace_back(point.z);
+
+    const auto &texture = textures[textureIndex];
+    resultTextures.emplace_back(texture.x);
+    resultTextures.emplace_back(texture.y);
+
+    const auto &normal = normals[normalIndex];
+    resultNormals.emplace_back(normal.x);
+    resultNormals.emplace_back(normal.y);
+    resultNormals.emplace_back(normal.z);
 }
 
 
