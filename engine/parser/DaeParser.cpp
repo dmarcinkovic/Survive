@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <glm/glm.hpp>
+#include <iostream>
 #include "DaeParser.h"
 #include "../util/Util.h"
 
@@ -32,21 +33,31 @@ Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
 
+    int coordinatesSize = 0;
+
     std::string line;
     while (std::getline(reader, line))
     {
-        if (line.find(R"(id="Cube-mesh-positions-array")") != -1)
+        if (vertices.empty() && line.find("positions-array") != -1)
         {
             parsePointsLine(line, vertices);
-        } else if (line.find(R"(id="Cube-mesh-normals-array")") != -1)
+        } else if (normals.empty() && line.find("normals-array") != -1)
         {
             parsePointsLine(line, normals);
-        } else if (line.find(R"(id="Cube-mesh-map-0-array")") != -1)
+        } else if (textures.empty() && line.find("map-0-array") != -1)
         {
             parseTexturesLine(line, textures);
         } else if (line.find("<p>") != -1)
         {
-            return parseIndices(loader, line, vertices, normals, textures);
+            return parseIndices(loader, line, vertices, normals, textures, coordinatesSize + 1);
+        } else if (line.find("input semantic") != -1)
+        {
+            int index = line.find("offset");
+            if (index != -1)
+            {
+                char c = line[index + 8];
+                coordinatesSize = c - '0';
+            }
         } else if (line.find("</library_geometries>") != -1)
         {
             break;
@@ -84,7 +95,7 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
 }
 
 Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
-                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures)
+                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures, int size)
 {
     int index = line.find('>');
     auto numbers = Util::split(line.substr(index + 1), ' ');
@@ -93,7 +104,7 @@ Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vect
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
 
-    for (int i = 0; i < numbers.size(); i += 4)
+    for (int i = 0; i < numbers.size(); i += size)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
         unsigned normalIndex = std::stoi(numbers[i + 1]);

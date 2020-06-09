@@ -18,7 +18,7 @@ private:
     static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
     static Model parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
-                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures);
+                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures, int size);
 
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
