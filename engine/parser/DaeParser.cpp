@@ -5,6 +5,7 @@
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
+
 #include "DaeParser.h"
 #include "../util/Util.h"
 
@@ -20,6 +21,9 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         if (line.find("<library_geometries>") != -1)
         {
             model = loadGeometry(reader, loader);
+        } else if (line.find("<library_controllers>") != -1)
+        {
+            loadControllers(reader);
         }
     }
 
@@ -116,4 +120,34 @@ Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vect
     }
 
     return loader.loadToVao(resultPoints, resultTextures, resultNormals);
+}
+
+void DaeParser::loadControllers(std::ifstream &reader)
+{
+    std::vector<float> weights;
+    std::vector<std::string> jointNames;
+
+    std::string line;
+    while (std::getline(reader, line))
+    {
+        if (line.find(R"(id="Armature_Cube-skin-joints-array")") != -1)
+        {
+            int index = line.find('>');
+            jointNames = Util::split(line.substr(index + 1), ' ');
+
+            std::string &lastJoint = jointNames.back();
+            int size = lastJoint.find('<');
+            jointNames.back() = lastJoint.substr(0, size);
+        } else if (line.find(R"(id="Armature_Cube-skin-weights-array")") != -1)
+        {
+            int start = line.find('>');
+            int end = line.find_last_of('<');
+            auto numbers = Util::split(line.substr(start + 1, end - start), ' ');
+
+            for (auto const& weight : numbers)
+            {
+                weights.emplace_back(std::stof(weight));
+            }
+        }
+    }
 }

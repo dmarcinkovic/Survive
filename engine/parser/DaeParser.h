@@ -20,6 +20,8 @@ private:
     static Model parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
                               const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures, int size);
 
+    static void loadControllers(std::ifstream &reader);
+
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
 };
