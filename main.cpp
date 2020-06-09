@@ -7,6 +7,7 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
+#include "engine/parser/DaeParser.h"
 
 int main()
 {
@@ -17,10 +18,13 @@ int main()
 
     Loader loader;
 
-    TexturedModel texture{ObjParser::loadObj("res/character.obj", loader),
-                          loader.loadTexture("res/character.png")};
+    TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
+                                loader.loadTexture("res/character.png"));
 
-    Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
+//    TexturedModel texture{ObjParser::loadObj("res/character.obj", loader),
+//                          loader.loadTexture("res/character.png")};
+
+    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
     Camera camera{};
     Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 1});

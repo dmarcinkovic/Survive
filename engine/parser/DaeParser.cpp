@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <glm/glm.hpp>
+#include <iostream>
 #include "DaeParser.h"
 #include "../util/Util.h"
 
@@ -11,17 +12,19 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
 
+    Model model;
+
     std::string line;
     while (std::getline(reader, line))
     {
         if (line.find("<library_geometries>") != -1)
         {
-
+            model = loadGeometry(reader, loader);
         }
     }
 
     reader.close();
-    return Model(0, 0);
+    return model;
 }
 
 Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
