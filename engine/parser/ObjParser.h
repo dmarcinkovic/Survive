@@ -2,14 +2,14 @@
 // Created by david on 16. 05. 2020..
 //
 
-#ifndef SURVIVE_OBJLOADER_H
-#define SURVIVE_OBJLOADER_H
+#ifndef SURVIVE_OBJPARSER_H
+#define SURVIVE_OBJPARSER_H
 
 #include <glm/glm.hpp>
 
 #include "../renderer/Loader.h"
 
-class ObjLoader
+class ObjParser
 {
 private:
     static void processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
@@ -27,4 +27,4 @@ public:
 };
 
 
-#endif //SURVIVE_OBJLOADER_H
+#endif //SURVIVE_OBJPARSER_H

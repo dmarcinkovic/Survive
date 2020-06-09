@@ -1,6 +1,6 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/obj/ObjLoader.h"
+#include "engine/parser/ObjParser.h"
 #include "engine/entity/Entity.h"
 #include "engine/math/Maths.h"
 #include "engine/objects/ObjectRenderer.h"
@@ -17,7 +17,7 @@ int main()
 
     Loader loader;
 
-    TexturedModel texture{ObjLoader::loadObj("res/character.obj", loader),
+    TexturedModel texture{ObjParser::loadObj("res/character.obj", loader),
                           loader.loadTexture("res/character.png")};
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
