@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include <glm/glm.hpp>
-#include <iostream>
 #include "DaeParser.h"
 #include "../util/Util.h"
 
@@ -94,11 +93,11 @@ Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vect
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
 
-    for (int i = 0; i < numbers.size(); i += 3)
+    for (int i = 0; i < numbers.size(); i += 4)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
-        unsigned textureIndex = std::stoi(numbers[i + 1]);
-        unsigned normalIndex = std::stoi(numbers[i + 2]);
+        unsigned normalIndex = std::stoi(numbers[i + 1]);
+        unsigned textureIndex = std::stoi(numbers[i + 2]);
 
         Util::processVertex(vertices, normals, textures,
                             resultPoints, resultNormals, resultTextures,
