@@ -127,6 +127,8 @@ void DaeParser::loadControllers(std::ifstream &reader)
     std::vector<float> weights;
     std::vector<std::string> jointNames;
     std::vector<int> count;
+    std::vector<glm::ivec3 > jointIds;
+    std::vector<glm::vec3> jointWeights;
 
     std::string line;
     while (std::getline(reader, line))
@@ -156,16 +158,32 @@ void DaeParser::loadControllers(std::ifstream &reader)
         {
             auto numbers = getData(line);
 
+            jointWeights.reserve(count.size());
+            jointIds.reserve(count.size());
+
+            int index = 0;
             for (int n : count)
             {
                 if (n <= 3)
                 {
+                    glm::vec3 jointWeight;
+                    glm::ivec3 jointId;
                     for (int i = 0; i < 2 * n; i += 2)
                     {
-
+                        int j = i / 2;
+                        jointId[j] = std::stoi(numbers[index++]);
+                        jointWeight[j] = std::stof(numbers[index++]);
                     }
+
+                    jointIds.emplace_back(jointId);
+                    jointWeights.emplace_back(jointWeight);
+                } else
+                {
+                    index += 2;
                 }
             }
+
+
 
             break;
         }
