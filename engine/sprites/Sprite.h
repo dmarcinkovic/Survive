@@ -11,7 +11,11 @@ class Sprite : public Entity2D
 {
 private:
     double m_Time{};
+
     int m_EndRow{}, m_EndCol{};
+    int m_NumberOfEpochs{};
+    int m_CurrentEpoch{};
+    int m_PreviousFrameIndex{};
 
 public:
     int m_CurrentFrameIndex{};
@@ -22,11 +26,13 @@ public:
 
     Sprite(const Texture &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
 
-    void animate(int spritesInSecond, int startRow = 0, int startCol = 0);
+    void animate(int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
 
-    void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol);
+    void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
 
     void drawSprite(int row, int col);
+
+    void stopAnimation();
 
     void animate();
 
