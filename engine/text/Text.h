@@ -21,7 +21,7 @@ private:
     bool m_Centered{};
     glm::vec3 m_Color{};
 
-    GLuint m_TextTexture;
+    GLuint m_TextTexture, m_VboTexture{}, m_VboVertices{};
 
     glm::vec3 m_BorderColor;
     float m_BorderWidth{};
@@ -45,9 +45,11 @@ public:
 
     void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
-    void setText(const std::string &newText, Loader &loader);
+    void setText(std::string newText, Loader &loader);
 
 private:
+    void calculateTextureVertices();
+
     Model calculateVertices(Loader &loader);
 
     void addVertices(const Character &character, float cursorX, float cursorY);

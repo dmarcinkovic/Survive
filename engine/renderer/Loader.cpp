@@ -80,15 +80,14 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
     return Model(vao, indices.size());
 }
 
-Model Loader::loadToVaoDynamic(const std::vector<float> &vertices, const std::vector<float> &texture, size_t size)
+void Loader::updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId)
 {
-    GLuint vao = createVao();
+    glBindVertexArray(vaoId);
 
-    storeDataInAttributeList(0, vertices, size);
-    storeDataInAttributeList(1, texture, 2, GL_DYNAMIC_DRAW);
+    storeDataInAttributeList(0, vertices, 2);
+    storeDataInAttributeList(1, textures, 2);
+
     unbindVao();
-
-    return Model(vao, vertices.size() / size);
 }
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)

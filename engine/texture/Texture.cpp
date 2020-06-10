@@ -33,3 +33,13 @@ bool Texture::operator==(const Texture &rhs) const
            m_VertexCount == rhs.m_VertexCount &&
            m_TextureID == rhs.m_TextureID;
 }
+
+GLuint Texture::vaoId() const
+{
+    return m_Vao;
+}
+
+void Texture::updateVertexCount(int vertexCount)
+{
+    m_VertexCount = vertexCount;
+}

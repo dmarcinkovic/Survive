@@ -37,11 +37,11 @@ public:
 
     GLuint loadTexture(const char *texture) noexcept;
 
-    Model loadToVaoDynamic(const std::vector<float> &vertices, const std::vector<float> &texture, size_t size);
+    void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 private:
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
-                                  GLenum usage = GL_STATIC_DRAW);
+                                    GLenum usage = GL_STATIC_DRAW);
 
     void createIndexBuffer(const std::vector<unsigned> &indices);
 

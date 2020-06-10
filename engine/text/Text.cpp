@@ -19,6 +19,16 @@ Text::Text(std::string text, Font font, const glm::vec3 &position,
 
 Model Text::calculateVertices(Loader &loader)
 {
+    m_Vertices.clear();
+    m_TextureCoordinates.clear();
+
+    calculateTextureVertices();
+
+    return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
+}
+
+void Text::calculateTextureVertices()
+{
     float cursorX = m_Position.x;
     float cursorY = m_Position.y;
 
@@ -36,8 +46,6 @@ Model Text::calculateVertices(Loader &loader)
     }
 
     if (m_Centered) alignText();
-
-    return loader.loadToVaoDynamic(m_Vertices, m_TextureCoordinates, 2);
 }
 
 void Text::addVertices(const Character &character, float cursorX, float cursorY)
@@ -71,10 +79,16 @@ void Text::centerText()
     m_Centered = true;
 }
 
-void Text::setText(const std::string &newText, Loader &loader)
+void Text::setText(std::string newText, Loader &loader)
 {
-    m_Text = newText;
+    m_Text = std::move(newText);
 
+    m_TextureCoordinates.clear();
+    m_Vertices.clear();
+
+    calculateTextureVertices();
+    loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Texture.vaoId());
+    m_Texture.updateVertexCount(static_cast<int>(m_Vertices.size()) / 2);
 }
 
 const glm::vec3 &Text::color() const

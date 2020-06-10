@@ -25,6 +25,10 @@ public:
 
     static void unbindTexture();
 
+    [[nodiscard]] GLuint vaoId() const;
+
+    void updateVertexCount(int vertexCount);
+
     [[nodiscard]] size_t vertexCount() const;
 
     bool operator==(const Texture &rhs) const;

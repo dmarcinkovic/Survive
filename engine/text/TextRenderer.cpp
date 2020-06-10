@@ -18,7 +18,7 @@ void TextRenderer::renderText() const
             m_Shader.loadColor(text.get().color());
             m_Shader.loadBorder(text.get().getMBorderColor(), text.get().getMBorderWidth());
 
-            glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+            glDrawArrays(GL_TRIANGLES, 0, text.get().m_Texture.vertexCount());
         }
 
         RendererUtil::finishRenderingEntity();

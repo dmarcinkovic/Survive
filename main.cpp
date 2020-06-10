@@ -22,12 +22,8 @@ int main()
     text.centerText();
     text.addBorder(0.5, glm::vec3{1, 0, 0});
 
-    Text text2("Maja", font, glm::vec3{0, 0.25, 0}, glm::vec3{1, 0, 0}, 3);
-    text2.addBorder(0.5, glm::vec3{0, 1, 0});
-    text2.centerText();
-
     renderer.addText(text);
-    renderer.addText(text2);
+    text.setText("AB", loader);
 
     while (display.isRunning())
     {
