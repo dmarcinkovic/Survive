@@ -126,28 +126,61 @@ void DaeParser::loadControllers(std::ifstream &reader)
 {
     std::vector<float> weights;
     std::vector<std::string> jointNames;
+    std::vector<int> count;
 
     std::string line;
     while (std::getline(reader, line))
     {
-        if (line.find(R"(id="Armature_Cube-skin-joints-array")") != -1)
+        if (jointNames.empty() && line.find("skin-joints-array") != -1)
         {
-            int index = line.find('>');
-            jointNames = Util::split(line.substr(index + 1), ' ');
-
-            std::string &lastJoint = jointNames.back();
-            int size = lastJoint.find('<');
-            jointNames.back() = lastJoint.substr(0, size);
-        } else if (line.find(R"(id="Armature_Cube-skin-weights-array")") != -1)
+            jointNames = getData(line);
+        } else if (weights.empty() && line.find("skin-weights-array") != -1)
         {
-            int start = line.find('>');
-            int end = line.find_last_of('<');
-            auto numbers = Util::split(line.substr(start + 1, end - start), ' ');
+            auto numbers = getData(line);
+            weights.reserve(numbers.size());
 
-            for (auto const& weight : numbers)
+            for (auto const &weight : numbers)
             {
                 weights.emplace_back(std::stof(weight));
             }
+        } else if (count.empty() && line.find("<vcount>") != -1)
+        {
+            auto numbers = getData(line);
+            count.reserve(numbers.size());
+
+            for (auto const &c : numbers)
+            {
+                count.emplace_back(std::stoi(c));
+            }
+        } else if (line.find("<v>") != -1)
+        {
+            auto numbers = getData(line);
+
+            for (int n : count)
+            {
+                if (n <= 3)
+                {
+                    for (int i = 0; i < 2 * n; i += 2)
+                    {
+
+                    }
+                }
+            }
+
+            break;
         }
     }
+}
+
+std::vector<std::string> DaeParser::getData(std::string &line)
+{
+    int start = line.find('>');
+    int end = line.find_last_of('<');
+
+    if (end == -1)
+    {
+        end = line.length();
+    }
+
+    return Util::split(line.substr(start + 1, end - start - 1), ' ');
 }

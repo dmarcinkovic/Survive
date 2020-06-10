@@ -22,6 +22,8 @@ private:
 
     static void loadControllers(std::ifstream &reader);
 
+    static std::vector<std::string> getData(std::string &line);
+
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
 };
