@@ -16,7 +16,7 @@ class Text : public Entity2D
 private:
     constexpr static float PADDING = -15.0f;
 
-    const std::string m_Text;
+    std::string m_Text;
     const Font m_Font;
     bool m_Centered{};
     glm::vec3 m_Color{};
@@ -44,6 +44,8 @@ public:
     float getMBorderWidth() const;
 
     void addBorder(float borderWidth, const glm::vec3 &borderColor);
+
+    void setText(const std::string &newText, Loader &loader);
 
 private:
     Model calculateVertices(Loader &loader);

@@ -37,7 +37,7 @@ Model Text::calculateVertices(Loader &loader)
 
     if (m_Centered) alignText();
 
-    return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
+    return loader.loadToVaoDynamic(m_Vertices, m_TextureCoordinates, 2);
 }
 
 void Text::addVertices(const Character &character, float cursorX, float cursorY)
@@ -69,6 +69,12 @@ void Text::loadTexture(Loader &loader)
 void Text::centerText()
 {
     m_Centered = true;
+}
+
+void Text::setText(const std::string &newText, Loader &loader)
+{
+    m_Text = newText;
+
 }
 
 const glm::vec3 &Text::color() const
