@@ -105,6 +105,13 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     return Model(vao, vertices.size() / size);
 }
 
+void Loader::addMipMap()
+{
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.3);
+}
+
 GLuint Loader::loadTexture(const char *texture) noexcept
 {
     GLuint textureId;
@@ -116,6 +123,8 @@ GLuint Loader::loadTexture(const char *texture) noexcept
 
     loadImage(texture);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    addMipMap();
 
     m_Textures.emplace_back(textureId);
     return textureId;

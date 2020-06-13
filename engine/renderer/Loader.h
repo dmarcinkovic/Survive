@@ -50,6 +50,9 @@ private:
     GLuint createVao();
 
     static void loadImage(const char *texture) noexcept;
+
+    static void addMipMap();
+
 };
 
 
