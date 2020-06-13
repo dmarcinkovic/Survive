@@ -3,10 +3,11 @@
 //
 
 #include <cstdint>
-#include <c++/10/iosfwd>
+#include <iosfwd>
 #include <fstream>
 #include <iostream>
 #include <cstring>
+
 #include "AudioMaster.h"
 
 ALuint AudioMaster::loadSound(const char *filename)
