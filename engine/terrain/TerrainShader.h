@@ -5,8 +5,8 @@
 #ifndef SURVIVE_TERRAINSHADER_H
 #define SURVIVE_TERRAINSHADER_H
 
-
 #include "../shader/Shader.h"
+#include "../texture/Texture.h"
 
 class TerrainShader : public Shader
 {
@@ -18,6 +18,11 @@ private:
     GLuint m_LocationProjectionMatrix{};
     GLuint m_LocationViewMatrix{};
 
+    GLuint m_LocationBlendMap{};
+    GLuint m_LocationGrass{};
+    GLuint m_LocationDirt{};
+    GLuint m_LocationRock{};
+
 public:
     TerrainShader();
 
@@ -26,6 +31,8 @@ public:
     void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
     void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+    void loadTextures() const;
 
 private:
     void getUniformLocations();

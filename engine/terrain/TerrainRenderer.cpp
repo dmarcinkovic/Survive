@@ -23,6 +23,8 @@ void TerrainRenderer::render(const Camera &camera) const
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_ScaleX,
                                                                   m_Terrain->m_ScaleY, m_Terrain->m_ScaleZ, 90);
 
+    m_Shader.loadTextures();
+
     auto viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
 
@@ -35,6 +37,7 @@ void TerrainRenderer::render(const Camera &camera) const
 void TerrainRenderer::addTerrain(Terrain &terrain)
 {
     m_Terrain = &terrain;
+    m_Textures = terrain.textures();
 }
 
 void TerrainRenderer::prepareRendering() const
@@ -42,6 +45,11 @@ void TerrainRenderer::prepareRendering() const
     Renderer3DUtil::prepareRendering(m_Shader);
     Renderer3DUtil::prepareEntity(m_Terrain->m_Texture);
     Renderer3DUtil::addTransparency(false, true);
+
+    for (int i = 0; i < m_Textures.size(); ++i)
+    {
+        m_Textures[i].bindTexture(i);
+    }
 }
 
 void TerrainRenderer::finishRendering()

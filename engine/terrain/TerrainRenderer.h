@@ -19,6 +19,8 @@ private:
     TerrainShader m_Shader;
     Terrain *m_Terrain{};
 
+    std::vector<Texture> m_Textures;
+
 public:
     TerrainRenderer();
 
