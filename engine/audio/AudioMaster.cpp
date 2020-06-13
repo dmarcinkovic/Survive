@@ -3,6 +3,10 @@
 //
 
 #include <cstdint>
+#include <c++/10/iosfwd>
+#include <fstream>
+#include <iostream>
+#include <cstring>
 #include "AudioMaster.h"
 
 ALuint AudioMaster::loadSound(const char *filename)
@@ -26,18 +30,37 @@ ALuint AudioMaster::loadSound(const char *filename)
     ALenum format = getFormat(channels, bitsPerSample);
     alBufferData(buffer, format, wavFile, size, sampleRate);
 
+    delete[] wavFile;
+
     return buffer;
 }
 
 AudioMaster::~AudioMaster()
 {
     alDeleteBuffers(m_Buffers.size(), m_Buffers.data());
+    alcMakeContextCurrent(nullptr);
+    alcDestroyContext(m_Context);
+    alcCloseDevice(m_Device);
 }
 
 char *AudioMaster::loadWav(const char *filename, uint8_t &channels, int32_t &sampleRate, uint8_t &bitsPerSample,
                            ALsizei &size)
 {
+    std::ifstream reader(filename, std::ios::binary);
 
+    if (!reader.is_open())
+    {
+        throw std::runtime_error("Could not open file");
+    }
+
+    loadWavHelper(reader, channels, sampleRate, bitsPerSample, size);
+
+    char *data = new char[size];
+
+    reader.read(data, size);
+    reader.close();
+
+    return data;
 }
 
 ALenum AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
@@ -53,4 +76,66 @@ ALenum AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
         return AL_FORMAT_STEREO8;
     }
     return AL_FORMAT_STEREO16;
+}
+
+void AudioMaster::loadWavHelper(std::ifstream &reader, uint8_t &channels, int32_t &sampleRate, uint8_t &bitsPerSample,
+                                ALsizei &size)
+{
+    const int N = 4;
+    char buffer[N];
+
+    reader.read(buffer, N);
+
+    if (std::strncmp(buffer, "RIFF", N) != 0)
+    {
+        throw std::runtime_error("Could not load wav file");
+    }
+
+    reader.read(buffer, N);
+    reader.read(buffer, N);
+
+    if (std::strncmp(buffer, "WAVE", N) != 0)
+    {
+        throw std::runtime_error("Could not load wav file");
+    }
+
+    reader.read(buffer, N);
+    reader.read(buffer, N);
+    reader.read(buffer, 2);
+
+    reader.read(buffer, 2);
+    channels = convertToInt(buffer, 2);
+
+    reader.read(buffer, N);
+    sampleRate = convertToInt(buffer, N);
+
+    reader.read(buffer, N);
+    reader.read(buffer, 2);
+
+    reader.read(buffer, 2);
+    bitsPerSample = convertToInt(buffer, 2);
+
+    reader.read(buffer, N);
+
+    if (std::strncmp(buffer, "data", N) != 0)
+    {
+        throw std::runtime_error("Could not load wav file");
+    }
+
+    reader.read(buffer, N);
+    size = convertToInt(buffer, N);
+}
+
+int AudioMaster::convertToInt(const char *buffer, std::size_t len)
+{
+    std::int32_t number = 0;
+    std::memcpy(&number, buffer, len);
+
+    return number;
+}
+
+void AudioMaster::setListenerData()
+{
+    alListener3f(AL_POSITION, 0,0,0);
+    alListener3f(AL_VELOCITY, 0,0,0);
 }

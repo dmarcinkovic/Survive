@@ -22,11 +22,18 @@ public:
 
     ~AudioMaster();
 
+    static void setListenerData();
+
 private:
     static char *loadWav(const char *filename, std::uint8_t &channels,
                          std::int32_t &sampleRate, std::uint8_t &bitsPerSample, ALsizei &size);
 
     static ALenum getFormat(std::uint8_t channels, std::uint8_t bitsPerSample);
+
+    static void loadWavHelper(std::ifstream &reader, std::uint8_t &channels, std::int32_t &sampleRate,
+                              std::uint8_t &bitsPerSample, ALsizei &size);
+
+    static int convertToInt(const char *buffer, std::size_t len);
 
 };
 
