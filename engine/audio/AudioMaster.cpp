@@ -120,7 +120,7 @@ void AudioMaster::loadWavHelper(std::ifstream &reader, uint8_t &channels, int32_
 
     if (std::strncmp(buffer, "data", N) != 0)
     {
-        throw std::runtime_error("Could not load wav file");
+        throw std::runtime_error("Did not found data");
     }
 
     reader.read(buffer, N);
