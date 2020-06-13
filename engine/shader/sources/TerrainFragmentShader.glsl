@@ -7,7 +7,9 @@ uniform sampler2D grass;
 uniform sampler2D dirt;
 uniform sampler2D rock;
 
+in vec2 textureCoords;
+
 void main()
 {
-    outColor = vec4(vec3(0.5), 1.0);
+    outColor = texture(rock, textureCoords);
 }
