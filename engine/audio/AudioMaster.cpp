@@ -23,9 +23,10 @@ ALuint AudioMaster::loadSound(const char *filename)
 
     const char *wavFile = loadWav(filename, channels, sampleRate, bitsPerSample, size);
 
-    
+    ALenum format = getFormat(channels, bitsPerSample);
+    alBufferData(buffer, format, wavFile, size, sampleRate);
 
-    return 0;
+    return buffer;
 }
 
 AudioMaster::~AudioMaster()
@@ -37,4 +38,19 @@ char *AudioMaster::loadWav(const char *filename, uint8_t &channels, int32_t &sam
                            ALsizei &size)
 {
 
+}
+
+ALenum AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
+{
+    if (channels == 1 && bitsPerSample == 8)
+    {
+        return AL_FORMAT_MONO8;
+    } else if (channels == 1 && bitsPerSample == 16)
+    {
+        return AL_FORMAT_MONO16;
+    } else if (channels == 2 && bitsPerSample == 8)
+    {
+        return AL_FORMAT_STEREO8;
+    }
+    return AL_FORMAT_STEREO16;
 }
