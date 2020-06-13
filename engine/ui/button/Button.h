@@ -19,7 +19,7 @@ struct Button : public Entity
 
     int m_Width{}, m_Height{};
 
-    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
+    Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
 
 private:
     bool isInsideButton(double x, double y) const;

@@ -15,8 +15,8 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-
     Camera camera;
+
     Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
 
     Renderer3D renderer(light);

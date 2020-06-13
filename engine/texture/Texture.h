@@ -1,43 +1,26 @@
 //
-// Created by david on 24. 03. 2020..
+// Created by david on 06. 06. 2020..
 //
 
 #ifndef SURVIVE_TEXTURE_H
 #define SURVIVE_TEXTURE_H
 
-#include <GL/glew.h>
 
-#include "../renderer/Loader.h"
+#include <GL/glew.h>
 
 class Texture
 {
 private:
-    GLuint m_Vao;
-    size_t m_VertexCount;
-    GLuint m_TextureID;
+    GLuint m_TextureId;
 
 public:
-    Texture(const Model &model, GLuint textureId);
+    explicit Texture(GLuint textureId);
 
-    Texture() = default;
-
-    void bindTexture() const;
+    void bindTexture(int textureIndex) const;
 
     static void unbindTexture();
 
-    [[nodiscard]] size_t vertexCount() const;
-
-    bool operator==(const Texture &rhs) const;
-
-    friend class TextureHash;
-};
-
-struct TextureHash
-{
-    std::size_t operator()(const Texture &texture) const noexcept
-    {
-        return texture.m_Vao ^ texture.m_TextureID ^ texture.m_VertexCount;
-    }
+    [[nodiscard]] GLuint textureId() const;
 };
 
 

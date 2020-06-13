@@ -5,9 +5,8 @@
 #include "Renderer3D.h"
 
 Renderer3D::Renderer3D(const Light &light)
-        : m_Light(light)
+        : m_Light(light), m_ObjectRenderer(light)
 {
-    m_ObjectRenderer.setLight(light);
 }
 
 void Renderer3D::render(const Camera &camera) const

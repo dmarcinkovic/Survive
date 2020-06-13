@@ -16,9 +16,9 @@ void Renderer3DUtil::finishRendering()
     glDisable(GL_DEPTH_TEST);
 }
 
-void Renderer3DUtil::prepareEntity(const Texture &texture)
+void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
 {
-    texture.bindTexture();
+    texture.bind();
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
@@ -26,7 +26,7 @@ void Renderer3DUtil::prepareEntity(const Texture &texture)
 
 void Renderer3DUtil::finishRenderingEntity()
 {
-    Texture::unbindTexture();
+    TexturedModel::unbind();
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);

@@ -4,7 +4,7 @@
 
 #include "Entity.h"
 
-Entity::Entity(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ)
+Entity::Entity(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ)
         : m_Texture(texture), m_Position(position), m_ScaleX(scaleX), m_ScaleY(scaleY), m_ScaleZ(scaleZ)
 {
 
