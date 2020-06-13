@@ -5,8 +5,6 @@
 #ifndef SURVIVE_TERRAINRENDERER_H
 #define SURVIVE_TERRAINRENDERER_H
 
-#include <functional>
-
 #include "TerrainShader.h"
 #include "Terrain.h"
 #include "../camera/Camera.h"
@@ -19,7 +17,7 @@ private:
     constexpr static const float far = 1000.0f;
 
     TerrainShader m_Shader;
-    Terrain m_Terrain;
+    Terrain *m_Terrain{};
 
 public:
     TerrainRenderer();
@@ -27,6 +25,11 @@ public:
     void render(const Camera &camera) const;
 
     void addTerrain(Terrain &terrain);
+
+private:
+    void prepareRendering() const;
+
+    static void finishRendering();
 };
 
 
