@@ -9,3 +9,8 @@ Terrain::Terrain(const Model &model, const glm::vec3 &position, float scaleX, fl
 {
 
 }
+
+void Terrain::addTextures(const char *blendMap, const std::vector<const char *> &textures)
+{
+
+}
