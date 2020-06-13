@@ -22,7 +22,8 @@ int main()
     Renderer3D renderer(light);
 
     Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -100}, 100, 100, 1);
-    terrain.addTextures("res/blendMap.png", {"res/dirt.jpg", "res/grass.jpg", "res/rock.jpg"});
+    terrain.addTextures("res/blendMap.png",
+                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
     renderer.addTerrain(terrain);
 
     while (display.isRunning())

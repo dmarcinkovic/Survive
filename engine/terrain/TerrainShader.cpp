@@ -17,9 +17,11 @@ void TerrainShader::getUniformLocations()
     m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 
     m_LocationBlendMap = glGetUniformLocation(m_Program, "blendMap");
+
     m_LocationRock = glGetUniformLocation(m_Program, "rock");
     m_LocationGrass = glGetUniformLocation(m_Program, "grass");
     m_LocationDirt = glGetUniformLocation(m_Program, "dirt");
+    m_LocationFlowers = glGetUniformLocation(m_Program, "flowers");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -43,4 +45,5 @@ void TerrainShader::loadTextures() const
     loadInteger(m_LocationDirt, 1);
     loadInteger(m_LocationGrass, 2);
     loadInteger(m_LocationRock, 3);
+    loadInteger(m_LocationFlowers, 4);
 }

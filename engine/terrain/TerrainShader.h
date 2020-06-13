@@ -19,9 +19,11 @@ private:
     GLuint m_LocationViewMatrix{};
 
     GLuint m_LocationBlendMap{};
+
     GLuint m_LocationGrass{};
     GLuint m_LocationDirt{};
     GLuint m_LocationRock{};
+    GLuint m_LocationFlowers{};
 
 public:
     TerrainShader();
