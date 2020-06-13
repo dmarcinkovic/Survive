@@ -7,6 +7,8 @@
 #include "../texture/stb_image.h"
 #include "../texture/TexturedModel.h"
 
+std::vector<GLuint> Loader::m_Textures;
+
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size)
 {
     GLuint vao = createVao();
