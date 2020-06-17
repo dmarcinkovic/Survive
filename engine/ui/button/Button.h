@@ -11,6 +11,7 @@
 #include "../../entity/Entity2D.h"
 #include "../../text/Font.h"
 #include "../../text/Text.h"
+#include "../../display/Display.h"
 
 class Renderer2D;
 
@@ -32,7 +33,22 @@ public:
 
     Text &getText();
 
-    void setText(const std::string& text, const Font &font, const glm::vec3 &textColor = glm::vec3{});
+    void setText(const std::string &text, const Font &font, const glm::vec3 &textColor = glm::vec3{});
+
+    template<typename Callable, typename ...Args>
+    void onButtonPress(Callable &&callable, Args &&... args)
+    {
+        auto mousePressedListener = [this, callable = std::forward<Callable>(callable),
+                ...args = std::forward<Args>(args)](int button, int action, double mouseX, double mouseY)
+        {
+            if (isInsideButton(mouseX, mouseY) && action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+            {
+                callable(args...);
+            }
+        };
+
+        Display::addMouseListener(mousePressedListener);
+    }
 
 private:
     [[nodiscard]] bool isInsideButton(double x, double y) const;

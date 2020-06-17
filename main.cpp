@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
@@ -25,6 +26,7 @@ int main()
     Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
                    glm::vec4{0, 1, 0, 0.4});
     button2.setText("Button2", font);
+    button2.onButtonPress([]{std::cout << "Button pressed\n";});
 
     renderer.addButton(button);
     renderer.addButton(button2);
