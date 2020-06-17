@@ -30,6 +30,8 @@ public:
     bool operator==(const Texture &rhs) const;
 
     friend class TextureHash;
+
+    [[nodiscard]] bool isValidTexture() const;
 };
 
 struct TextureHash

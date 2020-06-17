@@ -3,12 +3,20 @@
 out vec4 outColor;
 in vec3 pos;
 
+in vec2 textureCoordinates;
+
 uniform vec4 color;
-//uniform bool loadImage;
-//
-//uniform sampler2D image;
+uniform bool isLoadingImage;
+
+uniform sampler2D image;
 
 void main()
 {
-    outColor = color;
+    if (isLoadingImage)
+    {
+        outColor = texture(image, textureCoordinates);
+    } else
+    {
+        outColor = color;
+    }
 }

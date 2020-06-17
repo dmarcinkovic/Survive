@@ -33,3 +33,8 @@ bool Texture::operator==(const Texture &rhs) const
            m_VertexCount == rhs.m_VertexCount &&
            m_TextureID == rhs.m_TextureID;
 }
+
+bool Texture::isValidTexture() const
+{
+    return m_TextureID != 0;
+}
