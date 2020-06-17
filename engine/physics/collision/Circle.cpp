@@ -4,8 +4,8 @@
 
 #include "Circle.h"
 
-Circle::Circle(Entity2D &circle, float radius)
-    : m_Circle(circle), m_Radius(radius)
+Circle::Circle(Entity2D &circle, float radius, const BodyType &bodyType, const glm::vec2 &initialVelocity)
+        : Body(circle, bodyType, initialVelocity), m_Radius(radius)
 {
 
 }

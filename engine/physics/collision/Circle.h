@@ -5,17 +5,20 @@
 #ifndef SURVIVE_CIRCLE_H
 #define SURVIVE_CIRCLE_H
 
+#include <glm/glm.hpp>
 
 #include "../../entity/Entity2D.h"
+#include "BodyType.h"
+#include "Body.h"
 
-class Circle
+class Circle : public Body
 {
 private:
-    Entity2D &m_Circle;
     float m_Radius;
 
 public:
-    explicit Circle(Entity2D &circle, float radius);
+    explicit Circle(Entity2D &circle, float radius, const BodyType &bodyType, const glm::vec2 &initialVelocity = glm::vec2{});
+
 };
 
 
