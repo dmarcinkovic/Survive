@@ -5,10 +5,9 @@
 #include "Button.h"
 #include "../../display/Display.h"
 
-Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-               const std::string &text, const Font &font, const glm::vec3 &textColor)
+Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity2D(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
-          m_OriginalScaleY(scaleY), m_Text(text, font, position, textColor)
+          m_OriginalScaleY(scaleY)
 {
     auto[width, height] = Display::getWindowSize();
     convertToScreenSpace(width, height);
@@ -77,4 +76,9 @@ void Button::addWindowResizeListener()
 Text &Button::getText()
 {
     return m_Text;
+}
+
+void Button::setText(const std::string& text, const Font &font, const glm::vec3 &textColor)
+{
+    m_Text = Text(text, font, m_Position, textColor);
 }

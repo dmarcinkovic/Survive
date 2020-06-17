@@ -19,6 +19,8 @@ private:
 public:
     Font(const char* textureAtlas, Loader &loader);
 
+    Font() = default;
+
     void loadFontFromFntFile(const char* fntFile);
 
     void loadFontFromJsonFile(const char* jsonFile);

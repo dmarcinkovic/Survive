@@ -16,14 +16,14 @@ class Text : public Entity2D
 private:
     constexpr static float PADDING = -15.0f;
 
-    const std::string m_Text;
-    const Font m_Font;
+    std::string m_Text;
+    Font m_Font{};
     bool m_Centered{};
     glm::vec3 m_Color{};
 
-    GLuint m_TextTexture;
+    GLuint m_TextTexture{};
 
-    glm::vec3 m_BorderColor;
+    glm::vec3 m_BorderColor{};
     float m_BorderWidth{};
 
     std::vector<float> m_Vertices;
@@ -32,6 +32,8 @@ private:
 public:
     Text(std::string text, Font font, const glm::vec3 &position,
          const glm::vec3 &color = glm::vec3{1, 1, 1}, float scale = 1.0);
+
+    Text();
 
     void loadTexture(Loader &loader);
 

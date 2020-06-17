@@ -28,10 +28,11 @@ public:
 
     int m_Width{}, m_Height{};
 
-    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color,
-           const std::string &text, const Font &font, const glm::vec3 &textColor = glm::vec3{0, 0, 0});
+    Button(const Texture &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
 
     Text &getText();
+
+    void setText(const std::string& text, const Font &font, const glm::vec3 &textColor = glm::vec3{});
 
 private:
     [[nodiscard]] bool isInsideButton(double x, double y) const;

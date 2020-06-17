@@ -17,6 +17,12 @@ Text::Text(std::string text, Font font, const glm::vec3 &position,
     m_ScaleY = scale;
 }
 
+Text::Text()
+    : Entity2D()
+{
+
+}
+
 Model Text::calculateVertices(Loader &loader)
 {
     float cursorX = m_Position.x;
