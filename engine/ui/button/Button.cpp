@@ -14,8 +14,6 @@ Button::Button(const Texture &texture, const glm::vec3 &position, float scaleX, 
 
     addMouseMoveListener();
     addWindowResizeListener();
-
-    m_Text.centerText();
 }
 
 void Button::convertToScreenSpace(float width, float height)
@@ -81,4 +79,5 @@ Text &Button::getText()
 void Button::setText(const std::string& text, const Font &font, const glm::vec3 &textColor)
 {
     m_Text = Text(text, font, m_Position, textColor);
+    m_Text.centerText();
 }
