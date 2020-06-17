@@ -126,7 +126,6 @@ GLuint Loader::loadTexture(const char *texture) noexcept
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-
     m_Textures.emplace_back(textureId);
     return textureId;
 }
