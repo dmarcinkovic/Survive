@@ -9,3 +9,23 @@ Circle::Circle(Entity2D &circle, float radius, const BodyType &bodyType, const g
 {
 
 }
+
+void Circle::collide(Circle &circle)
+{
+
+}
+
+void Circle::collide(Rectangle &rectangle)
+{
+
+}
+
+void Circle::collide(Triangle &triangle)
+{
+
+}
+
+void Circle::accept(Body &body)
+{
+    body.collide(*this);
+}

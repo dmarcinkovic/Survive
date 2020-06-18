@@ -12,13 +12,26 @@
 #include "BodyType.h"
 #include "Body.h"
 
+class Circle;
+
+class Triangle;
+
 class Rectangle : public Body
 {
 private:
     float m_Width, m_Height;
 
 public:
-    Rectangle(Entity2D &rectangle, float width, float height, const BodyType &bodyType, const glm::vec2 &initialVelocity = glm::vec2{});
+    Rectangle(Entity2D &rectangle, float width, float height, const BodyType &bodyType,
+              const glm::vec2 &initialVelocity = glm::vec2{});
+
+    void collide(Circle &circle) override;
+
+    void collide(Rectangle &rectangle) override;
+
+    void collide(Triangle &triangle) override;
+
+    void accept(Body &body) override;
 };
 
 

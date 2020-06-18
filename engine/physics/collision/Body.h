@@ -11,6 +11,12 @@
 #include "../../entity/Entity2D.h"
 #include "BodyType.h"
 
+class Triangle;
+
+class Circle;
+
+class Rectangle;
+
 class Body
 {
 protected:
@@ -21,6 +27,15 @@ protected:
 public:
     Body(Entity2D &entity2D, const BodyType &bodyType, const glm::vec2 &initialVelocity);
 
+    [[nodiscard]] const BodyType &bodyType() const;
+
+    virtual void collide(Circle &circle);
+
+    virtual void collide(Rectangle &rectangle);
+
+    virtual void collide(Triangle &triangle);
+
+    virtual void accept(Body &body);
 };
 
 

@@ -9,6 +9,10 @@
 #include "../../entity/Entity2D.h"
 #include "Body.h"
 
+class Circle;
+
+class Rectangle;
+
 class Triangle : public Body
 {
 private:
@@ -17,6 +21,14 @@ private:
 public:
     Triangle(Entity2D &triangle, float a, float b, float c, const BodyType &bodyType,
              const glm::vec2 &initialVelocity = glm::vec2{});
+
+    void collide(Circle &circle) override;
+
+    void collide(Rectangle &rectangle) override;
+
+    void collide(Triangle &triangle) override;
+
+    void accept(Body &body) override;
 };
 
 

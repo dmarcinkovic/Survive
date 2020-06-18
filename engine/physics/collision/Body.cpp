@@ -9,3 +9,28 @@ Body::Body(Entity2D &entity2D, const BodyType &bodyType, const glm::vec2 &initia
 {
 
 }
+
+const BodyType &Body::bodyType() const
+{
+    return m_BodyType;
+}
+
+void Body::collide(Circle &circle)
+{
+
+}
+
+void Body::collide(Rectangle &rectangle)
+{
+
+}
+
+void Body::collide(Triangle &triangle)
+{
+
+}
+
+void Body::accept(Body &body)
+{
+
+}

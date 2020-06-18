@@ -10,3 +10,23 @@ Triangle::Triangle(Entity2D &triangle, float a, float b, float c, const BodyType
 {
 
 }
+
+void Triangle::collide(Circle &circle)
+{
+
+}
+
+void Triangle::collide(Rectangle &rectangle)
+{
+
+}
+
+void Triangle::collide(Triangle &triangle)
+{
+
+}
+
+void Triangle::accept(Body &body)
+{
+    body.collide(*this);
+}
