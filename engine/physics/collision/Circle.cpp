@@ -6,7 +6,7 @@
 #include "Circle.h"
 
 Circle::Circle(Entity2D &circle, float radius, float mass, const BodyType &bodyType, const glm::vec2 &initialVelocity)
-        : Body(circle, bodyType,mass, initialVelocity), m_Radius(radius)
+        : Body(circle, bodyType, mass, initialVelocity), m_Radius(radius)
 {
 
 }
@@ -22,14 +22,15 @@ void Circle::collide(Circle &circle)
     auto position = m_Body.m_Position - circle.m_Body.m_Position;
     float totalDistance = m_Radius + circle.m_Radius;
 
-    if (position.x * position.x + position.y + position.y > totalDistance * totalDistance)
+    if (position.x * position.x + position.y * position.y > totalDistance * totalDistance)
     {
-        std::cout << "No collision\n";
+//        std::cout << "No collision\n";
         return;
     }
 
     if (circle.bodyType() == BodyType::DYNAMIC)
     {
+//        std::cout << "Circles are colliding\n";
         float totalMass = circle.m_Mass + m_Mass;
         if (totalDistance == 0)
         {
@@ -39,15 +40,16 @@ void Circle::collide(Circle &circle)
         float k1 = m_Mass / totalMass;
         float k2 = circle.m_Mass / totalMass;
 
-        m_Velocity = k1 * m_Velocity + k2 * circle.m_Velocity;
-        circle.m_Velocity = k2 * circle.m_Velocity + k1 * m_Velocity;
+        const glm::vec2 velocity = m_Velocity;
+
+        m_Velocity = k1 * velocity + k2 * circle.m_Velocity;
+        circle.m_Velocity = k2 * circle.m_Velocity + k1 * velocity;
     } else
     {
         glm::vec2 normal = m_Body.m_Position - circle.m_Body.m_Position;
+        std::cout << "Normal: " << normal.x << ' ' << normal.y << '\n';
         m_Velocity = glm::reflect(m_Velocity, normal);
     }
-
-    std::cout << "Circle - circle " << m_Radius << '\n';
 }
 
 void Circle::collide(Rectangle &rectangle)

@@ -38,6 +38,10 @@ public:
     virtual void collide(Triangle &triangle) = 0;
 
     virtual void accept(Body &body) = 0;
+
+    Entity2D &getBody();
+
+    [[nodiscard]] const glm::vec2 &velocity() const;
 };
 
 

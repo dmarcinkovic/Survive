@@ -14,3 +14,13 @@ const BodyType &Body::bodyType() const
 {
     return m_BodyType;
 }
+
+Entity2D &Body::getBody()
+{
+    return m_Body;
+}
+
+const glm::vec2 &Body::velocity() const
+{
+    return m_Velocity;
+}

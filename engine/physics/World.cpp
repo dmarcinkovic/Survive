@@ -22,12 +22,17 @@ void World::step()
 
             if (m_Bodies[i]->bodyType() == BodyType::STATIC)
             {
-                m_Bodies[j]->accept(*m_Bodies[i].get());
+                m_Bodies[i]->accept(*m_Bodies[j].get());
             } else
             {
-                m_Bodies[i]->accept(*m_Bodies[j].get());
+                m_Bodies[j]->accept(*m_Bodies[i].get());
             }
         }
+    }
+
+    for (auto &body : m_Bodies)
+    {
+        body->getBody().m_Position += glm::vec3(body->velocity(), 0);
     }
 }
 
