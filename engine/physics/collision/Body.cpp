@@ -14,23 +14,3 @@ const BodyType &Body::bodyType() const
 {
     return m_BodyType;
 }
-
-void Body::collide(Circle &circle)
-{
-
-}
-
-void Body::collide(Rectangle &rectangle)
-{
-
-}
-
-void Body::collide(Triangle &triangle)
-{
-
-}
-
-void Body::accept(Body &body)
-{
-
-}

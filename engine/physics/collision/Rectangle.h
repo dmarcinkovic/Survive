@@ -7,6 +7,7 @@
 
 
 #include <glm/glm.hpp>
+#include <ostream>
 
 #include "../../entity/Entity2D.h"
 #include "BodyType.h"

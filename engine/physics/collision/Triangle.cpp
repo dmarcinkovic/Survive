@@ -2,6 +2,7 @@
 // Created by david on 18. 06. 2020..
 //
 
+#include <iostream>
 #include "Triangle.h"
 
 Triangle::Triangle(Entity2D &triangle, float a, float b, float c, const BodyType &bodyType,
@@ -13,17 +14,17 @@ Triangle::Triangle(Entity2D &triangle, float a, float b, float c, const BodyType
 
 void Triangle::collide(Circle &circle)
 {
-
+    std::cout << "Triangle - circle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
 }
 
 void Triangle::collide(Rectangle &rectangle)
 {
-
+    std::cout << "Triangle - rectangle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
 }
 
 void Triangle::collide(Triangle &triangle)
 {
-
+    std::cout << "Triangle - triangle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
 }
 
 void Triangle::accept(Body &body)

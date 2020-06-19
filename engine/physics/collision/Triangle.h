@@ -6,6 +6,7 @@
 #define SURVIVE_TRIANGLE_H
 
 
+#include <ostream>
 #include "../../entity/Entity2D.h"
 #include "Body.h"
 

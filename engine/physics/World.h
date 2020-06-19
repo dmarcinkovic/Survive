@@ -5,8 +5,8 @@
 #ifndef SURVIVE_WORLD_H
 #define SURVIVE_WORLD_H
 
-#include <functional>
 #include <vector>
+#include <memory>
 
 #include "collision/Circle.h"
 #include "collision/Rectangle.h"
@@ -15,10 +15,10 @@
 class World
 {
 private:
-    std::vector<std::reference_wrapper<Body>> m_Bodies;
+    std::vector<std::unique_ptr<Body>> m_Bodies;
 
 public:
-    void addBody(Body &body);
+    void addBody(std::unique_ptr<Body> body);
 
     void step();
 };
