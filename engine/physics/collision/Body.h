@@ -24,8 +24,10 @@ protected:
     glm::vec2 m_Velocity;
     BodyType m_BodyType;
 
+    float m_Mass;
+
 public:
-    Body(Entity2D &entity2D, const BodyType &bodyType, const glm::vec2 &initialVelocity);
+    Body(Entity2D &entity2D, const BodyType &bodyType, float mass, const glm::vec2 &initialVelocity);
 
     [[nodiscard]] const BodyType &bodyType() const;
 

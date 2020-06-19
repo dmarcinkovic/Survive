@@ -22,7 +22,7 @@ private:
     float m_Radius;
 
 public:
-    explicit Circle(Entity2D &circle, float radius, const BodyType &bodyType,
+    explicit Circle(Entity2D &circle, float radius, float mass, const BodyType &bodyType,
                     const glm::vec2 &initialVelocity = glm::vec2{});
 
     void collide(Circle &circle) override;

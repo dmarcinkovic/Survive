@@ -4,8 +4,8 @@
 
 #include "Body.h"
 
-Body::Body(Entity2D &entity2D, const BodyType &bodyType, const glm::vec2 &initialVelocity)
-    : m_Body(entity2D), m_BodyType(bodyType), m_Velocity(initialVelocity)
+Body::Body(Entity2D &entity2D, const BodyType &bodyType, float mass, const glm::vec2 &initialVelocity)
+        : m_Body(entity2D), m_BodyType(bodyType), m_Mass(mass), m_Velocity(initialVelocity)
 {
 
 }

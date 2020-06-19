@@ -16,17 +16,17 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    Texture texture(renderer.getModel(),loader.loadTexture("res/apple.png"));
-    Texture texture1(renderer.getModel(),loader.loadTexture("res/texture.jpg"));
+    Texture texture(renderer.getModel(), loader.loadTexture("res/apple.png"));
+    Texture texture1(renderer.getModel(), loader.loadTexture("res/texture.jpg"));
 
     Entity2D entity1(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3);
-    Entity2D entity2(texture, glm::vec3{0.5, 0.5, 0.0}, 0.3);
+    Entity2D entity2(texture, glm::vec3{-0.1, 0.5, 0.0}, 0.3);
     Entity2D entity3(texture1, glm::vec3{-0.5, -0.5, 0.0}, 0.3);
 
     World world;
-    world.addBody(std::make_unique<Circle>(entity1, 0.3, BodyType::DYNAMIC));
-    world.addBody(std::make_unique<Rectangle>(entity3, 0.2, 0.4, BodyType::STATIC));
-    world.addBody(std::make_unique<Circle>(entity2, 0.1, BodyType::DYNAMIC));
+    world.addBody(std::make_unique<Circle>(entity1, 0.3, 1, BodyType::DYNAMIC));
+    world.addBody(std::make_unique<Circle>(entity2, 0.1, 1, BodyType::DYNAMIC));
+    world.addBody(std::make_unique<Rectangle>(entity3, 0.2, 0.4, 1, BodyType::STATIC));
 
     world.step();
 

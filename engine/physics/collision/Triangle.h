@@ -20,7 +20,7 @@ private:
     float m_A, m_B, m_C;
 
 public:
-    Triangle(Entity2D &triangle, float a, float b, float c, const BodyType &bodyType,
+    Triangle(Entity2D &triangle, float a, float b, float c, float mass, const BodyType &bodyType,
              const glm::vec2 &initialVelocity = glm::vec2{});
 
     void collide(Circle &circle) override;

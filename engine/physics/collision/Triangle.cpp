@@ -5,9 +5,9 @@
 #include <iostream>
 #include "Triangle.h"
 
-Triangle::Triangle(Entity2D &triangle, float a, float b, float c, const BodyType &bodyType,
+Triangle::Triangle(Entity2D &triangle, float a, float b, float c, float mass, const BodyType &bodyType,
                    const glm::vec2 &initialVelocity)
-        : Body(triangle, bodyType, initialVelocity), m_A(a), m_B(b), m_C(c)
+        : Body(triangle, bodyType, mass, initialVelocity), m_A(a), m_B(b), m_C(c)
 {
 
 }

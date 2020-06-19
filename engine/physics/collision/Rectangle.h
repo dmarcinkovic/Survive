@@ -23,7 +23,7 @@ private:
     float m_Width, m_Height;
 
 public:
-    Rectangle(Entity2D &rectangle, float width, float height, const BodyType &bodyType,
+    Rectangle(Entity2D &rectangle, float width, float height, float mass, const BodyType &bodyType,
               const glm::vec2 &initialVelocity = glm::vec2{});
 
     void collide(Circle &circle) override;

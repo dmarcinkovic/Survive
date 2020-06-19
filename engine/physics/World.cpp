@@ -20,7 +20,13 @@ void World::step()
                 m_Bodies[j]->bodyType() == BodyType::STATIC)
                 continue;
 
-            m_Bodies[i]->accept(*m_Bodies[j].get());
+            if (m_Bodies[i]->bodyType() == BodyType::STATIC)
+            {
+                m_Bodies[j]->accept(*m_Bodies[i].get());
+            } else
+            {
+                m_Bodies[i]->accept(*m_Bodies[j].get());
+            }
         }
     }
 }

@@ -5,9 +5,9 @@
 #include <iostream>
 #include "Rectangle.h"
 
-Rectangle::Rectangle(Entity2D &rectangle, float width, float height, const BodyType &bodyType,
+Rectangle::Rectangle(Entity2D &rectangle, float width, float height, float mass, const BodyType &bodyType,
                      const glm::vec2 &initialVelocity)
-        : Body(rectangle, bodyType, initialVelocity), m_Height(height), m_Width(width)
+        : Body(rectangle, bodyType, mass, initialVelocity), m_Height(height), m_Width(width)
 {
 
 }
