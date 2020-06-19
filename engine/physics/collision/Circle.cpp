@@ -30,7 +30,21 @@ void Circle::collide(Circle &circle)
 
     if (circle.bodyType() == BodyType::DYNAMIC)
     {
+        float totalMass = circle.m_Mass + m_Mass;
+        if (totalDistance == 0)
+        {
+            return;
+        }
 
+        float k1 = m_Mass / totalMass;
+        float k2 = circle.m_Mass / totalMass;
+
+        m_Velocity = k1 * m_Velocity + k2 * circle.m_Velocity;
+        circle.m_Velocity = k2 * circle.m_Velocity + k1 * m_Velocity;
+    } else
+    {
+        glm::vec2 normal = m_Body.m_Position - circle.m_Body.m_Position;
+        m_Velocity = glm::reflect(m_Velocity, normal);
     }
 
     std::cout << "Circle - circle " << m_Radius << '\n';
