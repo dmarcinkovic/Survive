@@ -1,4 +1,3 @@
-#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
@@ -25,9 +24,9 @@ int main()
     Entity2D entity3(texture1, glm::vec3{-0.5, -0.5, 0.0}, 0.3);
 
     World world;
-    world.addBody(std::make_unique<Circle>(entity1, 10, BodyType::DYNAMIC));
-    world.addBody(std::make_unique<Rectangle>(entity3, 10, 12, BodyType::STATIC));
-    world.addBody(std::make_unique<Circle>(entity2, 15, BodyType::DYNAMIC));
+    world.addBody(std::make_unique<Circle>(entity1, 0.3, BodyType::DYNAMIC));
+    world.addBody(std::make_unique<Rectangle>(entity3, 0.2, 0.4, BodyType::STATIC));
+    world.addBody(std::make_unique<Circle>(entity2, 0.1, BodyType::DYNAMIC));
 
     world.step();
 
