@@ -49,6 +49,7 @@ void Circle::collide(Circle &circle)
         glm::vec2 normal = m_Body.m_Position - circle.m_Body.m_Position;
         std::cout << "Normal: " << normal.x << ' ' << normal.y << '\n';
         m_Velocity = glm::reflect(m_Velocity, normal);
+        std::cout << m_Velocity.x << ' ' << m_Velocity.y << '\n';
     }
 }
 
