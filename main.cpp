@@ -20,7 +20,7 @@ int main()
     Texture texture1(renderer.getModel(), loader.loadTexture("res/circle.png"));
 
     Entity2D entity1(texture, glm::vec3{-0.5, 0.5, 0.0}, 0.3);
-    Entity2D entity2(texture, glm::vec3{0.5, 0.35, 0.0}, 0.1);
+    Entity2D entity2(texture, glm::vec3{0.5, 0.25, 0.0}, 0.1);
     Entity2D entity3(texture1, glm::vec3{-0.5, -0.5, 0.0}, 0.3);
 
     World world;
