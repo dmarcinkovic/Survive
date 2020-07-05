@@ -8,9 +8,7 @@
 #include <vector>
 #include <memory>
 
-#include "collision/Circle.h"
-#include "collision/Rectangle.h"
-#include "collision/Triangle.h"
+#include "collision/Body.h"
 
 class World
 {

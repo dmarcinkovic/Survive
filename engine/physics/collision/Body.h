@@ -8,8 +8,8 @@
 
 #include <glm/glm.hpp>
 
-#include "../../entity/Entity2D.h"
 #include "BodyType.h"
+#include "../../entity/Entity2D.h"
 
 class Triangle;
 

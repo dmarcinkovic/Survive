@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+
 #include "Body.h"
 
 Body::Body(Entity2D &entity2D, const BodyType &bodyType, float mass, const glm::vec2 &initialVelocity)
@@ -44,7 +45,6 @@ void Circle::collide(Circle &circle)
 
     if (circle.bodyType() == BodyType::DYNAMIC)
     {
-//        std::cout << "Circles are colliding\n";
         float totalMass = circle.m_Mass + m_Mass;
         if (totalDistance == 0)
         {

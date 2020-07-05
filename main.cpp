@@ -2,8 +2,6 @@
 #include "engine/renderer/Loader.h"
 #include "engine/texture/Texture.h"
 #include "engine/renderer/Renderer2D.h"
-#include "engine/physics/collision/Circle.h"
-#include "engine/physics/collision/Rectangle.h"
 #include "engine/physics/World.h"
 
 int main()
