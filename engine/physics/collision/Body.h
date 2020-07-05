@@ -44,5 +44,58 @@ public:
     [[nodiscard]] const glm::vec2 &velocity() const;
 };
 
+class Circle : public Body
+{
+private:
+    float m_Radius;
+
+public:
+    explicit Circle(Entity2D &circle, float radius, float mass, const BodyType &bodyType,
+                    const glm::vec2 &initialVelocity = glm::vec2{});
+
+    void collide(Circle &circle) override;
+
+    void collide(Rectangle &rectangle) override;
+
+    void collide(Triangle &triangle) override;
+
+    void accept(Body &body) override;
+};
+
+class Rectangle : public Body
+{
+private:
+    float m_Width, m_Height;
+
+public:
+    Rectangle(Entity2D &rectangle, float width, float height, float mass, const BodyType &bodyType,
+              const glm::vec2 &initialVelocity = glm::vec2{});
+
+    void collide(Circle &circle) override;
+
+    void collide(Rectangle &rectangle) override;
+
+    void collide(Triangle &triangle) override;
+
+    void accept(Body &body) override;
+};
+
+class Triangle : public Body
+{
+private:
+    float m_A, m_B, m_C;
+
+public:
+    Triangle(Entity2D &triangle, float a, float b, float c, float mass, const BodyType &bodyType,
+             const glm::vec2 &initialVelocity = glm::vec2{});
+
+    void collide(Circle &circle) override;
+
+    void collide(Rectangle &rectangle) override;
+
+    void collide(Triangle &triangle) override;
+
+    void accept(Body &body) override;
+};
 
 #endif //SURVIVE_BODY_H
