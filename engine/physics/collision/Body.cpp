@@ -80,8 +80,25 @@ void Circle::collide(Circle &circle)
 
 void Circle::collide(Rectangle &rectangle)
 {
-    auto &e = rectangle.getBody();
-    std::cout << "Circle - rectangle " << m_Radius << '\n';
+    const auto &rectanglePos = rectangle.getBody().m_Position;
+    const auto &pos = m_Body.m_Position;
+
+    if (pos.x + m_Radius < rectanglePos.x - rectangle.width() / 2 ||
+        pos.y + m_Radius < rectanglePos.y - rectangle.height() / 2 ||
+        pos.x - m_Radius > rectanglePos.x + rectangle.width() / 2 ||
+        pos.y - m_Radius > rectanglePos.y + rectangle.height() / 2)
+    {
+        return;
+    }
+
+    if (rectangle.bodyType() == BodyType::STATIC)
+    {
+        glm::vec2 normal = pos - rectanglePos;
+        std::cout << normal.x << ' ' << normal.y << '\n';
+//        m_Velocity = glm::reflect(m_Velocity, glm::normalize(normal));
+    }
+
+    std::cout << "They are colliding\n";
 }
 
 void Circle::collide(Triangle &triangle)
@@ -120,6 +137,16 @@ void Rectangle::collide(Triangle &triangle)
 void Rectangle::accept(Body &body)
 {
     body.collide(*this);
+}
+
+float Rectangle::width() const
+{
+    return m_Width;
+}
+
+float Rectangle::height() const
+{
+    return m_Height;
 }
 
 

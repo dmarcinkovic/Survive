@@ -78,6 +78,10 @@ public:
     void collide(Triangle &triangle) override;
 
     void accept(Body &body) override;
+
+    [[nodiscard]] float width() const;
+
+    [[nodiscard]] float height() const;
 };
 
 class Triangle : public Body
