@@ -55,7 +55,7 @@ public:
 
     void collide(Circle &circle) override;
 
-    void collide(Rectangle &rectangle) override;
+    void collide(Rectangle &r) override;
 
     void collide(Triangle &triangle) override;
 
