@@ -80,18 +80,15 @@ void Circle::collide(Circle &circle)
 
 void Circle::collide(Rectangle &r)
 {
-    const auto &rPos = r.getBody().m_Position;
-    const auto &cPos = m_Body.m_Position;
+    BoundingBox box1(r.getBody().m_Position, r.width(), r.height());
+    BoundingBox box2(m_Body.m_Position, m_Radius * 2, m_Radius * 2);
 
-    if (cPos.x + m_Radius < rPos.x - r.width() / 2 || cPos.y + m_Radius < rPos.y - r.height() / 2 ||
-        cPos.x - m_Radius > rPos.x + r.width() / 2 || cPos.y - m_Radius > rPos.y + r.height() / 2)
-    {
-        return;
-    }
+    if (!BoundingBox::collide(box1, box2)) return;
 
     if (r.bodyType() == BodyType::STATIC)
     {
         
+        m_Velocity.x *= -1;
     }
 
     std::cout << "They are colliding\n";
@@ -171,4 +168,18 @@ void Triangle::collide(Triangle &triangle)
 void Triangle::accept(Body &body)
 {
     body.collide(*this);
+}
+
+BoundingBox::BoundingBox(const glm::vec3 &position, float width, float height)
+        : m_Position(position), m_Width(width), m_Height(height)
+{
+
+}
+
+bool BoundingBox::collide(const BoundingBox &box1, const BoundingBox &box2)
+{
+    return !(box1.m_Position.x + box1.m_Width / 2 < box2.m_Position.x - box2.m_Width / 2
+             || box1.m_Position.y + box1.m_Height / 2 < box2.m_Position.y - box2.m_Height / 2
+             || box1.m_Position.x - box1.m_Width / 2 > box2.m_Position.x + box2.m_Width / 2
+             || box1.m_Position.y - box1.m_Height / 2 > box2.m_Position.y + box2.m_Height / 2);
 }

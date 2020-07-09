@@ -11,6 +11,19 @@
 #include "BodyType.h"
 #include "../../entity/Entity2D.h"
 
+class BoundingBox
+{
+private:
+    const glm::vec3 &m_Position;
+    float m_Width;
+    float m_Height;
+
+public:
+    BoundingBox(const glm::vec3 &position, float width, float height);
+
+    static bool collide(const BoundingBox &box1, const BoundingBox &box2);
+};
+
 class Triangle;
 
 class Circle;
@@ -42,6 +55,9 @@ public:
     Entity2D &getBody();
 
     [[nodiscard]] const glm::vec2 &velocity() const;
+
+private:
+
 };
 
 class Circle : public Body
