@@ -24,8 +24,6 @@ public:
     static bool collide(const BoundingBox &box1, const BoundingBox &box2);
 };
 
-class Triangle;
-
 class Circle;
 
 class Rectangle;
@@ -47,8 +45,6 @@ public:
     virtual void collide(Circle &circle) = 0;
 
     virtual void collide(Rectangle &rectangle) = 0;
-
-    virtual void collide(Triangle &triangle) = 0;
 
     virtual void accept(Body &body) = 0;
 
@@ -73,8 +69,6 @@ public:
 
     void collide(Rectangle &r) override;
 
-    void collide(Triangle &triangle) override;
-
     void accept(Body &body) override;
 };
 
@@ -91,31 +85,11 @@ public:
 
     void collide(Rectangle &rectangle) override;
 
-    void collide(Triangle &triangle) override;
-
     void accept(Body &body) override;
 
     [[nodiscard]] float width() const;
 
     [[nodiscard]] float height() const;
-};
-
-class Triangle : public Body
-{
-private:
-    float m_A, m_B, m_C;
-
-public:
-    Triangle(Entity2D &triangle, float a, float b, float c, float mass, const BodyType &bodyType,
-             const glm::vec2 &initialVelocity = glm::vec2{});
-
-    void collide(Circle &circle) override;
-
-    void collide(Rectangle &rectangle) override;
-
-    void collide(Triangle &triangle) override;
-
-    void accept(Body &body) override;
 };
 
 #endif //SURVIVE_BODY_H

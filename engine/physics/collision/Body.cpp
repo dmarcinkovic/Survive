@@ -87,16 +87,10 @@ void Circle::collide(Rectangle &r)
 
     if (r.bodyType() == BodyType::STATIC)
     {
-        
         m_Velocity.x *= -1;
     }
 
     std::cout << "They are colliding\n";
-}
-
-void Circle::collide(Triangle &triangle)
-{
-    std::cout << "Circle - triangle " << m_Radius << '\n';
 }
 
 void Circle::accept(Body &body)
@@ -122,11 +116,6 @@ void Rectangle::collide(Rectangle &rectangle)
     std::cout << "Rectangle - rectangle " << m_Width << ' ' << m_Height << '\n';
 }
 
-void Rectangle::collide(Triangle &triangle)
-{
-    std::cout << "Rectangle - triangle" << m_Width << ' ' << m_Height << '\n';
-}
-
 void Rectangle::accept(Body &body)
 {
     body.collide(*this);
@@ -142,33 +131,6 @@ float Rectangle::height() const
     return m_Height;
 }
 
-
-Triangle::Triangle(Entity2D &triangle, float a, float b, float c, float mass, const BodyType &bodyType,
-                   const glm::vec2 &initialVelocity)
-        : Body(triangle, bodyType, mass, initialVelocity), m_A(a), m_B(b), m_C(c)
-{
-
-}
-
-void Triangle::collide(Circle &circle)
-{
-    std::cout << "Triangle - circle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
-}
-
-void Triangle::collide(Rectangle &rectangle)
-{
-    std::cout << "Triangle - rectangle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
-}
-
-void Triangle::collide(Triangle &triangle)
-{
-    std::cout << "Triangle - triangle " << m_A << ' ' << m_B << ' ' << m_C << '\n';
-}
-
-void Triangle::accept(Body &body)
-{
-    body.collide(*this);
-}
 
 BoundingBox::BoundingBox(const glm::vec3 &position, float width, float height)
         : m_Position(position), m_Width(width), m_Height(height)
