@@ -46,10 +46,8 @@ void Circle::collide(Circle &circle)
     if (circle.bodyType() == BodyType::DYNAMIC)
     {
         float totalMass = circle.m_Mass + m_Mass;
-        if (totalDistance == 0)
-        {
-            return;
-        }
+
+        if (totalDistance == 0) return;
 
         float k1 = m_Mass / totalMass;
         float k2 = circle.m_Mass / totalMass;

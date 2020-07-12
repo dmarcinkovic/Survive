@@ -52,8 +52,6 @@ public:
 
     [[nodiscard]] const glm::vec2 &velocity() const;
 
-private:
-
 };
 
 class Circle : public Body
