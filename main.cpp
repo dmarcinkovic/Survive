@@ -20,7 +20,7 @@ int main()
     TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
                                 loader.loadTexture("res/character.png"));
 
-    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
+    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Camera camera{};
     Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 1});
