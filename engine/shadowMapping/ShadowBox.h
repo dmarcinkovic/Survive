@@ -26,8 +26,8 @@ public:
     static void calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix);
 
     static std::vector<glm::vec4>
-    calcFrustumVertices(const glm::mat4 &rotation, const glm::vec3 &forwardVector, const glm::vec3 &centerNear,
-                        const glm::vec3 &centerFar);
+    calcFrustumVertices(const glm::mat4 &lightViewMatrix, const glm::mat4 &rotation, const glm::vec3 &forwardVector,
+                        const glm::vec3 &centerNear, const glm::vec3 &centerFar);
 
 private:
     static glm::mat4 calcCameraRotation(const Camera &camera);

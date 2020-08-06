@@ -34,8 +34,9 @@ glm::mat4 ShadowBox::calcCameraRotation(const Camera &camera)
     return rotation;
 }
 
-std::vector<glm::vec4> ShadowBox::calcFrustumVertices(const glm::mat4 &rotation, const glm::vec3 &forwardVector,
-                                                      const glm::vec3 &centerNear, const glm::vec3 &centerFar)
+std::vector<glm::vec4>
+ShadowBox::calcFrustumVertices(const glm::mat4 &lightViewMatrix, const glm::mat4 &rotation,
+                               const glm::vec3 &forwardVector, const glm::vec3 &centerNear, const glm::vec3 &centerFar)
 {
     glm::vec3 up = UP * rotation;
     glm::vec3 right = glm::cross(forwardVector, up);
@@ -48,7 +49,14 @@ std::vector<glm::vec4> ShadowBox::calcFrustumVertices(const glm::mat4 &rotation,
     glm::vec3 nearBottom = centerNear + down * nearHeight;
 
     std::vector<glm::vec4> points(8);
-    
+    points[0] = calcLightSpaceFrustumCorner(lightViewMatrix, farTop, right, farWidth);
+    points[1] = calcLightSpaceFrustumCorner(lightViewMatrix, farTop, left, farWidth);
+    points[2] = calcLightSpaceFrustumCorner(lightViewMatrix, farBottom, right, farWidth);
+    points[3] = calcLightSpaceFrustumCorner(lightViewMatrix, farBottom, left, farWidth);
+    points[4] = calcLightSpaceFrustumCorner(lightViewMatrix, nearTop, right, nearWidth);
+    points[5] = calcLightSpaceFrustumCorner(lightViewMatrix, nearTop, left, nearWidth);
+    points[6] = calcLightSpaceFrustumCorner(lightViewMatrix, nearBottom, right, nearWidth);
+    points[7] = calcLightSpaceFrustumCorner(lightViewMatrix, nearBottom, left, nearWidth);
 
     return points;
 }
