@@ -18,7 +18,24 @@ void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightV
     glm::vec3 centerNear = toNear + camera.m_Position;
     glm::vec3 centerFar = toFar + camera.m_Position;
 
+    auto points = calcFrustumVertices(lightViewMatrix, rotation, forwardVector, centerNear, centerFar);
 
+    minX = maxX = points.front().x;
+    minY = maxY = points.front().y;
+    minZ = maxZ = points.front().z;
+
+    for (int i = 1; i < points.size(); ++i)
+    {
+        maxX = std::max(points[i].x, maxX);
+        maxY = std::max(points[i].y, maxY);
+        maxZ = std::max(points[i].z, maxZ);
+
+        minX = std::min(points[i].x, minX);
+        minZ = std::min(points[i].y, minY);
+        minY = std::min(points[i].z, minZ);
+    }
+
+    maxZ += OFFSET;
 }
 
 glm::mat4 ShadowBox::calcCameraRotation(const Camera &camera)
