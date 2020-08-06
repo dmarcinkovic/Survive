@@ -5,6 +5,7 @@
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <numeric>
 
 #include "DaeParser.h"
 #include "../util/Util.h"
@@ -158,28 +159,26 @@ void DaeParser::loadControllers(std::ifstream &reader)
         {
             auto numbers = getData(line);
 
-            jointWeights.reserve(count.size());
-            jointIds.reserve(count.size());
-
             int index = 0;
             for (int n : count)
             {
-                if (n <= 3)
-                {
-                    glm::vec3 jointWeight{-1, -1, -1};
-                    glm::ivec3 jointId{-1, -1, -1};
-                    for (int i = 0; i < 2 * n; i += 2)
-                    {
-                        int j = i / 2;
-                        jointId[j] = std::stoi(numbers[index++]);
-                        jointWeight[j] = weights[std::stof(numbers[index++])];
-                    }
+                int numberOfJoints = std::min(n, 3);
 
-                    jointIds.emplace_back(jointId);
-                    jointWeights.emplace_back(jointWeight);
-                } else
+                glm::vec3 jointWeight{-1, -1, -1};
+                glm::ivec3 jointId{-1, -1, -1};
+                for (int i = 0; i < 2 * numberOfJoints; i += 2)
                 {
-                    index += 2;
+                    int j = i / 2;
+                    jointId[j] = std::stoi(numbers[index++]);
+                    jointWeight[j] = weights[std::stof(numbers[index++])];
+                }
+
+                jointIds.emplace_back(jointId);
+                jointWeights.emplace_back(jointWeight);
+
+                if (n > numberOfJoints)
+                {
+                    index += 2 * (n - numberOfJoints);
                 }
             }
 
@@ -187,6 +186,11 @@ void DaeParser::loadControllers(std::ifstream &reader)
             {
                 std::cout << jointId.x << ' ' << jointId.y << ' ' << jointId.z << '\n';
             }
+
+            auto sum = std::accumulate(count.begin(), count.end(), 0);
+            std::cout << "Index  is: " << index << '\n';
+            std::cout << "Sum is: " << sum << '\n';
+            std::cout << "Double sum is: " << sum * 2 << '\n';
 
             break;
         }
