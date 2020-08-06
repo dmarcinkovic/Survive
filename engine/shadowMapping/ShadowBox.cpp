@@ -19,7 +19,6 @@ void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightV
     glm::vec3 centerFar = toFar + camera.m_Position;
 
 
-
 }
 
 glm::mat4 ShadowBox::calcCameraRotation(const Camera &camera)
@@ -35,9 +34,8 @@ glm::mat4 ShadowBox::calcCameraRotation(const Camera &camera)
     return rotation;
 }
 
-std::vector<glm::vec4>
-ShadowBox::calcFrustumVertices(const glm::mat4 &rotation, const glm::vec3 &forwardVector, const glm::vec3 &centerNear,
-                               const glm::vec3 &centerFar)
+std::vector<glm::vec4> ShadowBox::calcFrustumVertices(const glm::mat4 &rotation, const glm::vec3 &forwardVector,
+                                                      const glm::vec3 &centerNear, const glm::vec3 &centerFar)
 {
     glm::vec3 up = UP * rotation;
     glm::vec3 right = glm::cross(forwardVector, up);
@@ -49,5 +47,14 @@ ShadowBox::calcFrustumVertices(const glm::mat4 &rotation, const glm::vec3 &forwa
     glm::vec3 nearTop = centerNear + up * nearHeight;
     glm::vec3 nearBottom = centerNear + down * nearHeight;
 
+    std::vector<glm::vec4> points(8);
+    
 
+    return points;
+}
+
+glm::vec4 ShadowBox::calcLightSpaceFrustumCorner(const glm::mat4 &lightViewMatrix, const glm::vec3 &startPoint,
+                                                 const glm::vec3 &direction, float width)
+{
+    return lightViewMatrix * glm::vec4{startPoint + direction * width, 1};
 }

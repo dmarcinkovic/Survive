@@ -31,6 +31,9 @@ public:
 
 private:
     static glm::mat4 calcCameraRotation(const Camera &camera);
+
+    static glm::vec4 calcLightSpaceFrustumCorner(const glm::mat4 &lightViewMatrix, const glm::vec3 &startPoint,
+                                                 const glm::vec3 &direction, float width);
 };
 
 
