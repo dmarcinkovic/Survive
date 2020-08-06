@@ -192,6 +192,10 @@ void DaeParser::loadControllers(std::ifstream &reader)
             std::cout << "Sum is: " << sum << '\n';
             std::cout << "Double sum is: " << sum * 2 << '\n';
 
+            std::cout << jointIds.size() << '\n';
+            std::cout << jointWeights.size() << '\n';
+            std::cout << jointNames.size() << '\n';
+
             break;
         }
     }
