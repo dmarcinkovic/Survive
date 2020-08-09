@@ -7,6 +7,13 @@
 #include "ShadowBox.h"
 #include "../constant/Constants.h"
 
+float ShadowBox::minX, ShadowBox::maxX;
+float ShadowBox::minY, ShadowBox::maxY;
+float ShadowBox::minZ, ShadowBox::maxZ;
+
+float ShadowBox::nearHeight, ShadowBox::farHeight;
+float ShadowBox::nearWidth, ShadowBox::farWidth;
+
 void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix)
 {
     const glm::mat4 rotation = calcCameraRotation(camera);
