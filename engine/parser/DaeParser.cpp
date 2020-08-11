@@ -159,6 +159,7 @@ void DaeParser::loadControllers(std::ifstream &reader)
         {
             auto numbers = getData(line);
 
+
             int index = 0;
             for (int n : count)
             {
@@ -186,6 +187,15 @@ void DaeParser::loadControllers(std::ifstream &reader)
             {
                 std::cout << jointId.x << ' ' << jointId.y << ' ' << jointId.z << '\n';
             }
+
+            std::cout << "-------------\n";
+
+            for (auto &jointWeight : jointWeights)
+            {
+                std::cout << jointWeight.x << ' ' << jointWeight.y << ' ' << jointWeight.z << '\n';
+            }
+
+            std::cout << "-----------------\n";
 
             auto sum = std::accumulate(count.begin(), count.end(), 0);
             std::cout << "Index  is: " << index << '\n';
