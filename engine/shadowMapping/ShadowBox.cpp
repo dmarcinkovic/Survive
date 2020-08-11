@@ -13,7 +13,7 @@ ShadowBox::ShadowBox()
     calculateWidthAndHeight();
 }
 
-void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix)
+void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix) const
 {
     const glm::mat4 rotation = calcCameraRotation(camera);
     const glm::vec3 forwardVector = FORWARD * rotation;

@@ -22,6 +22,9 @@ ShadowRenderer::ShadowRenderer()
 
 void ShadowRenderer::render(const Light &light, const Camera &camera) const
 {
+    static const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(light);
+    m_ShadowBox.calculateShadowBox(camera, lightViewMatrix);
+
     Renderer3DUtil::prepareRendering(m_ShadowShader);
     glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
     m_ShadowShader.loadViewMatrix(viewMatrix);
