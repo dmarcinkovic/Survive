@@ -16,16 +16,24 @@ private:
     constexpr static const glm::vec4 UP = glm::vec4{0, 1, 0, 0};
     constexpr static const glm::vec4 FORWARD = glm::vec4{0, 0, -1, 0};
 
-    float minX, maxX;
-    float minY, maxY;
-    float minZ, maxZ;
+    float m_MinX{}, m_MaxX{};
+    float m_MinY{}, m_MaxY{};
+    float m_MinZ{}, m_MaxZ{};
 
-    float farHeight, farWidth, nearHeight, nearWidth;
+    float m_FarHeight{}, m_FarWidth{}, m_NearHeight{}, m_NearWidth{};
 
 public:
     ShadowBox();
 
     void calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix);
+
+    [[nodiscard]] glm::vec3 center(const glm::mat4 &lightViewMatrix) const;
+
+    [[nodiscard]] float width() const;
+
+    [[nodiscard]] float height() const;
+
+    [[nodiscard]] float length() const;
 
 private:
     [[nodiscard]] std::vector<glm::vec4>
