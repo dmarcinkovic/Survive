@@ -13,8 +13,6 @@ struct Constants
     constexpr static float RIGHT = 40.0f;
     constexpr static float BOTTOM = -10.0f;
     constexpr static float TOP = 40.0f;
-    constexpr static float SHADOW_DISTANCE = 100.0f;
-    constexpr static float FIELD_OF_VIEW = 70.0f;
 };
 
 #endif //SURVIVE_CONSTANTS_H

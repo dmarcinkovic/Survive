@@ -13,15 +13,12 @@
 #include "../light/Light.h"
 #include "../objects/Object3D.h"
 #include "../camera/Camera.h"
-#include "ShadowBox.h"
 
 class ShadowRenderer
 {
 private:
     ShadowShader m_ShadowShader{};
     std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
-
-    ShadowBox m_ShadowBox{};
 
 public:
     ShadowRenderer();
