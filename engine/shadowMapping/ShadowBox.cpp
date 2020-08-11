@@ -6,13 +6,12 @@
 
 #include "ShadowBox.h"
 #include "../constant/Constants.h"
+#include "../display/Display.h"
 
-float ShadowBox::minX, ShadowBox::maxX;
-float ShadowBox::minY, ShadowBox::maxY;
-float ShadowBox::minZ, ShadowBox::maxZ;
+ShadowBox::ShadowBox()
+{
 
-float ShadowBox::nearHeight, ShadowBox::farHeight;
-float ShadowBox::nearWidth, ShadowBox::farWidth;
+}
 
 void ShadowBox::calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix)
 {
@@ -60,7 +59,8 @@ glm::mat4 ShadowBox::calcCameraRotation(const Camera &camera)
 
 std::vector<glm::vec4>
 ShadowBox::calcFrustumVertices(const glm::mat4 &lightViewMatrix, const glm::mat4 &rotation,
-                               const glm::vec3 &forwardVector, const glm::vec3 &centerNear, const glm::vec3 &centerFar)
+                               const glm::vec3 &forwardVector, const glm::vec3 &centerNear,
+                               const glm::vec3 &centerFar) const
 {
     glm::vec3 up = UP * rotation;
     glm::vec3 right = glm::cross(forwardVector, up);
@@ -89,4 +89,22 @@ glm::vec4 ShadowBox::calcLightSpaceFrustumCorner(const glm::mat4 &lightViewMatri
                                                  const glm::vec3 &direction, float width)
 {
     return lightViewMatrix * glm::vec4{startPoint + direction * width, 1};
+}
+
+void ShadowBox::calculateWidthAndHeight()
+{
+    double fieldOfViewTan = std::tan(glm::radians(Constants::FIELD_OF_VIEW));
+
+    farWidth = static_cast<float>(Constants::SHADOW_DISTANCE * fieldOfViewTan);
+    nearWidth = static_cast<float>(Constants::NEAR * fieldOfViewTan);
+
+    const float ratio = aspectRatio();
+    farHeight = farWidth / ratio;
+    nearHeight = nearWidth / ratio;
+}
+
+float ShadowBox::aspectRatio()
+{
+    auto[width, height] = Display::getWindowSize();
+    return static_cast<float>(width) / height;
 }

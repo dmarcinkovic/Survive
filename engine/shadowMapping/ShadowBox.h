@@ -16,24 +16,30 @@ private:
     constexpr static const glm::vec4 UP = glm::vec4{0, 1, 0, 0};
     constexpr static const glm::vec4 FORWARD = glm::vec4{0, 0, -1, 0};
 
-    static float minX, maxX;
-    static float minY, maxY;
-    static float minZ, maxZ;
+    float minX, maxX;
+    float minY, maxY;
+    float minZ, maxZ;
 
-    static float farHeight, farWidth, nearHeight, nearWidth;
+    float farHeight, farWidth, nearHeight, nearWidth;
 
 public:
-    static void calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix);
+    ShadowBox();
 
-    static std::vector<glm::vec4>
-    calcFrustumVertices(const glm::mat4 &lightViewMatrix, const glm::mat4 &rotation, const glm::vec3 &forwardVector,
-                        const glm::vec3 &centerNear, const glm::vec3 &centerFar);
+    void calculateShadowBox(const Camera &camera, const glm::mat4 &lightViewMatrix);
 
 private:
+    [[nodiscard]] std::vector<glm::vec4>
+    calcFrustumVertices(const glm::mat4 &lightViewMatrix, const glm::mat4 &rotation, const glm::vec3 &forwardVector,
+                        const glm::vec3 &centerNear, const glm::vec3 &centerFar) const;
+
     static glm::mat4 calcCameraRotation(const Camera &camera);
 
     static glm::vec4 calcLightSpaceFrustumCorner(const glm::mat4 &lightViewMatrix, const glm::vec3 &startPoint,
                                                  const glm::vec3 &direction, float width);
+
+    void calculateWidthAndHeight();
+
+    static float aspectRatio();
 };
 
 
