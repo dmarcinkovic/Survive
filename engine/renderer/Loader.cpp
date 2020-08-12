@@ -118,7 +118,7 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     storeDataInAttributeList(3, jointWeights, 3);
     storeDataInAttributeList(4, jointIds, 3);
 
-    return Model();
+    return Model(vao, vertices.size() / 3);
 }
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)
