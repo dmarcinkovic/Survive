@@ -121,7 +121,7 @@ Model DaeParser::parseIndices(Loader &loader)
         processJointsData(resultWeights, resultIds, vertexIndex);
     }
 
-    return loader.loadToVao(resultPoints, resultTextures, resultNormals);
+    return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds);
 }
 
 void DaeParser::loadControllers(std::ifstream &reader)
