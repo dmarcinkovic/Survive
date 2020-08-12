@@ -49,6 +49,8 @@ public:
 private:
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
 
+    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
+
     void createIndexBuffer(const std::vector<unsigned> &indices);
 
     GLuint createVao();
