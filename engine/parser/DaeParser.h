@@ -12,6 +12,8 @@
 
 struct VertexData
 {
+    std::string indicesLine;
+
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
@@ -24,7 +26,7 @@ class DaeParser
 private:
     static VertexData vertexData;
 
-    static Model loadGeometry(std::ifstream &reader, Loader &loader);
+    static void loadGeometry(std::ifstream &reader);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 

@@ -22,7 +22,9 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
     {
         if (line.find("<library_geometries>") != -1)
         {
-            model = loadGeometry(reader, loader);
+            loadGeometry(reader);
+            model = parseIndices(loader, vertexData.indicesLine, vertexData.vertices, vertexData.normals,
+                                 vertexData.textures, vertexData.size);
         } else if (line.find("<library_controllers>") != -1)
         {
             loadControllers(reader);
@@ -33,14 +35,11 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
     return model;
 }
 
-Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
+void DaeParser::loadGeometry(std::ifstream &reader)
 {
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
-
-    // TODO kreiraj struct za pohranu vertices, normals, texture i coordianteSize tako da
-    // mozes naknadno pozvat metodu parseIndices koju moras nadograditi
 
     int coordinatesSize = 0;
 
@@ -58,7 +57,12 @@ Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
             parseTexturesLine(line, textures);
         } else if (line.find("<p>") != -1)
         {
-            return parseIndices(loader, line, vertices, normals, textures, coordinatesSize + 1);
+            vertexData.indicesLine = line;
+            vertexData.size = coordinatesSize + 1;
+            vertexData.vertices = vertices;
+            vertexData.textures = textures;
+            vertexData.normals = normals;
+            break;
         } else if (line.find("input semantic") != -1)
         {
             int index = line.find("offset");
@@ -67,13 +71,8 @@ Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
                 char c = line[index + 8];
                 coordinatesSize = c - '0';
             }
-        } else if (line.find("</library_geometries>") != -1)
-        {
-            break;
         }
     }
-
-    return Model(0, 0);
 }
 
 void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices)
