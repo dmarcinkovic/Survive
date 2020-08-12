@@ -18,6 +18,9 @@ struct VertexData
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
 
+    std::vector<glm::ivec3> jointIds;
+    std::vector<glm::vec3> jointWeights;
+
     int size;
 };
 

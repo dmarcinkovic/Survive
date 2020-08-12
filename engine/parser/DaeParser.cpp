@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <numeric>
 
 #include "DaeParser.h"
 #include "../util/Util.h"
@@ -112,8 +111,6 @@ Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vect
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
 
-    std::cout << "NUMBER OF VERTICES: " << vertices.size() << ' ' << normals.size() << ' ' << textures.size() << '\n';
-
     for (int i = 0; i < numbers.size(); i += size)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
@@ -164,7 +161,6 @@ void DaeParser::loadControllers(std::ifstream &reader)
         {
             auto numbers = getData(line);
 
-
             int index = 0;
             for (int n : count)
             {
@@ -188,29 +184,8 @@ void DaeParser::loadControllers(std::ifstream &reader)
                 }
             }
 
-            for (auto &jointId : jointIds)
-            {
-                std::cout << jointId.x << ' ' << jointId.y << ' ' << jointId.z << '\n';
-            }
-
-            std::cout << "-------------\n";
-
-            for (auto &jointWeight : jointWeights)
-            {
-                std::cout << jointWeight.x << ' ' << jointWeight.y << ' ' << jointWeight.z << '\n';
-            }
-
-            std::cout << "-----------------\n";
-
-            auto sum = std::accumulate(count.begin(), count.end(), 0);
-            std::cout << "Index  is: " << index << '\n';
-            std::cout << "Sum is: " << sum << '\n';
-            std::cout << "Double sum is: " << sum * 2 << '\n';
-
-            std::cout << jointIds.size() << '\n';
-            std::cout << jointWeights.size() << '\n';
-            std::cout << jointNames.size() << '\n';
-
+            vertexData.jointWeights = jointWeights;
+            vertexData.jointIds = jointIds;
             break;
         }
     }
