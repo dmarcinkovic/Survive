@@ -9,6 +9,8 @@
 #include "DaeParser.h"
 #include "../util/Util.h"
 
+VertexData DaeParser::vertexData;
+
 Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);

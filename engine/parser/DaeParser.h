@@ -22,6 +22,8 @@ struct VertexData
 class DaeParser
 {
 private:
+    static VertexData vertexData;
+
     static Model loadGeometry(std::ifstream &reader, Loader &loader);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
