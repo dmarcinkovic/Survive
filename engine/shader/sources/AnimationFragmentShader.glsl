@@ -21,4 +21,8 @@ void main()
     vec3 lightDirection = normalize(lightPos - worldPosition);
     const float diffuseFactor = max(dot(lightDirection, surfaceNormal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
+
+    vec3 totalColor = (diffuse + ambient) * textureColor.rgb;
+
+    outColor = vec4(totalColor, 1.0);
 }
