@@ -1,5 +1,10 @@
 #version 450 core
 
-void main() {
+in vec3 surfaceNormal;
+in vec2 texCoordinates;
+in vec3 worldPosition;
+
+void main()
+{
 
 }

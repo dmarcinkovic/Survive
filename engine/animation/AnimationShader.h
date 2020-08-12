@@ -6,8 +6,17 @@
 #define SURVIVE_ANIMATIONSHADER_H
 
 
-class AnimationShader
+#include "../shader/Shader.h"
+
+class AnimationShader : public Shader
 {
+private:
+    static constexpr const char* VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
+    static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
+
+public:
+    AnimationShader();
+
 
 };
 
