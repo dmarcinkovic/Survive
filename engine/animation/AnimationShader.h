@@ -14,10 +14,26 @@ private:
     static constexpr const char* VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
     static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
 
+    GLuint m_LocationTransformationMatrix{};
+    GLuint m_LocationViewMatrix{};
+    GLuint m_LocationProjectionMatrix{};
+
+    GLuint m_LocationLightPosition{};
+    GLuint m_LocationLightColor{};
+
 public:
     AnimationShader();
 
+    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
+    void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+    void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+    void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
+
+private:
+    void loadUniformLocations();
 };
 
 
