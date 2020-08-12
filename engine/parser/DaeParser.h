@@ -5,8 +5,19 @@
 #ifndef SURVIVE_DAEPARSER_H
 #define SURVIVE_DAEPARSER_H
 
+#include <glm/glm.hpp>
+#include <vector>
 
 #include "../renderer/Loader.h"
+
+struct VertexData
+{
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> textures;
+
+    int size;
+};
 
 class DaeParser
 {

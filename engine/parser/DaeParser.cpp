@@ -3,7 +3,6 @@
 //
 
 #include <fstream>
-#include <glm/glm.hpp>
 #include <iostream>
 #include <numeric>
 
@@ -37,6 +36,9 @@ Model DaeParser::loadGeometry(std::ifstream &reader, Loader &loader)
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
+
+    // TODO kreiraj struct za pohranu vertices, normals, texture i coordianteSize tako da
+    // mozes naknadno pozvat metodu parseIndices koju moras nadograditi
 
     int coordinatesSize = 0;
 
@@ -108,6 +110,8 @@ Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vect
     std::vector<float> resultPoints;
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
+
+    std::cout << "NUMBER OF VERTICES: " << vertices.size() << ' ' << normals.size() << ' ' << textures.size() << '\n';
 
     for (int i = 0; i < numbers.size(); i += size)
     {
