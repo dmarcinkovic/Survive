@@ -35,8 +35,7 @@ private:
 
     static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
-    static Model parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
-                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures, int size);
+    static Model parseIndices(Loader &loader);
 
     static void loadControllers(std::ifstream &reader);
 

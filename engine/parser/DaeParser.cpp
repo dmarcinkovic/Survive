@@ -14,16 +14,12 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
 
-    Model model;
-
     std::string line;
     while (std::getline(reader, line))
     {
         if (line.find("<library_geometries>") != -1)
         {
             loadGeometry(reader);
-            model = parseIndices(loader, vertexData.indicesLine, vertexData.vertices, vertexData.normals,
-                                 vertexData.textures, vertexData.size);
         } else if (line.find("<library_controllers>") != -1)
         {
             loadControllers(reader);
@@ -31,7 +27,7 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
     }
 
     reader.close();
-    return model;
+    return parseIndices(loader);
 }
 
 void DaeParser::loadGeometry(std::ifstream &reader)
@@ -101,23 +97,23 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
     }
 }
 
-Model DaeParser::parseIndices(Loader &loader, std::string &line, const std::vector<glm::vec3> &vertices,
-                              const std::vector<glm::vec3> &normals, const std::vector<glm::vec2> &textures, int size)
+Model DaeParser::parseIndices(Loader &loader)
 {
-    int index = line.find('>');
-    auto numbers = Util::split(line.substr(index + 1), ' ');
+    int index = vertexData.indicesLine.find('>');
+    auto numbers = Util::split(vertexData.indicesLine.substr(index + 1), ' ');
 
     std::vector<float> resultPoints;
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
+//    std::vector<float> result
 
-    for (int i = 0; i < numbers.size(); i += size)
+    for (int i = 0; i < numbers.size(); i += vertexData.size)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
         unsigned normalIndex = std::stoi(numbers[i + 1]);
         unsigned textureIndex = std::stoi(numbers[i + 2]);
 
-        Util::processVertex(vertices, normals, textures,
+        Util::processVertex(vertexData.vertices, vertexData.normals, vertexData.textures,
                             resultPoints, resultNormals, resultTextures,
                             vertexIndex, textureIndex, normalIndex);
     }
