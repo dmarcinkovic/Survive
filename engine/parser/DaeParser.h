@@ -41,6 +41,8 @@ private:
 
     static std::vector<std::string> getData(std::string &line);
 
+    static void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
 };

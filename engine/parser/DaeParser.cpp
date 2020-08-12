@@ -105,7 +105,8 @@ Model DaeParser::parseIndices(Loader &loader)
     std::vector<float> resultPoints;
     std::vector<float> resultNormals;
     std::vector<float> resultTextures;
-//    std::vector<float> result
+    std::vector<float> resultWeights;
+    std::vector<unsigned> resultIds;
 
     for (int i = 0; i < numbers.size(); i += vertexData.size)
     {
@@ -116,6 +117,8 @@ Model DaeParser::parseIndices(Loader &loader)
         Util::processVertex(vertexData.vertices, vertexData.normals, vertexData.textures,
                             resultPoints, resultNormals, resultTextures,
                             vertexIndex, textureIndex, normalIndex);
+
+        processJointsData(resultWeights, resultIds, vertexIndex);
     }
 
     return loader.loadToVao(resultPoints, resultTextures, resultNormals);
@@ -198,4 +201,18 @@ std::vector<std::string> DaeParser::getData(std::string &line)
     }
 
     return Util::split(line.substr(start + 1, end - start - 1), ' ');
+}
+
+void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
+                                  unsigned int index)
+{
+    const auto &weight = vertexData.jointWeights[index];
+    resultWeights.emplace_back(weight.x);
+    resultWeights.emplace_back(weight.y);
+    resultWeights.emplace_back(weight.z);
+
+    const auto &id = vertexData.jointIds[index];
+    resultWeights.emplace_back(id.x);
+    resultWeights.emplace_back(id.y);
+    resultWeights.emplace_back(id.z);
 }
