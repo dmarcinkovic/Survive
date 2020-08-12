@@ -92,6 +92,13 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     return Model(vao, vertices.size() / 3);
 }
 
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+                        const std::vector<float> &normals, const std::vector<float> &jointWeights,
+                        const std::vector<unsigned int> &jointIds)
+{
+    return Model();
+}
+
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)
 {
     GLuint vao = createVao();

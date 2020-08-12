@@ -38,6 +38,10 @@ public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
                     const std::vector<float> &normals);
 
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+                    const std::vector<float> &normals, const std::vector<float> &jointWeights,
+                    const std::vector<unsigned> &jointIds);
+
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
     GLuint loadTexture(const char *texture) noexcept;
