@@ -11,8 +11,8 @@
 class AnimationShader : public Shader
 {
 private:
-    static constexpr const char* VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
-    static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
+    static constexpr const char* VERTEX_SHADER = "engine/shader/sources/ObjectVertexShader.glsl";
+    static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/ObjectFragmentShader.glsl";
 
     GLuint m_LocationTransformationMatrix{};
     GLuint m_LocationViewMatrix{};

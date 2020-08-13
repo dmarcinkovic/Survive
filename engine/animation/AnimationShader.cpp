@@ -7,7 +7,7 @@
 AnimationShader::AnimationShader()
     : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
-
+    loadUniformLocations();
 }
 
 void AnimationShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const

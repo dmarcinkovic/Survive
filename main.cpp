@@ -23,10 +23,10 @@ int main()
     Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Camera camera{};
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 1});
+    Light light(glm::vec3{0, 10, -10}, glm::vec3{1, 1, 1});
 
     Renderer3D renderer(light);
-    renderer.add3DObject(object);
+    renderer.addAnimatedObject(object);
 
     while (display.isRunning())
     {

@@ -1,10 +1,10 @@
 #version 450 core
 
 in vec3 position;
-in vec3 normal;
 in vec2 textures;
-in ivec3 jointID;
-in vec3 jointWeigth;
+in vec3 normal;
+//in ivec3 jointID;
+//in vec3 jointWeigth;
 
 uniform mat4 transformationMatrix;
 uniform mat4 viewMatrix;

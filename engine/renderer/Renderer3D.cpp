@@ -17,6 +17,10 @@ void Renderer3D::render(const Camera &camera) const
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-//    m_ObjectRenderer.add3DObject(object3D);
-    m_AnimationRenderer.addObject(object3D);
+    m_ObjectRenderer.add3DObject(object3D);
+}
+
+void Renderer3D::addAnimatedObject(Object3D &object3D)
+{
+    m_AnimationRenderer.add3DObject(object3D);
 }

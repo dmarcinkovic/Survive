@@ -1,36 +1,31 @@
 //
-// Created by david on 12. 08. 2020..
+// Created by david on 17. 05. 2020..
 //
-
-#include <iostream>
 #include "AnimationRenderer.h"
-#include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
+#include "../math/Maths.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)
 {
     m_Shader.start();
-
-    auto projectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far);
-    m_Shader.loadProjectionMatrix(projectionMatrix);
-
-    AnimationShader::stop();
+    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(fieldOfView, near, far));
+    Shader::stop();
 }
 
 void AnimationRenderer::render(const Camera &camera) const
 {
     Renderer3DUtil::prepareRendering(m_Shader);
 
-    const auto viewMatrix = Maths::createViewMatrix(camera);
+    const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
+
     m_Shader.loadLight(m_Light.position(), m_Light.color());
 
-    for (auto const &object : m_Objects)
+    for (auto const&[texture, objects] : m_Objects)
     {
-        Renderer3DUtil::prepareEntity(object.get().m_Texture);
-
-        renderObject(object.get(), camera);
+        Renderer3DUtil::prepareEntity(texture);
+        renderScene(objects, camera);
 
         Renderer3DUtil::finishRenderingEntity();
     }
@@ -38,21 +33,27 @@ void AnimationRenderer::render(const Camera &camera) const
     Renderer3DUtil::finishRendering();
 }
 
-void AnimationRenderer::addObject(Object3D &object)
+void AnimationRenderer::add3DObject(Object3D &entity)
 {
-    m_Objects.emplace_back(object);
+    auto &batch = m_Objects[entity.m_Texture];
+    batch.emplace_back(entity);
 }
 
-void AnimationRenderer::renderObject(const Object3D &object, const Camera &camera) const
+void
+AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
 {
-    auto rotation = object.m_Rotation + camera.m_Rotation;
+    for (auto const &object : objects)
+    {
+        auto const &o = object.get();
+        auto rotation = camera.m_Rotation + o.m_Rotation;
 
-    glm::mat4 transformationMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_ScaleX,
-                                                                       object.m_ScaleY, object.m_ScaleZ, rotation.x,
-                                                                       rotation.y, rotation.z);
-    m_Shader.loadTransformationMatrix(transformationMatrix);
+        glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
+                                                                  rotation.x, rotation.y, rotation.z);
+        m_Shader.loadTransformationMatrix(modelMatrix);
+        Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 
-    Renderer3DUtil::addTransparency(!object.m_IsTransparent, !object.m_IsTransparent);
-    glDrawArrays(GL_TRIANGLES, 0, object.m_Texture.vertexCount());
-    Renderer3DUtil::addTransparency(object.m_IsTransparent, object.m_IsTransparent);
+        glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+
+        Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+    }
 }
