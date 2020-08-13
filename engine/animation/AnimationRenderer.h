@@ -11,6 +11,7 @@
 #include "AnimationShader.h"
 #include "../light/Light.h"
 #include "../objects/Object3D.h"
+#include "../camera/Camera.h"
 
 class AnimationRenderer
 {
@@ -27,9 +28,12 @@ private:
 public:
     explicit AnimationRenderer(const Light &light);
 
-    void render() const;
+    void render(const Camera &camera) const;
 
     void addObject(Object3D &object);
+
+private:
+    void renderObject(const Object3D &object, const Camera &camera) const;
 };
 
 
