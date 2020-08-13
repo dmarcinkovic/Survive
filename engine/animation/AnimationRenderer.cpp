@@ -2,6 +2,7 @@
 // Created by david on 12. 08. 2020..
 //
 
+#include <iostream>
 #include "AnimationRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"

@@ -7,11 +7,14 @@
 
 
 #include "../objects/ObjectRenderer.h"
+#include "../animation/AnimationRenderer.h"
 
 class Renderer3D
 {
 private:
     ObjectRenderer m_ObjectRenderer;
+    AnimationRenderer m_AnimationRenderer;
+
     const Light &m_Light;
 
 public:
