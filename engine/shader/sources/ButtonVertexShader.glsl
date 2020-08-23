@@ -1,10 +1,10 @@
 #version 450 core
 
-in vec3 position;
-out vec3 pos;
+layout (location = 0) in vec3 position;
 
 uniform mat4 transformationMatrix;
 
+out vec3 pos;
 out vec2 textureCoordinates;
 
 void main()
