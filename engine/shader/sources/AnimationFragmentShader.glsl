@@ -12,13 +12,12 @@ out vec4 outColor;
 
 void main()
 {
-    vec3 lightPos = normalize(lightPosition);
     vec4 textureColor = texture(objectTexture, texCoordinates);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPos - worldPosition);
+    vec3 lightDirection = normalize(lightPosition - worldPosition);
     const float diffuseFactor = max(dot(lightDirection, surfaceNormal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
