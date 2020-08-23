@@ -3,8 +3,8 @@
 in vec3 position;
 in vec2 textures;
 in vec3 normal;
-//in ivec3 jointID;
-//in vec3 jointWeigth;
+in ivec3 jointID;
+in vec3 jointWeigth;
 
 uniform mat4 transformationMatrix;
 uniform mat4 viewMatrix;
