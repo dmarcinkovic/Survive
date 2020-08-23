@@ -1,10 +1,10 @@
 #version 450 core
 
-in vec3 position;
-in vec2 textures;
-in vec3 normal;
-in ivec3 jointID;
-in vec3 jointWeigth;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 textures;
+layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 jointWeigth;
+layout (location = 4) in ivec3 jointID;
 
 uniform mat4 transformationMatrix;
 uniform mat4 viewMatrix;
