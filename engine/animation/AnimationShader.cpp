@@ -5,7 +5,7 @@
 #include "AnimationShader.h"
 
 AnimationShader::AnimationShader()
-    : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+        : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
     loadUniformLocations();
 }
@@ -25,18 +25,18 @@ void AnimationShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) co
     loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
+void AnimationShader::loadUniformLocations()
+{
+    m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
+    m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
+    m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+
+    m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
+    m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+}
+
 void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
 {
     loadVector3(m_LocationLightPosition, lightPosition);
     loadVector3(m_LocationLightColor, lightColor);
-}
-
-void AnimationShader::loadUniformLocations()
-{
-    m_LocationTransformationMatrix = glGetAttribLocation(m_Program, "transformationMatrix");
-    m_LocationViewMatrix = glGetAttribLocation(m_Program, "viewMatrix");
-    m_LocationProjectionMatrix = glGetAttribLocation(m_Program, "projectionMatrix");
-
-    m_LocationLightColor = glGetAttribLocation(m_Program, "lightColor");
-    m_LocationLightPosition = glGetAttribLocation(m_Program, "lightPosition");
 }
