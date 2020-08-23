@@ -17,13 +17,13 @@ int main()
 
     Loader loader;
 
-    TexturedModel texture{ObjLoader::loadObj("res/cube.obj", loader),
+    TexturedModel texture{ObjLoader::loadObj("res/dragon.obj", loader),
                           loader.loadTexture("res/lamp.jpg")};
 
     Object3D object(texture, glm::vec3{0, -10, -30}, glm::vec3{0, 30, 0});
 
     Camera camera{};
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
+    Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 0.2});
 
     Renderer3D renderer(light);
     renderer.add3DObject(object);
