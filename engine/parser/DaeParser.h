@@ -31,13 +31,15 @@ private:
 
     static void loadGeometry(std::ifstream &reader);
 
+    static void loadVisualScene(std::ifstream &reader);
+
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
     static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
     static Model parseIndices(Loader &loader);
 
-    static void loadControllers(std::ifstream &reader);
+    static void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
 
     static std::vector<std::string> getData(std::string &line);
 

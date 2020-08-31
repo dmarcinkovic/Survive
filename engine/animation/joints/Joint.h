@@ -16,10 +16,19 @@ private:
     int m_Index;
     std::string m_Name;
 
-    glm::mat4 m_InverseTransformation{};
+    glm::mat4 m_AnimatedTransform{1};
+    glm::mat4 m_InverseBindTransformation{1};
+
+    const glm::mat4 m_LocalBindTransform;
 
 public:
-    Joint(std::string name, int index, glm::mat4 inverseTransformation);
+    Joint(std::string name, int index, const glm::mat4 &bindLocalTransform);
+
+    void addChild(const Joint &childJoint);
+
+    void calculateInverseBindTransform(const glm::mat4 &parentBindTransform);
+
+
 };
 
 

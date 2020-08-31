@@ -13,6 +13,7 @@ VertexData DaeParser::vertexData;
 Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
+    std::vector<std::string> jointNames;
 
     std::string line;
     while (std::getline(reader, line))
@@ -22,8 +23,17 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
             loadGeometry(reader);
         } else if (line.find("<library_controllers>") != -1)
         {
-            loadControllers(reader);
+            loadControllers(reader, jointNames);
+        } else if (line.find("<library_visual_scenes>") != -1)
+        {
+
         }
+    }
+
+    std::cout << "Joint names are:\n";
+    for (auto const &name : jointNames)
+    {
+        std::cout << name << '\n';
     }
 
     reader.close();
@@ -124,10 +134,9 @@ Model DaeParser::parseIndices(Loader &loader)
     return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds);
 }
 
-void DaeParser::loadControllers(std::ifstream &reader)
+void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames)
 {
     std::vector<float> weights;
-    std::vector<std::string> jointNames;
     std::vector<int> count;
     std::vector<glm::ivec3> jointIds;
     std::vector<glm::vec3> jointWeights;
@@ -215,4 +224,9 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
     resultWeights.emplace_back(id.x);
     resultWeights.emplace_back(id.y);
     resultWeights.emplace_back(id.z);
+}
+
+void DaeParser::loadVisualScene(std::ifstream &reader)
+{
+
 }
