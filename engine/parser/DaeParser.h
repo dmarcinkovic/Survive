@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../renderer/Loader.h"
+#include "../animation/joints/Joint.h"
 
 struct VertexData
 {
