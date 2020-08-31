@@ -26,7 +26,7 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
             loadControllers(reader, jointNames);
         } else if (line.find("<library_visual_scenes>") != -1)
         {
-            loadVisualScene(reader);
+            loadVisualScene(reader, jointNames);
         }
     }
 
@@ -226,7 +226,7 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
     resultWeights.emplace_back(id.z);
 }
 
-void DaeParser::loadVisualScene(std::ifstream &reader)
+void DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
     static const int OFFSET = 4;
 
@@ -240,7 +240,8 @@ void DaeParser::loadVisualScene(std::ifstream &reader)
             const int length = restOfLine.find('\"');
 
             std::string name = restOfLine.substr(0, length);
-            std::cout << name << '\n';
+            int index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
+            std::cout << name << ' ' << index << '\n';
         }
     }
 }
