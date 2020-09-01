@@ -228,25 +228,30 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
 
 void DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
-    static const int OFFSET = 4;
-
     std::string line;
     while (std::getline(reader, line))
     {
         if (line.find("type=\"JOINT\"") != -1)
         {
-            const int startIndex = line.find("id=");
-            std::string restOfLine = line.substr(startIndex + OFFSET);
-            const int length = restOfLine.find('\"');
 
-            std::string name = restOfLine.substr(0, length);
-            int index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
-
-            std::getline(reader, line);
-
-            Joint joint(name, index, getJointTransform(line));
         }
     }
+}
+
+Joint DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
+{
+    static const int OFFSET = 4;
+
+    const int startIndex = line.find("id=");
+    std::string restOfLine = line.substr(startIndex + OFFSET);
+    const int length = restOfLine.find('\"');
+
+    std::string name = restOfLine.substr(0, length);
+    int index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
+
+    std::getline(reader, line);
+
+    return Joint(name, index, getJointTransform(line));
 }
 
 glm::mat4 DaeParser::getJointTransform(std::string &line)

@@ -48,6 +48,8 @@ private:
 
     static glm::mat4 getJointTransform(std::string &line);
 
+    static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
+
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
 };
