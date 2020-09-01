@@ -244,9 +244,7 @@ void DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::st
 
             std::getline(reader, line);
 
-            auto transform = getJointTransform(line);
-            std::cout << name << ' ' << index << '\n';
-
+            Joint joint(name, index, getJointTransform(line));
         }
     }
 }
