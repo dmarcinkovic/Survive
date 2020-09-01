@@ -27,9 +27,6 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_visual_scenes>") != -1)
         {
             Joint root = loadVisualScene(reader, jointNames);
-            const auto &children = root.children();
-            std::cout << "Number of children: " << children.size() << '\n';
-            std::cout << "Loaded joint hierarchy\n";
         }
     }
 
