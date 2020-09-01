@@ -32,7 +32,7 @@ private:
 
     static void loadGeometry(std::ifstream &reader);
 
-    static void loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+    static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 

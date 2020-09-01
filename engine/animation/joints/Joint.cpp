@@ -25,3 +25,8 @@ void Joint::calculateInverseBindTransform(const glm::mat4 &parentBindTransform)
         child.calculateInverseBindTransform(bindTransform);
     }
 }
+
+const std::vector<Joint> &Joint::children() const
+{
+    return m_Children;
+}

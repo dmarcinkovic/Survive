@@ -26,14 +26,11 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
             loadControllers(reader, jointNames);
         } else if (line.find("<library_visual_scenes>") != -1)
         {
-            loadVisualScene(reader, jointNames);
+            Joint root = loadVisualScene(reader, jointNames);
+            const auto &children = root.children();
+            std::cout << "Number of children: " << children.size() << '\n';
+            std::cout << "Loaded joint hierarchy\n";
         }
-    }
-
-    std::cout << "Joint names are:\n";
-    for (auto const &name : jointNames)
-    {
-        std::cout << name << '\n';
     }
 
     reader.close();
@@ -226,16 +223,27 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
     resultWeights.emplace_back(id.z);
 }
 
-void DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
+Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
     std::string line;
+    Joint root;
+    bool initialized = false;
+
     while (std::getline(reader, line))
     {
         if (line.find("type=\"JOINT\"") != -1)
         {
-
+            root = getJoint(reader, line, jointNames);
+            root.addChild(loadVisualScene(reader, jointNames));
+            initialized = true;
+            std::cout << "N = " << root.children().size() << '\n';
+        } else if (line.find("</node>") != -1 && initialized)
+        {
+            break;
         }
     }
+
+    return root;
 }
 
 Joint DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)

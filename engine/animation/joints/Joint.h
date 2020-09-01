@@ -19,7 +19,7 @@ private:
     glm::mat4 m_AnimatedTransform{1};
     glm::mat4 m_InverseBindTransformation{1};
 
-    const glm::mat4 m_LocalBindTransform{};
+    glm::mat4 m_LocalBindTransform{};
 
 public:
     Joint() = default;
@@ -30,7 +30,7 @@ public:
 
     void calculateInverseBindTransform(const glm::mat4 &parentBindTransform);
 
-
+    const std::vector<Joint> &children() const;
 };
 
 
