@@ -46,6 +46,8 @@ private:
 
     static void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
+    static glm::mat4 getJointTransform(std::string &line);
+
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
 };

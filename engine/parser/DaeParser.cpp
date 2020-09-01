@@ -241,7 +241,31 @@ void DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::st
 
             std::string name = restOfLine.substr(0, length);
             int index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
+
+            std::getline(reader, line);
+
+            auto transform = getJointTransform(line);
             std::cout << name << ' ' << index << '\n';
+
         }
     }
+}
+
+glm::mat4 DaeParser::getJointTransform(std::string &line)
+{
+    auto data = getData(line);
+    glm::mat4 transform{};
+
+    static const int SIZE = 4;
+
+    for (int i = 0; i < SIZE; ++i)
+    {
+        for (int j = 0; j < SIZE; ++j)
+        {
+            int index = i * SIZE + j;
+            transform[i][j] = std::stof(data[index]);
+        }
+    }
+
+    return transform;
 }
