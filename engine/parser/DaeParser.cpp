@@ -226,23 +226,33 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
 Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
     std::string line;
-    Joint root;
     bool initialized = false;
+    Joint root;
+
+    std::stack<Joint> stack;
 
     while (std::getline(reader, line))
     {
         if (line.find("type=\"JOINT\"") != -1)
         {
-            root = getJoint(reader, line, jointNames);
-            root.addChild(loadVisualScene(reader, jointNames));
+            Joint rootJoint = getJoint(reader, line, jointNames);
+            stack.push(rootJoint);
             initialized = true;
-            std::cout << "N = " << root.children().size() << '\n';
         } else if (line.find("</node>") != -1 && initialized)
         {
-            break;
+            Joint joint = stack.top();
+            stack.pop();
+
+            if (!stack.empty())
+            {
+                stack.top().addChild(joint);
+            } else
+            {
+                root = joint;
+                break;
+            }
         }
     }
-
     return root;
 }
 

@@ -30,3 +30,8 @@ const std::vector<Joint> &Joint::children() const
 {
     return m_Children;
 }
+
+const std::string &Joint::name() const
+{
+    return m_Name;
+}
