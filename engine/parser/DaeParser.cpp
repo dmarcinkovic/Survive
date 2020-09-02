@@ -345,6 +345,23 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
     auto data = getData(line);
     std::vector<glm::mat4> transforms;
 
+    static const int SIZE = 4;
+
+    int n = static_cast<int>(data.size()) / (SIZE * SIZE);
+    int index = 0;
+
+    for (int i = 0; i < n ; ++i)
+    {
+        glm::mat4 transform{};
+        for (int row = 0; row < SIZE; ++row)
+        {
+            for (int col = 0; col < SIZE; ++col)
+            {
+                transform[row][col] = std::stof(data[index++]);
+            }
+        }
+        transforms.emplace_back(transform);
+    }
 
     return transforms;
 }
