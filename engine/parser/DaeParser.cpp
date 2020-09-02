@@ -27,6 +27,9 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_visual_scenes>") != -1)
         {
             Joint root = loadVisualScene(reader, jointNames);
+        } else if (line.find("<library_animations>"))
+        {
+            loadAnimation(reader);
         }
     }
 
@@ -286,4 +289,36 @@ glm::mat4 DaeParser::getJointTransform(std::string &line)
     }
 
     return transform;
+}
+
+void DaeParser::loadAnimation(std::ifstream &reader)
+{
+    std::string line;
+    std::vector<AnimationData> animationData;
+
+    while (std::getline(reader, line))
+    {
+        if (line.find("</library_animations>"))
+        {
+            break;
+        } else if (line.find("animation id"))
+        {
+            animationData.emplace_back(getAnimationData(reader));
+        }
+    }
+}
+
+AnimationData DaeParser::getAnimationData(std::ifstream &reader)
+{
+    AnimationData animationData;
+    std::string line;
+    while (std::getline(reader, line))
+    {
+        if (line.find("</animation>"))
+        {
+            break;
+        }
+    }
+
+    return animationData;
 }
