@@ -25,7 +25,7 @@ struct VertexData
 
 struct AnimationData
 {
-    float timestamp;
+    std::vector<float> timestamps;
     std::string jointName;
     glm::mat4 transform;
 };

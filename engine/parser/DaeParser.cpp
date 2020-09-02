@@ -27,7 +27,7 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_visual_scenes>") != -1)
         {
             Joint root = loadVisualScene(reader, jointNames);
-        } else if (line.find("<library_animations>"))
+        } else if (line.find("<library_animations>") != -1)
         {
             loadAnimation(reader);
         }
@@ -298,10 +298,10 @@ void DaeParser::loadAnimation(std::ifstream &reader)
 
     while (std::getline(reader, line))
     {
-        if (line.find("</library_animations>"))
+        if (line.find("</library_animations>") != -1)
         {
             break;
-        } else if (line.find("animation id"))
+        } else if (line.find("animation id") != -1)
         {
             animationData.emplace_back(getAnimationData(reader));
         }
@@ -314,9 +314,17 @@ AnimationData DaeParser::getAnimationData(std::ifstream &reader)
     std::string line;
     while (std::getline(reader, line))
     {
-        if (line.find("</animation>"))
+        if (line.find("</animation>") != -1)
         {
             break;
+        } else if (line.find("input-array") != -1 && line.find("float_array") != -1)
+        {
+            auto timestamps = getData(line);
+
+            for (auto const & timestamp : timestamps)
+            {
+                animationData.timestamps.emplace_back(std::stof(timestamp));
+            }
         }
     }
 
