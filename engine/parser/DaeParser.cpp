@@ -317,16 +317,34 @@ AnimationData DaeParser::getAnimationData(std::ifstream &reader)
         if (line.find("</animation>") != -1)
         {
             break;
+        } else if (line.find("target") != -1)
+        {
+            auto start = line.find_last_of('=') + 1;
+            auto end = line.find('/') - 1;
+
+            animationData.jointName = line.substr(start + 1, end - start );
         } else if (line.find("input-array") != -1 && line.find("float_array") != -1)
         {
             auto timestamps = getData(line);
 
-            for (auto const & timestamp : timestamps)
+            for (auto const &timestamp : timestamps)
             {
                 animationData.timestamps.emplace_back(std::stof(timestamp));
             }
+        } else if (line.find("output-array") != -1 && line.find("float_array") != -1)
+        {
+            animationData.transforms = getTransforms(line);
         }
     }
 
     return animationData;
+}
+
+std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
+{
+    auto data = getData(line);
+    std::vector<glm::mat4> transforms;
+
+
+    return transforms;
 }

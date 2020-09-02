@@ -27,7 +27,7 @@ struct AnimationData
 {
     std::vector<float> timestamps;
     std::string jointName;
-    glm::mat4 transform;
+    std::vector<glm::mat4> transforms;
 };
 
 class DaeParser
@@ -58,6 +58,8 @@ private:
     static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
 
     static AnimationData getAnimationData(std::ifstream &reader);
+
+    static std::vector<glm::mat4> getTransforms(std::string &line);
 
 public:
     static Model loadDae(const char *daeFile, Loader &loader);
