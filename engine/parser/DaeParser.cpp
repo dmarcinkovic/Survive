@@ -322,7 +322,7 @@ AnimationData DaeParser::getAnimationData(std::ifstream &reader)
             auto start = line.find_last_of('=') + 1;
             auto end = line.find('/') - 1;
 
-            animationData.jointName = line.substr(start + 1, end - start );
+            animationData.jointName = line.substr(start + 1, end - start);
         } else if (line.find("input-array") != -1 && line.find("float_array") != -1)
         {
             auto timestamps = getData(line);
@@ -350,7 +350,7 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
     int n = static_cast<int>(data.size()) / (SIZE * SIZE);
     int index = 0;
 
-    for (int i = 0; i < n ; ++i)
+    for (int i = 0; i < n; ++i)
     {
         glm::mat4 transform{};
         for (int row = 0; row < SIZE; ++row)

@@ -17,7 +17,7 @@ public:
 
     void normalize();
 
-    glm::mat4 toRotationMatrix() const;
+    [[nodiscard]] glm::mat4 toRotationMatrix() const;
 
     static Quaternion fromMatrix(const glm::mat4 &matrix);
 

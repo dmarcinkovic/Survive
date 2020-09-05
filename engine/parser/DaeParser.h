@@ -13,7 +13,7 @@
 
 struct VertexData
 {
-    int size;
+    int size{};
     std::string indicesLine;
 
     std::vector<glm::vec3> vertices;
