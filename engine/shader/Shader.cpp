@@ -2,7 +2,6 @@
 // Created by david on 24. 03. 2020..
 //
 
-#include <alloca.h>
 #include <iostream>
 #include <fstream>
 
@@ -75,4 +74,29 @@ void Shader::debug(GLuint shaderId)
         std::cout << "Error while compiling shader: " << message << "\n";
         glDeleteShader(shaderId);
     }
+}
+
+void Shader::loadMatrix(GLuint location, const glm::mat4 &matrix)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+}
+
+void Shader::loadVector3(GLuint location, const glm::vec3 &vector)
+{
+    glUniform3f(location, vector.x, vector.y, vector.z);
+}
+
+void Shader::loadFloat(GLuint location, float value)
+{
+    glUniform1f(location, value);
+}
+
+void Shader::loadVector4(GLuint location, const glm::vec4 &vector)
+{
+    glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+}
+
+void Shader::loadInteger(GLuint location, int value)
+{
+    glUniform1i(location, value);
 }

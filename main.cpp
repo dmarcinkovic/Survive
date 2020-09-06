@@ -1,8 +1,12 @@
-
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/shader/Shader.h"
-#include "engine/texture/Texture.h"
+#include "engine/obj/ObjLoader.h"
+#include "engine/entity/Entity.h"
+#include "engine/math/Maths.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
+#include "engine/renderer/Renderer3D.h"
 
 int main()
 {
@@ -11,35 +15,31 @@ int main()
 
     Display display(width, height, "Survive");
 
-    std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-    std::vector<unsigned> indices = {0, 1, 3, 3, 1, 2};
-    std::vector<float> textureCoordinates = {0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0};
-
     Loader loader;
-    Texture texture(loader.loadToVao(vertices, indices, textureCoordinates, 2),
-                    loader.loadTexture("res/texture.jpg"));
 
-    Shader shader("engine/shader/VertexShader.glsl",
-                  "engine/shader/FragmentShader.glsl");
+    Texture texture(loader.loadTexture("res/lamp.jpg"));
+
+    TexturedModel dragonTexture{ObjLoader::loadObj("res/dragon.obj", loader), texture.textureId()};
+    TexturedModel lampTexture{ObjLoader::loadObj("res/lamp.obj", loader), texture.textureId()};
+
+    Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
+    Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
+
+    Camera camera;
+    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
+
+    Renderer3D renderer(light);
+    renderer.add3DObject(dragon);
+    renderer.add3DObject(lamp);
+
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
+    renderer.addTerrain(terrain);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        shader.start();
-        texture.bindTexture();
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        Shader::stop();
-
-        Texture::unbindTexture();
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(0);
-        Loader::unbindVao();
+        renderer.render(camera);
 
         display.update();
     }

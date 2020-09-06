@@ -1,23 +1,27 @@
 //
-// Created by david on 24. 03. 2020..
+// Created by david on 06. 06. 2020..
 //
 
 #include "Texture.h"
 
-Texture::Texture(const Model &model, GLuint textureId)
-    : m_Vao(model.vao), m_TextureID(textureId), m_VertexCount(model.vertexCount)
+Texture::Texture(GLuint textureId)
+    : m_TextureId(textureId)
 {
 
 }
 
-void Texture::bindTexture() const
+void Texture::bindTexture(int textureIndex) const
 {
-    glBindVertexArray(m_Vao);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    glActiveTexture(GL_TEXTURE0 + textureIndex);
+    glBindTexture(GL_TEXTURE_2D, m_TextureId);
 }
 
 void Texture::unbindTexture()
 {
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+GLuint Texture::textureId() const
+{
+    return m_TextureId;
 }

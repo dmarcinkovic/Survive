@@ -6,13 +6,12 @@
 #define SURVIVE_LOADER_H
 
 #include <vector>
-#include <tuple>
 #include <GL/glew.h>
 
 struct Model
 {
-    GLuint vao;
-    size_t vertexCount;
+    GLuint m_Vao;
+    size_t m_VertexCount;
 
     Model(GLuint vao, size_t vertexCount);
 };
@@ -24,14 +23,6 @@ private:
     std::vector<GLuint> m_Vbos;
     std::vector<GLuint> m_Textures;
 
-    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
-
-    void createIndexBuffer(const std::vector<unsigned> &indices);
-
-    GLuint createVao();
-
-    static void loadImage(const char *texture) noexcept;
-
 public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
 
@@ -42,7 +33,23 @@ public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
                     const std::vector<float> &textureCoordinates, size_t size);
 
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+                    const std::vector<float> &normals);
+
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
+
     GLuint loadTexture(const char *texture) noexcept;
+
+    Model renderQuad();
+
+private:
+    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
+
+    void createIndexBuffer(const std::vector<unsigned> &indices);
+
+    GLuint createVao();
+
+    static void loadImage(const char *texture) noexcept;
 };
 
 

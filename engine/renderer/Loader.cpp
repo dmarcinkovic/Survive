@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Loader.h"
 #include "../texture/stb_image.h"
-#include "../texture/Texture.h"
+#include "../texture/TexturedModel.h"
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size)
 {
@@ -72,11 +72,35 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<un
     GLuint vao = createVao();
 
     createIndexBuffer(indices);
-    storeDataInAttributeList(0, vertices,2);
+    storeDataInAttributeList(0, vertices, size);
     storeDataInAttributeList(1, textureCoordinates, 2);
     unbindVao();
 
     return Model(vao, indices.size());
+}
+
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+                        const std::vector<float> &normals)
+{
+    GLuint vao = createVao();
+
+    storeDataInAttributeList(0, vertices, 3);
+    storeDataInAttributeList(1, textureCoordinates, 2);
+    storeDataInAttributeList(2, normals, 3);
+    unbindVao();
+
+    return Model(vao, vertices.size() / 3);
+}
+
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)
+{
+    GLuint vao = createVao();
+
+    storeDataInAttributeList(0, vertices, size);
+    storeDataInAttributeList(1, textureCoordinates, 2);
+    unbindVao();
+
+    return Model(vao, vertices.size() / size);
 }
 
 GLuint Loader::loadTexture(const char *texture) noexcept
@@ -112,8 +136,16 @@ void Loader::loadImage(const char *texture) noexcept
     stbi_image_free(image);
 }
 
+Model Loader::renderQuad()
+{
+    static const std::vector<float> vertices{-1, -1, 1, -1, 1, 1, -1, 1};
+    static const std::vector<unsigned> indices{0, 1, 3, 3, 1, 2};
+
+    return Model(loadToVao(vertices, indices, 2));
+}
+
 Model::Model(GLuint vao, size_t vertexCount)
-        : vao(vao), vertexCount(vertexCount)
+        : m_Vao(vao), m_VertexCount(vertexCount)
 {
 
 }

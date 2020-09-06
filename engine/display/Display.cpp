@@ -2,13 +2,20 @@
 // Created by david on 08. 03. 2020..
 //
 
+#include <iostream>
 #include "Display.h"
 
-std::vector<Listener> Display::m_KeyEventListeners;
-std::vector<Listener> Display::m_MouseEventListeners;
+std::vector<KeyListener> Display::m_KeyEventListeners;
+std::vector<MouseListener> Display::m_MouseEventListeners;
+std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
+std::vector<WindowListener> Display::m_WindowListeners;
+std::vector<ScrollListener> Display::m_ScrollListeners;
 
 double Display::m_LastFrameTime{};
 double Display::m_DeltaTime{};
+
+int Display::m_Width;
+int Display::m_Height;
 
 Display::Display(int width, int height, const char *title)
 {
@@ -25,11 +32,21 @@ Display::Display(int width, int height, const char *title)
 
     glewInit();
 
+    addCallbacks();
+
+    m_LastFrameTime = glfwGetTime();
+
+    m_Width = width;
+    m_Height = height;
+}
+
+void Display::addCallbacks() const
+{
     glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
     glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
     glfwSetKeyCallback(m_Window, keyEventCallback);
-
-    m_LastFrameTime = glfwGetTime();
+    glfwSetCursorPosCallback(m_Window, mousePositionCallback);
+    glfwSetScrollCallback(m_Window, scrollCallback);
 }
 
 Display::~Display()
@@ -56,10 +73,11 @@ bool Display::isRunning() const
 void Display::clearWindow()
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
+void Display::windowResizeCallback(GLFWwindow *, int width, int height)
 {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
@@ -68,9 +86,17 @@ void Display::windowResizeCallback(GLFWwindow *window, int width, int height)
     glOrtho(0, width, 0, height, -1.5, 1.5);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    m_Width = width;
+    m_Height = height;
+
+    for (auto const &listener : m_WindowListeners)
+    {
+        listener(width, height);
+    }
 }
 
-void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods)
+void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
 {
     for (auto const &listener : m_KeyEventListeners)
     {
@@ -78,20 +104,23 @@ void Display::keyEventCallback(GLFWwindow *window1, int key, int code, int actio
     }
 }
 
-void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int mods)
+void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int)
 {
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
     for (auto const &listener : m_MouseEventListeners)
     {
-        listener(button, action);
+        listener(button, action, mouseX, mouseY);
     }
 }
 
-void Display::addKeyListener(const Listener &listener)
+void Display::addKeyListener(const KeyListener &listener)
 {
     m_KeyEventListeners.emplace_back(listener);
 }
 
-void Display::addMouseListener(const Listener &listener)
+void Display::addMouseListener(const MouseListener &listener)
 {
     m_MouseEventListeners.emplace_back(listener);
 }
@@ -99,4 +128,40 @@ void Display::addMouseListener(const Listener &listener)
 double Display::getFrameTime()
 {
     return m_DeltaTime;
+}
+
+std::pair<int, int> Display::getWindowSize()
+{
+    return {m_Width, m_Height};
+}
+
+void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
+{
+    for (auto const &listener : m_MouseMoveListeners)
+    {
+        listener(mouseX, mouseY);
+    }
+}
+
+void Display::addMouseMovedListener(const MouseMovedListener &listener)
+{
+    m_MouseMoveListeners.emplace_back(listener);
+}
+
+void Display::addWindowResizeListener(const WindowListener &listener)
+{
+    m_WindowListeners.emplace_back(listener);
+}
+
+void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
+{
+    for (auto const &listener : m_ScrollListeners)
+    {
+        listener(xOffset, yOffset);
+    }
+}
+
+void Display::addScrollListener(const ScrollListener &listener)
+{
+    m_ScrollListeners.emplace_back(listener);
 }
