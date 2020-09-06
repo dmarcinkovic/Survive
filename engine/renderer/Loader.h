@@ -10,10 +10,12 @@
 
 struct Model
 {
-    GLuint m_Vao;
-    size_t m_VertexCount;
+    GLuint m_Vao{};
+    size_t m_VertexCount{};
 
     Model(GLuint vao, size_t vertexCount);
+
+    Model() = default;
 };
 
 class Loader
@@ -36,6 +38,10 @@ public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
                     const std::vector<float> &normals);
 
+    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+                    const std::vector<float> &normals, const std::vector<float> &jointWeights,
+                    const std::vector<unsigned> &jointIds);
+
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
     GLuint loadTexture(const char *texture) noexcept;
@@ -44,6 +50,8 @@ public:
 
 private:
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
+
+    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
 
     void createIndexBuffer(const std::vector<unsigned> &indices);
 

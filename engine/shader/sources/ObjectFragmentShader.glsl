@@ -53,7 +53,7 @@ void main()
 
     vec3 lightDirection = normalize(lightPos - worldPosition);
 
-    float diffuseFactor = max(dot(surfaceNormal, lightPos), 0.0);
+    float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     float shadow = shadowCalculation(fragmentPositionInLightSpace);

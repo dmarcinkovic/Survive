@@ -9,6 +9,7 @@
 #include <string>
 #include <regex>
 #include <optional>
+#include <glm/glm.hpp>
 
 #include "../text/Character.h"
 
@@ -29,6 +30,11 @@ public:
     static std::optional<Character> getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
 
     static std::vector<std::string> split(std::string string, char delimiter);
+
+    static void processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+                              const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+                              std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+                              unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex);
 };
 
 

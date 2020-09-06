@@ -23,6 +23,11 @@ TerrainRenderer::TerrainRenderer()
 
 void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap) const
 {
+    if (m_Terrain == nullptr)
+    {
+        return;
+    }
+
     prepareRendering();
     renderShadow(shadowMap, light);
 

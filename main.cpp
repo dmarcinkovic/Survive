@@ -1,12 +1,12 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/obj/ObjLoader.h"
 #include "engine/entity/Entity.h"
 #include "engine/math/Maths.h"
 #include "engine/objects/ObjectRenderer.h"
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -19,8 +19,8 @@ int main()
 
     Texture texture(loader.loadTexture("res/lamp.jpg"));
 
-    TexturedModel dragonTexture{ObjLoader::loadObj("res/dragon.obj", loader), texture.textureId()};
-    TexturedModel lampTexture{ObjLoader::loadObj("res/lamp.obj", loader), texture.textureId()};
+    TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
+    TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
 
     Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
     Object3D lamp(lampTexture, glm::vec3{5, -10, -30});

@@ -40,6 +40,20 @@ void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned int> &data, size_t size)
+{
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glEnableVertexAttribArray(attributeNumber);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned) * data.size(), data.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(attributeNumber, size, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
+    m_Vbos.emplace_back(vbo);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void Loader::createIndexBuffer(const std::vector<unsigned> &indices)
 {
     GLuint indexBuffer;
@@ -88,6 +102,21 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     storeDataInAttributeList(1, textureCoordinates, 2);
     storeDataInAttributeList(2, normals, 3);
     unbindVao();
+
+    return Model(vao, vertices.size() / 3);
+}
+
+Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+                        const std::vector<float> &normals, const std::vector<float> &jointWeights,
+                        const std::vector<unsigned int> &jointIds)
+{
+    GLuint vao = createVao();
+
+    storeDataInAttributeList(0, vertices, 3);
+    storeDataInAttributeList(1, textures, 2);
+    storeDataInAttributeList(2, normals, 3);
+    storeDataInAttributeList(3, jointWeights, 3);
+    storeDataInAttributeList(4, jointIds, 3);
 
     return Model(vao, vertices.size() / 3);
 }
