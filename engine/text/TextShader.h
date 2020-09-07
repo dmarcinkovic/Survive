@@ -18,12 +18,16 @@ private:
     GLuint m_LocationBorderWidth{};
     GLuint m_LocationBorderColor{};
 
+    GLuint m_LocationTransformationMatrix{};
+
 public:
     TextShader();
 
     void loadColor(const glm::vec3 &color) const;
 
     void loadBorder(const glm::vec3 &borderColor, float borderWidth) const;
+
+    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
 private:
     void getUniformLocations();

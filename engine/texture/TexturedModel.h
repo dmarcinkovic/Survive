@@ -36,6 +36,8 @@ public:
 
     bool operator==(const TexturedModel &rhs) const;
 
+    [[nodiscard]] bool isValidTexture() const;
+
     friend class TextureHash;
 };
 

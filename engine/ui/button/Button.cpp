@@ -2,8 +2,8 @@
 // Created by david on 05. 05. 2020..
 //
 
+#include <iostream>
 #include "Button.h"
-#include "../../display/Display.h"
 
 Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
         : Entity(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
@@ -47,12 +47,14 @@ void Button::addMouseMoveListener()
     {
         if (isInsideButton(x, y))
         {
-            m_ScaleX = m_OriginalScaleX * 1.05f;
-            m_ScaleY = m_OriginalScaleY * 1.05f;
+            m_ScaleX = m_OriginalScaleX * 1.02f;
+            m_ScaleY = m_OriginalScaleY * 1.02f;
+            m_Text.scaleFor(1.02f);
         } else
         {
             m_ScaleX = m_OriginalScaleX;
             m_ScaleY = m_OriginalScaleY;
+            m_Text.scaleFor(1);
         }
     };
 
@@ -67,4 +69,15 @@ void Button::addWindowResizeListener()
     };
 
     Display::addWindowResizeListener(windowResizeListener);
+}
+
+Text &Button::getText()
+{
+    return m_Text;
+}
+
+void Button::setText(const std::string& text, const Font &font, const glm::vec3 &textColor)
+{
+    m_Text = Text(text, font, m_Position, textColor);
+    m_Text.centerText();
 }

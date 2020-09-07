@@ -2,6 +2,7 @@
 // Created by david on 27. 03. 2020..
 //
 
+#include <iostream>
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
@@ -13,8 +14,15 @@ Renderer2D::Renderer2D(Loader &loader)
 void Renderer2D::render() const
 {
     m_GuiRenderer.render();
-    m_TextRenderer.renderText();
 
+    auto[width, height] = Display::getWindowSize();
+
+    if (width == 0 || height == 0)
+    {
+        return;
+    }
+
+    m_TextRenderer.renderText();
 //    m_ButtonRenderer.render();
 }
 
@@ -26,10 +34,12 @@ void Renderer2D::addGui(Entity &entity2D) noexcept
 void Renderer2D::addText(Text &text) noexcept
 {
     m_TextRenderer.addText(text, m_Loader);
+    auto color = text.color();
 }
 
 void Renderer2D::addButton(Button &button) noexcept
 {
     m_ButtonRenderer.addButton(button);
+    addText(button.getText());
 }
 

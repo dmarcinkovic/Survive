@@ -6,11 +6,21 @@
 #define SURVIVE_BUTTON_H
 
 #include <glm/glm.hpp>
+#include <string>
 
 #include "../../entity/Entity.h"
+#include "../../text/Font.h"
+#include "../../text/Text.h"
+#include "../../display/Display.h"
+
+class Renderer2D;
 
 struct Button : public Entity
 {
+private:
+    Text m_Text;
+
+public:
     glm::vec4 m_Color;
     glm::ivec2 m_Center{};
 
@@ -21,8 +31,27 @@ struct Button : public Entity
 
     Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color);
 
+    Text &getText();
+
+    void setText(const std::string &text, const Font &font, const glm::vec3 &textColor = glm::vec3{});
+
+    template<typename Callable, typename ...Args>
+    void onButtonPress(Callable &&callable, Args &&... args)
+    {
+        auto mousePressedListener = [this, callable = std::forward<Callable>(callable),
+                ...args = std::forward<Args>(args)](int button, int action, double mouseX, double mouseY)
+        {
+            if (isInsideButton(mouseX, mouseY) && action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+            {
+                callable(args...);
+            }
+        };
+
+        Display::addMouseListener(mousePressedListener);
+    }
+
 private:
-    bool isInsideButton(double x, double y) const;
+    [[nodiscard]] bool isInsideButton(double x, double y) const;
 
     static float convertPoint(float point, float size);
 

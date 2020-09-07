@@ -23,5 +23,4 @@ public:
     [[nodiscard]] GLuint textureId() const;
 };
 
-
 #endif //SURVIVE_TEXTURE_H

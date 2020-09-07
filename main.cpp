@@ -1,8 +1,8 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer2D.h"
-#include "engine/text/Font.h"
-#include "engine/text/TextRenderer.h"
+#include "engine/ui/button/Button.h"
 
 int main()
 {
@@ -14,15 +14,21 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
+    TexturedModel texture(loader.renderQuad(), 0);
     Font font("res/candara.png", loader);
     font.loadFontFromFntFile("res/candara.fnt");
 
-    Text text("D", font, glm::vec3{0, 0, 0}, glm::vec3{1, 0, 1}, 10.0);
-    text.centerText();
-    text.addBorder(0.5, glm::vec3{1, 0, 0});
+    Button button(texture, glm::vec3{0, 0.5, 0}, 0.4, 0.2,
+                  glm::vec4{1, 0, 0, 0.6});
+    button.setText("Button1", font, glm::vec3{1, 0, 0});
 
-    renderer.addText(text);
-    text.setText("AB", loader);
+//    Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
+//                   glm::vec4{0, 1, 0, 0.4});
+//    button2.setText("Button2", font);
+//    button2.onButtonPress([]{std::cout << "Button pressed\n";});
+
+    renderer.addButton(button);
+//    renderer.addButton(button2);
 
     while (display.isRunning())
     {

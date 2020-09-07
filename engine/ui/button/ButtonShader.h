@@ -16,6 +16,7 @@ private:
 
     GLuint m_LocationTransformationMatrix{};
     GLuint m_LocationColor{};
+    GLuint m_LocationIsLoadingImage{};
 
 public:
     ButtonShader();
@@ -23,6 +24,8 @@ public:
     void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
     void loadColor(const glm::vec4 &color) const;
+
+    void loadIsLoadingImage(bool value) const;
 
 private:
     void getUniformLocations();

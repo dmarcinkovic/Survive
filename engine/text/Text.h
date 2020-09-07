@@ -17,13 +17,13 @@ private:
     constexpr static float PADDING = -15.0f;
 
     std::string m_Text;
-    const Font m_Font;
+    Font m_Font;
     bool m_Centered{};
     glm::vec3 m_Color{};
 
-    GLuint m_TextTexture, m_VboTexture{}, m_VboVertices{};
+    GLuint m_TextTexture{};
 
-    glm::vec3 m_BorderColor;
+    glm::vec3 m_BorderColor{};
     float m_BorderWidth{};
 
     std::vector<float> m_Vertices;
@@ -32,6 +32,8 @@ private:
 public:
     Text(std::string text, Font font, const glm::vec3 &position,
          const glm::vec3 &color = glm::vec3{1, 1, 1}, float scale = 1.0);
+
+    Text() = default;
 
     void loadTexture(Loader &loader);
 
@@ -46,6 +48,10 @@ public:
     void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
     void setText(std::string newText, Loader &loader);
+
+    float getScale() const;
+
+    void scaleFor(float scaleFactor);
 
 private:
     void calculateTextureVertices();

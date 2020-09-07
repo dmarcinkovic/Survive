@@ -53,3 +53,8 @@ void TexturedModel::setVertexCount(int vertexCount)
 {
     m_VertexCount = vertexCount;
 }
+
+bool TexturedModel::isValidTexture() const
+{
+    return m_Texture.textureId() != 0;
+}
