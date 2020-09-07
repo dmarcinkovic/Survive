@@ -7,6 +7,10 @@ in vec3 worldPosition;
 uniform sampler2D objectTexture;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
+uniform vec3 cameraPosition;
+
+uniform float shineDamper;
+uniform int material;
 
 out vec4 outColor;
 
@@ -57,7 +61,20 @@ void main()
 
     float shadow = shadowCalculation(fragmentPositionInLightSpace);
 
-    vec3 totalColor = (ambient + (1 - shadow) * diffuse) * textureColor.rgb;
+    vec3 toCameraVector = normalize(cameraPosition - worldPosition);
+    vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
 
+    float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
+    specularFactor = pow(specularFactor, material);
+
+    const float c0 = 1.0;
+    const float c1 = 0.0;
+    const float c2 = 0.001;
+
+    float distance = length(lightPosition - worldPosition);
+    float attenuation = c0 + distance * c1 + distance * distance * c2;
+    vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
+
+    vec3 totalColor = (diffuse * (1- shadow) + ambient + specular) * textureColor.rgb;
     outColor = vec4(totalColor, 1.0);
 }

@@ -26,14 +26,15 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
 
     const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
     const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
+    m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
     m_Shader.loadViewMatrix(viewMatrix);
-    m_Shader.loadLight(m_Light.position(), m_Light.color());
     m_Shader.loadLightViewMatrix(lightViewMatrix);
     m_Shader.loadTextures();
 
     Texture texture(shadowMap);
     texture.bindTexture(1);
+    m_Shader.loadCameraPosition(camera.m_Position);
 
     for (auto const&[texturedModel, objects] : m_Objects)
     {
