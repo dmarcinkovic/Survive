@@ -45,13 +45,12 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
-    vec3 lightPos = normalize(lightPosition);
     vec4 textureColor = texture(objectTexture, textCoords);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPos - worldPosition);
+    vec3 lightDirection = normalize(lightPosition - worldPosition);
 
     float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
