@@ -7,10 +7,10 @@
 #include <utility>
 #include <iostream>
 
-Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm::vec3 &position,
+Text::Text(std::string text, Font font, const glm::vec3 &position,
            const glm::vec3 &color, float scale)
-        : Entity(), m_Text(std::move(text)), m_Font(std::move(font)), textureAtlas(textureAtlasFile), m_Color(color),
-          m_BorderColor(color)
+        : Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_Color(color),
+          m_BorderColor(color), m_TextTexture(font.getMTextureId())
 {
     m_Position = position;
     m_ScaleX = scale;
@@ -18,6 +18,16 @@ Text::Text(std::string text, Font font, const char *textureAtlasFile, const glm:
 }
 
 Model Text::calculateVertices(Loader &loader)
+{
+    m_Vertices.clear();
+    m_TextureCoordinates.clear();
+
+    calculateTextureVertices();
+
+    return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
+}
+
+void Text::calculateTextureVertices()
 {
     float cursorX = m_Position.x;
     float cursorY = m_Position.y;
@@ -36,8 +46,6 @@ Model Text::calculateVertices(Loader &loader)
     }
 
     if (m_Centered) alignText();
-
-    return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }
 
 void Text::addVertices(const Character &character, float cursorX, float cursorY)
@@ -63,12 +71,25 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
 
 void Text::loadTexture(Loader &loader)
 {
-    m_Texture = TexturedModel(calculateVertices(loader), loader.loadTexture(textureAtlas));
+    m_Texture = TexturedModel(calculateVertices(loader), m_TextTexture);
 }
 
 void Text::centerText()
 {
     m_Centered = true;
+}
+
+void Text::setText(std::string newText, Loader &loader)
+{
+    m_Text = std::move(newText);
+
+    m_TextureCoordinates.clear();
+    m_Vertices.clear();
+
+    calculateTextureVertices();
+
+    loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Texture.vaoID());
+    m_Texture.setVertexCount(static_cast<int>(m_Vertices.size()) / 2);
 }
 
 const glm::vec3 &Text::color() const
@@ -122,3 +143,4 @@ float Text::getMBorderWidth() const
 {
     return m_BorderWidth;
 }
+

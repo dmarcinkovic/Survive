@@ -2,6 +2,7 @@
 // Created by david on 29. 03. 2020..
 //
 
+#include <iostream>
 #include "TextRenderer.h"
 #include "../renderer/Renderer2DUtil.h"
 
@@ -17,7 +18,7 @@ void TextRenderer::renderText() const
             m_Shader.loadColor(text.get().color());
             m_Shader.loadBorder(text.get().getMBorderColor(), text.get().getMBorderWidth());
 
-            glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+            glDrawArrays(GL_TRIANGLES, 0, text.get().m_Texture.vertexCount());
         }
 
         Renderer2DUtil::finishRenderingEntity();
@@ -26,8 +27,9 @@ void TextRenderer::renderText() const
     Renderer2DUtil::finishRendering();
 }
 
-void TextRenderer::addText(Text &text)
+void TextRenderer::addText(Text &text, Loader &loader)
 {
+    text.loadTexture(loader);
     auto &texts = m_Texts[text.m_Texture];
     texts.emplace_back(text);
 }

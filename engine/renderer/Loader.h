@@ -48,8 +48,11 @@ public:
 
     Model renderQuad();
 
+    void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
+
 private:
-    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size);
+    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
+                                    GLenum usage = GL_STATIC_DRAW);
 
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
 

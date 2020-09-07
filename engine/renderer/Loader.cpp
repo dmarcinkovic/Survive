@@ -26,13 +26,14 @@ Loader::~Loader()
     glDeleteTextures(1, m_Textures.data());
 }
 
-void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size)
+void
+Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size, GLenum usage)
 {
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glEnableVertexAttribArray(attributeNumber);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), usage);
 
     glVertexAttribPointer(attributeNumber, size, GL_FLOAT, GL_FALSE, 0, nullptr);
     m_Vbos.emplace_back(vbo);
@@ -119,6 +120,16 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     storeDataInAttributeList(4, jointIds, 3);
 
     return Model(vao, vertices.size() / 3);
+}
+
+void Loader::updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId)
+{
+    glBindVertexArray(vaoId);
+
+    storeDataInAttributeList(0, vertices, 2);
+    storeDataInAttributeList(1, textures, 2);
+
+    unbindVao();
 }
 
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size)

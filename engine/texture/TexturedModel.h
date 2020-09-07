@@ -28,6 +28,10 @@ public:
 
     static void unbind();
 
+    [[nodiscard]] GLuint vaoID() const;
+
+    void setVertexCount(int vertexCount);
+
     [[nodiscard]] size_t vertexCount() const;
 
     bool operator==(const TexturedModel &rhs) const;

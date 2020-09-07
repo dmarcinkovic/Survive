@@ -43,3 +43,13 @@ bool TexturedModel::operator==(const TexturedModel &rhs) const
            m_VertexCount == rhs.m_VertexCount &&
            m_Texture.textureId() == rhs.m_Texture.textureId();
 }
+
+GLuint TexturedModel::vaoID() const
+{
+    return m_Vao;
+}
+
+void TexturedModel::setVertexCount(int vertexCount)
+{
+    m_VertexCount = vertexCount;
+}

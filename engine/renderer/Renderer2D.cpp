@@ -13,7 +13,7 @@ Renderer2D::Renderer2D(Loader &loader)
 void Renderer2D::render() const
 {
     m_GuiRenderer.render();
-//    m_TextRenderer.renderText();
+    m_TextRenderer.renderText();
 
 //    m_ButtonRenderer.render();
 }
@@ -25,8 +25,7 @@ void Renderer2D::addGui(Entity &entity2D) noexcept
 
 void Renderer2D::addText(Text &text) noexcept
 {
-    text.loadTexture(m_Loader);
-    m_TextRenderer.addText(text);
+    m_TextRenderer.addText(text, m_Loader);
 }
 
 void Renderer2D::addButton(Button &button) noexcept
