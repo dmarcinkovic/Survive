@@ -11,7 +11,8 @@ Game engine.
     * C++ compiler that supports c++20 standard
     * `openAL`: Cross-platform 3D audio API.
     * `CMake`: Cross-platform software tool for managing the build 
-    process of software using a compiler-independent method.
+    process of software using a compiler-independent method.  
+    Make sure to download version `3.15` or higher.
     
  * ##Linux
  * On Linux you can use `clang` or `gcc` compiler. 
