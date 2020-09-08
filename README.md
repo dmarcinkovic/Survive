@@ -24,3 +24,6 @@ Game engine.
         * ` $ sudo apt install clang` or ` $ sudo apt install g++`
         * ` $ sudo apt install libalut-dev`
         * ` $ sudo apt install cmake`
+    
+    - #####Gentoo
+        * ``
