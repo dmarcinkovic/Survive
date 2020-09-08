@@ -10,6 +10,8 @@ Game engine.
     which OpenGL extensions are supported on the target platform. 
     * C++ compiler that supports c++20 standard
     * `openAL`: Cross-platform 3D audio API.
+    * `CMake`: Cross-platform software tool for managing the build 
+    process of software using a compiler-independent method.
     
  * ##Linux
  * On Linux you can use `clang` or `gcc` compiler. 
@@ -20,3 +22,4 @@ Game engine.
         * ` $ sudo apt install libglew-dev`
         * ` $ sudo apt install clang` or ` $ sudo apt install g++`
         * ` $ sudo apt install libalut-dev`
+        * ` $ sudo apt install cmake`
