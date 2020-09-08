@@ -1,7 +1,7 @@
 # Survive
 Game engine.
 
-##Building instructions
+## Building instructions
 * Required packages and libraries
     * `pkg-config`: Used for managing compile and link flags for libraries.
     * `libgl`: Free implementation of the OpenGL API
@@ -14,9 +14,9 @@ Game engine.
     process of software using a compiler-independent method.  
     Make sure to download version `3.15` or higher.
     
- * ##Linux
+ * ## Linux
  * On Linux you can use `clang` or `gcc` compiler. 
-   - #####Ubuntu 
+   - ##### Ubuntu 
         * ` $ sudo apt install pkg-config`
         * ` $ sudp apt install libgl1-mesa-dev`
         * ` $ sudo apt install libglfw3-dev`
@@ -25,7 +25,7 @@ Game engine.
         * ` $ sudo apt install libalut-dev`
         * ` $ sudo apt install cmake`
     
-    - #####Gentoo
+    - ##### Gentoo
         * ` $ sudo emerge dev-util/pkgconfig`
         * ` $ sudo emerge media-libs/mesa`
         * ` $ sudo emerge media-libs/glfw`
