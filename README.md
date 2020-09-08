@@ -26,4 +26,7 @@ Game engine.
         * ` $ sudo apt install cmake`
     
     - #####Gentoo
-        * ``
+        * ` $ sudo emerge dev-util/pkgconfig`
+        * ` $ sudo emerge media-libs/mesa`
+        * ` $ sudo emerge media-libs/glfw`
+        * ` $ sudo emerge dev-util/cmake`
