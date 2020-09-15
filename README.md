@@ -31,5 +31,8 @@ Game engine.
         * ` $ sudo emerge dev-util/pkgconfig`
         * ` $ sudo emerge media-libs/mesa`
         * ` $ sudo emerge media-libs/glfw`
+        * ` $ sudo emerge media-libs/glew`
         * ` $ sudo emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
+        * ` $ sudo emerge media-libs/freealut`
         * ` $ sudo emerge dev-util/cmake`
+        * ` $ sudo emerge media-libs/glm`
