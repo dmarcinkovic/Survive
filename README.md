@@ -13,6 +13,7 @@ Game engine.
     * `CMake`: Cross-platform software tool for managing the build 
     process of software using a compiler-independent method.  
     Make sure to download version `3.15` or higher.
+    * `glm`: C++ library for OpenGL GLSL type-base mathematics
     
  * ## Linux
  * On Linux you can use `clang` or `gcc` compiler. 
@@ -29,4 +30,5 @@ Game engine.
         * ` $ sudo emerge dev-util/pkgconfig`
         * ` $ sudo emerge media-libs/mesa`
         * ` $ sudo emerge media-libs/glfw`
+	* ` $ sudo emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
         * ` $ sudo emerge dev-util/cmake`
