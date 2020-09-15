@@ -12,7 +12,7 @@ Game engine.
     * `openAL`: Cross-platform 3D audio API.
     * `CMake`: Cross-platform software tool for managing the build 
     process of software using a compiler-independent method.  
-    Make sure to download version `3.15` or higher.
+    Make sure to download the version `3.15` or higher.
     * `glm`: C++ library for OpenGL GLSL type-base mathematics
     
  * ## Linux
@@ -25,10 +25,11 @@ Game engine.
         * ` $ sudo apt install clang` or ` $ sudo apt install g++`
         * ` $ sudo apt install libalut-dev`
         * ` $ sudo apt install cmake`
+        * ` $ sudo apt install libglm-dev`
     
     - ##### Gentoo
         * ` $ sudo emerge dev-util/pkgconfig`
         * ` $ sudo emerge media-libs/mesa`
         * ` $ sudo emerge media-libs/glfw`
-	* ` $ sudo emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
+        * ` $ sudo emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
         * ` $ sudo emerge dev-util/cmake`
