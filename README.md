@@ -18,21 +18,21 @@ Game engine.
  * ## Linux
  * On Linux you can use `clang` or `gcc` compiler. 
    - ##### Ubuntu 
-        * ` $ sudo apt install pkg-config`
-        * ` $ sudp apt install libgl1-mesa-dev`
-        * ` $ sudo apt install libglfw3-dev`
-        * ` $ sudo apt install libglew-dev`
-        * ` $ sudo apt install clang` or ` $ sudo apt install g++`
-        * ` $ sudo apt install libalut-dev`
-        * ` $ sudo apt install cmake`
-        * ` $ sudo apt install libglm-dev`
+        * ` $ apt install pkg-config`
+        * ` $ apt install libgl1-mesa-dev`
+        * ` $ apt install libglfw3-dev`
+        * ` $ apt install libglew-dev`
+        * ` $ apt install clang` or ` $ sudo apt install g++`
+        * ` $ apt install libalut-dev`
+        * ` $ apt install cmake`
+        * ` $ apt install libglm-dev`
     
     - ##### Gentoo
-        * ` $ sudo emerge dev-util/pkgconfig`
-        * ` $ sudo emerge media-libs/mesa`
-        * ` $ sudo emerge media-libs/glfw`
-        * ` $ sudo emerge media-libs/glew`
-        * ` $ sudo emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
-        * ` $ sudo emerge media-libs/freealut`
-        * ` $ sudo emerge dev-util/cmake`
-        * ` $ sudo emerge media-libs/glm`
+        * ` $ emerge dev-util/pkgconfig`
+        * ` $ emerge media-libs/mesa`
+        * ` $ emerge media-libs/glfw`
+        * ` $ emerge media-libs/glew`
+        * ` $ emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
+        * ` $ emerge media-libs/freealut`
+        * ` $ emerge dev-util/cmake`
+        * ` $ emerge media-libs/glm`
