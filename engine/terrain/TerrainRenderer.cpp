@@ -28,11 +28,11 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
         return;
     }
 
-    prepareRendering();
     renderShadow(shadowMap, light);
+    prepareRendering();
 
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_ScaleX,
-                                                                  m_Terrain->m_ScaleY, m_Terrain->m_ScaleZ, 90);
+                                                                  m_Terrain->m_ScaleY, m_Terrain->m_ScaleZ, rotationX);
 
     m_Shader.loadTextures();
 
