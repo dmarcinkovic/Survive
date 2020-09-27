@@ -5,6 +5,7 @@
 
 #include "TextRenderer.h"
 #include "../renderer/Renderer2DUtil.h"
+#include "../math/Maths.h"
 
 void TextRenderer::renderText() const
 {
@@ -17,6 +18,9 @@ void TextRenderer::renderText() const
         {
             m_Shader.loadColor(text.get().color());
             m_Shader.loadBorder(text.get().getMBorderColor(), text.get().getMBorderWidth());
+
+            float scale = text.get().getScale();
+            m_Shader.loadTransformationMatrix(Maths::createTransformationMatrix(glm::vec3{}, scale, scale));
 
             glDrawArrays(GL_TRIANGLES, 0, text.get().m_Texture.vertexCount());
         }

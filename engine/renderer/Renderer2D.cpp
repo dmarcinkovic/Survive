@@ -23,7 +23,7 @@ void Renderer2D::render() const
     }
 
     m_TextRenderer.renderText();
-//    m_ButtonRenderer.render();
+    m_ButtonRenderer.render();
 }
 
 void Renderer2D::addGui(Entity &entity2D) noexcept

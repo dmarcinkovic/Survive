@@ -22,13 +22,13 @@ int main()
                   glm::vec4{1, 0, 0, 0.6});
     button.setText("Button1", font, glm::vec3{1, 0, 0});
 
-//    Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
-//                   glm::vec4{0, 1, 0, 0.4});
-//    button2.setText("Button2", font);
-//    button2.onButtonPress([]{std::cout << "Button pressed\n";});
+    Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
+                   glm::vec4{0, 1, 0, 0.4});
+    button2.setText("Button2", font);
+    button2.onButtonPress([]{std::cout << "Button pressed\n";});
 
     renderer.addButton(button);
-//    renderer.addButton(button2);
+    renderer.addButton(button2);
 
     while (display.isRunning())
     {
