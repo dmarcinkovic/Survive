@@ -18,7 +18,7 @@ protected:
 private:
     static GLuint loadShader(const char *filename, GLenum type);
 
-    static void debug(GLuint shaderId);
+    static void debug(GLuint shaderId, const char *filename);
 
 public:
     Shader(const char *vertexShaderFile, const char *fragmentShaderFile);

@@ -52,13 +52,13 @@ GLuint Shader::loadShader(const char *filename, GLenum type)
     glShaderSource(shader, 1, &shaderSource, nullptr);
     glCompileShader(shader);
 
-    debug(shader);
+    debug(shader, filename);
 
     reader.close();
     return shader;
 }
 
-void Shader::debug(GLuint shaderId)
+void Shader::debug(GLuint shaderId, const char *filename)
 {
     int result;
     glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
@@ -71,7 +71,7 @@ void Shader::debug(GLuint shaderId)
 
         glGetShaderInfoLog(shaderId, length, &length, message);
 
-        std::cout << "Error while compiling shader: " << message << "\n";
+        std::cout << "Error while compiling " << filename << " shader: " << message << "\n";
         glDeleteShader(shaderId);
     }
 }

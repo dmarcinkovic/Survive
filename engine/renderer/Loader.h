@@ -52,7 +52,7 @@ public:
 
 private:
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
-                                    GLenum usage = GL_STATIC_DRAW);
+                                  GLenum usage = GL_STATIC_DRAW);
 
     void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
 

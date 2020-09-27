@@ -23,7 +23,6 @@ public:
     void render() const;
 
     void addEntity(Entity &entity2D) noexcept;
-
 };
 
 

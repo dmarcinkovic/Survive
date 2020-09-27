@@ -1,11 +1,7 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/entity/Entity.h"
-#include "engine/math/Maths.h"
-#include "engine/objects/ObjectRenderer.h"
-#include "engine/light/Light.h"
-#include "engine/objects/Object3D.h"
-#include "engine/renderer/Renderer3D.h"
+#include "engine/renderer/Renderer2D.h"
+#include "engine/physics/World.h"
 
 int main()
 {
@@ -15,22 +11,27 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Camera camera;
+    Renderer2D renderer(loader);
 
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
+    TexturedModel circleTexture(loader.renderQuad(), Loader::loadTexture("res/circle.png"));
+    TexturedModel rectangleTexture(loader.renderQuad(), Loader::loadTexture("res/rectangle.png"));
 
-    Renderer3D renderer(light);
+    Entity circle(circleTexture, glm::vec3{0.5, 0.25, 0.0}, 0.1, 0.1);
+    Entity rectangle(rectangleTexture, glm::vec3{-0.5, 0.5, 0.0}, 0.3, 0.2);
 
-    Terrain terrain(loader.renderQuad(), glm::vec3{0, -20, -100}, 500, 500, 1);
-    terrain.addTextures("res/blendMap.png",
-                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
-    renderer.addTerrain(terrain);
+    World world;
+    world.addBody(std::make_unique<Circle>(circle, 0.1, 10, BodyType::DYNAMIC, glm::vec2{-0.01, 0}));
+    world.addBody(std::make_unique<Rectangle>(rectangle, 0.6, 0.6, 1, BodyType::STATIC));
+
+    renderer.addGui(circle);
+    renderer.addGui(rectangle);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render(camera);
+        world.step();
+        renderer.render();
 
         display.update();
     }

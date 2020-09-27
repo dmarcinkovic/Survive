@@ -2,7 +2,6 @@
 // Created by david on 27. 03. 2020..
 //
 
-#include <iostream>
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
