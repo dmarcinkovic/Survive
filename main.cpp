@@ -1,8 +1,11 @@
-#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/renderer/Renderer2D.h"
-#include "engine/ui/button/Button.h"
+#include "engine/entity/Entity.h"
+#include "engine/math/Maths.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
+#include "engine/renderer/Renderer3D.h"
 
 int main()
 {
@@ -12,29 +15,22 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Renderer2D renderer(loader);
+    Camera camera;
 
-    TexturedModel texture(loader.renderQuad(), 0);
-    Font font("res/candara.png", loader);
-    font.loadFontFromFntFile("res/candara.fnt");
+    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
 
-    Button button(texture, glm::vec3{0, 0.5, 0}, 0.4, 0.2,
-                  glm::vec4{1, 0, 0, 0.6});
-    button.setText("Button1", font, glm::vec3{1, 0, 0});
+    Renderer3D renderer(light);
 
-    Button button2(texture, glm::vec3{0, 0, 0}, 0.3, 0.1,
-                   glm::vec4{0, 1, 0, 0.4});
-    button2.setText("Button2", font);
-    button2.onButtonPress([]{std::cout << "Button pressed\n";});
-
-    renderer.addButton(button);
-    renderer.addButton(button2);
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -20, -100}, 500, 500, 1);
+    terrain.addTextures("res/blendMap.png",
+                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
+    renderer.addTerrain(terrain);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render();
+        renderer.render(camera);
 
         display.update();
     }

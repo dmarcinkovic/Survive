@@ -7,6 +7,8 @@
 #include "../texture/stb_image.h"
 #include "../texture/TexturedModel.h"
 
+std::vector<GLuint> Loader::m_Textures;
+
 Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size)
 {
     GLuint vao = createVao();
@@ -143,6 +145,13 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
     return Model(vao, vertices.size() / size);
 }
 
+void Loader::addMipMap()
+{
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4);
+}
+
 GLuint Loader::loadTexture(const char *texture) noexcept
 {
     GLuint textureId;
@@ -153,6 +162,8 @@ GLuint Loader::loadTexture(const char *texture) noexcept
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     loadImage(texture);
+    addMipMap();
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     m_Textures.emplace_back(textureId);

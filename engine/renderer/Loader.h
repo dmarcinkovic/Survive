@@ -23,7 +23,7 @@ class Loader
 private:
     std::vector<GLuint> m_Vaos;
     std::vector<GLuint> m_Vbos;
-    std::vector<GLuint> m_Textures;
+    static std::vector<GLuint> m_Textures;
 
 public:
     Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
@@ -44,7 +44,7 @@ public:
 
     Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
-    GLuint loadTexture(const char *texture) noexcept;
+    static GLuint loadTexture(const char *texture) noexcept;
 
     Model renderQuad();
 
@@ -61,6 +61,9 @@ private:
     GLuint createVao();
 
     static void loadImage(const char *texture) noexcept;
+
+    static void addMipMap();
+
 };
 
 

@@ -10,10 +10,17 @@
 
 class Terrain : public Entity
 {
+private:
+    std::vector<Texture> m_Textures;
+
 public:
     Terrain(const Model &model, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ);
 
     Terrain() = default;
+
+    void addTextures(const char* blendMap, const std::vector<const char*> &textures);
+
+    [[nodiscard]] const std::vector<Texture> &textures() const;
 };
 
 

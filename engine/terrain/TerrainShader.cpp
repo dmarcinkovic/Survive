@@ -17,6 +17,13 @@ void TerrainShader::getUniformLocations()
     m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
     m_LocationLightProjection = glGetUniformLocation(m_Program, "lightProjectionMatrix");
     m_LocationLightView = glGetUniformLocation(m_Program, "lightViewMatrix");
+
+    m_LocationBlendMap = glGetUniformLocation(m_Program, "blendMap");
+
+    m_LocationRock = glGetUniformLocation(m_Program, "rock");
+    m_LocationGrass = glGetUniformLocation(m_Program, "grass");
+    m_LocationDirt = glGetUniformLocation(m_Program, "dirt");
+    m_LocationFlowers = glGetUniformLocation(m_Program, "flowers");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -42,4 +49,13 @@ void TerrainShader::loadLightProjectionMatrix(const glm::mat4 &projectionMatrix)
 void TerrainShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
 {
     loadMatrix(m_LocationLightView, viewMatrix);
+}
+
+void TerrainShader::loadTextures() const
+{
+    loadInteger(m_LocationBlendMap, 0);
+    loadInteger(m_LocationDirt, 1);
+    loadInteger(m_LocationGrass, 2);
+    loadInteger(m_LocationRock, 3);
+    loadInteger(m_LocationFlowers, 4);
 }
