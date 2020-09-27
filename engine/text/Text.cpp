@@ -13,8 +13,7 @@ Text::Text(std::string text, Font font, const glm::vec3 &position,
           m_BorderColor(color), m_TextTexture(font.getMTextureId())
 {
     m_Position = position;
-    m_ScaleX = scale;
-    m_ScaleY = scale;
+    m_ScaleX = m_ScaleY = scale;
 }
 
 Model Text::calculateVertices(Loader &loader)
@@ -55,18 +54,18 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
     float maxY = cursorY + character.m_YOffset / character.m_ScaleH;
     float minY = maxY - character.m_Height / character.m_ScaleH;
 
-    m_Vertices.emplace_back(minX * m_ScaleX);
-    m_Vertices.emplace_back(maxY * m_ScaleY);
-    m_Vertices.emplace_back(minX * m_ScaleX);
-    m_Vertices.emplace_back(minY * m_ScaleY);
-    m_Vertices.emplace_back(maxX * m_ScaleX);
-    m_Vertices.emplace_back(minY * m_ScaleY);
-    m_Vertices.emplace_back(maxX * m_ScaleX);
-    m_Vertices.emplace_back(minY * m_ScaleY);
-    m_Vertices.emplace_back(maxX * m_ScaleX);
-    m_Vertices.emplace_back(maxY * m_ScaleY);
-    m_Vertices.emplace_back(minX * m_ScaleX);
-    m_Vertices.emplace_back(maxY * m_ScaleY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(minY);
+    m_Vertices.emplace_back(maxX);
+    m_Vertices.emplace_back(maxY);
+    m_Vertices.emplace_back(minX);
+    m_Vertices.emplace_back(maxY);
 }
 
 void Text::loadTexture(Loader &loader)
