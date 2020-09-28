@@ -14,5 +14,4 @@ add_executable(Survive main.cpp engine/texture/stb_image.h engine/texture/stb_im
 target_link_libraries(Survive ${OpenGlLinkers})
 
 include_directories(${GLFW_INCLUDE_DIRS})
-target_link_libraries(Survive ${GLFW_LIBRARIES})
-target_link_libraries(Survive ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY})
+target_link_libraries(Survive ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY})
