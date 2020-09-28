@@ -1,49 +1,40 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/entity/Entity.h"
-#include "engine/math/Maths.h"
-#include "engine/objects/ObjectRenderer.h"
-#include "engine/light/Light.h"
-#include "engine/objects/Object3D.h"
-#include "engine/renderer/Renderer3D.h"
-#include "engine/parser/DaeParser.h"
-#include "engine/animations/animation/AnimatedObject.h"
-#include "engine/animations/animation/Animator.h"
+#include "engine/renderer/Renderer2D.h"
+#include "engine/physics/World.h"
 
 int main()
 {
-    constexpr int width = 800;
-    constexpr int height = 800;
+	constexpr int width = 800;
+	constexpr int height = 800;
 
-    Display display(width, height, "Survive");
+	Display display(width, height, "Survive");
 
-    Loader loader;
+	Loader loader;
+	Renderer2D renderer(loader);
 
-    DaeParser daeParser;
-    TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
-                                Loader::loadTexture("res/character.png"));
+	TexturedModel circleTexture(loader.renderQuad(), Loader::loadTexture("res/circle.png"));
+	TexturedModel rectangleTexture(loader.renderQuad(), Loader::loadTexture("res/rectangle.png"));
 
-    auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-    AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+	Entity circle(circleTexture, glm::vec3{0.5, 0.25, 0.0}, 0.1, 0.1);
+	Entity rectangle(rectangleTexture, glm::vec3{-0.5, 0.5, 0.0}, 0.3, 0.2);
 
-    Animator animator(daeParser.getAnimation(), object);
+	World world;
+	world.addBody(std::make_unique<Circle>(circle, 0.1, 10, BodyType::DYNAMIC, glm::vec2{-0.01, 0}));
+	world.addBody(std::make_unique<Rectangle>(rectangle, 0.6, 0.6, 1, BodyType::STATIC));
 
-    Camera camera{};
-    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
+	renderer.addGui(circle);
+	renderer.addGui(rectangle);
 
-    Renderer3D renderer(light);
-    renderer.addAnimatedObject(object);
+	while (display.isRunning())
+	{
+		Display::clearWindow();
 
-    while (display.isRunning())
-    {
-        Display::clearWindow();
+		world.step();
+		renderer.render();
 
-        animator.update();
+		display.update();
+	}
 
-        renderer.render(camera);
-
-        display.update();
-    }
-
-    return 0;
+	return 0;
 }
