@@ -1,6 +1,8 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer2D.h"
+#include "engine/text/Font.h"
+#include "engine/text/TextRenderer.h"
 
 int main()
 {
@@ -12,12 +14,15 @@ int main()
     Loader loader;
     Renderer2D renderer(loader);
 
-    TexturedModel texture2(loader.renderQuad(), Loader::loadTexture("res/walking.png"));
+    Font font("res/candara.png", loader);
+    font.loadFontFromFntFile("res/candara.fnt");
 
-    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 1, 8);
-    renderer.addSprite(sprite2);
+    Text text("D", font, glm::vec3{0, 0, 0}, glm::vec3{1, 0, 1}, 10.0);
+    text.centerText();
+    text.addBorder(0.5, glm::vec3{1, 0, 0});
 
-    sprite2.animate(12);
+    renderer.addText(text);
+    text.setText("AB", loader);
 
     while (display.isRunning())
     {
