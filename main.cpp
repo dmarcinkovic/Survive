@@ -6,7 +6,7 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/parser/ObjParser.h"
+#include "engine/parser/DaeParser.h"
 
 int main()
 {
@@ -17,23 +17,16 @@ int main()
 
     Loader loader;
 
-    Texture texture(Loader::loadTexture("res/lamp.jpg"));
+    TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
+                                loader.loadTexture("res/character.png"));
 
-    TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
-    TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
+    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
-    Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
-    Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
-
-    Camera camera;
-    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
+    Camera camera{};
+    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
 
     Renderer3D renderer(light);
-    renderer.add3DObject(dragon);
-    renderer.add3DObject(lamp);
-
-    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
-    renderer.addTerrain(terrain);
+    renderer.addAnimatedObject(object);
 
     while (display.isRunning())
     {
