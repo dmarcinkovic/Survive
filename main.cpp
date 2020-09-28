@@ -18,7 +18,7 @@ int main()
     Loader loader;
 
     TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
-                                loader.loadTexture("res/character.png"));
+                                Loader::loadTexture("res/character.png"));
 
     Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
