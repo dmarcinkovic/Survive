@@ -22,7 +22,7 @@ Game engine.
         * ` $ apt install libgl1-mesa-dev`
         * ` $ apt install libglfw3-dev`
         * ` $ apt install libglew-dev`
-        * ` $ apt install clang` or ` $ sudo apt install g++`
+        * ` $ apt install libclang-dev clang` or ` $ sudo apt install g++`
         * ` $ apt install libalut-dev`
         * ` $ apt install cmake`
         * ` $ apt install libglm-dev`
