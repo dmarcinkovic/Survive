@@ -1,8 +1,12 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/renderer/Renderer2D.h"
-#include "engine/text/Font.h"
-#include "engine/text/TextRenderer.h"
+#include "engine/entity/Entity.h"
+#include "engine/math/Maths.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
+#include "engine/renderer/Renderer3D.h"
+#include "engine/parser/DaeParser.h"
 
 int main()
 {
@@ -12,23 +16,23 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Renderer2D renderer(loader);
 
-    Font font("res/candara.png", loader);
-    font.loadFontFromFntFile("res/candara.fnt");
+    TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
+                                Loader::loadTexture("res/character.png"));
 
-    Text text("D", font, glm::vec3{0, 0, 0}, glm::vec3{1, 0, 1}, 10.0);
-    text.centerText();
-    text.addBorder(0.5, glm::vec3{1, 0, 0});
+    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
-    renderer.addText(text);
-    text.setText("AB", loader);
+    Camera camera{};
+    Light light(glm::vec3{0, 10, -10}, glm::vec3{1, 1, 1});
+
+    Renderer3D renderer(light);
+    renderer.addAnimatedObject(object);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render();
+        renderer.render(camera);
 
         display.update();
     }
