@@ -23,6 +23,7 @@ void Renderer2D::render() const
 
     m_TextRenderer.renderText();
     m_ButtonRenderer.render();
+    m_SpriteRenderer.renderSprite();
 }
 
 void Renderer2D::addGui(Entity &entity2D) noexcept
@@ -40,5 +41,10 @@ void Renderer2D::addButton(Button &button) noexcept
 {
     m_ButtonRenderer.addButton(button);
     addText(button.getText());
+}
+
+void Renderer2D::addSprite(Sprite &sprite) noexcept
+{
+    m_SpriteRenderer.addSprite(sprite);
 }
 

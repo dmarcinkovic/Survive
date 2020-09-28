@@ -31,6 +31,5 @@ void GuiRenderer::render() const
 void GuiRenderer::addEntity(Entity &entity2D) noexcept
 {
     std::vector<std::reference_wrapper<Entity>> &batch = m_Entities[entity2D.m_Texture];
-
     batch.emplace_back(entity2D);
 }

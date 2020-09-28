@@ -5,7 +5,7 @@
 #include "Texture.h"
 
 Texture::Texture(GLuint textureId)
-    : m_TextureId(textureId)
+        : m_TextureId(textureId)
 {
 
 }

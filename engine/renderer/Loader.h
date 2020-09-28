@@ -23,6 +23,7 @@ class Loader
 private:
     std::vector<GLuint> m_Vaos;
     std::vector<GLuint> m_Vbos;
+
     static std::vector<GLuint> m_Textures;
 
 public:
@@ -63,7 +64,6 @@ private:
     static void loadImage(const char *texture) noexcept;
 
     static void addMipMap();
-
 };
 
 
