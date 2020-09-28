@@ -1,6 +1,11 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/renderer/Renderer2D.h"
+#include "engine/entity/Entity.h"
+#include "engine/math/Maths.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
+#include "engine/renderer/Renderer3D.h"
 
 int main()
 {
@@ -10,20 +15,22 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Renderer2D renderer(loader);
+    Camera camera;
 
-    TexturedModel texture2(loader.renderQuad(), Loader::loadTexture("res/walking.png"));
+    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
 
-    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 1, 8);
-    renderer.addSprite(sprite2);
+    Renderer3D renderer(light);
 
-    sprite2.animate(12);
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -20, -100}, 500, 500, 1);
+    terrain.addTextures("res/blendMap.png",
+                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
+    renderer.addTerrain(terrain);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render();
+        renderer.render(camera);
 
         display.update();
     }
