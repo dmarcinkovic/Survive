@@ -18,8 +18,8 @@ struct Character
     float m_ScaleH;
     std::vector<float> m_TextureCoords;
 
-    Character(int id, float x, float y, float width, float height, float xOffset, float yOffset, float advance, float scaleW,
-              float scaleH);
+    Character(int id, float x, float y, float width, float height, float xOffset, float yOffset, float advance,
+              float scaleW, float scaleH);
 
 private:
     void calculateTextureCoordinates(float scaleW, float scaleH);

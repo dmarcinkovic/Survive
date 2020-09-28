@@ -11,7 +11,7 @@
 class ShadowShader : public Shader
 {
 private:
-    static constexpr const char* VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
+    static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
     static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ShadowFragmentShader.glsl";
 
     GLuint m_LocationTransformationMatrix{};

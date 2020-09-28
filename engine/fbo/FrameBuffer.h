@@ -5,9 +5,9 @@
 #ifndef SURVIVE_FRAMEBUFFER_H
 #define SURVIVE_FRAMEBUFFER_H
 
-
 #include <GL/glew.h>
 #include <vector>
+
 #include "../shadowMapping/ShadowRenderer.h"
 
 class FrameBuffer

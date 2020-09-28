@@ -31,7 +31,7 @@ public:
 private:
     void prepareRendering() const;
 
-    static void finishRendering() ;
+    static void finishRendering();
 
     void renderShadow(GLuint shadowMap, const Light &light) const;
 };

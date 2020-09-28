@@ -5,7 +5,7 @@
 #include "ShadowShader.h"
 
 ShadowShader::ShadowShader()
-    : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+        : Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
     getUniformLocations();
 }
@@ -28,6 +28,6 @@ void ShadowShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 void ShadowShader::getUniformLocations()
 {
     m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
-    m_LocationProjectionMatrix  = glGetUniformLocation(m_Program, "projectionMatrix");
+    m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
     m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 }

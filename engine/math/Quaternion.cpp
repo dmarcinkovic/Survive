@@ -92,12 +92,14 @@ Quaternion Quaternion::interpolate(const Quaternion &a, const Quaternion &b, flo
     Quaternion result(0, 0, 0, 1);
     float dot = a.m_W * b.m_W + a.m_X * b.m_X + a.m_Y * b.m_Y + a.m_Z * b.m_Z;
     float blendI = 1.0f - blend;
-    if (dot < 0) {
+    if (dot < 0)
+    {
         result.m_W = blendI * a.m_W + blend * -b.m_W;
         result.m_X = blendI * a.m_X + blend * -b.m_X;
         result.m_Y = blendI * a.m_Y + blend * -b.m_Y;
         result.m_Z = blendI * a.m_Z + blend * -b.m_Z;
-    } else {
+    } else
+    {
         result.m_W = blendI * a.m_W + blend * b.m_W;
         result.m_X = blendI * a.m_X + blend * b.m_X;
         result.m_Y = blendI * a.m_Y + blend * b.m_Y;

@@ -39,8 +39,7 @@ public:
     void onButtonPress(Callable &&callable, Args &&... args)
     {
         auto mousePressedListener = [this, callable = std::forward<Callable>(callable),
-                ...args = std::forward<Args>(args)](int button, int action, double mouseX, double mouseY)
-        {
+                ...args = std::forward<Args>(args)](int button, int action, double mouseX, double mouseY) {
             if (isInsideButton(mouseX, mouseY) && action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
             {
                 callable(args...);

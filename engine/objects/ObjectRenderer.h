@@ -5,7 +5,6 @@
 #ifndef SURVIVE_OBJECTRENDERER_H
 #define SURVIVE_OBJECTRENDERER_H
 
-
 #include <unordered_map>
 #include <functional>
 

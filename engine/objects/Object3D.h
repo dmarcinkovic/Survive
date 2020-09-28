@@ -5,7 +5,6 @@
 #ifndef SURVIVE_OBJECT3D_H
 #define SURVIVE_OBJECT3D_H
 
-
 #include "../entity/Entity.h"
 
 struct Object3D : public Entity

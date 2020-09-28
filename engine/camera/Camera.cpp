@@ -15,8 +15,7 @@ Camera::Camera()
 
 void Camera::addScrollListener()
 {
-    auto scrollListener = [this](double xOffset, double yOffset)
-    {
+    auto scrollListener = [this](double xOffset, double yOffset) {
         m_Position.z -= yOffset * 2.0;
     };
     Display::addScrollListener(scrollListener);
@@ -24,8 +23,7 @@ void Camera::addScrollListener()
 
 void Camera::addMousePressedListener()
 {
-    auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY)
-    {
+    auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY) {
         if (action == GLFW_PRESS)
         {
             if (button == GLFW_MOUSE_BUTTON_RIGHT)
@@ -51,8 +49,7 @@ void Camera::addMousePressedListener()
 
 void Camera::addMouseMovedListener()
 {
-    auto mouseMovedListener = [this](double mouseX, double mouseY)
-    {
+    auto mouseMovedListener = [this](double mouseX, double mouseY) {
         double dy = mouseY - m_MousePos.y;
         double dx = mouseX - m_MousePos.x;
 
@@ -71,8 +68,7 @@ void Camera::addMouseMovedListener()
 
 void Camera::addKeyboardListener()
 {
-    auto keyboardListener = [this](int key, int action)
-    {
+    auto keyboardListener = [this](int key, int action) {
         if (action == GLFW_PRESS)
         {
             switch (key)

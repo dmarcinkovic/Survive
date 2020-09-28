@@ -5,7 +5,8 @@
 #include <iostream>
 #include "Button.h"
 
-Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY, const glm::vec4 &color)
+Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
+               const glm::vec4 &color)
         : Entity(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
           m_OriginalScaleY(scaleY)
 {
@@ -43,8 +44,7 @@ bool Button::isInsideButton(double x, double y) const
 
 void Button::addMouseMoveListener()
 {
-    auto mouseListener = [&](double x, double y)
-    {
+    auto mouseListener = [&](double x, double y) {
         if (isInsideButton(x, y))
         {
             m_ScaleX = m_OriginalScaleX * 1.02f;
@@ -63,8 +63,7 @@ void Button::addMouseMoveListener()
 
 void Button::addWindowResizeListener()
 {
-    auto windowResizeListener = [&](int width, int height)
-    {
+    auto windowResizeListener = [&](int width, int height) {
         convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
     };
 
@@ -76,7 +75,7 @@ Text &Button::getText()
     return m_Text;
 }
 
-void Button::setText(const std::string& text, const Font &font, const glm::vec3 &textColor)
+void Button::setText(const std::string &text, const Font &font, const glm::vec3 &textColor)
 {
     m_Text = Text(text, font, m_Position, textColor);
     m_Text.centerText();

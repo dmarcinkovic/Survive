@@ -5,7 +5,7 @@
 #include "Joint.h"
 
 Joint::Joint(std::string name, int index, const glm::mat4 &bindLocalTransform)
-    : m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(bindLocalTransform)
+        : m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(bindLocalTransform)
 {
 
 }

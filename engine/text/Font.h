@@ -17,19 +17,18 @@ private:
     GLuint m_TextureId{};
 
 public:
-    Font(const char* textureAtlas, Loader &loader);
+    Font(const char *textureAtlas, Loader &loader);
 
     Font() = default;
 
-    void loadFontFromFntFile(const char* fntFile);
+    void loadFontFromFntFile(const char *fntFile);
 
-    void loadFontFromJsonFile(const char* jsonFile);
+    void loadFontFromJsonFile(const char *jsonFile);
 
     const Character &getCharacter(int ascii) const;
 
     GLuint getMTextureId() const;
 };
-
 
 
 #endif //SURVIVE_FONT_H

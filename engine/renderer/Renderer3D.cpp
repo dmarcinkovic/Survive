@@ -5,7 +5,8 @@
 #include "Renderer3D.h"
 
 Renderer3D::Renderer3D(const Light &light)
-        : m_Light(light), m_ObjectRenderer(light), m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture()), m_AnimationRenderer(light)
+        : m_Light(light), m_ObjectRenderer(light), m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture()),
+          m_AnimationRenderer(light)
 {
 }
 

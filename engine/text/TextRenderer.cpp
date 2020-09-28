@@ -13,7 +13,7 @@ void TextRenderer::renderText() const
 
     for (auto const&[texture, batch] : m_Texts)
     {
-        Renderer2DUtil ::prepareEntity(texture);
+        Renderer2DUtil::prepareEntity(texture);
         for (auto const &text : batch)
         {
             m_Shader.loadColor(text.get().color());

@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+
 #include "Display.h"
 
 std::vector<KeyListener> Display::m_KeyEventListeners;

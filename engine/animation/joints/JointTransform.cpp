@@ -3,6 +3,7 @@
 //
 
 #include <glm/gtc/matrix_transform.hpp>
+
 #include "JointTransform.h"
 
 JointTransform::JointTransform(const glm::vec3 &position, const Quaternion &quaternion)

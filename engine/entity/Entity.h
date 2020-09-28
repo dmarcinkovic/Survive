@@ -17,7 +17,8 @@ struct Entity
     float m_ScaleY{};
     float m_ScaleZ{};
 
-    Entity(const TexturedModel &texture, const glm::vec3 &position, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
+    Entity(const TexturedModel &texture, const glm::vec3 &position, float scaleX = 1.0f, float scaleY = 1.0f,
+           float scaleZ = 1.0f);
 
     Entity() = default;
 };

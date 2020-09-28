@@ -10,7 +10,7 @@
 
 #include "../shader/Shader.h"
 
-class SpritesShader  : public Shader
+class SpritesShader : public Shader
 {
 private:
     constexpr static const char *VERTEX_FILE = "engine/shader/sources/SpriteVertexShader.glsl";

@@ -12,9 +12,9 @@
 class Renderer2DUtil
 {
 public:
-    static void prepareRendering(const Shader &shader) ;
+    static void prepareRendering(const Shader &shader);
 
-    static void prepareEntity(const TexturedModel &texture) ;
+    static void prepareEntity(const TexturedModel &texture);
 
     static void finishRenderingEntity();
 

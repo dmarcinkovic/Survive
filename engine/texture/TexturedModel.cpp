@@ -11,7 +11,7 @@ TexturedModel::TexturedModel(const Model &model, GLuint textureId)
 }
 
 TexturedModel::TexturedModel()
-    : m_Texture(0)
+        : m_Texture(0)
 {
 
 }

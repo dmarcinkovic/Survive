@@ -2,7 +2,6 @@
 // Created by david on 18. 06. 2020..
 //
 
-#include <iostream>
 #include "World.h"
 
 void World::addBody(std::unique_ptr<Body> body)

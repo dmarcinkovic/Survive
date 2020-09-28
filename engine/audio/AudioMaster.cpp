@@ -137,6 +137,6 @@ int AudioMaster::convertToInt(const char *buffer, std::size_t len)
 
 void AudioMaster::setListenerData()
 {
-    alListener3f(AL_POSITION, 0,0,0);
-    alListener3f(AL_VELOCITY, 0,0,0);
+    alListener3f(AL_POSITION, 0, 0, 0);
+    alListener3f(AL_VELOCITY, 0, 0, 0);
 }
