@@ -1,6 +1,12 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
-#include "engine/renderer/Renderer2D.h"
+#include "engine/entity/Entity.h"
+#include "engine/math/Maths.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/light/Light.h"
+#include "engine/objects/Object3D.h"
+#include "engine/renderer/Renderer3D.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -10,20 +16,30 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Renderer2D renderer(loader);
 
-    TexturedModel texture2(loader.renderQuad(), Loader::loadTexture("res/walking.png"));
+    Texture texture(Loader::loadTexture("res/lamp.jpg"));
 
-    Sprite sprite2(texture2, glm::vec3{0.5, 0.5, 0.0}, 0.3, 1, 8);
-    renderer.addSprite(sprite2);
+    TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
+    TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
 
-    sprite2.animate(12);
+    Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
+    Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
+
+    Camera camera;
+    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
+
+    Renderer3D renderer(light);
+    renderer.add3DObject(dragon);
+    renderer.add3DObject(lamp);
+
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
+    renderer.addTerrain(terrain);
 
     while (display.isRunning())
     {
         Display::clearWindow();
 
-        renderer.render();
+        renderer.render(camera);
 
         display.update();
     }
