@@ -6,7 +6,6 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -16,23 +15,15 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-
-    Texture texture(Loader::loadTexture("res/lamp.jpg"));
-
-    TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
-    TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
-
-    Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
-    Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
-
     Camera camera;
-    Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
+
+    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
 
     Renderer3D renderer(light);
-    renderer.add3DObject(dragon);
-    renderer.add3DObject(lamp);
 
-    Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
+    Terrain terrain(loader.renderQuad(), glm::vec3{0, -20, -100}, 500, 500, 1);
+    terrain.addTextures("res/blendMap.png",
+                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
     renderer.addTerrain(terrain);
 
     while (display.isRunning())
