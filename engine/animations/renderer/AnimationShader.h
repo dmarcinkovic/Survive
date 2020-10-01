@@ -24,7 +24,7 @@ private:
     GLuint m_LocationLightPosition{};
     GLuint m_LocationLightColor{};
 
-    GLuint m_LocationJointTransforms[MAX_JOINTS];
+    GLuint m_LocationJointTransforms[MAX_JOINTS]{};
 
 public:
     AnimationShader();
