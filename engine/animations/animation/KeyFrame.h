@@ -17,6 +17,10 @@ private:
 
 public:
     KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransform> jointKeyFrames);
+
+    float timeStamp() const;
+
+    const std::unordered_map<std::string, JointTransform> &getPose() const ;
 };
 
 

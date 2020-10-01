@@ -6,9 +6,13 @@
 #define SURVIVE_ANIMATEDMODEL_H
 
 
+#include "../joints/Joint.h"
+
 class AnimatedModel
 {
 
+public:
+    Joint &rootJoint();
 };
 
 

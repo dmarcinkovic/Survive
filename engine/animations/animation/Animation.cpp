@@ -9,3 +9,13 @@ Animation::Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames)
 {
 
 }
+
+float Animation::getLength() const
+{
+    return m_Length;
+}
+
+const std::vector<KeyFrame> &Animation::keyFrames() const
+{
+    return m_KeyFrames;
+}

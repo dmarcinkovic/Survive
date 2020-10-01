@@ -11,3 +11,13 @@ KeyFrame::KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransfo
 {
 
 }
+
+float KeyFrame::timeStamp() const
+{
+    return m_TimeStamp;
+}
+
+const std::unordered_map<std::string, JointTransform> &KeyFrame::getPose() const
+{
+    return m_Pose;
+}

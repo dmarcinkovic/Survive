@@ -17,6 +17,10 @@ private:
 
 public:
     Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames);
+
+    [[nodiscard]] float getLength() const;
+
+    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
 };
 
 

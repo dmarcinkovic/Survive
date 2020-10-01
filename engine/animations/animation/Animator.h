@@ -9,17 +9,21 @@
 #include "Animation.h"
 #include "AnimatedModel.h"
 #include "../joints/Joint.h"
+#include "KeyFrame.h"
 
 class Animator
 {
 private:
     Animation m_Animation;
-    float animationTime{};
+    float m_AnimationTime{};
 
     AnimatedModel m_Model;
 
 public:
     Animator(Animation animation, AnimatedModel animatedModel);
+
+    void update();
+
 
 private:
     [[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;
@@ -27,7 +31,13 @@ private:
     void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
                            const glm::mat4 &parentTransformation);
 
-    
+    void increaseAnimationTime();
+
+    [[nodiscard]] std::pair<KeyFrame, KeyFrame> nextAndPreviousFrames() const;
+
+    [[nodiscard]] float calculateProgression(const KeyFrame &prev, const KeyFrame &next) const;
+
+    static std::unordered_map<std::string , glm::mat4> interpolatePoses(const KeyFrame& prev, const KeyFrame &next, float progression);
 };
 
 
