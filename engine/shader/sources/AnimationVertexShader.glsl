@@ -32,7 +32,7 @@ void main()
         vec4 pose = jointTransform * vec4(position, 1.0);
         totalLocalPos += pose * jointWeigth[i];
     }
-    
+
     gl_Position = projectionMatrix * viewMatrix * worldPos;
 
     worldPosition = worldPos.xyz;

@@ -6,13 +6,16 @@
 #define SURVIVE_ANIMATIONSHADER_H
 
 
+#include <vector>
 #include "../../shader/Shader.h"
+#include "../joints/JointTransform.h"
 
 class AnimationShader : public Shader
 {
 private:
     static constexpr const char *VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
     static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
+    static constexpr int MAX_JOINTS = 50;
 
     GLuint m_LocationTransformationMatrix{};
     GLuint m_LocationViewMatrix{};
@@ -20,6 +23,8 @@ private:
 
     GLuint m_LocationLightPosition{};
     GLuint m_LocationLightColor{};
+
+    GLuint m_LocationJointTransforms[MAX_JOINTS];
 
 public:
     AnimationShader();
@@ -31,6 +36,8 @@ public:
     void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
     void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
+
+    void loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const;
 
 private:
     void loadUniformLocations();
