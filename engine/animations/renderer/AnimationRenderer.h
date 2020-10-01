@@ -8,13 +8,13 @@
 #include <unordered_map>
 #include <functional>
 
-#include "../texture/TexturedModel.h"
-#include "../entity/Entity.h"
-#include "../camera/Camera.h"
-#include "../light/Light.h"
-#include "../objects/Object3D.h"
+#include "../../texture/TexturedModel.h"
+#include "../../entity/Entity.h"
+#include "../../camera/Camera.h"
+#include "../../light/Light.h"
+#include "../../objects/Object3D.h"
 #include "AnimationShader.h"
-#include "../objects/ObjectShader.h"
+#include "../../objects/ObjectShader.h"
 
 class AnimationRenderer
 {

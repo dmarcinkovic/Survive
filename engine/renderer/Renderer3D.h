@@ -8,7 +8,7 @@
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
-#include "../animation/AnimationRenderer.h"
+#include "../animations/renderer/AnimationRenderer.h"
 
 class Renderer3D
 {

@@ -2,9 +2,9 @@
 // Created by david on 17. 05. 2020..
 //
 #include "AnimationRenderer.h"
-#include "../renderer/Renderer3DUtil.h"
-#include "../math/Maths.h"
-#include "../constant/Constants.h"
+#include "../../renderer/Renderer3DUtil.h"
+#include "../../math/Maths.h"
+#include "../../constant/Constants.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)

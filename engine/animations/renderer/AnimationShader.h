@@ -6,7 +6,7 @@
 #define SURVIVE_ANIMATIONSHADER_H
 
 
-#include "../shader/Shader.h"
+#include "../../shader/Shader.h"
 
 class AnimationShader : public Shader
 {
