@@ -4,12 +4,13 @@
 #include "AnimationRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../constant/Constants.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)
 {
     m_Shader.start();
-    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(fieldOfView, near, far));
+    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(Constants::FOV));
     Shader::stop();
 }
 

@@ -13,6 +13,7 @@ struct Constants
     constexpr static float RIGHT = 40.0f;
     constexpr static float BOTTOM = -10.0f;
     constexpr static float TOP = 40.0f;
+    constexpr static float FOV = 70.0f;
 };
 
 #endif //SURVIVE_CONSTANTS_H

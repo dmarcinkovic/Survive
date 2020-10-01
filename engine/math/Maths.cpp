@@ -22,12 +22,12 @@ glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float 
     return matrix;
 }
 
-glm::mat4 Maths::createProjectionMatrix(float fieldOfView, float near, float far)
+glm::mat4 Maths::createProjectionMatrix(float fieldOfView)
 {
     auto[width, height] = Display::getWindowSize();
     float aspectRatio = static_cast<float>(width) / static_cast<float >(height);
 
-    return glm::perspective(fieldOfView, aspectRatio, near, far);
+    return glm::perspective(fieldOfView, aspectRatio, Constants::NEAR, Constants::FAR);
 }
 
 glm::mat4 Maths::createViewMatrix(const Camera &camera)
@@ -45,8 +45,8 @@ glm::mat4 Maths::createLightViewMatrix(const Light &light)
     return glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
 }
 
-glm::mat4 Maths::createLightProjectionMatrix(float near, float far)
+glm::mat4 Maths::createLightProjectionMatrix()
 {
     return glm::ortho(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
-                      Constants::TOP, near, far);
+                      Constants::TOP, Constants::NEAR, Constants::FAR);
 }

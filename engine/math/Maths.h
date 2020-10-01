@@ -18,13 +18,13 @@ public:
                                                 float scaleY = 1.0f, float scaleZ = 1.0f,
                                                 float rotationX = 0.0f, float rotationY = 0.0f, float rotationZ = 0.0f);
 
-    static glm::mat4 createProjectionMatrix(float fieldOfView, float near, float far);
+    static glm::mat4 createProjectionMatrix(float fieldOfView);
 
     static glm::mat4 createViewMatrix(const Camera &camera);
 
     static glm::mat4 createLightViewMatrix(const Light &light);
 
-    static glm::mat4 createLightProjectionMatrix(float near, float far);
+    static glm::mat4 createLightProjectionMatrix();
 };
 
 #endif //SURVIVE_MATHS_H

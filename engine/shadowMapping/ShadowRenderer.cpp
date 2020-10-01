@@ -13,8 +13,7 @@ ShadowRenderer::ShadowRenderer()
 {
     m_ShadowShader.start();
 
-    glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix(Constants::NEAR,
-                                                                    Constants::FAR);
+    glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix();
     m_ShadowShader.loadProjectionMatrix(projectionMatrix);
 
     ShadowShader::stop();

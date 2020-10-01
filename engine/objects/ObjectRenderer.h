@@ -18,8 +18,6 @@
 class ObjectRenderer
 {
 private:
-    constexpr static const float fieldOfView = 70.0f;
-
     ObjectShader m_Shader;
     std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 

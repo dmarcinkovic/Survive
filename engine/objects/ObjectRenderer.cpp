@@ -11,10 +11,10 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 {
     m_Shader.start();
 
-    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(fieldOfView, Constants::NEAR, Constants::FAR);
+    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
     m_Shader.loadProjectionMatrix(projectionMatrix);
 
-    const glm::mat4 lightProjection = Maths::createLightProjectionMatrix(Constants::NEAR, Constants::FAR);
+    const glm::mat4 lightProjection = Maths::createLightProjectionMatrix();
     m_Shader.loadLightProjection(lightProjection);
 
     Shader::stop();
