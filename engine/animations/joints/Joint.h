@@ -30,9 +30,13 @@ public:
 
     void calculateInverseBindTransform(const glm::mat4 &parentBindTransform);
 
-    [[nodiscard]] const std::vector<Joint> &children() const;
+    std::vector<Joint> &children();
 
     [[nodiscard]] const std::string &name() const;
+
+    [[nodiscard]] const glm::mat4 &inverseBindTransform() const;
+
+    void setAnimatedTransform(const glm::mat4 &animatedTransform);
 };
 
 
