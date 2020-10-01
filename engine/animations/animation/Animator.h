@@ -24,7 +24,10 @@ public:
 private:
     [[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;
 
-    void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint, const glm::mat4 &parentTransformation);
+    void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
+                           const glm::mat4 &parentTransformation);
+
+    
 };
 
 
