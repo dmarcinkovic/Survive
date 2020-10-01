@@ -50,5 +50,14 @@ void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 
 
 void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
 {
+    for (int i = 0; i < jointTransforms.size(); ++i)
+    {
+        loadMatrix(m_LocationJointTransforms[i], jointTransforms[i].getLocalTransform());
+    }
 
+    for (int i = jointTransforms.size(); i < MAX_JOINTS; ++i)
+    {
+        glm::mat4 emptyMatrix{};
+        loadMatrix(m_LocationJointTransforms[i], emptyMatrix);
+    }
 }
