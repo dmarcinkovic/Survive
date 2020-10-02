@@ -10,8 +10,12 @@
 
 class AnimatedModel
 {
+private:
+    Joint m_RootJoint;
 
 public:
+    AnimatedModel();
+
     Joint &rootJoint();
 };
 

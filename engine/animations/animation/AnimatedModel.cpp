@@ -3,3 +3,14 @@
 //
 
 #include "AnimatedModel.h"
+
+AnimatedModel::AnimatedModel()
+    : m_RootJoint("name", 0, glm::mat4{})
+{
+
+}
+
+Joint &AnimatedModel::rootJoint()
+{
+    return m_RootJoint;
+}
