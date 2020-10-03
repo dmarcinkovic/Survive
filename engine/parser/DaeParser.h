@@ -30,39 +30,45 @@ struct AnimationData
     std::vector<glm::mat4> transforms;
 };
 
+struct JointData
+{
+    Joint rootJoint;
+    int numberOfJoints{};
+};
+
 class DaeParser
 {
 private:
-    static VertexData vertexData;
+    VertexData vertexData;
 
-    static void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
+     void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
 
-    static void loadGeometry(std::ifstream &reader);
+     void loadGeometry(std::ifstream &reader);
 
-    static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+     Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-    static void loadAnimation(std::ifstream &reader);
+     void loadAnimation(std::ifstream &reader);
 
-    static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
+     void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
-    static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
+     void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
-    static Model parseIndices(Loader &loader);
+     Model parseIndices(Loader &loader);
 
-    static std::vector<std::string> getData(std::string &line);
+     std::vector<std::string> getData(std::string &line);
 
-    static void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+     void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
-    static glm::mat4 getJointTransform(std::string &line);
+     glm::mat4 getJointTransform(std::string &line);
 
-    static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
+     Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
 
-    static AnimationData getAnimationData(std::ifstream &reader);
+     AnimationData getAnimationData(std::ifstream &reader);
 
-    static std::vector<glm::mat4> getTransforms(std::string &line);
+     std::vector<glm::mat4> getTransforms(std::string &line);
 
 public:
-    static Model loadDae(const char *daeFile, Loader &loader);
+     Model loadDae(const char *daeFile, Loader &loader);
 };
 
 

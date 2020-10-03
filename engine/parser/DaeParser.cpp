@@ -8,8 +8,6 @@
 #include "DaeParser.h"
 #include "../util/Util.h"
 
-VertexData DaeParser::vertexData;
-
 Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
@@ -27,6 +25,7 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_visual_scenes>") != -1)
         {
             Joint root = loadVisualScene(reader, jointNames);
+
         } else if (line.find("<library_animations>") != -1)
         {
             loadAnimation(reader);

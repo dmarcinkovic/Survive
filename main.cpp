@@ -18,7 +18,8 @@ int main()
 
     Loader loader;
 
-    TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
+    DaeParser daeParser;
+    TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
                                 Loader::loadTexture("res/character.png"));
 
 //    AnimatedModel object();
