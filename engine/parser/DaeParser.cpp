@@ -362,7 +362,7 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
             }
         }
         transforms.emplace_back(transform);
-    }
+    }   
 
     return transforms;
 }
