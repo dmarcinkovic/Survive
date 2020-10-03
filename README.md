@@ -40,7 +40,7 @@ Game engine.
         * ` $ emerge media-libs/freealut`
         * ` $ emerge media-libs/glm`
     
-    - #### Archlinux
+    - ##### Archlinux
         * ` $ pacman -S pkg-config`
         * ` $ pacman -S make`
         * ` $ pacman -S cmake`
