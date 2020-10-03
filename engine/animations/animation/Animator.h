@@ -24,7 +24,6 @@ public:
 
     void update();
 
-
 private:
     [[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;
 

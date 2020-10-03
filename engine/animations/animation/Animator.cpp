@@ -15,6 +15,7 @@ std::unordered_map<std::string, glm::mat4> Animator::calculatePose() const
 {
     auto[prev, next] = nextAndPreviousFrames();
     float progression = calculateProgression(prev, next);
+
     return interpolatePoses(prev, next, progression);
 }
 
