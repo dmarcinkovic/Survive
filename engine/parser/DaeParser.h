@@ -42,6 +42,12 @@ private:
     VertexData m_VertexData;
     JointData m_JointData;
 
+public:
+    [[nodiscard]] std::pair<Joint, int> getJointData() const;
+
+    Model loadDae(const char *daeFile, Loader &loader);
+
+private:
     void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
 
     void loadGeometry(std::ifstream &reader);
@@ -67,11 +73,6 @@ private:
     static AnimationData getAnimationData(std::ifstream &reader);
 
     static std::vector<glm::mat4> getTransforms(std::string &line);
-
-    [[nodiscard]] std::pair<Joint, int> getJointData() const;
-
-public:
-    Model loadDae(const char *daeFile, Loader &loader);
 };
 
 

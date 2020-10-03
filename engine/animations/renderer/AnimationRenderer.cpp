@@ -34,14 +34,14 @@ void AnimationRenderer::render(const Camera &camera) const
     Renderer3DUtil::finishRendering();
 }
 
-void AnimationRenderer::add3DObject(Object3D &entity)
+void AnimationRenderer::addAnimatedModel(AnimatedModel &entity)
 {
     auto &batch = m_Objects[entity.m_Texture];
     batch.emplace_back(entity);
 }
 
 void
-AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedModel>> &objects, const Camera &camera) const
 {
     for (auto const &object : objects)
     {

@@ -22,8 +22,8 @@ int main()
     TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
                                 Loader::loadTexture("res/character.png"));
 
-//    AnimatedModel object();
-    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+    auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+    AnimatedModel object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Camera camera{};
     Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
