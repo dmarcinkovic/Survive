@@ -5,22 +5,22 @@
 #ifndef SURVIVE_KEYFRAME_H
 #define SURVIVE_KEYFRAME_H
 
-
 #include <unordered_map>
+
 #include "../joints/JointTransform.h"
 
 class KeyFrame
 {
 private:
     float m_TimeStamp;
-    std::unordered_map<std::string , JointTransform> m_Pose;
+    std::unordered_map<std::string, JointTransform> m_Pose;
 
 public:
     KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransform> jointKeyFrames);
 
     float timeStamp() const;
 
-    const std::unordered_map<std::string, JointTransform> &getPose() const ;
+    const std::unordered_map<std::string, JointTransform> &getPose() const;
 };
 
 
