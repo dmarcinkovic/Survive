@@ -7,6 +7,7 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/DaeParser.h"
+#include "engine/animations/animation/AnimatedModel.h"
 
 int main()
 {
@@ -20,6 +21,7 @@ int main()
     TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
                                 Loader::loadTexture("res/character.png"));
 
+//    AnimatedModel object();
     Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Camera camera{};
