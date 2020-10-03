@@ -306,7 +306,7 @@ void DaeParser::loadAnimation(std::ifstream &reader)
         }
     }
 
-    std::cout << animationData.size() << '\n';
+    auto keyFrames = getKeyFrames(animationData);
 }
 
 AnimationData DaeParser::getAnimationData(std::ifstream &reader)
@@ -370,4 +370,22 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
 std::pair<Joint, int> DaeParser::getJointData() const
 {
     return {m_JointData.rootJoint, m_JointData.numberOfJoints};
+}
+
+std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
+{
+    std::vector<KeyFrame> keyFrames;
+    std::vector<float> timeStamps = animationData.front().timestamps;
+    for (int i = 0; i < timeStamps.size(); ++i)
+    {
+        std::unordered_map<std::string , JointTransform> pose;
+        for (auto const & j : animationData)
+        {
+            // TODO initialize position
+            JointTransform jointTransform(glm::vec3{}, Quaternion::fromMatrix(j.transforms[i]));
+            pose.insert({j.jointName, jointTransform});
+        }
+    }
+
+    return keyFrames;
 }

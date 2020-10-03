@@ -10,6 +10,7 @@
 
 #include "../renderer/Loader.h"
 #include "../animations/joints/Joint.h"
+#include "../animations/animation/KeyFrame.h"
 
 struct VertexData
 {
@@ -73,6 +74,8 @@ private:
     static AnimationData getAnimationData(std::ifstream &reader);
 
     static std::vector<glm::mat4> getTransforms(std::string &line);
+
+    static std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
 };
 
 
