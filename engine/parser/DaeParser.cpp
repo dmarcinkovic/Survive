@@ -300,11 +300,13 @@ void DaeParser::loadAnimation(std::ifstream &reader)
         if (line.find("</library_animations>") != -1)
         {
             break;
-        } else if (line.find("animations id") != -1)
+        } else if (line.find("animation id") != -1)
         {
             animationData.emplace_back(getAnimationData(reader));
         }
     }
+
+    std::cout << animationData.size() << '\n';
 }
 
 AnimationData DaeParser::getAnimationData(std::ifstream &reader)
@@ -313,7 +315,7 @@ AnimationData DaeParser::getAnimationData(std::ifstream &reader)
     std::string line;
     while (std::getline(reader, line))
     {
-        if (line.find("</animations>") != -1)
+        if (line.find("</animation>") != -1)
         {
             break;
         } else if (line.find("target") != -1)
