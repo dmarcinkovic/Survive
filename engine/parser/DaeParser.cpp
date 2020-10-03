@@ -22,10 +22,10 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_controllers>") != -1)
         {
             loadControllers(reader, jointNames);
+            m_JointData.numberOfJoints = jointNames.size();
         } else if (line.find("<library_visual_scenes>") != -1)
         {
-            Joint root = loadVisualScene(reader, jointNames);
-
+            m_JointData.rootJoint = loadVisualScene(reader, jointNames);
         } else if (line.find("<library_animations>") != -1)
         {
             loadAnimation(reader);
@@ -363,4 +363,9 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
     }
 
     return transforms;
+}
+
+std::pair<Joint, int> DaeParser::getJointData() const
+{
+    return {m_JointData.rootJoint, m_JointData.numberOfJoints};
 }

@@ -46,27 +46,29 @@ private:
 
     void loadGeometry(std::ifstream &reader);
 
-    Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+    static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-    void loadAnimation(std::ifstream &reader);
+    static void loadAnimation(std::ifstream &reader);
 
-    void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
+    static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
-    void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
+    static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
     Model parseIndices(Loader &loader);
 
-    std::vector<std::string> getData(std::string &line);
+    static std::vector<std::string> getData(std::string &line);
 
     void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
-    glm::mat4 getJointTransform(std::string &line);
+    static glm::mat4 getJointTransform(std::string &line);
 
-    Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
+    static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
 
-    AnimationData getAnimationData(std::ifstream &reader);
+    static AnimationData getAnimationData(std::ifstream &reader);
 
-    std::vector<glm::mat4> getTransforms(std::string &line);
+    static std::vector<glm::mat4> getTransforms(std::string &line);
+
+    [[nodiscard]] std::pair<Joint, int> getJointData() const;
 
 public:
     Model loadDae(const char *daeFile, Loader &loader);
