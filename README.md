@@ -31,6 +31,7 @@ Game engine.
     
     - ##### Gentoo
         * ` $ emerge dev-util/pkgconfig`
+        * ` $ emerge sys-devel/make`
         * ` $ emerge dev-util/cmake`
         * ` $ emerge media-libs/mesa`
         * ` $ emerge media-libs/glfw`
