@@ -58,11 +58,11 @@ void DaeParser::loadGeometry(std::ifstream &reader)
             parseTexturesLine(line, textures);
         } else if (line.find("<p>") != -1)
         {
-            vertexData.indicesLine = line;
-            vertexData.size = coordinatesSize + 1;
-            vertexData.vertices = vertices;
-            vertexData.textures = textures;
-            vertexData.normals = normals;
+            m_VertexData.indicesLine = line;
+            m_VertexData.size = coordinatesSize + 1;
+            m_VertexData.vertices = vertices;
+            m_VertexData.textures = textures;
+            m_VertexData.normals = normals;
             break;
         } else if (line.find("input semantic") != -1)
         {
@@ -105,8 +105,8 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
 
 Model DaeParser::parseIndices(Loader &loader)
 {
-    int index = vertexData.indicesLine.find('>');
-    auto numbers = Util::split(vertexData.indicesLine.substr(index + 1), ' ');
+    int index = m_VertexData.indicesLine.find('>');
+    auto numbers = Util::split(m_VertexData.indicesLine.substr(index + 1), ' ');
 
     std::vector<float> resultPoints;
     std::vector<float> resultNormals;
@@ -114,13 +114,13 @@ Model DaeParser::parseIndices(Loader &loader)
     std::vector<float> resultWeights;
     std::vector<unsigned> resultIds;
 
-    for (int i = 0; i < numbers.size(); i += vertexData.size)
+    for (int i = 0; i < numbers.size(); i += m_VertexData.size)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
         unsigned normalIndex = std::stoi(numbers[i + 1]);
         unsigned textureIndex = std::stoi(numbers[i + 2]);
 
-        Util::processVertex(vertexData.vertices, vertexData.normals, vertexData.textures,
+        Util::processVertex(m_VertexData.vertices, m_VertexData.normals, m_VertexData.textures,
                             resultPoints, resultNormals, resultTextures,
                             vertexIndex, textureIndex, normalIndex);
 
@@ -188,8 +188,8 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
                 }
             }
 
-            vertexData.jointWeights = jointWeights;
-            vertexData.jointIds = jointIds;
+            m_VertexData.jointWeights = jointWeights;
+            m_VertexData.jointIds = jointIds;
             break;
         }
     }
@@ -211,12 +211,12 @@ std::vector<std::string> DaeParser::getData(std::string &line)
 void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
                                   unsigned int index)
 {
-    const auto &weight = vertexData.jointWeights[index];
+    const auto &weight = m_VertexData.jointWeights[index];
     resultWeights.emplace_back(weight.x);
     resultWeights.emplace_back(weight.y);
     resultWeights.emplace_back(weight.z);
 
-    const auto &id = vertexData.jointIds[index];
+    const auto &id = m_VertexData.jointIds[index];
     resultWeights.emplace_back(id.x);
     resultWeights.emplace_back(id.y);
     resultWeights.emplace_back(id.z);

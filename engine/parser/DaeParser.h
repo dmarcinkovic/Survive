@@ -39,36 +39,37 @@ struct JointData
 class DaeParser
 {
 private:
-    VertexData vertexData;
+    VertexData m_VertexData;
+    JointData m_JointData;
 
-     void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
+    void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
 
-     void loadGeometry(std::ifstream &reader);
+    void loadGeometry(std::ifstream &reader);
 
-     Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+    Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-     void loadAnimation(std::ifstream &reader);
+    void loadAnimation(std::ifstream &reader);
 
-     void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
+    void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
-     void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
+    void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
-     Model parseIndices(Loader &loader);
+    Model parseIndices(Loader &loader);
 
-     std::vector<std::string> getData(std::string &line);
+    std::vector<std::string> getData(std::string &line);
 
-     void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+    void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
-     glm::mat4 getJointTransform(std::string &line);
+    glm::mat4 getJointTransform(std::string &line);
 
-     Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
+    Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
 
-     AnimationData getAnimationData(std::ifstream &reader);
+    AnimationData getAnimationData(std::ifstream &reader);
 
-     std::vector<glm::mat4> getTransforms(std::string &line);
+    std::vector<glm::mat4> getTransforms(std::string &line);
 
 public:
-     Model loadDae(const char *daeFile, Loader &loader);
+    Model loadDae(const char *daeFile, Loader &loader);
 };
 
 
