@@ -11,6 +11,7 @@
 #include "../renderer/Loader.h"
 #include "../animations/joints/Joint.h"
 #include "../animations/animation/KeyFrame.h"
+#include "../animations/animation/Animation.h"
 
 struct VertexData
 {
@@ -49,9 +50,7 @@ private:
 public:
     Model loadDae(const char *daeFile, Loader &loader);
 
-    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
-
-    [[nodiscard]] float lengthInSeconds() const;
+    [[nodiscard]] Animation getAnimation() const;
 
     [[nodiscard]] std::pair<Joint, int> getJointData() const;
 

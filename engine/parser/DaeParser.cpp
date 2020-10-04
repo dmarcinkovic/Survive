@@ -41,14 +41,9 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
     return parseIndices(loader);
 }
 
-const std::vector<KeyFrame> &DaeParser::keyFrames() const
+Animation DaeParser::getAnimation() const
 {
-    return m_KeyFrames;
-}
-
-float DaeParser::lengthInSeconds() const
-{
-    return m_LengthInSeconds;
+    return Animation(m_LengthInSeconds, m_KeyFrames);
 }
 
 std::pair<Joint, int> DaeParser::getJointData() const
