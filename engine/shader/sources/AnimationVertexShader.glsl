@@ -28,6 +28,11 @@ void main()
 
     for (int i = 0; i < MAX_WEIGHTS; ++i)
     {
+        if (jointID[i] == -1)
+        {
+            break;
+        }
+
         mat4 jointTransform = jointTransforms[jointID[i]];
         vec4 pose = jointTransform * vec4(position, 1.0);
         totalLocalPos += pose * jointWeigth[i];
