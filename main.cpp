@@ -26,8 +26,7 @@ int main()
     auto[rootJoint, numberOfJoints] = daeParser.getJointData();
     AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
-    Animation animation = daeParser.getAnimation();
-    Animator animator(std::move(animation), object);
+    Animator animator(daeParser.getAnimation(), object);
 
     Camera camera{};
     Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
