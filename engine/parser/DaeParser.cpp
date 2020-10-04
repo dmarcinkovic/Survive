@@ -381,8 +381,10 @@ std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &
         std::unordered_map<std::string, JointTransform> pose;
         for (auto const &j : animationData)
         {
-            // TODO initialize position
-            JointTransform jointTransform(glm::vec3{}, Quaternion::fromMatrix(j.transforms[i]));
+            const glm::mat4 &mat = j.transforms[i];
+            glm::vec3 translation{mat[3][0], mat[3][1], mat[3][2]};
+
+            JointTransform jointTransform(translation, Quaternion::fromMatrix(mat));
             pose.insert({j.jointName, jointTransform});
         }
         keyFrames.emplace_back(timeStamps[i], pose);
