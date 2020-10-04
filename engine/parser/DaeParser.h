@@ -44,10 +44,16 @@ private:
     JointData m_JointData;
     std::vector<KeyFrame> m_KeyFrames;
 
+    float m_LengthInSeconds;
+
 public:
     [[nodiscard]] std::pair<Joint, int> getJointData() const;
 
     Model loadDae(const char *daeFile, Loader &loader);
+
+    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
+
+    [[nodiscard]] float lengthInSeconds() const;
 
 private:
     void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
@@ -76,11 +82,9 @@ private:
 
     static std::vector<glm::mat4> getTransforms(std::string &line);
 
-    static std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+    std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
 
     void normalizeWeights();
-
-    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
 };
 
 

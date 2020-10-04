@@ -412,10 +412,17 @@ std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &
         keyFrames.emplace_back(timeStamps[i], pose);
     }
 
+    m_LengthInSeconds = timeStamps.back();
+
     return keyFrames;
 }
 
 const std::vector<KeyFrame> &DaeParser::keyFrames() const
 {
     return m_KeyFrames;
+}
+
+float DaeParser::lengthInSeconds() const
+{
+    return m_LengthInSeconds;
 }
