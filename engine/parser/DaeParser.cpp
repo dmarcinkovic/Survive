@@ -12,7 +12,7 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
     std::vector<std::string> jointNames;
-    
+
     if (!reader)
     {
         std::cout << "Could not open: " << daeFile << '\n';
@@ -175,7 +175,7 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
             {
                 int numberOfJoints = std::min(n, 3);
 
-                glm::vec3 jointWeight{-1, -1, -1};
+                glm::vec3 jointWeight{0, 0, 0};
                 glm::ivec3 jointId{-1, -1, -1};
                 for (int i = 0; i < 2 * numberOfJoints; i += 2)
                 {
@@ -196,6 +196,23 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
             m_VertexData.jointWeights = jointWeights;
             m_VertexData.jointIds = jointIds;
             break;
+        }
+    }
+
+    normalizeWeights();
+}
+
+void DaeParser::normalizeWeights()
+{
+    for (glm::vec3 &vec : m_VertexData.jointWeights)
+    {
+        float sum = vec.x + vec.y + vec.z;
+
+        if (sum < 1.0f)
+        {
+            vec.x /= sum;
+            vec.y /= sum;
+            vec.z /= sum;
         }
     }
 }
@@ -367,7 +384,7 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
             }
         }
         transforms.emplace_back(transform);
-    }   
+    }
 
     return transforms;
 }

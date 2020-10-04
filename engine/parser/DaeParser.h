@@ -76,6 +76,8 @@ private:
     static std::vector<glm::mat4> getTransforms(std::string &line);
 
     static std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+
+    void normalizeWeights();
 };
 
 
