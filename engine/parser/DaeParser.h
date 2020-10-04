@@ -42,6 +42,7 @@ class DaeParser
 private:
     VertexData m_VertexData;
     JointData m_JointData;
+    std::vector<KeyFrame> m_KeyFrames;
 
 public:
     [[nodiscard]] std::pair<Joint, int> getJointData() const;
@@ -55,7 +56,7 @@ private:
 
     static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-    static void loadAnimation(std::ifstream &reader);
+    void loadAnimation(std::ifstream &reader);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
@@ -78,6 +79,8 @@ private:
     static std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
 
     void normalizeWeights();
+
+    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
 };
 
 

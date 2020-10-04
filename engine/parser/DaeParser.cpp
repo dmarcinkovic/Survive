@@ -328,7 +328,7 @@ void DaeParser::loadAnimation(std::ifstream &reader)
         }
     }
 
-    auto keyFrames = getKeyFrames(animationData);
+    m_KeyFrames = getKeyFrames(animationData);
 }
 
 AnimationData DaeParser::getAnimationData(std::ifstream &reader)
@@ -413,4 +413,9 @@ std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &
     }
 
     return keyFrames;
+}
+
+const std::vector<KeyFrame> &DaeParser::keyFrames() const
+{
+    return m_KeyFrames;
 }
