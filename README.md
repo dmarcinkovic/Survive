@@ -58,6 +58,6 @@ Game engine.
         * ` $ dnf install mesa-libGL`
         * ` $ dnf install glfw-devel`
         * ` $ dnf install glew-devel`
-        * ` $ dnf install gcc-c++`
+        * ` $ dnf install llvm clang` or ` $ dnf install gcc-c++`
         * ` $ dnf install freealut-devel`
         * ` $ dnf install glm-devel`
