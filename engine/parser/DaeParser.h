@@ -47,13 +47,13 @@ private:
     float m_LengthInSeconds;
 
 public:
-    [[nodiscard]] std::pair<Joint, int> getJointData() const;
-
     Model loadDae(const char *daeFile, Loader &loader);
 
     [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
 
     [[nodiscard]] float lengthInSeconds() const;
+
+    [[nodiscard]] std::pair<Joint, int> getJointData() const;
 
 private:
     void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);

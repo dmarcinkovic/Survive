@@ -41,6 +41,21 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
     return parseIndices(loader);
 }
 
+const std::vector<KeyFrame> &DaeParser::keyFrames() const
+{
+    return m_KeyFrames;
+}
+
+float DaeParser::lengthInSeconds() const
+{
+    return m_LengthInSeconds;
+}
+
+std::pair<Joint, int> DaeParser::getJointData() const
+{
+    return {m_JointData.rootJoint, m_JointData.numberOfJoints};
+}
+
 void DaeParser::loadGeometry(std::ifstream &reader)
 {
     std::vector<glm::vec3> vertices;
@@ -389,11 +404,6 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
     return transforms;
 }
 
-std::pair<Joint, int> DaeParser::getJointData() const
-{
-    return {m_JointData.rootJoint, m_JointData.numberOfJoints};
-}
-
 std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
 {
     std::vector<KeyFrame> keyFrames;
@@ -415,14 +425,4 @@ std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &
     m_LengthInSeconds = timeStamps.back();
 
     return keyFrames;
-}
-
-const std::vector<KeyFrame> &DaeParser::keyFrames() const
-{
-    return m_KeyFrames;
-}
-
-float DaeParser::lengthInSeconds() const
-{
-    return m_LengthInSeconds;
 }
