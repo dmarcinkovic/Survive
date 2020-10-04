@@ -8,6 +8,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/DaeParser.h"
 #include "engine/animations/animation/AnimatedModel.h"
+#include "engine/animations/animation/Animator.h"
 
 int main()
 {
@@ -26,7 +27,7 @@ int main()
     AnimatedModel object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Animation animation = daeParser.getAnimation();
-//    Animator animator();
+    Animator animator(std::move(animation), object);
 
     Camera camera{};
     Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
