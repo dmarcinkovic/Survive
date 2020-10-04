@@ -50,3 +50,14 @@ Game engine.
         * ` $ pacman -S llvm clang` or ` $ pacman -S gcc`
         * ` $ pacman -S freealut`
         * ` $ pacman -S glm`    
+
+    - ##### Fedora 
+        * ` $ dnf install pkgconf-pkg-config`
+        * ` $ dnf install make`
+        * ` $ dnf install cmake`
+        * ` $ dnf install mesa-libGL`
+        * ` $ dnf install glfw-devel`
+        * ` $ dnf install glew-devel`
+        * ` $ dnf install gcc-c++`
+        * ` $ dnf install freealut-devel`
+        * ` $ dnf install glm-devel`
