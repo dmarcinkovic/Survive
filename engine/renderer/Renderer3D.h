@@ -9,7 +9,7 @@
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
-#include "../animations/animation/AnimatedModel.h"
+#include "../animations/animation/AnimatedObject.h"
 
 class Renderer3D
 {
@@ -32,7 +32,7 @@ public:
 
     void addTerrain(Terrain &terrain);
 
-    void addAnimatedObject(AnimatedModel &object3D);
+    void addAnimatedObject(AnimatedObject &object3D);
 };
 
 

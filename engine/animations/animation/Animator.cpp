@@ -5,7 +5,7 @@
 #include "Animator.h"
 #include "../../display/Display.h"
 
-Animator::Animator(Animation animation, AnimatedModel animatedModel)
+Animator::Animator(Animation animation, AnimatedObject animatedModel)
         : m_Animation(std::move(animation)), m_Model(std::move(animatedModel))
 {
 

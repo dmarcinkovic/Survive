@@ -7,7 +7,7 @@
 
 
 #include "Animation.h"
-#include "AnimatedModel.h"
+#include "AnimatedObject.h"
 #include "../joints/Joint.h"
 #include "KeyFrame.h"
 
@@ -17,10 +17,10 @@ private:
     Animation m_Animation;
     float m_AnimationTime{};
 
-    AnimatedModel m_Model;
+    AnimatedObject m_Model;
 
 public:
-    Animator(Animation animation, AnimatedModel animatedModel);
+    Animator(Animation animation, AnimatedObject animatedModel);
 
     void update();
 

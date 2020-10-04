@@ -14,13 +14,13 @@
 #include "../../light/Light.h"
 #include "AnimationShader.h"
 #include "../../objects/ObjectShader.h"
-#include "../animation/AnimatedModel.h"
+#include "../animation/AnimatedObject.h"
 
 class AnimationRenderer
 {
 private:
     AnimationShader m_Shader;
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<AnimatedModel>>, TextureHash> m_Objects;
+    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<AnimatedObject>>, TextureHash> m_Objects;
 
     const Light &m_Light;
 
@@ -29,10 +29,10 @@ public:
 
     void render(const Camera &camera) const;
 
-    void addAnimatedModel(AnimatedModel &entity);
+    void addAnimatedModel(AnimatedObject &entity);
 
 private:
-    void renderScene(const std::vector<std::reference_wrapper<AnimatedModel>> &objects, const Camera &camera) const;
+    void renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const;
 };
 
 #endif //SURVIVE_ANIMATIONRENDERER_H

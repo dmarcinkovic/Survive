@@ -7,7 +7,7 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/DaeParser.h"
-#include "engine/animations/animation/AnimatedModel.h"
+#include "engine/animations/animation/AnimatedObject.h"
 #include "engine/animations/animation/Animator.h"
 
 int main()
@@ -24,7 +24,7 @@ int main()
                                 Loader::loadTexture("res/character.png"));
 
     auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-    AnimatedModel object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+    AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
     Animation animation = daeParser.getAnimation();
     Animator animator(std::move(animation), object);
