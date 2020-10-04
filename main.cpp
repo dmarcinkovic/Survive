@@ -20,7 +20,7 @@ int main()
     Loader loader;
 
     DaeParser daeParser;
-    TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
+    TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
                                 Loader::loadTexture("res/character.png"));
 
     auto[rootJoint, numberOfJoints] = daeParser.getJointData();
