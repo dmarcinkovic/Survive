@@ -25,7 +25,7 @@ Game engine.
         * ` $ apt install libgl1-mesa-dev`
         * ` $ apt install libglfw3-dev`
         * ` $ apt install libglew-dev`
-        * ` $ apt install libclang-dev clang` or ` $ sudo apt install g++`
+        * ` $ apt install libclang-dev clang` or ` $ apt install g++`
         * ` $ apt install libalut-dev`
         * ` $ apt install libglm-dev`
     
@@ -36,7 +36,7 @@ Game engine.
         * ` $ emerge media-libs/mesa`
         * ` $ emerge media-libs/glfw`
         * ` $ emerge media-libs/glew`
-        * ` $ emerge sys-devel/llvm sys-devel/clang` or `sudo emerge sys-devel/gcc`
+        * ` $ emerge sys-devel/llvm sys-devel/clang` or ` $ emerge sys-devel/gcc`
         * ` $ emerge media-libs/freealut`
         * ` $ emerge media-libs/glm`
     
@@ -47,6 +47,6 @@ Game engine.
         * ` $ pacman -S mesa`
         * ` $ pacman -S glfw-x11`
         * ` $ pacman -S glew`
-        * ` $ pacman -S gcc`
+        * ` $ pacman -S llvm clang` or ` $ pacman -S gcc`
         * ` $ pacman -S freealut`
         * ` $ pacman -S glm`    
