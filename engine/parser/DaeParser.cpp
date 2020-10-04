@@ -12,6 +12,11 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
     std::vector<std::string> jointNames;
+    
+    if (!reader)
+    {
+        std::cout << "Could not open: " << daeFile << '\n';
+    }
 
     std::string line;
     while (std::getline(reader, line))
