@@ -12,6 +12,11 @@ Model ObjParser::loadObj(const char *objFile, Loader &loader)
 {
     std::ifstream reader(objFile);
 
+    if (!reader)
+    {
+        std::cout << "Could not load: " << objFile << '\n';
+    }
+
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> textures;
     std::vector<glm::vec3> normals;
