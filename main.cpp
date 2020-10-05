@@ -38,6 +38,8 @@ int main()
     {
         Display::clearWindow();
 
+        animator.update();
+
         renderer.render(camera);
 
         display.update();
