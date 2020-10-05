@@ -23,6 +23,11 @@ public:
                    float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
 
     Joint &rootJoint();
+
+    [[nodiscard]] std::vector<glm::mat4> getJointTransforms() const;
+
+private:
+    void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
 };
 
 

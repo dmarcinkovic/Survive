@@ -19,3 +19,20 @@ Joint &AnimatedObject::rootJoint()
 {
     return m_RootJoint;
 }
+
+std::vector<glm::mat4> AnimatedObject::getJointTransforms() const
+{
+    std::vector<glm::mat4> jointMatrices(m_NumberOfJoints);
+    addJointsToArray(m_RootJoint, jointMatrices);
+
+    return jointMatrices;
+}
+
+void AnimatedObject::addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const
+{
+    jointMatrices[headJoint.index()] = headJoint.getAnimatedTransform();
+    for (auto const& childJoint : headJoint.children())
+    {
+        addJointsToArray(childJoint, jointMatrices);
+    }
+}
