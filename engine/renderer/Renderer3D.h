@@ -8,7 +8,8 @@
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
-#include "../animation/AnimationRenderer.h"
+#include "../animations/renderer/AnimationRenderer.h"
+#include "../animations/animation/AnimatedObject.h"
 
 class Renderer3D
 {
@@ -31,7 +32,7 @@ public:
 
     void addTerrain(Terrain &terrain);
 
-    void addAnimatedObject(Object3D &object3D);
+    void addAnimatedObject(AnimatedObject &object3D);
 };
 
 

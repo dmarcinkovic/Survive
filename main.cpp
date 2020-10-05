@@ -7,6 +7,8 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/DaeParser.h"
+#include "engine/animations/animation/AnimatedObject.h"
+#include "engine/animations/animation/Animator.h"
 
 int main()
 {
@@ -17,13 +19,17 @@ int main()
 
     Loader loader;
 
-    TexturedModel texturedModel(DaeParser::loadDae("res/character.dae", loader),
+    DaeParser daeParser;
+    TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
                                 Loader::loadTexture("res/character.png"));
 
-    Object3D object(texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+    auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+    AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+
+    Animator animator(daeParser.getAnimation(), object);
 
     Camera camera{};
-    Light light(glm::vec3{0, 10, -10}, glm::vec3{1, 1, 1});
+    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
 
     Renderer3D renderer(light);
     renderer.addAnimatedObject(object);
@@ -31,6 +37,8 @@ int main()
     while (display.isRunning())
     {
         Display::clearWindow();
+
+        animator.update();
 
         renderer.render(camera);
 

@@ -30,7 +30,7 @@ void Renderer3D::addTerrain(Terrain &terrain)
     m_TerrainRenderer.addTerrain(terrain);
 }
 
-void Renderer3D::addAnimatedObject(Object3D &object3D)
+void Renderer3D::addAnimatedObject(AnimatedObject &object3D)
 {
-    m_AnimationRenderer.add3DObject(object3D);
+    m_AnimationRenderer.addAnimatedModel(object3D);
 }

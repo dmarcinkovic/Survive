@@ -26,7 +26,7 @@ void Joint::calculateInverseBindTransform(const glm::mat4 &parentBindTransform)
     }
 }
 
-const std::vector<Joint> &Joint::children() const
+std::vector<Joint> &Joint::children()
 {
     return m_Children;
 }
@@ -34,4 +34,29 @@ const std::vector<Joint> &Joint::children() const
 const std::string &Joint::name() const
 {
     return m_Name;
+}
+
+const glm::mat4 &Joint::inverseBindTransform() const
+{
+    return m_InverseBindTransformation;
+}
+
+void Joint::setAnimatedTransform(const glm::mat4 &animatedTransform)
+{
+    m_AnimatedTransform = animatedTransform;
+}
+
+int Joint::index() const
+{
+    return m_Index;
+}
+
+const glm::mat4 &Joint::getAnimatedTransform() const
+{
+    return m_AnimatedTransform;
+}
+
+const std::vector<Joint> &Joint::children() const
+{
+    return  m_Children;
 }

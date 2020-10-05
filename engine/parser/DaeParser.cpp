@@ -8,12 +8,15 @@
 #include "DaeParser.h"
 #include "../util/Util.h"
 
-VertexData DaeParser::vertexData;
-
 Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
     std::ifstream reader(daeFile);
     std::vector<std::string> jointNames;
+
+    if (!reader)
+    {
+        std::cout << "Could not open: " << daeFile << '\n';
+    }
 
     std::string line;
     while (std::getline(reader, line))
@@ -24,9 +27,10 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
         } else if (line.find("<library_controllers>") != -1)
         {
             loadControllers(reader, jointNames);
+            m_JointData.numberOfJoints = jointNames.size();
         } else if (line.find("<library_visual_scenes>") != -1)
         {
-            Joint root = loadVisualScene(reader, jointNames);
+            m_JointData.rootJoint = loadVisualScene(reader, jointNames);
         } else if (line.find("<library_animations>") != -1)
         {
             loadAnimation(reader);
@@ -35,6 +39,16 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 
     reader.close();
     return parseIndices(loader);
+}
+
+Animation DaeParser::getAnimation() const
+{
+    return Animation(m_LengthInSeconds, m_KeyFrames);
+}
+
+std::pair<Joint, int> DaeParser::getJointData() const
+{
+    return {m_JointData.rootJoint, m_JointData.numberOfJoints};
 }
 
 void DaeParser::loadGeometry(std::ifstream &reader)
@@ -59,11 +73,11 @@ void DaeParser::loadGeometry(std::ifstream &reader)
             parseTexturesLine(line, textures);
         } else if (line.find("<p>") != -1)
         {
-            vertexData.indicesLine = line;
-            vertexData.size = coordinatesSize + 1;
-            vertexData.vertices = vertices;
-            vertexData.textures = textures;
-            vertexData.normals = normals;
+            m_VertexData.indicesLine = line;
+            m_VertexData.size = coordinatesSize + 1;
+            m_VertexData.vertices = vertices;
+            m_VertexData.textures = textures;
+            m_VertexData.normals = normals;
             break;
         } else if (line.find("input semantic") != -1)
         {
@@ -106,8 +120,8 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
 
 Model DaeParser::parseIndices(Loader &loader)
 {
-    int index = vertexData.indicesLine.find('>');
-    auto numbers = Util::split(vertexData.indicesLine.substr(index + 1), ' ');
+    int index = m_VertexData.indicesLine.find('>');
+    auto numbers = Util::split(m_VertexData.indicesLine.substr(index + 1), ' ');
 
     std::vector<float> resultPoints;
     std::vector<float> resultNormals;
@@ -115,13 +129,13 @@ Model DaeParser::parseIndices(Loader &loader)
     std::vector<float> resultWeights;
     std::vector<unsigned> resultIds;
 
-    for (int i = 0; i < numbers.size(); i += vertexData.size)
+    for (int i = 0; i < numbers.size(); i += m_VertexData.size)
     {
         unsigned vertexIndex = std::stoi(numbers[i]);
         unsigned normalIndex = std::stoi(numbers[i + 1]);
         unsigned textureIndex = std::stoi(numbers[i + 2]);
 
-        Util::processVertex(vertexData.vertices, vertexData.normals, vertexData.textures,
+        Util::processVertex(m_VertexData.vertices, m_VertexData.normals, m_VertexData.textures,
                             resultPoints, resultNormals, resultTextures,
                             vertexIndex, textureIndex, normalIndex);
 
@@ -171,7 +185,7 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
             {
                 int numberOfJoints = std::min(n, 3);
 
-                glm::vec3 jointWeight{-1, -1, -1};
+                glm::vec3 jointWeight{0, 0, 0};
                 glm::ivec3 jointId{-1, -1, -1};
                 for (int i = 0; i < 2 * numberOfJoints; i += 2)
                 {
@@ -189,9 +203,26 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
                 }
             }
 
-            vertexData.jointWeights = jointWeights;
-            vertexData.jointIds = jointIds;
+            m_VertexData.jointWeights = jointWeights;
+            m_VertexData.jointIds = jointIds;
             break;
+        }
+    }
+
+    normalizeWeights();
+}
+
+void DaeParser::normalizeWeights()
+{
+    for (glm::vec3 &vec : m_VertexData.jointWeights)
+    {
+        float sum = vec.x + vec.y + vec.z;
+
+        if (sum < 1.0f)
+        {
+            vec.x /= sum;
+            vec.y /= sum;
+            vec.z /= sum;
         }
     }
 }
@@ -212,12 +243,12 @@ std::vector<std::string> DaeParser::getData(std::string &line)
 void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
                                   unsigned int index)
 {
-    const auto &weight = vertexData.jointWeights[index];
+    const auto &weight = m_VertexData.jointWeights[index];
     resultWeights.emplace_back(weight.x);
     resultWeights.emplace_back(weight.y);
     resultWeights.emplace_back(weight.z);
 
-    const auto &id = vertexData.jointIds[index];
+    const auto &id = m_VertexData.jointIds[index];
     resultWeights.emplace_back(id.x);
     resultWeights.emplace_back(id.y);
     resultWeights.emplace_back(id.z);
@@ -306,6 +337,8 @@ void DaeParser::loadAnimation(std::ifstream &reader)
             animationData.emplace_back(getAnimationData(reader));
         }
     }
+
+    m_KeyFrames = getKeyFrames(animationData);
 }
 
 AnimationData DaeParser::getAnimationData(std::ifstream &reader)
@@ -364,4 +397,27 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
     }
 
     return transforms;
+}
+
+std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
+{
+    std::vector<KeyFrame> keyFrames;
+    std::vector<float> timeStamps = animationData.front().timestamps;
+    for (int i = 0; i < timeStamps.size(); ++i)
+    {
+        std::unordered_map<std::string, JointTransform> pose;
+        for (auto const &j : animationData)
+        {
+            const glm::mat4 &mat = j.transforms[i];
+            glm::vec3 translation{mat[3][0], mat[3][1], mat[3][2]};
+
+            JointTransform jointTransform(translation, Quaternion::fromMatrix(mat));
+            pose.insert({j.jointName, jointTransform});
+        }
+        keyFrames.emplace_back(timeStamps[i], pose);
+    }
+
+    m_LengthInSeconds = timeStamps.back();
+
+    return keyFrames;
 }
