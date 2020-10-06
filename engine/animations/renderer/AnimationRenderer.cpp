@@ -41,7 +41,8 @@ void AnimationRenderer::addAnimatedModel(AnimatedObject &entity)
 }
 
 void
-AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const
+AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects,
+                               const Camera &camera) const
 {
     for (auto const &object : objects)
     {
