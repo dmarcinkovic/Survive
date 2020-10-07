@@ -54,6 +54,8 @@ AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Animated
         m_Shader.loadTransformationMatrix(modelMatrix);
         Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 
+        m_Shader.loadJointTransforms(object.get().getJointTransforms());
+
         glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
 
         Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
