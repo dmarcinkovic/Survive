@@ -48,11 +48,11 @@ void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 
     loadVector3(m_LocationLightColor, lightColor);
 }
 
-void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
+void AnimationShader::loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const
 {
     for (int i = 0; i < jointTransforms.size(); ++i)
     {
-        loadMatrix(m_LocationJointTransforms[i], jointTransforms[i].getLocalTransform());
+        loadMatrix(m_LocationJointTransforms[i], jointTransforms[i]);
     }
 
     for (int i = jointTransforms.size(); i < MAX_JOINTS; ++i)

@@ -5,10 +5,9 @@
 #ifndef SURVIVE_ANIMATIONSHADER_H
 #define SURVIVE_ANIMATIONSHADER_H
 
-
 #include <vector>
+
 #include "../../shader/Shader.h"
-#include "../joints/JointTransform.h"
 
 class AnimationShader : public Shader
 {
@@ -37,7 +36,7 @@ public:
 
     void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
 
-    void loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const;
+    void loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const;
 
 private:
     void loadUniformLocations();
