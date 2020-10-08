@@ -1,7 +1,7 @@
 //
 // Created by david on 17. 05. 2020..
 //
-#include <iostream>
+
 #include "AnimationRenderer.h"
 #include "../../renderer/Renderer3DUtil.h"
 #include "../../math/Maths.h"
@@ -54,22 +54,6 @@ AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Animated
                                                                   rotation.x, rotation.y, rotation.z);
         m_Shader.loadTransformationMatrix(modelMatrix);
         Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
-
-        auto const &transforms = object.get().getJointTransforms();
-
-//        for (int k = 0; k < 4; ++k)
-//        {
-//            for (const auto &transform : transforms)
-//            {
-//                for (int j = 0; j < 4; ++j)
-//                {
-//                    std::cout << transform[k][j] << ' ';
-//                }
-//                std::cout << "  ";
-//            }
-//            std::cout << '\n';
-//        }
-//        std::cout << '\n';
 
         m_Shader.loadJointTransforms(object.get().getJointTransforms());
 

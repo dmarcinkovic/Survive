@@ -58,5 +58,5 @@ const glm::mat4 &Joint::getAnimatedTransform() const
 
 const std::vector<Joint> &Joint::children() const
 {
-    return  m_Children;
+    return m_Children;
 }
