@@ -2,6 +2,7 @@
 // Created by david on 01. 10. 2020..
 //
 
+#include <iostream>
 #include "Animator.h"
 #include "../../display/Display.h"
 
@@ -38,7 +39,7 @@ void Animator::update()
 {
     increaseAnimationTime();
     std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-    applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{});
+    applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{1});
 }
 
 void Animator::increaseAnimationTime()
