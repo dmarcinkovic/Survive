@@ -3,6 +3,7 @@
 //
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 #include "JointTransform.h"
 
@@ -24,6 +25,10 @@ JointTransform
 JointTransform::interpolate(const JointTransform &frameA, const JointTransform &frameB, float progression)
 {
     glm::vec3 position = interpolate(frameA.m_Position, frameB.m_Position, progression);
+    std::cout << "In joint transform interpolate method\n";
+    std::cout << frameA.m_Position.x << ' ' << frameA.m_Position.y << ' ' << frameA.m_Position.z << '\n';
+    std::cout << frameB.m_Position.x << ' ' << frameB.m_Position.y << ' ' << frameB.m_Position.z << '\n';
+//    std::cout << position.x << ' ' << position.y << ' ' << position.z << '\n';
     Quaternion rotation = Quaternion::interpolate(frameA.m_Rotation, frameB.m_Rotation, progression);
     return JointTransform(position, rotation);
 }
@@ -34,4 +39,9 @@ glm::vec3 JointTransform::interpolate(const glm::vec3 &start, const glm::vec3 &e
     float y = start.y + (end.y - start.y) * progression;
     float z = start.z + (end.z - start.z) * progression;
     return glm::vec3(x, y, z);
+}
+
+const glm::vec3 &JointTransform::position() const
+{
+    return m_Position;
 }

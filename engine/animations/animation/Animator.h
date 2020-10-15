@@ -20,7 +20,7 @@ private:
     AnimatedObject m_Model;
 
 public:
-    Animator(Animation animation, AnimatedObject animatedModel);
+    Animator(Animation animation, AnimatedObject animatedObject);
 
     void update();
 

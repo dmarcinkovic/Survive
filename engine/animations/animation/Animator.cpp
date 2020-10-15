@@ -6,8 +6,8 @@
 #include "Animator.h"
 #include "../../display/Display.h"
 
-Animator::Animator(Animation animation, AnimatedObject animatedModel)
-        : m_Animation(std::move(animation)), m_Model(std::move(animatedModel))
+Animator::Animator(Animation animation, AnimatedObject animatedObject)
+        : m_Animation(std::move(animation)), m_Model(animatedObject)
 {
 
 }
@@ -26,6 +26,41 @@ void Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4
     glm::mat4 currentLocalTransform = currentPose.at(joint.name());
     glm::mat4 currentTransform = parentTransformation * currentLocalTransform;
 
+//    std::cout << joint.name() << '\n';
+//
+//    std::cout << "Current local transform\n";
+//    for (int i = 0; i < 4; ++i)
+//    {
+//        for (int j = 0; j < 4; ++j)
+//        {
+//            std::cout << currentLocalTransform[i][j] << ' ';
+//        }
+//        std::cout << '\n';
+//    }
+//    std::cout << '\n';
+//
+//    std::cout << "Parent transformation\n";
+//    for (int i = 0; i < 4; ++i)
+//    {
+//        for (int j = 0; j < 4; ++j)
+//        {
+//            std::cout << parentTransformation[i][j] << ' ';
+//        }
+//        std::cout << '\n';
+//    }
+//    std::cout << '\n';
+//
+//    std::cout << "Current transform\n";
+//    for (int i = 0; i < 4; ++i)
+//    {
+//        for (int j = 0; j < 4; ++j)
+//        {
+//            std::cout << currentTransform[i][j] << ' ';
+//        }
+//        std::cout << '\n';
+//    }
+//    std::cout << '\n';
+
     for (auto &child : joint.children())
     {
         applyPoseToJoints(currentPose, child, currentTransform);
@@ -39,6 +74,19 @@ void Animator::update()
 {
     increaseAnimationTime();
     std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
+    for (auto const&[name, pose]: currentPose)
+    {
+        std::cout << name << '\n';
+        for (int i  =0; i <4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                std::cout << pose[i][j] << ' ';
+            }
+            std::cout << '\n';
+        }
+        std::cout << '\n';
+    }
     applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{1});
 }
 

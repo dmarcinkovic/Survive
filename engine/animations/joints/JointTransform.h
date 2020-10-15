@@ -23,6 +23,8 @@ public:
     static JointTransform interpolate(const JointTransform &frameA, const JointTransform &frameB, float progression);
 
     static glm::vec3 interpolate(const glm::vec3 &start, const glm::vec3 &end, float progression);
+
+    [[nodiscard]] const glm::vec3 &position() const;
 };
 
 
