@@ -4,7 +4,6 @@
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
-#include "../constant/Constants.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
         : m_Light(light)

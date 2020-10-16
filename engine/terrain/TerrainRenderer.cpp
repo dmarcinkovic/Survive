@@ -5,7 +5,6 @@
 #include "TerrainRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
-#include "../constant/Constants.h"
 
 TerrainRenderer::TerrainRenderer()
 {
