@@ -3,16 +3,19 @@
 //
 
 #include "Renderer3D.h"
+#include "../constant/Constants.h"
 
 Renderer3D::Renderer3D(const Light &light)
-        : m_Light(light), m_ObjectRenderer(light), m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture()),
+        : m_Light(light), m_ObjectRenderer(light),
+          m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
           m_AnimationRenderer(light)
 {
 }
 
 void Renderer3D::render(const Camera &camera) const
 {
-    m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
+    m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+                                      Constants::SHADOW_HEIGHT);
 
     m_ObjectRenderer.render(camera, m_ShadowMap);
     m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);

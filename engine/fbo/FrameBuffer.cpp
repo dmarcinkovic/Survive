@@ -43,11 +43,11 @@ GLuint FrameBuffer::createTexture()
     return texture;
 }
 
-GLuint FrameBuffer::attachToDepthBufferTexture()
+GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 {
     bindFrameBuffer();
 
-    GLuint texture = createDepthTexture(SHADOW_WIDTH, SHADOW_HEIGHT);
+    GLuint texture = createDepthTexture(width, height);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture, 0);
 
@@ -109,9 +109,9 @@ void FrameBuffer::attachDepthComponent(int width, int height)
     m_RenderBuffers.emplace_back(renderBuffer);
 }
 
-void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light) const
+void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width, int height) const
 {
-    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+    glViewport(0, 0, width, height);
 
     bindFrameBuffer();
     glClear(GL_DEPTH_BUFFER_BIT);
@@ -120,6 +120,6 @@ void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Came
 
     unbindFrameBuffer();
 
-    auto[width, height] = Display::getWindowSize();
-    glViewport(0, 0, width, height);
+    auto[w, h] = Display::getWindowSize();
+    glViewport(0, 0, w, h);
 }
