@@ -7,6 +7,7 @@
 #include "../constant/Constants.h"
 
 glm::mat4 Maths::projectionMatrix;
+glm::mat4 Maths::lightProjectionMatrix;
 
 glm::mat4 Maths::createTransformationMatrix(const glm::vec3 &translation, float scaleX, float scaleY, float scaleZ,
                                             float rotationX, float rotationY, float rotationZ)
