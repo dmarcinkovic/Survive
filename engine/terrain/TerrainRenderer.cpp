@@ -34,6 +34,7 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 
     auto viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
     m_Shader.loadTransformationMatrix(transformationMatrix);
     glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
