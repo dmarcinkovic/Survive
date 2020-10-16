@@ -43,6 +43,7 @@ Display::Display(int width, int height, const char *title)
     m_Height = height;
 
     Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
+    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 }
 
 void Display::addCallbacks() const
@@ -101,6 +102,7 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
     }
 
     Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
+    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)

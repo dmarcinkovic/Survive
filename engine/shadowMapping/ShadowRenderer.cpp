@@ -10,12 +10,6 @@
 
 ShadowRenderer::ShadowRenderer()
 {
-    m_ShadowShader.start();
-
-    glm::mat4 projectionMatrix = Maths::createLightProjectionMatrix();
-    m_ShadowShader.loadProjectionMatrix(projectionMatrix);
-
-    ShadowShader::stop();
 }
 
 void ShadowRenderer::render(const Light &light, const Camera &camera) const
@@ -23,6 +17,7 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
     Renderer3DUtil::prepareRendering(m_ShadowShader);
     glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
     m_ShadowShader.loadViewMatrix(viewMatrix);
+    m_ShadowShader.loadProjectionMatrix(Maths::lightProjectionMatrix);
 
     for (auto const&[texture, objects] : m_Objects)
     {

@@ -15,6 +15,7 @@ class Maths
 {
 public:
     static glm::mat4 projectionMatrix;
+    static glm::mat4 lightProjectionMatrix;
 
     static glm::mat4 createTransformationMatrix(const glm::vec3 &translation, float scaleX = 1.0f,
                                                 float scaleY = 1.0f, float scaleZ = 1.0f,
