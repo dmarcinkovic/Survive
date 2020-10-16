@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include "Display.h"
+#include "../math/Maths.h"
+#include "../constant/Constants.h"
 
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
@@ -39,6 +41,8 @@ Display::Display(int width, int height, const char *title)
 
     m_Width = width;
     m_Height = height;
+
+    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
 }
 
 void Display::addCallbacks() const
@@ -95,6 +99,8 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
     {
         listener(width, height);
     }
+
+    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
