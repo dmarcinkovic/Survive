@@ -11,9 +11,6 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 {
     m_Shader.start();
 
-    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-    m_Shader.loadProjectionMatrix(projectionMatrix);
-
     const glm::mat4 lightProjection = Maths::createLightProjectionMatrix();
     m_Shader.loadLightProjection(lightProjection);
 
@@ -31,6 +28,7 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLightViewMatrix(lightViewMatrix);
     m_Shader.loadTextures();
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
     Texture texture(shadowMap);
     texture.bindTexture(1);

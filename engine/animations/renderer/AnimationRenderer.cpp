@@ -9,9 +9,6 @@
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)
 {
-    m_Shader.start();
-    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(Constants::FOV));
-    Shader::stop();
 }
 
 void AnimationRenderer::render(const Camera &camera) const
@@ -20,6 +17,7 @@ void AnimationRenderer::render(const Camera &camera) const
 
     const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
     m_Shader.loadLight(m_Light.position(), m_Light.color());
 
@@ -41,7 +39,8 @@ void AnimationRenderer::addAnimatedModel(AnimatedObject &entity)
 }
 
 void
-AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const
+AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects,
+                               const Camera &camera) const
 {
     for (auto const &object : objects)
     {
