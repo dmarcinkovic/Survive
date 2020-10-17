@@ -8,6 +8,9 @@
 
 TerrainRenderer::TerrainRenderer()
 {
+    m_Shader.start();
+    m_Shader.loadTextures();
+    Shader::stop();
 }
 
 void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap) const
@@ -23,16 +26,13 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_ScaleX,
                                                                   m_Terrain->m_ScaleY, m_Terrain->m_ScaleZ, rotationX);
 
-    m_Shader.loadTextures();
+    m_Shader.loadTransformationMatrix(transformationMatrix);
 
-    auto viewMatrix = Maths::createViewMatrix(camera);
-    m_Shader.loadViewMatrix(viewMatrix);
+    m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
     m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
     m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
 
-    m_Shader.loadTransformationMatrix(transformationMatrix);
     glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-
     finishRendering();
 }
 
