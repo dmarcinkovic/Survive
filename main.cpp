@@ -6,6 +6,9 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
+#include "engine/parser/DaeParser.h"
+#include "engine/animations/animation/AnimatedObject.h"
+#include "engine/animations/animation/Animator.h"
 
 int main()
 {
@@ -15,20 +18,27 @@ int main()
     Display display(width, height, "Survive");
 
     Loader loader;
-    Camera camera;
 
-    Light light(glm::vec3{-10, 10, 10}, glm::vec3{1, 1, 0.2});
+    DaeParser daeParser;
+    TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
+                                Loader::loadTexture("res/character.png"));
+
+    auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+    AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+
+    Animator animator(daeParser.getAnimation(), object);
+
+    Camera camera{};
+    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
 
     Renderer3D renderer(light);
-
-    Terrain terrain(loader.renderQuad(), glm::vec3{0, -20, -100}, 500, 500, 1);
-    terrain.addTextures("res/blendMap.png",
-                        {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
-    renderer.addTerrain(terrain);
+    renderer.addAnimatedObject(object);
 
     while (display.isRunning())
     {
         Display::clearWindow();
+
+        animator.update();
 
         renderer.render(camera);
 
