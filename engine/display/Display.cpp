@@ -5,6 +5,7 @@
 #include <iostream>
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include "Display.h"
 
@@ -40,8 +41,9 @@ Display::Display(int width, int height, const char *title)
     m_LastFrameTime = glfwGetTime();
 
     ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
     ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
 
     m_Width = width;
     m_Height = height;
