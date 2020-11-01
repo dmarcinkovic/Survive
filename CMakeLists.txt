@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(OpenGlLinkers -lGLU -lGL -lGLEW -lopenal)
 
+include_directories(editor/imgui)
+include_directories(engine)
+
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
 find_package(GLEW REQUIRED STATIC)
