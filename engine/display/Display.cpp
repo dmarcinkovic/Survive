@@ -6,6 +6,10 @@
 
 #include "Display.h"
 
+#include "../../editor/imgui/imgui.h"
+#include "../../editor/imgui/backends/imgui_impl_glfw.h"
+#include "../../editor/imgui/backends/imgui_impl_opengl3.h"
+
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
 std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
@@ -36,6 +40,11 @@ Display::Display(int width, int height, const char *title)
     addCallbacks();
 
     m_LastFrameTime = glfwGetTime();
+
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+    ImGui_ImplOpenGL3_Init("#version 450 core");
+    ImGui::StyleColorsDark();
 
     m_Width = width;
     m_Height = height;
