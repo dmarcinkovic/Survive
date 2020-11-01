@@ -3,12 +3,10 @@
 //
 
 #include <iostream>
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
 
 #include "Display.h"
-
-#include "../../editor/imgui/imgui.h"
-#include "../../editor/imgui/backends/imgui_impl_glfw.h"
-#include "../../editor/imgui/backends/imgui_impl_opengl3.h"
 
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
@@ -43,11 +41,19 @@ Display::Display(int width, int height, const char *title)
 
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
-    ImGui_ImplOpenGL3_Init("#version 450 core");
     ImGui::StyleColorsDark();
 
     m_Width = width;
     m_Height = height;
+}
+
+Display::~Display()
+{
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_Window);
+    glfwTerminate();
 }
 
 void Display::addCallbacks() const
@@ -57,12 +63,6 @@ void Display::addCallbacks() const
     glfwSetKeyCallback(m_Window, keyEventCallback);
     glfwSetCursorPosCallback(m_Window, mousePositionCallback);
     glfwSetScrollCallback(m_Window, scrollCallback);
-}
-
-Display::~Display()
-{
-    glfwDestroyWindow(m_Window);
-    glfwTerminate();
 }
 
 void Display::update() const
