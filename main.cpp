@@ -10,6 +10,7 @@
 #include "engine/camera/Camera.h"
 #include "engine/light/Light.h"
 #include "engine/renderer/Renderer3D.h"
+#include "engine/renderer/Renderer2D.h"
 
 int main()
 {
@@ -31,9 +32,16 @@ int main()
     Renderer3D renderer(light);
     renderer.addAnimatedObject(object);
 
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    FrameBuffer frameBuffer;
+
+    Entity entity(TexturedModel(loader.renderQuad(), frameBuffer.createTexture()), glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
+    Renderer2D renderer2D(loader);
+
+    renderer2D.addGui(entity);
+
+    bool showDemoWindow = true;
+    bool showAnotherWindow = false;
+    ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     while (display.isRunning())
     {
@@ -47,28 +55,46 @@ int main()
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Hello, world!");
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            ImGui::Text("This is some useful text.");
+            ImGui::Checkbox("Demo Window", &showDemoWindow);
+            ImGui::Checkbox("Another Window", &showAnotherWindow);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+            ImGui::ColorEdit3("clear color", reinterpret_cast<float *>(&clearColor));
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            if (ImGui::Button("Button"))
+            {
                 counter++;
+            }
+
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                        ImGui::GetIO().Framerate);
             ImGui::End();
+        }
+
+        {
+//            ImGui::Begin("Scene window");
+//            ImVec2 pos = ImGui::GetCursorScreenPos();
+
+//            ImGui::GetWindowDrawList()->AddImage();
+
+//            ImGui::End();
         }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        frameBuffer.bindFrameBuffer();
+        glClear(GL_DEPTH_BUFFER_BIT);
         renderer.render(camera);
+        FrameBuffer::unbindFrameBuffer();
+
+        renderer2D.render();
 
         display.update();
     }
