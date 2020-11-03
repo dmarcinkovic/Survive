@@ -19,19 +19,26 @@ private:
     AnimationRenderer m_AnimationRenderer;
 
     const Light &m_Light;
-    FrameBuffer m_FrameBuffer;
+    FrameBuffer m_ShadowFrameBuffer;
     const GLuint m_ShadowMap;
+
+    FrameBuffer m_SceneFrameBuffer;
+    GLuint m_Scene;
 
 public:
     explicit Renderer3D(const Light &light);
 
     void render(const Camera &camera) const;
 
+    void renderToFbo(const Camera &camera) const;
+
     void add3DObject(Object3D &object3D);
 
     void addTerrain(Terrain &terrain);
 
     void addAnimatedObject(Object3D &object3D);
+
+    GLuint getRenderedTexture() const;
 };
 
 
