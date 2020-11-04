@@ -2,7 +2,9 @@
 // Created by david on 22. 05. 2020..
 //
 
+#include <iostream>
 #include "Renderer3D.h"
+#include "../display/Display.h"
 
 Renderer3D::Renderer3D(const Light &light)
         : m_Light(light), m_ObjectRenderer(light), m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture()),
@@ -37,10 +39,12 @@ void Renderer3D::addAnimatedObject(Object3D &object3D)
 
 void Renderer3D::renderToFbo(const Camera &camera) const
 {
+	std::cout << "Bind scene\n";
 	m_SceneFrameBuffer.bindFrameBuffer();
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	Display::clearWindow();
+
+	std::cout << "Bind shadow\n";
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
 
 	m_ObjectRenderer.render(camera, m_ShadowMap);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
