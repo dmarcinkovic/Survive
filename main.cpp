@@ -9,12 +9,11 @@
 #include "engine/camera/Camera.h"
 #include "engine/light/Light.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/renderer/Renderer2D.h"
 #include "engine/parser/ObjParser.h"
 
 int main()
 {
-	constexpr int width = 800;
+	constexpr int width = 1200;
 	constexpr int height = 800;
 
 	Display display(width, height, "Survive");
@@ -38,11 +37,6 @@ int main()
 
 	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
 	renderer.addTerrain(terrain);
-
-	Entity entity(TexturedModel(loader.renderQuad(), renderer.getRenderedTexture()), glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
-	Renderer2D renderer2D(loader);
-
-	renderer2D.addGui(entity);
 
 	bool showDemoWindow = true;
 	bool showAnotherWindow = false;
@@ -83,20 +77,21 @@ int main()
 		}
 
 		{
-//            ImGui::Begin("Scene window");
-//            ImVec2 pos = ImGui::GetCursorScreenPos();
+			ImGui::Begin("Scene window");
+			ImVec2 pos = ImGui::GetCursorScreenPos();
+			auto[width, height] = Display::getWindowSize();
 
-//            ImGui::GetWindowDrawList()->AddImage();
+			ImGui::GetWindowDrawList()->AddImage((void *) renderer.getRenderedTexture(), pos,
+												 ImVec2(pos.x + width / 2.0f, pos.y + height / 2.0f), ImVec2(0, 1),
+												 ImVec2(1, 0));
 
-//            ImGui::End();
+			ImGui::End();
 		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		renderer.renderToFbo(camera);
-
-		renderer2D.render();
 
 		display.update();
 	}
