@@ -94,7 +94,6 @@ int main()
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-//		renderer.render(camera);
 		renderer.renderToFbo(camera);
 
 		renderer2D.render();

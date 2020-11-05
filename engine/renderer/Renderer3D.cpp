@@ -2,7 +2,6 @@
 // Created by david on 22. 05. 2020..
 //
 
-#include <iostream>
 #include "Renderer3D.h"
 #include "../display/Display.h"
 
@@ -39,18 +38,14 @@ void Renderer3D::addAnimatedObject(Object3D &object3D)
 
 void Renderer3D::renderToFbo(const Camera &camera) const
 {
-	std::cout << "Bind scene\n";
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
-
-	std::cout << "Bind shadow\n";
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
 
 	m_ObjectRenderer.render(camera, m_ShadowMap);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
 
-	FrameBuffer::unbindFrameBuffer();
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
 }
 
 GLuint Renderer3D::getRenderedTexture() const

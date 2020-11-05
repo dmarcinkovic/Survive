@@ -20,7 +20,6 @@ FrameBuffer::~FrameBuffer()
 
 void FrameBuffer::bindFrameBuffer() const
 {
-	std::cout << "Binding framebuffer: " << m_FrameBuffer << '\n';
     glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
 }
 
@@ -120,7 +119,7 @@ void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Came
 
     renderer.render(light, camera);
 
-//    unbindFrameBuffer();
+    unbindFrameBuffer();
 
     auto[width, height] = Display::getWindowSize();
     glViewport(0, 0, width, height);
