@@ -80,8 +80,9 @@ int main()
 			ImGui::Begin("Scene window");
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 			auto[width, height] = Display::getWindowSize();
+			auto textureId = reinterpret_cast<ImTextureID>(renderer.getRenderedTexture());
 
-			ImGui::GetWindowDrawList()->AddImage((void *) renderer.getRenderedTexture(), pos,
+			ImGui::GetWindowDrawList()->AddImage(textureId, pos,
 												 ImVec2(pos.x + width / 2.0f, pos.y + height / 2.0f), ImVec2(0, 1),
 												 ImVec2(1, 0));
 
