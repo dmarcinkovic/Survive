@@ -50,11 +50,16 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		ImGui::ShowDemoWindow(&showDemoWindow);
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable;
+
 		{
 			static float f = 0.0f;
 			static int counter = 0;
 
 			ImGui::Begin("Hello, world!");
+			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 			ImGui::Text("This is some useful text.");
 			ImGui::Checkbox("Demo Window", &showDemoWindow);
