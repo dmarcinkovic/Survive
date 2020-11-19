@@ -121,7 +121,8 @@ int main()
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable;
 
-		ShowExampleAppDockSpace(&showDemoWindow);
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+//		ShowExampleAppDockSpace(&showDemoWindow);
 
 		{
 			static float f = 0.0f;
