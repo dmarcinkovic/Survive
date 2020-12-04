@@ -6,9 +6,16 @@
 #define SURVIVE_HORIZONTALBLUR_H
 
 
+#include <GL/glew.h>
+
 class HorizontalBlur
 {
+public:
+	HorizontalBlur(int targetFboWidth, int targetFboHeight);
 
+	void render(GLuint texture);
+
+	[[nodiscard]] GLuint getTexture() const;
 };
 
 

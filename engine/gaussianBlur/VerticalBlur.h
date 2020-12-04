@@ -6,9 +6,20 @@
 #define SURVIVE_VERTICALBLUR_H
 
 
+#include <GL/gl.h>
+
 class VerticalBlur
 {
+private:
+//	ImageRenderer renderer;
+//	VerticalBlurShader shader;
 
+public:
+	VerticalBlur(int targetFboWidth, int targetFboHeight);
+
+	void render(GLuint texture);
+
+	[[nodiscard]] GLuint getTexture() const;
 };
 
 

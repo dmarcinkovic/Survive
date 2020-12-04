@@ -3,3 +3,18 @@
 //
 
 #include "HorizontalBlur.h"
+
+HorizontalBlur::HorizontalBlur(int targetFboWidth, int targetFboHeight)
+{
+
+}
+
+void HorizontalBlur::render(GLuint texture)
+{
+
+}
+
+GLuint HorizontalBlur::getTexture() const
+{
+	return 0;
+}

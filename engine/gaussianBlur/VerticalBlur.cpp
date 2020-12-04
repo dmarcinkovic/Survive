@@ -3,3 +3,18 @@
 //
 
 #include "VerticalBlur.h"
+
+VerticalBlur::VerticalBlur(int targetFboWidth, int targetFboHeight)
+{
+
+}
+
+void VerticalBlur::render(GLuint texture)
+{
+
+}
+
+GLuint VerticalBlur::getTexture() const
+{
+	return 0;
+}
