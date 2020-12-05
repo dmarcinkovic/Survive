@@ -32,10 +32,10 @@ public:
 
 	static void unbindFrameBuffer();
 
+	GLuint createColorTexture(int width, int height);
+
 private:
     void attachDepthComponent(int width, int height);
-
-    GLuint createColorTexture(int width, int height);
 
     GLuint createDepthTexture(int width, int height);
 };
