@@ -34,6 +34,8 @@ public:
 
 	GLuint createColorTexture(int width, int height);
 
+	static void attachColorAttachment(GLuint texture);
+
 private:
     void attachDepthComponent(int width, int height);
 
