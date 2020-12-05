@@ -12,10 +12,6 @@ int main()
 
 	Display display(width, height, "Survive");
 
-	bool showDemoWindow = true;
-	bool showAnotherWindow = false;
-	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
