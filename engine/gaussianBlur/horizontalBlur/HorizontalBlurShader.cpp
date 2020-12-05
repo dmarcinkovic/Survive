@@ -12,5 +12,5 @@ HorizontalBlurShader::HorizontalBlurShader()
 
 void HorizontalBlurShader::loadUniformLocations()
 {
-
+	m_LocationTargetWidth = glGetUniformLocation(m_Program, "targetWidth");
 }
