@@ -2,20 +2,20 @@
 // Created by david on 05. 12. 2020..
 //
 
-#ifndef SURVIVE_VERTICALBLUR_H
-#define SURVIVE_VERTICALBLUR_H
+#ifndef SURVIVE_VERTICALBLURRENDERER_H
+#define SURVIVE_VERTICALBLURRENDERER_H
 
 
 #include <GL/gl.h>
 
-class VerticalBlur
+class VerticalBlurRenderer
 {
 private:
 //	ImageRenderer renderer;
 //	VerticalBlurShader shader;
 
 public:
-	VerticalBlur(int targetFboWidth, int targetFboHeight);
+	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
 	void render(GLuint texture);
 
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //SURVIVE_VERTICALBLUR_H
+#endif //SURVIVE_VERTICALBLURRENDERER_H
