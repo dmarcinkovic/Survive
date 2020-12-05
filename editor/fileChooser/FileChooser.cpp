@@ -10,7 +10,7 @@ void FileChooser::open()
 {
 	ImGui::Begin("Open...");
 
-	auto[width, height] = Display::getWindowSize();
+	auto[width, height] = Display::getWindowSize<float>();
 
 
 //	ImVec2 windowSize{static_cast<float>(width) / 2.0, height / 2};
