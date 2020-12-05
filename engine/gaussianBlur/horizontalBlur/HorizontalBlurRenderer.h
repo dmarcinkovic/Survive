@@ -6,16 +6,25 @@
 #define SURVIVE_HORIZONTALBLURRENDERER_H
 
 
-#include <GL/glew.h>
+#include "../../fbo/FrameBuffer.h"
+#include "HorizontalBlurShader.h"
 
 class HorizontalBlurRenderer
 {
+private:
+	FrameBuffer m_Fbo;
+	HorizontalBlurShader m_Shader;
+
+	Texture m_Texture;
+	Model m_Model;
+	int m_Width, m_Height;
+
 public:
-	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight);
+	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
 
-	void render(GLuint texture);
+	void render() const;
 
-	[[nodiscard]] GLuint getTexture() const;
+	[[nodiscard]] const Texture &getTexture() const;
 };
 
 
