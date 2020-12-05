@@ -12,5 +12,5 @@ VerticalBlurShader::VerticalBlurShader()
 
 void VerticalBlurShader::loadUniformLocations()
 {
-
+	m_LocationTargetHeights = glGetUniformLocation(m_Program, "targetHeight");
 }
