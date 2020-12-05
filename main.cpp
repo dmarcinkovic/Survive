@@ -14,6 +14,7 @@ int main()
 	Display display(width, height, "Survive");
 
 	bool openItemSelected = false;
+	bool showDemoWindow = true;
 
 	while (display.isRunning())
 	{
@@ -23,14 +24,17 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::BeginMainMenuBar();
-		ImGui::BeginMenu("File");
-		ImGui::MenuItem("Open", "CTRL+O", &openItemSelected);
+		ImGui::ShowDemoWindow(&showDemoWindow);
 
-		FileChooser::open();
-
-		ImGui::EndMenu();
-		ImGui::EndMainMenuBar();
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				ImGui::MenuItem("Open", "Ctrl+O");
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
