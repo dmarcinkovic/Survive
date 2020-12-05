@@ -28,12 +28,12 @@ public:
 
     GLuint attachToDepthBufferTexture(int width, int height);
 
+	void bindFrameBuffer() const;
+
+	static void unbindFrameBuffer();
+
 private:
     void attachDepthComponent(int width, int height);
-
-    static void unbindFrameBuffer();
-
-    void bindFrameBuffer() const;
 
     GLuint createColorTexture(int width, int height);
 
