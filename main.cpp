@@ -2,16 +2,8 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <imgui_internal.h>
-#include <iostream>
 
 #include "engine/display/Display.h"
-#include "engine/renderer/Loader.h"
-#include "engine/texture/TexturedModel.h"
-#include "engine/objects/Object3D.h"
-#include "engine/camera/Camera.h"
-#include "engine/light/Light.h"
-#include "engine/renderer/Renderer3D.h"
-#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -19,26 +11,6 @@ int main()
 	constexpr int height = 800;
 
 	Display display(width, height, "Survive");
-
-	Loader loader;
-
-	Texture texture(Loader::loadTexture("res/lamp.jpg"));
-
-	TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
-	TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
-
-	Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
-	Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
-
-	Camera camera;
-	Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
-
-	Renderer3D renderer(light);
-	renderer.add3DObject(dragon);
-	renderer.add3DObject(lamp);
-
-	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
-	renderer.addTerrain(terrain);
 
 	bool showDemoWindow = true;
 	bool showAnotherWindow = false;
@@ -51,13 +23,6 @@ int main()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
-		ImGuiIO &io = ImGui::GetIO();
-		io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
-						 ImGuiWindowFlags_UnsavedDocument;
-
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_DockSpace);
-//		ImGui::ShowDemoWindow(&showDemoWindow);
 
 		{
 			static float f = 0.0f;
@@ -84,24 +49,8 @@ int main()
 			ImGui::End();
 		}
 
-		{
-			ImGui::Begin("Scene window");
-			ImVec2 pos = ImGui::GetCursorScreenPos();
-			auto textureId = reinterpret_cast<ImTextureID>(renderer.getRenderedTexture());
-
-			ImVec2 windowSize = ImGui::GetWindowSize();
-
-			ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-												 ImVec2(pos.x + windowSize.x, pos.y + windowSize.y), ImVec2(0, 1),
-												 ImVec2(1, 0));
-
-			ImGui::End();
-		}
-
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		renderer.renderToFbo(camera);
 
 		display.update();
 	}
