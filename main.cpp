@@ -30,11 +30,13 @@ int main()
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				ImGui::MenuItem("Open", "Ctrl+O");
+				ImGui::MenuItem("Open", "Ctrl+O", &openItemSelected);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
 		}
+
+		FileChooser::open();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
