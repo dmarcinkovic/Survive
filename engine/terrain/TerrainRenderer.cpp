@@ -5,18 +5,11 @@
 #include "TerrainRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
-#include "../constant/Constants.h"
 
 TerrainRenderer::TerrainRenderer()
 {
     m_Shader.start();
-
-    auto projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-    glm::mat4 lightProjection = Maths::createLightProjectionMatrix();
-
-    m_Shader.loadLightProjectionMatrix(lightProjection);
-    m_Shader.loadProjectionMatrix(projectionMatrix);
-
+    m_Shader.loadTextures();
     Shader::stop();
 }
 
@@ -33,14 +26,13 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
     auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_ScaleX,
                                                                   m_Terrain->m_ScaleY, m_Terrain->m_ScaleZ, rotationX);
 
-    m_Shader.loadTextures();
-
-    auto viewMatrix = Maths::createViewMatrix(camera);
-    m_Shader.loadViewMatrix(viewMatrix);
-
     m_Shader.loadTransformationMatrix(transformationMatrix);
-    glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
+    m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+    m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
+
+    glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
     finishRendering();
 }
 

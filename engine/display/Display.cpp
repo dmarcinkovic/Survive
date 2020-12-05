@@ -8,6 +8,8 @@
 #include <backends/imgui_impl_opengl3.h>
 
 #include "Display.h"
+#include "../math/Maths.h"
+#include "../constant/Constants.h"
 
 std::vector<KeyListener> Display::m_KeyEventListeners;
 std::vector<MouseListener> Display::m_MouseEventListeners;
@@ -47,6 +49,9 @@ Display::Display(int width, int height, const char *title)
 
     m_Width = width;
     m_Height = height;
+
+    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
+    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 }
 
 Display::~Display()
@@ -106,6 +111,9 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
     {
         listener(width, height);
     }
+
+    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
+    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)

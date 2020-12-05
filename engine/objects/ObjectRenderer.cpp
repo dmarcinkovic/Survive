@@ -4,20 +4,10 @@
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
-#include "../constant/Constants.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
         : m_Light(light)
 {
-    m_Shader.start();
-
-    const glm::mat4 projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-    m_Shader.loadProjectionMatrix(projectionMatrix);
-
-    const glm::mat4 lightProjection = Maths::createLightProjectionMatrix();
-    m_Shader.loadLightProjection(lightProjection);
-
-    Shader::stop();
 }
 
 void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
@@ -31,6 +21,8 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
     m_Shader.loadViewMatrix(viewMatrix);
     m_Shader.loadLightViewMatrix(lightViewMatrix);
     m_Shader.loadTextures();
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+    m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
 
     Texture texture(shadowMap);
     texture.bindTexture(1);

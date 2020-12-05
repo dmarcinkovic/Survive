@@ -9,7 +9,9 @@
 #include <vector>
 
 #include "../renderer/Loader.h"
-#include "../animation/joints/Joint.h"
+#include "../animations/joints/Joint.h"
+#include "../animations/animation/KeyFrame.h"
+#include "../animations/animation/Animation.h"
 
 struct VertexData
 {
@@ -30,28 +32,46 @@ struct AnimationData
     std::vector<glm::mat4> transforms;
 };
 
+struct JointData
+{
+    Joint rootJoint;
+    int numberOfJoints{};
+};
+
 class DaeParser
 {
 private:
-    static VertexData vertexData;
+    VertexData m_VertexData;
+    JointData m_JointData;
+    std::vector<KeyFrame> m_KeyFrames;
 
-    static void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
+    float m_LengthInSeconds;
 
-    static void loadGeometry(std::ifstream &reader);
+public:
+    Model loadDae(const char *daeFile, Loader &loader);
+
+    [[nodiscard]] Animation getAnimation() const;
+
+    [[nodiscard]] std::pair<Joint, int> getJointData() const;
+
+private:
+    void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
+
+    void loadGeometry(std::ifstream &reader);
 
     static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-    static void loadAnimation(std::ifstream &reader);
+    void loadAnimation(std::ifstream &reader);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
     static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
-    static Model parseIndices(Loader &loader);
+    Model parseIndices(Loader &loader);
 
     static std::vector<std::string> getData(std::string &line);
 
-    static void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+    void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
     static glm::mat4 getJointTransform(std::string &line);
 
@@ -61,8 +81,9 @@ private:
 
     static std::vector<glm::mat4> getTransforms(std::string &line);
 
-public:
-    static Model loadDae(const char *daeFile, Loader &loader);
+    std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+
+    void normalizeWeights();
 };
 
 

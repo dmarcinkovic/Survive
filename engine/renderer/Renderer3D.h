@@ -8,7 +8,8 @@
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
-#include "../animation/AnimationRenderer.h"
+#include "../animations/renderer/AnimationRenderer.h"
+#include "../animations/animation/AnimatedObject.h"
 
 class Renderer3D
 {
@@ -23,7 +24,7 @@ private:
     const GLuint m_ShadowMap;
 
     FrameBuffer m_SceneFrameBuffer;
-    GLuint m_Scene;
+    GLuint m_Scene{};
 
 public:
     explicit Renderer3D(const Light &light);
@@ -36,9 +37,9 @@ public:
 
     void addTerrain(Terrain &terrain);
 
-    void addAnimatedObject(Object3D &object3D);
-
     GLuint getRenderedTexture() const;
+
+    void addAnimatedObject(AnimatedObject &object3D);
 };
 
 

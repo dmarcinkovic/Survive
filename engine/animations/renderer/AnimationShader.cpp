@@ -2,6 +2,7 @@
 // Created by david on 12. 08. 2020..
 //
 
+#include <string>
 #include "AnimationShader.h"
 
 AnimationShader::AnimationShader()
@@ -33,10 +34,30 @@ void AnimationShader::loadUniformLocations()
 
     m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
     m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+
+    for (int i = 0; i < MAX_JOINTS; ++i)
+    {
+        std::string name = "jointTransforms[" + std::to_string(i) + "]";
+        m_LocationJointTransforms[i] = glGetUniformLocation(m_Program, name.c_str());
+    }
 }
 
 void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
 {
     loadVector3(m_LocationLightPosition, lightPosition);
     loadVector3(m_LocationLightColor, lightColor);
+}
+
+void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
+{
+    for (int i = 0; i < jointTransforms.size(); ++i)
+    {
+        loadMatrix(m_LocationJointTransforms[i], jointTransforms[i].getLocalTransform());
+    }
+
+    for (int i = jointTransforms.size(); i < MAX_JOINTS; ++i)
+    {
+        glm::mat4 emptyMatrix{};
+        loadMatrix(m_LocationJointTransforms[i], emptyMatrix);
+    }
 }

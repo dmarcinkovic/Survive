@@ -3,17 +3,20 @@
 //
 
 #include "Renderer3D.h"
+#include "../constant/Constants.h"
 #include "../display/Display.h"
 
 Renderer3D::Renderer3D(const Light &light)
-        : m_Light(light), m_ObjectRenderer(light), m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture()),
-          m_AnimationRenderer(light), m_SceneFrameBuffer{}, m_Scene(m_SceneFrameBuffer.createTexture())
+        : m_Light(light), m_ObjectRenderer(light),
+          m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
+          m_AnimationRenderer(light), m_Scene(m_SceneFrameBuffer.createTexture())
 {
 }
 
 void Renderer3D::render(const Camera &camera) const
 {
-    m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+                                      Constants::SHADOW_HEIGHT);
 
     m_ObjectRenderer.render(camera, m_ShadowMap);
     m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
@@ -31,9 +34,9 @@ void Renderer3D::addTerrain(Terrain &terrain)
     m_TerrainRenderer.addTerrain(terrain);
 }
 
-void Renderer3D::addAnimatedObject(Object3D &object3D)
+void Renderer3D::addAnimatedObject(AnimatedObject &object3D)
 {
-    m_AnimationRenderer.add3DObject(object3D);
+    m_AnimationRenderer.addAnimatedModel(object3D);
 }
 
 void Renderer3D::renderToFbo(const Camera &camera) const
@@ -45,7 +48,7 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
 
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light);
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT);
 }
 
 GLuint Renderer3D::getRenderedTexture() const

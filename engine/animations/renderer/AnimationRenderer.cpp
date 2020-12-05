@@ -2,16 +2,13 @@
 // Created by david on 17. 05. 2020..
 //
 #include "AnimationRenderer.h"
-#include "../renderer/Renderer3DUtil.h"
-#include "../math/Maths.h"
-#include "../constant/Constants.h"
+#include "../../renderer/Renderer3DUtil.h"
+#include "../../math/Maths.h"
+#include "../../constant/Constants.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)
 {
-    m_Shader.start();
-    m_Shader.loadProjectionMatrix(Maths::createProjectionMatrix(Constants::FOV));
-    Shader::stop();
 }
 
 void AnimationRenderer::render(const Camera &camera) const
@@ -20,6 +17,7 @@ void AnimationRenderer::render(const Camera &camera) const
 
     const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
     m_Shader.loadViewMatrix(viewMatrix);
+    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
     m_Shader.loadLight(m_Light.position(), m_Light.color());
 
@@ -34,14 +32,15 @@ void AnimationRenderer::render(const Camera &camera) const
     Renderer3DUtil::finishRendering();
 }
 
-void AnimationRenderer::add3DObject(Object3D &entity)
+void AnimationRenderer::addAnimatedModel(AnimatedObject &entity)
 {
     auto &batch = m_Objects[entity.m_Texture];
     batch.emplace_back(entity);
 }
 
 void
-AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects,
+                               const Camera &camera) const
 {
     for (auto const &object : objects)
     {
