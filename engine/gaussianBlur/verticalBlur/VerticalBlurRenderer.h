@@ -6,8 +6,6 @@
 #define SURVIVE_VERTICALBLURRENDERER_H
 
 
-#include <GL/gl.h>
-
 #include "VerticalBlurShader.h"
 #include "../../fbo/FrameBuffer.h"
 
