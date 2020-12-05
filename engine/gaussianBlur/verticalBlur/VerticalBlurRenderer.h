@@ -8,18 +8,25 @@
 
 #include <GL/gl.h>
 
+#include "VerticalBlurShader.h"
+#include "../../fbo/FrameBuffer.h"
+
 class VerticalBlurRenderer
 {
 private:
-//	ImageRenderer renderer;
-//	VerticalBlurShader shader;
+	FrameBuffer m_Fbo;
+	VerticalBlurShader m_Shader;
+
+	Texture m_Texture;
+	Model m_Model;
+	int m_Width, m_Height;
 
 public:
-	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
+	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
 
-	void render(GLuint texture);
+	void render() const;
 
-	[[nodiscard]] GLuint getTexture() const;
+	[[nodiscard]] const Texture &getTexture() const;
 };
 
 
