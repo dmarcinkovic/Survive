@@ -6,11 +6,19 @@
 #define SURVIVE_VERTICALBLURSHADER_H
 
 
-class VerticalBlurShader
+#include "../../shader/Shader.h"
+
+class VerticalBlurShader : public Shader
 {
 private:
-	static constexpr const char* VERTEX_SHADER = "";
-	static constexpr const char* FRAGMENT_SHADER = "";
+	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/VerticalBlurVertexShader.glsl";
+	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/BlurFragmentShader.glsl";
+
+public:
+	VerticalBlurShader();
+	
+private:
+	void loadUniformLocations();
 };
 
 
