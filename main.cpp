@@ -4,6 +4,7 @@
 #include <imgui_internal.h>
 
 #include "engine/display/Display.h"
+#include "editor/fileChooser/FileChooser.h"
 
 int main()
 {
@@ -25,6 +26,8 @@ int main()
 		ImGui::BeginMainMenuBar();
 		ImGui::BeginMenu("File");
 		ImGui::MenuItem("Open", "CTRL+O", &openItemSelected);
+
+		FileChooser::open();
 
 		ImGui::EndMenu();
 		ImGui::EndMainMenuBar();
