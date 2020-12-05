@@ -8,7 +8,9 @@
 
 class VerticalBlurShader
 {
-
+private:
+	static constexpr const char* VERTEX_SHADER = "";
+	static constexpr const char* FRAGMENT_SHADER = "";
 };
 
 
