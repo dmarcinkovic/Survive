@@ -14,7 +14,7 @@ void Renderer2D::render() const
 {
     m_GuiRenderer.render();
 
-    auto[width, height] = Display::getWindowSize();
+    auto[width, height] = Display::getWindowSize<int>();
 
     if (width == 0 || height == 0)
     {

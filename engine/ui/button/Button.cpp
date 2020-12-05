@@ -10,7 +10,7 @@ Button::Button(const TexturedModel &texture, const glm::vec3 &position, float sc
         : Entity(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
           m_OriginalScaleY(scaleY)
 {
-    auto[width, height] = Display::getWindowSize();
+    auto[width, height] = Display::getWindowSize<float>();
     convertToScreenSpace(width, height);
 
     addMouseMoveListener();
