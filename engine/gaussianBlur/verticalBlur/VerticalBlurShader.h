@@ -14,10 +14,12 @@ private:
 	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/VerticalBlurVertexShader.glsl";
 	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/BlurFragmentShader.glsl";
 
-	GLuint m_LocationTargetHeights{};
+	GLuint m_LocationTargetHeight{};
 
 public:
 	VerticalBlurShader();
+
+	void loadTargetHeight(float targetHeight) const;
 
 private:
 	void loadUniformLocations();
