@@ -19,6 +19,8 @@ private:
 public:
 	HorizontalBlurShader();
 
+	void loadTargetWidth(float targetWidth) const;
+
 private:
 	void loadUniformLocations();
 };

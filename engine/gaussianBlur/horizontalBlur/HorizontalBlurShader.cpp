@@ -14,3 +14,8 @@ void HorizontalBlurShader::loadUniformLocations()
 {
 	m_LocationTargetWidth = glGetUniformLocation(m_Program, "targetWidth");
 }
+
+void HorizontalBlurShader::loadTargetWidth(float targetWidth) const
+{
+	loadFloat(m_LocationTargetWidth, targetWidth);
+}
