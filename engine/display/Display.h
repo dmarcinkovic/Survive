@@ -54,7 +54,11 @@ public:
 
     static double getFrameTime();
 
-    static std::pair<int, int> getWindowSize();
+	template<typename T>
+	static std::pair<T, T> getWindowSize()
+	{
+		return {static_cast<T>(m_Width), static_cast<T>(m_Height)};
+	}
 
 private:
     static void windowResizeCallback(GLFWwindow *window, int width, int height);
