@@ -16,7 +16,7 @@ private:
 
 public:
 	VerticalBlurShader();
-	
+
 private:
 	void loadUniformLocations();
 };

@@ -3,3 +3,14 @@
 //
 
 #include "HorizontalBlurShader.h"
+
+HorizontalBlurShader::HorizontalBlurShader()
+	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+{
+	loadUniformLocations();
+}
+
+void HorizontalBlurShader::loadUniformLocations()
+{
+
+}

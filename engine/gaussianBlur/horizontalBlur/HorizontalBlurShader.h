@@ -6,9 +6,19 @@
 #define SURVIVE_HORIZONTALBLURSHADER_H
 
 
-class HorizontalBlurShader
-{
+#include "../../shader/Shader.h"
 
+class HorizontalBlurShader : public Shader
+{
+private:
+	static constexpr const char * VERTEX_SHADER = "engine/shader/sources/HorizontalBlurVertexShader.glsl";
+	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/BlurFragmentShader.glsl";
+
+public:
+	HorizontalBlurShader();
+
+private:
+	void loadUniformLocations();
 };
 
 
