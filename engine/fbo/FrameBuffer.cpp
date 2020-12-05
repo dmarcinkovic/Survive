@@ -32,7 +32,7 @@ GLuint FrameBuffer::createTexture()
 {
     bindFrameBuffer();
 
-    auto[width, height] = Display::getWindowSize();
+    auto[width, height] = Display::getWindowSize<int>();
     GLuint texture = createColorTexture(width, height);
 
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
@@ -121,6 +121,6 @@ void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Came
 
     unbindFrameBuffer();
 
-    auto[w, h] = Display::getWindowSize();
+    auto[w, h] = Display::getWindowSize<int>();
     glViewport(0, 0, w, h);
 }

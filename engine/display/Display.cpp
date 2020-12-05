@@ -150,11 +150,6 @@ double Display::getFrameTime()
     return m_DeltaTime;
 }
 
-std::pair<int, int> Display::getWindowSize()
-{
-    return {m_Width, m_Height};
-}
-
 void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 {
     for (auto const &listener : m_MouseMoveListeners)
