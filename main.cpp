@@ -28,6 +28,15 @@ int main()
 			static float f = 0.0f;
 			static int counter = 0;
 
+			ImGui::BeginMainMenuBar();
+			ImGui::BeginMenuBar();
+			ImGui::BeginMenu("File");
+
+
+			ImGui::EndMenu();
+			ImGui::EndMenuBar();
+			ImGui::EndMainMenuBar();
+
 			ImGui::Begin("Hello, world!");
 			ImGui::Text("This is some useful text.");
 			ImGui::Checkbox("Demo Window", &showDemoWindow);
