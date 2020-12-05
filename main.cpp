@@ -12,6 +12,8 @@ int main()
 
 	Display display(width, height, "Survive");
 
+	bool openItemSelected = false;
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
@@ -20,16 +22,12 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		{
-			ImGui::BeginMainMenuBar();
-			ImGui::BeginMenuBar();
-			ImGui::BeginMenu("File");
+		ImGui::BeginMainMenuBar();
+		ImGui::BeginMenu("File");
+		ImGui::MenuItem("Open", "CTRL+O", &openItemSelected);
 
-
-			ImGui::EndMenu();
-			ImGui::EndMenuBar();
-			ImGui::EndMainMenuBar();
-		}
+		ImGui::EndMenu();
+		ImGui::EndMainMenuBar();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
