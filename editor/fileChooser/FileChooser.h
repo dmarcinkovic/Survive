@@ -6,10 +6,12 @@
 #define SURVIVE_FILECHOOSER_H
 
 
+#include <GL/glew.h>
+
 class FileChooser
 {
 public:
-	static void open();
+	static void open(GLuint texture);
 
 };
 

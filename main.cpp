@@ -5,6 +5,7 @@
 
 #include "engine/display/Display.h"
 #include "editor/fileChooser/FileChooser.h"
+#include "engine/renderer/Loader.h"
 
 int main()
 {
@@ -14,7 +15,9 @@ int main()
 	Display display(width, height, "Survive");
 
 	bool openItemSelected = false;
-	bool showDemoWindow = true;
+
+	GLuint directoryIcon = Loader::loadTexture("res/directory.png");
+
 
 	while (display.isRunning())
 	{
@@ -34,7 +37,7 @@ int main()
 			ImGui::EndMainMenuBar();
 		}
 
-		FileChooser::open();
+		FileChooser::open(directoryIcon);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
