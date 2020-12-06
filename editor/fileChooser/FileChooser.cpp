@@ -6,6 +6,7 @@
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
+#include "../../engine/renderer/Loader.h"
 
 void FileChooser::open()
 {
@@ -17,9 +18,10 @@ void FileChooser::open()
 	ImGui::Begin("Open...");
 
 	ImGuiIO &io = ImGui::GetIO();
-	ImTextureID my_tex_id = io.Fonts->TexID;
 	auto my_tex_w = (float) io.Fonts->TexWidth;
 	auto my_tex_h = (float) io.Fonts->TexHeight;
+
+	auto texture = reinterpret_cast<void*>(Loader::loadTexture("res/rock.png"));
 
 	static int pressed_count = 0;
 	for (int i = 0; i < 8; i++)
@@ -31,7 +33,7 @@ void FileChooser::open()
 		ImVec2 uv1 = ImVec2(32.0f / my_tex_w, 32.0f / my_tex_h);
 		ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 		ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-		if (ImGui::ImageButton(my_tex_id, size, uv0, uv1, frame_padding, bg_col, tint_col))
+		if (ImGui::ImageButton(texture, size, uv0, uv1, frame_padding, bg_col, tint_col))
 			pressed_count += 1;
 		ImGui::PopID();
 		ImGui::SameLine();
