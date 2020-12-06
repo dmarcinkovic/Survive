@@ -21,7 +21,7 @@ void FileChooser::open(GLuint texture)
 	ImVec2 size = ImVec2(60.0f, 60.0f);
 	ImVec2 uv0 = ImVec2(0.0f, 0.0f);
 	ImVec2 uv1 = ImVec2(1.0f, 1.0f);
-	ImVec4 backgroundColor = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
+	ImVec4 backgroundColor = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
 	ImVec4 borderColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ImGui::ImageButton(reinterpret_cast<void *>(texture), size, uv0, uv1, frame_padding, backgroundColor, borderColor);
 	ImGui::PopID();
