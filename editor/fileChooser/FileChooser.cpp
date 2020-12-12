@@ -16,16 +16,19 @@ void FileChooser::open(GLuint texture)
 
 	ImGui::Begin("Open...");
 
-	ImGui::PushID(0);
-	int frame_padding = -1;
-	ImVec2 size = ImVec2(60.0f, 60.0f);
-	ImVec2 uv0 = ImVec2(0.0f, 0.0f);
-	ImVec2 uv1 = ImVec2(1.0f, 1.0f);
-	ImVec4 backgroundColor = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
-	ImVec4 borderColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	ImGui::ImageButton(reinterpret_cast<void *>(texture), size, uv0, uv1, frame_padding, backgroundColor, borderColor);
-	ImGui::PopID();
-	ImGui::SameLine();
-
+	for (int i = 0; i < 10; ++i)
+	{
+		ImGui::PushID(i);
+		int frame_padding = -1;
+		ImVec2 size = ImVec2(60.0f, 60.0f);
+		ImVec2 uv0 = ImVec2(0.0f, 0.0f);
+		ImVec2 uv1 = ImVec2(1.0f, 1.0f);
+		ImVec4 backgroundColor = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+		ImVec4 borderColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+		ImGui::ImageButton(reinterpret_cast<void *>(texture), size, uv1,uv0, frame_padding, backgroundColor,
+						   borderColor);
+		ImGui::PopID();
+		ImGui::SameLine();
+	}
 	ImGui::End();
 }
