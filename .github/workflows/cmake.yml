@@ -20,7 +20,7 @@ jobs:
         with:
             submodules: recursive
 
-      -name: Install compiler
+      - name: Install compiler
         run: |
           sudo apt-get install g++-10
 
