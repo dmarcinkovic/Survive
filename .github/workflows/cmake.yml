@@ -15,13 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+      - uses: actions/checkout@v1
+        with:
+            submodules: recursive
+
       - name: Install dependencies
         run: |
           sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
 
       - name: Build executable
         run: |
-          cd ${{github.workspace}}/work/Survive
+          cd ${{github.workspace}}
           mkdir build
           cd build
           cmake ..
