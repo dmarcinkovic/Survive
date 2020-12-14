@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install compiler
+      - name: Install dependencies
         run: |
           sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
 #  build:
