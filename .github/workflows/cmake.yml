@@ -12,13 +12,17 @@ env:
 jobs:
   Linux:
     name: Survive
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
         with:
             submodules: recursive
+
+      -name: Install compiler
+        run: |
+          sudo apt-get install g++-10
 
       - name: Install dependencies
         run: |
@@ -29,7 +33,7 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          cmake -D CMAKE_CXX_COMPILER=g++ ..
+          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
 
 #  build:
