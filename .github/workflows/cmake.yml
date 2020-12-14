@@ -18,9 +18,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
-      
+
       - name: Build executable
         run: |
+          cp CMakeLists.txt ${{github.worspace}}
           cd ${{github.worspace}}
           mkdir build
           cd build
