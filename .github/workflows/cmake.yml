@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Install compiler
         run: |
-          apt install libglfw3-dev
+          sudo apt-get install libglfw3-dev
 #  build:
 #    # The CMake configure and build commands are platform agnostic and should work equally
 #    # well on Windows or Mac.  You can convert this to a matrix build if you need
