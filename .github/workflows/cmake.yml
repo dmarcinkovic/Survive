@@ -34,3 +34,6 @@ jobs:
           cd build
           cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
+        uses: actions/download-artifact@v2
+        with:
+          name: Survive
