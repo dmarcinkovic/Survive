@@ -6,6 +6,7 @@
 #define SURVIVE_KEYFRAME_H
 
 #include <unordered_map>
+#include <string>
 
 #include "../joints/JointTransform.h"
 
