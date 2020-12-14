@@ -34,3 +34,8 @@ jobs:
           cd build
           cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
+
+      - name: Upload artifact
+       uses: actions/upload-artifact@master
+       with:
+         name: Artifact
