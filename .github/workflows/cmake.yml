@@ -36,6 +36,6 @@ jobs:
           make
 
       - name: Upload artifact
-       uses: actions/upload-artifact@master
-       with:
-         name: Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: Artifact
