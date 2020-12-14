@@ -21,8 +21,6 @@ jobs:
 
       - name: Build executable
         run: |
-          cp CMakeLists.txt ${{github.worspace}}
-          cd ${{github.worspace}}
           mkdir build
           cd build
           cmake ..
