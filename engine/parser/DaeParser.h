@@ -7,6 +7,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <stack>
 
 #include "../renderer/Loader.h"
 #include "../animations/joints/Joint.h"
