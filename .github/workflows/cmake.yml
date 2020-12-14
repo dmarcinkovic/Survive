@@ -18,14 +18,15 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
-
-      -name: Build executable
+      
+      - name: Build executable
         run: |
           cd ${{github.worspace}}
           mkdir build
           cd build
           cmake ..
-          make 
+          make
+
 #  build:
 #    # The CMake configure and build commands are platform agnostic and should work equally
 #    # well on Windows or Mac.  You can convert this to a matrix build if you need
