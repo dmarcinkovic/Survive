@@ -40,3 +40,21 @@ jobs:
         with:
           name: Artifact
           path: ${{github.workspace}}/build
+
+  Windows:
+    name: Survive
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+            submodules: recursive
+            
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          cmake ..
+          make
