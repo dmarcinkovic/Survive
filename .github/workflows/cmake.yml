@@ -50,7 +50,15 @@ jobs:
         uses: actions/checkout@v1
         with:
             submodules: recursive
-            
+
+      - name: Download and Build GLEW
+        run: |
+          git clone https://github.com/nigels-com/glew.git
+          cd glew
+          mingw32-make
+          mingw32-make install
+          mingw32-make install.all
+          
       - name: Build executable
         run: |
           cd ${{github.workspace}}
