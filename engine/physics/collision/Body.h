@@ -40,6 +40,8 @@ protected:
 public:
     Body(Entity &entity2D, const BodyType &bodyType, float mass, const glm::vec2 &initialVelocity);
 
+    virtual ~Body() = default;
+
     [[nodiscard]] const BodyType &bodyType() const;
 
     virtual void collide(Circle &circle) = 0;
