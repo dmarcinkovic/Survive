@@ -40,29 +40,3 @@ jobs:
         with:
           name: Artifact
           path: ${{github.workspace}}/build
-
-  Windows:
-    name: Survive
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-        with:
-            submodules: recursive
-
-      - name: Install dependencies
-        run: |
-            sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
-
-      - name: Install compiler
-        run: |
-          sudo apt-get install mingw-w64 libc6-dev-i386
-
-      - name: Build executable
-        run: |
-          cd ${{github.workspace}}
-          mkdir build
-          cd build
-          cmake -D CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ ..
-          make
