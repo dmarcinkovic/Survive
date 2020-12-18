@@ -52,17 +52,17 @@ jobs:
             submodules: recursive
 
       - name: Install dependencies
-          run: |
+        run: |
             sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
 
       - name: Install compiler
-          run: |
-            sudo apt-get install mingw-w64
+        run: |
+          sudo apt-get install mingw-w64
 
       - name: Build executable
-          run: |
-            cd ${{github.workspace}}
-            mkdir build
-            cd build
-            cmake -D CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ ..
-            make
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          cmake -D CMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ ..
+          make
