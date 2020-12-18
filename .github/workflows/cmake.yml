@@ -57,7 +57,7 @@ jobs:
 
       - name: Install compiler
         run: |
-          sudo apt-get install mingw-w64
+          sudo apt-get install mingw-w64 libc6-dev
 
       - name: Build executable
         run: |
