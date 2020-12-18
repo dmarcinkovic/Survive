@@ -13,18 +13,18 @@ class VerticalBlurRenderer
 {
 private:
 	FrameBuffer m_Fbo;
-	VerticalBlurShader m_Shader;
-
-	Texture m_Texture;
-	Model m_Model;
 	int m_Width, m_Height;
+
+	VerticalBlurShader m_Shader;
+	GLuint verticalBlurTexture;
+	Model m_Model;
 
 public:
 	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
 
-	void render() const;
+	void render(const Texture &texture) const;
 
-	[[nodiscard]] const Texture &getTexture() const;
+	[[nodiscard]] GLuint getTexture() const;
 };
 
 

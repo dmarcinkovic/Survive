@@ -13,18 +13,18 @@ class HorizontalBlurRenderer
 {
 private:
 	FrameBuffer m_Fbo;
-	HorizontalBlurShader m_Shader;
-
-	Texture m_Texture;
-	Model m_Model;
 	int m_Width, m_Height;
+
+	GLint horizontalBlurTexture;
+	HorizontalBlurShader m_Shader;
+	Model m_Model;
 
 public:
 	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
 
-	void render() const;
+	void render(const Texture &texture) const;
 
-	[[nodiscard]] const Texture &getTexture() const;
+	[[nodiscard]] GLuint getTexture() const;
 };
 
 

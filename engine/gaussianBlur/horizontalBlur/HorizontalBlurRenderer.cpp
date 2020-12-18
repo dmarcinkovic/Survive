@@ -6,10 +6,10 @@
 #include "../../display/Display.h"
 
 HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model)
-	:m_Width(targetFboWidth), m_Height(targetFboHeight), m_Texture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight)),
-	m_Model(model)
+	:m_Width(targetFboWidth), m_Height(targetFboHeight), m_Model(model),
+	horizontalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
-	FrameBuffer::attachColorAttachment(m_Texture.textureId());
+	FrameBuffer::attachColorAttachment(horizontalBlurTexture);
 
 	m_Shader.start();
 
@@ -17,10 +17,10 @@ HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFbo
 	HorizontalBlurShader::stop();
 }
 
-void HorizontalBlurRenderer::render() const
+void HorizontalBlurRenderer::render(const Texture &texture) const
 {
 	m_Shader.start();
-	m_Texture.bindTexture(0);
+	texture.bindTexture(0);
 
 	m_Fbo.bindFrameBuffer();
 	glViewport(0,0,m_Width, m_Height);
@@ -35,7 +35,7 @@ void HorizontalBlurRenderer::render() const
 	HorizontalBlurShader::stop();
 }
 
-const Texture &HorizontalBlurRenderer::getTexture() const
+GLuint HorizontalBlurRenderer::getTexture() const
 {
-	return m_Texture;
+	return horizontalBlurTexture;
 }
