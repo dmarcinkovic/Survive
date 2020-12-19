@@ -38,12 +38,12 @@ int main()
 	renderer.addAnimatedObject(object);
 
 	Model rawModel = loader.renderQuad();
-//	HorizontalBlurRenderer horizontalBlurRenderer(width / 8, height / 8, rawModel);
-	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
+	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4, rawModel);
+//	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
 
 	FrameBuffer fbo;
 	GLuint texture = fbo.createTexture();
-	TexturedModel model(rawModel, verticalBlurRenderer.getTexture());
+	TexturedModel model(rawModel, horizontalBlurRenderer.getTexture());
 
 	GuiRenderer guiRenderer;
 	Entity entity(model, glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
@@ -65,8 +65,8 @@ int main()
 		glEnableVertexAttribArray(0);
 		glDisable(GL_DEPTH_TEST);
 
-//        horizontalBlurRenderer.render(Texture(texture));
-		verticalBlurRenderer.render(Texture(texture));
+        horizontalBlurRenderer.render(Texture(texture));
+//		verticalBlurRenderer.render(Texture(texture));
 
 		glEnable(GL_DEPTH_TEST);
 		glDisableVertexAttribArray(0);
