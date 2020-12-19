@@ -8,9 +8,9 @@
 
 VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight),
-		verticalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
+		  m_VerticalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
-	FrameBuffer::attachColorAttachment(verticalBlurTexture);
+	FrameBuffer::attachColorAttachment(m_VerticalBlurTexture.textureId());
 
 	m_Shader.start();
 	m_Shader.loadTargetHeight(static_cast<float>(targetFboHeight));
@@ -36,7 +36,7 @@ void VerticalBlurRenderer::render(const Texture &texture) const
 	VerticalBlurShader::stop();
 }
 
-GLuint VerticalBlurRenderer::getTexture() const
+const Texture &VerticalBlurRenderer::getTexture() const
 {
-	return verticalBlurTexture;
+	return m_VerticalBlurTexture;
 }

@@ -16,14 +16,14 @@ private:
 	int m_Width, m_Height;
 
 	VerticalBlurShader m_Shader;
-	GLuint verticalBlurTexture;
+	Texture m_VerticalBlurTexture;
 
 public:
 	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
 	void render(const Texture &texture) const;
 
-	[[nodiscard]] GLuint getTexture() const;
+	[[nodiscard]] const Texture &getTexture() const;
 };
 
 
