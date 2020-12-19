@@ -33,6 +33,11 @@ public:
 	void render(const Texture &texture) const;
 
 	const Texture &getTexture() const;
+
+private:
+	void prepareRendering() const;
+
+	static void finishRendering();
 };
 
 
