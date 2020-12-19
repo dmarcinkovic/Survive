@@ -21,8 +21,6 @@ private:
     std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
 public:
-    ShadowRenderer();
-
     void render(const Light &light, const Camera &camera) const;
 
     void add3DObject(Object3D &object);

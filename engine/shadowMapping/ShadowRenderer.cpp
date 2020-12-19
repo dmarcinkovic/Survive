@@ -8,9 +8,6 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
 
-ShadowRenderer::ShadowRenderer()
-{
-}
 
 void ShadowRenderer::render(const Light &light, const Camera &camera) const
 {
