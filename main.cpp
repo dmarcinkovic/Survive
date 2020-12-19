@@ -66,7 +66,7 @@ int main()
 		glDisable(GL_DEPTH_TEST);
 
         horizontalBlurRenderer.render(Texture(texture), rawModel);
-		verticalBlurRenderer.render(Texture(horizontalBlurRenderer.getTexture()));
+		verticalBlurRenderer.render(Texture(horizontalBlurRenderer.getTexture()), rawModel);
 
 		glEnable(GL_DEPTH_TEST);
 		glDisableVertexAttribArray(0);

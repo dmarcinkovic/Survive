@@ -16,7 +16,7 @@ void BlurRenderer::render(const Texture &texture) const
 	prepareRendering();
 
 	m_HorizontalBlurRenderer.render(texture, m_Model);
-	m_VerticalBlurRenderer.render(m_HorizontalBlurRenderer.getTexture());
+	m_VerticalBlurRenderer.render(m_HorizontalBlurRenderer.getTexture(), m_Model);
 
 	finishRendering();
 }

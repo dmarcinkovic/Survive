@@ -21,7 +21,7 @@ private:
 public:
 	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
-	void render(const Texture &texture) const;
+	void render(const Texture &texture, const Model &model) const;
 
 	[[nodiscard]] const Texture &getTexture() const;
 };
