@@ -13,7 +13,12 @@ BlurRenderer::BlurRenderer(int width, int height)
 
 void BlurRenderer::render(const Texture &texture) const
 {
+	prepareRendering();
 
+	m_HorizontalBlurRenderer.render(texture);
+	m_VerticalBlurRenderer.render(m_HorizontalBlurRenderer.getTexture());
+
+	finishRendering();
 }
 
 const Texture &BlurRenderer::getTexture() const
