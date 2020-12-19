@@ -63,6 +63,8 @@ GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 GLuint FrameBuffer::createColorTexture(int width, int height)
 {
     GLuint texture;
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
     glGenTextures(1, &texture);
 
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -127,4 +129,14 @@ void FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Came
 void FrameBuffer::attachColorAttachment(GLuint texture)
 {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+}
+
+void FrameBuffer::bindDrawBuffer() const
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FrameBuffer);
+}
+
+void FrameBuffer::unbindDrawFrameBuffer()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

@@ -6,8 +6,8 @@
 #include "VerticalBlurShader.h"
 #include "../../display/Display.h"
 
-VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model)
-		: m_Width(targetFboWidth), m_Height(targetFboHeight), m_Model(model),
+VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight)
+		: m_Width(targetFboWidth), m_Height(targetFboHeight),
 		verticalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
 	FrameBuffer::attachColorAttachment(verticalBlurTexture);
@@ -22,13 +22,13 @@ void VerticalBlurRenderer::render(const Texture &texture) const
 	m_Shader.start();
 	texture.bindTexture(0);
 
-//	m_Fbo.bindFrameBuffer();
+	m_Fbo.bindDrawBuffer();
 	glViewport(0, 0, m_Width, m_Height);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glDrawElements(GL_TRIANGLES, m_Model.m_VertexCount, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-	FrameBuffer::unbindFrameBuffer();
+	FrameBuffer::unbindDrawFrameBuffer();
 	auto[width, height] = Display::getWindowSize();
 	glViewport(0, 0, width, height);
 

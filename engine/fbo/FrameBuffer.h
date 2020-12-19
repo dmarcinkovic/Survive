@@ -30,7 +30,11 @@ public:
 
 	void bindFrameBuffer() const;
 
+	void bindDrawBuffer() const;
+
 	static void unbindFrameBuffer();
+
+	static void unbindDrawFrameBuffer();
 
 	GLuint createColorTexture(int width, int height);
 

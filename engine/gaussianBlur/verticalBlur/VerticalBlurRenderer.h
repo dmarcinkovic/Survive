@@ -17,10 +17,9 @@ private:
 
 	VerticalBlurShader m_Shader;
 	GLuint verticalBlurTexture;
-	Model m_Model;
 
 public:
-	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
+	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
 	void render(const Texture &texture) const;
 
