@@ -17,7 +17,7 @@ HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFbo
 	HorizontalBlurShader::stop();
 }
 
-void HorizontalBlurRenderer::render(const Texture &texture) const
+void HorizontalBlurRenderer::render(const Texture &texture, const Model &model) const
 {
 	m_Shader.start();
 	texture.bindTexture(0);
@@ -26,7 +26,7 @@ void HorizontalBlurRenderer::render(const Texture &texture) const
 	glViewport(0, 0, m_Width, m_Height);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, model.m_VertexCount, GL_UNSIGNED_INT, nullptr);
 
 	FrameBuffer::unbindDrawFrameBuffer();
 	auto[width, height] = Display::getWindowSize();
