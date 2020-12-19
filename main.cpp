@@ -43,7 +43,7 @@ int main()
 
 	FrameBuffer fbo;
 	GLuint texture = fbo.createTexture();
-	TexturedModel model(rawModel, verticalBlurRenderer.getTexture());
+	TexturedModel model(rawModel, verticalBlurRenderer.getTexture().textureId());
 
 	GuiRenderer guiRenderer;
 	Entity entity(model, glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
