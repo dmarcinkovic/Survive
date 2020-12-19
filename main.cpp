@@ -38,7 +38,7 @@ int main()
 	renderer.addAnimatedObject(object);
 
 	Model rawModel = loader.renderQuad();
-	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4, rawModel);
+	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4);
 	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
 
 	FrameBuffer fbo;

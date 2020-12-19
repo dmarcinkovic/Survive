@@ -5,7 +5,7 @@
 #include "BlurRenderer.h"
 
 BlurRenderer::BlurRenderer(int width, int height)
-		: m_Model(m_Loader.renderQuad()), m_HorizontalBlurRenderer(width, height, m_Model),
+		: m_Model(m_Loader.renderQuad()), m_HorizontalBlurRenderer(width, height),
 		  m_VerticalBlurRenderer(width, height), m_Texture(m_Fbo.createTexture())
 {
 

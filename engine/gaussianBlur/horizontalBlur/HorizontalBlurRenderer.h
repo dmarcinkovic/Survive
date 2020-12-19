@@ -17,10 +17,9 @@ private:
 
 	Texture m_HorizontalBlurTexture;
 	HorizontalBlurShader m_Shader;
-	Model m_Model;
 
 public:
-	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model);
+	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
 	void render(const Texture &texture) const;
 
