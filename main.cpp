@@ -39,7 +39,7 @@ int main()
 
 	Model rawModel = loader.renderQuad();
 //	HorizontalBlurRenderer horizontalBlurRenderer(width / 8, height / 8, rawModel);
-	VerticalBlurRenderer verticalBlurRenderer(width / 2, height / 2);
+	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
 
 	FrameBuffer fbo;
 	GLuint texture = fbo.createTexture();
