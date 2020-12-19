@@ -11,7 +11,7 @@ BlurRenderer::BlurRenderer(int width, int height)
 
 }
 
-void BlurRenderer::render() const
+void BlurRenderer::render(const Texture &texture) const
 {
 
 }

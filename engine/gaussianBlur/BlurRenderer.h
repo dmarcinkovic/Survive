@@ -30,7 +30,7 @@ private:
 public:
 	BlurRenderer(int width, int height);
 
-	void render() const;
+	void render(const Texture &texture) const;
 
 	const Texture &getTexture() const;
 };
