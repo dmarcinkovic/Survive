@@ -7,9 +7,9 @@
 
 HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight, const Model &model)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight), m_Model(model),
-		  horizontalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
+		  m_HorizontalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
-	FrameBuffer::attachColorAttachment(horizontalBlurTexture);
+	FrameBuffer::attachColorAttachment(m_HorizontalBlurTexture.textureId());
 
 	m_Shader.start();
 
@@ -36,7 +36,7 @@ void HorizontalBlurRenderer::render(const Texture &texture) const
 	HorizontalBlurShader::stop();
 }
 
-GLuint HorizontalBlurRenderer::getTexture() const
+const Texture &HorizontalBlurRenderer::getTexture() const
 {
-	return horizontalBlurTexture;
+	return m_HorizontalBlurTexture;
 }

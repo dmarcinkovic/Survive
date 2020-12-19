@@ -15,7 +15,7 @@ private:
 	FrameBuffer m_Fbo;
 	int m_Width, m_Height;
 
-	GLint horizontalBlurTexture;
+	Texture m_HorizontalBlurTexture;
 	HorizontalBlurShader m_Shader;
 	Model m_Model;
 
@@ -24,7 +24,7 @@ public:
 
 	void render(const Texture &texture) const;
 
-	[[nodiscard]] GLuint getTexture() const;
+	[[nodiscard]] const Texture &getTexture() const;
 };
 
 
