@@ -16,11 +16,14 @@ private:
     constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
 
     GLuint m_LocationTransformationMatrix{};
+	GLuint m_LocationProjectionMatrix{};
 
 public:
     GuiShader();
 
     void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+    void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
 private:
     void getUniformLocations();
