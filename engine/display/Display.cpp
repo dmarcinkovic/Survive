@@ -44,6 +44,9 @@ Display::Display(int width, int height, const char *title)
 
     Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
     Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
+
+	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
 }
 
 void Display::addCallbacks() const
@@ -103,6 +106,9 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
 
     Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
     Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
+
+    float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+    Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
