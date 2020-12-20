@@ -53,3 +53,8 @@ glm::mat4 Maths::createLightProjectionMatrix()
 	return glm::ortho(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
 					  Constants::TOP, Constants::NEAR, Constants::FAR);
 }
+
+glm::mat4 Maths::createOrthographicProjectionMatrix(float width, float height, float near, float far)
+{
+	return glm::ortho(0.0f, width, 0.0f, height, near, far);
+}

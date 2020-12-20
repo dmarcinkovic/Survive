@@ -28,6 +28,8 @@ public:
     static glm::mat4 createLightViewMatrix(const Light &light);
 
     static glm::mat4 createLightProjectionMatrix();
+
+    static glm::mat4 createOrthographicProjectionMatrix(float width, float height, float near, float far);
 };
 
 #endif //SURVIVE_MATHS_H
