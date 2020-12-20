@@ -42,11 +42,7 @@ Display::Display(int width, int height, const char *title)
     m_Width = width;
     m_Height = height;
 
-    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
-
-	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
+	setProjectionMatrices(width, height);
 }
 
 void Display::addCallbacks() const
@@ -104,11 +100,7 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
         listener(width, height);
     }
 
-    Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-    Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
-
-    float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-    Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
+	setProjectionMatrices(width, height);
 }
 
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
@@ -174,4 +166,13 @@ void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 void Display::addScrollListener(const ScrollListener &listener)
 {
     m_ScrollListeners.emplace_back(listener);
+}
+
+void Display::setProjectionMatrices(int width, int height)
+{
+	Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
+	Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
+
+	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
 }

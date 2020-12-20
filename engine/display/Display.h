@@ -72,6 +72,8 @@ private:
     static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 
     void addCallbacks() const;
+
+    static void setProjectionMatrices(int width, int height);
 };
 
 
