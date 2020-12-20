@@ -37,6 +37,9 @@ int main()
 	renderer.addOutlineToObject(dragon);
 	renderer.addOutlineToObject(dragon2);
 
+	renderer.addShadow(dragon);
+	renderer.addShadow(dragon2);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();

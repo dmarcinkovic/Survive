@@ -27,8 +27,7 @@ void Renderer3D::render(const Camera &camera) const
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-	m_ObjectRenderer.add3DObject(object3D);
-	m_ShadowRenderer.add3DObject(object3D);
+    m_ObjectRenderer.add3DObject(object3D);
 }
 
 void Renderer3D::addTerrain(Terrain &terrain)
@@ -54,4 +53,9 @@ void Renderer3D::addOutlineToObject(Object3D &object)
 void Renderer3D::removeOutlineToObject()
 {
 	m_OutlineRenderer.removeObject();
+}
+
+void Renderer3D::addShadow(Object3D &object)
+{
+	m_ShadowRenderer.add3DObject(object);
 }

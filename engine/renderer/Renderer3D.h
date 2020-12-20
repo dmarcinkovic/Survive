@@ -43,6 +43,8 @@ public:
 	void addOutlineToObject(Object3D &object);
 
 	void removeOutlineToObject();
+
+    void addShadow(Object3D &object);
 };
 
 
