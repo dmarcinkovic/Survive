@@ -32,6 +32,9 @@ int main()
     renderer.add3DObject(dragon);
     renderer.add3DObject(lamp);
 
+    renderer.addShadow(dragon);
+    renderer.addShadow(lamp);
+
     Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
     renderer.addTerrain(terrain);
 

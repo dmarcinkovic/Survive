@@ -33,6 +33,8 @@ public:
     void addTerrain(Terrain &terrain);
 
     void addAnimatedObject(AnimatedObject &object3D);
+
+    void addShadow(Object3D &object);
 };
 
 
