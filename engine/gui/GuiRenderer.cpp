@@ -2,18 +2,19 @@
 // Created by david on 28. 03. 2020..
 //
 
+#include <iostream>
 #include "GuiRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer2DUtil.h"
 #include "../display/Display.h"
-#include "../constant/Constants.h"
 
 void GuiRenderer::render() const
 {
     Renderer2DUtil::prepareRendering(m_Shader);
 
     auto[width, height] = Display::getWindowSize<float>();
-    auto projectionMatrix = Maths::createOrthographicProjectionMatrix(width, height, Constants::NEAR, Constants::FAR);
+    auto projectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
+
 	m_Shader.loadProjectionMatrix(projectionMatrix);
 
     for (auto const&[texture, batch] : m_Entities)

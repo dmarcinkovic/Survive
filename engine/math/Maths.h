@@ -29,7 +29,7 @@ public:
 
     static glm::mat4 createLightProjectionMatrix();
 
-    static glm::mat4 createOrthographicProjectionMatrix(float width, float height, float near, float far);
+    static glm::mat4 createOrthographicProjectionMatrix(float width, float height);
 };
 
 #endif //SURVIVE_MATHS_H
