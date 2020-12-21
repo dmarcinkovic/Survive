@@ -3,19 +3,29 @@
 //
 
 #include "BlurRenderer.h"
+#include "../display/Display.h"
 
-BlurRenderer::BlurRenderer(int width, int height)
+BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 		: m_Model(m_Loader.renderQuad()), m_HorizontalBlurRenderer(width, height),
-		  m_VerticalBlurRenderer(width, height), m_Texture(m_Fbo.createTexture())
+		  m_VerticalBlurRenderer(width, height), m_Texture(m_Fbo.createTexture()),
+		  m_ObjectRenderer(light)
 {
 
 }
 
-void BlurRenderer::render(const Texture &texture) const
+void BlurRenderer::render(const Camera &camera) const
 {
+	m_Fbo.bindDrawBuffer();
+	Display::clearWindow();
+
+	// TODO change the shadowMap sent to this renderer
+	m_ObjectRenderer.render(camera, 0);
+
+	FrameBuffer::unbindDrawFrameBuffer();
+
 	prepareRendering();
 
-	m_HorizontalBlurRenderer.render(texture, m_Model);
+	m_HorizontalBlurRenderer.render(m_Texture, m_Model);
 	m_VerticalBlurRenderer.render(m_HorizontalBlurRenderer.getTexture(), m_Model);
 
 	finishRendering();
@@ -23,7 +33,7 @@ void BlurRenderer::render(const Texture &texture) const
 
 const Texture &BlurRenderer::getTexture() const
 {
-	return m_Texture;
+	return m_VerticalBlurRenderer.getTexture();
 }
 
 void BlurRenderer::prepareRendering() const
@@ -38,4 +48,9 @@ void BlurRenderer::finishRendering()
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
+}
+
+void BlurRenderer::addObject(Object3D &object)
+{
+	m_ObjectRenderer.add3DObject(object);
 }

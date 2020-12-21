@@ -10,8 +10,7 @@
 #include "engine/animations/animation/AnimatedObject.h"
 #include "engine/animations/animation/Animator.h"
 #include "engine/gui/GuiRenderer.h"
-#include "engine/gaussianBlur/verticalBlur/VerticalBlurRenderer.h"
-#include "engine/gaussianBlur/horizontalBlur/HorizontalBlurRenderer.h"
+#include "engine/gaussianBlur/BlurRenderer.h"
 
 int main()
 {
@@ -37,13 +36,10 @@ int main()
 	Renderer3D renderer(light);
 	renderer.addAnimatedObject(object);
 
-	Model rawModel = loader.renderQuad();
-	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4);
-	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
+	BlurRenderer blurRenderer(light, width / 4, height / 4);
+	blurRenderer.addObject(object);
 
-	FrameBuffer fbo;
-	GLuint texture = fbo.createTexture();
-	TexturedModel model(rawModel, verticalBlurRenderer.getTexture().textureId());
+	TexturedModel model(loader.renderQuad(), blurRenderer.getTexture().textureId());
 
 	GuiRenderer guiRenderer;
 	Entity entity(model, glm::vec3{0.5, 0.5, 0}, 0.5, 0.5);
@@ -55,22 +51,7 @@ int main()
 
 		animator.update();
 
-		fbo.bindFrameBuffer();
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		renderer.render(camera);
-		FrameBuffer::unbindFrameBuffer();
-
-		glBindVertexArray(rawModel.m_Vao);
-		glEnableVertexAttribArray(0);
-		glDisable(GL_DEPTH_TEST);
-
-        horizontalBlurRenderer.render(Texture(texture), rawModel);
-		verticalBlurRenderer.render(Texture(horizontalBlurRenderer.getTexture()), rawModel);
-
-		glEnable(GL_DEPTH_TEST);
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
+		blurRenderer.render(camera);
 
 		renderer.render(camera);
 

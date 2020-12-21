@@ -14,8 +14,8 @@ Renderer3D::Renderer3D(const Light &light)
 
 void Renderer3D::render(const Camera &camera) const
 {
-//    m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-//                                      Constants::SHADOW_HEIGHT);
+    m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+                                      Constants::SHADOW_HEIGHT);
 
     m_ObjectRenderer.render(camera, m_ShadowMap);
     m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);

@@ -13,11 +13,12 @@
 #include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
+#include "../objects/ObjectRenderer.h"
 
 class BlurRenderer
 {
 private:
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+	ObjectRenderer m_ObjectRenderer;
 	Loader m_Loader;
 	FrameBuffer m_Fbo;
 	Model m_Model;
@@ -28,11 +29,13 @@ private:
 	VerticalBlurRenderer m_VerticalBlurRenderer;
 
 public:
-	BlurRenderer(int width, int height);
+	BlurRenderer(const Light &light, int width, int height);
 
-	void render(const Texture &texture) const;
+	void render(const Camera &camera) const;
 
 	const Texture &getTexture() const;
+
+	void addObject(Object3D &object);
 
 private:
 	void prepareRendering() const;
