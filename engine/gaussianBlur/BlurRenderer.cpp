@@ -8,7 +8,7 @@
 BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 		: m_Model(m_Loader.renderQuad()), m_HorizontalBlurRenderer(width, height),
 		  m_VerticalBlurRenderer(width, height), m_Texture(m_Fbo.createTexture()),
-		  m_ObjectRenderer(light)
+		  m_AnimationRenderer(light)
 {
 
 }
@@ -18,8 +18,7 @@ void BlurRenderer::render(const Camera &camera) const
 	m_Fbo.bindDrawBuffer();
 	Display::clearWindow();
 
-	// TODO change the shadowMap sent to this renderer
-	m_ObjectRenderer.render(camera, 0);
+	m_AnimationRenderer.render(camera);
 
 	FrameBuffer::unbindDrawFrameBuffer();
 
@@ -50,7 +49,7 @@ void BlurRenderer::finishRendering()
 	glBindVertexArray(0);
 }
 
-void BlurRenderer::addObject(Object3D &object)
+void BlurRenderer::addObject(AnimatedObject &object)
 {
-	m_ObjectRenderer.add3DObject(object);
+	m_AnimationRenderer.addAnimatedModel(object);
 }

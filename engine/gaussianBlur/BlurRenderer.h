@@ -13,12 +13,12 @@
 #include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
-#include "../objects/ObjectRenderer.h"
+#include "../animations/renderer/AnimationRenderer.h"
 
 class BlurRenderer
 {
 private:
-	ObjectRenderer m_ObjectRenderer;
+	AnimationRenderer m_AnimationRenderer;
 	Loader m_Loader;
 	FrameBuffer m_Fbo;
 	Model m_Model;
@@ -35,7 +35,7 @@ public:
 
 	const Texture &getTexture() const;
 
-	void addObject(Object3D &object);
+	void addObject(AnimatedObject &object);
 
 private:
 	void prepareRendering() const;
