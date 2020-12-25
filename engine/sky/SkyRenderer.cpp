@@ -5,12 +5,6 @@
 #include "SkyRenderer.h"
 #include "../math/Maths.h"
 
-SkyRenderer::SkyRenderer(Entity &sky)
-	: m_Sky(sky)
-{
-
-}
-
 void SkyRenderer::render(const Camera &camera) const
 {
 	m_Shader.start();
@@ -34,4 +28,9 @@ void SkyRenderer::render(const Camera &camera) const
 	glDepthFunc(GL_LESS);
 	glDisable(GL_DEPTH_TEST);
 	SkyShader::stop();
+}
+
+void SkyRenderer::addSkyEntity(const Entity &sky)
+{
+	m_Sky = sky;
 }

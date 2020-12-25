@@ -19,7 +19,8 @@ int main()
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 
 	Entity sky(texturedModel, glm::vec3{});
-	SkyRenderer skyRenderer(sky);
+	SkyRenderer skyRenderer;
+	skyRenderer.addSkyEntity(sky);
 
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	Renderer3D renderer(light);

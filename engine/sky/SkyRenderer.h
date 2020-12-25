@@ -14,13 +14,12 @@ class SkyRenderer
 {
 private:
 	SkyShader m_Shader;
-	Entity &m_Sky;
+	Entity m_Sky;
 
 public:
-	explicit SkyRenderer(Entity &sky);
-
 	void render(const Camera &camera) const;
 
+	void addSkyEntity(const Entity &sky);
 };
 
 
