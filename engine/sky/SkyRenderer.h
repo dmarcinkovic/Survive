@@ -8,6 +8,7 @@
 
 #include "SkyShader.h"
 #include "../entity/Entity.h"
+#include "../camera/Camera.h"
 
 class SkyRenderer
 {
@@ -17,7 +18,9 @@ private:
 
 public:
 	explicit SkyRenderer(Entity &sky);
-	
+
+	void render(const Camera &camera) const;
+
 };
 
 
