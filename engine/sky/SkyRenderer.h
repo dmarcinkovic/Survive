@@ -6,8 +6,12 @@
 #define SURVIVE_SKYRENDERER_H
 
 
+#include "SkyShader.h"
+
 class SkyRenderer
 {
+private:
+	SkyShader m_Shader;
 
 };
 

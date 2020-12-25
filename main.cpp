@@ -1,6 +1,7 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/texture/TexturedModel.h"
+#include "engine/entity/Entity.h"
 
 int main()
 {
@@ -12,6 +13,8 @@ int main()
 	Loader loader;
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
+
+	Entity sky(texturedModel, glm::vec3{});
 
 	while (display.isRunning())
 	{
