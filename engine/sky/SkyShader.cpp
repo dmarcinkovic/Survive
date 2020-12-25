@@ -7,7 +7,7 @@
 SkyShader::SkyShader()
 	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
-
+	getUniformLocations();
 }
 
 void SkyShader::getUniformLocations()
