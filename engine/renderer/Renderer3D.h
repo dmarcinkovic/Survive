@@ -10,6 +10,7 @@
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../animations/animation/AnimatedObject.h"
+#include "../sky/SkyRenderer.h"
 
 class Renderer3D
 {
@@ -18,6 +19,7 @@ private:
     TerrainRenderer m_TerrainRenderer;
     ShadowRenderer m_ShadowRenderer;
     AnimationRenderer m_AnimationRenderer;
+    SkyRenderer m_SkyRenderer;
 
     const Light &m_Light;
     FrameBuffer m_FrameBuffer;
@@ -33,6 +35,8 @@ public:
     void addTerrain(Terrain &terrain);
 
     void addAnimatedObject(AnimatedObject &object3D);
+
+    void addSkyboxEntity(const Entity &entity);
 };
 
 

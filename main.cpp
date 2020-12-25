@@ -19,9 +19,6 @@ int main()
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 
 	Entity sky(texturedModel, glm::vec3{});
-	SkyRenderer skyRenderer;
-	skyRenderer.addSkyEntity(sky);
-
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	Renderer3D renderer(light);
 
@@ -29,13 +26,13 @@ int main()
 	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
 
 	renderer.add3DObject(dragon);
+	renderer.addSkyboxEntity(sky);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(camera);
-		skyRenderer.render(camera);
 
 		display.update();
 	}

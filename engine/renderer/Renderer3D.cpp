@@ -20,6 +20,8 @@ void Renderer3D::render(const Camera &camera) const
     m_ObjectRenderer.render(camera, m_ShadowMap);
     m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
     m_AnimationRenderer.render(camera);
+
+    m_SkyRenderer.render(camera);
 }
 
 void Renderer3D::add3DObject(Object3D &object3D)
@@ -36,4 +38,9 @@ void Renderer3D::addTerrain(Terrain &terrain)
 void Renderer3D::addAnimatedObject(AnimatedObject &object3D)
 {
     m_AnimationRenderer.addAnimatedModel(object3D);
+}
+
+void Renderer3D::addSkyboxEntity(const Entity &entity)
+{
+	m_SkyRenderer.addSkyEntity(entity);
 }
