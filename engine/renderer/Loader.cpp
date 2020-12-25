@@ -198,11 +198,11 @@ Model Loader::renderQuad()
 
 Model Loader::renderCube()
 {
-	static const std::vector<float> vertices{-1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1,
-											 -1, 1, -1, 1, 1, -1, -1, -1 - 1, 1, -1, -1};
+	static const std::vector<float> vertices{-1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, -1,
+											 -1, -1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1};
 
-	static const std::vector<unsigned> indices{0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5, 4, 5, 6, 6, 5, 7,
-											   6, 7, 0, 0, 7, 1, 1, 7, 3, 3, 7, 5, 6, 0, 4, 4, 0, 2};
+	static const std::vector<unsigned> indices{0, 1, 2, 2, 3, 0, 4, 1, 0, 0, 5, 4, 2, 6, 7, 7, 3, 2,
+											   4, 5, 7, 7, 6, 4, 0, 3, 7, 7, 5, 0, 1, 4, 2, 2, 4, 6};
 
 	return Model(loadToVao(vertices, indices, 3));
 }
