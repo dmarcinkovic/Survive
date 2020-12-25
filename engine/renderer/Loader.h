@@ -47,6 +47,8 @@ public:
 
     static GLuint loadTexture(const char *texture) noexcept;
 
+    static GLuint loadCubeMap(const std::vector<std::string> &faces) noexcept;
+
     Model renderQuad();
 
     void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
@@ -64,6 +66,8 @@ private:
     static void loadImage(const char *texture) noexcept;
 
     static void addMipMap();
+
+    static void loadToCubeMap(const std::vector<std::string> &faces) noexcept;
 };
 
 
