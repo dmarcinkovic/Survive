@@ -3,6 +3,8 @@
 #include "engine/texture/TexturedModel.h"
 #include "engine/entity/Entity.h"
 #include "engine/sky/SkyRenderer.h"
+#include "engine/renderer/Renderer3D.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -19,10 +21,19 @@ int main()
 	Entity sky(texturedModel, glm::vec3{});
 	SkyRenderer skyRenderer(sky);
 
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
+	Renderer3D renderer(light);
+
+	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
+	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
+
+	renderer.add3DObject(dragon);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
+		renderer.render(camera);
 		skyRenderer.render(camera);
 
 		display.update();
