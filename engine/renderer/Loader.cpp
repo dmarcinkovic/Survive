@@ -207,7 +207,7 @@ Model Loader::renderCube()
 	return Model(loadToVao(vertices, indices, 3));
 }
 
-GLuint Loader::loadCubeMap(const std::vector<std::string> &faces) noexcept
+GLuint Loader::loadCubeMap(const std::vector<const char*> &faces) noexcept
 {
 	GLuint cubeMap;
 	glGenTextures(1, &cubeMap);
@@ -227,12 +227,12 @@ GLuint Loader::loadCubeMap(const std::vector<std::string> &faces) noexcept
 	return cubeMap;
 }
 
-void Loader::loadToCubeMap(const std::vector<std::string> &faces) noexcept
+void Loader::loadToCubeMap(const std::vector<const char*> &faces) noexcept
 {
 	int width, height, BPP;
 	for (int i = 0; i < faces.size(); ++i)
 	{
-		std::uint8_t *image = stbi_load(faces[i].c_str(), &width, &height, &BPP, 4);
+		std::uint8_t *image = stbi_load(faces[i], &width, &height, &BPP, 4);
 		if (!image)
 		{
 			std::cout << "Error while loading image to cube map\n";
