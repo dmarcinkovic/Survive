@@ -13,8 +13,9 @@ SkyRenderer::SkyRenderer(Entity &sky)
 
 void SkyRenderer::render(const Camera &camera) const
 {
-	glDepthMask(GL_FALSE);
 	m_Shader.start();
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
 	glBindVertexArray(m_Sky.m_Texture.vaoID());
 	glEnableVertexAttribArray(0);
@@ -30,6 +31,7 @@ void SkyRenderer::render(const Camera &camera) const
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 
+	glDepthFunc(GL_LESS);
+	glDisable(GL_DEPTH_TEST);
 	SkyShader::stop();
-	glDepthMask(GL_TRUE);
 }
