@@ -16,8 +16,8 @@ void SkyRenderer::render(const Camera &camera) const
 	glDepthMask(GL_FALSE);
 	m_Shader.start();
 
-	glEnableVertexAttribArray(0);
 	glBindVertexArray(m_Sky.m_Texture.vaoID());
+	glEnableVertexAttribArray(0);
 
 	m_Sky.m_Texture.bindCubeTexture(0);
 
