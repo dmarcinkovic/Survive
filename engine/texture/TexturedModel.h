@@ -26,6 +26,8 @@ public:
 
     void bindTexture(int index) const;
 
+    void bindCubeTexture(int index) const;
+
     static void unbind();
 
     [[nodiscard]] GLuint vaoID() const;
