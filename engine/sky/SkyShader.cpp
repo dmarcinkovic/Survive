@@ -3,3 +3,14 @@
 //
 
 #include "SkyShader.h"
+
+SkyShader::SkyShader()
+	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+{
+
+}
+
+void SkyShader::getUniformLocations()
+{
+
+}

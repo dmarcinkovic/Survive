@@ -13,7 +13,12 @@ class SkyShader : public Shader
 private:
 	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/SkyVertexShader.glsl";
 	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/SkyFragmentShader.glsl";
-	
+
+public:
+	SkyShader();
+
+private:
+	void getUniformLocations();
 };
 
 
