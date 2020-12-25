@@ -51,6 +51,8 @@ public:
 
     Model renderQuad();
 
+    Model renderCube();
+
     void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 private:
