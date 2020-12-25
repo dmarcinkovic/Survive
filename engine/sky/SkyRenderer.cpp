@@ -3,3 +3,9 @@
 //
 
 #include "SkyRenderer.h"
+
+SkyRenderer::SkyRenderer(Entity &sky)
+	: m_Sky(sky)
+{
+
+}

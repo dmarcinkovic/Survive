@@ -7,12 +7,17 @@
 
 
 #include "SkyShader.h"
+#include "../entity/Entity.h"
 
 class SkyRenderer
 {
 private:
 	SkyShader m_Shader;
+	Entity &m_Sky;
 
+public:
+	explicit SkyRenderer(Entity &sky);
+	
 };
 
 
