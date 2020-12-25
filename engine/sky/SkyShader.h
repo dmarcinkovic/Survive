@@ -14,14 +14,11 @@ private:
 	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/SkyVertexShader.glsl";
 	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/SkyFragmentShader.glsl";
 
-	GLuint m_LocationTransformationMatrix{};
 	GLuint m_LocationProjectionMatrix{};
 	GLuint m_LocationViewMatrix{};
 
 public:
 	SkyShader();
-
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
 	void loadViewAndProjectionMatrices(const glm::mat4 &viewMatrix, const glm::mat4 &projectionMatrix) const;
 
