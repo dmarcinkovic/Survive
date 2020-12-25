@@ -18,6 +18,8 @@ public:
 
     void bindTexture(int textureIndex) const;
 
+    void bindCubeTexture(int textureIndex) const;
+
     static void unbindTexture();
 
     [[nodiscard]] GLuint textureId() const;
