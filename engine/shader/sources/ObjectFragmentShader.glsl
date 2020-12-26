@@ -18,6 +18,7 @@ in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
 
 uniform samplerCube skybox;
+uniform float reflectiveFactor;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {

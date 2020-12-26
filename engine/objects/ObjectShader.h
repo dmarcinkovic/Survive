@@ -10,47 +10,50 @@
 class ObjectShader : public Shader
 {
 private:
-    constexpr static const char *VERTEX_SHADER = "engine/shader/sources/ObjectVertexShader.glsl";
-    constexpr static const char *FRAGMENT_SHADER = "engine/shader/sources/ObjectFragmentShader.glsl";
+	constexpr static const char *VERTEX_SHADER = "engine/shader/sources/ObjectVertexShader.glsl";
+	constexpr static const char *FRAGMENT_SHADER = "engine/shader/sources/ObjectFragmentShader.glsl";
 
-    GLuint m_LocationTransformationMatrix{};
-    GLuint m_LocationProjectionMatrix{};
-    GLuint m_LocationViewMatrix{};
+	GLuint m_LocationTransformationMatrix{};
+	GLuint m_LocationProjectionMatrix{};
+	GLuint m_LocationViewMatrix{};
 
-    GLuint m_LocationLightColor{};
-    GLuint m_LocationLightPos{};
-    GLuint m_LocationShineDamper{};
-    GLuint m_LocationMaterial{};
+	GLuint m_LocationLightColor{};
+	GLuint m_LocationLightPos{};
+	GLuint m_LocationShineDamper{};
+	GLuint m_LocationMaterial{};
 
-    GLuint m_LocationCameraPosition{};
+	GLuint m_LocationCameraPosition{};
 
-    GLuint m_LocationLightViewMatrix{};
-    GLuint m_LocationLightProjection{};
-    GLuint m_LocationObjectTexture{};
-    GLuint m_LocationShadowMap{};
-    GLuint m_LocationSkybox{};
+	GLuint m_LocationLightViewMatrix{};
+	GLuint m_LocationLightProjection{};
+	GLuint m_LocationObjectTexture{};
+	GLuint m_LocationShadowMap{};
+	GLuint m_LocationSkybox{};
+	GLuint m_LocationReflectiveFactor{};
 
 public:
-    ObjectShader();
+	ObjectShader();
 
-    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-    void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-    void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
-    void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper, int material) const;
+	void loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper, int material) const;
 
-    void loadCameraPosition(const glm::vec3 &cameraPosition) const;
+	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 
-    void loadLightProjection(const glm::mat4 &lightProjection) const;
+	void loadLightProjection(const glm::mat4 &lightProjection) const;
 
-    void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
+	void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
 
-    void loadTextures() const;
+	void loadTextures() const;
+
+	void loadReflectiveFactor(float reflectiveFactor) const;
 
 private:
-    void loadUniformLocations();
+	void loadUniformLocations();
 
 };
 

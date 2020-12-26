@@ -43,6 +43,7 @@ void ObjectShader::loadUniformLocations()
 
     m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
     m_LocationSkybox = glGetUniformLocation(m_Program, "skybox");
+    m_LocationReflectiveFactor = glGetUniformLocation(m_Program, "reflectiveFactor");
 }
 
 void
@@ -75,4 +76,9 @@ void ObjectShader::loadTextures() const
     loadInteger(m_LocationObjectTexture, 0);
     loadInteger(m_LocationShadowMap, 1);
     loadInteger(m_LocationSkybox, 2);
+}
+
+void ObjectShader::loadReflectiveFactor(float reflectiveFactor) const
+{
+	loadFloat(m_LocationReflectiveFactor, reflectiveFactor);
 }
