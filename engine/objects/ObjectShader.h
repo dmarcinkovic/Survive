@@ -28,8 +28,11 @@ private:
 	GLuint m_LocationLightProjection{};
 	GLuint m_LocationObjectTexture{};
 	GLuint m_LocationShadowMap{};
+
 	GLuint m_LocationSkybox{};
 	GLuint m_LocationReflectiveFactor{};
+	GLuint m_LocationRefractionFactor{};
+	GLuint m_LocationRefractionIndex{};
 
 public:
 	ObjectShader();
@@ -51,6 +54,8 @@ public:
 	void loadTextures() const;
 
 	void loadReflectiveFactor(float reflectiveFactor) const;
+
+	void loadRefractionData(float refractionIndex, float refractionFactor) const;
 
 private:
 	void loadUniformLocations();
