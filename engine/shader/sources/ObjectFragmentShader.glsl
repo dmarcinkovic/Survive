@@ -19,6 +19,8 @@ uniform sampler2D shadowMap;
 
 uniform samplerCube skybox;
 uniform float reflectiveFactor;
+uniform float refractionFactor;
+uniform float refractionIndex;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {

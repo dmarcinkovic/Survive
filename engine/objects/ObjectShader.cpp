@@ -45,6 +45,8 @@ void ObjectShader::loadUniformLocations()
 
     m_LocationSkybox = glGetUniformLocation(m_Program, "skybox");
     m_LocationReflectiveFactor = glGetUniformLocation(m_Program, "reflectiveFactor");
+    m_LocationRefractionIndex = glGetUniformLocation(m_Program, "refractionIndex");
+    m_LocationRefractionFactor = glGetUniformLocation(m_Program, "refractionFactor");
 }
 
 void
