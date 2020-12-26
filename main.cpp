@@ -25,6 +25,7 @@ int main()
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
 	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
 	dragon.m_Skybox = sky.m_Texture.getTexture();
+	dragon.m_ReflectiveFactor = 0.3;
 
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
