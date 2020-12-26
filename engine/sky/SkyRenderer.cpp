@@ -40,6 +40,8 @@ void SkyRenderer::finishRendering()
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 
+	Texture::unbindCubeTexture();
+
 	glDepthFunc(GL_LESS);
 	glDisable(GL_DEPTH_TEST);
 	SkyShader::stop();
