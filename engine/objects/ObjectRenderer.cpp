@@ -14,19 +14,7 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
 {
     Renderer3DUtil::prepareRendering(m_Shader);
 
-    const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-    const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
-    m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
-
-    m_Shader.loadViewMatrix(viewMatrix);
-    m_Shader.loadLightViewMatrix(lightViewMatrix);
-    m_Shader.loadTextures();
-    m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-    m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
-
-    Texture texture(shadowMap);
-    texture.bindTexture(1);
-    m_Shader.loadCameraPosition(camera.m_Position);
+    loadUniforms(camera, shadowMap);
 
     for (auto const&[texturedModel, objects] : m_Objects)
     {
@@ -62,5 +50,22 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
 
         Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
     }
+}
+
+void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap) const
+{
+	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
+	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
+
+	m_Shader.loadViewMatrix(viewMatrix);
+	m_Shader.loadLightViewMatrix(lightViewMatrix);
+	m_Shader.loadTextures();
+	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
+
+	Texture texture(shadowMap);
+	texture.bindTexture(1);
+	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
