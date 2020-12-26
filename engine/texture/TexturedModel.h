@@ -30,6 +30,8 @@ public:
 
     static void unbind();
 
+    [[nodiscard]] const Texture &getTexture() const;
+
     [[nodiscard]] GLuint vaoID() const;
 
     void setVertexCount(int vertexCount);

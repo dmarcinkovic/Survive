@@ -63,3 +63,8 @@ bool TexturedModel::isValidTexture() const
 {
 	return m_Texture.textureId() != 0;
 }
+
+const Texture &TexturedModel::getTexture() const
+{
+	return m_Texture;
+}

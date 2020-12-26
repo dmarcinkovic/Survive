@@ -9,7 +9,7 @@
 AnimatedObject::AnimatedObject(Joint rootJoint, int numberOfJoints, const TexturedModel &texture,
                                const glm::vec3 &position, const glm::vec3 &rotation, bool isTransparent, float scaleX,
                                float scaleY, float scaleZ)
-        : Object3D(texture, position, rotation, isTransparent, scaleX, scaleY, scaleZ),
+        : Object3D(texture, Texture{0}, position, rotation, isTransparent, scaleX, scaleY, scaleZ),
           m_RootJoint(std::move(rootJoint)), m_NumberOfJoints(numberOfJoints)
 {
     m_RootJoint.calculateInverseBindTransform(glm::mat4{1});
