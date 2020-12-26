@@ -17,6 +17,8 @@ out vec4 outColor;
 in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
 
+uniform samplerCube skybox;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
