@@ -11,10 +11,12 @@
 class Texture
 {
 private:
-    GLuint m_TextureId;
+    GLuint m_TextureId{};
 
 public:
     explicit Texture(GLuint textureId);
+
+    Texture() = default;
 
     void bindTexture(int textureIndex) const;
 
