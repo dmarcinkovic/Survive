@@ -34,6 +34,8 @@ private:
     void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 
     void loadUniforms(const Camera &camera, GLuint shadowMap) const;
+
+    void loadObjectUniforms(const Object3D &object, const Camera &camera) const;
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H
