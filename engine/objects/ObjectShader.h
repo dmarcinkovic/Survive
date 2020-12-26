@@ -28,6 +28,7 @@ private:
     GLuint m_LocationLightProjection{};
     GLuint m_LocationObjectTexture{};
     GLuint m_LocationShadowMap{};
+    GLuint m_LocationSkybox{};
 
 public:
     ObjectShader();
