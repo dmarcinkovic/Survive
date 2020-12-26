@@ -42,6 +42,7 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
         auto rotation = camera.m_Rotation + o.m_Rotation;
 
         object.get().m_Skybox.bindCubeTexture(2);
+		m_Shader.loadReflectiveFactor(object.get().m_ReflectiveFactor);
 
         glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
                                                                   rotation.x, rotation.y, rotation.z);

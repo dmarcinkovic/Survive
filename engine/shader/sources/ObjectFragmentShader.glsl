@@ -82,5 +82,5 @@ void main()
 
     vec3 R = reflect(toCameraVector, surfaceNormal);
     vec3 reflectionColor = texture(skybox, R).rgb;
-    outColor = vec4(mix(totalColor, reflectionColor, 0.3), 1.0);
+    outColor = vec4(mix(totalColor, reflectionColor, reflectiveFactor), 1.0);
 }
