@@ -31,3 +31,8 @@ void Texture::bindCubeTexture(int textureIndex) const
 	glActiveTexture(GL_TEXTURE0 + textureIndex);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureId);
 }
+
+void Texture::unbindCubeTexture()
+{
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+}
