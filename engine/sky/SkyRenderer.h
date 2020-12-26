@@ -20,6 +20,11 @@ public:
 	void render(const Camera &camera) const;
 
 	void addSkyEntity(const Entity &sky);
+
+private:
+	void prepareRendering() const;
+
+	static void finishRendering();
 };
 
 
