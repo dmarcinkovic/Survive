@@ -13,7 +13,7 @@ struct Object3D : public Entity
 	bool m_IsTransparent;
 	Texture m_Skybox;
 
-	Object3D(const TexturedModel &texture, const Texture &skybox, const glm::vec3 &position,
+	Object3D(const TexturedModel &texture, const glm::vec3 &position,
 			 const glm::vec3 &rotation = glm::vec3{0, 0, 0},
 			 bool isTransparent = false, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
 };

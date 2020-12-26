@@ -23,7 +23,8 @@ int main()
 	Renderer3D renderer(light);
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, sky.m_Texture.getTexture(), glm::vec3{0, -5, -30});
+	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
+	dragon.m_Skybox = sky.m_Texture.getTexture();
 
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
