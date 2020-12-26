@@ -41,6 +41,8 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
         auto const &o = object.get();
         auto rotation = camera.m_Rotation + o.m_Rotation;
 
+        object.get().m_Skybox.bindCubeTexture(2);
+
         glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
                                                                   rotation.x, rotation.y, rotation.z);
         m_Shader.loadTransformationMatrix(modelMatrix);
@@ -49,6 +51,7 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
         glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
 
         Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+        Texture::unbindCubeTexture();
     }
 }
 

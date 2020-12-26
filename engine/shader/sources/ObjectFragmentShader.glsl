@@ -78,5 +78,8 @@ void main()
     vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
 
     vec3 totalColor = (diffuse * (1- shadow) + ambient + specular) * textureColor.rgb;
+
+    vec3 R = reflect(toCameraVector, surfaceNormal);
     outColor = vec4(totalColor, 1.0);
+    outColor = vec4(texture(skybox, R).rgb, 1.0);
 }
