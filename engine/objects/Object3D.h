@@ -13,6 +13,8 @@ struct Object3D : public Entity
 	bool m_IsTransparent;
 	Texture m_Skybox;
 	float m_ReflectiveFactor{};
+	float m_RefractionFactor{};
+	float m_RefractiveIndex{};
 
 	Object3D(const TexturedModel &texture, const glm::vec3 &position,
 			 const glm::vec3 &rotation = glm::vec3{0, 0, 0},
