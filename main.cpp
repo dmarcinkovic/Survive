@@ -5,7 +5,6 @@
 #include "engine/sky/SkyRenderer.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/outline/OutlineRenderer.h"
 
 int main()
 {
