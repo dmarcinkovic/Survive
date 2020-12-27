@@ -27,6 +27,8 @@ public:
 
 	void add3DObject(Object3D &object);
 
+	void removeObject();
+
 private:
 	static void setStencilFunctions();
 

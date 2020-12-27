@@ -8,6 +8,11 @@
 
 void OutlineRenderer::render(const Camera &camera) const
 {
+	if (m_Object == nullptr)
+	{
+		return;
+	}
+
 	Renderer3DUtil::prepareRendering(m_Shader);
 	setStencilFunctions();
 
@@ -26,6 +31,12 @@ void OutlineRenderer::add3DObject(Object3D &object)
 {
 	m_Object = &object;
 	m_Object->m_DrawOutline = true;
+}
+
+void OutlineRenderer::removeObject()
+{
+	m_Object->m_DrawOutline = false;
+	m_Object = nullptr;
 }
 
 void OutlineRenderer::setStencilFunctions()
