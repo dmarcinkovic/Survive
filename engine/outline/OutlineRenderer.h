@@ -17,7 +17,7 @@
 class OutlineRenderer
 {
 private:
-	static constexpr float SCALE = 1.02f;
+	static constexpr float SCALE = 1.04f;
 
 	OutlineShader m_Shader;
 	Object3D *m_Object{};
@@ -33,6 +33,10 @@ private:
 	static void resetStencilFunctions();
 
 	void loadUniforms(const Camera &camera) const;
+
+	void prepareObject() const;
+
+	static void finishRenderingObject();
 };
 
 

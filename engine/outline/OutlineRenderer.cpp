@@ -11,12 +11,12 @@ void OutlineRenderer::render(const Camera &camera) const
 	Renderer3DUtil::prepareRendering(m_Shader);
 	setStencilFunctions();
 
-	Renderer3DUtil::prepareEntity(m_Object->m_Texture);
+	prepareObject();
 	loadUniforms(camera);
 
 	glDrawArrays(GL_TRIANGLES, 0, m_Object->m_Texture.vertexCount());
 
-	Renderer3DUtil::finishRenderingEntity();
+	finishRenderingObject();
 
 	resetStencilFunctions();
 	Renderer3DUtil::finishRendering();
@@ -51,4 +51,16 @@ void OutlineRenderer::loadUniforms(const Camera &camera) const
 															  m_Object->m_ScaleZ * SCALE, rotation.x, rotation.y,
 															  rotation.z);
 	m_Shader.loadTransformationMatrix(modelMatrix);
+}
+
+void OutlineRenderer::prepareObject() const
+{
+	glBindVertexArray(m_Object->m_Texture.vaoID());
+	glEnableVertexAttribArray(0);
+}
+
+void OutlineRenderer::finishRenderingObject()
+{
+	glBindVertexArray(0);
+	glDisableVertexAttribArray(0);
 }

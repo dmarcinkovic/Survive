@@ -32,10 +32,9 @@ int main()
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
 
-	OutlineRenderer outlineRenderer(light);
+	OutlineRenderer outlineRenderer;
 	outlineRenderer.add3DObject(dragon);
 
-	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
