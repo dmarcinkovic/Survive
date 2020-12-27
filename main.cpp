@@ -27,7 +27,6 @@ int main()
 	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
 	dragon.m_Skybox = sky.m_Texture.getTexture();
 	dragon.m_ReflectiveFactor = 0.3;
-	dragon.m_DrawOutline = true;
 
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
