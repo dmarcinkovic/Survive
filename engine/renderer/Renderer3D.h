@@ -11,6 +11,7 @@
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../animations/animation/AnimatedObject.h"
 #include "../sky/SkyRenderer.h"
+#include "../outline/OutlineRenderer.h"
 
 class Renderer3D
 {
@@ -20,6 +21,7 @@ private:
     ShadowRenderer m_ShadowRenderer;
     AnimationRenderer m_AnimationRenderer;
     SkyRenderer m_SkyRenderer;
+    OutlineRenderer m_OutlineRenderer;
 
     const Light &m_Light;
     FrameBuffer m_FrameBuffer;
@@ -37,6 +39,10 @@ public:
     void addAnimatedObject(AnimatedObject &object3D);
 
     void addSkyboxEntity(const Entity &entity);
+
+    void addOutlineToObject(Object3D &object);
+
+    void removeOutlineToObject();
 };
 
 

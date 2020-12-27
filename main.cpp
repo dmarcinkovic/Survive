@@ -30,9 +30,7 @@ int main()
 
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
-
-	OutlineRenderer outlineRenderer;
-	outlineRenderer.add3DObject(dragon);
+	renderer.addOutlineToObject(dragon);
 
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -42,7 +40,6 @@ int main()
 		Display::clearWindow();
 
 		renderer.render(camera);
-		outlineRenderer.render(camera);
 
 		display.update();
 	}
