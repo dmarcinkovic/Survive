@@ -23,13 +23,19 @@ int main()
 	Renderer3D renderer(light);
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
+	Object3D dragon(dragonModel, glm::vec3{-5, -5, -30});
 	dragon.m_Skybox = sky.m_Texture.getTexture();
-	dragon.m_ReflectiveFactor = 0.3;
+	dragon.m_ReflectiveFactor = 0.6;
+
+	Object3D dragon2(dragonModel, glm::vec3{5, -5, -30});
+	dragon2.m_Skybox = sky.m_Texture.getTexture();
+	dragon2.m_ReflectiveFactor = 0.4;
 
 	renderer.add3DObject(dragon);
+	renderer.add3DObject(dragon2);
 	renderer.addSkyboxEntity(sky);
 	renderer.addOutlineToObject(dragon);
+	renderer.addOutlineToObject(dragon2);
 
 	while (display.isRunning())
 	{
