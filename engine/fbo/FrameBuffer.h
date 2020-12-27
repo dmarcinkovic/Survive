@@ -13,31 +13,32 @@
 class FrameBuffer
 {
 private:
-    GLuint m_FrameBuffer{};
-    std::vector<GLuint> m_Textures;
-    std::vector<GLuint> m_RenderBuffers;
+	GLuint m_FrameBuffer{};
+	std::vector<GLuint> m_Textures;
+	std::vector<GLuint> m_RenderBuffers;
 
 public:
-    FrameBuffer();
+	FrameBuffer();
 
-    ~FrameBuffer();
+	~FrameBuffer();
 
-    void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width, int height) const;
+	void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
+							 int height) const;
 
-    GLuint createTexture();
+	GLuint createTexture();
 
-    GLuint attachToDepthBufferTexture(int width, int height);
+	GLuint attachToDepthBufferTexture(int width, int height);
 
 private:
-    void attachDepthComponent(int width, int height);
+	void attachDepthComponent(int width, int height);
 
-    static void unbindFrameBuffer();
+	static void unbindFrameBuffer();
 
-    void bindFrameBuffer() const;
+	void bindFrameBuffer() const;
 
-    GLuint createColorTexture(int width, int height);
+	GLuint createColorTexture(int width, int height);
 
-    GLuint createDepthTexture(int width, int height);
+	GLuint createDepthTexture(int width, int height);
 };
 
 

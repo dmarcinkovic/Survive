@@ -17,13 +17,13 @@
 class ShadowRenderer
 {
 private:
-    ShadowShader m_ShadowShader{};
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+	ShadowShader m_ShadowShader{};
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
 public:
-    void render(const Light &light, const Camera &camera) const;
+	void render(const Light &light, const Camera &camera) const;
 
-    void add3DObject(Object3D &object);
+	void add3DObject(Object3D &object);
 };
 
 

@@ -16,33 +16,33 @@
 class Renderer3D
 {
 private:
-    ObjectRenderer m_ObjectRenderer;
-    TerrainRenderer m_TerrainRenderer;
-    ShadowRenderer m_ShadowRenderer;
-    AnimationRenderer m_AnimationRenderer;
-    SkyRenderer m_SkyRenderer;
-    OutlineRenderer m_OutlineRenderer;
+	ObjectRenderer m_ObjectRenderer;
+	TerrainRenderer m_TerrainRenderer;
+	ShadowRenderer m_ShadowRenderer;
+	AnimationRenderer m_AnimationRenderer;
+	SkyRenderer m_SkyRenderer;
+	OutlineRenderer m_OutlineRenderer;
 
-    const Light &m_Light;
-    FrameBuffer m_FrameBuffer;
-    const GLuint m_ShadowMap;
+	const Light &m_Light;
+	FrameBuffer m_FrameBuffer;
+	const GLuint m_ShadowMap;
 
 public:
-    explicit Renderer3D(const Light &light);
+	explicit Renderer3D(const Light &light);
 
-    void render(const Camera &camera) const;
+	void render(const Camera &camera) const;
 
-    void add3DObject(Object3D &object3D);
+	void add3DObject(Object3D &object3D);
 
-    void addTerrain(Terrain &terrain);
+	void addTerrain(Terrain &terrain);
 
-    void addAnimatedObject(AnimatedObject &object3D);
+	void addAnimatedObject(AnimatedObject &object3D);
 
-    void addSkyboxEntity(const Entity &entity);
+	void addSkyboxEntity(const Entity &entity);
 
-    void addOutlineToObject(Object3D &object);
+	void addOutlineToObject(Object3D &object);
 
-    void removeOutlineToObject();
+	void removeOutlineToObject();
 };
 
 

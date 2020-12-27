@@ -5,7 +5,7 @@
 #include "SkyShader.h"
 
 SkyShader::SkyShader()
-	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	getUniformLocations();
 }

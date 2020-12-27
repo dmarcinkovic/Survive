@@ -15,13 +15,13 @@
 class ButtonRenderer
 {
 private:
-    ButtonShader m_Shader{};
-    std::vector<std::reference_wrapper<Button>> m_Buttons;
+	ButtonShader m_Shader{};
+	std::vector<std::reference_wrapper<Button>> m_Buttons;
 
 public:
-    void render() const;
+	void render() const;
 
-    void addButton(Button &button) noexcept;
+	void addButton(Button &button) noexcept;
 };
 
 

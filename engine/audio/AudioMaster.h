@@ -12,28 +12,28 @@
 class AudioMaster
 {
 private:
-    ALCdevice *m_Device;
-    ALCcontext *m_Context;
+	ALCdevice *m_Device;
+	ALCcontext *m_Context;
 
-    std::vector<ALuint> m_Buffers;
+	std::vector<ALuint> m_Buffers;
 
 public:
-    ALuint loadSound(const char *filename);
+	ALuint loadSound(const char *filename);
 
-    ~AudioMaster();
+	~AudioMaster();
 
-    static void setListenerData();
+	static void setListenerData();
 
 private:
-    static char *loadWav(const char *filename, std::uint8_t &channels,
-                         std::int32_t &sampleRate, std::uint8_t &bitsPerSample, ALsizei &size);
+	static char *loadWav(const char *filename, std::uint8_t &channels,
+						 std::int32_t &sampleRate, std::uint8_t &bitsPerSample, ALsizei &size);
 
-    static ALenum getFormat(std::uint8_t channels, std::uint8_t bitsPerSample);
+	static ALenum getFormat(std::uint8_t channels, std::uint8_t bitsPerSample);
 
-    static void loadWavHelper(std::ifstream &reader, std::uint8_t &channels, std::int32_t &sampleRate,
-                              std::uint8_t &bitsPerSample, ALsizei &size);
+	static void loadWavHelper(std::ifstream &reader, std::uint8_t &channels, std::int32_t &sampleRate,
+							  std::uint8_t &bitsPerSample, ALsizei &size);
 
-    static int convertToInt(const char *buffer, std::size_t len);
+	static int convertToInt(const char *buffer, std::size_t len);
 
 };
 

@@ -5,46 +5,46 @@
 #include "Renderer2D.h"
 
 Renderer2D::Renderer2D(Loader &loader)
-        : m_Loader(loader)
+		: m_Loader(loader)
 {
 
 }
 
 void Renderer2D::render() const
 {
-    m_GuiRenderer.render();
+	m_GuiRenderer.render();
 
-    auto[width, height] = Display::getWindowSize<int>();
+	auto[width, height] = Display::getWindowSize<int>();
 
-    if (width == 0 || height == 0)
-    {
-        return;
-    }
+	if (width == 0 || height == 0)
+	{
+		return;
+	}
 
-    m_TextRenderer.renderText();
-    m_ButtonRenderer.render();
-    m_SpriteRenderer.renderSprite();
+	m_TextRenderer.renderText();
+	m_ButtonRenderer.render();
+	m_SpriteRenderer.renderSprite();
 }
 
 void Renderer2D::addGui(Entity &entity2D) noexcept
 {
-    m_GuiRenderer.addEntity(entity2D);
+	m_GuiRenderer.addEntity(entity2D);
 }
 
 void Renderer2D::addText(Text &text) noexcept
 {
-    m_TextRenderer.addText(text, m_Loader);
-    auto color = text.color();
+	m_TextRenderer.addText(text, m_Loader);
+	auto color = text.color();
 }
 
 void Renderer2D::addButton(Button &button) noexcept
 {
-    m_ButtonRenderer.addButton(button);
-    addText(button.getText());
+	m_ButtonRenderer.addButton(button);
+	addText(button.getText());
 }
 
 void Renderer2D::addSprite(Sprite &sprite) noexcept
 {
-    m_SpriteRenderer.addSprite(sprite);
+	m_SpriteRenderer.addSprite(sprite);
 }
 

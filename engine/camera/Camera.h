@@ -9,30 +9,30 @@
 
 struct Camera
 {
-    glm::vec3 m_Position{};
-    float m_Pitch{};
-    float m_Yaw{};
+	glm::vec3 m_Position{};
+	float m_Pitch{};
+	float m_Yaw{};
 
-    glm::vec3 m_Rotation{};
+	glm::vec3 m_Rotation{};
 
-    Camera();
+	Camera();
 
 private:
-    bool m_LeftButtonPressed{};
-    bool m_RightButtonPressed{};
+	bool m_LeftButtonPressed{};
+	bool m_RightButtonPressed{};
 
-    glm::vec2 m_MousePos{};
-    glm::vec3 m_CurrentRotation{};
-    float m_CurrentYaw{};
-    float m_CurrentPitch{};
+	glm::vec2 m_MousePos{};
+	glm::vec3 m_CurrentRotation{};
+	float m_CurrentYaw{};
+	float m_CurrentPitch{};
 
-    void addScrollListener();
+	void addScrollListener();
 
-    void addMousePressedListener();
+	void addMousePressedListener();
 
-    void addMouseMovedListener();
+	void addMouseMovedListener();
 
-    void addKeyboardListener();
+	void addKeyboardListener();
 };
 
 

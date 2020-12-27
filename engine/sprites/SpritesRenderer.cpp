@@ -8,41 +8,41 @@
 
 void SpritesRenderer::renderSprite() const
 {
-    Renderer2DUtil::prepareRendering(m_Shader);
+	Renderer2DUtil::prepareRendering(m_Shader);
 
-    for (auto const&[texture, batch] : m_Sprites)
-    {
-        Renderer2DUtil::prepareEntity(texture);
-        for (auto const &sprite : batch)
-        {
-            auto &s = sprite.get();
-            m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(s.m_Position, s.m_Scale));
-            animate(s);
+	for (auto const&[texture, batch] : m_Sprites)
+	{
+		Renderer2DUtil::prepareEntity(texture);
+		for (auto const &sprite : batch)
+		{
+			auto &s = sprite.get();
+			m_Shader.loadTransformationMatrix(
+					Maths::createTransformationMatrix(s.m_Position, s.m_Scale));
+			animate(s);
 
-            glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-        }
+			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		}
 
-        Renderer2DUtil::finishRenderingEntity();
-    }
+		Renderer2DUtil::finishRenderingEntity();
+	}
 
-    Renderer2DUtil::finishRendering();
+	Renderer2DUtil::finishRendering();
 }
 
 void SpritesRenderer::addSprite(Sprite &sprite) noexcept
 {
-    std::vector<std::reference_wrapper<Sprite>> &batch = m_Sprites[sprite.m_Texture];
+	std::vector<std::reference_wrapper<Sprite>> &batch = m_Sprites[sprite.m_Texture];
 
-    batch.emplace_back(sprite);
+	batch.emplace_back(sprite);
 }
 
 void SpritesRenderer::animate(Sprite &sprite) const
 {
-    if (sprite.m_Animate)
-    {
-        sprite.animate();
-    }
+	if (sprite.m_Animate)
+	{
+		sprite.animate();
+	}
 
-    m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
-    m_Shader.loadSpritePosition(sprite.m_CurrentFrameIndex);
+	m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
+	m_Shader.loadSpritePosition(sprite.m_CurrentFrameIndex);
 }

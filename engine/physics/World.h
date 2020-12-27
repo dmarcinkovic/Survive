@@ -13,12 +13,12 @@
 class World
 {
 private:
-    std::vector<std::unique_ptr<Body>> m_Bodies;
+	std::vector<std::unique_ptr<Body>> m_Bodies;
 
 public:
-    void addBody(std::unique_ptr<Body> body);
+	void addBody(std::unique_ptr<Body> body);
 
-    void step();
+	void step();
 };
 
 

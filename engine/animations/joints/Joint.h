@@ -12,37 +12,37 @@
 class Joint
 {
 private:
-    std::vector<Joint> m_Children;
-    int m_Index{};
-    std::string m_Name;
+	std::vector<Joint> m_Children;
+	int m_Index{};
+	std::string m_Name;
 
-    glm::mat4 m_AnimatedTransform{1};
-    glm::mat4 m_InverseBindTransformation{1};
+	glm::mat4 m_AnimatedTransform{1};
+	glm::mat4 m_InverseBindTransformation{1};
 
-    glm::mat4 m_LocalBindTransform{};
+	glm::mat4 m_LocalBindTransform{};
 
 public:
-    Joint() = default;
+	Joint() = default;
 
-    Joint(std::string name, int index, const glm::mat4 &bindLocalTransform);
+	Joint(std::string name, int index, const glm::mat4 &bindLocalTransform);
 
-    void addChild(const Joint &childJoint);
+	void addChild(const Joint &childJoint);
 
-    void calculateInverseBindTransform(const glm::mat4 &parentBindTransform);
+	void calculateInverseBindTransform(const glm::mat4 &parentBindTransform);
 
-    std::vector<Joint> &children();
+	std::vector<Joint> &children();
 
-    [[nodiscard]] const std::vector<Joint>& children() const;
+	[[nodiscard]] const std::vector<Joint> &children() const;
 
-    [[nodiscard]] const std::string &name() const;
+	[[nodiscard]] const std::string &name() const;
 
-    [[nodiscard]] const glm::mat4 &inverseBindTransform() const;
+	[[nodiscard]] const glm::mat4 &inverseBindTransform() const;
 
-    void setAnimatedTransform(const glm::mat4 &animatedTransform);
+	void setAnimatedTransform(const glm::mat4 &animatedTransform);
 
-    [[nodiscard]] const glm::mat4 &getAnimatedTransform() const;
+	[[nodiscard]] const glm::mat4 &getAnimatedTransform() const;
 
-    [[nodiscard]] int index() const;
+	[[nodiscard]] int index() const;
 };
 
 

@@ -5,17 +5,17 @@
 #include "Light.h"
 
 Light::Light(const glm::vec3 &position, const glm::vec3 &color)
-        : m_Position(position), m_Color(color)
+		: m_Position(position), m_Color(color)
 {
 
 }
 
 const glm::vec3 &Light::position() const
 {
-    return m_Position;
+	return m_Position;
 }
 
 const glm::vec3 &Light::color() const
 {
-    return m_Color;
+	return m_Color;
 }

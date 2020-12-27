@@ -11,34 +11,34 @@
 class Sprite : public Entity
 {
 private:
-    double m_Time{};
+	double m_Time{};
 
-    int m_EndRow{}, m_EndCol{};
-    int m_NumberOfEpochs{};
-    int m_CurrentEpoch{};
-    int m_PreviousFrameIndex{};
+	int m_EndRow{}, m_EndCol{};
+	int m_NumberOfEpochs{};
+	int m_CurrentEpoch{};
+	int m_PreviousFrameIndex{};
 
 public:
-    int m_CurrentFrameIndex{};
-    const int m_Row, m_Col;
-    bool m_Animate{};
+	int m_CurrentFrameIndex{};
+	const int m_Row, m_Col;
+	bool m_Animate{};
 
-    int m_SpritesInSecond{};
+	int m_SpritesInSecond{};
 
-    Sprite(const TexturedModel &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
+	Sprite(const TexturedModel &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
 
-    void animate(int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
+	void animate(int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
 
-    void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
+	void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
 
-    void drawSprite(int row, int col);
+	void drawSprite(int row, int col);
 
-    void stopAnimation();
+	void stopAnimation();
 
-    void animate();
+	void animate();
 
 private:
-    int calculateFrameIndex(int startIndex, int endIndex);
+	int calculateFrameIndex(int startIndex, int endIndex);
 };
 
 

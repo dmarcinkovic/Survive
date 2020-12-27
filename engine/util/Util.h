@@ -16,25 +16,25 @@
 class Util
 {
 private:
-    static Character getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH);
+	static Character getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH);
 
-    static void removeTrailingSpaces(std::string &string);
+	static void removeTrailingSpaces(std::string &string);
 
 public:
-    static float getNumber(const std::string &string, char delimiter = '=');
+	static float getNumber(const std::string &string, char delimiter = '=');
 
-    static std::vector<std::string> splitByRegex(const std::string &string);
+	static std::vector<std::string> splitByRegex(const std::string &string);
 
-    static Character getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h);
+	static Character getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h);
 
-    static std::optional<Character> getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
+	static std::optional<Character> getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH);
 
-    static std::vector<std::string> split(std::string string, char delimiter);
+	static std::vector<std::string> split(std::string string, char delimiter);
 
-    static void processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
-                              const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
-                              std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-                              unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex);
+	static void processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+							  const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+							  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+							  unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex);
 };
 
 

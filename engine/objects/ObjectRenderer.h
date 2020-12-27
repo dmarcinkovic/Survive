@@ -18,24 +18,24 @@
 class ObjectRenderer
 {
 private:
-    ObjectShader m_Shader;
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+	ObjectShader m_Shader;
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
-    const Light &m_Light;
+	const Light &m_Light;
 
 public:
-    explicit ObjectRenderer(const Light &light);
+	explicit ObjectRenderer(const Light &light);
 
-    void render(const Camera &camera, GLuint shadowMap) const;
+	void render(const Camera &camera, GLuint shadowMap) const;
 
-    void add3DObject(Object3D &entity);
+	void add3DObject(Object3D &entity);
 
 private:
-    void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
+	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 
-    void loadUniforms(const Camera &camera, GLuint shadowMap) const;
+	void loadUniforms(const Camera &camera, GLuint shadowMap) const;
 
-    void loadObjectUniforms(const Object3D &object, const Camera &camera) const;
+	void loadObjectUniforms(const Object3D &object, const Camera &camera) const;
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H

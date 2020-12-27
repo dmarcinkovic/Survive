@@ -16,13 +16,13 @@
 class GuiRenderer
 {
 private:
-    GuiShader m_Shader{};
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Entities;
+	GuiShader m_Shader{};
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Entities;
 
 public:
-    void render() const;
+	void render() const;
 
-    void addEntity(Entity &entity2D) noexcept;
+	void addEntity(Entity &entity2D) noexcept;
 };
 
 

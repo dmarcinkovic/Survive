@@ -10,18 +10,18 @@
 class Quaternion
 {
 private:
-    float m_X, m_Y, m_Z, m_W;
+	float m_X, m_Y, m_Z, m_W;
 
 public:
-    Quaternion(float x, float y, float z, float w);
+	Quaternion(float x, float y, float z, float w);
 
-    void normalize();
+	void normalize();
 
-    [[nodiscard]] glm::mat4 toRotationMatrix() const;
+	[[nodiscard]] glm::mat4 toRotationMatrix() const;
 
-    static Quaternion fromMatrix(const glm::mat4 &matrix);
+	static Quaternion fromMatrix(const glm::mat4 &matrix);
 
-    static Quaternion interpolate(const Quaternion &a, const Quaternion &b, float blend);
+	static Quaternion interpolate(const Quaternion &a, const Quaternion &b, float blend);
 
 };
 

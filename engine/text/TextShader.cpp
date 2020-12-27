@@ -5,31 +5,31 @@
 #include "TextShader.h"
 
 TextShader::TextShader()
-        : Shader(VERTEX_FILE, FRAGMENT_FILE)
+		: Shader(VERTEX_FILE, FRAGMENT_FILE)
 {
-    getUniformLocations();
+	getUniformLocations();
 }
 
 void TextShader::getUniformLocations()
 {
-    m_LocationColor = glGetUniformLocation(m_Program, "color");
-    m_LocationBorderColor = glGetUniformLocation(m_Program, "borderColor");
-    m_LocationBorderWidth = glGetUniformLocation(m_Program, "borderWidth");
-    m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+	m_LocationColor = glGetUniformLocation(m_Program, "color");
+	m_LocationBorderColor = glGetUniformLocation(m_Program, "borderColor");
+	m_LocationBorderWidth = glGetUniformLocation(m_Program, "borderWidth");
+	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 }
 
 void TextShader::loadColor(const glm::vec3 &color) const
 {
-    loadVector3(m_LocationColor, color);
+	loadVector3(m_LocationColor, color);
 }
 
 void TextShader::loadBorder(const glm::vec3 &borderColor, float borderWidth) const
 {
-    loadVector3(m_LocationBorderColor, borderColor);
-    loadFloat(m_LocationBorderWidth, borderWidth);
+	loadVector3(m_LocationBorderColor, borderColor);
+	loadFloat(m_LocationBorderWidth, borderWidth);
 }
 
 void TextShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
-    loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
+	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }

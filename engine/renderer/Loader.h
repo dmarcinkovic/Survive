@@ -10,66 +10,66 @@
 
 struct Model
 {
-    GLuint m_Vao{};
-    size_t m_VertexCount{};
+	GLuint m_Vao{};
+	size_t m_VertexCount{};
 
-    Model(GLuint vao, size_t vertexCount);
+	Model(GLuint vao, size_t vertexCount);
 
-    Model() = default;
+	Model() = default;
 };
 
 class Loader
 {
 private:
-    std::vector<GLuint> m_Vaos;
-    std::vector<GLuint> m_Vbos;
+	std::vector<GLuint> m_Vaos;
+	std::vector<GLuint> m_Vbos;
 
-    static std::vector<GLuint> m_Textures;
+	static std::vector<GLuint> m_Textures;
 
 public:
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
 
-    ~Loader();
+	~Loader();
 
-    static void unbindVao();
+	static void unbindVao();
 
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-                    const std::vector<float> &textureCoordinates, size_t size);
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
+					const std::vector<float> &textureCoordinates, size_t size);
 
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
-                    const std::vector<float> &normals);
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+					const std::vector<float> &normals);
 
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
-                    const std::vector<float> &normals, const std::vector<float> &jointWeights,
-                    const std::vector<unsigned> &jointIds);
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+					const std::vector<float> &normals, const std::vector<float> &jointWeights,
+					const std::vector<unsigned> &jointIds);
 
-    Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
-    static GLuint loadTexture(const char *texture) noexcept;
+	static GLuint loadTexture(const char *texture) noexcept;
 
-    static GLuint loadCubeMap(const std::vector<const char*> &faces) noexcept;
+	static GLuint loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
-    Model renderQuad();
+	Model renderQuad();
 
-    Model renderCube();
+	Model renderCube();
 
-    void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
+	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 private:
-    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
-                                  GLenum usage = GL_STATIC_DRAW);
+	void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
+								  GLenum usage = GL_STATIC_DRAW);
 
-    void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
+	void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
 
-    void createIndexBuffer(const std::vector<unsigned> &indices);
+	void createIndexBuffer(const std::vector<unsigned> &indices);
 
-    GLuint createVao();
+	GLuint createVao();
 
-    static void loadImage(const char *texture) noexcept;
+	static void loadImage(const char *texture) noexcept;
 
-    static void addMipMap();
+	static void addMipMap();
 
-    static void loadToCubeMap(const std::vector<const char*> &faces) noexcept;
+	static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
 };
 
 
