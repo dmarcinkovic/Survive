@@ -17,8 +17,8 @@ void SpritesRenderer::renderSprite() const
         {
             auto &s = sprite.get();
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(s.m_Position, s.m_ScaleX, s.m_ScaleY));
-            animate(sprite.get());
+                    Maths::createTransformationMatrix(s.m_Position, s.m_Scale));
+            animate(s);
 
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }

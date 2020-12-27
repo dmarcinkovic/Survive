@@ -4,7 +4,6 @@
 #include "AnimationRenderer.h"
 #include "../../renderer/Renderer3DUtil.h"
 #include "../../math/Maths.h"
-#include "../../constant/Constants.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
         : m_Light(light)
@@ -47,8 +46,7 @@ AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Animated
         auto const &o = object.get();
         auto rotation = camera.m_Rotation + o.m_Rotation;
 
-        glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
-                                                                  rotation.x, rotation.y, rotation.z);
+        glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
         m_Shader.loadTransformationMatrix(modelMatrix);
         Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 

@@ -14,7 +14,7 @@ private:
     std::vector<Texture> m_Textures;
 
 public:
-    Terrain(const Model &model, const glm::vec3 &position, float scaleX, float scaleY, float scaleZ);
+    Terrain(const Model &model, const glm::vec3 &position, const glm::vec3 &scale);
 
     Terrain() = default;
 

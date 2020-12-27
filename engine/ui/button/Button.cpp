@@ -7,7 +7,7 @@
 
 Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
                const glm::vec4 &color)
-        : Entity(texture, position, scaleX, scaleY), m_Color(color), m_OriginalScaleX(scaleX),
+        : Entity(texture, position, glm::vec3{scaleX, scaleY, 1.0f}), m_Color(color), m_OriginalScaleX(scaleX),
           m_OriginalScaleY(scaleY)
 {
     auto[width, height] = Display::getWindowSize<float>();
@@ -23,8 +23,8 @@ void Button::convertToScreenSpace(float width, float height)
     int newY = static_cast<int>(convertPoint(-m_Position.y, height));
 
     m_Center = glm::ivec2{newX, newY};
-    m_Width = static_cast<int>(m_ScaleX * width);
-    m_Height = static_cast<int>(m_ScaleY * height);
+    m_Width = static_cast<int>(m_Scale.x * width);
+    m_Height = static_cast<int>(m_Scale.y * height);
 }
 
 float Button::convertPoint(float point, float size)
@@ -47,13 +47,13 @@ void Button::addMouseMoveListener()
     auto mouseListener = [&](double x, double y) {
         if (isInsideButton(x, y))
         {
-            m_ScaleX = m_OriginalScaleX * 1.02f;
-            m_ScaleY = m_OriginalScaleY * 1.02f;
+            m_Scale.x = m_OriginalScaleX * 1.02f;
+            m_Scale.y = m_OriginalScaleY * 1.02f;
             m_Text.scaleFor(1.02f);
         } else
         {
-            m_ScaleX = m_OriginalScaleX;
-            m_ScaleY = m_OriginalScaleY;
+            m_Scale.x = m_OriginalScaleX;
+            m_Scale.y = m_OriginalScaleY;
             m_Text.scaleFor(1);
         }
     };

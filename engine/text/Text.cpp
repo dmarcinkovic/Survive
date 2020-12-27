@@ -13,7 +13,7 @@ Text::Text(std::string text, Font font, const glm::vec3 &position,
           m_BorderColor(color), m_TextTexture(font.getMTextureId())
 {
     m_Position = position;
-    m_ScaleX = m_ScaleY = scale;
+    m_Scale.x = m_Scale.y = scale;
 }
 
 Model Text::calculateVertices(Loader &loader)
@@ -145,10 +145,10 @@ float Text::getMBorderWidth() const
 
 float Text::getScale() const
 {
-    return m_ScaleX;
+	return m_Scale.x;
 }
 
 void Text::scaleFor(float scaleFactor)
 {
-    m_ScaleX = m_ScaleY * scaleFactor;
+	m_Scale.x = m_Scale.y * scaleFactor;
 }

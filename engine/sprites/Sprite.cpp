@@ -8,7 +8,7 @@
 #include "../display/Display.h"
 
 Sprite::Sprite(const TexturedModel &texture, const glm::vec3 &position, float scale, int row, int col)
-        : Entity(texture, position, scale, scale), m_Row(row), m_Col(col)
+        : Entity(texture, position, glm::vec3{scale, scale, 1.0f}), m_Row(row), m_Col(col)
 {
 
 }

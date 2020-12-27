@@ -20,7 +20,7 @@ void GuiRenderer::render() const
         {
             const Entity &e = entity2D.get();
             m_Shader.loadTransformationMatrix(
-                    Maths::createTransformationMatrix(e.m_Position, e.m_ScaleX, e.m_ScaleY));
+                    Maths::createTransformationMatrix(e.m_Position, e.m_Scale));
 
             glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
         }

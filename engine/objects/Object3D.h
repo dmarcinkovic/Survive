@@ -19,9 +19,8 @@ struct Object3D : public Entity
 
 	bool m_DrawOutline{};
 
-	Object3D(const TexturedModel &texture, const glm::vec3 &position,
-			 const glm::vec3 &rotation = glm::vec3{0, 0, 0},
-			 bool isTransparent = false, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
+	Object3D(const TexturedModel &texture, const glm::vec3 &position, const glm::vec3 &rotation = glm::vec3{0, 0, 0},
+			 bool isTransparent = false, const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
 };
 
 

@@ -21,7 +21,7 @@ void ButtonRenderer::render() const
 
         m_Shader.loadColor(button.m_Color);
         m_Shader.loadTransformationMatrix(
-                Maths::createTransformationMatrix(button.m_Position, button.m_ScaleX, button.m_ScaleY));
+                Maths::createTransformationMatrix(button.m_Position, button.m_Scale));
 
         m_Shader.loadIsLoadingImage(button.m_Texture.isValidTexture());
 

@@ -84,8 +84,7 @@ void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &ca
 	m_Shader.loadReflectiveFactor(object.m_ReflectiveFactor);
 	m_Shader.loadRefractionData(object.m_RefractiveIndex, object.m_RefractionFactor);
 
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_ScaleX, object.m_ScaleY,
-															  object.m_ScaleZ, rotation.x, rotation.y, rotation.z);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_Scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
 }
 

@@ -11,16 +11,14 @@
 
 struct Entity
 {
-    TexturedModel m_Texture;
-    glm::vec3 m_Position{};
-    float m_ScaleX{};
-    float m_ScaleY{};
-    float m_ScaleZ{};
+	TexturedModel m_Texture;
+	glm::vec3 m_Position{};
+	glm::vec3 m_Scale{};
 
-    Entity(const TexturedModel &texture, const glm::vec3 &position, float scaleX = 1.0f, float scaleY = 1.0f,
-           float scaleZ = 1.0f);
+	Entity(const TexturedModel &texture, const glm::vec3 &position,
+		   const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
 
-    Entity() = default;
+	Entity() = default;
 };
 
 

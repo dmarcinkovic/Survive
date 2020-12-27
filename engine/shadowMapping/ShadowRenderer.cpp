@@ -8,10 +8,6 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
 
-ShadowRenderer::ShadowRenderer()
-{
-}
-
 void ShadowRenderer::render(const Light &light, const Camera &camera) const
 {
     Renderer3DUtil::prepareRendering(m_ShadowShader);
@@ -31,8 +27,7 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
             glCullFace(GL_FRONT);
 
             auto rotation = o.m_Rotation + camera.m_Rotation;
-            glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY, o.m_ScaleZ,
-                                                                      rotation.x, rotation.y, rotation.z);
+            glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
             m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
             glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
