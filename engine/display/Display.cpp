@@ -22,151 +22,163 @@ int Display::m_Height;
 
 Display::Display(int width, int height, const char *title)
 {
-    glfwInit();
+	glfwInit();
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	setWindowHints();
 
-    m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-    glfwMakeContextCurrent(m_Window);
-    glfwSwapInterval(1);
+	m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	glfwMakeContextCurrent(m_Window);
+	glfwSwapInterval(1);
 
-    glewInit();
+	glewInit();
 
-    addCallbacks();
+	addCallbacks();
 
-    m_LastFrameTime = glfwGetTime();
+	m_LastFrameTime = glfwGetTime();
 
-    m_Width = width;
-    m_Height = height;
+	m_Width = width;
+	m_Height = height;
 
 	setProjectionMatrices(width, height);
+	setStencilProperties();
 }
 
 void Display::addCallbacks() const
 {
-    glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
-    glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
-    glfwSetKeyCallback(m_Window, keyEventCallback);
-    glfwSetCursorPosCallback(m_Window, mousePositionCallback);
-    glfwSetScrollCallback(m_Window, scrollCallback);
+	glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
+	glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
+	glfwSetKeyCallback(m_Window, keyEventCallback);
+	glfwSetCursorPosCallback(m_Window, mousePositionCallback);
+	glfwSetScrollCallback(m_Window, scrollCallback);
 }
 
 Display::~Display()
 {
-    glfwDestroyWindow(m_Window);
-    glfwTerminate();
+	glfwDestroyWindow(m_Window);
+	glfwTerminate();
 }
 
 void Display::update() const
 {
-    double currentTime = glfwGetTime();
-    m_DeltaTime = currentTime - m_LastFrameTime;
-    m_LastFrameTime = currentTime;
+	double currentTime = glfwGetTime();
+	m_DeltaTime = currentTime - m_LastFrameTime;
+	m_LastFrameTime = currentTime;
 
-    glfwPollEvents();
-    glfwSwapBuffers(m_Window);
+	glfwPollEvents();
+	glfwSwapBuffers(m_Window);
 }
 
 bool Display::isRunning() const
 {
-    return !glfwWindowShouldClose(m_Window);
+	return !glfwWindowShouldClose(m_Window);
 }
 
 void Display::clearWindow()
 {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glClear(GL_STENCIL_BUFFER_BIT);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glClear(GL_STENCIL_BUFFER_BIT);
+}
+
+void Display::setWindowHints()
+{
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
 void Display::windowResizeCallback(GLFWwindow *, int width, int height)
 {
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+	setViewport(width, height);
 
-    glOrtho(0, width, 0, height, -1.5, 1.5);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+	m_Width = width;
+	m_Height = height;
 
-    m_Width = width;
-    m_Height = height;
-
-    for (auto const &listener : m_WindowListeners)
-    {
-        listener(width, height);
-    }
+	for (auto const &listener : m_WindowListeners)
+	{
+		listener(width, height);
+	}
 
 	setProjectionMatrices(width, height);
 }
 
+void Display::setViewport(int width, int height)
+{
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glOrtho(0, width, 0, height, -1.5, 1.5);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
 void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
 {
-    for (auto const &listener : m_KeyEventListeners)
-    {
-        listener(key, action);
-    }
+	for (auto const &listener : m_KeyEventListeners)
+	{
+		listener(key, action);
+	}
 }
 
 void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int)
 {
-    double mouseX, mouseY;
-    glfwGetCursorPos(window, &mouseX, &mouseY);
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
 
-    for (auto const &listener : m_MouseEventListeners)
-    {
-        listener(button, action, mouseX, mouseY);
-    }
+	for (auto const &listener : m_MouseEventListeners)
+	{
+		listener(button, action, mouseX, mouseY);
+	}
 }
 
 void Display::addKeyListener(const KeyListener &listener)
 {
-    m_KeyEventListeners.emplace_back(listener);
+	m_KeyEventListeners.emplace_back(listener);
 }
 
 void Display::addMouseListener(const MouseListener &listener)
 {
-    m_MouseEventListeners.emplace_back(listener);
+	m_MouseEventListeners.emplace_back(listener);
 }
 
 double Display::getFrameTime()
 {
-    return m_DeltaTime;
+	return m_DeltaTime;
 }
 
 void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 {
-    for (auto const &listener : m_MouseMoveListeners)
-    {
-        listener(mouseX, mouseY);
-    }
+	for (auto const &listener : m_MouseMoveListeners)
+	{
+		listener(mouseX, mouseY);
+	}
 }
 
 void Display::addMouseMovedListener(const MouseMovedListener &listener)
 {
-    m_MouseMoveListeners.emplace_back(listener);
+	m_MouseMoveListeners.emplace_back(listener);
 }
 
 void Display::addWindowResizeListener(const WindowListener &listener)
 {
-    m_WindowListeners.emplace_back(listener);
+	m_WindowListeners.emplace_back(listener);
 }
 
 void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 {
-    for (auto const &listener : m_ScrollListeners)
-    {
-        listener(xOffset, yOffset);
-    }
+	for (auto const &listener : m_ScrollListeners)
+	{
+		listener(xOffset, yOffset);
+	}
 }
 
 void Display::addScrollListener(const ScrollListener &listener)
 {
-    m_ScrollListeners.emplace_back(listener);
+	m_ScrollListeners.emplace_back(listener);
 }
 
 void Display::setProjectionMatrices(int width, int height)
@@ -176,4 +188,10 @@ void Display::setProjectionMatrices(int width, int height)
 
 	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
+}
+
+void Display::setStencilProperties()
+{
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }

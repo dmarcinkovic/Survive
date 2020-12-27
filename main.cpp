@@ -31,9 +31,6 @@ int main()
 	renderer.addSkyboxEntity(sky);
 	renderer.addOutlineToObject(dragon);
 
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
