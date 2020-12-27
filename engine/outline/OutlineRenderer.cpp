@@ -29,6 +29,11 @@ void OutlineRenderer::render(const Camera &camera) const
 
 void OutlineRenderer::add3DObject(Object3D &object)
 {
+	if (m_Object != nullptr)
+	{
+		m_Object->m_DrawOutline = false;
+	}
+
 	m_Object = &object;
 	m_Object->m_DrawOutline = true;
 }
@@ -43,7 +48,6 @@ void OutlineRenderer::setStencilFunctions()
 {
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilMask(0x00);
-	glDisable(GL_DEPTH_TEST);
 }
 
 void OutlineRenderer::resetStencilFunctions()
