@@ -35,6 +35,10 @@ int main()
 	OutlineRenderer outlineRenderer(light);
 	outlineRenderer.add3DObject(dragon);
 
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
