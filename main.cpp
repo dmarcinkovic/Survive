@@ -5,6 +5,7 @@
 #include "engine/sky/SkyRenderer.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/outline/OutlineRenderer.h"
 
 int main()
 {
@@ -31,11 +32,15 @@ int main()
 	renderer.add3DObject(dragon);
 	renderer.addSkyboxEntity(sky);
 
+	OutlineRenderer outlineRenderer(light);
+	outlineRenderer.add3DObject(dragon);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(camera);
+		outlineRenderer.render(camera);
 
 		display.update();
 	}
