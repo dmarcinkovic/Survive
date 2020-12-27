@@ -80,6 +80,7 @@ void Display::clearWindow()
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_STENCIL_BUFFER_BIT);
 }
 
 void Display::windowResizeCallback(GLFWwindow *, int width, int height)
