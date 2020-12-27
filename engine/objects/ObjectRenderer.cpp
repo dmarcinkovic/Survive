@@ -45,6 +45,9 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
 		{
 			glStencilFunc(GL_ALWAYS, 1, 0xFF);
 			glStencilMask(0xFF);
+		} else
+		{
+			glStencilMask(0x00);
 		}
 
 		Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
