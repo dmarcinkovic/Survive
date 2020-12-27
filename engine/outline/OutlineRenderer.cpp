@@ -36,7 +36,6 @@ void OutlineRenderer::render(const Camera &camera) const
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_ScaleX, o.m_ScaleY,
 																	  o.m_ScaleZ, rotation.x, rotation.y, rotation.z);
 			m_Shader.loadTransformationMatrix(modelMatrix);
-
 			if (o.m_DrawOutline)
 			{
 				glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -60,5 +59,6 @@ void OutlineRenderer::render(const Camera &camera) const
 
 void OutlineRenderer::add3DObject(Object3D &object)
 {
-
+	auto &batch = m_Objects[object.m_Texture];
+	batch.emplace_back(object);
 }
