@@ -25,6 +25,7 @@ void OutlineRenderer::render(const Camera &camera) const
 void OutlineRenderer::add3DObject(Object3D &object)
 {
 	m_Object = &object;
+	m_Object->m_DrawOutline = true;
 }
 
 void OutlineRenderer::setStencilFunctions()
