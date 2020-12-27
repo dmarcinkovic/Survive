@@ -2,10 +2,7 @@
 
 out vec4 outColor;
 
-in vec2 textCoords;
-uniform sampler2D image;
-
 void main()
 {
-    outColor = texture(image, textCoords);
+    outColor = vec4(0.04, 0.28, 0.26, 1.0);
 }
