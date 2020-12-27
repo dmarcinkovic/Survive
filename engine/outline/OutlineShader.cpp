@@ -7,7 +7,7 @@
 OutlineShader::OutlineShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
-
+	loadUniformLocations();
 }
 
 void OutlineShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
