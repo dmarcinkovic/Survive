@@ -41,6 +41,12 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
 		auto const &o = object.get();
 		loadObjectUniforms(o, camera);
 
+		if (o.m_DrawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+
 		Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 
 		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
