@@ -6,9 +6,13 @@
 #define SURVIVE_OUTLINESHADER_H
 
 
-class OutlineShader
-{
+#include "../shader/Shader.h"
 
+class OutlineShader : public Shader
+{
+private:
+	constexpr static const char *VERTEX_SHADER = "engine/shader/sources/OutlineVertexShader.glsl";
+	constexpr static const char *FRAGMENT_SHADER = "engine/shader/sources/OutlineFragmentShader.glsl";
 };
 
 
