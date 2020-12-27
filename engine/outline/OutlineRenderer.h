@@ -17,17 +17,22 @@
 class OutlineRenderer
 {
 private:
-	OutlineShader m_Shader;
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+	static constexpr float SCALE = 1.02f;
 
-	const Light &m_Light;
+	OutlineShader m_Shader;
+	Object3D *m_Object{};
 
 public:
-	explicit OutlineRenderer(const Light &light);
-
 	void render(const Camera &camera) const;
 
 	void add3DObject(Object3D &object);
+
+private:
+	static void setStencilFunctions();
+
+	static void resetStencilFunctions();
+
+	void loadUniforms(const Camera &camera) const;
 };
 
 
