@@ -15,6 +15,9 @@ MousePicking::MousePicking()
 void MousePicking::mousePressedHandler()
 {
 	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY){
-		std::cout << "Mouse pressed: " << mouseX << ' ' << mouseY << '\n';
+		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+		{
+			std::cout << "Mouse pressed: " << mouseX << ' ' << mouseY << '\n';
+		}
 	});
 }

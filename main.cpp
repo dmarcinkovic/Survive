@@ -5,6 +5,7 @@
 #include "engine/sky/SkyRenderer.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/mousePicking/MousePicking.h"
 
 int main()
 {
@@ -36,6 +37,8 @@ int main()
 	renderer.addSkyboxEntity(sky);
 	renderer.addOutlineToObject(dragon);
 	renderer.addOutlineToObject(dragon2);
+
+	MousePicking mousePicking;
 
 	while (display.isRunning())
 	{
