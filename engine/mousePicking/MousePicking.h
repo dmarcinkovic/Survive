@@ -8,7 +8,11 @@
 
 class MousePicking
 {
+public:
+	MousePicking();
 
+private:
+	void mousePressedHandler();
 };
 
 
