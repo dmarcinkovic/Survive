@@ -7,7 +7,7 @@
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/gaussianBlur/BloomRenderer.h"
+#include "engine/mousePicking/MousePicking.h"
 
 int main()
 {
@@ -31,16 +31,11 @@ int main()
 	renderer.add3DObject(lamp);
 	renderer.add3DObject(lamp2);
 
-	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
-	BloomRenderer bloomRenderer(width / 8, height / 8);
-
-	lamp.addBloomEffect(bloomRenderer.getTexture());
+	MousePicking mousePicking;
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
-
-		bloomRenderer.render(lampBloom);
 
 		renderer.render(camera);
 
