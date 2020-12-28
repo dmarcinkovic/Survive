@@ -16,6 +16,8 @@ private:
 	void mousePressedHandler();
 
 	static glm::vec3 getNormalizedDeviceCoordinates(const glm::vec2& viewportCoordinates);
+
+	static glm::vec4 getClipCoordinates(const glm::vec3 &normalizedDeviceCoordinates);
 };
 
 

@@ -19,8 +19,9 @@ void MousePicking::mousePressedHandler()
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			glm::vec2 viewportCoordinates{mouseX, mouseY};
-			glm::vec2 normalizedDeviceCoordinates = getNormalizedDeviceCoordinates(viewportCoordinates);
-
+			glm::vec3 normalizedDeviceCoordinates = getNormalizedDeviceCoordinates(viewportCoordinates);
+			glm::vec4 clipCoordinates = getClipCoordinates(normalizedDeviceCoordinates);
+			
 			std::cout << "Mouse pressed: " << mouseX << ' ' << mouseY << '\n';
 			std::cout << "X and Y: " << normalizedDeviceCoordinates.x << ' ' << normalizedDeviceCoordinates.y << '\n';
 		}
@@ -35,4 +36,9 @@ glm::vec3 MousePicking::getNormalizedDeviceCoordinates(const glm::vec2 &viewport
 	float y = 1.0f - (2.0f * viewportCoordinates.y) / height;
 
 	return glm::vec3{x, y, 1.0f};
+}
+
+glm::vec4 MousePicking::getClipCoordinates(const glm::vec3 &normalizedDeviceCoordinates)
+{
+	return glm::vec4{normalizedDeviceCoordinates.x, normalizedDeviceCoordinates.y, -1.0f, 1.0f};
 }
