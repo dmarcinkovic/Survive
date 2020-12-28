@@ -193,5 +193,5 @@ void Display::setProjectionMatrices(int width, int height)
 void Display::setStencilProperties()
 {
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 }
