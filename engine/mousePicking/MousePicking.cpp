@@ -6,9 +6,11 @@
 
 #include "MousePicking.h"
 #include "../display/Display.h"
+#include "../math/Maths.h"
 
 
-MousePicking::MousePicking()
+MousePicking::MousePicking(const Camera &camera)
+		: m_Camera(camera)
 {
 	mousePressedHandler();
 }
@@ -21,9 +23,10 @@ void MousePicking::mousePressedHandler()
 			glm::vec2 viewportCoordinates{mouseX, mouseY};
 			glm::vec3 normalizedDeviceCoordinates = getNormalizedDeviceCoordinates(viewportCoordinates);
 			glm::vec4 clipCoordinates = getClipCoordinates(normalizedDeviceCoordinates);
-			
-			std::cout << "Mouse pressed: " << mouseX << ' ' << mouseY << '\n';
-			std::cout << "X and Y: " << normalizedDeviceCoordinates.x << ' ' << normalizedDeviceCoordinates.y << '\n';
+			glm::vec4 eyeCoordinates = getEyeCoordinates(clipCoordinates);
+			glm::vec3 worldCoordinates = getWorldCoordinates(eyeCoordinates, m_Camera);
+
+			std::cout << worldCoordinates.x << ' ' << worldCoordinates.y << ' ' << worldCoordinates.z << '\n';
 		}
 	});
 }
@@ -41,4 +44,18 @@ glm::vec3 MousePicking::getNormalizedDeviceCoordinates(const glm::vec2 &viewport
 glm::vec4 MousePicking::getClipCoordinates(const glm::vec3 &normalizedDeviceCoordinates)
 {
 	return glm::vec4{normalizedDeviceCoordinates.x, normalizedDeviceCoordinates.y, -1.0f, 1.0f};
+}
+
+glm::vec4 MousePicking::getEyeCoordinates(const glm::vec4 &clipCoordinates)
+{
+	glm::vec4 eye = glm::inverse(Maths::projectionMatrix) * clipCoordinates;
+	return glm::vec4{eye.x, eye.y, -1.0f, 0.0f};
+}
+
+glm::vec3 MousePicking::getWorldCoordinates(const glm::vec4 &eyeCoordinates, const Camera &camera)
+{
+	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	glm::vec4 world = glm::inverse(viewMatrix) * eyeCoordinates;
+
+	return glm::normalize(glm::vec3{world});
 }

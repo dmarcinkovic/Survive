@@ -31,7 +31,7 @@ int main()
 	renderer.add3DObject(lamp);
 	renderer.add3DObject(lamp2);
 
-	MousePicking mousePicking;
+	MousePicking mousePicking(camera);
 
 	while (display.isRunning())
 	{
