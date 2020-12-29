@@ -38,7 +38,7 @@ int main()
 	renderer.addOutlineToObject(dragon);
 	renderer.addOutlineToObject(dragon2);
 
-	MousePicking mousePicking;
+	MousePicking mousePicking(camera);
 
 	while (display.isRunning())
 	{
