@@ -92,6 +92,12 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 			}
 		}
 	}
+
+	std::cout << "Normals: " << normals.size() << '\n';
+	for (auto const &normal : normals)
+	{
+		std::cout << normal.x << ' ' << normal.y << ' ' << normal.z << '\n';
+	}
 }
 
 void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices)
@@ -432,4 +438,21 @@ DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData, const s
 	m_LengthInSeconds = timeStamps.back();
 
 	return keyFrames;
+}
+
+std::vector<glm::vec3>
+DaeParser::applyCorrectionToVertices(const std::vector<glm::vec3> &vertices, const glm::mat4 &correction)
+{
+	std::vector<glm::vec3> result;
+	result.reserve(vertices.size());
+
+	for (auto const& vertex : vertices)
+	{
+		glm::vec4 point(vertex, 1.0f);
+		point = correction * point;
+
+		result.emplace_back(point);
+	}
+
+	return result;
 }
