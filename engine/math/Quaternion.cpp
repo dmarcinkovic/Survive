@@ -7,12 +7,12 @@
 Quaternion::Quaternion(float x, float y, float z, float w)
         : m_X(x), m_Y(y), m_Z(z), m_W(w)
 {
-    normalize();
+	normalize();
 }
 
 void Quaternion::normalize()
 {
-    auto magnitude = static_cast<float>(std::sqrt(m_X * m_X + m_Y * m_Y + m_Z * m_Z + m_W + m_W));
+    auto magnitude = static_cast<float>(std::sqrt(m_X * m_X + m_Y * m_Y + m_Z * m_Z + m_W * m_W));
     m_X /= magnitude;
     m_Y /= magnitude;
     m_Z /= magnitude;

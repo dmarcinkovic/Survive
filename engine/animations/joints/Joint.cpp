@@ -44,16 +44,16 @@ const glm::mat4 &Joint::inverseBindTransform() const
 
 void Joint::setAnimatedTransform(const glm::mat4 &animatedTransform)
 {
-    std::cout << m_Name << '\n';
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            std::cout << animatedTransform[i][j] << ' ';
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
+//    std::cout << m_Name << '\n';
+//    for (int i = 0; i < 4; ++i)
+//    {
+//        for (int j = 0; j < 4; ++j)
+//        {
+//            std::cout << animatedTransform[i][j] << ' ';
+//        }
+//        std::cout << '\n';
+//    }
+//    std::cout << '\n';
     m_AnimatedTransform = animatedTransform;
 }
 
