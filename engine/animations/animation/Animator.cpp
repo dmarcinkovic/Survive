@@ -74,19 +74,19 @@ void Animator::update()
 {
     increaseAnimationTime();
     std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-    std::cout << "Update method\n";
+//    std::cout << "Update method\n";
     for (auto const&[name, pose]: currentPose)
     {
-        std::cout << name << '\n';
-        for (int i = 0; i <4; ++i)
-        {
-            for (int j = 0; j < 4; ++j)
-            {
-                std::cout << pose[i][j] << ' ';
-            }
-            std::cout << '\n';
-        }
-        std::cout << '\n';
+//        std::cout << name << '\n';
+//        for (int i = 0; i <4; ++i)
+//        {
+//            for (int j = 0; j < 4; ++j)
+//            {
+//                std::cout << pose[i][j] << ' ';
+//            }
+//            std::cout << '\n';
+//        }
+//        std::cout << '\n';
     }
     applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{1});
 }
@@ -129,24 +129,24 @@ float Animator::calculateProgression(const KeyFrame &prev, const KeyFrame &next)
 std::unordered_map<std::string, glm::mat4>
 Animator::interpolatePoses(const KeyFrame &prev, const KeyFrame &next, float progression)
 {
-	std::cout << "Interpolate poses\n";
+//	std::cout << "Interpolate poses\n";
 	std::unordered_map<std::string, glm::mat4> currentPose;
 	for (auto const&[jointName, previousTransform] : prev.getPose())
     {
 		auto const &nextTransform = next.getPose().at(jointName);
 
-		std::cout << "Joint name: " << jointName << '\n';
-		std::cout << "Next transform\n";
-		auto localTransform = nextTransform.getLocalTransform();
-		for (int i = 0; i < 4; ++i)
-		{
-			for (int j = 0; j < 4; ++j)
-			{
-				std::cout << localTransform[i][j] << ' ';
-			}
-			std::cout << '\n';
-		}
-		std::cout << '\n';
+//		std::cout << "Joint name: " << jointName << '\n';
+//		std::cout << "Next transform\n";
+//		auto localTransform = nextTransform.getLocalTransform();
+//		for (int i = 0; i < 4; ++i)
+//		{
+//			for (int j = 0; j < 4; ++j)
+//			{
+//				std::cout << localTransform[i][j] << ' ';
+//			}
+//			std::cout << '\n';
+//		}
+//		std::cout << '\n';
 
         const JointTransform &currentTransform = JointTransform::interpolate(previousTransform, nextTransform,
                                                                              progression);

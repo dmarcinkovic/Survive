@@ -18,23 +18,22 @@ glm::mat4 JointTransform::getLocalTransform() const
     glm::mat4 matrix{1};
     matrix = glm::translate(matrix, m_Position);
 
-    std::cout << "Get local transform:\n";
-    std::cout << "Position: " << m_Position.x << ' ' << m_Position.y << ' ' << m_Position.z << "\n";
-
-    std::cout << "Matrix after translation: \n";
-
-    for (int i = 0; i < 4; ++i)
-	{
-    	for (int j = 0; j < 4; ++j)
-		{
-    		std::cout << m_Rotation.toRotationMatrix()[i][j] << ' ';
-		}
-    	std::cout << '\n';
-	}
-    std::cout << '\n';
+//    std::cout << "Get local transform:\n";
+//    std::cout << "Position: " << m_Position.x << ' ' << m_Position.y << ' ' << m_Position.z << "\n";
+//
+//    std::cout << "Matrix after translation: \n";
+//
+//    for (int i = 0; i < 4; ++i)
+//	{
+//    	for (int j = 0; j < 4; ++j)
+//		{
+//    		std::cout << m_Rotation.toRotationMatrix()[i][j] << ' ';
+//		}
+//    	std::cout << '\n';
+//	}
+//    std::cout << '\n';
 
     matrix *= m_Rotation.toRotationMatrix();
-
 
     return matrix;
 }
