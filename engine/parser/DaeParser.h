@@ -61,7 +61,7 @@ private:
 
     static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-    void loadAnimation(std::ifstream &reader);
+    static std::vector<AnimationData> loadAnimation(std::ifstream &reader);
 
     static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
@@ -81,7 +81,7 @@ private:
 
     static std::vector<glm::mat4> getTransforms(std::string &line);
 
-    std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+    std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData, const std::string &rootJoint);
 
     void normalizeWeights();
 };

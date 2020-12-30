@@ -7,6 +7,7 @@
 Quaternion::Quaternion(float x, float y, float z, float w)
         : m_X(x), m_Y(y), m_Z(z), m_W(w)
 {
+
 	normalize();
 }
 
@@ -107,4 +108,9 @@ Quaternion Quaternion::interpolate(const Quaternion &a, const Quaternion &b, flo
     }
     result.normalize();
     return result;
+}
+
+glm::vec4 Quaternion::getQuaternion() const
+{
+	return glm::vec4{m_X, m_Y, m_Z, m_W};
 }

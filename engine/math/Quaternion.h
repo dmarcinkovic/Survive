@@ -23,6 +23,7 @@ public:
 
     static Quaternion interpolate(const Quaternion &a, const Quaternion &b, float blend);
 
+    glm::vec4 getQuaternion() const;
 };
 
 
