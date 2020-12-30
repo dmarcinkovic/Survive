@@ -43,6 +43,8 @@ public:
     [[nodiscard]] const glm::mat4 &getAnimatedTransform() const;
 
     [[nodiscard]] int index() const;
+
+    void applyCorrection(const glm::mat4 &correction);
 };
 
 

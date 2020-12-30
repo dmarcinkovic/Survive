@@ -6,9 +6,8 @@
 #include "Joint.h"
 
 Joint::Joint(std::string name, int index, const glm::mat4 &bindLocalTransform)
-        : m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(bindLocalTransform)
+        : m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(glm::transpose(bindLocalTransform))
 {
-
 }
 
 void Joint::addChild(const Joint &childJoint)
@@ -18,10 +17,10 @@ void Joint::addChild(const Joint &childJoint)
 
 void Joint::calculateInverseBindTransform(const glm::mat4 &parentBindTransform)
 {
-    auto bindTransform = parentBindTransform * m_LocalBindTransform;
+    auto bindTransform =  parentBindTransform * m_LocalBindTransform;
     m_InverseBindTransformation = glm::inverse(bindTransform);
 
-    for (auto &child :m_Children)
+    for (auto &child : m_Children)
     {
         child.calculateInverseBindTransform(bindTransform);
     }
@@ -70,4 +69,9 @@ const glm::mat4 &Joint::getAnimatedTransform() const
 const std::vector<Joint> &Joint::children() const
 {
     return m_Children;
+}
+
+void Joint::applyCorrection(const glm::mat4 &correction)
+{
+	m_LocalBindTransform = correction * m_LocalBindTransform;
 }

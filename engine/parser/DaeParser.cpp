@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <glm/ext/matrix_transform.hpp>
 
 #include "DaeParser.h"
 #include "../util/Util.h"
@@ -256,6 +257,8 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
 
 Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
+	static const glm::mat4 correction = glm::rotate(glm::mat4{1.0f}, glm::radians(-90.0f), glm::vec3{1, 0, 0});
+
     std::string line;
     bool initialized = false;
     Joint root;
@@ -284,6 +287,8 @@ Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::s
             }
         }
     }
+
+    root.applyCorrection(correction);
     return root;
 }
 
