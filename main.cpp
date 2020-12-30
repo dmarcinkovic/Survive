@@ -38,7 +38,7 @@ int main()
 	{
 		Display::clearWindow();
 
-//		animator.update();
+		animator.update();
 
 		renderer.render(camera);
 
