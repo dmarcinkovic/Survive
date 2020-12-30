@@ -56,6 +56,8 @@ std::pair<Joint, int> DaeParser::getJointData() const
 
 void DaeParser::loadGeometry(std::ifstream &reader)
 {
+	static const glm::mat4 correction = glm::rotate(glm::mat4{1.0f}, glm::radians(-90.0f), glm::vec3{1, 0, 0});
+
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> textures;
@@ -78,9 +80,9 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 		{
 			m_VertexData.indicesLine = line;
 			m_VertexData.size = coordinatesSize + 1;
-			m_VertexData.vertices = vertices;
+			m_VertexData.vertices = applyCorrectionToVertices(vertices, correction);
 			m_VertexData.textures = textures;
-			m_VertexData.normals = normals;
+			m_VertexData.normals = applyCorrectionToVertices(normals, correction);
 			break;
 		} else if (line.find("input semantic") != -1)
 		{
@@ -91,12 +93,6 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 				coordinatesSize = c - '0';
 			}
 		}
-	}
-
-	std::cout << "Normals: " << normals.size() << '\n';
-	for (auto const &normal : normals)
-	{
-		std::cout << normal.x << ' ' << normal.y << ' ' << normal.z << '\n';
 	}
 }
 
