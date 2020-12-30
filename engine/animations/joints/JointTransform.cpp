@@ -10,9 +10,9 @@
 JointTransform::JointTransform(const glm::vec3 &position, const Quaternion &quaternion)
 		: m_Position(position), m_Rotation(quaternion)
 {
-//	std::cout << "Position: " << m_Position.x << ' ' << m_Position.y << ' ' << m_Position.z << '\n';
-//	auto q = quaternion.getQuaternion();
-//	std::cout << "Quaternion: " << q.x << ' ' << q.y << ' ' << q.z << ' ' << q.w << "\n\n";
+	std::cout << "Position: " << m_Position.x << ' ' << m_Position.y << ' ' << m_Position.z << '\n';
+	auto q = quaternion.getQuaternion();
+	std::cout << "Quaternion: " << q.x << ' ' << q.y << ' ' << q.z << ' ' << q.w << "\n\n";
 }
 
 glm::mat4 JointTransform::getLocalTransform() const

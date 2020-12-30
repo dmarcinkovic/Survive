@@ -419,9 +419,9 @@ DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData, const s
 		for (auto const &j : animationData)
 		{
 			const glm::mat4 &mat = j.transforms[i];
-			glm::vec3 translation{mat[0][3], mat[1][3], mat[2][3]};
 
 			glm::mat4 matrix = j.jointName == rootJoint ? correction * glm::transpose(mat) : glm::transpose(mat);
+			glm::vec3 translation{matrix[3][0], matrix[3][1], matrix[3][2]};
 
 			JointTransform jointTransform(translation, Quaternion::fromMatrix(matrix));
 			pose.insert({j.jointName, jointTransform});
