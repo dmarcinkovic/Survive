@@ -12,38 +12,38 @@
 
 int main()
 {
-    constexpr int width = 800;
-    constexpr int height = 800;
+	constexpr int width = 800;
+	constexpr int height = 800;
 
-    Display display(width, height, "Survive");
+	Display display(width, height, "Survive");
 
-    Loader loader;
+	Loader loader;
 
-    DaeParser daeParser;
-    TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
-                                Loader::loadTexture("res/character.png"));
+	DaeParser daeParser;
+	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
+								Loader::loadTexture("res/character.png"));
 
-    auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-    AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30});
+	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30});
 
-    Animator animator(daeParser.getAnimation(), object);
+	Animator animator(daeParser.getAnimation(), object);
 
-    Camera camera{};
-    Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
+	Camera camera{};
+	Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
 
-    Renderer3D renderer(light);
-    renderer.addAnimatedObject(object);
+	Renderer3D renderer(light);
+	renderer.addAnimatedObject(object);
 
-    while (display.isRunning())
-    {
-        Display::clearWindow();
+	while (display.isRunning())
+	{
+		Display::clearWindow();
 
-        animator.update();
+		animator.update();
 
-        renderer.render(camera);
+		renderer.render(camera);
 
-        display.update();
-    }
+		display.update();
+	}
 
-    return 0;
+	return 0;
 }
