@@ -254,9 +254,9 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
 	resultWeights.emplace_back(weight.z);
 
 	const auto &id = m_VertexData.jointIds[index];
-	resultWeights.emplace_back(id.x);
-	resultWeights.emplace_back(id.y);
-	resultWeights.emplace_back(id.z);
+	resultIds.emplace_back(id.x);
+	resultIds.emplace_back(id.y);
+	resultIds.emplace_back(id.z);
 }
 
 Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
