@@ -8,6 +8,7 @@
 
 #include <GL/gl.h>
 #include <imgui.h>
+#include <utility>
 
 class Editor
 {
@@ -28,6 +29,8 @@ public:
 	static void dock();
 
 	static void newFrame();
+
+	[[nodiscard]] std::pair<int, int> getSceneWindowSize() const;
 
 private:
 	void renderSceneWindow();

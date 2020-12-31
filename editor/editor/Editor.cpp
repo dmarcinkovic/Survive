@@ -75,3 +75,8 @@ void Editor::renderPropertyWindow()
 				ImGui::GetIO().Framerate);
 	ImGui::End();
 }
+
+std::pair<int, int> Editor::getSceneWindowSize() const
+{
+	return {m_SceneSize.x, m_SceneSize.y};
+}
