@@ -9,8 +9,9 @@
 Renderer3D::Renderer3D(const Light &light)
         : m_Light(light), m_ObjectRenderer(light),
           m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
-          m_AnimationRenderer(light), m_Scene(m_SceneFrameBuffer.createTexture())
+          m_AnimationRenderer(light), m_SceneSize(Display::getWindowSize<int>())
 {
+	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
 void Renderer3D::render(const Camera &camera) const

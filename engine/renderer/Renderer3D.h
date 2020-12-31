@@ -27,6 +27,8 @@ private:
     FrameBuffer m_ShadowFrameBuffer;
     const GLuint m_ShadowMap;
 
+    std::pair<int, int> m_SceneSize;
+
     FrameBuffer m_SceneFrameBuffer;
     GLuint m_Scene{};
 
