@@ -7,9 +7,10 @@
 #include "../display/Display.h"
 
 Renderer3D::Renderer3D(const Light &light)
-        : m_Light(light), m_ObjectRenderer(light),
-          m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
-          m_AnimationRenderer(light), m_SceneSize(Display::getWindowSize<int>())
+		: m_Light(light), m_ObjectRenderer(light),
+		  m_ShadowMap(
+				  m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
+		  m_AnimationRenderer(light), m_SceneSize(Display::getWindowSize<int>())
 {
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
@@ -17,7 +18,7 @@ Renderer3D::Renderer3D(const Light &light)
 void Renderer3D::render(const Camera &camera) const
 {
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-                                      Constants::SHADOW_HEIGHT);
+											Constants::SHADOW_HEIGHT);
 
 	m_ObjectRenderer.render(camera, m_ShadowMap);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
@@ -60,6 +61,8 @@ void Renderer3D::removeOutlineToObject()
 
 void Renderer3D::renderToFbo(const Camera &camera) const
 {
+	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
+
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
@@ -67,7 +70,8 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
 
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT);
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+											Constants::SHADOW_HEIGHT);
 }
 
 GLuint Renderer3D::getRenderedTexture() const
