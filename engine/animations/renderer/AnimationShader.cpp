@@ -54,10 +54,4 @@ void AnimationShader::loadJointTransforms(const std::vector<glm::mat4> &jointTra
     {
         loadMatrix(m_LocationJointTransforms[i], jointTransforms[i]);
     }
-
-    for (int i = jointTransforms.size(); i < MAX_JOINTS; ++i)
-    {
-        glm::mat4 emptyMatrix{};
-        loadMatrix(m_LocationJointTransforms[i], emptyMatrix);
-    }
 }
