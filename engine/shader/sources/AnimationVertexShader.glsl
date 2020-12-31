@@ -45,7 +45,7 @@ void main()
 
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
-//    surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
-    surfaceNormal = totalNormal.xyz;
+    surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
+//    surfaceNormal = totalNormal.xyz;
     surfaceNormal = normalize(surfaceNormal);
 }

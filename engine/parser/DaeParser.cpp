@@ -132,7 +132,7 @@ Model DaeParser::parseIndices(Loader &loader)
 	std::vector<float> resultNormals;
 	std::vector<float> resultTextures;
 	std::vector<float> resultWeights;
-	std::vector<unsigned> resultIds;
+	std::vector<int> resultIds;
 
 	for (int i = 0; i < numbers.size(); i += m_VertexData.size)
 	{
@@ -245,7 +245,7 @@ std::vector<std::string> DaeParser::getData(std::string &line)
 	return Util::split(line.substr(start + 1, end - start - 1), ' ');
 }
 
-void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
+void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<int> &resultIds,
 								  unsigned int index)
 {
 	const auto &weight = m_VertexData.jointWeights[index];

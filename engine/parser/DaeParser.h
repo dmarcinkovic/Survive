@@ -71,7 +71,7 @@ private:
 
     static std::vector<std::string> getData(std::string &line);
 
-    void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+    void processJointsData(std::vector<float> &resultWeights, std::vector<int> &resultIds, unsigned index);
 
     static glm::mat4 getJointTransform(std::string &line);
 
