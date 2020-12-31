@@ -15,6 +15,7 @@ private:
 	ImGuiIO &m_Io;
 	GLuint m_Scene;
 	ImVec4 m_ClearColor;
+	ImVec2 m_SceneSize;
 
 	bool m_ShowDemoWindow = true;
 	bool m_ShowAnotherWindow = false;
@@ -29,7 +30,7 @@ public:
 	static void newFrame();
 
 private:
-	void renderSceneWindow() const;
+	void renderSceneWindow();
 
 	void renderPropertyWindow();
 };

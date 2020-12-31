@@ -8,10 +8,10 @@
 #include "Editor.h"
 
 Editor::Editor(GLuint scene)
-	: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
+		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
 	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
-					 ImGuiWindowFlags_UnsavedDocument;
+					   ImGuiWindowFlags_UnsavedDocument;
 }
 
 void Editor::render()
@@ -35,16 +35,16 @@ void Editor::dock()
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 }
 
-void Editor::renderSceneWindow() const
+void Editor::renderSceneWindow()
 {
 	ImGui::Begin("Scene window");
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
-	ImVec2 windowSize = ImGui::GetWindowSize();
+	m_SceneSize = ImGui::GetWindowSize();
 
 	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-										 ImVec2(pos.x + windowSize.x, pos.y + windowSize.y), ImVec2(0, 1),
+										 ImVec2(pos.x + m_SceneSize.x, pos.y + m_SceneSize.y), ImVec2(0, 1),
 										 ImVec2(1, 0));
 
 	ImGui::End();
