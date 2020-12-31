@@ -22,11 +22,15 @@ void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(4);
 }
 
 void Renderer3DUtil::finishRenderingEntity()
 {
     TexturedModel::unbind();
+    glDisableVertexAttribArray(4);
+    glDisableVertexAttribArray(3);
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);

@@ -41,7 +41,7 @@ void main()
         totalNormal += worldNormal * jointWeigth[i];
     }
 
-    gl_Position = projectionMatrix * viewMatrix * totalLocalPos;
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * totalLocalPos;
 
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
