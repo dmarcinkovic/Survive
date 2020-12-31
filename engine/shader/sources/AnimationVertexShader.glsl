@@ -36,12 +36,16 @@ void main()
         mat4 jointTransform = jointTransforms[jointID[i]];
         vec4 pose = jointTransform * vec4(position, 1.0);
         totalLocalPos += pose * jointWeigth[i];
+
+        vec4 worldNormal = jointTransform * vec4(normal, 0.0);
+        totalNormal += worldNormal * jointWeigth[i];
     }
 
     gl_Position = projectionMatrix * viewMatrix * totalLocalPos;
 
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
-    surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
+//    surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
+    surfaceNormal = totalNormal.xyz;
     surfaceNormal = normalize(surfaceNormal);
 }
