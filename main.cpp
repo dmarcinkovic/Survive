@@ -1,7 +1,3 @@
-#include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
-#include <imgui_internal.h>
 #include <iostream>
 
 #include "engine/display/Display.h"
@@ -12,6 +8,7 @@
 #include "engine/light/Light.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "editor/editor/Editor.h"
 
 int main()
 {
@@ -40,66 +37,15 @@ int main()
 	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
 	renderer.addTerrain(terrain);
 
-	bool showDemoWindow = true;
-	bool showAnotherWindow = false;
-	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	ImGuiIO &io = ImGui::GetIO();
-	io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
-					 ImGuiWindowFlags_UnsavedDocument;
+	Editor editor(renderer.getRenderedTexture());
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-//		ImGui::ShowDemoWindow(&showDemoWindow);
-
-		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			ImGui::Begin("Hello, world!");
-			ImGui::Text("This is some useful text.");
-			ImGui::Checkbox("Demo Window", &showDemoWindow);
-			ImGui::Checkbox("Another Window", &showAnotherWindow);
-
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			ImGui::ColorEdit3("clear color", reinterpret_cast<float *>(&clearColor));
-
-			if (ImGui::Button("Button"))
-			{
-				counter++;
-			}
-
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-						ImGui::GetIO().Framerate);
-			ImGui::End();
-		}
-
-		{
-			ImGui::Begin("Scene window");
-			ImVec2 pos = ImGui::GetCursorScreenPos();
-			auto textureId = reinterpret_cast<ImTextureID>(renderer.getRenderedTexture());
-
-			ImVec2 windowSize = ImGui::GetWindowSize();
-
-			ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-												 ImVec2(pos.x + windowSize.x, pos.y + windowSize.y), ImVec2(0, 1),
-												 ImVec2(1, 0));
-
-			ImGui::End();
-		}
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		Editor::newFrame();
+		Editor::dock();
+		editor.render();
 
 		renderer.renderToFbo(camera);
 
