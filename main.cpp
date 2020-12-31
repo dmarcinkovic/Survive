@@ -44,6 +44,10 @@ int main()
 	bool showAnotherWindow = false;
 	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+	ImGuiIO &io = ImGui::GetIO();
+	io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
+					 ImGuiWindowFlags_UnsavedDocument;
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
@@ -52,11 +56,7 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGuiIO &io = ImGui::GetIO();
-		io.ConfigFlags = static_cast<unsigned>(io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
-						 ImGuiWindowFlags_UnsavedDocument;
-
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_DockSpace);
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 //		ImGui::ShowDemoWindow(&showDemoWindow);
 
 		{
