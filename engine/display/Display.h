@@ -68,6 +68,8 @@ private:
     static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 
     void addCallbacks() const;
+
+    void initializeImGui();
 };
 
 

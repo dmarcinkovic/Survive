@@ -37,15 +37,10 @@ Display::Display(int width, int height, const char *title)
     glfwSwapInterval(1);
 
     glewInit();
-
     addCallbacks();
+	initializeImGui();
 
-    m_LastFrameTime = glfwGetTime();
-
-    ImGui::CreateContext();
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
+	m_LastFrameTime = glfwGetTime();
 
     m_Width = width;
     m_Height = height;
@@ -184,4 +179,12 @@ void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 void Display::addScrollListener(const ScrollListener &listener)
 {
     m_ScrollListeners.emplace_back(listener);
+}
+
+void Display::initializeImGui()
+{
+	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+	ImGui_ImplOpenGL3_Init("#version 130");
 }
