@@ -7,15 +7,15 @@
 
 struct Constants
 {
-    constexpr static float NEAR = 0.1f;
-    constexpr static float FAR = 1000.0f;
-    constexpr static float LEFT = -10.0f;
-    constexpr static float RIGHT = 40.0f;
-    constexpr static float BOTTOM = -10.0f;
-    constexpr static float TOP = 40.0f;
-    constexpr static float FOV = 70.0f;
-    constexpr static const int SHADOW_WIDTH = 1024;
-    constexpr static const int SHADOW_HEIGHT = 1024;
+	constexpr static float NEAR = 0.1f;
+	constexpr static float FAR = 1000.0f;
+	constexpr static float LEFT = -10.0f;
+	constexpr static float RIGHT = 40.0f;
+	constexpr static float BOTTOM = -10.0f;
+	constexpr static float TOP = 40.0f;
+	constexpr static float FOV = 70.0f;
+	constexpr static const int SHADOW_WIDTH = 1024;
+	constexpr static const int SHADOW_HEIGHT = 1024;
 };
 
 #endif //SURVIVE_CONSTANTS_H

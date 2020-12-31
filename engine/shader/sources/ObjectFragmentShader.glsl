@@ -17,6 +17,11 @@ out vec4 outColor;
 in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
 
+uniform samplerCube skybox;
+uniform float reflectiveFactor;
+uniform float refractionFactor;
+uniform float refractionIndex;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -28,16 +33,16 @@ float shadowCalculation(vec4 lightSpacePosition)
     float bias = 0.005;
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-    for(int x = -1; x <= 1; ++x)
+    for (int x = -1; x <= 1; ++x)
     {
-        for(int y = -1; y <= 1; ++y)
+        for (int y = -1; y <= 1; ++y)
         {
             float pcfDepth = texture(shadowMap, clipSpace.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
     shadow /= 9.0;
-//    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    //    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
 
     if (clipSpace.z > 1.0)
     {
@@ -76,5 +81,13 @@ void main()
     vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
 
     vec3 totalColor = (diffuse * (1- shadow) + ambient + specular) * textureColor.rgb;
-    outColor = vec4(totalColor, 1.0);
+
+    vec3 R = reflect(toCameraVector, surfaceNormal);
+    vec3 reflectionColor = texture(skybox, R).rgb;
+    outColor = vec4(mix(totalColor, reflectionColor, reflectiveFactor), 1.0);
+
+    vec3 refractionVector = refract(toCameraVector, surfaceNormal, refractionIndex);
+    vec3 refractionColor = texture(skybox, refractionVector).rgb;
+
+    outColor = vec4(mix(outColor.rgb, refractionColor, refractionFactor), 1.0);
 }

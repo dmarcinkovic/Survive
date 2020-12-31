@@ -13,21 +13,21 @@
 class Font
 {
 private:
-    std::unordered_map<int, Character> m_Characters;
-    GLuint m_TextureId{};
+	std::unordered_map<int, Character> m_Characters;
+	GLuint m_TextureId{};
 
 public:
-    Font(const char *textureAtlas, Loader &loader);
+	Font(const char *textureAtlas, Loader &loader);
 
-    Font() = default;
+	Font() = default;
 
-    void loadFontFromFntFile(const char *fntFile);
+	void loadFontFromFntFile(const char *fntFile);
 
-    void loadFontFromJsonFile(const char *jsonFile);
+	void loadFontFromJsonFile(const char *jsonFile);
 
-    const Character &getCharacter(int ascii) const;
+	const Character &getCharacter(int ascii) const;
 
-    GLuint getMTextureId() const;
+	GLuint getMTextureId() const;
 };
 
 

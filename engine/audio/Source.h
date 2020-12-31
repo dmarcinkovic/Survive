@@ -11,14 +11,14 @@
 class Source
 {
 private:
-    ALuint m_Source{};
+	ALuint m_Source{};
 
 public:
-    explicit Source(const glm::vec3 &sourcePosition);
+	explicit Source(const glm::vec3 &sourcePosition);
 
-    ~Source();
+	~Source();
 
-    void play(ALuint buffer) const;
+	void play(ALuint buffer) const;
 };
 
 

@@ -11,39 +11,39 @@
 class TerrainShader : public Shader
 {
 private:
-    constexpr static const char *VERTEX_FILE = "engine/shader/sources/TerrainVertexShader.glsl";
-    constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/TerrainFragmentShader.glsl";
+	constexpr static const char *VERTEX_FILE = "engine/shader/sources/TerrainVertexShader.glsl";
+	constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/TerrainFragmentShader.glsl";
 
-    GLuint m_LocationTransformationMatrix{};
-    GLuint m_LocationProjectionMatrix{};
-    GLuint m_LocationViewMatrix{};
+	GLuint m_LocationTransformationMatrix{};
+	GLuint m_LocationProjectionMatrix{};
+	GLuint m_LocationViewMatrix{};
 
-    GLuint m_LocationLightProjection{};
-    GLuint m_LocationLightView{};
+	GLuint m_LocationLightProjection{};
+	GLuint m_LocationLightView{};
 
-    GLuint m_LocationBlendMap{};
-    GLuint m_LocationGrass{};
-    GLuint m_LocationDirt{};
-    GLuint m_LocationRock{};
-    GLuint m_LocationFlowers{};
+	GLuint m_LocationBlendMap{};
+	GLuint m_LocationGrass{};
+	GLuint m_LocationDirt{};
+	GLuint m_LocationRock{};
+	GLuint m_LocationFlowers{};
 
 public:
-    TerrainShader();
+	TerrainShader();
 
-    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-    void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-    void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
-    void loadLightProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+	void loadLightProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-    void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
+	void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
 
-    void loadTextures() const;
+	void loadTextures() const;
 
 private:
-    void getUniformLocations();
+	void getUniformLocations();
 };
 
 

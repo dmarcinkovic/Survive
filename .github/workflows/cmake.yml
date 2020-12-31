@@ -1,0 +1,42 @@
+name: CMake
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  Linux:
+    name: Survive
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+            submodules: recursive
+
+      - name: Install compiler
+        run: |
+          sudo apt-get install g++-10
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
+
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
+          make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Artifact
+          path: ${{github.workspace}}/build

@@ -14,20 +14,20 @@
 class AnimatedObject : public Object3D
 {
 private:
-    Joint m_RootJoint;
-    int m_NumberOfJoints;
+	Joint m_RootJoint;
+	int m_NumberOfJoints;
 
 public:
-    AnimatedObject(Joint rootJoint, int numberOfJoints, const TexturedModel &texture, const glm::vec3 &position,
-                   const glm::vec3 &rotation = glm::vec3{0, 0, 0}, bool isTransparent = false,
-                   float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
+	AnimatedObject(Joint rootJoint, int numberOfJoints, const TexturedModel &texture, const glm::vec3 &position,
+				   const glm::vec3 &rotation = glm::vec3{0, 0, 0}, bool isTransparent = false,
+				   const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
 
-    Joint &rootJoint();
+	Joint &rootJoint();
 
-    [[nodiscard]] std::vector<glm::mat4> getJointTransforms() const;
+	[[nodiscard]] std::vector<glm::mat4> getJointTransforms() const;
 
 private:
-    void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
+	void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
 };
 
 

@@ -11,16 +11,22 @@
 class Texture
 {
 private:
-    GLuint m_TextureId;
+	GLuint m_TextureId{};
 
 public:
-    explicit Texture(GLuint textureId);
+	explicit Texture(GLuint textureId);
 
-    void bindTexture(int textureIndex) const;
+	Texture() = default;
 
-    static void unbindTexture();
+	void bindTexture(int textureIndex) const;
 
-    [[nodiscard]] GLuint textureId() const;
+	void bindCubeTexture(int textureIndex) const;
+
+	static void unbindCubeTexture();
+
+	static void unbindTexture();
+
+	[[nodiscard]] GLuint textureId() const;
 };
 
 #endif //SURVIVE_TEXTURE_H

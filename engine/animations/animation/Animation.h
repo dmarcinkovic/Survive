@@ -12,15 +12,15 @@
 class Animation
 {
 private:
-    float m_Length;
-    std::vector<KeyFrame> m_KeyFrames;
+	float m_Length;
+	std::vector<KeyFrame> m_KeyFrames;
 
 public:
-    Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames);
+	Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames);
 
-    [[nodiscard]] float getLength() const;
+	[[nodiscard]] float getLength() const;
 
-    [[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
+	[[nodiscard]] const std::vector<KeyFrame> &keyFrames() const;
 };
 
 

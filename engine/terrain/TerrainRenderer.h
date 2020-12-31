@@ -13,26 +13,26 @@
 class TerrainRenderer
 {
 private:
-    constexpr static const float rotationX = 90.0f;
+	constexpr static const float rotationX = 90.0f;
 
-    TerrainShader m_Shader;
-    Terrain *m_Terrain{};
+	TerrainShader m_Shader;
+	Terrain *m_Terrain{};
 
-    std::vector<Texture> m_Textures;
+	std::vector<Texture> m_Textures;
 
 public:
-    TerrainRenderer();
+	TerrainRenderer();
 
-    void render(const Camera &camera, const Light &light, GLuint shadowMap) const;
+	void render(const Camera &camera, const Light &light, GLuint shadowMap) const;
 
-    void addTerrain(Terrain &terrain);
+	void addTerrain(Terrain &terrain);
 
 private:
-    void prepareRendering() const;
+	void prepareRendering() const;
 
-    static void finishRendering();
+	static void finishRendering();
 
-    void renderShadow(GLuint shadowMap, const Light &light) const;
+	void renderShadow(GLuint shadowMap, const Light &light) const;
 };
 
 

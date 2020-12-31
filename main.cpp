@@ -34,7 +34,7 @@ int main()
 	renderer.add3DObject(dragon);
 	renderer.add3DObject(lamp);
 
-	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, 100, 100, 1);
+	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, glm::vec3{100, 100, 1});
 	renderer.addTerrain(terrain);
 
 	Editor editor(renderer.getRenderedTexture());

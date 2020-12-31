@@ -19,20 +19,20 @@
 class AnimationRenderer
 {
 private:
-    AnimationShader m_Shader;
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<AnimatedObject>>, TextureHash> m_Objects;
+	AnimationShader m_Shader;
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<AnimatedObject>>, TextureHash> m_Objects;
 
-    const Light &m_Light;
+	const Light &m_Light;
 
 public:
-    explicit AnimationRenderer(const Light &light);
+	explicit AnimationRenderer(const Light &light);
 
-    void render(const Camera &camera) const;
+	void render(const Camera &camera) const;
 
-    void addAnimatedModel(AnimatedObject &entity);
+	void addAnimatedModel(AnimatedObject &entity);
 
 private:
-    void renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const;
+	void renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const;
 };
 
 #endif //SURVIVE_ANIMATIONRENDERER_H

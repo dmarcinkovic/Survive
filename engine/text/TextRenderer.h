@@ -14,13 +14,13 @@
 class TextRenderer
 {
 private:
-    TextShader m_Shader{};
-    std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
+	TextShader m_Shader{};
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
 
 public:
-    void renderText() const;
+	void renderText() const;
 
-    void addText(Text &text, Loader &loader);
+	void addText(Text &text, Loader &loader);
 };
 
 

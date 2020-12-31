@@ -14,29 +14,30 @@
 class Animator
 {
 private:
-    Animation m_Animation;
-    float m_AnimationTime{};
+	Animation m_Animation;
+	float m_AnimationTime{};
 
-    AnimatedObject m_Model;
+	AnimatedObject m_Model;
 
 public:
-    Animator(Animation animation, AnimatedObject animatedModel);
+	Animator(Animation animation, AnimatedObject animatedModel);
 
-    void update();
+	void update();
 
 private:
-    [[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;
+	[[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;
 
-    void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
-                           const glm::mat4 &parentTransformation);
+	void applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
+						   const glm::mat4 &parentTransformation);
 
-    void increaseAnimationTime();
+	void increaseAnimationTime();
 
-    [[nodiscard]] std::pair<KeyFrame, KeyFrame> nextAndPreviousFrames() const;
+	[[nodiscard]] std::pair<KeyFrame, KeyFrame> nextAndPreviousFrames() const;
 
-    [[nodiscard]] float calculateProgression(const KeyFrame &prev, const KeyFrame &next) const;
+	[[nodiscard]] float calculateProgression(const KeyFrame &prev, const KeyFrame &next) const;
 
-    static std::unordered_map<std::string , glm::mat4> interpolatePoses(const KeyFrame& prev, const KeyFrame &next, float progression);
+	static std::unordered_map<std::string, glm::mat4>
+	interpolatePoses(const KeyFrame &prev, const KeyFrame &next, float progression);
 };
 
 

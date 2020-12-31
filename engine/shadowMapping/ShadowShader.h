@@ -11,24 +11,24 @@
 class ShadowShader : public Shader
 {
 private:
-    static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
-    static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ShadowFragmentShader.glsl";
+	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
+	static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ShadowFragmentShader.glsl";
 
-    GLuint m_LocationTransformationMatrix{};
-    GLuint m_LocationViewMatrix{};
-    GLuint m_LocationProjectionMatrix{};
+	GLuint m_LocationTransformationMatrix{};
+	GLuint m_LocationViewMatrix{};
+	GLuint m_LocationProjectionMatrix{};
 
 public:
-    ShadowShader();
+	ShadowShader();
 
-    void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-    void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-    void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
 private:
-    void getUniformLocations();
+	void getUniformLocations();
 };
 
 

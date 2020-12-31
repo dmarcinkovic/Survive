@@ -10,14 +10,18 @@
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../animations/animation/AnimatedObject.h"
+#include "../sky/SkyRenderer.h"
+#include "../outline/OutlineRenderer.h"
 
 class Renderer3D
 {
 private:
-    ObjectRenderer m_ObjectRenderer;
-    TerrainRenderer m_TerrainRenderer;
-    ShadowRenderer m_ShadowRenderer;
-    AnimationRenderer m_AnimationRenderer;
+	ObjectRenderer m_ObjectRenderer;
+	TerrainRenderer m_TerrainRenderer;
+	ShadowRenderer m_ShadowRenderer;
+	AnimationRenderer m_AnimationRenderer;
+	SkyRenderer m_SkyRenderer;
+	OutlineRenderer m_OutlineRenderer;
 
     const Light &m_Light;
     FrameBuffer m_ShadowFrameBuffer;
@@ -27,19 +31,25 @@ private:
     GLuint m_Scene{};
 
 public:
-    explicit Renderer3D(const Light &light);
+	explicit Renderer3D(const Light &light);
 
-    void render(const Camera &camera) const;
+	void render(const Camera &camera) const;
 
     void renderToFbo(const Camera &camera) const;
 
-    void add3DObject(Object3D &object3D);
+	void add3DObject(Object3D &object3D);
 
-    void addTerrain(Terrain &terrain);
+	void addTerrain(Terrain &terrain);
 
     GLuint getRenderedTexture() const;
 
-    void addAnimatedObject(AnimatedObject &object3D);
+	void addAnimatedObject(AnimatedObject &object3D);
+
+	void addSkyboxEntity(const Entity &entity);
+
+	void addOutlineToObject(Object3D &object);
+
+	void removeOutlineToObject();
 };
 
 

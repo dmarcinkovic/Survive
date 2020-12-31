@@ -7,7 +7,7 @@
 
 enum class BodyType
 {
-    DYNAMIC, STATIC
+	DYNAMIC, STATIC
 };
 
 #endif //SURVIVE_BODYTYPE_H

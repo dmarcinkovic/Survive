@@ -13,40 +13,44 @@
 class TexturedModel
 {
 private:
-    GLuint m_Vao{};
-    size_t m_VertexCount{};
-    Texture m_Texture;
+	GLuint m_Vao{};
+	size_t m_VertexCount{};
+	Texture m_Texture;
 
 public:
-    TexturedModel(const Model &model, GLuint textureId);
+	TexturedModel(const Model &model, GLuint textureId);
 
-    TexturedModel();
+	TexturedModel();
 
-    void bind() const;
+	void bind() const;
 
-    void bindTexture(int index) const;
+	void bindTexture(int index) const;
 
-    static void unbind();
+	void bindCubeTexture(int index) const;
 
-    [[nodiscard]] GLuint vaoID() const;
+	static void unbind();
 
-    void setVertexCount(int vertexCount);
+	[[nodiscard]] const Texture &getTexture() const;
 
-    [[nodiscard]] size_t vertexCount() const;
+	[[nodiscard]] GLuint vaoID() const;
 
-    bool operator==(const TexturedModel &rhs) const;
+	void setVertexCount(int vertexCount);
 
-    [[nodiscard]] bool isValidTexture() const;
+	[[nodiscard]] size_t vertexCount() const;
 
-    friend class TextureHash;
+	bool operator==(const TexturedModel &rhs) const;
+
+	[[nodiscard]] bool isValidTexture() const;
+
+	friend class TextureHash;
 };
 
 struct TextureHash
 {
-    std::size_t operator()(const TexturedModel &texture) const noexcept
-    {
-        return texture.m_Vao ^ texture.m_Texture.textureId() ^ texture.m_VertexCount;
-    }
+	std::size_t operator()(const TexturedModel &texture) const noexcept
+	{
+		return texture.m_Vao ^ texture.m_Texture.textureId() ^ texture.m_VertexCount;
+	}
 };
 
 
