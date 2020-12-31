@@ -25,7 +25,7 @@ public:
 	void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
 							 int height) const;
 
-	GLuint createTexture();
+	GLuint createTexture(int width, int height);
 
 	GLuint attachToDepthBufferTexture(int width, int height);
 

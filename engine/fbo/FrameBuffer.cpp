@@ -28,11 +28,10 @@ void FrameBuffer::unbindFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint FrameBuffer::createTexture()
+GLuint FrameBuffer::createTexture(int width, int height)
 {
 	bindFrameBuffer();
 
-	auto[width, height] = Display::getWindowSize<int>();
 	GLuint texture = createColorTexture(width, height);
 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
