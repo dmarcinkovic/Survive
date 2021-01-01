@@ -36,6 +36,8 @@ private:
 	void renderSceneWindow();
 
 	void renderPropertyWindow();
+
+	static void setColorStyle();
 };
 
 

@@ -12,6 +12,8 @@ Editor::Editor(GLuint scene)
 {
 	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
+
+	setColorStyle();
 }
 
 void Editor::render()
@@ -79,4 +81,18 @@ void Editor::renderPropertyWindow()
 std::pair<int, int> Editor::getSceneWindowSize() const
 {
 	return {m_SceneSize.x, m_SceneSize.y};
+}
+
+void Editor::setColorStyle()
+{
+	ImGuiStyle *style = &ImGui::GetStyle();
+	ImVec4 *colors = style->Colors;
+
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 0.87f);
+
+	colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.07f, 0.1f, 1.0f);
+	colors[ImGuiCol_TabHovered] = ImVec4(0.13f, 0.1f, 0.13f, 0.8f);
+	colors[ImGuiCol_TabActive] = ImVec4(0.306f, 0.32f, 0.329f, 1);
+	colors[ImGuiCol_TabUnfocused] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
+	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
 }
