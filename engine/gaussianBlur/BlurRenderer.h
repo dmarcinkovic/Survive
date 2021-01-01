@@ -23,6 +23,8 @@ private:
 	FrameBuffer m_Fbo;
 	Model m_Model;
 
+	int m_Width, m_Height;
+
 	Texture m_Texture;
 
 	HorizontalBlurRenderer m_HorizontalBlurRenderer;
