@@ -29,14 +29,20 @@ public:
 
 	GLuint attachToDepthBufferTexture(int width, int height);
 
-private:
-	void attachDepthComponent(int width, int height);
+	void bindFrameBuffer() const;
+
+	void bindDrawBuffer() const;
 
 	static void unbindFrameBuffer();
 
-	void bindFrameBuffer() const;
+	static void unbindDrawFrameBuffer();
 
 	GLuint createColorTexture(int width, int height);
+
+	static void attachColorAttachment(GLuint texture);
+
+private:
+    void attachDepthComponent(int width, int height);
 
 	GLuint createDepthTexture(int width, int height);
 };
