@@ -15,16 +15,19 @@
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../objects/ObjectRenderer.h"
+#include "../terrain/TerrainRenderer.h"
 
 class BlurRenderer
 {
 private:
 	AnimationRenderer m_AnimationRenderer;
 	ObjectRenderer m_ObjectRenderer;
+	TerrainRenderer m_TerrainRenderer;
 
 	Loader m_Loader{};
 	FrameBuffer m_Fbo{};
 	Model m_Model;
+	const Light &m_Light;
 
 	int m_Width, m_Height;
 
@@ -43,6 +46,8 @@ public:
 	void addAnimatedObject(AnimatedObject &animatedObject);
 
 	void addObject(Object3D &object);
+
+	void addTerrain(Terrain &terrain);
 
 private:
 	void renderToFbo(const Camera &camera) const;

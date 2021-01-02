@@ -7,7 +7,7 @@
 
 BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 		: m_AnimationRenderer(light), m_ObjectRenderer(light),
-		  m_Model(m_Loader.renderQuad()), m_Texture(m_Fbo.createTexture()),
+		  m_Model(m_Loader.renderQuad()), m_Light(light), m_Texture(m_Fbo.createTexture()),
 		  m_HorizontalBlurRenderer(width, height), m_VerticalBlurRenderer(width, height)
 {
 	auto[screenWidth, screenHeight] = Display::getWindowSize();
@@ -51,6 +51,11 @@ void BlurRenderer::addObject(Object3D &object)
 	m_ObjectRenderer.add3DObject(object);
 }
 
+void BlurRenderer::addTerrain(Terrain &terrain)
+{
+	m_TerrainRenderer.addTerrain(terrain);
+}
+
 void BlurRenderer::renderToFbo(const Camera &camera) const
 {
 	glViewport(0, 0, m_Width, m_Height);
@@ -59,6 +64,8 @@ void BlurRenderer::renderToFbo(const Camera &camera) const
 	Display::clearWindow();
 
 	m_AnimationRenderer.render(camera);
+	m_ObjectRenderer.render(camera, 0);
+	m_TerrainRenderer.render(camera,m_Light, 0);
 
 	FrameBuffer::unbindDrawFrameBuffer();
 
