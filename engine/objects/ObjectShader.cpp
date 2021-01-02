@@ -47,6 +47,8 @@ void ObjectShader::loadUniformLocations()
 	m_LocationReflectiveFactor = glGetUniformLocation(m_Program, "reflectiveFactor");
 	m_LocationRefractionIndex = glGetUniformLocation(m_Program, "refractionIndex");
 	m_LocationRefractionFactor = glGetUniformLocation(m_Program, "refractionFactor");
+
+	m_LocationAddShadow = glGetUniformLocation(m_Program, "addShadow");
 }
 
 void
@@ -90,4 +92,9 @@ void ObjectShader::loadRefractionData(float refractionIndex, float refractionFac
 {
 	loadFloat(m_LocationRefractionIndex, refractionIndex);
 	loadFloat(m_LocationRefractionFactor, refractionFactor);
+}
+
+void ObjectShader::loadAddShadow(bool addShadow) const
+{
+	loadInteger(m_LocationAddShadow, addShadow);
 }
