@@ -11,6 +11,7 @@
 #include "engine/animations/animation/Animator.h"
 #include "engine/gui/GuiRenderer.h"
 #include "engine/gaussianBlur/BlurRenderer.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -26,7 +27,10 @@ int main()
 								Loader::loadTexture("res/character.png"));
 
 	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
+	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{5, -10, -30}, glm::vec3{-90, 0, 0});
+
+	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
+	Object3D dragon(dragonModel, glm::vec3{-5, -10, -30});
 
 	Animator animator(daeParser.getAnimation(), object);
 
@@ -35,6 +39,7 @@ int main()
 
 	Renderer3D renderer(light);
 	renderer.addAnimatedObject(object);
+	renderer.add3DObject(dragon);
 
 	BlurRenderer blurRenderer(light, width / 4, height / 4);
 	blurRenderer.addAnimatedObject(object);
