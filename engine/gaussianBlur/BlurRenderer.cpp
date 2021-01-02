@@ -6,16 +6,19 @@
 #include "../display/Display.h"
 
 BlurRenderer::BlurRenderer(const Light &light, int width, int height)
-		: m_Model(m_Loader.renderQuad()), m_Width(width), m_Height(height), m_HorizontalBlurRenderer(width, height),
+		: m_Model(m_Loader.renderQuad()), m_HorizontalBlurRenderer(width, height),
 		  m_VerticalBlurRenderer(width, height), m_Texture(m_Fbo.createTexture()),
 		  m_AnimationRenderer(light)
 {
+	auto[screenWidth, screenHeight] = Display::getWindowSize();
 
+	m_Width = screenWidth;
+	m_Height = screenHeight;
 }
 
 void BlurRenderer::render(const Camera &camera) const
 {
-	glViewport(0,0, m_Width, m_Height);
+	glViewport(0, 0, m_Width, m_Height);
 
 	m_Fbo.bindDrawBuffer();
 	Display::clearWindow();
@@ -25,7 +28,7 @@ void BlurRenderer::render(const Camera &camera) const
 	FrameBuffer::unbindDrawFrameBuffer();
 
 	auto[screenWidth, screenHeight] = Display::getWindowSize();
-	glViewport(0,0, screenWidth, screenHeight);
+	glViewport(0, 0, screenWidth, screenHeight);
 
 	prepareRendering();
 
