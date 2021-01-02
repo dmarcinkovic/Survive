@@ -57,7 +57,12 @@ void BlurRenderer::finishRendering()
 	glBindVertexArray(0);
 }
 
-void BlurRenderer::addObject(AnimatedObject &object)
+void BlurRenderer::addAnimatedObject(AnimatedObject &animatedObject)
 {
-	m_AnimationRenderer.addAnimatedModel(object);
+	m_AnimationRenderer.addAnimatedModel(animatedObject);
+}
+
+void BlurRenderer::addObject(Object3D &object)
+{
+	m_ObjectRenderer.add3DObject(object);
 }

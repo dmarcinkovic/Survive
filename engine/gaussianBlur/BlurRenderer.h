@@ -19,6 +19,8 @@ class BlurRenderer
 {
 private:
 	AnimationRenderer m_AnimationRenderer;
+	ObjectRenderer m_ObjectRenderer;
+
 	Loader m_Loader;
 	FrameBuffer m_Fbo;
 	Model m_Model;
@@ -37,7 +39,9 @@ public:
 
 	const Texture &getTexture() const;
 
-	void addObject(AnimatedObject &object);
+	void addAnimatedObject(AnimatedObject &animatedObject);
+
+	void addObject(Object3D &object);
 
 private:
 	void prepareRendering() const;

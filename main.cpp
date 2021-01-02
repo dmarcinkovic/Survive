@@ -37,7 +37,7 @@ int main()
 	renderer.addAnimatedObject(object);
 
 	BlurRenderer blurRenderer(light, width / 4, height / 4);
-	blurRenderer.addObject(object);
+	blurRenderer.addAnimatedObject(object);
 
 	TexturedModel model(loader.renderQuad(), blurRenderer.getTexture().textureId());
 
