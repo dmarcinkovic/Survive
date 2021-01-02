@@ -14,6 +14,7 @@
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"
+#include "../objects/ObjectRenderer.h"
 
 class BlurRenderer
 {
@@ -21,8 +22,8 @@ private:
 	AnimationRenderer m_AnimationRenderer;
 	ObjectRenderer m_ObjectRenderer;
 
-	Loader m_Loader;
-	FrameBuffer m_Fbo;
+	Loader m_Loader{};
+	FrameBuffer m_Fbo{};
 	Model m_Model;
 
 	int m_Width, m_Height;
@@ -44,6 +45,10 @@ public:
 	void addObject(Object3D &object);
 
 private:
+	void renderToFbo(const Camera &camera) const;
+
+	void renderBlur() const;
+
 	void prepareRendering() const;
 
 	static void finishRendering();
