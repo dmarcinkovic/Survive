@@ -11,7 +11,7 @@
 class FileChooser
 {
 public:
-	static void open(GLuint texture);
+	static void open();
 
 };
 
