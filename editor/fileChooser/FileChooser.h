@@ -7,12 +7,18 @@
 
 
 #include <GL/glew.h>
+#include <string>
+#include <vector>
 
 class FileChooser
 {
 public:
 	static void open();
 
+private:
+	static std::vector<std::string> listDirectory(const std::string &directory);
+
+	static std::vector<std::string> listCurrentDirectory();
 };
 
 

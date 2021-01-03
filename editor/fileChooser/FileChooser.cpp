@@ -61,3 +61,13 @@ void FileChooser::open()
 	}
 	ImGui::End();
 }
+
+std::vector<std::string> FileChooser::listDirectory(const std::string &directory)
+{
+	return std::vector<std::string>();
+}
+
+std::vector<std::string> FileChooser::listCurrentDirectory()
+{
+	return std::vector<std::string>();
+}
