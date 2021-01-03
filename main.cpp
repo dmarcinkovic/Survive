@@ -17,7 +17,7 @@ int main()
 
 	bool openItemSelected = false;
 
-	Texture directoryIcon(Loader::loadTexture("res/directory.png"));
+	Texture directoryIcon(Loader::loadTexture("res/folder.png"));
 
 	while (display.isRunning())
 	{
