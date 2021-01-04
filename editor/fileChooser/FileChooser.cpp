@@ -4,7 +4,6 @@
 
 #include <imgui.h>
 #include <filesystem>
-#include <iostream>
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
@@ -23,49 +22,46 @@ void FileChooser::open()
 		// Left
 		static int selected = 0;
 		{
-			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-			for (int i = 0; i < currentDirectory.size(); ++i)
+			static ImGuiTableFlags flags =
+					ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
+					ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+
+			const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
+			if (ImGui::BeginTable("##3ways", 3, flags))
 			{
-				const std::string &file = currentDirectory[i];
-				if (ImGui::Selectable(file.c_str(), selected == i))
+				ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
+				ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
+				ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
+				ImGui::TableHeadersRow();
+
+				for (int i = 0; i < currentDirectory.size(); ++i)
 				{
-					selected = i;
+					const std::string &file = currentDirectory[i];
+					ImGui::TableNextRow();
+
+					ImGui::TableNextColumn();
+					if (ImGui::Selectable(file.c_str(), selected == i))
+					{
+						selected = i;
+					}
+
+					ImGui::TableNextColumn();
+					if (ImGui::Selectable("Size", selected == i))
+					{
+						selected = i;
+					}
+
+					ImGui::TableNextColumn();
+					if (ImGui::Selectable("Type", selected == i))
+					{
+						selected = i;
+					}
 				}
+
+				ImGui::EndTable();
 			}
-			ImGui::EndChild();
 		}
 		ImGui::SameLine();
-
-		// Right
-		{
-			ImGui::BeginGroup();
-			ImGui::BeginChild("item view",
-							  ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-			ImGui::Text("MyObject: %d", selected);
-			ImGui::Separator();
-			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
-			{
-				if (ImGui::BeginTabItem("Description"))
-				{
-					ImGui::TextWrapped(
-							"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
-					ImGui::EndTabItem();
-				}
-				if (ImGui::BeginTabItem("Details"))
-				{
-					ImGui::Text("ID: 0123456789");
-					ImGui::EndTabItem();
-				}
-				ImGui::EndTabBar();
-			}
-			ImGui::EndChild();
-			if (ImGui::Button("Revert"))
-			{}
-			ImGui::SameLine();
-			if (ImGui::Button("Save"))
-			{}
-			ImGui::EndGroup();
-		}
 	}
 	ImGui::End();
 }
