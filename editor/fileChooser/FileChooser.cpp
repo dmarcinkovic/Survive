@@ -3,6 +3,8 @@
 //
 
 #include <imgui.h>
+#include <filesystem>
+#include <iostream>
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
@@ -35,14 +37,16 @@ void FileChooser::open()
 		// Right
 		{
 			ImGui::BeginGroup();
-			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+			ImGui::BeginChild("item view",
+							  ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
 			ImGui::Text("MyObject: %d", selected);
 			ImGui::Separator();
 			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
 			{
 				if (ImGui::BeginTabItem("Description"))
 				{
-					ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+					ImGui::TextWrapped(
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
 					ImGui::EndTabItem();
 				}
 				if (ImGui::BeginTabItem("Details"))
@@ -53,9 +57,11 @@ void FileChooser::open()
 				ImGui::EndTabBar();
 			}
 			ImGui::EndChild();
-			if (ImGui::Button("Revert")) {}
+			if (ImGui::Button("Revert"))
+			{}
 			ImGui::SameLine();
-			if (ImGui::Button("Save")) {}
+			if (ImGui::Button("Save"))
+			{}
 			ImGui::EndGroup();
 		}
 	}
@@ -64,6 +70,15 @@ void FileChooser::open()
 
 std::vector<std::string> FileChooser::listDirectory(const std::string &directory)
 {
+	std::filesystem::directory_iterator directoryIterator(directory);
+
+	std::cout << "Directory: " << directory << '\n';
+	for (auto const &file : directoryIterator)
+	{
+		std::string filename = file.path().filename();
+		std::cout << "Filename: " << filename << '\n';
+
+	}
 	return std::vector<std::string>();
 }
 

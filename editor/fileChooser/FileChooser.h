@@ -15,7 +15,7 @@ class FileChooser
 public:
 	static void open();
 
-private:
+public:
 	static std::vector<std::string> listDirectory(const std::string &directory);
 
 	static std::vector<std::string> listCurrentDirectory();
