@@ -11,7 +11,7 @@
 void FileChooser::open()
 {
 	auto[width, height] = Display::getWindowSize<float>();
-	static std::vector<File> currentDirectory = listCurrentDirectory();
+	static std::vector<File> currentDirectory = listDirectory("/home/david");
 
 	ImGui::SetNextWindowSize(ImVec2{width / 2.0f, height / 2.0f}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
@@ -34,32 +34,41 @@ void FileChooser::open()
 				ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
 				ImGui::TableHeadersRow();
 
-				for (int i = 0; i < currentDirectory.size(); ++i)
-				{
-					const File &file = currentDirectory[i];
-					ImGui::TableNextRow();
-
-					ImGui::TableNextColumn();
-					if (ImGui::Selectable(file.name.c_str(), selected == i))
-					{
-						selected = i;
-					}
-
-					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileSize(file.size).c_str(), selected == i))
-					{
-						selected = i;
-					}
-
-					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileType(file.type), selected == i))
-					{
-						selected = i;
-					}
-				}
-
 				ImGui::EndTable();
 			}
+
+			if (ImGui::BeginChild("table_pane"))
+			{
+				if (ImGui::BeginTable("###3ways", 3, flags))
+				{
+					for (int i = 0; i < currentDirectory.size(); ++i)
+					{
+						const File &file = currentDirectory[i];
+						ImGui::TableNextRow();
+
+						ImGui::TableNextColumn();
+						if (ImGui::Selectable(file.name.c_str(), selected == i))
+						{
+							selected = i;
+						}
+
+						ImGui::TableNextColumn();
+						if (ImGui::Selectable(getFileSize(file.size).c_str(), selected == i))
+						{
+							selected = i;
+						}
+
+						ImGui::TableNextColumn();
+						if (ImGui::Selectable(getFileType(file.type), selected == i))
+						{
+							selected = i;
+						}
+					}
+					ImGui::EndTable();
+				}
+				ImGui::EndChild();
+			}
+
 		}
 		ImGui::SameLine();
 	}
