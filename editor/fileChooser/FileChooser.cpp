@@ -77,12 +77,13 @@ std::vector<std::string> FileChooser::listDirectory(const std::string &directory
 	{
 		std::string filename = file.path().filename();
 		std::cout << "Filename: " << filename << '\n';
-
 	}
 	return std::vector<std::string>();
 }
 
 std::vector<std::string> FileChooser::listCurrentDirectory()
 {
-	return std::vector<std::string>();
+	auto workingDirectory = std::filesystem::current_path();
+
+	return listDirectory(std::filesystem::absolute(workingDirectory));
 }
