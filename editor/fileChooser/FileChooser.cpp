@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <iostream>
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
@@ -10,7 +11,7 @@
 void FileChooser::open()
 {
 	auto[width, height] = Display::getWindowSize<float>();
-	static std::vector<std::string> currentDirectory = listCurrentDirectory();
+	static std::vector<File> currentDirectory = listCurrentDirectory();
 
 	ImGui::SetNextWindowSize(ImVec2{width / 2.0f, height / 2.0f}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
@@ -35,11 +36,11 @@ void FileChooser::open()
 
 				for (int i = 0; i < currentDirectory.size(); ++i)
 				{
-					const std::string &file = currentDirectory[i];
+					const File &file = currentDirectory[i];
 					ImGui::TableNextRow();
 
 					ImGui::TableNextColumn();
-					if (ImGui::Selectable(file.c_str(), selected == i))
+					if (ImGui::Selectable(file.name.c_str(), selected == i))
 					{
 						selected = i;
 					}
@@ -65,21 +66,29 @@ void FileChooser::open()
 	ImGui::End();
 }
 
-std::vector<std::string> FileChooser::listDirectory(const std::string &directory)
+std::vector<File> FileChooser::listDirectory(const std::string &directory)
 {
 	std::filesystem::directory_iterator directoryIterator(directory);
-	std::vector<std::string> files;
+	std::vector<File> files;
 
-	for (auto const &file : directoryIterator)
+	for (auto const &path : directoryIterator)
 	{
-		std::string filename = file.path().filename();
-		files.emplace_back(filename);
+		File file;
+		file.name = path.path().filename();
+
+		if (path.is_regular_file())
+		{
+			file.size = path.file_size();
+		}
+
+		file.type = path.status().type();
+		files.emplace_back(file);
 	}
 
 	return files;
 }
 
-std::vector<std::string> FileChooser::listCurrentDirectory()
+std::vector<File> FileChooser::listCurrentDirectory()
 {
 	auto workingDirectory = std::filesystem::current_path();
 
