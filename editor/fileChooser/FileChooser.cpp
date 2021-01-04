@@ -107,26 +107,32 @@ std::string FileChooser::getFileSize(unsigned long fileSize)
 		return std::to_string(fileSize);
 	}
 
+	std::ostringstream stream;
+
 	double megabytes = kilobytes / BYTE;
 
 	if (megabytes < 1.0)
 	{
-		return std::to_string(kilobytes) + "K";
+		stream << std::setprecision(3) << kilobytes << "K";
+		return stream.str();
 	}
 
 	double gigabytes = megabytes / BYTE;
 
 	if (gigabytes < 1.0)
 	{
-		return std::to_string(megabytes) + "M";
+		stream << std::setprecision(3) << megabytes << "M";
+		return stream.str();
 	}
 
 	double terabytes = gigabytes / BYTE;
 
 	if (terabytes < 1.0)
 	{
-		return std::to_string(gigabytes) + "G";
+		stream << std::setprecision(3) << gigabytes << "G";
+		return stream.str();
 	}
 
-	return std::to_string(terabytes) + "T";
+	stream << std::setprecision(3) << terabytes << "T";
+	return stream.str();
 }
