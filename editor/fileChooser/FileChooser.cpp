@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <filesystem>
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"

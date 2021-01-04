@@ -7,8 +7,16 @@
 
 
 #include <GL/glew.h>
+#include <filesystem>
 #include <string>
 #include <vector>
+
+struct File
+{
+	std::string name;
+	unsigned long size;
+	std::filesystem::file_type type;
+};
 
 class FileChooser
 {
