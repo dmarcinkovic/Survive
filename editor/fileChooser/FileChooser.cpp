@@ -46,7 +46,7 @@ void FileChooser::open()
 					}
 
 					ImGui::TableNextColumn();
-					if (ImGui::Selectable("Size", selected == i))
+					if (ImGui::Selectable(getFileSize(file.size).c_str(), selected == i))
 					{
 						selected = i;
 					}
