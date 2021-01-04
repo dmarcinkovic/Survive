@@ -27,6 +27,8 @@ private:
 	static std::vector<File> listDirectory(const std::string &directory);
 
 	static std::vector<File> listCurrentDirectory();
+
+	static std::string getFileSize(unsigned long fileSize);
 };
 
 

@@ -94,3 +94,39 @@ std::vector<File> FileChooser::listCurrentDirectory()
 
 	return listDirectory(std::filesystem::absolute(workingDirectory));
 }
+
+std::string FileChooser::getFileSize(unsigned long fileSize)
+{
+	static const int BYTE = 1024;
+	auto size = static_cast<double>(fileSize);
+
+	double kilobytes = size / BYTE;
+
+	if (kilobytes < 1.0)
+	{
+		return std::to_string(fileSize);
+	}
+
+	double megabytes = kilobytes / BYTE;
+
+	if (megabytes < 1.0)
+	{
+		return std::to_string(kilobytes) + "K";
+	}
+
+	double gigabytes = megabytes / BYTE;
+
+	if (gigabytes < 1.0)
+	{
+		return std::to_string(megabytes) + "M";
+	}
+
+	double terabytes = gigabytes / BYTE;
+
+	if (terabytes < 1.0)
+	{
+		return std::to_string(gigabytes) + "G";
+	}
+
+	return std::to_string(terabytes) + "T";
+}
