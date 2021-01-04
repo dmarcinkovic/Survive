@@ -136,3 +136,30 @@ std::string FileChooser::getFileSize(unsigned long fileSize)
 	stream << std::setprecision(3) << terabytes << "T";
 	return stream.str();
 }
+
+const char *FileChooser::getFileType(std::filesystem::file_type type)
+{
+	switch (type)
+	{
+		case std::filesystem::file_type::directory :
+			return "directory";
+		case std::filesystem::file_type::none:
+			return "none";
+		case std::filesystem::file_type::not_found:
+			return "not found";
+		case std::filesystem::file_type::regular:
+			return "regular";
+		case std::filesystem::file_type::symlink:
+			return "symlink";
+		case std::filesystem::file_type::block:
+			return "block";
+		case std::filesystem::file_type::character:
+			return "character";
+		case std::filesystem::file_type::fifo:
+			return "fifo";
+		case std::filesystem::file_type::socket:
+			return "socket";
+		case std::filesystem::file_type::unknown:
+			return "unknown";
+	}
+}
