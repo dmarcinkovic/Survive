@@ -12,6 +12,7 @@
 void FileChooser::open()
 {
 	auto[width, height] = Display::getWindowSize<float>();
+	static std::vector<std::string> currentDirectory = listCurrentDirectory();
 
 	ImGui::SetNextWindowSize(ImVec2{width / 2.0f, height / 2.0f}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
@@ -23,12 +24,13 @@ void FileChooser::open()
 		static int selected = 0;
 		{
 			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < currentDirectory.size(); ++i)
 			{
-				char label[128];
-				sprintf(label, "MyObject %d", i);
-				if (ImGui::Selectable(label, selected == i))
+				const std::string &file = currentDirectory[i];
+				if (ImGui::Selectable(file.c_str(), selected == i))
+				{
 					selected = i;
+				}
 			}
 			ImGui::EndChild();
 		}
@@ -71,14 +73,15 @@ void FileChooser::open()
 std::vector<std::string> FileChooser::listDirectory(const std::string &directory)
 {
 	std::filesystem::directory_iterator directoryIterator(directory);
+	std::vector<std::string> files;
 
-	std::cout << "Directory: " << directory << '\n';
 	for (auto const &file : directoryIterator)
 	{
 		std::string filename = file.path().filename();
-		std::cout << "Filename: " << filename << '\n';
+		files.emplace_back(filename);
 	}
-	return std::vector<std::string>();
+
+	return files;
 }
 
 std::vector<std::string> FileChooser::listCurrentDirectory()
