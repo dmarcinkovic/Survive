@@ -52,7 +52,7 @@ void FileChooser::open()
 					}
 
 					ImGui::TableNextColumn();
-					if (ImGui::Selectable("Type", selected == i))
+					if (ImGui::Selectable(getFileType(file.type), selected == i))
 					{
 						selected = i;
 					}
