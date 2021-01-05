@@ -35,6 +35,9 @@ void FileChooser::open(GLuint icon)
 
 		ImGui::InputText("", buffer, 255);
 
+		ImGui::SameLine();
+		helpMarker("This is help message");
+
 		static int selected = 0;
 		{
 			static ImGuiTableFlags flags =
@@ -228,5 +231,18 @@ const char *FileChooser::getFileType(std::filesystem::file_type type)
 			return "socket";
 		case std::filesystem::file_type::unknown:
 			return "unknown";
+	}
+}
+
+void FileChooser::helpMarker(const char *description)
+{
+	ImGui::TextDisabled("(?)");
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(description);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
 	}
 }
