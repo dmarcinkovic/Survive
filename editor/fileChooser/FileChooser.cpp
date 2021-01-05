@@ -13,7 +13,10 @@ void FileChooser::open()
 	auto[width, height] = Display::getWindowSize<float>();
 	static std::vector<File> currentDirectory = listDirectory("/home/david");
 
-	ImGui::SetNextWindowSize(ImVec2{width / 2.0f, height / 2.0f}, ImGuiCond_Once);
+	float windowWidth = width / 2.0f;
+	float windowHeight = height / 2.0f;
+
+	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
 	bool p_open = true;
@@ -37,7 +40,7 @@ void FileChooser::open()
 				ImGui::EndTable();
 			}
 
-			if (ImGui::BeginChild("table_pane"))
+			if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 			{
 				if (ImGui::BeginTable("###3ways", 3, flags))
 				{
@@ -69,6 +72,25 @@ void FileChooser::open()
 				ImGui::EndChild();
 			}
 
+			if (ImGui::BeginChild("text box"))
+			{
+				char buf[255];
+				ImGui::InputTextWithHint("", "Hint", buf, 255);
+
+				ImGui::SameLine();
+
+				ImGuiStyle *style = &ImGui::GetStyle();
+				ImVec4 *colors = style->Colors;
+				colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
+				ImGui::Button("Cancel");
+
+				ImGui::SameLine();
+
+				colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
+				ImGui::Button("Open");
+
+				ImGui::EndChild();
+			}
 		}
 		ImGui::SameLine();
 	}
