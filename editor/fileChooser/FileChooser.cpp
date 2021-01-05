@@ -22,7 +22,12 @@ void FileChooser::open(GLuint icon)
 	bool p_open = true;
 	if (ImGui::Begin("Open", &p_open))
 	{
-		// Left
+		ImGui::ArrowButton("left", ImGuiDir_Left);
+		ImGui::SameLine();
+		ImGui::ArrowButton("right", ImGuiDir_Right);
+		ImGui::SameLine();
+		ImGui::ArrowButton("up", ImGuiDir_Up);
+
 		static int selected = 0;
 		{
 			static ImGuiTableFlags flags =
