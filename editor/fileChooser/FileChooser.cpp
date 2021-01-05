@@ -74,8 +74,10 @@ void FileChooser::open()
 
 			if (ImGui::BeginChild("text box"))
 			{
-				char buf[255];
-				ImGui::InputTextWithHint("", "Hint", buf, 255);
+				char *buf;
+				std::string selectedFile = currentDirectory[selected].name;
+				buf = selectedFile.data();
+				ImGui::InputText("", buf, 255);
 
 				ImGui::SameLine();
 
