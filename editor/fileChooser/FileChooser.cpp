@@ -11,7 +11,8 @@
 void FileChooser::open(GLuint icon)
 {
 	auto[width, height] = Display::getWindowSize<float>();
-	static std::vector<File> currentDirectory = listDirectory("/home/david");
+	static std::string pwd = "/home/david";
+	static std::vector<File> currentDirectory = listDirectory(pwd);
 
 	float windowWidth = width / 2.0f;
 	float windowHeight = height / 2.0f;
@@ -27,6 +28,12 @@ void FileChooser::open(GLuint icon)
 		ImGui::ArrowButton("right", ImGuiDir_Right);
 		ImGui::SameLine();
 		ImGui::ArrowButton("up", ImGuiDir_Up);
+
+		ImGui::SameLine();
+		char *buffer;
+		buffer = pwd.data();
+
+		ImGui::InputText("", buffer, 255);
 
 		static int selected = 0;
 		{
