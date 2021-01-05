@@ -74,15 +74,20 @@ void FileChooser::open()
 
 			if (ImGui::BeginChild("text box"))
 			{
+				ImGuiStyle *style = &ImGui::GetStyle();
+				ImVec4 *colors = style->Colors;
+
+				colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
+				colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+
 				char *buf;
 				std::string selectedFile = currentDirectory[selected].name;
 				buf = selectedFile.data();
+
 				ImGui::InputText("", buf, 255);
 
 				ImGui::SameLine();
 
-				ImGuiStyle *style = &ImGui::GetStyle();
-				ImVec4 *colors = style->Colors;
 				colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
 				ImGui::Button("Cancel");
 
