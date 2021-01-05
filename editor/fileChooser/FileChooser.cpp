@@ -53,7 +53,7 @@ void FileChooser::open()
 						}
 
 						ImGui::TableNextColumn();
-						if (ImGui::Selectable(getFileSize(file.size).c_str(), selected == i))
+						if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), selected == i))
 						{
 							selected = i;
 						}
@@ -104,8 +104,13 @@ std::vector<File> FileChooser::listCurrentDirectory()
 	return listDirectory(std::filesystem::absolute(workingDirectory));
 }
 
-std::string FileChooser::getFileSize(unsigned long fileSize)
+std::string FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
 {
+	if (type != std::filesystem::file_type::regular)
+	{
+		return "";
+	}
+
 	static const int BYTE = 1024;
 	auto size = static_cast<double>(fileSize);
 
