@@ -20,7 +20,7 @@ void FileChooser::open(GLuint icon)
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
 	bool p_open = true;
-	if (ImGui::Begin("Example: Simple layout", &p_open, ImGuiWindowFlags_MenuBar))
+	if (ImGui::Begin("Example: Simple layout", &p_open))
 	{
 		// Left
 		static int selected = 0;
