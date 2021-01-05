@@ -21,7 +21,7 @@ struct File
 class FileChooser
 {
 public:
-	static void open(GLuint directoryIcon, GLuint fileIcon, GLuint symlinkIcon);
+	static void open(GLuint icon);
 
 private:
 	static std::vector<File> listDirectory(const std::string &directory);
