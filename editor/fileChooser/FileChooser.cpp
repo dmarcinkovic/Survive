@@ -8,7 +8,7 @@
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
 
-void FileChooser::open()
+void FileChooser::open(GLuint image)
 {
 	auto[width, height] = Display::getWindowSize<float>();
 	static std::vector<File> currentDirectory = listDirectory("/home/david");
@@ -50,6 +50,13 @@ void FileChooser::open()
 						ImGui::TableNextRow();
 
 						ImGui::TableNextColumn();
+						
+						ImVec2 uv0(0.0f,1.0f);
+						ImVec2 uv1(1.0f,0.0f);
+						auto textureId = reinterpret_cast<ImTextureID>(image);
+						ImGui::Image(textureId, ImVec2(10, 10), uv0, uv1);
+						ImGui::SameLine();
+
 						if (ImGui::Selectable(file.name.c_str(), selected == i))
 						{
 							selected = i;
