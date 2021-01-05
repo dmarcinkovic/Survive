@@ -8,7 +8,7 @@
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
 
-void FileChooser::open(GLuint image)
+void FileChooser::open(GLuint directoryIcon, GLuint fileIcon, GLuint symlinkIcon)
 {
 	auto[width, height] = Display::getWindowSize<float>();
 	static std::vector<File> currentDirectory = listDirectory("/home/david");
@@ -53,7 +53,7 @@ void FileChooser::open(GLuint image)
 
 						ImVec2 uv0(0.0f,1.0f);
 						ImVec2 uv1(1.0f,0.0f);
-						auto textureId = reinterpret_cast<ImTextureID>(image);
+						auto textureId = reinterpret_cast<ImTextureID>(directoryIcon);
 						ImGui::Image(textureId, ImVec2(20, 15), uv0, uv1);
 						ImGui::SameLine();
 

@@ -16,7 +16,9 @@ int main()
 
 	bool openItemSelected = false;
 
-	GLuint image = Loader::loadTexture("res/folder.png");
+	GLuint directoryIcon = Loader::loadTexture("res/folder.png");
+	GLuint fileIcon = Loader::loadTexture("res/file.png");
+	GLuint symlinkIcon = Loader::loadTexture("res/symlink.png");
 
 	while (display.isRunning())
 	{
@@ -36,7 +38,7 @@ int main()
 			ImGui::EndMainMenuBar();
 		}
 
-		FileChooser::open(image);
+		FileChooser::open(directoryIcon, fileIcon, symlinkIcon);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
