@@ -51,8 +51,8 @@ void FileChooser::open(GLuint directoryIcon, GLuint fileIcon, GLuint symlinkIcon
 
 						ImGui::TableNextColumn();
 
-						ImVec2 uv0(0.0f,1.0f);
-						ImVec2 uv1(1.0f,0.0f);
+						ImVec2 uv0(0.0f, 1.0f);
+						ImVec2 uv1(1.0f, 0.0f);
 						auto textureId = reinterpret_cast<ImTextureID>(directoryIcon);
 						ImGui::Image(textureId, ImVec2(20, 15), uv0, uv1);
 						ImGui::SameLine();
