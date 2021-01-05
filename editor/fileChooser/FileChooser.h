@@ -14,7 +14,7 @@
 struct File
 {
 	std::string name;
-	unsigned long size;
+	unsigned long size = 0;
 	std::filesystem::file_type type;
 };
 
