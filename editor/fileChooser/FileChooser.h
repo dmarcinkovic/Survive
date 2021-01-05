@@ -24,9 +24,9 @@ public:
 	static void open(GLuint icon);
 
 private:
-	static std::vector<File> listDirectory(const std::string &directory);
+	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
-	static std::vector<File> listCurrentDirectory();
+	static std::vector<File> listCurrentDirectory(bool showHidden = false);
 
 	static std::string getFileSize(unsigned long fileSize, std::filesystem::file_type type);
 

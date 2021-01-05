@@ -123,7 +123,7 @@ void FileChooser::open(GLuint icon)
 	ImGui::End();
 }
 
-std::vector<File> FileChooser::listDirectory(const std::string &directory)
+std::vector<File> FileChooser::listDirectory(const std::string &directory, bool showHidden)
 {
 	std::filesystem::directory_iterator directoryIterator(directory);
 	std::vector<File> files;
@@ -132,6 +132,11 @@ std::vector<File> FileChooser::listDirectory(const std::string &directory)
 	{
 		File file;
 		file.name = path.path().filename();
+
+		if (!showHidden && file.name.front() == '.')
+		{
+			continue;
+		}
 
 		if (path.is_regular_file())
 		{
@@ -145,11 +150,11 @@ std::vector<File> FileChooser::listDirectory(const std::string &directory)
 	return files;
 }
 
-std::vector<File> FileChooser::listCurrentDirectory()
+std::vector<File> FileChooser::listCurrentDirectory(bool showHidden)
 {
 	auto workingDirectory = std::filesystem::current_path();
 
-	return listDirectory(std::filesystem::absolute(workingDirectory));
+	return listDirectory(std::filesystem::absolute(workingDirectory), showHidden);
 }
 
 std::string FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
