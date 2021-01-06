@@ -270,7 +270,7 @@ void FileChooser::drawLeftArrow()
 			m_Redo.push(m_CurrentDirectory);
 
 			m_CurrentDirectory = m_Undo.top();
-			m_DirectoryContent = listDirectory(m_CurrentDirectory);
+			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
 			m_Undo.pop();
 		}
@@ -287,7 +287,7 @@ void FileChooser::drawRightArrow()
 			m_Undo.push(m_CurrentDirectory);
 
 			m_CurrentDirectory = m_Redo.top();
-			m_DirectoryContent = listDirectory(m_CurrentDirectory);
+			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
 			m_Redo.pop();
 		}
@@ -302,7 +302,7 @@ void FileChooser::drawUpArrow()
 		m_Redo.push(m_CurrentDirectory);
 
 		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
-		m_DirectoryContent = listDirectory(m_CurrentDirectory);
+		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 	}
 
 	ImGui::SameLine();
