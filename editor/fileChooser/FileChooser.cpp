@@ -315,7 +315,11 @@ void FileChooser::drawFilenameTextbox()
 		ImGui::SameLine();
 
 		colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
-		ImGui::Button("Cancel");
+
+		if (ImGui::Button("Cancel"))
+		{
+			m_Open = false;
+		}
 
 		ImGui::SameLine();
 
