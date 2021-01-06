@@ -22,6 +22,10 @@ class FileChooser
 {
 private:
 	static constexpr float TEXT_BASE_WIDTH = 10.0f;
+	static constexpr ImGuiTableFlags tableFlags =
+			ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
+			ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+
 	std::string m_CurrentDirectory;
 	ImTextureID m_Icon{};
 	int m_SelectedFile{};
@@ -40,15 +44,16 @@ public:
 private:
 	void setupDarkStyleColors();
 
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);
 
 	static std::string getFileSize(unsigned long fileSize, std::filesystem::file_type type);
 
-	static const char* getFileType(std::filesystem::file_type type);
+	static const char *getFileType(std::filesystem::file_type type);
 
-	static void helpMarker(const char* description);
+	static void helpMarker(const char *description);
 
 	static std::filesystem::path getParentPath(const std::string &currentDirectory);
 };

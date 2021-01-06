@@ -46,11 +46,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 		ImGui::SameLine();
 		helpMarker("Show hidden files");
 
-		static ImGuiTableFlags flags =
-				ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
-				ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
-
-		if (ImGui::BeginTable("##3ways", 3, flags))
+		if (ImGui::BeginTable("##3ways", 3, tableFlags))
 		{
 			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
 			ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
@@ -62,7 +58,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 
 		if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 		{
-			if (ImGui::BeginTable("###3ways", 3, flags))
+			if (ImGui::BeginTable("###3ways", 3, tableFlags))
 			{
 				for (int i = 0; i < m_DirectoryContent.size(); ++i)
 				{
