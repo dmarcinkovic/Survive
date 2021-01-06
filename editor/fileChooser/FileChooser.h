@@ -34,7 +34,8 @@ private:
 	int m_SelectedFile{};
 
 	std::vector<File> m_DirectoryContent;
-	bool m_Check{};
+	bool m_Hidden{};
+	bool m_Previous{};
 	bool m_Open;
 
 	ImGuiStyle *m_Style;
@@ -57,6 +58,8 @@ private:
 	void drawRightArrow();
 
 	void drawUpArrow();
+
+	void drawCheckbox();
 
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 

@@ -37,9 +37,9 @@ void FileChooser::open(float windowWidth, float windowHeight)
 		ImGui::InputText("", buffer, 255);
 
 		ImGui::SameLine();
-		ImGui::Checkbox("Hidden", &m_Check);
 
-		ImGui::SameLine();
+		drawCheckbox();
+
 		helpMarker("Show hidden files");
 
 		if (ImGui::BeginTable("##3ways", 3, tableFlags))
@@ -305,5 +305,18 @@ void FileChooser::drawUpArrow()
 		m_DirectoryContent = listDirectory(m_CurrentDirectory);
 	}
 
+	ImGui::SameLine();
+}
+
+void FileChooser::drawCheckbox()
+{
+	ImGui::Checkbox("Hidden", &m_Hidden);
+
+	if (!m_Previous && m_Hidden)
+	{
+		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+	}
+
+	m_Previous = m_Hidden;
 	ImGui::SameLine();
 }
