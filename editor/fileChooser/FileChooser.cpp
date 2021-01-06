@@ -42,15 +42,7 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 
 		helpMarker("Show hidden files");
 
-		if (ImGui::BeginTable("##3ways", 3, tableFlags))
-		{
-			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
-			ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
-			ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
-			ImGui::TableHeadersRow();
-
-			ImGui::EndTable();
-		}
+		drawHeader();
 
 		drawTable(windowHeight);
 		drawFilenameTextbox(open);
@@ -329,5 +321,18 @@ void FileChooser::drawTable(float windowHeight)
 			ImGui::EndTable();
 		}
 		ImGui::EndChild();
+	}
+}
+
+void FileChooser::drawHeader()
+{
+	if (ImGui::BeginTable("##3ways", 3, tableFlags))
+	{
+		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
+		ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
+		ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
+		ImGui::TableHeadersRow();
+
+		ImGui::EndTable();
 	}
 }

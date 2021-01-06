@@ -14,7 +14,7 @@ int main()
 	Display display(width, height, "Survive");
 
 	FileChooser fileChooser;
-	bool openDialog = false;
+	bool openDialog = true;
 
 	while (display.isRunning())
 	{
