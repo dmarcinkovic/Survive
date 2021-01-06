@@ -39,6 +39,7 @@ private:
 
 	ImGuiStyle *m_Style;
 
+	std::string m_SelectedFileName;
 	std::stack<std::string> m_Undo;
 	std::stack<std::string> m_Redo;
 

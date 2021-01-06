@@ -12,7 +12,7 @@
 FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(listCurrentDirectory()),
-		  m_Style(&ImGui::GetStyle())
+		  m_Style(&ImGui::GetStyle()), m_SelectedFileName(m_DirectoryContent.front().name)
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
@@ -200,6 +200,7 @@ void FileChooser::drawLeftArrow()
 
 			m_CurrentDirectory = m_Undo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 
 			m_Undo.pop();
 		}
@@ -217,6 +218,7 @@ void FileChooser::drawRightArrow()
 
 			m_CurrentDirectory = m_Redo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 
 			m_Redo.pop();
 		}
@@ -232,6 +234,7 @@ void FileChooser::drawUpArrow()
 
 		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 	}
 
 	ImGui::SameLine();
@@ -256,12 +259,7 @@ void FileChooser::drawFilenameTextbox(bool *open)
 	{
 		ImVec4 *colors = m_Style->Colors;
 
-		char *buf;
-		std::string selectedFile = m_DirectoryContent[m_SelectedFile].name;
-		buf = selectedFile.data();
-
-		ImGui::InputText("", buf, 255);
-
+		ImGui::InputText("", m_SelectedFileName.data(), 255);
 		ImGui::SameLine();
 
 		colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
@@ -301,18 +299,21 @@ void FileChooser::drawTable(float windowHeight)
 				if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == i))
 				{
 					m_SelectedFile = i;
+					m_SelectedFileName = file.name;
 				}
 
 				ImGui::TableNextColumn();
 				if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == i))
 				{
 					m_SelectedFile = i;
+					m_SelectedFileName = file.name;
 				}
 
 				ImGui::TableNextColumn();
 				if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == i))
 				{
 					m_SelectedFile = i;
+					m_SelectedFileName = file.name;
 				}
 			}
 			ImGui::EndTable();
