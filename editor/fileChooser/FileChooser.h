@@ -82,6 +82,8 @@ private:
 	static void helpMarker(const char *description);
 
 	static std::filesystem::path getParentPath(const std::string &currentDirectory);
+
+	std::string getSelectedFile() const;
 };
 
 

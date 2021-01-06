@@ -350,9 +350,9 @@ void FileChooser::drawOpenButton(bool *open)
 
 	if (ImGui::Button("Open"))
 	{
-		std::filesystem::path path(m_CurrentDirectory);
 		if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
 		{
+			std::filesystem::path path(m_CurrentDirectory);
 			m_CurrentDirectory = path.append(m_SelectedFileName);
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
@@ -360,8 +360,13 @@ void FileChooser::drawOpenButton(bool *open)
 			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 		} else
 		{
-			m_SelectedFileName = path.append(m_SelectedFileName);
 			*open = false;
 		}
 	}
+}
+
+std::string FileChooser::getSelectedFile() const
+{
+	std::filesystem::path path(m_CurrentDirectory);
+	return path.append(m_SelectedFileName);
 }
