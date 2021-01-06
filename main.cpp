@@ -16,6 +16,7 @@ int main()
 	bool openItemSelected = false;
 
 	FileChooser fileChooser;
+	bool openDialog = true;
 
 	while (display.isRunning())
 	{
@@ -35,7 +36,10 @@ int main()
 			ImGui::EndMainMenuBar();
 		}
 
-		fileChooser.open(600.0f, 400.0f);
+		if (openDialog)
+		{
+			fileChooser.open(600.0f, 400.0f, &openDialog);
+		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

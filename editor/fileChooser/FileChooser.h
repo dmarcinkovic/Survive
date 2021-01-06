@@ -36,7 +36,6 @@ private:
 	std::vector<File> m_DirectoryContent;
 	bool m_Hidden{};
 	bool m_Previous{};
-	bool m_Open;
 
 	ImGuiStyle *m_Style;
 
@@ -46,7 +45,7 @@ private:
 public:
 	FileChooser();
 
-	void open(float windowWidth, float windowHeight);
+	void open(float windowWidth, float windowHeight, bool *open);
 
 private:
 	void setupDarkStyleColors();
@@ -61,7 +60,7 @@ private:
 
 	void drawCheckbox();
 
-	void drawFilenameTextbox();
+	void drawFilenameTextbox(bool *open);
 
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 

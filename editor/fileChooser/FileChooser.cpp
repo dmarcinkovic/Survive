@@ -12,7 +12,7 @@
 FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(listCurrentDirectory()),
-		  m_Open(true), m_Style(&ImGui::GetStyle())
+		  m_Style(&ImGui::GetStyle())
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
@@ -20,14 +20,14 @@ FileChooser::FileChooser()
 	setupDarkStyleColors();
 }
 
-void FileChooser::open(float windowWidth, float windowHeight)
+void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
 	auto[width, height] = Display::getWindowSize<float>();
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
-	if (ImGui::Begin("Open", &m_Open))
+	if (ImGui::Begin("Open", open))
 	{
 		drawNavigationArrows();
 
@@ -90,7 +90,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 			ImGui::EndChild();
 		}
 
-		drawFilenameTextbox();
+		drawFilenameTextbox(open);
 
 		ImGui::SameLine();
 	}
@@ -300,7 +300,7 @@ void FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void FileChooser::drawFilenameTextbox()
+void FileChooser::drawFilenameTextbox(bool *open)
 {
 	if (ImGui::BeginChild("text box"))
 	{
@@ -318,7 +318,7 @@ void FileChooser::drawFilenameTextbox()
 
 		if (ImGui::Button("Cancel"))
 		{
-			m_Open = false;
+			*open = false;
 		}
 
 		ImGui::SameLine();
