@@ -265,22 +265,13 @@ void FileChooser::drawFilenameTextbox(bool *open)
 {
 	if (ImGui::BeginChild("text box"))
 	{
-		ImVec4 *colors = m_Style->Colors;
-
 		ImGui::InputText("", m_SelectedFileName.data(), 255);
-		ImGui::SameLine();
-
-		colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
-
-		if (ImGui::Button("Cancel"))
-		{
-			*open = false;
-		}
 
 		ImGui::SameLine();
+		drawCancelButton(open);
 
-		colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
-		ImGui::Button("Open");
+		ImGui::SameLine();
+		drawOpenButton(open);
 
 		ImGui::EndChild();
 	}
@@ -340,5 +331,37 @@ void FileChooser::drawHeader()
 		ImGui::TableHeadersRow();
 
 		ImGui::EndTable();
+	}
+}
+
+void FileChooser::drawCancelButton(bool *open)
+{
+	m_Style->Colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
+
+	if (ImGui::Button("Cancel"))
+	{
+		*open = false;
+	}
+}
+
+void FileChooser::drawOpenButton(bool *open)
+{
+	m_Style->Colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
+
+	if (ImGui::Button("Open"))
+	{
+		std::filesystem::path path(m_CurrentDirectory);
+		if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
+		{
+			m_CurrentDirectory = path.append(m_SelectedFileName);
+			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+			m_SelectedFile = 0;
+			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+		} else
+		{
+			m_SelectedFileName = path.append(m_SelectedFileName);
+			*open = false;
+		}
 	}
 }

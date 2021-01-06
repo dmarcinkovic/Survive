@@ -67,6 +67,10 @@ private:
 
 	static void drawHeader();
 
+	void drawOpenButton(bool *open);
+
+	void drawCancelButton(bool *open);
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);
