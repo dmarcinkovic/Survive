@@ -250,3 +250,10 @@ void FileChooser::helpMarker(const char *description)
 		ImGui::EndTooltip();
 	}
 }
+
+std::filesystem::path FileChooser::getParentPath(const std::string &currentDirectory)
+{
+	std::filesystem::path path(currentDirectory.c_str());
+
+	return path.parent_path();
+}

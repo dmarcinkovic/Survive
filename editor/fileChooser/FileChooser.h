@@ -33,6 +33,8 @@ private:
 	static const char* getFileType(std::filesystem::file_type type);
 
 	static void helpMarker(const char* description);
+
+	static std::filesystem::path getParentPath(const std::string &currentDirectory);
 };
 
 
