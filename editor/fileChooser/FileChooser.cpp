@@ -10,7 +10,8 @@
 #include "../../engine/renderer/Loader.h"
 
 FileChooser::FileChooser()
-	: m_CurrentDirectory(std::filesystem::current_path().filename()), m_DirectoryContent(listCurrentDirectory())
+		: m_CurrentDirectory(std::filesystem::current_path().filename()), m_DirectoryContent(listCurrentDirectory()),
+		  m_Open(true)
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
@@ -19,14 +20,11 @@ FileChooser::FileChooser()
 void FileChooser::open(float windowWidth, float windowHeight)
 {
 	auto[width, height] = Display::getWindowSize<float>();
-	static std::string pwd = "/home/david";
-	static std::vector<File> currentDirectory = listDirectory(pwd);
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
-	bool p_open = true;
-	if (ImGui::Begin("Open", &p_open))
+	if (ImGui::Begin("Open", &m_Open))
 	{
 		ImGui::ArrowButton("left", ImGuiDir_Left);
 		ImGui::SameLine();
@@ -36,7 +34,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 
 		ImGui::SameLine();
 		char *buffer;
-		buffer = pwd.data();
+		buffer = m_CurrentDirectory.data();
 
 		ImGui::InputText("", buffer, 255);
 
@@ -45,8 +43,6 @@ void FileChooser::open(float windowWidth, float windowHeight)
 
 		ImGui::SameLine();
 		helpMarker("Show hidden files");
-
-		static int selected = 0;
 
 		static ImGuiTableFlags flags =
 				ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
@@ -67,9 +63,9 @@ void FileChooser::open(float windowWidth, float windowHeight)
 		{
 			if (ImGui::BeginTable("###3ways", 3, flags))
 			{
-				for (int i = 0; i < currentDirectory.size(); ++i)
+				for (int i = 0; i < m_DirectoryContent.size(); ++i)
 				{
-					const File &file = currentDirectory[i];
+					const File &file = m_DirectoryContent[i];
 					ImGui::TableNextRow();
 
 					ImGui::TableNextColumn();
@@ -79,21 +75,21 @@ void FileChooser::open(float windowWidth, float windowHeight)
 					ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
 					ImGui::SameLine();
 
-					if (ImGui::Selectable(file.name.c_str(), selected == i))
+					if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == i))
 					{
-						selected = i;
+						m_SelectedFile = i;
 					}
 
 					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), selected == i))
+					if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == i))
 					{
-						selected = i;
+						m_SelectedFile = i;
 					}
 
 					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileType(file.type), selected == i))
+					if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == i))
 					{
-						selected = i;
+						m_SelectedFile = i;
 					}
 				}
 				ImGui::EndTable();
@@ -110,7 +106,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 			colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
 
 			char *buf;
-			std::string selectedFile = currentDirectory[selected].name;
+			std::string selectedFile = m_DirectoryContent[m_SelectedFile].name;
 			buf = selectedFile.data();
 
 			ImGui::InputText("", buf, 255);

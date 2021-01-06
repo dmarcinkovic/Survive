@@ -28,6 +28,8 @@ private:
 	std::vector<File> m_DirectoryContent;
 	bool m_Check{};
 
+	bool m_Open;
+
 public:
 	FileChooser();
 
