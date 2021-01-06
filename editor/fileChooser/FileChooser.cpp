@@ -7,19 +7,23 @@
 
 #include "FileChooser.h"
 #include "../../engine/display/Display.h"
+#include "../../engine/renderer/Loader.h"
 
-void FileChooser::open(GLuint icon)
+FileChooser::FileChooser()
+	: m_CurrentDirectory(std::filesystem::current_path().filename()), m_DirectoryContent(listCurrentDirectory())
+{
+	GLuint folder = Loader::loadTexture("res/folder.png");
+	m_Icon = reinterpret_cast<ImTextureID>(folder);
+}
+
+void FileChooser::open(float windowWidth, float windowHeight)
 {
 	auto[width, height] = Display::getWindowSize<float>();
 	static std::string pwd = "/home/david";
 	static std::vector<File> currentDirectory = listDirectory(pwd);
 
-	float windowWidth = 600.0f;
-	float windowHeight = 400.0f;
-
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
-	static bool check;
 
 	bool p_open = true;
 	if (ImGui::Begin("Open", &p_open))
@@ -37,7 +41,7 @@ void FileChooser::open(GLuint icon)
 		ImGui::InputText("", buffer, 255);
 
 		ImGui::SameLine();
-		ImGui::Checkbox("Hidden", &check);
+		ImGui::Checkbox("Hidden", &m_Check);
 
 		ImGui::SameLine();
 		helpMarker("Show hidden files");
@@ -72,8 +76,7 @@ void FileChooser::open(GLuint icon)
 
 					ImVec2 uv0(0.0f, 1.0f);
 					ImVec2 uv1(1.0f, 0.0f);
-					auto textureId = reinterpret_cast<ImTextureID>(icon);
-					ImGui::Image(textureId, ImVec2(20, 15), uv0, uv1);
+					ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
 					ImGui::SameLine();
 
 					if (ImGui::Selectable(file.name.c_str(), selected == i))

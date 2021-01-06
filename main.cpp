@@ -5,7 +5,6 @@
 
 #include "engine/display/Display.h"
 #include "editor/fileChooser/FileChooser.h"
-#include "engine/renderer/Loader.h"
 
 int main()
 {
@@ -16,7 +15,7 @@ int main()
 
 	bool openItemSelected = false;
 
-	GLuint directoryIcon = Loader::loadTexture("res/folder.png");
+	FileChooser fileChooser;
 
 	while (display.isRunning())
 	{
@@ -36,7 +35,7 @@ int main()
 			ImGui::EndMainMenuBar();
 		}
 
-		FileChooser::open(directoryIcon);
+		fileChooser.open(600.0f, 400.0f);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

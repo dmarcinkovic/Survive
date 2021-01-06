@@ -20,8 +20,18 @@ struct File
 
 class FileChooser
 {
+private:
+	std::string m_CurrentDirectory;
+	ImTextureID m_Icon{};
+
+	int m_SelectedFile{};
+	std::vector<File> m_DirectoryContent;
+	bool m_Check{};
+
 public:
-	static void open(GLuint icon);
+	FileChooser();
+
+	void open(float windowWidth, float windowHeight);
 
 private:
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
