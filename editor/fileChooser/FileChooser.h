@@ -62,6 +62,8 @@ private:
 
 	void drawFilenameTextbox(bool *open);
 
+	void drawTable(float windowHeight);
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);

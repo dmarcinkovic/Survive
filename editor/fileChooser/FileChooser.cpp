@@ -52,47 +52,8 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 			ImGui::EndTable();
 		}
 
-		if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
-		{
-			if (ImGui::BeginTable("###3ways", 3, tableFlags))
-			{
-				for (int i = 0; i < m_DirectoryContent.size(); ++i)
-				{
-					const File &file = m_DirectoryContent[i];
-					ImGui::TableNextRow();
-
-					ImGui::TableNextColumn();
-
-					ImVec2 uv0(0.0f, 1.0f);
-					ImVec2 uv1(1.0f, 0.0f);
-					ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
-					ImGui::SameLine();
-
-					if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == i))
-					{
-						m_SelectedFile = i;
-					}
-
-					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == i))
-					{
-						m_SelectedFile = i;
-					}
-
-					ImGui::TableNextColumn();
-					if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == i))
-					{
-						m_SelectedFile = i;
-					}
-				}
-				ImGui::EndTable();
-			}
-			ImGui::EndChild();
-		}
-
+		drawTable(windowHeight);
 		drawFilenameTextbox(open);
-
-		ImGui::SameLine();
 	}
 	ImGui::End();
 }
@@ -326,6 +287,47 @@ void FileChooser::drawFilenameTextbox(bool *open)
 		colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
 		ImGui::Button("Open");
 
+		ImGui::EndChild();
+	}
+}
+
+void FileChooser::drawTable(float windowHeight)
+{
+	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
+	{
+		if (ImGui::BeginTable("###3ways", 3, tableFlags))
+		{
+			for (int i = 0; i < m_DirectoryContent.size(); ++i)
+			{
+				const File &file = m_DirectoryContent[i];
+				ImGui::TableNextRow();
+
+				ImGui::TableNextColumn();
+
+				ImVec2 uv0(0.0f, 1.0f);
+				ImVec2 uv1(1.0f, 0.0f);
+				ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
+				ImGui::SameLine();
+
+				if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == i))
+				{
+					m_SelectedFile = i;
+				}
+
+				ImGui::TableNextColumn();
+				if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == i))
+				{
+					m_SelectedFile = i;
+				}
+
+				ImGui::TableNextColumn();
+				if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == i))
+				{
+					m_SelectedFile = i;
+				}
+			}
+			ImGui::EndTable();
+		}
 		ImGui::EndChild();
 	}
 }
