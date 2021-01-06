@@ -13,10 +13,8 @@ int main()
 
 	Display display(width, height, "Survive");
 
-	bool openItemSelected = false;
-
 	FileChooser fileChooser;
-	bool openDialog = true;
+	bool openDialog = false;
 
 	while (display.isRunning())
 	{
@@ -30,7 +28,7 @@ int main()
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				ImGui::MenuItem("Open", "Ctrl+O", &openItemSelected);
+				ImGui::MenuItem("Open", "Ctrl+O", &openDialog);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
