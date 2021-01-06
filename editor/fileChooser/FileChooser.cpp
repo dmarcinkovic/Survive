@@ -31,10 +31,7 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 	{
 		drawNavigationArrows();
 
-		char *buffer;
-		buffer = m_CurrentDirectory.data();
-
-		ImGui::InputText("", buffer, 255);
+		ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
 
 		ImGui::SameLine();
 
