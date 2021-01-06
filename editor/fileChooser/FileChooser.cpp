@@ -14,11 +14,12 @@ void FileChooser::open(GLuint icon)
 	static std::string pwd = "/home/david";
 	static std::vector<File> currentDirectory = listDirectory(pwd);
 
-	float windowWidth = width / 2.0f;
-	float windowHeight = height / 2.0f;
+	float windowWidth = 600.0f;
+	float windowHeight = 400.0f;
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
+	static bool check;
 
 	bool p_open = true;
 	if (ImGui::Begin("Open", &p_open))
@@ -36,91 +37,94 @@ void FileChooser::open(GLuint icon)
 		ImGui::InputText("", buffer, 255);
 
 		ImGui::SameLine();
-		helpMarker("This is help message");
+		ImGui::Checkbox("Hidden", &check);
+
+		ImGui::SameLine();
+		helpMarker("Show hidden files");
 
 		static int selected = 0;
+
+		static ImGuiTableFlags flags =
+				ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
+				ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+
+		const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
+		if (ImGui::BeginTable("##3ways", 3, flags))
 		{
-			static ImGuiTableFlags flags =
-					ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
-					ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
+			ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
+			ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
+			ImGui::TableHeadersRow();
 
-			const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
-			if (ImGui::BeginTable("##3ways", 3, flags))
+			ImGui::EndTable();
+		}
+
+		if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
+		{
+			if (ImGui::BeginTable("###3ways", 3, flags))
 			{
-				ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
-				ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 12.0f);
-				ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, TEXT_BASE_WIDTH * 18.0f);
-				ImGui::TableHeadersRow();
+				for (int i = 0; i < currentDirectory.size(); ++i)
+				{
+					const File &file = currentDirectory[i];
+					ImGui::TableNextRow();
 
+					ImGui::TableNextColumn();
+
+					ImVec2 uv0(0.0f, 1.0f);
+					ImVec2 uv1(1.0f, 0.0f);
+					auto textureId = reinterpret_cast<ImTextureID>(icon);
+					ImGui::Image(textureId, ImVec2(20, 15), uv0, uv1);
+					ImGui::SameLine();
+
+					if (ImGui::Selectable(file.name.c_str(), selected == i))
+					{
+						selected = i;
+					}
+
+					ImGui::TableNextColumn();
+					if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), selected == i))
+					{
+						selected = i;
+					}
+
+					ImGui::TableNextColumn();
+					if (ImGui::Selectable(getFileType(file.type), selected == i))
+					{
+						selected = i;
+					}
+				}
 				ImGui::EndTable();
 			}
-
-			if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
-			{
-				if (ImGui::BeginTable("###3ways", 3, flags))
-				{
-					for (int i = 0; i < currentDirectory.size(); ++i)
-					{
-						const File &file = currentDirectory[i];
-						ImGui::TableNextRow();
-
-						ImGui::TableNextColumn();
-
-						ImVec2 uv0(0.0f, 1.0f);
-						ImVec2 uv1(1.0f, 0.0f);
-						auto textureId = reinterpret_cast<ImTextureID>(icon);
-						ImGui::Image(textureId, ImVec2(20, 15), uv0, uv1);
-						ImGui::SameLine();
-
-						if (ImGui::Selectable(file.name.c_str(), selected == i))
-						{
-							selected = i;
-						}
-
-						ImGui::TableNextColumn();
-						if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), selected == i))
-						{
-							selected = i;
-						}
-
-						ImGui::TableNextColumn();
-						if (ImGui::Selectable(getFileType(file.type), selected == i))
-						{
-							selected = i;
-						}
-					}
-					ImGui::EndTable();
-				}
-				ImGui::EndChild();
-			}
-
-			if (ImGui::BeginChild("text box"))
-			{
-				ImGuiStyle *style = &ImGui::GetStyle();
-				ImVec4 *colors = style->Colors;
-
-				colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
-				colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
-
-				char *buf;
-				std::string selectedFile = currentDirectory[selected].name;
-				buf = selectedFile.data();
-
-				ImGui::InputText("", buf, 255);
-
-				ImGui::SameLine();
-
-				colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
-				ImGui::Button("Cancel");
-
-				ImGui::SameLine();
-
-				colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
-				ImGui::Button("Open");
-
-				ImGui::EndChild();
-			}
+			ImGui::EndChild();
 		}
+
+		if (ImGui::BeginChild("text box"))
+		{
+			ImGuiStyle *style = &ImGui::GetStyle();
+			ImVec4 *colors = style->Colors;
+
+			colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
+			colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+
+			char *buf;
+			std::string selectedFile = currentDirectory[selected].name;
+			buf = selectedFile.data();
+
+			ImGui::InputText("", buf, 255);
+
+			ImGui::SameLine();
+
+			colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
+			ImGui::Button("Cancel");
+
+			ImGui::SameLine();
+
+			colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
+			ImGui::Button("Open");
+
+			ImGui::EndChild();
+		}
+
 		ImGui::SameLine();
 	}
 	ImGui::End();
