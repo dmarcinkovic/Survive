@@ -52,6 +52,12 @@ private:
 
 	void drawNavigationArrows();
 
+	void drawLeftArrow();
+
+	void drawRightArrow();
+
+	void drawUpArrow();
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);

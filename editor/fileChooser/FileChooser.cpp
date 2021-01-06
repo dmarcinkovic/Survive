@@ -256,6 +256,13 @@ void FileChooser::setupDarkStyleColors()
 
 void FileChooser::drawNavigationArrows()
 {
+	drawLeftArrow();
+	drawRightArrow();
+	drawUpArrow();
+}
+
+void FileChooser::drawLeftArrow()
+{
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
 		if (!m_Undo.empty())
@@ -269,7 +276,10 @@ void FileChooser::drawNavigationArrows()
 		}
 	}
 	ImGui::SameLine();
+}
 
+void FileChooser::drawRightArrow()
+{
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
 		if (!m_Redo.empty())
@@ -283,7 +293,10 @@ void FileChooser::drawNavigationArrows()
 		}
 	}
 	ImGui::SameLine();
+}
 
+void FileChooser::drawUpArrow()
+{
 	if (ImGui::ArrowButton("up", ImGuiDir_Up) && m_CurrentDirectory != m_Root)
 	{
 		m_Redo.push(m_CurrentDirectory);
