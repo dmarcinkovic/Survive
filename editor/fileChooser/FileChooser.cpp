@@ -201,8 +201,7 @@ void FileChooser::drawLeftArrow()
 			m_CurrentDirectory = m_Undo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
-			m_SelectedFile = 0;
-			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+			resetSelectedFile();
 
 			m_Undo.pop();
 		}
@@ -221,8 +220,7 @@ void FileChooser::drawRightArrow()
 			m_CurrentDirectory = m_Redo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
-			m_SelectedFile = 0;
-			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+			resetSelectedFile();
 
 			m_Redo.pop();
 		}
@@ -239,8 +237,7 @@ void FileChooser::drawUpArrow()
 		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
-		m_SelectedFile = 0;
-		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+		resetSelectedFile();
 	}
 
 	ImGui::SameLine();
@@ -253,8 +250,7 @@ void FileChooser::drawCheckbox()
 	if (m_Previous != m_Hidden)
 	{
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
-		m_SelectedFile = 0;
-		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+		resetSelectedFile();
 	}
 
 	m_Previous = m_Hidden;
@@ -356,8 +352,7 @@ void FileChooser::drawOpenButton(bool *open)
 			m_CurrentDirectory = path.append(m_SelectedFileName);
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
-			m_SelectedFile = 0;
-			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+			resetSelectedFile();
 		} else
 		{
 			*open = false;
@@ -369,4 +364,10 @@ std::string FileChooser::getSelectedFile() const
 {
 	std::filesystem::path path(m_CurrentDirectory);
 	return path.append(m_SelectedFileName);
+}
+
+void FileChooser::resetSelectedFile()
+{
+	m_SelectedFile = 0;
+	m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 }

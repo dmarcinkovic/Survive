@@ -83,7 +83,9 @@ private:
 
 	static std::filesystem::path getParentPath(const std::string &currentDirectory);
 
-	std::string getSelectedFile() const;
+	[[nodiscard]] std::string getSelectedFile() const;
+
+	void resetSelectedFile();
 };
 
 
