@@ -21,14 +21,16 @@ struct File
 class FileChooser
 {
 private:
+	static constexpr float TEXT_BASE_WIDTH = 10.0f;
 	std::string m_CurrentDirectory;
 	ImTextureID m_Icon{};
-
 	int m_SelectedFile{};
+
 	std::vector<File> m_DirectoryContent;
 	bool m_Check{};
-
 	bool m_Open;
+
+	ImGuiStyle *m_Style;
 
 public:
 	FileChooser();
@@ -36,6 +38,8 @@ public:
 	void open(float windowWidth, float windowHeight);
 
 private:
+	void setupDarkStyleColors();
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);

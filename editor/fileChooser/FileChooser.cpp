@@ -11,10 +11,12 @@
 
 FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path().filename()), m_DirectoryContent(listCurrentDirectory()),
-		  m_Open(true)
+		  m_Open(true), m_Style(&ImGui::GetStyle())
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
+
+	setupDarkStyleColors();
 }
 
 void FileChooser::open(float windowWidth, float windowHeight)
@@ -48,7 +50,6 @@ void FileChooser::open(float windowWidth, float windowHeight)
 				ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
 				ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
 
-		const float TEXT_BASE_WIDTH = ImGui::CalcTextSize("A").x;
 		if (ImGui::BeginTable("##3ways", 3, flags))
 		{
 			ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
@@ -99,11 +100,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 
 		if (ImGui::BeginChild("text box"))
 		{
-			ImGuiStyle *style = &ImGui::GetStyle();
-			ImVec4 *colors = style->Colors;
-
-			colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
-			colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+			ImVec4 *colors = m_Style->Colors;
 
 			char *buf;
 			std::string selectedFile = m_DirectoryContent[m_SelectedFile].name;
@@ -255,4 +252,12 @@ std::filesystem::path FileChooser::getParentPath(const std::string &currentDirec
 	std::filesystem::path path(currentDirectory.c_str());
 
 	return path.parent_path();
+}
+
+void FileChooser::setupDarkStyleColors()
+{
+	ImVec4 *colors = m_Style->Colors;
+
+	colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
+	colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
 }
