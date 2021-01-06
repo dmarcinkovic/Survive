@@ -284,32 +284,7 @@ void FileChooser::drawTable(float windowHeight)
 				const File &file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
-				ImGui::TableNextColumn();
-
-				ImVec2 uv0(0.0f, 1.0f);
-				ImVec2 uv1(1.0f, 0.0f);
-				ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
-				ImGui::SameLine();
-
-				if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == i))
-				{
-					m_SelectedFile = i;
-					m_SelectedFileName = file.name;
-				}
-
-				ImGui::TableNextColumn();
-				if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == i))
-				{
-					m_SelectedFile = i;
-					m_SelectedFileName = file.name;
-				}
-
-				ImGui::TableNextColumn();
-				if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == i))
-				{
-					m_SelectedFile = i;
-					m_SelectedFileName = file.name;
-				}
+				fillTableRow(file, i);
 			}
 			ImGui::EndTable();
 		}
@@ -370,4 +345,39 @@ void FileChooser::resetSelectedFile()
 {
 	m_SelectedFile = 0;
 	m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+}
+
+void FileChooser::drawIcon()
+{
+	ImVec2 uv0(0.0f, 1.0f);
+	ImVec2 uv1(1.0f, 0.0f);
+
+	ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
+	ImGui::SameLine();
+}
+
+void FileChooser::fillTableRow(const File &file, int index)
+{
+	ImGui::TableNextColumn();
+	drawIcon();
+
+	if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = file.name;
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = file.name;
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = file.name;
+	}
 }

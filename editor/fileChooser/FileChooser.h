@@ -86,6 +86,10 @@ private:
 	[[nodiscard]] std::string getSelectedFile() const;
 
 	void resetSelectedFile();
+
+	void drawIcon();
+
+	void fillTableRow(const File &file, int index);
 };
 
 
