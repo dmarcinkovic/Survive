@@ -90,28 +90,7 @@ void FileChooser::open(float windowWidth, float windowHeight)
 			ImGui::EndChild();
 		}
 
-		if (ImGui::BeginChild("text box"))
-		{
-			ImVec4 *colors = m_Style->Colors;
-
-			char *buf;
-			std::string selectedFile = m_DirectoryContent[m_SelectedFile].name;
-			buf = selectedFile.data();
-
-			ImGui::InputText("", buf, 255);
-
-			ImGui::SameLine();
-
-			colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
-			ImGui::Button("Cancel");
-
-			ImGui::SameLine();
-
-			colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
-			ImGui::Button("Open");
-
-			ImGui::EndChild();
-		}
+		drawFilenameTextbox();
 
 		ImGui::SameLine();
 	}
@@ -319,4 +298,30 @@ void FileChooser::drawCheckbox()
 
 	m_Previous = m_Hidden;
 	ImGui::SameLine();
+}
+
+void FileChooser::drawFilenameTextbox()
+{
+	if (ImGui::BeginChild("text box"))
+	{
+		ImVec4 *colors = m_Style->Colors;
+
+		char *buf;
+		std::string selectedFile = m_DirectoryContent[m_SelectedFile].name;
+		buf = selectedFile.data();
+
+		ImGui::InputText("", buf, 255);
+
+		ImGui::SameLine();
+
+		colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
+		ImGui::Button("Cancel");
+
+		ImGui::SameLine();
+
+		colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
+		ImGui::Button("Open");
+
+		ImGui::EndChild();
+	}
 }

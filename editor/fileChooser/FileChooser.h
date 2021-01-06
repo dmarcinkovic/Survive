@@ -61,6 +61,8 @@ private:
 
 	void drawCheckbox();
 
+	void drawFilenameTextbox();
+
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
 	static std::vector<File> listCurrentDirectory(bool showHidden = false);
