@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <stack>
 
 struct File
 {
@@ -27,6 +28,8 @@ private:
 			ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
 
 	std::string m_CurrentDirectory;
+	const std::filesystem::path m_Root;
+
 	ImTextureID m_Icon{};
 	int m_SelectedFile{};
 
@@ -36,6 +39,9 @@ private:
 
 	ImGuiStyle *m_Style;
 
+	std::stack<std::string> m_Undo;
+	std::stack<std::string> m_Redo;
+
 public:
 	FileChooser();
 
@@ -44,6 +50,7 @@ public:
 private:
 	void setupDarkStyleColors();
 
+	void drawNavigationArrows();
 
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 

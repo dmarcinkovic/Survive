@@ -10,7 +10,8 @@
 #include "../../engine/renderer/Loader.h"
 
 FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path().filename()), m_DirectoryContent(listCurrentDirectory()),
+		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
+		  m_DirectoryContent(listCurrentDirectory()),
 		  m_Open(true), m_Style(&ImGui::GetStyle())
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
@@ -28,13 +29,8 @@ void FileChooser::open(float windowWidth, float windowHeight)
 
 	if (ImGui::Begin("Open", &m_Open))
 	{
-		ImGui::ArrowButton("left", ImGuiDir_Left);
-		ImGui::SameLine();
-		ImGui::ArrowButton("right", ImGuiDir_Right);
-		ImGui::SameLine();
-		ImGui::ArrowButton("up", ImGuiDir_Up);
+		drawNavigationArrows();
 
-		ImGui::SameLine();
 		char *buffer;
 		buffer = m_CurrentDirectory.data();
 
@@ -256,4 +252,45 @@ void FileChooser::setupDarkStyleColors()
 
 	colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
 	colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+}
+
+void FileChooser::drawNavigationArrows()
+{
+	if (ImGui::ArrowButton("left", ImGuiDir_Left))
+	{
+		if (!m_Undo.empty())
+		{
+			m_Redo.push(m_CurrentDirectory);
+
+			m_CurrentDirectory = m_Undo.top();
+			m_DirectoryContent = listDirectory(m_CurrentDirectory);
+
+			m_Undo.pop();
+		}
+	}
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("right", ImGuiDir_Right))
+	{
+		if (!m_Redo.empty())
+		{
+			m_Undo.push(m_CurrentDirectory);
+
+			m_CurrentDirectory = m_Redo.top();
+			m_DirectoryContent = listDirectory(m_CurrentDirectory);
+
+			m_Redo.pop();
+		}
+	}
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("up", ImGuiDir_Up) && m_CurrentDirectory != m_Root)
+	{
+		m_Redo.push(m_CurrentDirectory);
+
+		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
+		m_DirectoryContent = listDirectory(m_CurrentDirectory);
+	}
+
+	ImGui::SameLine();
 }
