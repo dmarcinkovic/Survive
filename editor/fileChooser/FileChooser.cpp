@@ -312,7 +312,7 @@ void FileChooser::drawCheckbox()
 {
 	ImGui::Checkbox("Hidden", &m_Hidden);
 
-	if (!m_Previous && m_Hidden)
+	if (m_Previous != m_Hidden)
 	{
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 	}
