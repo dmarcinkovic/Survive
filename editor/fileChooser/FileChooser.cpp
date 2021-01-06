@@ -200,6 +200,8 @@ void FileChooser::drawLeftArrow()
 
 			m_CurrentDirectory = m_Undo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+			m_SelectedFile = 0;
 			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 
 			m_Undo.pop();
@@ -218,6 +220,8 @@ void FileChooser::drawRightArrow()
 
 			m_CurrentDirectory = m_Redo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+			m_SelectedFile = 0;
 			m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 
 			m_Redo.pop();
@@ -234,6 +238,8 @@ void FileChooser::drawUpArrow()
 
 		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+		m_SelectedFile = 0;
 		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 	}
 
@@ -247,6 +253,8 @@ void FileChooser::drawCheckbox()
 	if (m_Previous != m_Hidden)
 	{
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+		m_SelectedFile = 0;
+		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 	}
 
 	m_Previous = m_Hidden;
