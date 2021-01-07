@@ -64,7 +64,7 @@ private:
 
 	void drawTable(float windowHeight, bool *open);
 
-	static void drawHeader();
+	void drawHeader();
 
 	void drawOpenButton(bool *open);
 
@@ -95,6 +95,8 @@ private:
 	static bool sortByFilename(const File &file1, const File &file2);
 
 	static bool sortBySize(const File &file1, const File &file2);
+
+	void sortDirectoryContent();
 };
 
 

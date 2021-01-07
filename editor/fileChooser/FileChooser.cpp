@@ -280,12 +280,9 @@ void FileChooser::drawTable(float windowHeight, bool *open)
 			for (int i = 0; i < m_DirectoryContent.size(); ++i)
 			{
 				const File &file = m_DirectoryContent[i];
-//				ImGui::PushID(i);
 				ImGui::TableNextRow();
 
 				fillTableRow(file, i, open);
-
-//				ImGui::PopID();
 			}
 			ImGui::EndTable();
 		}
@@ -302,22 +299,7 @@ void FileChooser::drawHeader()
 	ImGui::TableSetupScrollFreeze(0, 1);
 	ImGui::TableHeadersRow();
 
-	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
-	{
-		if (sorts_specs->SpecsDirty)
-		{
-			if (sorts_specs->Specs->SortDirection == ImGuiSortDirection_Ascending)
-			{
-				std::cout << "Sort ascending\n";
-			} else
-			{
-				std::cout << "Sort descending\n";
-			}
-
-			std::cout << "Index: " << sorts_specs->Specs->ColumnIndex << '\n';
-			sorts_specs->SpecsDirty = false;
-		}
-	}
+	sortDirectoryContent();
 }
 
 void FileChooser::drawCancelButton(bool *open)
@@ -415,4 +397,26 @@ bool FileChooser::sortByFilename(const File &file1, const File &file2)
 bool FileChooser::sortBySize(const File &file1, const File &file2)
 {
 	return file1.size < file2.size;
+}
+
+void FileChooser::sortDirectoryContent()
+{
+	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
+	{
+		if (sorts_specs->SpecsDirty)
+		{
+			std::function<bool(const File &, const File &)> comparator =
+					sorts_specs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
+
+			if (sorts_specs->Specs->SortDirection == ImGuiSortDirection_Ascending)
+			{
+				std::sort(m_DirectoryContent.begin(), m_DirectoryContent.end(), comparator);
+			} else
+			{
+				std::sort(m_DirectoryContent.rbegin(), m_DirectoryContent.rend(), comparator);
+			}
+
+			sorts_specs->SpecsDirty = false;
+		}
+	}
 }
