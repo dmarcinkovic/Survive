@@ -11,17 +11,17 @@
 
 FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
-		  m_DirectoryContent(listCurrentDirectory()),
-		  m_Style(&ImGui::GetStyle()), m_SelectedFileName(m_DirectoryContent.front().name)
+		  m_DirectoryContent(listCurrentDirectory()), m_Style(&ImGui::GetStyle()),
+		  m_SelectedFileName(m_DirectoryContent.front().name)
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
-
-	setupDarkStyleColors();
 }
 
 void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
+	setupDarkStyleColors();
+
 	auto[width, height] = Display::getWindowSize<float>();
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
