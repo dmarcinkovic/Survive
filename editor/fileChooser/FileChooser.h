@@ -23,8 +23,8 @@ class FileChooser
 {
 private:
 	static constexpr ImGuiTableFlags tableFlags =
-			ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
-			ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
+			ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable | ImGuiTableFlags_Sortable |
+			ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody | ImGuiTableFlags_Reorderable | ImGuiTableFlags_ScrollY;
 
 	std::string m_CurrentDirectory;
 	const std::filesystem::path m_Root;
