@@ -90,7 +90,7 @@ void Editor::setColorStyle()
 	ImGuiStyle *style = &ImGui::GetStyle();
 	ImVec4 *colors = style->Colors;
 
-	colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 0.87f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
 
 	colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.07f, 0.1f, 1.0f);
 	colors[ImGuiCol_TabHovered] = ImVec4(0.13f, 0.1f, 0.13f, 0.8f);
