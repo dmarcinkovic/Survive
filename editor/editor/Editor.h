@@ -25,6 +25,11 @@ private:
 	FileChooser m_FileChooser;
 	bool m_OpenDialog = false;
 
+	ImGuiStyle *m_Style;
+
+	const ImVec4 &m_WindowBg;
+	const ImVec4 m_FrameBg;
+
 public:
 	explicit Editor(GLuint scene);
 
@@ -45,7 +50,7 @@ private:
 
 	void renderOpenDialog();
 
-	static void setColorStyle();
+	void setColorStyle();
 };
 
 
