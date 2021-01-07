@@ -91,6 +91,10 @@ private:
 	void fillTableRow(const File &file, int index, bool *open);
 
 	void openPressed(bool *open);
+
+	static bool sortByFilename(const File &file1, const File &file2);
+
+	static bool sortBySize(const File &file1, const File &file2);
 };
 
 

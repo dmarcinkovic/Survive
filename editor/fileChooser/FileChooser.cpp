@@ -406,3 +406,13 @@ void FileChooser::openPressed(bool *open)
 		*open = false;
 	}
 }
+
+bool FileChooser::sortByFilename(const File &file1, const File &file2)
+{
+	return file1.name < file2.name;
+}
+
+bool FileChooser::sortBySize(const File &file1, const File &file2)
+{
+	return file1.size < file2.size;
+}
