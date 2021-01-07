@@ -63,7 +63,7 @@ private:
 
 	void drawFilenameTextbox(bool *open);
 
-	void drawTable(float windowHeight);
+	void drawTable(float windowHeight, bool *open);
 
 	static void drawHeader();
 
@@ -89,7 +89,9 @@ private:
 
 	void drawIcon();
 
-	void fillTableRow(const File &file, int index);
+	void fillTableRow(const File &file, int index, bool *open);
+
+	void openPressed(bool *open);
 };
 
 

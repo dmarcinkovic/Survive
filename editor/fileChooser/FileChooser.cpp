@@ -41,7 +41,7 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 
 		drawHeader();
 
-		drawTable(windowHeight);
+		drawTable(windowHeight, open);
 		drawFilenameTextbox(open);
 	}
 	ImGui::End();
@@ -273,7 +273,7 @@ void FileChooser::drawFilenameTextbox(bool *open)
 	}
 }
 
-void FileChooser::drawTable(float windowHeight)
+void FileChooser::drawTable(float windowHeight, bool *open)
 {
 	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 	{
@@ -284,7 +284,7 @@ void FileChooser::drawTable(float windowHeight)
 				const File &file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
-				fillTableRow(file, i);
+				fillTableRow(file, i, open);
 			}
 			ImGui::EndTable();
 		}
@@ -321,17 +321,7 @@ void FileChooser::drawOpenButton(bool *open)
 
 	if (ImGui::Button("Open"))
 	{
-		if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
-		{
-			std::filesystem::path path(m_CurrentDirectory);
-			m_CurrentDirectory = path.append(m_SelectedFileName);
-			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
-
-			resetSelectedFile();
-		} else
-		{
-			*open = false;
-		}
+		openPressed(open);
 	}
 }
 
@@ -356,15 +346,20 @@ void FileChooser::drawIcon()
 	ImGui::SameLine();
 }
 
-void FileChooser::fillTableRow(const File &file, int index)
+void FileChooser::fillTableRow(const File &file, int index, bool *open)
 {
 	ImGui::TableNextColumn();
 	drawIcon();
 
-	if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == index))
+	if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
 	{
 		m_SelectedFile = index;
 		m_SelectedFileName = file.name;
+	}
+
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+	{
+		openPressed(open);
 	}
 
 	ImGui::TableNextColumn();
@@ -379,5 +374,20 @@ void FileChooser::fillTableRow(const File &file, int index)
 	{
 		m_SelectedFile = index;
 		m_SelectedFileName = file.name;
+	}
+}
+
+void FileChooser::openPressed(bool *open)
+{
+	if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
+	{
+		std::filesystem::path path(m_CurrentDirectory);
+		m_CurrentDirectory = path.append(m_SelectedFileName);
+		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+		resetSelectedFile();
+	} else
+	{
+		*open = false;
 	}
 }
