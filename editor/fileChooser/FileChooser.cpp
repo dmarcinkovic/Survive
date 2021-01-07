@@ -26,7 +26,7 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
-	if (ImGui::Begin("Open", open))
+	if (ImGui::Begin("Open", open, ImGuiWindowFlags_NoDocking))
 	{
 		drawNavigationArrows();
 
