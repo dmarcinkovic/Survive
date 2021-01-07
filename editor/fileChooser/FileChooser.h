@@ -47,7 +47,7 @@ public:
 	void open(float windowWidth, float windowHeight, bool *open);
 
 private:
-	void setupDarkStyleColors();
+	static void setupDarkStyleColors();
 
 	void drawNavigationArrows();
 

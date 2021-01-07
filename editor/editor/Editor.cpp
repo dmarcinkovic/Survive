@@ -8,8 +8,7 @@
 #include "Editor.h"
 
 Editor::Editor(GLuint scene)
-		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f),
-		m_Style(&ImGui::GetStyle()), m_WindowBg(m_Style->Colors[ImGuiCol_WindowBg]), m_FrameBg(m_Style->Colors[ImGuiCol_FrameBg])
+		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
 	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
@@ -88,7 +87,8 @@ std::pair<int, int> Editor::getSceneWindowSize() const
 
 void Editor::setColorStyle()
 {
-	ImVec4 *colors = m_Style->Colors;
+	ImGuiStyle *style = &ImGui::GetStyle();
+	ImVec4 *colors = style->Colors;
 
 	colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 0.87f);
 

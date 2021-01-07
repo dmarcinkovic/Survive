@@ -41,8 +41,11 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 
 		drawTable(windowHeight, open);
 		drawFilenameTextbox(open);
+
+		ImGui::End();
 	}
-	ImGui::End();
+
+	ImGui::PopStyleColor(2);
 }
 
 std::vector<File> FileChooser::listDirectory(const std::string &directory, bool showHidden)
@@ -175,10 +178,8 @@ std::filesystem::path FileChooser::getParentPath(const std::string &currentDirec
 
 void FileChooser::setupDarkStyleColors()
 {
-	ImVec4 *colors = m_Style->Colors;
-
-	colors[ImGuiCol_WindowBg] = ImVec4(0.267f, 0.267f, 0.267f, 1.0f);
-	colors[ImGuiCol_FrameBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.11f, 0.11f, 0.11f, 1.0f));
 }
 
 void FileChooser::drawNavigationArrows()
