@@ -22,7 +22,6 @@ struct File
 class FileChooser
 {
 private:
-	static constexpr float TEXT_BASE_WIDTH = 10.0f;
 	static constexpr ImGuiTableFlags tableFlags =
 			ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
 			ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody;
