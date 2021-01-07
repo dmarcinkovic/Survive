@@ -194,10 +194,9 @@ void FileChooser::drawLeftArrow()
 {
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
+		m_Redo.push(m_CurrentDirectory);
 		if (!m_Undo.empty())
 		{
-			m_Redo.push(m_CurrentDirectory);
-
 			m_CurrentDirectory = m_Undo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
@@ -213,10 +212,9 @@ void FileChooser::drawRightArrow()
 {
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
+		m_Undo.push(m_CurrentDirectory);
 		if (!m_Redo.empty())
 		{
-			m_Undo.push(m_CurrentDirectory);
-
 			m_CurrentDirectory = m_Redo.top();
 			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
