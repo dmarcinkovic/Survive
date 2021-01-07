@@ -383,6 +383,8 @@ void FileChooser::openPressed(bool *open)
 	if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
 	{
 		std::filesystem::path path(m_CurrentDirectory);
+
+		m_Undo.push(m_CurrentDirectory);
 		m_CurrentDirectory = path.append(m_SelectedFileName);
 		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
