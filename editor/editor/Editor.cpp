@@ -20,6 +20,8 @@ void Editor::render()
 {
 	renderPropertyWindow();
 	renderSceneWindow();
+	renderMenu();
+	renderOpenDialog();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -95,4 +97,25 @@ void Editor::setColorStyle()
 	colors[ImGuiCol_TabActive] = ImVec4(0.306f, 0.32f, 0.329f, 1);
 	colors[ImGuiCol_TabUnfocused] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
 	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
+}
+
+void Editor::renderMenu()
+{
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::MenuItem("Open", "Ctrl+O", &m_OpenDialog);
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
+void Editor::renderOpenDialog()
+{
+	if (m_OpenDialog)
+	{
+		m_FileChooser.open(600.0f, 400.0f, &m_OpenDialog);
+	}
 }

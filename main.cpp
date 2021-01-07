@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/texture/TexturedModel.h"

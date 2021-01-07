@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 #include <imgui.h>
 #include <utility>
+#include "../fileChooser/FileChooser.h"
 
 class Editor
 {
@@ -20,6 +21,9 @@ private:
 
 	bool m_ShowDemoWindow = true;
 	bool m_ShowAnotherWindow = false;
+
+	FileChooser m_FileChooser;
+	bool m_OpenDialog = false;
 
 public:
 	explicit Editor(GLuint scene);
@@ -36,6 +40,10 @@ private:
 	void renderSceneWindow();
 
 	void renderPropertyWindow();
+
+	void renderMenu();
+
+	void renderOpenDialog();
 
 	static void setColorStyle();
 };
