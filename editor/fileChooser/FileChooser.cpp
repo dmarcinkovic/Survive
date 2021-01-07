@@ -297,17 +297,25 @@ void FileChooser::drawHeader()
 {
 	ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_DefaultSort);
 	ImGui::TableSetupColumn("Size");
-	ImGui::TableSetupColumn("Type");
+	ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_NoSort);
 
 	ImGui::TableSetupScrollFreeze(0, 1);
 	ImGui::TableHeadersRow();
 
 	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
 	{
-		std::cout << "Sort specs\n";
 		if (sorts_specs->SpecsDirty)
 		{
-			std::cout << "Changed sort specs\n";
+			if (sorts_specs->Specs->SortDirection == ImGuiSortDirection_Ascending)
+			{
+				std::cout << "Sort ascending\n";
+			} else
+			{
+				std::cout << "Sort descending\n";
+			}
+
+			std::cout << "Index: " << sorts_specs->Specs->ColumnIndex << '\n';
+			sorts_specs->SpecsDirty = false;
 		}
 	}
 }
