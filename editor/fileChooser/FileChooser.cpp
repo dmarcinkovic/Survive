@@ -11,8 +11,7 @@
 
 FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
-		  m_DirectoryContent(listCurrentDirectory()), m_Style(&ImGui::GetStyle()),
-		  m_SelectedFileName(m_DirectoryContent.front().name)
+		  m_DirectoryContent(listCurrentDirectory()), m_SelectedFileName(m_DirectoryContent.front().name)
 {
 	GLuint folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder);
@@ -305,22 +304,26 @@ void FileChooser::drawHeader()
 
 void FileChooser::drawCancelButton(bool *open)
 {
-	m_Style->Colors[ImGuiCol_Button] = ImVec4(0.345f, 0.345f, 0.345f, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.345f, 0.345f, 0.345f, 1.0f));
 
 	if (ImGui::Button("Cancel"))
 	{
 		*open = false;
 	}
+
+	ImGui::PopStyleColor();
 }
 
 void FileChooser::drawOpenButton(bool *open)
 {
-	m_Style->Colors[ImGuiCol_Button] = ImVec4(0.337f, 0.5f, 0.76f, 1.0f);
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.337f, 0.5f, 0.76f, 1.0f));
 
 	if (ImGui::Button("Open"))
 	{
 		openPressed(open);
 	}
+
+	ImGui::PopStyleColor();
 }
 
 std::string FileChooser::getSelectedFile() const

@@ -35,8 +35,6 @@ private:
 	bool m_Hidden{};
 	bool m_Previous{};
 
-	ImGuiStyle *m_Style;
-
 	std::string m_SelectedFileName;
 	std::stack<std::string> m_Undo;
 	std::stack<std::string> m_Redo;
@@ -67,7 +65,7 @@ private:
 
 	void drawOpenButton(bool *open);
 
-	void drawCancelButton(bool *open);
+	static void drawCancelButton(bool *open);
 
 	static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
 
