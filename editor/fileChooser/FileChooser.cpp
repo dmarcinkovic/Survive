@@ -39,8 +39,6 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 
 		helpMarker("Show hidden files");
 
-		drawHeader();
-
 		drawTable(windowHeight, open);
 		drawFilenameTextbox(open);
 	}
@@ -277,12 +275,17 @@ void FileChooser::drawTable(float windowHeight, bool *open)
 	{
 		if (ImGui::BeginTable("###3ways", 3, tableFlags))
 		{
+			drawHeader();
+
 			for (int i = 0; i < m_DirectoryContent.size(); ++i)
 			{
 				const File &file = m_DirectoryContent[i];
+//				ImGui::PushID(i);
 				ImGui::TableNextRow();
 
 				fillTableRow(file, i, open);
+
+//				ImGui::PopID();
 			}
 			ImGui::EndTable();
 		}
@@ -292,14 +295,20 @@ void FileChooser::drawTable(float windowHeight, bool *open)
 
 void FileChooser::drawHeader()
 {
-	if (ImGui::BeginTable("##3ways", 3, tableFlags))
-	{
-		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_NoHide);
-		ImGui::TableSetupColumn("Size");
-		ImGui::TableSetupColumn("Type");
-		ImGui::TableHeadersRow();
+	ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_DefaultSort);
+	ImGui::TableSetupColumn("Size");
+	ImGui::TableSetupColumn("Type");
 
-		ImGui::EndTable();
+	ImGui::TableSetupScrollFreeze(0, 1);
+	ImGui::TableHeadersRow();
+
+	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
+	{
+		std::cout << "Sort specs\n";
+		if (sorts_specs->SpecsDirty)
+		{
+			std::cout << "Changed sort specs\n";
+		}
 	}
 }
 
