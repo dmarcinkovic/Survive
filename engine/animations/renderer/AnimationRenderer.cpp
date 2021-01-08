@@ -44,7 +44,7 @@ AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<Animated
 	for (auto const &object : objects)
 	{
 		auto const &o = object.get();
-		auto rotation = camera.m_Rotation + o.m_Rotation;
+		auto rotation = camera.rotation + o.m_Rotation;
 
 		glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
 		m_Shader.loadTransformationMatrix(modelMatrix);

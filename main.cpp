@@ -7,6 +7,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "editor/editor/Editor.h"
+#include "engine/events/EventHandler.h"
 
 int main()
 {
@@ -26,6 +27,8 @@ int main()
 	Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
 
 	Camera camera;
+	EventHandler eventHandler(camera);
+
 	Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
 
 	Renderer3D renderer(light);

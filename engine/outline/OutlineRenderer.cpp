@@ -61,7 +61,7 @@ void OutlineRenderer::loadUniforms(const Camera &camera) const
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
-	auto rotation = m_Object->m_Rotation + camera.m_Rotation;
+	auto rotation = m_Object->m_Rotation + camera.rotation;
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(m_Object->m_Position, m_Object->m_Scale * SCALE,
 															  rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);

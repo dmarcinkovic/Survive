@@ -73,12 +73,12 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap) const
 
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
-	m_Shader.loadCameraPosition(camera.m_Position);
+	m_Shader.loadCameraPosition(camera.position);
 }
 
 void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &camera) const
 {
-	auto rotation = camera.m_Rotation + object.m_Rotation;
+	auto rotation = camera.rotation + object.m_Rotation;
 
 	object.m_Skybox.bindCubeTexture(2);
 	m_Shader.loadReflectiveFactor(object.m_ReflectiveFactor);

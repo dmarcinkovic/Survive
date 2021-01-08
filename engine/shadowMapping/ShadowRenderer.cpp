@@ -26,7 +26,7 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_FRONT);
 
-			auto rotation = o.m_Rotation + camera.m_Rotation;
+			auto rotation = o.m_Rotation + camera.rotation;
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
