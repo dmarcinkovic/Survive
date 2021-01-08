@@ -25,6 +25,8 @@ private:
 	FileChooser m_FileChooser;
 	bool m_OpenDialog = false;
 
+	bool m_IsSceneWindowFocused = true;
+
 public:
 	explicit Editor(GLuint scene);
 
@@ -35,6 +37,10 @@ public:
 	static void newFrame();
 
 	[[nodiscard]] std::pair<int, int> getSceneWindowSize() const;
+
+	bool &isSceneWindowFocused();
+
+	bool isSceneWindowFocused() const;
 
 private:
 	void renderSceneWindow();

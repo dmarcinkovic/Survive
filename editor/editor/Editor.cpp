@@ -120,3 +120,13 @@ void Editor::renderOpenDialog()
 		m_FileChooser.open(600.0f, 400.0f, &m_OpenDialog);
 	}
 }
+
+bool &Editor::isSceneWindowFocused()
+{
+	return m_IsSceneWindowFocused;
+}
+
+bool Editor::isSceneWindowFocused() const
+{
+	return m_IsSceneWindowFocused;
+}
