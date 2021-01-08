@@ -40,7 +40,7 @@ public:
 
 	bool &isSceneWindowFocused();
 
-	bool isSceneWindowFocused() const;
+	[[nodiscard]] bool isSceneWindowFocused() const;
 
 private:
 	void renderSceneWindow();

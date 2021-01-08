@@ -42,6 +42,9 @@ void Editor::dock()
 void Editor::renderSceneWindow()
 {
 	ImGui::Begin("Scene window");
+
+	m_IsSceneWindowFocused = ImGui::IsWindowFocused();
+
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
