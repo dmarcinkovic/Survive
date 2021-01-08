@@ -22,9 +22,14 @@ private:
 	float m_CurrentYaw{};
 	float m_CurrentPitch{};
 
+	bool *m_Active{};
+
 public:
 	explicit EventHandler(Camera &camera);
 
+	void registerListener(bool &active);
+
+private:
 	void addScrollListener();
 
 	void addMousePressedListener();

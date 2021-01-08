@@ -128,8 +128,3 @@ bool &Editor::isSceneWindowFocused()
 {
 	return m_IsSceneWindowFocused;
 }
-
-bool Editor::isSceneWindowFocused() const
-{
-	return m_IsSceneWindowFocused;
-}

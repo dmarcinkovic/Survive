@@ -8,6 +8,12 @@
 EventHandler::EventHandler(Camera &camera)
 	: m_Camera(camera)
 {
+}
+
+void EventHandler::registerListener(bool &active)
+{
+	m_Active = &active;
+
 	addScrollListener();
 
 	addMousePressedListener();
@@ -20,7 +26,10 @@ EventHandler::EventHandler(Camera &camera)
 void EventHandler::addScrollListener()
 {
 	auto scrollListener = [this](double xOffset, double yOffset) {
-		m_Camera.position.z -= yOffset * 2.0;
+		if (*m_Active)
+		{
+			m_Camera.position.z -= yOffset * 2.0;
+		}
 	};
 
 	Display::addScrollListener(scrollListener);
@@ -29,7 +38,7 @@ void EventHandler::addScrollListener()
 void EventHandler::addMousePressedListener()
 {
 	auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY) {
-		if (action == GLFW_PRESS)
+		if (action == GLFW_PRESS && *m_Active)
 		{
 			if (button == GLFW_MOUSE_BUTTON_RIGHT)
 			{
@@ -56,6 +65,11 @@ void EventHandler::addMousePressedListener()
 void EventHandler::addMouseMovedListener()
 {
 	auto mouseMovedListener = [this](double mouseX, double mouseY) {
+		if (!*m_Active)
+		{
+			return;
+		}
+
 		double dx = mouseX - m_MousePos.x;
 		double dy = mouseY - m_MousePos.y;
 
@@ -76,7 +90,7 @@ void EventHandler::addMouseMovedListener()
 void EventHandler::addKeyboardListener()
 {
 	auto keyboardListener = [this](int key, int action) {
-		if (action == GLFW_PRESS)
+		if (action == GLFW_PRESS && *m_Active)
 		{
 			switch (key)
 			{

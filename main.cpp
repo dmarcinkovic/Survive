@@ -39,6 +39,7 @@ int main()
 	renderer.addTerrain(terrain);
 
 	Editor editor(renderer.getRenderedTexture());
+	eventHandler.registerListener(editor.isSceneWindowFocused());
 
 	while (display.isRunning())
 	{
