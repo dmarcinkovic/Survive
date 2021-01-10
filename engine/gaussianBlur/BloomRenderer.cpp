@@ -33,3 +33,8 @@ void BloomRenderer::finishRendering()
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 }
+
+const Texture &BloomRenderer::getTexture() const
+{
+	return m_VerticalRenderer.getTexture();
+}

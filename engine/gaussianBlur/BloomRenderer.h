@@ -23,6 +23,8 @@ public:
 
 	void render(const Texture &bloomTexture) const;
 
+	[[nodiscard]] const Texture &getTexture() const;
+
 private:
 	void prepare() const;
 
