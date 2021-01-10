@@ -38,6 +38,7 @@ private:
 
 	GLuint m_LocationAddBloom{};
 	GLuint m_LocationBloomTexture{};
+	GLuint m_LocationBloomStrength{};
 
 public:
 	ObjectShader();
@@ -64,7 +65,7 @@ public:
 
 	void loadAddShadow(bool addShadow) const;
 
-	void loadBloom() const;
+	void loadBloom(float bloomStrength) const;
 
 private:
 	void loadUniformLocations();

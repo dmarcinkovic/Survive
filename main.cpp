@@ -34,7 +34,7 @@ int main()
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
 	BloomRenderer bloomRenderer(width / 8, height / 8);
 
-	lamp.m_BloomTexture = bloomRenderer.getTexture();
+	lamp.addBloomEffect(bloomRenderer.getTexture());
 
 	while (display.isRunning())
 	{

@@ -26,6 +26,7 @@ uniform int addShadow;
 
 uniform int addBloom;
 uniform sampler2D bloomTexture;
+uniform float bloomStrength;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {
@@ -98,6 +99,6 @@ void main()
 
     if (addBloom == 1)
     {
-        outColor += texture(bloomTexture, textCoords) * 5.0;
+        outColor += texture(bloomTexture, textCoords) * bloomStrength;
     }
 }
