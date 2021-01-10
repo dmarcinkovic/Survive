@@ -104,5 +104,6 @@ void ObjectShader::loadAddShadow(bool addShadow) const
 
 void ObjectShader::loadBloom() const
 {
-
+	loadInteger(m_LocationBloomTexture, 3);
+	loadInteger(m_LocationAddBloom, 1);
 }
