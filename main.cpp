@@ -32,7 +32,7 @@ int main()
 	renderer.add3DObject(lamp2);
 
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
-	BloomRenderer bloomRenderer(width / 4, height / 4);
+	BloomRenderer bloomRenderer(width / 8, height / 8);
 
 	lamp.m_BloomTexture = bloomRenderer.getTexture();
 
