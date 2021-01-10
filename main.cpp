@@ -6,9 +6,8 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/gui/GuiRenderer.h"
-#include "engine/gaussianBlur/BlurRenderer.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/gaussianBlur/BloomRenderer.h"
 
 int main()
 {
@@ -30,37 +29,18 @@ int main()
 
 	renderer.add3DObject(lamp);
 
-	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4);
-	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
-	TexturedModel model(loader.renderQuad(), verticalBlurRenderer.getTexture().textureId());
-
-	lamp.m_BloomTexture = verticalBlurRenderer.getTexture();
-
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
-	Model quadModel = loader.renderQuad();
+	BloomRenderer bloomRenderer(width / 4, height / 4);
 
-	GuiRenderer guiRenderer;
-	Entity entity(model, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 1});
-	guiRenderer.addEntity(entity);
+	lamp.m_BloomTexture = bloomRenderer.getTexture();
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		glBindVertexArray(quadModel.m_Vao);
-		glEnableVertexAttribArray(0);
-		glDisable(GL_DEPTH_TEST);
-
-		horizontalBlurRenderer.render(lampBloom, quadModel);
-		verticalBlurRenderer.render(horizontalBlurRenderer.getTexture(), quadModel);
-
-		glEnable(GL_DEPTH_TEST);
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
+		bloomRenderer.render(lampBloom);
 
 		renderer.render(camera);
-
-		guiRenderer.render();
 
 		display.update();
 	}
