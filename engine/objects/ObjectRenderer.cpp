@@ -88,5 +88,8 @@ void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &ca
 
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_Scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
+
+	object.m_BloomTexture.bindTexture(3);
+	m_Shader.loadBloom();
 }
 

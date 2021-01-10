@@ -24,6 +24,9 @@ uniform float refractionIndex;
 
 uniform int addShadow;
 
+uniform int addBloom;
+uniform sampler2D bloomTexture;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -92,4 +95,9 @@ void main()
     vec3 refractionColor = texture(skybox, refractionVector).rgb;
 
     outColor = vec4(mix(outColor.rgb, refractionColor, refractionFactor), 1.0);
+
+    if (addBloom == 1)
+    {
+        outColor += texture(bloomTexture, textCoords) * 5.0;
+    }
 }
