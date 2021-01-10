@@ -25,9 +25,11 @@ int main()
 
 	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
 								Loader::loadTexture("res/lamp_bloom.png"));
-	Object3D lamp(texturedModel, glm::vec3{0, -20, -50}, glm::vec3{0,-90,0}, false, glm::vec3{0.2f, 0.2f, 0.2f});
+	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0,-90,0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
+	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 
 	renderer.add3DObject(lamp);
+	renderer.add3DObject(lamp2);
 
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
 	BloomRenderer bloomRenderer(width / 4, height / 4);
