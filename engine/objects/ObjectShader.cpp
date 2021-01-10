@@ -49,6 +49,9 @@ void ObjectShader::loadUniformLocations()
 	m_LocationRefractionFactor = glGetUniformLocation(m_Program, "refractionFactor");
 
 	m_LocationAddShadow = glGetUniformLocation(m_Program, "addShadow");
+
+	m_LocationBloomTexture = glGetUniformLocation(m_Program, "bloomTexture");
+	m_LocationAddBloom = glGetUniformLocation(m_Program, "addBloom");
 }
 
 void
@@ -101,5 +104,5 @@ void ObjectShader::loadAddShadow(bool addShadow) const
 
 void ObjectShader::loadBloom() const
 {
-	
+
 }
