@@ -98,3 +98,8 @@ void ObjectShader::loadAddShadow(bool addShadow) const
 {
 	loadInteger(m_LocationAddShadow, addShadow);
 }
+
+void ObjectShader::loadBloom() const
+{
+	
+}

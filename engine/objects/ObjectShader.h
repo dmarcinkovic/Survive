@@ -36,6 +36,9 @@ private:
 
 	GLuint m_LocationAddShadow{};
 
+	GLuint m_LocationAddBloom{};
+	GLuint m_LocationBloomTexture{};
+
 public:
 	ObjectShader();
 
@@ -60,6 +63,8 @@ public:
 	void loadRefractionData(float refractionIndex, float refractionFactor) const;
 
 	void loadAddShadow(bool addShadow) const;
+
+	void loadBloom() const;
 
 private:
 	void loadUniformLocations();
