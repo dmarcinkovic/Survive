@@ -195,3 +195,8 @@ void Display::setStencilProperties()
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 }
+
+int Display::getWidth()
+{
+	return m_Width;
+}

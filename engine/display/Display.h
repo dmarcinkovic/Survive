@@ -59,6 +59,8 @@ public:
 	{
 		return {static_cast<T>(m_Width), static_cast<T>(m_Height)};
 	}
+	
+	static int getWidth();
 
 private:
 	static void windowResizeCallback(GLFWwindow *window, int width, int height);
