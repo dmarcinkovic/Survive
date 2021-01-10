@@ -200,3 +200,8 @@ int Display::getWidth()
 {
 	return m_Width;
 }
+
+int Display::getHeight()
+{
+	return m_Height;
+}
