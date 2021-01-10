@@ -27,12 +27,14 @@ int main()
 	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
 								Loader::loadTexture("res/lamp_bloom.png"));
 	Object3D lamp(texturedModel, glm::vec3{0, -20, -50}, glm::vec3{0,-90,0}, false, glm::vec3{0.2f, 0.2f, 0.2f});
-
+	
 	renderer.add3DObject(lamp);
 
 	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4);
 	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
 	TexturedModel model(loader.renderQuad(), verticalBlurRenderer.getTexture().textureId());
+
+	lamp.m_BloomTexture = verticalBlurRenderer.getTexture();
 
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
 	Model quadModel = loader.renderQuad();
