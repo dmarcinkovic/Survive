@@ -6,9 +6,6 @@
 #include "engine/light/Light.h"
 #include "engine/objects/Object3D.h"
 #include "engine/renderer/Renderer3D.h"
-#include "engine/parser/DaeParser.h"
-#include "engine/animations/animation/AnimatedObject.h"
-#include "engine/animations/animation/Animator.h"
 #include "engine/gui/GuiRenderer.h"
 #include "engine/gaussianBlur/BlurRenderer.h"
 #include "engine/parser/ObjParser.h"
@@ -22,30 +19,23 @@ int main()
 
 	Loader loader;
 
-	DaeParser daeParser;
-	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
-								Loader::loadTexture("res/character.png"));
-
-	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{5, -10, -30}, glm::vec3{-90, 0, 0});
-
-	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{-5, -10, -30});
-
-	Animator animator(daeParser.getAnimation(), object);
-
 	Camera camera{};
 	Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
 
 	Renderer3D renderer(light);
-	renderer.addAnimatedObject(object);
-	renderer.add3DObject(dragon);
 
-	BlurRenderer blurRenderer(light, width / 4, height / 4);
-	blurRenderer.addAnimatedObject(object);
-	blurRenderer.addObject(dragon);
+	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
+								Loader::loadTexture("res/lamp_bloom.png"));
+	Object3D lamp(texturedModel, glm::vec3{0, -20, -50}, glm::vec3{0,-90,0}, false, glm::vec3{0.2f, 0.2f, 0.2f});
 
-	TexturedModel model(loader.renderQuad(), blurRenderer.getTexture().textureId());
+	renderer.add3DObject(lamp);
+
+	HorizontalBlurRenderer horizontalBlurRenderer(width / 4, height / 4);
+	VerticalBlurRenderer verticalBlurRenderer(width / 4, height / 4);
+	TexturedModel model(loader.renderQuad(), verticalBlurRenderer.getTexture().textureId());
+
+	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
+	Model quadModel = loader.renderQuad();
 
 	GuiRenderer guiRenderer;
 	Entity entity(model, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 1});
@@ -55,9 +45,16 @@ int main()
 	{
 		Display::clearWindow();
 
-		animator.update();
+		glBindVertexArray(quadModel.m_Vao);
+		glEnableVertexAttribArray(0);
+		glDisable(GL_DEPTH_TEST);
 
-		blurRenderer.render(camera);
+		horizontalBlurRenderer.render(lampBloom, quadModel);
+		verticalBlurRenderer.render(horizontalBlurRenderer.getTexture(), quadModel);
+
+		glEnable(GL_DEPTH_TEST);
+		glDisableVertexAttribArray(0);
+		glBindVertexArray(0);
 
 		renderer.render(camera);
 
