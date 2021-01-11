@@ -26,6 +26,8 @@ private:
 	static glm::vec4 getEyeCoordinates(const glm::vec4 &clipCoordinates);
 
 	static glm::vec3 getWorldCoordinates(const glm::vec4 &eyeCoordinates, const Camera &camera);
+
+	[[nodiscard]] glm::vec3 getMouseRay(double mouseX, double mouseY) const;
 };
 
 

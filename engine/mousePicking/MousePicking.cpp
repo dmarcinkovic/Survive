@@ -20,13 +20,9 @@ void MousePicking::mousePressedHandler()
 	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			glm::vec2 viewportCoordinates{mouseX, mouseY};
-			glm::vec3 normalizedDeviceCoordinates = getNormalizedDeviceCoordinates(viewportCoordinates);
-			glm::vec4 clipCoordinates = getClipCoordinates(normalizedDeviceCoordinates);
-			glm::vec4 eyeCoordinates = getEyeCoordinates(clipCoordinates);
-			glm::vec3 worldCoordinates = getWorldCoordinates(eyeCoordinates, m_Camera);
+			glm::vec3 mouseRay = getMouseRay(mouseX, mouseY);
 
-			std::cout << worldCoordinates.x << ' ' << worldCoordinates.y << ' ' << worldCoordinates.z << '\n';
+			std::cout << mouseRay.x << ' ' << mouseRay.y << ' ' << mouseRay.z << '\n';
 		}
 	});
 }
@@ -58,4 +54,15 @@ glm::vec3 MousePicking::getWorldCoordinates(const glm::vec4 &eyeCoordinates, con
 	glm::vec4 world = glm::inverse(viewMatrix) * eyeCoordinates;
 
 	return glm::normalize(glm::vec3{world});
+}
+
+glm::vec3 MousePicking::getMouseRay(double mouseX, double mouseY) const
+{
+	glm::vec2 viewportCoordinates{mouseX, mouseY};
+	glm::vec3 normalizedDeviceCoordinates = getNormalizedDeviceCoordinates(viewportCoordinates);
+	glm::vec4 clipCoordinates = getClipCoordinates(normalizedDeviceCoordinates);
+	glm::vec4 eyeCoordinates = getEyeCoordinates(clipCoordinates);
+	glm::vec3 worldCoordinates = getWorldCoordinates(eyeCoordinates, m_Camera);
+
+	return worldCoordinates;
 }
