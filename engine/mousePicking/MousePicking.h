@@ -6,15 +6,26 @@
 #define SURVIVE_MOUSEPICKING_H
 
 #include <glm/glm.hpp>
+#include <unordered_map>
+#include <functional>
+
 #include "../camera/Camera.h"
+#include "../texture/TexturedModel.h"
+#include "../objects/Object3D.h"
+#include "MousePickingShader.h"
 
 class MousePicking
 {
 private:
 	const Camera &m_Camera;
+	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+
+	MousePickingShader m_Shader;
 
 public:
 	explicit MousePicking(const Camera &camera);
+
+	void add3DObject(Object3D &entity);
 
 private:
 	void mousePressedHandler();
