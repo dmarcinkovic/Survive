@@ -12,6 +12,8 @@ Editor::Editor(GLuint scene)
 {
 	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
+	
+	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 	setColorStyle();
 }
