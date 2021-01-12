@@ -7,6 +7,7 @@
 #include "MousePicking.h"
 #include "../display/Display.h"
 #include "../math/Maths.h"
+#include "../renderer/Renderer3DUtil.h"
 
 
 MousePicking::MousePicking(const Camera &camera)
@@ -20,9 +21,28 @@ void MousePicking::mousePressedHandler()
 	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			glm::vec3 mouseRay = getMouseRay(mouseX, mouseY);
+			std::cout << "Mouse pressed\n";
 
-			std::cout << mouseRay.x << ' ' << mouseRay.y << ' ' << mouseRay.z << '\n';
+			Renderer3DUtil::prepareRendering(m_Shader);
+
+			for (auto const&[texturedModel, objects] : m_Objects)
+			{
+				glBindVertexArray(texturedModel.vaoID());
+				glEnableVertexAttribArray(0);
+
+				for (auto const& object : objects)
+				{
+					auto const& o = object.get();
+
+					glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+				}
+
+				glDisableVertexAttribArray(0);
+
+				Loader::unbindVao();
+			}
+
+			Renderer3DUtil::finishRendering();
 		}
 	});
 }
@@ -65,4 +85,10 @@ glm::vec3 MousePicking::getMouseRay(double mouseX, double mouseY) const
 	glm::vec3 worldCoordinates = getWorldCoordinates(eyeCoordinates, m_Camera);
 
 	return worldCoordinates;
+}
+
+void MousePicking::add3DObject(Object3D &entity)
+{
+	auto &batch = m_Objects[entity.m_Texture];
+	batch.emplace_back(entity);
 }
