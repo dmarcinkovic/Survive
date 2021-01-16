@@ -39,6 +39,8 @@ private:
 	static glm::vec3 getWorldCoordinates(const glm::vec4 &eyeCoordinates, const Camera &camera);
 
 	[[nodiscard]] glm::vec3 getMouseRay(double mouseX, double mouseY) const;
+
+	static glm::vec4 getColor(int id);
 };
 
 

@@ -40,6 +40,8 @@ void MousePicking::mousePressedHandler()
 					m_Shader.loadTransformationMatrix(
 							Maths::createTransformationMatrix(o.m_Position, o.m_Scale, o.m_Rotation));
 
+					m_Shader.loadPickingColor(getColor(o.m_Id));
+
 					glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
 				}
 
@@ -97,4 +99,13 @@ void MousePicking::add3DObject(Object3D &entity)
 {
 	auto &batch = m_Objects[entity.m_Texture];
 	batch.emplace_back(entity);
+}
+
+glm::vec4 MousePicking::getColor(int id)
+{
+	int r = (id & 0x000000FF) >>  0;
+	int g = (id & 0x0000FF00) >>  8;
+	int b = (id & 0x00FF0000) >> 16;
+
+	return glm::vec4(r / 255.0,g / 255.0,b / 255.0,1.0f);
 }
