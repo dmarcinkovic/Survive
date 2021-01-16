@@ -25,14 +25,20 @@ void MousePicking::mousePressedHandler()
 
 			Renderer3DUtil::prepareRendering(m_Shader);
 
+			m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+			m_Shader.loadViewMatrix(Maths::createViewMatrix(m_Camera));
+
 			for (auto const&[texturedModel, objects] : m_Objects)
 			{
 				glBindVertexArray(texturedModel.vaoID());
 				glEnableVertexAttribArray(0);
 
-				for (auto const& object : objects)
+				for (auto const &object : objects)
 				{
-					auto const& o = object.get();
+					auto const &o = object.get();
+
+					m_Shader.loadTransformationMatrix(
+							Maths::createTransformationMatrix(o.m_Position, o.m_Scale, o.m_Rotation));
 
 					glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
 				}
