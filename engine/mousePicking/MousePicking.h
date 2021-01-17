@@ -17,15 +17,20 @@
 class MousePicking
 {
 private:
-	const Camera &m_Camera;
+	static bool mousePressed;
+
 	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
 	MousePickingShader m_Shader;
 
+	glm::vec2 m_MousePosition{};
+
 public:
-	explicit MousePicking(const Camera &camera);
+	explicit MousePicking();
 
 	void add3DObject(Object3D &entity);
+
+	void render(const Camera &camera) const;
 
 private:
 	void mousePressedHandler();
