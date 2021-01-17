@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/texture/TexturedModel.h"
@@ -6,6 +7,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/mousePicking/MousePicking.h"
+#include "engine/math/Maths.h"
 
 int main()
 {
@@ -38,11 +40,19 @@ int main()
 	renderer.addOutlineToObject(dragon);
 	renderer.addOutlineToObject(dragon2);
 
-	MousePicking mousePicking(camera);
+	MousePicking mousePicking;
+	mousePicking.add3DObject(dragon);
+	mousePicking.add3DObject(dragon2);
+
+	std::vector<std::reference_wrapper<Object3D>> objects;
+	objects.emplace_back(dragon);
+	objects.emplace_back(dragon2);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
+
+		mousePicking.render(camera);
 
 		renderer.render(camera);
 
