@@ -12,6 +12,7 @@
 #include "../animations/animation/AnimatedObject.h"
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
+#include "../mousePicking/MousePicking.h"
 
 class Renderer3D
 {
@@ -22,6 +23,7 @@ private:
 	AnimationRenderer m_AnimationRenderer;
 	SkyRenderer m_SkyRenderer;
 	OutlineRenderer m_OutlineRenderer;
+	MousePicking m_MousePicking;
 
 	const Light &m_Light;
 	FrameBuffer m_FrameBuffer;
