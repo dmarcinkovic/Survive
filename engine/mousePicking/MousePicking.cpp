@@ -65,13 +65,7 @@ void MousePicking::render(const Camera &camera) const
 			m_Shader.loadTransformationMatrix(
 					Maths::createTransformationMatrix(o.m_Position, o.m_Scale, camera.m_Rotation));
 
-			std::uint8_t r = (o.m_Id & 0x000000FF) >> 0;
-			std::uint8_t g = (o.m_Id & 0x0000FF00) >> 8;
-			std::uint8_t b = (o.m_Id & 0x00FF0000) >> 16;
-
-			glm::vec4 color(r / 255.0, g / 255.0, b / 255.0, 1.0f);
-			color = glm::vec4(1, o.m_Id - 1, 0, 1);
-
+			glm::vec4 color = getColor(o.m_Id);
 			m_Shader.loadPickingColor(color);
 
 			glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
