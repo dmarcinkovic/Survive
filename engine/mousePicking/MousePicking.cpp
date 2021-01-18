@@ -20,7 +20,7 @@ void MousePicking::mousePressedHandler()
 		{
 			mousePressed = true;
 
-			auto[width, height] = Display::getWindowSize<double>();
+			int height = Display::getHeight();
 			m_MousePosition = glm::vec2{mouseX, height - mouseY};
 		}
 	});
