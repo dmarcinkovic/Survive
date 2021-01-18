@@ -40,6 +40,8 @@ private:
 	void getRenderedObject() const;
 
 	static glm::vec4 getColor(int id);
+
+	static int getID(const std::uint8_t *data);
 };
 
 

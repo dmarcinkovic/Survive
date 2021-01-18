@@ -2,6 +2,7 @@
 // Created by david on 29. 12. 2020..
 //
 
+#include <iostream>
 #include "MousePicking.h"
 #include "../display/Display.h"
 #include "../math/Maths.h"
@@ -98,4 +99,21 @@ void MousePicking::getRenderedObject() const
 
 	std::uint8_t data[4];
 	glReadPixels(m_MousePosition.x, m_MousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+	int id = getID(data);
+	std::cout << id << '\n';
+}
+
+int MousePicking::getID(const std::uint8_t *data)
+{
+	int r = data[0];
+	int g = data[1] << 8;
+	int b = data[2] << 16;
+
+	if (r == 0xFF && g == 0xFF00 && b == 0xFF0000)
+	{
+		return 0;
+	}
+
+	return r + g + b;
 }
