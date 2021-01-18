@@ -6,7 +6,6 @@
 #include "engine/sky/SkyRenderer.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/mousePicking/MousePicking.h"
 
 int main()
 {
@@ -39,10 +38,6 @@ int main()
 	renderer.addOutlineToObject(dragon);
 	renderer.addOutlineToObject(dragon2);
 
-	MousePicking mousePicking;
-	mousePicking.add3DObject(dragon);
-	mousePicking.add3DObject(dragon2);
-
 	std::vector<std::reference_wrapper<Object3D>> objects;
 	objects.emplace_back(dragon);
 	objects.emplace_back(dragon2);
@@ -50,8 +45,6 @@ int main()
 	while (display.isRunning())
 	{
 		Display::clearWindow();
-
-		mousePicking.render(camera);
 
 		renderer.render(camera);
 
