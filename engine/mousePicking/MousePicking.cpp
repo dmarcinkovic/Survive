@@ -5,6 +5,7 @@
 #include "MousePicking.h"
 #include "../display/Display.h"
 #include "../math/Maths.h"
+#include "../renderer/Renderer3DUtil.h"
 
 bool MousePicking::mousePressed = false;
 
@@ -48,8 +49,7 @@ void MousePicking::render(const Camera &camera) const
 		return;
 	}
 
-	m_Shader.start();
-	glEnable(GL_DEPTH_TEST);
+	Renderer3DUtil::prepareRendering(m_Shader);
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
@@ -65,16 +65,9 @@ void MousePicking::render(const Camera &camera) const
 		Loader::unbindVao();
 	}
 
-	glFlush();
-	glFinish();
+	getRenderedObject();
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	std::uint8_t data[4];
-	glReadPixels(m_MousePosition.x, m_MousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-	MousePickingShader::stop();
-	glDisable(GL_DEPTH_TEST);
+	Renderer3DUtil::finishRendering();
 
 	mousePressed = false;
 }
@@ -92,4 +85,15 @@ void MousePicking::renderScene(const std::vector<std::reference_wrapper<Object3D
 
 		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
 	}
+}
+
+void MousePicking::getRenderedObject() const
+{
+	glFlush();
+	glFinish();
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	std::uint8_t data[4];
+	glReadPixels(m_MousePosition.x, m_MousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }

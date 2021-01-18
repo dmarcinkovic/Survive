@@ -37,6 +37,8 @@ private:
 
 	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 
+	void getRenderedObject() const;
+
 	static glm::vec4 getColor(int id);
 };
 
