@@ -69,6 +69,8 @@ void MousePicking::render(const Camera &camera) const
 
 	Renderer3DUtil::finishRendering();
 
+	Display::clearWindow();
+
 	mousePressed = false;
 }
 
