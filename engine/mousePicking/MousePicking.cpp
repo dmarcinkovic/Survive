@@ -59,17 +59,7 @@ void MousePicking::render(const Camera &camera) const
 		glBindVertexArray(texturedModel.vaoID());
 		glEnableVertexAttribArray(0);
 
-		for (auto const &object : objects)
-		{
-			auto const &o = object.get();
-			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(o.m_Position, o.m_Scale, camera.m_Rotation));
-
-			glm::vec4 color = getColor(o.m_Id);
-			m_Shader.loadPickingColor(color);
-
-			glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
-		}
+		renderScene(objects, camera);
 
 		glDisableVertexAttribArray(0);
 		Loader::unbindVao();
@@ -87,4 +77,19 @@ void MousePicking::render(const Camera &camera) const
 	glDisable(GL_DEPTH_TEST);
 
 	mousePressed = false;
+}
+
+void MousePicking::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+{
+	for (auto const &object : objects)
+	{
+		auto const &o = object.get();
+		m_Shader.loadTransformationMatrix(
+				Maths::createTransformationMatrix(o.m_Position, o.m_Scale, camera.m_Rotation));
+
+		glm::vec4 color = getColor(o.m_Id);
+		m_Shader.loadPickingColor(color);
+
+		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+	}
 }
