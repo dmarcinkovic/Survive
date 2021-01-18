@@ -21,7 +21,9 @@ void MousePicking::mousePressedHandler()
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			mousePressed = true;
-			m_MousePosition = glm::vec2{mouseX, mouseY};
+
+			auto[width, height] = Display::getWindowSize<double>();
+			m_MousePosition = glm::vec2{mouseX, height - mouseY};
 		}
 	});
 }
