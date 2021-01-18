@@ -9,7 +9,6 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/mousePicking/MousePicking.h"
-#include "engine/math/Maths.h"
 
 int main()
 {
