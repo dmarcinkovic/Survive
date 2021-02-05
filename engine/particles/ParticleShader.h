@@ -6,9 +6,19 @@
 #define SURVIVE_PARTICLESHADER_H
 
 
-class ParticleShader
-{
+#include "../shader/Shader.h"
 
+class ParticleShader : public Shader
+{
+private:
+	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ParticleVertexShader.glsl";
+	static constexpr const char  *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
+
+public:
+	ParticleShader();
+
+private:
+	void getUniformLocations();
 };
 
 
