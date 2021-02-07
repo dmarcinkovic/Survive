@@ -152,6 +152,8 @@ const char *FileChooser::getFileType(std::filesystem::file_type type)
 			return "socket";
 		case std::filesystem::file_type::unknown:
 			return "unknown";
+		default:
+			return "";
 	}
 }
 
