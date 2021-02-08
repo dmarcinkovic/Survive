@@ -34,6 +34,12 @@ private:
 	GLuint m_LocationRefractionFactor{};
 	GLuint m_LocationRefractionIndex{};
 
+	GLuint m_LocationAddShadow{};
+
+	GLuint m_LocationAddBloom{};
+	GLuint m_LocationBloomTexture{};
+	GLuint m_LocationBloomStrength{};
+
 public:
 	ObjectShader();
 
@@ -56,6 +62,10 @@ public:
 	void loadReflectiveFactor(float reflectiveFactor) const;
 
 	void loadRefractionData(float refractionIndex, float refractionFactor) const;
+
+	void loadAddShadow(bool addShadow) const;
+
+	void loadBloom(float bloomStrength) const;
 
 private:
 	void loadUniformLocations();

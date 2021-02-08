@@ -47,6 +47,12 @@ void ObjectShader::loadUniformLocations()
 	m_LocationReflectiveFactor = glGetUniformLocation(m_Program, "reflectiveFactor");
 	m_LocationRefractionIndex = glGetUniformLocation(m_Program, "refractionIndex");
 	m_LocationRefractionFactor = glGetUniformLocation(m_Program, "refractionFactor");
+
+	m_LocationAddShadow = glGetUniformLocation(m_Program, "addShadow");
+
+	m_LocationBloomTexture = glGetUniformLocation(m_Program, "bloomTexture");
+	m_LocationAddBloom = glGetUniformLocation(m_Program, "addBloom");
+	m_LocationBloomStrength = glGetUniformLocation(m_Program, "bloomStrength");
 }
 
 void
@@ -90,4 +96,16 @@ void ObjectShader::loadRefractionData(float refractionIndex, float refractionFac
 {
 	loadFloat(m_LocationRefractionIndex, refractionIndex);
 	loadFloat(m_LocationRefractionFactor, refractionFactor);
+}
+
+void ObjectShader::loadAddShadow(bool addShadow) const
+{
+	loadInteger(m_LocationAddShadow, addShadow);
+}
+
+void ObjectShader::loadBloom(float bloomStrength) const
+{
+	loadInteger(m_LocationBloomTexture, 3);
+	loadInteger(m_LocationAddBloom, 1);
+	loadFloat(m_LocationBloomStrength, bloomStrength);
 }

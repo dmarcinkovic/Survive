@@ -28,6 +28,13 @@ void FrameBuffer::unbindFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+GLuint FrameBuffer::createTexture()
+{
+	auto[width, height] = Display::getWindowSize<int>();
+
+	return createTexture(width, height);
+}
+
 GLuint FrameBuffer::createTexture(int width, int height)
 {
 	bindFrameBuffer();
@@ -62,8 +69,10 @@ GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 
 GLuint FrameBuffer::createColorTexture(int width, int height)
 {
-	GLuint texture;
-	glGenTextures(1, &texture);
+    GLuint texture;
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glGenTextures(1, &texture);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
@@ -124,4 +133,19 @@ FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &c
 
 	auto[w, h] = Display::getWindowSize<int>();
 	glViewport(0, 0, w, h);
+}
+
+void FrameBuffer::attachColorAttachment(GLuint texture)
+{
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+}
+
+void FrameBuffer::bindDrawBuffer() const
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FrameBuffer);
+}
+
+void FrameBuffer::unbindDrawFrameBuffer()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

@@ -34,12 +34,17 @@ int main()
 	Renderer3D renderer(light);
 	renderer.add3DObject(dragon);
 	renderer.add3DObject(lamp);
+	renderer.addShadow(dragon);
+	renderer.addShadow(lamp);
 
 	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, glm::vec3{100, 100, 1});
 	renderer.addTerrain(terrain);
 
 	Editor editor(renderer.getRenderedTexture());
 	eventHandler.registerListener(editor.isSceneWindowFocused());
+
+	std::vector<std::reference_wrapper<Object3D>> objects;
+	objects.emplace_back(dragon);
 
 	while (display.isRunning())
 	{

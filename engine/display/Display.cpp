@@ -209,3 +209,13 @@ void Display::initializeImGui()
 	ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
 }
+
+int Display::getWidth()
+{
+	return m_Width;
+}
+
+int Display::getHeight()
+{
+	return m_Height;
+}

@@ -8,6 +8,7 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
 
+
 void ShadowRenderer::render(const Light &light, const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_ShadowShader);

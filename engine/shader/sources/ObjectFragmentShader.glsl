@@ -22,6 +22,12 @@ uniform float reflectiveFactor;
 uniform float refractionFactor;
 uniform float refractionIndex;
 
+uniform int addShadow;
+
+uniform int addBloom;
+uniform sampler2D bloomTexture;
+uniform float bloomStrength;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -64,7 +70,7 @@ void main()
     float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
-    float shadow = shadowCalculation(fragmentPositionInLightSpace);
+    float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
 
     vec3 toCameraVector = normalize(cameraPosition - worldPosition);
     vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
@@ -90,4 +96,9 @@ void main()
     vec3 refractionColor = texture(skybox, refractionVector).rgb;
 
     outColor = vec4(mix(outColor.rgb, refractionColor, refractionFactor), 1.0);
+
+    if (addBloom == 1)
+    {
+        outColor += texture(bloomTexture, textCoords) * bloomStrength;
+    }
 }

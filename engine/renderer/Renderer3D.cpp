@@ -17,6 +17,8 @@ Renderer3D::Renderer3D(const Light &light)
 
 void Renderer3D::render(const Camera &camera) const
 {
+
+	m_MousePicking.render(camera);
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
 
@@ -30,8 +32,8 @@ void Renderer3D::render(const Camera &camera) const
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-	m_ObjectRenderer.add3DObject(object3D);
-	m_ShadowRenderer.add3DObject(object3D);
+    m_ObjectRenderer.add3DObject(object3D);
+    m_MousePicking.add3DObject(object3D);
 }
 
 void Renderer3D::addTerrain(Terrain &terrain)
@@ -77,4 +79,9 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 GLuint Renderer3D::getRenderedTexture() const
 {
 	return m_Scene;
+}
+
+void Renderer3D::addShadow(Object3D &object)
+{
+	m_ShadowRenderer.add3DObject(object);
 }
