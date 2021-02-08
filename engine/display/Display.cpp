@@ -25,11 +25,17 @@ int Display::m_Height;
 
 Display::Display(int width, int height, const char *title)
 {
+	glfwInit();
+	setWindowHints();
+
 	init(width, height, title);
 }
 
 Display::Display(const char *title)
 {
+	glfwInit();
+	setWindowHints();
+
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
@@ -38,9 +44,6 @@ Display::Display(const char *title)
 
 void Display::init(int width, int height, const char *title)
 {
-	glfwInit();
-	setWindowHints();
-
 	m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	glfwMakeContextCurrent(m_Window);
 	glfwSwapInterval(1);
