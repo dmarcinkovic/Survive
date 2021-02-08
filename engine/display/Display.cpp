@@ -25,8 +25,20 @@ int Display::m_Height;
 
 Display::Display(int width, int height, const char *title)
 {
-	glfwInit();
+	init(width, height, title);
+}
 
+Display::Display(const char *title)
+{
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+	init(mode->width, mode->height, title);
+}
+
+void Display::init(int width, int height, const char *title)
+{
+	glfwInit();
 	setWindowHints();
 
 	m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);

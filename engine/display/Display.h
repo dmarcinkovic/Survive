@@ -18,7 +18,7 @@ using ScrollListener = std::function<void(double, double)>;
 class Display
 {
 private:
-	GLFWwindow *m_Window;
+	GLFWwindow *m_Window{};
 
 	static std::vector<KeyListener> m_KeyEventListeners;
 	static std::vector<MouseListener> m_MouseEventListeners;
@@ -33,6 +33,8 @@ private:
 
 public:
 	Display(int width, int height, const char *title);
+
+	explicit Display(const char *title);
 
 	~Display();
 
@@ -65,6 +67,8 @@ public:
 	static int getHeight();
 
 private:
+	void init(int width, int height, const char *title);
+
 	static void windowResizeCallback(GLFWwindow *window, int width, int height);
 
 	static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
