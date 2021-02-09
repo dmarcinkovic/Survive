@@ -25,27 +25,27 @@ private:
 	OutlineRenderer m_OutlineRenderer;
 	MousePicking m_MousePicking;
 
-    const Light &m_Light;
-    FrameBuffer m_ShadowFrameBuffer;
-    const GLuint m_ShadowMap;
+	const Light &m_Light;
+	FrameBuffer m_ShadowFrameBuffer;
+	const GLuint m_ShadowMap;
 
-    std::pair<int, int> m_SceneSize;
+	std::pair<int, int> m_SceneSize;
 
-    FrameBuffer m_SceneFrameBuffer;
-    GLuint m_Scene{};
+	FrameBuffer m_SceneFrameBuffer;
+	GLuint m_Scene{};
 
 public:
 	explicit Renderer3D(const Light &light);
 
 	void render(const Camera &camera) const;
 
-    void renderToFbo(const Camera &camera) const;
+	void renderToFbo(const Camera &camera) const;
 
 	void add3DObject(Object3D &object3D);
 
 	void addTerrain(Terrain &terrain);
 
-    GLuint getRenderedTexture() const;
+	GLuint getRenderedTexture() const;
 
 	void addAnimatedObject(AnimatedObject &object3D);
 
@@ -55,10 +55,10 @@ public:
 
 	void removeOutlineToObject();
 
-    void addShadow(Object3D &object);
+	void addShadow(Object3D &object);
 
 private:
-	static void resetViewport() ;
+	static void resetViewport();
 };
 
 
