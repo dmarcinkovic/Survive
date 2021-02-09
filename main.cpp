@@ -18,33 +18,32 @@ int main()
 
 	Loader loader;
 
-	Texture texture(Loader::loadTexture("res/lamp.jpg"));
-
-	TexturedModel dragonTexture{ObjParser::loadObj("res/dragon.obj", loader), texture.textureId()};
-	TexturedModel lampTexture{ObjParser::loadObj("res/lamp.obj", loader), texture.textureId()};
-
-	Object3D dragon(dragonTexture, glm::vec3{0, -10, -35});
-	Object3D lamp(lampTexture, glm::vec3{5, -10, -30});
-
 	Camera camera;
-	EventHandler eventHandler(camera);
+	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
+			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 
-	Light light(glm::vec3{1, 1, 1}, glm::vec3{1, 1, 0.2});
-
+	Entity sky(texturedModel, glm::vec3{});
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	Renderer3D renderer(light);
-	renderer.add3DObject(dragon);
-	renderer.add3DObject(lamp);
-	renderer.addShadow(dragon);
-	renderer.addShadow(lamp);
 
-	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50}, glm::vec3{100, 100, 1});
-	renderer.addTerrain(terrain);
+	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
+	Object3D dragon(dragonModel, glm::vec3{-5, -5, -30});
+	dragon.m_Skybox = sky.m_Texture.getTexture();
+	dragon.m_ReflectiveFactor = 0.6;
+
+	Object3D dragon2(dragonModel, glm::vec3{5, -5, -30});
+	dragon2.m_Skybox = sky.m_Texture.getTexture();
+	dragon2.m_ReflectiveFactor = 0.4;
+
+	renderer.add3DObject(dragon);
+	renderer.add3DObject(dragon2);
+	renderer.addSkyboxEntity(sky);
+	renderer.addShadow(dragon);
+	renderer.addShadow(dragon2);
 
 	Editor editor(renderer.getRenderedTexture());
+	EventHandler eventHandler(camera);
 	eventHandler.registerListener(editor.isSceneWindowFocused());
-
-	std::vector<std::reference_wrapper<Object3D>> objects;
-	objects.emplace_back(dragon);
 
 	while (display.isRunning())
 	{

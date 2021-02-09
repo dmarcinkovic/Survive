@@ -63,10 +63,10 @@ void Renderer3D::removeOutlineToObject()
 
 void Renderer3D::renderToFbo(const Camera &camera) const
 {
-	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
-
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
+
+	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
@@ -74,6 +74,8 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_ObjectRenderer.render(camera, m_ShadowMap);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
+	m_SkyRenderer.render(camera);
+
 	FrameBuffer::unbindFrameBuffer();
 
 	resetViewport();
