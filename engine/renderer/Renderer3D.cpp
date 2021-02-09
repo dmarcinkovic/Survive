@@ -65,6 +65,9 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 {
 	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
+	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+											Constants::SHADOW_HEIGHT);
+
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
@@ -72,9 +75,6 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
 	FrameBuffer::unbindFrameBuffer();
-
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-											Constants::SHADOW_HEIGHT);
 
 	resetViewport();
 }
