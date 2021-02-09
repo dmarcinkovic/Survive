@@ -14,7 +14,7 @@ Renderer3D::Renderer3D(const Light &light)
 
 void Renderer3D::render(const Camera &camera) const
 {
-	m_MousePicking.render(camera);
+//	m_MousePicking.render(camera);
 
 	m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 									  Constants::SHADOW_HEIGHT);

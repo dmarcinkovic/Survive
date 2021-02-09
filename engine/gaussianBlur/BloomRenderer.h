@@ -18,12 +18,14 @@ private:
 	Loader m_Loader{};
 	Model m_Model;
 
+	std::vector<std::reference_wrapper<Object3D>> m_Objects;
+
 public:
 	BloomRenderer(int width, int height);
 
-	void render(const Texture &bloomTexture) const;
+	void render() const;
 
-	[[nodiscard]] const Texture &getTexture() const;
+	void addObject(Object3D &object);
 
 private:
 	void prepare() const;

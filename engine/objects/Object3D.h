@@ -25,14 +25,19 @@ struct Object3D : public Entity
 	Object3D(const TexturedModel &texture, const glm::vec3 &position, const glm::vec3 &rotation = glm::vec3{0, 0, 0},
 			 bool isTransparent = false, const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
 
-	void addBloomEffect(const Texture &bloomTexture, float bloomStrength = 3.0f);
+	void addBloomEffect(const Texture &emissiveTexture, float bloomStrength = 3.0f);
+
+	void addBloomTexture(const Texture &bloomTexture);
 
 	[[nodiscard]] const Texture &getBloomTexture() const;
+
+	[[nodiscard]] const Texture &getEmissiveTexture() const;
 
 	[[nodiscard]] float getBloomStrength() const;
 
 private:
-	Texture m_BloomTexture{};
+	Texture m_EmissiveTexture{};
+	Texture m_BloomTexture;
 	float m_BloomStrength{};
 
 };

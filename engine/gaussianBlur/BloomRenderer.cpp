@@ -10,12 +10,17 @@ BloomRenderer::BloomRenderer(int width, int height)
 
 }
 
-void BloomRenderer::render(const Texture &bloomTexture) const
+void BloomRenderer::render() const
 {
 	prepare();
 
-	m_HorizontalRenderer.render(bloomTexture, m_Model);
-	m_VerticalRenderer.render(m_HorizontalRenderer.getTexture(), m_Model);
+	for (auto const& object : m_Objects)
+	{
+		const Texture &emissiveTexture = object.get().getEmissiveTexture();
+
+		m_HorizontalRenderer.render(emissiveTexture, m_Model);
+		m_VerticalRenderer.render(m_HorizontalRenderer.getTexture(), m_Model);
+	}
 
 	finishRendering();
 }
@@ -34,7 +39,8 @@ void BloomRenderer::finishRendering()
 	glBindVertexArray(0);
 }
 
-const Texture &BloomRenderer::getTexture() const
+void BloomRenderer::addObject(Object3D &object)
 {
-	return m_VerticalRenderer.getTexture();
+	m_Objects.emplace_back(object);
+	object.addBloomTexture(m_VerticalRenderer.getTexture());
 }

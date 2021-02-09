@@ -13,18 +13,28 @@ Object3D::Object3D(const TexturedModel &texture, const glm::vec3 &position, cons
 	m_Id = id++;
 }
 
-void Object3D::addBloomEffect(const Texture &bloomTexture, float bloomStrength)
+void Object3D::addBloomEffect(const Texture &emissiveTexture, float bloomStrength)
 {
-	m_BloomTexture = bloomTexture;
+	m_EmissiveTexture = emissiveTexture;
 	m_BloomStrength = bloomStrength;
 }
 
-const Texture &Object3D::getBloomTexture() const
+const Texture &Object3D::getEmissiveTexture() const
 {
-	return m_BloomTexture;
+	return m_EmissiveTexture;
 }
 
 float Object3D::getBloomStrength() const
 {
 	return m_BloomStrength;
+}
+
+void Object3D::addBloomTexture(const Texture &bloomTexture)
+{
+	m_BloomTexture = bloomTexture;
+}
+
+const Texture &Object3D::getBloomTexture() const
+{
+	return m_BloomTexture;
 }

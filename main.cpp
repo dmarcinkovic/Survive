@@ -6,6 +6,7 @@
 #include "engine/sky/SkyRenderer.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/gaussianBlur/BloomRenderer.h"
 
 int main()
 {
@@ -15,37 +16,31 @@ int main()
 	Display display(width, height, "Survive");
 
 	Loader loader;
-	Camera camera;
-	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
-			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 
-	Entity sky(texturedModel, glm::vec3{});
-	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
+	Camera camera{};
+	Light light(glm::vec3{10, 10, 10}, glm::vec3{1, 1, 1});
+
 	Renderer3D renderer(light);
 
-	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{-5, -5, -30});
-	dragon.m_Skybox = sky.m_Texture.getTexture();
-	dragon.m_ReflectiveFactor = 0.6;
+	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
+								Loader::loadTexture("res/lamp_bloom.png"));
+	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0,-90,0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
+	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 
-	Object3D dragon2(dragonModel, glm::vec3{5, -5, -30});
-	dragon2.m_Skybox = sky.m_Texture.getTexture();
-	dragon2.m_ReflectiveFactor = 0.4;
+	renderer.add3DObject(lamp);
+	renderer.add3DObject(lamp2);
 
-	renderer.add3DObject(dragon);
-	renderer.add3DObject(dragon2);
-	renderer.addSkyboxEntity(sky);
-	renderer.addOutlineToObject(dragon);
-	renderer.addOutlineToObject(dragon2);
+	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
+	BloomRenderer bloomRenderer(width / 8, height / 8);
+	bloomRenderer.addObject(lamp);
 
-	std::vector<std::reference_wrapper<Object3D>> objects;
-	objects.emplace_back(dragon);
-	objects.emplace_back(dragon2);
+	lamp.addBloomEffect(lampBloom);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
+		bloomRenderer.render();
 		renderer.render(camera);
 
 		display.update();
