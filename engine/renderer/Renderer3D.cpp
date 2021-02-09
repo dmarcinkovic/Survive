@@ -32,8 +32,8 @@ void Renderer3D::render(const Camera &camera) const
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-    m_ObjectRenderer.add3DObject(object3D);
-    m_MousePicking.add3DObject(object3D);
+	m_ObjectRenderer.add3DObject(object3D);
+	m_MousePicking.add3DObject(object3D);
 }
 
 void Renderer3D::addTerrain(Terrain &terrain)
@@ -71,9 +71,12 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_ObjectRenderer.render(camera, m_ShadowMap);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
 	m_AnimationRenderer.render(camera);
+	FrameBuffer::unbindFrameBuffer();
 
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
+
+	resetViewport();
 }
 
 GLuint Renderer3D::getRenderedTexture() const
@@ -84,4 +87,10 @@ GLuint Renderer3D::getRenderedTexture() const
 void Renderer3D::addShadow(Object3D &object)
 {
 	m_ShadowRenderer.add3DObject(object);
+}
+
+void Renderer3D::resetViewport()
+{
+	auto[width, height] = Display::getWindowSize<int>();
+	glViewport(0, 0, width, height);
 }

@@ -56,6 +56,9 @@ public:
 	void removeOutlineToObject();
 
     void addShadow(Object3D &object);
+
+private:
+	static void resetViewport() ;
 };
 
 
