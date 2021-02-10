@@ -14,8 +14,6 @@ Particle::Particle(const TexturedModel &particleTexture, int rows, const glm::ve
 
 bool Particle::update(const Camera &camera)
 {
-	float atlasProgression = getAtlasProgression();
-	m_BlendFactor = std::fmod(atlasProgression, 1);
 
 
 	return false;
@@ -23,18 +21,32 @@ bool Particle::update(const Camera &camera)
 
 void Particle::updateTextureCoordInfo()
 {
+	int stageCount = m_Rows * m_Rows;
+	float atlasProgression = getAtlasProgression(stageCount);
 
+	m_BlendFactor = std::fmod(atlasProgression, 1);
+
+	updateTextureOffsets(atlasProgression, stageCount);
 }
 
 void Particle::setTextureOffset(int index) const
 {
-
+	
 }
 
-float Particle::getAtlasProgression() const
+float Particle::getAtlasProgression(int stageCount) const
 {
 	float lifeFactor = m_ElapsedTime / m_LifeLength;
-	auto stageCount = static_cast<float>(m_Rows * m_Rows);
+	auto stage = static_cast<float>(stageCount);
 
-	return lifeFactor * stageCount;
+	return lifeFactor * stage;
+}
+
+void Particle::updateTextureOffsets(float atlasProgression, int stageCount)
+{
+	int i = std::floor(atlasProgression);
+	int j = i < stageCount - 1 ? i + 1 : i;
+
+	m_TextureOffset1 = setTextureOffset(i);
+	m_TextureOffset2 = setTextureOffset(j);
 }

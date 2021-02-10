@@ -41,7 +41,9 @@ private:
 
 	void setTextureOffset(int index) const;
 
-	float getAtlasProgression() const;
+	[[nodiscard]] float getAtlasProgression(int stageCount) const;
+
+	void updateTextureOffsets(float atlasProgression, int stageCount);
 };
 
 
