@@ -39,7 +39,7 @@ public:
 private:
 	void updateTextureCoordInfo();
 
-	void setTextureOffset(int index) const;
+	[[nodiscard]] glm::vec2 setTextureOffset(int index) const;
 
 	[[nodiscard]] float getAtlasProgression(int stageCount) const;
 

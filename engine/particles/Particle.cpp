@@ -29,9 +29,13 @@ void Particle::updateTextureCoordInfo()
 	updateTextureOffsets(atlasProgression, stageCount);
 }
 
-void Particle::setTextureOffset(int index) const
+glm::vec2 Particle::setTextureOffset(int index) const
 {
-	
+	auto col = static_cast<float>(index % m_Rows);
+	auto row = static_cast<float>(std::floor(index / m_Rows));
+	auto numberOfRows = static_cast<float>(m_Rows);
+
+	return glm::vec2{col / numberOfRows, row / numberOfRows};
 }
 
 float Particle::getAtlasProgression(int stageCount) const
