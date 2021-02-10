@@ -24,10 +24,10 @@ bool Particle::update(const Camera &camera)
 	m_Position += change;
 	m_Distance = glm::length(camera.m_Position - m_Position);
 
-	
+	updateTextureCoordInfo();
+	updateTimeElapsed();
 
-
-	return false;
+	return m_ElapsedTime < m_LifeLength;
 }
 
 void Particle::updateTextureCoordInfo()
@@ -69,4 +69,9 @@ void Particle::updateTextureOffsets(float atlasProgression, int stageCount)
 void Particle::applyGravity()
 {
 	m_Velocity.y += Constants::GRAVITY * m_GravityEffect * Display::getFrameTime();
+}
+
+void Particle::updateTimeElapsed()
+{
+	m_ElapsedTime += static_cast<float>(Display::getFrameTime());
 }

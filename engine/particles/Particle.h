@@ -45,6 +45,8 @@ private:
 	void updateTextureOffsets(float atlasProgression, int stageCount);
 
 	void applyGravity();
+
+	void updateTimeElapsed();
 };
 
 
