@@ -16,3 +16,8 @@ bool Particle::update(const Camera &camera)
 {
 	return false;
 }
+
+void Particle::updateTextureCoordInfo()
+{
+
+}
