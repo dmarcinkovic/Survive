@@ -40,6 +40,8 @@ private:
 	void updateTextureCoordInfo();
 
 	void setTextureOffset(int index) const;
+
+	float getAtlasProgression() const;
 };
 
 

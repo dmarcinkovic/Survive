@@ -14,11 +14,9 @@ Particle::Particle(const TexturedModel &particleTexture, int rows, const glm::ve
 
 bool Particle::update(const Camera &camera)
 {
-	float lifeFactor = m_ElapsedTime / m_LifeLength;
-	auto stageCount = static_cast<float>(m_Rows * m_Rows);
-	float atlasProgression = lifeFactor * stageCount;
+	float atlasProgression = getAtlasProgression();
 
-	
+
 
 	return false;
 }
@@ -31,4 +29,12 @@ void Particle::updateTextureCoordInfo()
 void Particle::setTextureOffset(int index) const
 {
 
+}
+
+float Particle::getAtlasProgression() const
+{
+	float lifeFactor = m_ElapsedTime / m_LifeLength;
+	auto stageCount = static_cast<float>(m_Rows * m_Rows);
+
+	return lifeFactor * stageCount;
 }
