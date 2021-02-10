@@ -6,8 +6,20 @@
 #define SURVIVE_PARTICLETEXTURE_H
 
 
+#include "../texture/Texture.h"
+
 class ParticleTexture
 {
+private:
+	Texture m_Texture{};
+	int m_Rows;
+
+public:
+	ParticleTexture(Texture texture, int numberOfRows);
+
+	const Texture &getTexture() const;
+
+	int getRows() const;
 
 };
 
