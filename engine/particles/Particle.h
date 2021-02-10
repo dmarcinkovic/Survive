@@ -10,6 +10,16 @@
 
 class Particle : public Entity
 {
+	glm::vec3 m_Velocity{};
+	glm::vec3 m_Rotation{};
+
+	float m_BlendFactor{};
+
+private:
+	float m_GravityEffect{};
+	float m_LifeLength{};
+
+	float m_ElapsedTime{};
 
 };
 
