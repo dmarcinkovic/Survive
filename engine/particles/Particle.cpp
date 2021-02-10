@@ -15,7 +15,7 @@ Particle::Particle(const TexturedModel &particleTexture, int rows, const glm::ve
 bool Particle::update(const Camera &camera)
 {
 	float atlasProgression = getAtlasProgression();
-
+	m_BlendFactor = std::fmod(atlasProgression, 1);
 
 
 	return false;
