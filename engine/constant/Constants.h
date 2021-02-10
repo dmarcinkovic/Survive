@@ -16,6 +16,7 @@ struct Constants
 	constexpr static float FOV = 70.0f;
 	constexpr static const int SHADOW_WIDTH = 1024;
 	constexpr static const int SHADOW_HEIGHT = 1024;
+	constexpr static double GRAVITY = -50;
 };
 
 #endif //SURVIVE_CONSTANTS_H
