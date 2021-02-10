@@ -16,6 +16,15 @@ Particle::Particle(const TexturedModel &particleTexture, int rows, const glm::ve
 
 bool Particle::update(const Camera &camera)
 {
+	applyGravity();
+
+	glm::vec3 change{m_Velocity};
+	change *= Display::getFrameTime();
+
+	m_Position += change;
+	m_Distance = glm::length(camera.m_Position - m_Position);
+
+	
 
 
 	return false;
