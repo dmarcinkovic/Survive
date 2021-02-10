@@ -38,6 +38,8 @@ public:
 
 private:
 	void updateTextureCoordInfo();
+
+	void setTextureOffset(int index) const;
 };
 
 

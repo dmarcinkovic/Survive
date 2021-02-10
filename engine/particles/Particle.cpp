@@ -21,3 +21,8 @@ void Particle::updateTextureCoordInfo()
 {
 
 }
+
+void Particle::setTextureOffset(int index) const
+{
+
+}
