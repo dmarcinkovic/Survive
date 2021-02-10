@@ -3,6 +3,8 @@
 //
 
 #include "Particle.h"
+#include "../constant/Constants.h"
+#include "../display/Display.h"
 
 Particle::Particle(const TexturedModel &particleTexture, int rows, const glm::vec3 &position, const glm::vec3 &velocity,
 				   float gravityEffect, float lifeLength, float rotation, float scale)
@@ -53,4 +55,9 @@ void Particle::updateTextureOffsets(float atlasProgression, int stageCount)
 
 	m_TextureOffset1 = setTextureOffset(i);
 	m_TextureOffset2 = setTextureOffset(j);
+}
+
+void Particle::applyGravity()
+{
+	m_Velocity.y += Constants::GRAVITY * m_GravityEffect * Display::getFrameTime();
 }

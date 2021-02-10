@@ -8,7 +8,6 @@
 
 #include <glm/vec2.hpp>
 #include "../entity/Entity.h"
-#include "ParticleTexture.h"
 #include "../camera/Camera.h"
 
 class Particle : public Entity
@@ -44,6 +43,8 @@ private:
 	[[nodiscard]] float getAtlasProgression(int stageCount) const;
 
 	void updateTextureOffsets(float atlasProgression, int stageCount);
+
+	void applyGravity();
 };
 
 
