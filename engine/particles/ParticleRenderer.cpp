@@ -13,7 +13,8 @@ void ParticleRenderer::render(const Camera &camera) const
 	{
 		Renderer2DUtil::prepareEntity(texturedModel, VAO_UNITS);
 
-		
+
+
 
 		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
 	}

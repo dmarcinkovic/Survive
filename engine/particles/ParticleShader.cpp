@@ -12,5 +12,10 @@ ParticleShader::ParticleShader()
 
 void ParticleShader::getUniformLocations()
 {
+	m_LocationNumberOfRows = glGetUniformLocation(m_Program, "numberOfRows");
+}
 
+void ParticleShader::loadNumberOfRows(int rows) const
+{
+	loadInteger(m_LocationNumberOfRows, rows);
 }

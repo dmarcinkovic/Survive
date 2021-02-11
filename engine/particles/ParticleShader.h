@@ -14,8 +14,12 @@ private:
 	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ParticleVertexShader.glsl";
 	static constexpr const char  *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
 
+	GLuint m_LocationNumberOfRows{};
+
 public:
 	ParticleShader();
+
+	void loadNumberOfRows(int rows) const;
 
 private:
 	void getUniformLocations();
