@@ -53,6 +53,8 @@ public:
 
 	Model renderCube();
 
+	GLuint createEmptyVBO(int vertexCount);
+
 	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 private:

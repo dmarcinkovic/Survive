@@ -246,6 +246,20 @@ void Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
 	}
 }
 
+GLuint Loader::createEmptyVBO(int vertexCount)
+{
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	
+	m_Vbos.emplace_back(vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), nullptr, GL_STREAM_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return vbo;
+}
+
 Model::Model(GLuint vao, size_t vertexCount)
 		: m_Vao(vao), m_VertexCount(vertexCount)
 {
