@@ -35,6 +35,8 @@ public:
 
 	bool update(const Camera &camera);
 
+	[[nodiscard]] int numberOfRows() const;
+
 private:
 	void updateTextureCoordInfo();
 

@@ -13,6 +13,7 @@ void ParticleRenderer::render(const Camera &camera) const
 	{
 		Renderer2DUtil::prepareEntity(texturedModel, VAO_UNITS);
 
+		m_Shader.loadNumberOfRows(particles.back().numberOfRows());
 
 
 

@@ -75,3 +75,8 @@ void Particle::updateTimeElapsed()
 {
 	m_ElapsedTime += static_cast<float>(Display::getFrameTime());
 }
+
+int Particle::numberOfRows() const
+{
+	return m_Rows;
+}
