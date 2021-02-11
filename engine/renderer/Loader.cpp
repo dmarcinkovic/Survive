@@ -271,6 +271,21 @@ void Loader::updateVBO(GLuint vbo, const std::vector<float> &data)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+								   int offset)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+
+	const void *pointer = reinterpret_cast<void *>(offset * sizeof(float));
+	glVertexAttribPointer(attribute, vertexCount, GL_FLOAT, GL_FALSE, instancedDataLength * sizeof(float), pointer);
+
+	glVertexAttribDivisor(attribute, 1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 Model::Model(GLuint vao, size_t vertexCount)
 		: m_Vao(vao), m_VertexCount(vertexCount)
 {
