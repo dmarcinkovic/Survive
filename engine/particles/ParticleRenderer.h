@@ -18,7 +18,7 @@ class ParticleRenderer
 private:
 	constexpr static int MAX_INSTANCES = 10'000;
 	int m_Pointer{};
-	std::unordered_map<TexturedModel, std::vector<Particle>>, TextureHash> m_Particles;
+	std::unordered_map<TexturedModel, std::vector<Particle>, TextureHash> m_Particles;
 
 	ParticleShader m_Shader;
 
