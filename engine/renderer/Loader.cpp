@@ -250,7 +250,7 @@ GLuint Loader::createEmptyVBO(int vertexCount)
 {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	
+
 	m_Vbos.emplace_back(vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -258,6 +258,11 @@ GLuint Loader::createEmptyVBO(int vertexCount)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	return vbo;
+}
+
+void Loader::updateVBO(GLuint vbo, const std::vector<float> &data)
+{
+
 }
 
 Model::Model(GLuint vao, size_t vertexCount)

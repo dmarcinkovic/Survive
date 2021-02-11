@@ -55,6 +55,8 @@ public:
 
 	GLuint createEmptyVBO(int vertexCount);
 
+	void updateVBO(GLuint vbo, const std::vector<float> &data);
+
 	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 private:
