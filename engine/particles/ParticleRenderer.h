@@ -17,9 +17,10 @@ class ParticleRenderer
 {
 private:
 	constexpr static int MAX_INSTANCES = 10'000;
+	constexpr static int INSTANCE_DATA_LENGTH = 21;
 	constexpr static int VAO_UNITS = 5;
 
-	int m_Pointer{};
+	static int pointer;
 	std::unordered_map<TexturedModel, std::vector<Particle>, TextureHash> m_Particles;
 
 	ParticleShader m_Shader;
@@ -33,6 +34,11 @@ private:
 	static void finish();
 
 	static void enableBlending();
+
+	void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
+							   const glm::mat4 &viewMatrix, std::vector<float> &data);
+
+	void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
 };
 
 
