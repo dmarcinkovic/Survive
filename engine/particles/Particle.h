@@ -37,6 +37,8 @@ public:
 
 	[[nodiscard]] int numberOfRows() const;
 
+	[[nodiscard]] const glm::vec3 &rotation() const;
+
 private:
 	void updateTextureCoordInfo();
 

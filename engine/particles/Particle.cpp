@@ -80,3 +80,8 @@ int Particle::numberOfRows() const
 {
 	return m_Rows;
 }
+
+const glm::vec3 &Particle::rotation() const
+{
+	return m_Rotation;
+}
