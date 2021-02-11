@@ -35,10 +35,6 @@ public:
 
 	bool update(const Camera &camera);
 
-	[[nodiscard]] int numberOfRows() const;
-
-	[[nodiscard]] const glm::vec3 &rotation() const;
-
 private:
 	void updateTextureCoordInfo();
 
@@ -51,6 +47,8 @@ private:
 	void applyGravity();
 
 	void updateTimeElapsed();
+
+	friend class ParticleRenderer;
 };
 
 
