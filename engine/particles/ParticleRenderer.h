@@ -21,11 +21,15 @@ private:
 	constexpr static int VAO_UNITS = 5;
 
 	static int pointer;
+	GLuint m_Vbo{};
+	Loader m_Loader;
 	std::unordered_map<TexturedModel, std::vector<Particle>, TextureHash> m_Particles;
 
 	ParticleShader m_Shader;
 
 public:
+	ParticleRenderer();
+
 	void render(const Camera &camera) const;
 
 private:
@@ -40,7 +44,7 @@ private:
 
 	static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
 
-	void updateTextureCoordinates(const Particle &particle, std::vector<float> &data);
+	static void updateTextureCoordinates(const Particle &particle, std::vector<float> &data);
 };
 
 

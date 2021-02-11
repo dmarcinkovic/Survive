@@ -9,6 +9,11 @@
 
 int ParticleRenderer::pointer = 0;
 
+ParticleRenderer::ParticleRenderer()
+{
+	m_Vbo = m_Loader.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
+}
+
 void ParticleRenderer::render(const Camera &camera) const
 {
 	prepare();
@@ -28,6 +33,7 @@ void ParticleRenderer::render(const Camera &camera) const
 			updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
 		}
 
+		Loader::updateVBO(m_Vbo, data);
 		glDrawElementsInstanced(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr, particles.size());
 
 		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
