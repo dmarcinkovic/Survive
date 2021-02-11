@@ -17,18 +17,20 @@ class ParticleRenderer
 {
 private:
 	constexpr static int MAX_INSTANCES = 10'000;
+	constexpr static int VAO_UNITS = 5;
+
 	int m_Pointer{};
 	std::unordered_map<TexturedModel, std::vector<Particle>, TextureHash> m_Particles;
 
 	ParticleShader m_Shader;
 
 public:
-	void render(const Camera &camera);
+	void render(const Camera &camera) const;
 
 private:
-	void prepare();
+	void prepare() const;
 
-	void finish();
+	static void finish();
 
 	static void enableBlending();
 };
