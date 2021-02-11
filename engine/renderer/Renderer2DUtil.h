@@ -14,9 +14,9 @@ class Renderer2DUtil
 public:
 	static void prepareRendering(const Shader &shader);
 
-	static void prepareEntity(const TexturedModel &texture);
+	static void prepareEntity(const TexturedModel &texture, int numberOfVertexUnits = 2);
 
-	static void finishRenderingEntity();
+	static void finishRenderingEntity(int numberOfVertexUnits = 2);
 
 	static void finishRendering();
 };
