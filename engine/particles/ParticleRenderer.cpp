@@ -5,25 +5,27 @@
 #include <glm/ext/matrix_transform.hpp>
 #include "ParticleRenderer.h"
 #include "../renderer/Renderer2DUtil.h"
+#include "../math/Maths.h"
 
 int ParticleRenderer::pointer = 0;
 
 void ParticleRenderer::render(const Camera &camera) const
 {
 	prepare();
+	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 
 	for (auto const&[texturedModel, particles] : m_Particles)
 	{
 		Renderer2DUtil::prepareEntity(texturedModel, VAO_UNITS);
 
-		m_Shader.loadNumberOfRows(particles.back().numberOfRows());
+		m_Shader.loadNumberOfRows(particles.back().m_Rows);
 
 		pointer = 0;
 		std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
 
 		for (auto const &particle : particles)
 		{
-
+			updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
 		}
 
 		glDrawElementsInstanced(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr, particles.size());
@@ -100,4 +102,13 @@ void ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<floa
 	data[pointer++] = matrix[3][1];
 	data[pointer++] = matrix[3][2];
 	data[pointer++] = matrix[3][3];
+}
+
+void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::vector<float> &data)
+{
+	data[pointer++] = particle.m_TextureOffset1.x;
+	data[pointer++] = particle.m_TextureOffset1.y;
+	data[pointer++] = particle.m_TextureOffset2.x;
+	data[pointer++] = particle.m_TextureOffset2.y;
+	data[pointer++] = particle.m_BlendFactor;
 }

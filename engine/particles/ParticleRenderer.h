@@ -39,6 +39,8 @@ private:
 							   const glm::mat4 &viewMatrix, std::vector<float> &data);
 
 	static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
+
+	void updateTextureCoordinates(const Particle &particle, std::vector<float> &data);
 };
 
 
