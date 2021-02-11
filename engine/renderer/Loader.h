@@ -57,7 +57,7 @@ public:
 
 	static void updateVBO(GLuint vbo, const std::vector<float> &data);
 
-	void addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+	static void addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
 							   int offset);
 
 	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
