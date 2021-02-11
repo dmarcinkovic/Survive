@@ -35,10 +35,10 @@ private:
 
 	static void enableBlending();
 
-	void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
+	static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
 							   const glm::mat4 &viewMatrix, std::vector<float> &data);
 
-	void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
+	static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
 };
 
 

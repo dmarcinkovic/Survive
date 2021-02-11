@@ -84,5 +84,20 @@ ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::ve
 
 void ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data)
 {
-
+	data[pointer++] = matrix[0][0];
+	data[pointer++] = matrix[0][1];
+	data[pointer++] = matrix[0][2];
+	data[pointer++] = matrix[0][3];
+	data[pointer++] = matrix[1][0];
+	data[pointer++] = matrix[1][1];
+	data[pointer++] = matrix[1][2];
+	data[pointer++] = matrix[1][3];
+	data[pointer++] = matrix[2][0];
+	data[pointer++] = matrix[2][1];
+	data[pointer++] = matrix[2][2];
+	data[pointer++] = matrix[2][3];
+	data[pointer++] = matrix[3][0];
+	data[pointer++] = matrix[3][1];
+	data[pointer++] = matrix[3][2];
+	data[pointer++] = matrix[3][3];
 }
