@@ -17,7 +17,7 @@ int main()
 
 	ParticleRenderer particleRenderer;
 
-	TexturedModel model(loader.renderQuad(), Loader::loadTexture("res/particleAtlas.png"));
+	TexturedModel model(loader.renderQuadStrip(), Loader::loadTexture("res/particleAtlas.png"));
 	ParticleSystem particleSystem(model, 100, 25, 0.3f, 4);
 
 	particleRenderer.addParticle(Particle(model, 4, glm::vec3{0, 10, -30}, glm::vec3{0, 1, 0}, 0.3f, 4));
@@ -27,16 +27,16 @@ int main()
 		Display::clearWindow();
 
 		std::vector<Particle> &particles = particleRenderer.getParticles(model);
-//		particleSystem.generateParticles(glm::vec3{0, 10, -30}, particles);
-//
-//		for (auto &particle : particles)
-//		{
-//			particle.update(camera);
-//		}
-//
-//		particles.erase(std::remove_if(particles.begin(), particles.end(), [&](auto &particle){
-//			return !particle.update(camera);
-//		}), particles.end());
+		particleSystem.generateParticles(glm::vec3{0, 10, -30}, particles);
+
+		for (auto &particle : particles)
+		{
+			particle.update(camera);
+		}
+
+		particles.erase(std::remove_if(particles.begin(), particles.end(), [&](auto &particle){
+			return !particle.update(camera);
+		}), particles.end());
 
 		particleRenderer.render(camera);
 
