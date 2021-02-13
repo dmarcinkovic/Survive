@@ -31,6 +31,8 @@ public:
 	static glm::mat4 createLightProjectionMatrix();
 
 	static glm::mat4 createOrthographicProjectionMatrix(float width, float height);
+
+	static float getRandom(float first, float second);
 };
 
 #endif //SURVIVE_MATHS_H
