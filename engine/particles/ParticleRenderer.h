@@ -32,6 +32,8 @@ public:
 
 	void render(const Camera &camera) const;
 
+	void addParticle(const Particle &particle);
+
 private:
 	void prepare() const;
 
@@ -45,6 +47,8 @@ private:
 	static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
 
 	static void updateTextureCoordinates(const Particle &particle, std::vector<float> &data);
+
+	void addInstanceAttributes(const TexturedModel &model) const;
 };
 
 

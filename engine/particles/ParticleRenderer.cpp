@@ -18,7 +18,7 @@ void ParticleRenderer::render(const Camera &camera) const
 {
 	prepare();
 	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-	
+
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
 	for (auto const&[texturedModel, particles] : m_Particles)
@@ -120,4 +120,26 @@ void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::v
 	data[pointer++] = particle.m_TextureOffset2.x;
 	data[pointer++] = particle.m_TextureOffset2.y;
 	data[pointer++] = particle.m_BlendFactor;
+}
+
+void ParticleRenderer::addParticle(const Particle &particle)
+{
+	auto &batch = m_Particles[particle.m_Texture];
+
+	if (batch.empty())
+	{
+		addInstanceAttributes(particle.m_Texture);
+	}
+
+	batch.emplace_back(particle);
+}
+
+void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
+{
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
+	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 }
