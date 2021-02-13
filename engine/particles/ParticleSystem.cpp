@@ -4,6 +4,7 @@
 
 #include "ParticleSystem.h"
 #include "../display/Display.h"
+#include "../math/Maths.h"
 
 ParticleSystem::ParticleSystem(const TexturedModel &particleTexture, float particlesPerSecond, float speed,
 							   float gravity, float lifeLength)
@@ -28,5 +29,12 @@ void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, std::vecto
 
 void ParticleSystem::emitParticle(const glm::vec3 &center, std::vector<Particle> &particles)
 {
+	float dirX = Maths::getRandom(0, 1) * 1.2f - 1.0f;
+	float dirZ = Maths::getRandom(0, 1) * 1.2f - 1.0f;
 
+	glm::vec3 velocity{dirX, 1.0f, dirZ};
+	velocity = glm::normalize(velocity) * m_Speed;
+
+	// TODO do not hardcode the number of rows in texture
+	particles.emplace_back(Particle(m_Texture, 4, center, velocity, m_Gravity, m_LifeLength));
 }
