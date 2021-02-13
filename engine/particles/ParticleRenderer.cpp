@@ -18,6 +18,8 @@ void ParticleRenderer::render(const Camera &camera) const
 {
 	prepare();
 	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	
+	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
 	for (auto const&[texturedModel, particles] : m_Particles)
 	{
@@ -31,6 +33,7 @@ void ParticleRenderer::render(const Camera &camera) const
 		for (auto const &particle : particles)
 		{
 			updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
+			updateTextureCoordinates(particle, data);
 		}
 
 		Loader::updateVBO(m_Vbo, data);
