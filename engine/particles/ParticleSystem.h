@@ -6,7 +6,9 @@
 #define SURVIVE_PARTICLESYSTEM_H
 
 
+#include <glm/vec3.hpp>
 #include "../texture/TexturedModel.h"
+#include "Particle.h"
 
 class ParticleSystem
 {
@@ -22,7 +24,10 @@ public:
 	ParticleSystem(const TexturedModel &particleTexture, float particlesPerSecond, float speed, float gravity,
 				   float lifeLength);
 
+	void generateParticles(const glm::vec3 &systemCenter, std::vector<Particle> &particles);
 
+private:
+	void emitParticle(const glm::vec3 &center, std::vector<Particle> &particles);
 };
 
 
