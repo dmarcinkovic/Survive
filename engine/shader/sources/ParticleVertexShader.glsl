@@ -1,9 +1,9 @@
 #version 450 core
 
 layout (location = 0) in vec3 position;
-layout (location = 1) mat4 modelViewMatrix;
-layout (location = 5) float blendFactor;
-layout (location = 6) vec4 texOffsets;
+layout (location = 1) in mat4 modelViewMatrix;
+layout (location = 5) in float blendFactor;
+layout (location = 6) in vec4 texOffsets;
 
 out vec2 textureCoordinates1;
 out vec2 textureCoordinates2;
