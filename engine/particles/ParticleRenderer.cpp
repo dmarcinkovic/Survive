@@ -143,3 +143,8 @@ void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 }
+
+std::vector<Particle> &ParticleRenderer::getParticles(const TexturedModel &model)
+{
+	return m_Particles[model];
+}

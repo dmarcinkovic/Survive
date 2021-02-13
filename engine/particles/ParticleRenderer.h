@@ -34,6 +34,8 @@ public:
 
 	void addParticle(const Particle &particle);
 
+	std::vector<Particle> &getParticles(const TexturedModel &model);
+
 private:
 	void prepare() const;
 

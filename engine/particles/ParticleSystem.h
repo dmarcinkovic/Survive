@@ -21,6 +21,8 @@ private:
 public:
 	ParticleSystem(const TexturedModel &particleTexture, float particlesPerSecond, float speed, float gravity,
 				   float lifeLength);
+
+
 };
 
 
