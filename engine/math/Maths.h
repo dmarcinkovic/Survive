@@ -32,7 +32,7 @@ public:
 
 	static glm::mat4 createOrthographicProjectionMatrix(float width, float height);
 
-	static float getRandom(float first, float second);
+	static float getRandom(float first = 0.0f, float second = 1.0f);
 };
 
 #endif //SURVIVE_MATHS_H
