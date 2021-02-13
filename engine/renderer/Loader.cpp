@@ -146,6 +146,16 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
 	return Model(vao, vertices.size() / size);
 }
 
+Model Loader::loadToVao(const std::vector<float> &vertices, size_t size)
+{
+	GLuint vao = createVao();
+
+	storeDataInAttributeList(0, vertices, size);
+	unbindVao();
+
+	return Model(vao, vertices.size() / size);
+}
+
 void Loader::addMipMap()
 {
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -194,6 +204,13 @@ Model Loader::renderQuad()
 	static const std::vector<unsigned> indices{0, 1, 3, 3, 1, 2};
 
 	return Model(loadToVao(vertices, indices, 2));
+}
+
+Model Loader::renderQuadStrip()
+{
+	static const std::vector<float> vertices{-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
+
+	return loadToVao(vertices, 2);
 }
 
 Model Loader::renderCube()
