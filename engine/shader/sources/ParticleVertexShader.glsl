@@ -12,7 +12,8 @@ out float blend;
 uniform mat4 projectionMatrix;
 uniform int numberOfRows;
 
-void main() {
+void main()
+{
     vec2 textureCoordinates = position.xy + vec2(0.5, 0.5);
 
     textureCoordinates.y = 1.0 - textureCoordinates.y;
