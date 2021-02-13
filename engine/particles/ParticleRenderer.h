@@ -18,7 +18,7 @@ class ParticleRenderer
 private:
 	constexpr static int MAX_INSTANCES = 10'000;
 	constexpr static int INSTANCE_DATA_LENGTH = 21;
-	constexpr static int VAO_UNITS = 5;
+	constexpr static int VAO_UNITS = 7;
 
 	static int pointer;
 	GLuint m_Vbo{};
