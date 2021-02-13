@@ -32,11 +32,13 @@ public:
 
 	void render(const Camera &camera) const;
 
+	void update(const Camera &camera);
+
 	void addParticle(const Particle &particle);
 
 	std::vector<Particle> &getParticles(const TexturedModel &model);
-
 private:
+
 	void prepare() const;
 
 	static void finish();

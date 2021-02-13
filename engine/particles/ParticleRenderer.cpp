@@ -154,3 +154,18 @@ std::vector<Particle> &ParticleRenderer::getParticles(const TexturedModel &model
 {
 	return m_Particles[model];
 }
+
+void ParticleRenderer::update(const Camera &camera)
+{
+	for (auto &[texturedModel, particles] : m_Particles)
+	{
+		for (auto &particle :particles)
+		{
+			particle.update(camera);
+		}
+
+		particles.erase(std::remove_if(particles.begin(), particles.end(), [&](auto &particle) {
+			return !particle.update(camera);
+		}), particles.end());
+	}
+}
