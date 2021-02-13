@@ -18,7 +18,7 @@ int main()
 	ParticleRenderer particleRenderer;
 
 	TexturedModel model(loader.renderQuadStrip(), Loader::loadTexture("res/particleAtlas.png"));
-	ParticleSystem particleSystem(model, 100, 25, 0.3f, 4);
+	ParticleSystem particleSystem(model, 100, 25, 0.3f, 4, 1);
 
 	particleRenderer.addParticle(Particle(model, 4, glm::vec3{0, -10, -30}, glm::vec3{0, 1, 0}, 0.3f, 4));
 
