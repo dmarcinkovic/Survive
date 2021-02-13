@@ -3,7 +3,7 @@
 //
 
 #include <glm/ext/matrix_transform.hpp>
-#include <iostream>
+
 #include "ParticleRenderer.h"
 #include "../renderer/Renderer2DUtil.h"
 #include "../math/Maths.h"
@@ -38,7 +38,7 @@ void ParticleRenderer::render(const Camera &camera) const
 		}
 
 		Loader::updateVBO(m_Vbo, data, particles.size() * INSTANCE_DATA_LENGTH);
-		glDrawElementsInstanced(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr, particles.size());
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, texturedModel.vertexCount(), particles.size());
 
 		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
 	}
@@ -49,6 +49,9 @@ void ParticleRenderer::render(const Camera &camera) const
 void ParticleRenderer::prepare() const
 {
 	m_Shader.start();
+
+	glEnable(GL_DEPTH_TEST);
+
 	enableBlending();
 }
 
