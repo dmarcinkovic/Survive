@@ -75,9 +75,6 @@ void
 ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
 										const glm::mat4 &viewMatrix, std::vector<float> &data)
 {
-	// TODO this is just creating model matrix and view matrix
-	// TODO first 3x3 sub-matrix has to be identity matrix
-	// TODO do this calculation in the vertex shader
 	glm::mat4 modelMatrix{1};
 
 	modelMatrix = glm::translate(modelMatrix, position);
