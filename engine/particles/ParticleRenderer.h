@@ -39,8 +39,8 @@ public:
 	void addParticle(const Particle &particle);
 
 	std::vector<Particle> &getParticles(const ParticleModel &model);
-private:
 
+private:
 	void prepare() const;
 
 	static void finish();
@@ -48,7 +48,7 @@ private:
 	static void enableBlending();
 
 	static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
-							   const glm::mat4 &viewMatrix, std::vector<float> &data);
+									  const glm::mat4 &viewMatrix, std::vector<float> &data);
 
 	static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
 

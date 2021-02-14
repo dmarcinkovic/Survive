@@ -5,7 +5,7 @@
 #include "ParticleModel.h"
 
 ParticleModel::ParticleModel(const TexturedModel &model, unsigned rows, unsigned cols)
-	: texturedModel(model), rows(rows), cols(cols)
+		: texturedModel(model), rows(rows), cols(cols)
 {
 
 }

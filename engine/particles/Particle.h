@@ -41,9 +41,9 @@ private:
 
 	[[nodiscard]] glm::vec2 setTextureOffset(int index) const;
 
-	[[nodiscard]] float getAtlasProgression(int stageCount) const;
+	[[nodiscard]] float getAtlasProgression(unsigned stageCount) const;
 
-	void updateTextureOffsets(float atlasProgression, int stageCount);
+	void updateTextureOffsets(float atlasProgression, unsigned stageCount);
 
 	void applyGravity();
 
