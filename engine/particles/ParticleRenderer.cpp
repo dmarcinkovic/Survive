@@ -26,7 +26,7 @@ void ParticleRenderer::render(const Camera &camera) const
 	{
 		Renderer2DUtil::prepareEntity(particleModel.texturedModel, VAO_UNITS);
 
-		m_Shader.loadNumberOfRows(particles.back().m_Rows);
+		m_Shader.loadDimensions(particles.back().m_Rows, particles.back().m_Cols);
 
 		pointer = 0;
 		std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);

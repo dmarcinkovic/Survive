@@ -15,12 +15,13 @@ private:
 	static constexpr const char  *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
 
 	GLuint m_LocationNumberOfRows{};
+	GLuint m_LocationNumberOfCols{};
 	GLuint m_LocationProjectionMatrix{};
 
 public:
 	ParticleShader();
 
-	void loadNumberOfRows(int rows) const;
+	void loadDimensions(unsigned rows, unsigned cols) const;
 
 	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
