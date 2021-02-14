@@ -158,23 +158,3 @@ std::vector<Particle> &ParticleRenderer::getParticles(const ParticleModel &model
 
 	return particles;
 }
-
-void ParticleRenderer::update(const Camera &camera)
-{
-	for (auto &[particleModel, particles] : m_Particles)
-	{
-		for (auto &particle :particles)
-		{
-			bool alive = particle.update(camera);
-
-			if (!alive)
-			{
-
-			}
-		}
-
-		particles.erase(std::remove_if(particles.begin(), particles.end(), [&](auto &particle) {
-			return !particle.update(camera);
-		}), particles.end());
-	}
-}

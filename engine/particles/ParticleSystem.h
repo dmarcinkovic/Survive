@@ -12,6 +12,7 @@
 #include "../texture/TexturedModel.h"
 #include "Particle.h"
 #include "ParticleModel.h"
+#include "ParticleRenderer.h"
 
 class ParticleSystem
 {
@@ -20,6 +21,7 @@ private:
 	float m_SpeedError{}, m_LifeError{}, m_ScaleError{};
 
 	bool m_RandomRotation = false;
+	bool m_EmitParticles = true;
 
 	glm::vec3 m_Direction{};
 	float m_DirectionDeviation{};
@@ -29,7 +31,7 @@ public:
 				   float lifeLength, float scale);
 
 	void generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
-						   std::vector<Particle> &particles);
+						   ParticleRenderer &particleRenderer, const Camera &camera);
 
 	void setDirection(const glm::vec3 &direction, float deviation);
 
@@ -58,6 +60,8 @@ private:
 	static glm::vec4 rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction);
 
 	static glm::vec3 getDirection(float z, float theta);
+
+	int updateParticles(std::vector<Particle> &particles, const Camera &camera, int count);
 };
 
 

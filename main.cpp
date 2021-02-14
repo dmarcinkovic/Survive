@@ -25,13 +25,7 @@ int main()
 	{
 		Display::clearWindow();
 
-		std::vector<Particle> &particles = particleRenderer.getParticles(particleModel);
-		particleSystem.generateParticles(glm::vec3{0, -10, -30}, particleModel, particles);
-
-		std::cout << "Particles size: " << particles.size() << '\n';
-
-		particleRenderer.update(camera);
-
+		particleSystem.generateParticles(glm::vec3{0, -10, -30}, particleModel, particleRenderer, camera);
 		particleRenderer.render(camera);
 
 		display.update();

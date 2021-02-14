@@ -14,14 +14,17 @@ ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float grav
 }
 
 void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
-									   std::vector<Particle> &particles)
+									   ParticleRenderer &particleRenderer, const Camera &camera)
 {
+	std::vector<Particle> &particles = particleRenderer.getParticles(particleModel);
+
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
 	float particlesToCreate = m_ParticlesPerSecond * deltaTime;
 
 	int count = static_cast<int>(std::round(particlesToCreate));
+	count = updateParticles(particles, camera, count);
 
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count && m_EmitParticles; ++i)
 	{
 		emitParticle(systemCenter, particleModel, particles);
 	}
@@ -133,4 +136,23 @@ glm::vec3 ParticleSystem::getDirection(float z, float theta)
 	float y = k * std::sin(theta);
 
 	return glm::vec3{x, y, z};
+}
+
+int ParticleSystem::updateParticles(std::vector<Particle> &particles, const Camera &camera, int count)
+{
+	for (Particle &particle : particles)
+	{
+		if (!particle.update(camera))
+		{
+			--count;
+			particle.reset();
+		}
+	}
+
+	if (count < 0)
+	{
+		m_EmitParticles = false;
+	}
+
+	return count;
 }

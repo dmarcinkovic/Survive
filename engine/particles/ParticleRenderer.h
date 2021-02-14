@@ -34,8 +34,6 @@ public:
 
 	void render(const Camera &camera) const;
 
-	void update(const Camera &camera);
-
 	std::vector<Particle> &getParticles(const ParticleModel &model);
 
 private:
