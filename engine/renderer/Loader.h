@@ -45,13 +45,24 @@ public:
 
 	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
+	Model loadToVao(const std::vector<float> &vertices, size_t size);
+
 	static GLuint loadTexture(const char *texture) noexcept;
 
 	static GLuint loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
 	Model renderQuad();
 
+	Model renderQuadStrip();
+
 	Model renderCube();
+
+	GLuint createEmptyVBO(int vertexCount);
+
+	static void updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData);
+
+	static void addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+							   int offset);
 
 	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 

@@ -146,6 +146,16 @@ Model Loader::loadToVao(const std::vector<float> &vertices, const std::vector<fl
 	return Model(vao, vertices.size() / size);
 }
 
+Model Loader::loadToVao(const std::vector<float> &vertices, size_t size)
+{
+	GLuint vao = createVao();
+
+	storeDataInAttributeList(0, vertices, size);
+	unbindVao();
+
+	return Model(vao, vertices.size() / size);
+}
+
 void Loader::addMipMap()
 {
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -196,6 +206,13 @@ Model Loader::renderQuad()
 	return Model(loadToVao(vertices, indices, 2));
 }
 
+Model Loader::renderQuadStrip()
+{
+	static const std::vector<float> vertices{-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
+
+	return loadToVao(vertices, 2);
+}
+
 Model Loader::renderCube()
 {
 	static const std::vector<float> vertices{-1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, -1,
@@ -244,6 +261,46 @@ void Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
 					 image);
 		stbi_image_free(image);
 	}
+}
+
+GLuint Loader::createEmptyVBO(int vertexCount)
+{
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+
+	m_Vbos.emplace_back(vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), nullptr, GL_STREAM_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return vbo;
+}
+
+void Loader::updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	size_t dataSize = sizeOfData * sizeof(float);
+	glBufferData(GL_ARRAY_BUFFER, dataSize, data.data(), GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data.data());
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Loader::addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+								   int offset)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(vao);
+
+	const void *pointer = reinterpret_cast<void *>(offset * sizeof(float));
+	glVertexAttribPointer(attribute, vertexCount, GL_FLOAT, GL_FALSE, instancedDataLength * sizeof(float), pointer);
+
+	glVertexAttribDivisor(attribute, 1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 Model::Model(GLuint vao, size_t vertexCount)
