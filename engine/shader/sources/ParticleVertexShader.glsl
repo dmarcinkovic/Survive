@@ -10,14 +10,18 @@ out vec2 textureCoordinates2;
 out float blend;
 
 uniform mat4 projectionMatrix;
-uniform int numberOfRows;
+
+uniform uint numberOfRows;
+uniform uint numberOfCols;
 
 void main()
 {
     vec2 textureCoordinates = position + vec2(0.5, 0.5);
 
     textureCoordinates.y = 1.0 - textureCoordinates.y;
-    textureCoordinates /= float(numberOfRows);
+
+    textureCoordinates.x /= float(numberOfCols);
+    textureCoordinates.y /= float(numberOfRows);
 
     textureCoordinates1 = textureCoordinates + texOffsets.xy;
     textureCoordinates2 = textureCoordinates * texOffsets.zw;
