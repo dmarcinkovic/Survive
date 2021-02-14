@@ -22,8 +22,8 @@ private:
 	constexpr static int VAO_UNITS = 7;
 
 	static int pointer;
-	GLuint m_Vbo{};
 	Loader m_Loader;
+	GLuint m_Vbo{};
 
 	std::unordered_map<ParticleModel, std::vector<Particle>, ParticleHash> m_Particles;
 
@@ -35,8 +35,6 @@ public:
 	void render(const Camera &camera) const;
 
 	void update(const Camera &camera);
-
-	void addParticle(const Particle &particle);
 
 	std::vector<Particle> &getParticles(const ParticleModel &model);
 

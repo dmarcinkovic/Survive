@@ -11,8 +11,8 @@
 int ParticleRenderer::pointer = 0;
 
 ParticleRenderer::ParticleRenderer()
+		: m_Vbo(m_Loader.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES))
 {
-	m_Vbo = m_Loader.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
 }
 
 void ParticleRenderer::render(const Camera &camera) const
@@ -22,6 +22,11 @@ void ParticleRenderer::render(const Camera &camera) const
 
 	for (auto const&[particleModel, particles] : m_Particles)
 	{
+		if (particles.empty())
+		{
+			continue;
+		}
+
 		Renderer2DUtil::prepareEntity(particleModel.texturedModel, VAO_UNITS);
 
 		m_Shader.loadDimensions(particles.back().m_Rows, particles.back().m_Cols);
@@ -37,8 +42,8 @@ void ParticleRenderer::render(const Camera &camera) const
 	finish();
 }
 
-
-std::vector<float> ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
+std::vector<float>
+ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
 {
 	pointer = 0;
 	std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
@@ -132,19 +137,6 @@ void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::v
 	data[pointer++] = particle.m_BlendFactor;
 }
 
-void ParticleRenderer::addParticle(const Particle &particle)
-{
-	const ParticleModel particleModel(particle.m_Texture, particle.m_Rows, particle.m_Cols);
-	auto &batch = m_Particles[particleModel];
-
-	if (batch.empty())
-	{
-		addInstanceAttributes(particle.m_Texture);
-	}
-
-	batch.emplace_back(particle);
-}
-
 void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 {
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
@@ -157,7 +149,14 @@ void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 
 std::vector<Particle> &ParticleRenderer::getParticles(const ParticleModel &model)
 {
-	return m_Particles[model];
+	std::vector<Particle> &particles = m_Particles[model];
+
+	if (particles.empty())
+	{
+		addInstanceAttributes(model.texturedModel);
+	}
+
+	return particles;
 }
 
 void ParticleRenderer::update(const Camera &camera)
@@ -166,7 +165,12 @@ void ParticleRenderer::update(const Camera &camera)
 	{
 		for (auto &particle :particles)
 		{
-			particle.update(camera);
+			bool alive = particle.update(camera);
+
+			if (!alive)
+			{
+
+			}
 		}
 
 		particles.erase(std::remove_if(particles.begin(), particles.end(), [&](auto &particle) {

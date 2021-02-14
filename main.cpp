@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
@@ -20,15 +21,14 @@ int main()
 	ParticleModel particleModel(model, 4, 4);
 	ParticleSystem particleSystem(100, 25, 0.3f, 4, 1);
 
-	particleRenderer.addParticle(
-			Particle(particleModel, glm::vec3{0, -10, -30}, glm::vec3{0, 1, 0}, 0.3f, 4));
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		std::vector<Particle> &particles = particleRenderer.getParticles(particleModel);
 		particleSystem.generateParticles(glm::vec3{0, -10, -30}, particleModel, particles);
+
+		std::cout << "Particles size: " << particles.size() << '\n';
 
 		particleRenderer.update(camera);
 
