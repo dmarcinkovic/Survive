@@ -8,7 +8,8 @@
 
 Particle::Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
 				   float gravityEffect, float lifeLength, float rotation, float scale)
-		: Entity(particleModel.texturedModel, position, glm::vec3{scale, scale, scale}), m_Rows(particleModel.rows),
+		: Entity(particleModel.texturedModel, position, glm::vec3{scale, scale, scale}), m_InitialPosition(position),
+		  m_InitialVelocity(velocity), m_Rows(particleModel.rows),
 		  m_Cols(particleModel.cols), m_Velocity(velocity),
 		  m_GravityEffect(gravityEffect), m_LifeLength(lifeLength), m_Rotation(rotation)
 {
@@ -75,4 +76,14 @@ void Particle::applyGravity()
 void Particle::updateTimeElapsed()
 {
 	m_ElapsedTime += static_cast<float>(Display::getFrameTime());
+}
+
+void Particle::reset()
+{
+	m_ElapsedTime = m_Distance = 0;
+
+	m_Velocity = m_InitialVelocity;
+	m_Position = m_InitialPosition;
+
+	m_TextureOffset1 = m_TextureOffset2 = glm::vec2{};
 }

@@ -14,8 +14,9 @@
 class Particle : public Entity
 {
 private:
-	glm::vec3 m_Velocity{};
-	glm::vec3 m_Rotation{};
+	glm::vec3 m_Velocity, m_Rotation;
+
+	glm::vec3 m_InitialVelocity, m_InitialPosition;
 
 	float m_BlendFactor{};
 	unsigned m_Rows, m_Cols;
@@ -35,6 +36,8 @@ public:
 			 float gravityEffect, float lifeLength, float rotation = 0.0f, float scale = 1.0f);
 
 	bool update(const Camera &camera);
+
+	void reset();
 
 private:
 	void updateTextureCoordInfo();
