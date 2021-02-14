@@ -20,8 +20,6 @@ void ParticleRenderer::render(const Camera &camera) const
 	prepare();
 	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-
 	for (auto const&[particleModel, particles] : m_Particles)
 	{
 		Renderer2DUtil::prepareEntity(particleModel.texturedModel, VAO_UNITS);
@@ -58,6 +56,7 @@ void ParticleRenderer::prepare() const
 {
 	m_Shader.start();
 
+	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	glEnable(GL_DEPTH_TEST);
 
 	enableBlending();
