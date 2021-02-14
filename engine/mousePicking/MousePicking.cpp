@@ -7,6 +7,7 @@
 #include "../display/Display.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
+#include "../constant/Constants.h"
 
 bool MousePicking::mousePressed = false;
 
@@ -110,7 +111,9 @@ int MousePicking::getID(const std::uint8_t *data)
 	int g = data[1] << 8;
 	int b = data[2] << 16;
 
-	if (r == 0xFF && g == 0xFF00 && b == 0xFF0000)
+	glm::ivec4 clearColor = Constants::CLEAR_COLOR * 256.0f;
+
+	if (r == clearColor.r && g == clearColor.g << 8 && b == clearColor.b << 16)
 	{
 		return 0;
 	}
