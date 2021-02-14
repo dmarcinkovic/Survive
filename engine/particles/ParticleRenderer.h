@@ -12,6 +12,7 @@
 #include "../camera/Camera.h"
 #include "../texture/TexturedModel.h"
 #include "Particle.h"
+#include "ParticleModel.h"
 
 class ParticleRenderer
 {
@@ -23,7 +24,8 @@ private:
 	static int pointer;
 	GLuint m_Vbo{};
 	Loader m_Loader;
-	std::unordered_map<TexturedModel, std::vector<Particle>, TextureHash> m_Particles;
+
+	std::unordered_map<ParticleModel, std::vector<Particle>, ParticleHash> m_Particles;
 
 	ParticleShader m_Shader;
 
@@ -36,7 +38,7 @@ public:
 
 	void addParticle(const Particle &particle);
 
-	std::vector<Particle> &getParticles(const TexturedModel &model);
+	std::vector<Particle> &getParticles(const ParticleModel &model);
 private:
 
 	void prepare() const;

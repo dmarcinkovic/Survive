@@ -11,24 +11,25 @@
 
 #include "../texture/TexturedModel.h"
 #include "Particle.h"
+#include "ParticleModel.h"
 
 class ParticleSystem
 {
 private:
-	TexturedModel m_Texture;
-
 	float m_ParticlesPerSecond, m_Speed, m_Gravity, m_LifeLength, m_AverageScale;
 	float m_SpeedError{}, m_LifeError{}, m_ScaleError{};
 
 	bool m_RandomRotation = false;
+
 	glm::vec3 m_Direction{};
 	float m_DirectionDeviation{};
 
 public:
-	ParticleSystem(const TexturedModel &particleTexture, float particlesPerSecond, float speed, float gravity,
+	ParticleSystem(float particlesPerSecond, float speed, float gravity,
 				   float lifeLength, float scale);
 
-	void generateParticles(const glm::vec3 &systemCenter, std::vector<Particle> &particles);
+	void generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
+						   std::vector<Particle> &particles);
 
 	void setDirection(const glm::vec3 &direction, float deviation);
 
@@ -41,7 +42,8 @@ public:
 	void setScaleError(float scaleError);
 
 private:
-	void emitParticle(const glm::vec3 &center, std::vector<Particle> &particles);
+	void emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
+					  std::vector<Particle> &particles) const;
 
 	static float generateValue(float average, float errorMargin);
 

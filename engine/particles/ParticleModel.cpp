@@ -4,8 +4,20 @@
 
 #include "ParticleModel.h"
 
-ParticleModel::ParticleModel(const TexturedModel &model, int rows, int cols)
+ParticleModel::ParticleModel(const TexturedModel &model, unsigned rows, unsigned cols)
 	: texturedModel(model), rows(rows), cols(cols)
 {
 
+}
+
+bool ParticleModel::operator==(const ParticleModel &rhs) const
+{
+	return texturedModel == rhs.texturedModel &&
+		   rows == rhs.rows &&
+		   cols == rhs.cols;
+}
+
+bool ParticleModel::operator!=(const ParticleModel &rhs) const
+{
+	return !(rhs == *this);
 }

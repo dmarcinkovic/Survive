@@ -22,9 +22,9 @@ void ParticleRenderer::render(const Camera &camera) const
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
-	for (auto const&[texturedModel, particles] : m_Particles)
+	for (auto const&[particleModel, particles] : m_Particles)
 	{
-		Renderer2DUtil::prepareEntity(texturedModel, VAO_UNITS);
+		Renderer2DUtil::prepareEntity(particleModel.texturedModel, VAO_UNITS);
 
 		m_Shader.loadNumberOfRows(particles.back().m_Rows);
 
@@ -38,7 +38,7 @@ void ParticleRenderer::render(const Camera &camera) const
 		}
 
 		Loader::updateVBO(m_Vbo, data, particles.size() * INSTANCE_DATA_LENGTH);
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, texturedModel.vertexCount(), particles.size());
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(), particles.size());
 
 		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
 	}
@@ -130,7 +130,8 @@ void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::v
 
 void ParticleRenderer::addParticle(const Particle &particle)
 {
-	auto &batch = m_Particles[particle.m_Texture];
+	const ParticleModel particleModel(particle.m_Texture, particle.m_Rows, particle.m_Cols);
+	auto &batch = m_Particles[particleModel];
 
 	if (batch.empty())
 	{
@@ -150,14 +151,14 @@ void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 }
 
-std::vector<Particle> &ParticleRenderer::getParticles(const TexturedModel &model)
+std::vector<Particle> &ParticleRenderer::getParticles(const ParticleModel &model)
 {
 	return m_Particles[model];
 }
 
 void ParticleRenderer::update(const Camera &camera)
 {
-	for (auto &[texturedModel, particles] : m_Particles)
+	for (auto &[particleModel, particles] : m_Particles)
 	{
 		for (auto &particle :particles)
 		{

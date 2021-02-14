@@ -5,10 +5,11 @@
 #ifndef SURVIVE_PARTICLE_H
 #define SURVIVE_PARTICLE_H
 
-
 #include <glm/vec2.hpp>
+
 #include "../entity/Entity.h"
 #include "../camera/Camera.h"
+#include "ParticleModel.h"
 
 class Particle : public Entity
 {
@@ -17,7 +18,7 @@ private:
 	glm::vec3 m_Rotation{};
 
 	float m_BlendFactor{};
-	int m_Rows;
+	unsigned m_Rows, m_Cols;
 
 	float m_GravityEffect{};
 	float m_LifeLength{};
@@ -30,7 +31,7 @@ private:
 	float m_Distance{};
 
 public:
-	Particle(const TexturedModel &particleTexture, int rows, const glm::vec3 &position, const glm::vec3 &velocity,
+	Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
 			 float gravityEffect, float lifeLength, float rotation = 0.0f, float scale = 1.0f);
 
 	bool update(const Camera &camera);

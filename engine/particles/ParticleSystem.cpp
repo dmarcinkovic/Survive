@@ -6,15 +6,15 @@
 #include "../display/Display.h"
 #include "../math/Maths.h"
 
-ParticleSystem::ParticleSystem(const TexturedModel &particleTexture, float particlesPerSecond, float speed,
-							   float gravity, float lifeLength, float scale)
-		: m_Texture(particleTexture), m_ParticlesPerSecond(particlesPerSecond), m_Speed(speed), m_Gravity(gravity),
-		  m_LifeLength(lifeLength), m_AverageScale(scale)
+ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength, float scale)
+		: m_ParticlesPerSecond(particlesPerSecond), m_Speed(speed), m_Gravity(gravity), m_LifeLength(lifeLength),
+		  m_AverageScale(scale)
 {
 
 }
 
-void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, std::vector<Particle> &particles)
+void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
+									   std::vector<Particle> &particles)
 {
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
 	float particlesToCreate = m_ParticlesPerSecond * deltaTime;
@@ -23,11 +23,12 @@ void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, std::vecto
 
 	for (int i = 0; i < count; ++i)
 	{
-		emitParticle(systemCenter, particles);
+		emitParticle(systemCenter, particleModel, particles);
 	}
 }
 
-void ParticleSystem::emitParticle(const glm::vec3 &center, std::vector<Particle> &particles)
+void ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
+								  std::vector<Particle> &particles) const
 {
 	float dirX = Maths::getRandom() * 1.2f - 1.0f;
 	float dirZ = Maths::getRandom() * 1.2f - 1.0f;
@@ -35,8 +36,7 @@ void ParticleSystem::emitParticle(const glm::vec3 &center, std::vector<Particle>
 	glm::vec3 velocity{dirX, 1.0f, dirZ};
 	velocity = glm::normalize(velocity) * m_Speed;
 
-	// TODO do not hardcode the number of rows in texture
-	particles.emplace_back(Particle(m_Texture, 4, center, velocity, m_Gravity, m_LifeLength));
+	particles.emplace_back(Particle(particleModel, center, velocity, m_Gravity, m_LifeLength));
 }
 
 void ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
