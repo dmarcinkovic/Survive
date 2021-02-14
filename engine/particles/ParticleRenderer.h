@@ -47,6 +47,8 @@ private:
 
 	static void enableBlending();
 
+	static std::vector<float> updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix);
+
 	static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
 									  const glm::mat4 &viewMatrix, std::vector<float> &data);
 

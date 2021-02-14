@@ -28,14 +28,7 @@ void ParticleRenderer::render(const Camera &camera) const
 
 		m_Shader.loadDimensions(particles.back().m_Rows, particles.back().m_Cols);
 
-		pointer = 0;
-		std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
-
-		for (auto const &particle : particles)
-		{
-			updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
-			updateTextureCoordinates(particle, data);
-		}
+		std::vector<float> data = updateParticles(particles, viewMatrix);
 
 		Loader::updateVBO(m_Vbo, data, particles.size() * INSTANCE_DATA_LENGTH);
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(), particles.size());
@@ -44,6 +37,21 @@ void ParticleRenderer::render(const Camera &camera) const
 	}
 
 	finish();
+}
+
+
+std::vector<float> ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
+{
+	pointer = 0;
+	std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
+
+	for (auto const &particle : particles)
+	{
+		updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
+		updateTextureCoordinates(particle, data);
+	}
+
+	return data;
 }
 
 void ParticleRenderer::prepare() const
