@@ -6,9 +6,15 @@
 #define SURVIVE_PARTICLEMODEL_H
 
 
-class ParticleModel
-{
+#include "../texture/TexturedModel.h"
 
+struct ParticleModel
+{
+	TexturedModel texturedModel;
+	int rows;
+	int cols;
+
+	ParticleModel(const TexturedModel &model, int rows, int cols);
 };
 
 
