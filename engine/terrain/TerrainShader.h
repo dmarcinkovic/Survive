@@ -21,6 +21,7 @@ private:
 	GLuint m_LocationLightProjection{};
 	GLuint m_LocationLightView{};
 
+	GLuint m_LocationShadowMap{};
 	GLuint m_LocationBlendMap{};
 	GLuint m_LocationGrass{};
 	GLuint m_LocationDirt{};

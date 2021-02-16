@@ -57,7 +57,7 @@ void TerrainRenderer::prepareRendering() const
 	Renderer3DUtil::prepareEntity(m_Terrain->m_Texture);
 	Renderer3DUtil::addTransparency(false, true);
 
-	for (int i = 0; i < m_Textures.size(); ++i)
+	for (int i = 1; i < m_Textures.size(); ++i)
 	{
 		m_Textures[i].bindTexture(i);
 	}
@@ -66,6 +66,7 @@ void TerrainRenderer::prepareRendering() const
 void TerrainRenderer::finishRendering()
 {
 	Texture::unbindTexture();
+
 	Renderer3DUtil::addTransparency(true, false);
 	Renderer3DUtil::finishRenderingEntity();
 	Renderer3DUtil::finishRendering();
