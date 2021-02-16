@@ -34,7 +34,7 @@ bool Particle::update(const Camera &camera)
 
 void Particle::updateTextureCoordInfo()
 {
-	unsigned stageCount = m_Rows * m_Rows;
+	unsigned stageCount = m_Rows * m_Cols;
 	float atlasProgression = getAtlasProgression(stageCount);
 
 	m_BlendFactor = std::fmod(atlasProgression, 1);
@@ -44,8 +44,8 @@ void Particle::updateTextureCoordInfo()
 
 glm::vec2 Particle::setTextureOffset(int index) const
 {
-	auto col = static_cast<float>(index % m_Rows);
-	auto row = static_cast<float>(std::floor(index / m_Rows));
+	auto col = static_cast<float>(index % m_Cols);
+	auto row = static_cast<float>(std::floor(index / m_Cols));
 	auto numberOfRows = static_cast<float>(m_Rows);
 
 	return glm::vec2{col / numberOfRows, row / numberOfRows};
