@@ -190,7 +190,7 @@ void Loader::loadImage(const char *texture) noexcept
 
 	if (!image)
 	{
-		std::cout << "Error while loading image\n";
+		std::cout << "Error while loading image " << texture << '\n';
 		return;
 	}
 
