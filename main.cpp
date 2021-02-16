@@ -2,6 +2,7 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -19,6 +20,12 @@ int main()
 
 	Renderer3D renderer3D(light);
 	renderer3D.addTerrain(terrain);
+
+	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
+	Object3D dragon(dragonModel, glm::vec3{0, -5, -30});
+
+	renderer3D.add3DObject(dragon);
+	renderer3D.addShadow(dragon);
 
 	while (display.isRunning())
 	{
