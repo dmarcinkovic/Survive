@@ -1,6 +1,8 @@
 #version 450 core
 
 layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 textureCoordinates;
+layout (location = 2) in vec3 normals;
 
 uniform mat4 projectionMatrix;
 uniform mat4 transformationMatrix;
@@ -19,5 +21,5 @@ void main()
     fragmentPositionInLightSpace = lightSpaceMatrix * worldPosition;
 
     gl_Position =  projectionMatrix * viewMatrix * worldPosition;
-    textureCoords = position.xy / 2.0 + vec2(0.5);
+    textureCoords = textureCoordinates;
 }

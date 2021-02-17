@@ -23,11 +23,9 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 	prepareRendering();
 	renderShadow(shadowMap, light);
 
-	auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_Scale,
-																  glm::vec3{rotationX, 0, 0});
+	auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_Scale);
 
 	m_Shader.loadTransformationMatrix(transformationMatrix);
-
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);

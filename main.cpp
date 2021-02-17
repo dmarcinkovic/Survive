@@ -3,6 +3,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/terrain/TerrainGenerator.h"
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
 	Camera camera;
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Terrain terrain(loader.renderQuad(), glm::vec3{0, -10, -50,}, glm::vec3{100, 100, 1});
+	Terrain terrain(TerrainGenerator::generateTerrain(loader), glm::vec3{-50, -10, -100,}, glm::vec3{100, 1, 100});
 	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
 
 	Renderer3D renderer3D(light);
