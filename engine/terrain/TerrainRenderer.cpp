@@ -71,8 +71,3 @@ void TerrainRenderer::finishRendering()
 	Renderer3DUtil::finishRenderingEntity();
 	Renderer3DUtil::finishRendering();
 }
-
-Model TerrainRenderer::generateTerrain(Loader &loader)
-{
-	return Model();
-}

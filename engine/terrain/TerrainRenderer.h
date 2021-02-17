@@ -27,8 +27,6 @@ public:
 
 	void addTerrain(Terrain &terrain);
 
-	static Model generateTerrain(Loader &loader);
-
 private:
 	void prepareRendering() const;
 
