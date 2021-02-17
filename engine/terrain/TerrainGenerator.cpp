@@ -2,11 +2,16 @@
 // Created by david on 17. 02. 2021..
 //
 
+#include <iostream>
 #include "TerrainGenerator.h"
+#include "../texture/stb_image.h"
 
-Model TerrainGenerator::generateTerrain(Loader &loader)
+Model TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 {
-	int numberOfVertices = VERTEX_COUNT * VERTEX_COUNT;
+	int width, height;
+	std::uint8_t *image = loadHeightMap(heightMap, width, height);
+
+	int numberOfVertices = width * height;
 
 	std::vector<float> vertices(numberOfVertices * 3);
 	std::vector<float> normals(numberOfVertices * 3);
@@ -77,4 +82,39 @@ void TerrainGenerator::setTextureCoordinates(int index, std::vector<float> &text
 {
 	textureCoordinates[index * 2] = static_cast<float>(y) / (VERTEX_COUNT - 1);
 	textureCoordinates[index * 2 + 1] = static_cast<float>(x) / (VERTEX_COUNT - 1);
+}
+
+std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width, int &height)
+{
+	stbi_set_flip_vertically_on_load(1);
+
+	int BPP;
+	std::uint8_t *image = stbi_load(heightMap, &width, &height, &BPP, 4);
+
+	if (!image)
+	{
+		std::cout << "Error while loading image " << height << '\n';
+		return nullptr;
+	}
+
+	return image;
+}
+
+float TerrainGenerator::getHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight)
+{
+	if (x < 0 || x >= imageWidth || y < 0 || y >= imageHeight)
+	{
+		return 0;
+	}
+
+	int index = 4 * (y * imageWidth + x);
+
+	std::uint8_t red = image[index];
+	std::uint8_t green = image[index + 1];
+	std::uint8_t blue = image[index + 2];
+
+	float greyScale = static_cast<float>(red + green + blue) / 3.0f;
+	float height = greyScale / 255.0f;
+
+	return height * MAX_HEIGHT;
 }
