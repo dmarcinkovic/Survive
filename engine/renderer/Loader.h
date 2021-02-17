@@ -39,6 +39,9 @@ public:
 	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 					const std::vector<float> &normals);
 
+	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+					const std::vector<float> &normals, const std::vector<unsigned> &indices);
+
 	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 					const std::vector<float> &normals, const std::vector<float> &jointWeights,
 					const std::vector<unsigned> &jointIds);
@@ -61,8 +64,9 @@ public:
 
 	static void updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData);
 
-	static void addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
-							   int offset);
+	static void
+	addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+						  int offset);
 
 	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
