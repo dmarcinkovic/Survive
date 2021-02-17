@@ -20,8 +20,8 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 		return;
 	}
 
-	renderShadow(shadowMap, light);
 	prepareRendering();
+	renderShadow(shadowMap, light);
 
 	auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_Scale,
 																  glm::vec3{rotationX, 0, 0});
