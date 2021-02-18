@@ -12,6 +12,9 @@ uniform sampler2D dirt;
 uniform sampler2D rock;
 uniform sampler2D flowers;
 
+uniform vec3 lightColor;
+uniform vec3 cameraPosition;
+
 in vec2 textureCoords;
 in vec3 surfaceNormal;
 
