@@ -13,6 +13,7 @@ uniform sampler2D rock;
 uniform sampler2D flowers;
 
 in vec2 textureCoords;
+in vec3 surfaceNormal;
 
 const float scaleFactor = 40;
 
