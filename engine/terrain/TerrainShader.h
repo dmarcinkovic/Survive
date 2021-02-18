@@ -21,6 +21,9 @@ private:
 	GLuint m_LocationLightProjection{};
 	GLuint m_LocationLightView{};
 
+	GLuint m_LocationCameraPosition{};
+	GLuint m_LocationLightColor{};
+
 	GLuint m_LocationShadowMap{};
 	GLuint m_LocationBlendMap{};
 	GLuint m_LocationGrass{};
@@ -42,6 +45,10 @@ public:
 	void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
 
 	void loadTextures() const;
+
+	void loadLightColor(const glm::vec3 &lightPosition) const;
+
+	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 
 private:
 	void getUniformLocations();
