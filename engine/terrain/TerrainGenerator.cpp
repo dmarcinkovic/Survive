@@ -75,7 +75,7 @@ void TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float 
 								   float height)
 {
 	vertices.emplace_back(y / (height - 1));
-	vertices.emplace_back(0);
+	vertices.emplace_back(-terrainHeight);
 	vertices.emplace_back(x / (width - 1));
 }
 
@@ -125,5 +125,5 @@ float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *imag
 	float greyScale = static_cast<float>(red + green + blue) / 3.0f;
 	float height = greyScale / 255.0f;
 
-	return height * MAX_HEIGHT;
+	return  2 * height * MAX_HEIGHT - MAX_HEIGHT;
 }

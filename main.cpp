@@ -24,7 +24,7 @@ int main()
 	renderer3D.addTerrain(terrain);
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{0, -10, -30});
+	Object3D dragon(dragonModel, glm::vec3{0, 0, -30});
 
 	renderer3D.add3DObject(dragon);
 	renderer3D.addShadow(dragon);
