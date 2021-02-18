@@ -13,8 +13,6 @@
 class TerrainRenderer
 {
 private:
-	constexpr static const float rotationX = 90.0f;
-
 	TerrainShader m_Shader;
 	Terrain *m_Terrain{};
 
