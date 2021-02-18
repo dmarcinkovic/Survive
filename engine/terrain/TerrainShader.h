@@ -7,6 +7,7 @@
 
 #include "../shader/Shader.h"
 #include "../texture/Texture.h"
+#include "../light/Light.h"
 
 class TerrainShader : public Shader
 {
@@ -21,7 +22,7 @@ private:
 	GLuint m_LocationLightProjection{};
 	GLuint m_LocationLightView{};
 
-	GLuint m_LocationCameraPosition{};
+	GLuint m_LocationLightPosition{};
 	GLuint m_LocationLightColor{};
 
 	GLuint m_LocationShadowMap{};
@@ -46,9 +47,7 @@ public:
 
 	void loadTextures() const;
 
-	void loadLightColor(const glm::vec3 &lightPosition) const;
-
-	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
+	void loadLight(const Light &light) const;
 
 private:
 	void getUniformLocations();

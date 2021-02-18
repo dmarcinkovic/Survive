@@ -30,8 +30,7 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
 
-	m_Shader.loadLightColor(light.color());
-	m_Shader.loadCameraPosition(camera.m_Position);
+	m_Shader.loadLight(light);
 
 	glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	finishRendering();

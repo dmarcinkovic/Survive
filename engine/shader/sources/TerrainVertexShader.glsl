@@ -14,16 +14,19 @@ uniform mat4 lightViewMatrix;
 out vec4 fragmentPositionInLightSpace;
 out vec2 textureCoords;
 out vec3 surfaceNormal;
+out vec3 worldPosition;
 
 void main()
 {
     const mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
-    vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-    fragmentPositionInLightSpace = lightSpaceMatrix * worldPosition;
+    vec4 pos = transformationMatrix * vec4(position, 1.0);
+    fragmentPositionInLightSpace = lightSpaceMatrix * pos;
 
-    gl_Position =  projectionMatrix * viewMatrix * worldPosition;
+    gl_Position =  projectionMatrix * viewMatrix * pos;
     textureCoords = textureCoordinates;
 
     surfaceNormal = mat3(transpose(inverse(transformationMatrix))) * normal;
     surfaceNormal = normalize(surfaceNormal);
+
+    worldPosition = pos.xyz;
 }

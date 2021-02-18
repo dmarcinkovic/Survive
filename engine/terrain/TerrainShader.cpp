@@ -28,7 +28,7 @@ void TerrainShader::getUniformLocations()
 	m_LocationShadowMap = glGetUniformLocation(m_Program, "shadowMap");
 
 	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
-	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
+	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -66,12 +66,9 @@ void TerrainShader::loadTextures() const
 	loadInteger(m_LocationFlowers, 5);
 }
 
-void TerrainShader::loadLightColor(const glm::vec3 &lightColor) const
+void TerrainShader::loadLight(const Light &light) const
 {
-	loadVector3(m_LocationLightColor, lightColor);
+	loadVector3(m_LocationLightColor, light.color());
+	loadVector3(m_LocationLightPosition, light.position());
 }
 
-void TerrainShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
-{
-	loadVector3(m_LocationCameraPosition, cameraPosition);
-}
