@@ -31,6 +31,8 @@ void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::ve
 	normals.reserve(3 * numberOfVertices);
 	textureCoordinates.reserve(2 * numberOfVertices);
 
+	auto terrainHeight = preprocessHeight(image, width, height);
+
 	for (int i = 0; i < width; ++i)
 	{
 		for (int j = 0; j < height; ++j)
@@ -38,9 +40,7 @@ void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::ve
 			auto x = static_cast<float>(i);
 			auto y = static_cast<float>(j);
 
-			float terrainHeight = getHTerrainHeight(i, j, image, width, height);
-
-			setVertices(vertices, x, y, terrainHeight, imageWidth, imageHeight);
+			setVertices(vertices, x, y, terrainHeight[j][i], imageWidth, imageHeight);
 			setNormals(normals);
 			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
@@ -109,13 +109,8 @@ std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width,
 	return image;
 }
 
-float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight)
+float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth)
 {
-	if (x < 0 || x >= imageWidth || y < 0 || y >= imageHeight)
-	{
-		return 0;
-	}
-
 	int index = 4 * (y * imageWidth + x);
 
 	std::uint8_t red = image[index];
@@ -125,5 +120,44 @@ float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *imag
 	float greyScale = static_cast<float>(red + green + blue) / 3.0f;
 	float height = greyScale / 255.0f;
 
-	return  2 * height * MAX_HEIGHT - MAX_HEIGHT;
+	return 2 * height * MAX_HEIGHT - MAX_HEIGHT;
+}
+
+std::vector<std::vector<float>> TerrainGenerator::preprocessHeight(const std::uint8_t *image, int width, int height)
+{
+	std::vector<std::vector<float>> result(height, std::vector<float>(width));
+
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			result[y][x] = getHTerrainHeight(x, y, image, width);
+		}
+	}
+
+	return result;
+}
+
+glm::vec3 TerrainGenerator::calculateNormal(int x, int y, int width, int height,
+											const std::vector<std::vector<float>> &terrainHeight)
+{
+	float heightL = getPreprocessedValue(x - 1, y, height, width, terrainHeight);
+	float heightR = getPreprocessedValue(x + 1, y, height, width, terrainHeight);
+	float heightD = getPreprocessedValue(x, y - 1, height, width, terrainHeight);
+	float heightU = getPreprocessedValue(x, y + 1, height, width, terrainHeight);
+
+	glm::vec3 normal{heightL - heightR, 2.0f, heightD - heightU};
+
+	return glm::normalize(normal);
+}
+
+float
+TerrainGenerator::getPreprocessedValue(int i, int j, int rows, int cols, const std::vector<std::vector<float>> &matrix)
+{
+	if (i < 0 || i >= cols || j < 0 || j >= rows)
+	{
+		return 0;
+	}
+
+	return matrix[i][j];
 }
