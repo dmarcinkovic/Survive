@@ -29,7 +29,8 @@ private:
 	static void
 	setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width, float height);
 
-	static void setNormals(std::vector<float> &normals);
+	static void setNormals(std::vector<float> &normals, int x, int y, int width, int height,
+						   const std::vector<std::vector<float>> &terrainHeight);
 
 	static void
 	setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width, float height);

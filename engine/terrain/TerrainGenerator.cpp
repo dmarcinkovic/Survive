@@ -41,7 +41,7 @@ void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::ve
 			auto y = static_cast<float>(j);
 
 			setVertices(vertices, x, y, terrainHeight[j][i], imageWidth, imageHeight);
-			setNormals(normals);
+			setNormals(normals, x, y, width, height, terrainHeight);
 			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
 	}
@@ -79,11 +79,14 @@ void TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float 
 	vertices.emplace_back(x / (width - 1));
 }
 
-void TerrainGenerator::setNormals(std::vector<float> &normals)
+void TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int width, int height,
+								  const std::vector<std::vector<float>> &terrainHeight)
 {
-	normals.emplace_back(0);
-	normals.emplace_back(1);
-	normals.emplace_back(0);
+	glm::vec3 normal = calculateNormal(x, y, width, height, terrainHeight);
+
+	normals.emplace_back(normal.x);
+	normals.emplace_back(normal.y);
+	normals.emplace_back(normal.z);
 }
 
 void TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width,
