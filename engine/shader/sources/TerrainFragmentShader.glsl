@@ -71,6 +71,6 @@ void main()
     vec4 color3 = texture(rock, coordinate) * blendColor.b;
     vec4 color4 = texture(grass, coordinate) * backTexture;
 
-    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (1 - shadow / 1.5);
+    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (diffuse * (1- shadow) + ambient);
     outColor = vec4(totalColor, 1.0);
 }
