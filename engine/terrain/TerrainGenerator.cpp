@@ -11,45 +11,52 @@ Model TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 	int width, height;
 	std::uint8_t *image = loadHeightMap(heightMap, width, height);
 
-	int numberOfVertices = width * height;
+	std::vector<float> vertices, normals, textureCoordinates;
 
-	std::vector<float> vertices(numberOfVertices * 3);
-	std::vector<float> normals(numberOfVertices * 3);
-	std::vector<float> textureCoordinates(numberOfVertices * 2);
-
-	calculateVertexInfo(vertices, normals, textureCoordinates);
-	std::vector<unsigned> indices = generateIndices();
+	calculateVertexInfo(vertices, normals, textureCoordinates, image, width, height);
+	std::vector<unsigned> indices = generateIndices(width, height);
 
 	return loader.loadToVao(vertices, textureCoordinates, normals, indices);
 }
 
 void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::vector<float> &normals,
-										   std::vector<float> &textureCoordinates)
+										   std::vector<float> &textureCoordinates, const std::uint8_t *image, int width,
+										   int height)
 {
-	int vertexIndex = 0;
-	for (int i = 0; i < VERTEX_COUNT; ++i)
-	{
-		for (int j = 0; j < VERTEX_COUNT; ++j)
-		{
-			setVertices(vertexIndex, vertices, i, j);
-			setNormals(vertexIndex, normals);
-			setTextureCoordinates(vertexIndex, textureCoordinates, i, j);
+	int numberOfVertices = width * height;
+	auto imageWidth = static_cast<float>(width);
+	auto imageHeight = static_cast<float>(height);
 
-			++vertexIndex;
+	vertices.reserve(3 * numberOfVertices);
+	normals.reserve(3 * numberOfVertices);
+	textureCoordinates.reserve(2 * numberOfVertices);
+
+	for (int i = 0; i < width; ++i)
+	{
+		for (int j = 0; j < height; ++j)
+		{
+			auto x = static_cast<float>(i);
+			auto y = static_cast<float>(j);
+
+			float terrainHeight = getHTerrainHeight(i, j, image, width, height);
+
+			setVertices(vertices, x, y, terrainHeight, imageWidth, imageHeight);
+			setNormals(normals);
+			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
 	}
 }
 
-std::vector<unsigned> TerrainGenerator::generateIndices()
+std::vector<unsigned> TerrainGenerator::generateIndices(int width, int height)
 {
 	std::vector<unsigned> indices;
-	for (int i = 0; i < VERTEX_COUNT - 1; ++i)
+	for (int y = 0; y < height - 1; ++y)
 	{
-		for (int j = 0; j < VERTEX_COUNT - 1; ++j)
+		for (int x = 0; x < width - 1; ++x)
 		{
-			int topLeft = i * VERTEX_COUNT + j;
+			int topLeft = y * width + x;
 			int topRight = topLeft + 1;
-			int bottomLeft = (i + 1) * VERTEX_COUNT + j;
+			int bottomLeft = (y + 1) * width + x;
 			int bottomRight = bottomLeft + 1;
 
 			indices.emplace_back(topLeft);
@@ -64,24 +71,26 @@ std::vector<unsigned> TerrainGenerator::generateIndices()
 	return indices;
 }
 
-void TerrainGenerator::setVertices(int index, std::vector<float> &vertices, int x, int y)
+void TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width,
+								   float height)
 {
-	vertices[index * 3] = static_cast<float>(y) / (VERTEX_COUNT - 1);
-	vertices[index * 3 + 1] = 0;
-	vertices[index * 3 + 2] = static_cast<float>(x) / (VERTEX_COUNT - 1);
+	vertices.emplace_back(y / (height - 1));
+	vertices.emplace_back(0);
+	vertices.emplace_back(x / (width - 1));
 }
 
-void TerrainGenerator::setNormals(int index, std::vector<float> &normals)
+void TerrainGenerator::setNormals(std::vector<float> &normals)
 {
-	normals[index * 3] = 0;
-	normals[index * 3 + 1] = 1;
-	normals[index * 3 + 2] = 0;
+	normals.emplace_back(0);
+	normals.emplace_back(1);
+	normals.emplace_back(0);
 }
 
-void TerrainGenerator::setTextureCoordinates(int index, std::vector<float> &textureCoordinates, int x, int y)
+void TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width,
+											 float height)
 {
-	textureCoordinates[index * 2] = static_cast<float>(y) / (VERTEX_COUNT - 1);
-	textureCoordinates[index * 2 + 1] = static_cast<float>(x) / (VERTEX_COUNT - 1);
+	textureCoordinates.emplace_back(y / (height - 1));
+	textureCoordinates.emplace_back(x / (width - 1));
 }
 
 std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width, int &height)
@@ -100,7 +109,7 @@ std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width,
 	return image;
 }
 
-float TerrainGenerator::getHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight)
+float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight)
 {
 	if (x < 0 || x >= imageWidth || y < 0 || y >= imageHeight)
 	{

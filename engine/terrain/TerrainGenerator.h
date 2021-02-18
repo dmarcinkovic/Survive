@@ -13,7 +13,6 @@
 class TerrainGenerator
 {
 private:
-	static constexpr int VERTEX_COUNT = 128;
 	static constexpr float MAX_HEIGHT = 30;
 
 public:
@@ -21,19 +20,21 @@ public:
 
 private:
 	static void calculateVertexInfo(std::vector<float> &vertices, std::vector<float> &normals,
-									std::vector<float> &textureCoordinates);
+									std::vector<float> &textureCoordinates, const std::uint8_t *image, int width,
+									int height);
 
-	static std::vector<unsigned> generateIndices();
+	static std::vector<unsigned> generateIndices(int width, int height);
 
-	static void setVertices(int index, std::vector<float> &vertices, int x, int y);
+	static void
+	setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width, float height);
 
-	static void setNormals(int index, std::vector<float> &normals);
+	static void setNormals(std::vector<float> &normals);
 
-	static void setTextureCoordinates(int index, std::vector<float> &textureCoordinates, int x, int y);
+	static void setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width, float height);
 
 	static std::uint8_t *loadHeightMap(const char *heightMap, int &width, int &height);
 
-	static float getHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight);
+	static float getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth, int imageHeight);
 };
 
 
