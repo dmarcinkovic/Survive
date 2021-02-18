@@ -52,6 +52,9 @@ void main()
 {
     float shadow = shadowCalculation(fragmentPositionInLightSpace);
 
+    const float ambientFactor = 0.2;
+    vec3 ambient = lightColor * ambientFactor;
+
     vec2 coordinate = textureCoords * scaleFactor;
     vec4 blendColor = texture(blendMap, textureCoords);
 
