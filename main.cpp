@@ -16,7 +16,7 @@ int main()
 	Camera camera;
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.png"), glm::vec3{-200, -10, -200},
+	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.jpeg"), glm::vec3{-200, -10, -200},
 					glm::vec3{400, 1, 400});
 	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
 
