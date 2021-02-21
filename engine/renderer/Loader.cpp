@@ -260,6 +260,8 @@ GLuint Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
 
 void Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
 {
+	stbi_set_flip_vertically_on_load(0);
+
 	int width, height, BPP;
 	for (int i = 0; i < faces.size(); ++i)
 	{

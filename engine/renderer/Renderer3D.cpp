@@ -9,7 +9,7 @@ Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
 		  m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
 		  m_AnimationRenderer(light)
-{
+{	
 }
 
 void Renderer3D::render(const Camera &camera) const
