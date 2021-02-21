@@ -4,17 +4,12 @@
 
 #include "SkyRenderer.h"
 #include "../math/Maths.h"
+#include "../display/Display.h"
 
 void SkyRenderer::render(const Camera &camera) const
 {
 	prepareRendering();
-
-	auto viewMatrix = Maths::createViewMatrix(camera);
-	auto projectionMatrix = Maths::projectionMatrix;
-	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
-
-	auto transformationMatrix = Maths::createTransformationMatrix(m_Sky.m_Position, m_Sky.m_Scale);
-	m_Shader.loadTransformationMatrix(transformationMatrix);
+	loadUniforms(camera);
 
 	glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -48,4 +43,26 @@ void SkyRenderer::finishRendering()
 	glDepthFunc(GL_LESS);
 	glDisable(GL_DEPTH_TEST);
 	SkyShader::stop();
+}
+
+void SkyRenderer::loadUniforms(const Camera &camera) const
+{
+	auto viewMatrix = Maths::createViewMatrix(camera);
+	viewMatrix[3][0] = 0;
+	viewMatrix[3][1] = 0;
+	viewMatrix[3][2] = 0;
+
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(m_Rotation), glm::vec3{0, 1, 0});
+
+	auto projectionMatrix = Maths::projectionMatrix;
+	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
+
+	auto transformationMatrix = Maths::createTransformationMatrix(m_Sky.m_Position, m_Sky.m_Scale);
+	m_Shader.loadTransformationMatrix(transformationMatrix);
+}
+
+void SkyRenderer::rotateSky()
+{
+	auto deltaTime = static_cast<float>(Display::getFrameTime());
+	m_Rotation += ROTATE_SPEED * deltaTime;
 }
