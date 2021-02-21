@@ -39,6 +39,7 @@ int main()
 	{
 		Display::clearWindow();
 
+		renderer3D.update();
 		renderer3D.render(camera);
 
 		display.update();

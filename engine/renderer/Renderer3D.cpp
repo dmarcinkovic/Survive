@@ -62,3 +62,8 @@ void Renderer3D::addShadow(Object3D &object)
 {
 	m_ShadowRenderer.add3DObject(object);
 }
+
+void Renderer3D::update()
+{
+	m_SkyRenderer.rotateSky();
+}
