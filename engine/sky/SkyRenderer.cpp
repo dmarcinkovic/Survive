@@ -13,6 +13,9 @@ void SkyRenderer::render(const Camera &camera) const
 	auto projectionMatrix = Maths::projectionMatrix;
 	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
 
+	auto transformationMatrix = Maths::createTransformationMatrix(m_Sky.m_Position, m_Sky.m_Scale);
+	m_Shader.loadTransformationMatrix(transformationMatrix);
+
 	glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 	finishRendering();

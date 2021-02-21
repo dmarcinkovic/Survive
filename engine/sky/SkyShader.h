@@ -16,9 +16,12 @@ private:
 
 	GLuint m_LocationProjectionMatrix{};
 	GLuint m_LocationViewMatrix{};
+	GLuint m_LocationTransformationMatrix{};
 
 public:
 	SkyShader();
+
+	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
 	void loadViewAndProjectionMatrices(const glm::mat4 &viewMatrix, const glm::mat4 &projectionMatrix) const;
 
