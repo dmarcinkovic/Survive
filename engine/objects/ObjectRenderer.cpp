@@ -13,6 +13,7 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
+	glEnable(GL_STENCIL_TEST);
 
 	loadUniforms(camera, shadowMap);
 
@@ -25,6 +26,7 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
 	}
 
 	Renderer3DUtil::finishRendering();
+	glDisable(GL_STENCIL_TEST);
 }
 
 void ObjectRenderer::add3DObject(Object3D &entity)

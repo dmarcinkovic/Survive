@@ -8,14 +8,12 @@ void Renderer3DUtil::prepareRendering(const Shader &shader)
 {
 	shader.start();
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
 }
 
 void Renderer3DUtil::finishRendering()
 {
 	Shader::stop();
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
 }
 
 void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
