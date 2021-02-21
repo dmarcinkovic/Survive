@@ -23,6 +23,12 @@ int main()
 	Renderer3D renderer3D(light);
 	renderer3D.addTerrain(terrain);
 
+	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
+			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
+	Entity sky(texturedModel, glm::vec3{});
+
+	renderer3D.addSkyboxEntity(sky);
+
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
 	Object3D dragon(dragonModel, glm::vec3{0, 0, -30});
 
