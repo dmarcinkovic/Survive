@@ -74,16 +74,16 @@ void Camera::addKeyboardListener()
 			switch (key)
 			{
 				case GLFW_KEY_LEFT :
-					m_Position.x -= 0.3;
+					m_Position.x -= 3.0;
 					break;
 				case GLFW_KEY_RIGHT :
-					m_Position.x += 0.3;
+					m_Position.x += 3.0;
 					break;
 				case GLFW_KEY_DOWN :
-					m_Position.y -= 0.3;
+					m_Position.y -= 3.0;
 					break;
 				case GLFW_KEY_UP :
-					m_Position.y += 0.3;
+					m_Position.y += 3.0;
 					break;
 				default:
 					break;
