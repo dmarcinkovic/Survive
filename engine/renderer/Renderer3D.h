@@ -50,7 +50,6 @@ public:
 
     void update();
 
-private:
 	void renderScene(const Camera &camera) const;
 };
 
