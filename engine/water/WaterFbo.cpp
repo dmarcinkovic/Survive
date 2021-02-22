@@ -17,6 +17,8 @@ void WaterFbo::initializeRefractionFrameBuffer()
 	FrameBuffer::drawBuffer();
 	m_refractionTexture = m_FboRefraction.createColorTexture(REFRACTION_WIDTH, REFRACTION_HEIGHT);
 	m_FboRefraction.attachDepthComponent(REFRACTION_WIDTH, REFRACTION_HEIGHT);
+
+	unbindFrameBuffer();
 }
 
 void WaterFbo::initializeReflectionFrameBuffer()
@@ -25,6 +27,8 @@ void WaterFbo::initializeReflectionFrameBuffer()
 	FrameBuffer::drawBuffer();
 	m_reflectionTexture = m_FboReflection.createColorTexture(REFLECTION_WIDTH, REFLECTION_HEIGHT);
 	m_FboReflection.attachDepthComponent(REFLECTION_WIDTH, REFLECTION_HEIGHT);
+
+	unbindFrameBuffer();
 }
 
 GLuint WaterFbo::reflectionTexture() const
