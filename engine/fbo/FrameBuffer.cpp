@@ -142,3 +142,13 @@ void FrameBuffer::unbindDrawFrameBuffer()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
+
+void FrameBuffer::drawBuffer()
+{
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+}
+
+GLuint FrameBuffer::getRenderBuffer(int renderBufferNumber) const
+{
+	return m_RenderBuffers[renderBufferNumber];
+}

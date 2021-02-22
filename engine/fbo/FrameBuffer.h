@@ -41,9 +41,13 @@ public:
 
 	static void attachColorAttachment(GLuint texture);
 
-private:
-    void attachDepthComponent(int width, int height);
+	static void drawBuffer();
 
+	[[nodiscard]] GLuint getRenderBuffer(int renderBufferNumber) const;
+
+	void attachDepthComponent(int width, int height);
+
+private:
 	GLuint createDepthTexture(int width, int height);
 };
 
