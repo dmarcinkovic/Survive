@@ -14,8 +14,21 @@ private:
 	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/WaterVertexShader.glsl";
 	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/WaterFragmentShader.glsl";
 
+	GLuint m_LocationTransformationMatrix{};
+	GLuint m_LocationViewMatrix{};
+	GLuint m_LocationProjectionMatrix{};
+
 public:
 	WaterShader();
+
+	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+private:
+	void loadUniformLocations();
 };
 
 
