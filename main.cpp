@@ -38,6 +38,12 @@ int main()
 
 	WaterRenderer waterRenderer;
 
+	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
+	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
+	WaterTile waterTile(loader.renderQuad(), 0, -6, -20, duDvTexture, normalMap);
+
+	waterRenderer.addWaterTile(waterTile);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();

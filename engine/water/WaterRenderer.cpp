@@ -34,7 +34,7 @@ void WaterRenderer::render(const Camera &camera, const Light &light) const
 void WaterRenderer::prepareRendering(const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
-	Renderer3DUtil::addTransparency(true, true);
+	Renderer3DUtil::addTransparency(false, true);
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
