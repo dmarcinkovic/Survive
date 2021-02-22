@@ -6,9 +6,16 @@
 #define SURVIVE_WATERSHADER_H
 
 
-class WaterShader
-{
+#include "../shader/Shader.h"
 
+class WaterShader : public Shader
+{
+private:
+	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/WaterVertexShader.glsl";
+	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/WaterFragmentShader.glsl";
+
+public:
+	WaterShader();
 };
 
 

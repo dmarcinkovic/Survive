@@ -3,3 +3,9 @@
 //
 
 #include "WaterShader.h"
+
+WaterShader::WaterShader()
+	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+{
+
+}
