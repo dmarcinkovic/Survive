@@ -49,6 +49,9 @@ public:
     void addShadow(Object3D &object);
 
     void update();
+
+private:
+	void renderScene(const Camera &camera) const;
 };
 
 
