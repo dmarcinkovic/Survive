@@ -18,8 +18,14 @@ void WaterRenderer::render(const Camera &camera, const Light &light) const
 	for (auto const &waterTile : m_Tiles)
 	{
 		auto const &water = waterTile.get();
+		Renderer3DUtil::prepareEntity(water.m_Texture);
 
+		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
+		m_Shader.loadTransformationMatrix(transformationMatrix);
 
+		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+
+		Renderer3DUtil::finishRenderingEntity();
 	}
 
 	finishRendering();
@@ -28,7 +34,6 @@ void WaterRenderer::render(const Camera &camera, const Light &light) const
 void WaterRenderer::prepareRendering(const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
-	glEnableVertexAttribArray(0);
 	Renderer3DUtil::addTransparency(true, true);
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
@@ -37,8 +42,6 @@ void WaterRenderer::prepareRendering(const Camera &camera) const
 
 void WaterRenderer::finishRendering()
 {
-	TexturedModel::unbindVao();
-	glDisableVertexAttribArray(0);
 	Renderer3DUtil::addTransparency(false, false);
 	Renderer3DUtil::finishRendering();
 }
