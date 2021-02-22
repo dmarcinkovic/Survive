@@ -26,6 +26,8 @@ public:
 
 	void render(const Camera &camera, const Light &light) const;
 
+	void addWaterTile(WaterTile &waterTile);
+
 private:
 	void prepareRendering(const Camera &camera) const;
 

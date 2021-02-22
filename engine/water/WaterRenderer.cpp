@@ -45,3 +45,8 @@ void WaterRenderer::finishRendering()
 	Renderer3DUtil::addTransparency(false, false);
 	Renderer3DUtil::finishRendering();
 }
+
+void WaterRenderer::addWaterTile(WaterTile &waterTile)
+{
+	m_Tiles.emplace_back(waterTile);
+}

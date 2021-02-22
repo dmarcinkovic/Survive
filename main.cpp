@@ -4,6 +4,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/terrain/TerrainGenerator.h"
+#include "engine/water/WaterRenderer.h"
 
 int main()
 {
@@ -35,12 +36,16 @@ int main()
 	renderer3D.add3DObject(dragon);
 	renderer3D.addShadow(dragon);
 
+	WaterRenderer waterRenderer;
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer3D.update();
 		renderer3D.render(camera);
+
+		waterRenderer.render(camera, light);
 
 		display.update();
 	}
