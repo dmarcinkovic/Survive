@@ -1,5 +1,10 @@
-#version 120
+#version 450 core
 
-void main() {
+in vec2 textureCoordinates;
 
+out vec4 outColor;
+
+void main()
+{
+    outColor = vec4(0, 0, 1, 1);
 }
