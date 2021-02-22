@@ -56,6 +56,7 @@ int main()
 		Display::clearWindow();
 
 		waterFbo.bindReflectionFrameBuffer();
+		Display::clearWindow();
 		renderer3D.renderScene(camera);
 		WaterFbo::unbindFrameBuffer();
 
