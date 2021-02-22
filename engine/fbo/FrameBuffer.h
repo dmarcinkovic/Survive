@@ -27,6 +27,8 @@ public:
 
 	GLuint createTexture();
 
+	GLuint attachColorComponent(int width, int height);
+
 	GLuint attachToDepthBufferTexture(int width, int height);
 
 	void bindFrameBuffer() const;

@@ -32,9 +32,8 @@ GLuint FrameBuffer::createTexture()
 	bindFrameBuffer();
 
 	auto[width, height] = Display::getWindowSize<int>();
-	GLuint texture = createColorTexture(width, height);
+	GLuint texture = attachColorComponent(width, height);
 
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
 	attachDepthComponent(width, height);
 
 	unbindFrameBuffer();
@@ -58,6 +57,14 @@ GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return texture;
+}
+
+GLuint FrameBuffer::attachColorComponent(int width, int height)
+{
+	GLuint colorComponent = createColorTexture(width, height);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, colorComponent, 0);
+
+	return colorComponent;
 }
 
 GLuint FrameBuffer::createColorTexture(int width, int height)
