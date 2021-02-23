@@ -33,7 +33,8 @@ void Renderer3D::render(Camera &camera) const
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
 
-	m_WaterRenderer.render(camera, m_Light);
+	m_WaterRenderer.render(camera, m_Light, Texture(m_WaterFbo.reflectionColorTexture()),
+						   Texture(m_WaterFbo.refractionColorTexture()));
 	m_OutlineRenderer.render(camera);
 }
 
