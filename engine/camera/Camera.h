@@ -19,6 +19,8 @@ struct Camera
 
 	void invertPitch();
 
+	void moveCameraInYDirection(float yDistance);
+
 private:
 	bool m_LeftButtonPressed{};
 	bool m_RightButtonPressed{};

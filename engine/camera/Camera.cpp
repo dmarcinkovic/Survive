@@ -97,3 +97,8 @@ void Camera::invertPitch()
 {
 	m_Pitch = -m_Pitch;
 }
+
+void Camera::moveCameraInYDirection(float yDistance)
+{
+	m_Position.y += yDistance;
+}
