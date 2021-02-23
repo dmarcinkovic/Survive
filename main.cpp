@@ -3,8 +3,6 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/terrain/TerrainGenerator.h"
-#include "engine/water/WaterRenderer.h"
-#include "engine/water/WaterFbo.h"
 #include "engine/gui/GuiRenderer.h"
 
 int main()
@@ -37,18 +35,12 @@ int main()
 	renderer3D.add3DObject(dragon);
 	renderer3D.addShadow(dragon);
 
-	WaterRenderer waterRenderer;
-
 	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
 	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
 	WaterTile waterTile(loader.renderQuad(), 0, -6, -20, duDvTexture, normalMap);
 
-	waterRenderer.addWaterTile(waterTile);
-
-	WaterFbo waterFbo;
-
 	GuiRenderer guiRenderer;
-	Entity gui(TexturedModel(loader.renderQuad(), waterFbo.reflectionColorTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
+	Entity gui(TexturedModel(loader.renderQuad(), renderer3D.getWaterReflectionTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
 	guiRenderer.addEntity(gui);
 
 	renderer3D.addWaterTile(waterTile);

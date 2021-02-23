@@ -58,6 +58,12 @@ public:
 
 	void addWaterTile(WaterTile &waterTile);
 
+	// TODO remove this method
+	GLuint getWaterReflectionTexture() const;
+
+	// TODO remove this method
+	GLuint getWaterRefractionTexture() const;
+
 private:
 	void renderToWaterFrameBuffers(const Camera &camera) const;
 

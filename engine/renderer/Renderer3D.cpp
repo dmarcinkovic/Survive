@@ -110,3 +110,13 @@ void Renderer3D::addWaterTile(WaterTile &waterTile)
 {
 	m_WaterRenderer.addWaterTile(waterTile);
 }
+
+GLuint Renderer3D::getWaterReflectionTexture() const
+{
+	return m_WaterFbo.reflectionColorTexture();
+}
+
+GLuint Renderer3D::getWaterRefractionTexture() const
+{
+	return m_WaterFbo.refractionColorTexture();
+}
