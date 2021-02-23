@@ -48,7 +48,7 @@ int main()
 	WaterFbo waterFbo;
 	
 	GuiRenderer guiRenderer;
-	Entity gui(TexturedModel(loader.renderQuad(), waterFbo.reflectionTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
+	Entity gui(TexturedModel(loader.renderQuad(), waterFbo.reflectionColorTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
 	guiRenderer.addEntity(gui);
 
 	while (display.isRunning())
