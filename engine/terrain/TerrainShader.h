@@ -32,6 +32,8 @@ private:
 	GLuint m_LocationRock{};
 	GLuint m_LocationFlowers{};
 
+	GLuint m_LocationPlane{};
+
 public:
 	TerrainShader();
 
@@ -48,6 +50,8 @@ public:
 	void loadTextures() const;
 
 	void loadLight(const Light &light) const;
+
+	void loadPlane(const glm::vec4 &plane) const;
 
 private:
 	void getUniformLocations();

@@ -29,6 +29,8 @@ void TerrainShader::getUniformLocations()
 
 	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
 	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+
+	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -70,5 +72,10 @@ void TerrainShader::loadLight(const Light &light) const
 {
 	loadVector3(m_LocationLightColor, light.color());
 	loadVector3(m_LocationLightPosition, light.position());
+}
+
+void TerrainShader::loadPlane(const glm::vec4 &plane) const
+{
+	loadVector4(m_LocationPlane, plane);
 }
 
