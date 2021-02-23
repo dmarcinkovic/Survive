@@ -109,6 +109,9 @@ void Renderer3D::renderWaterRefraction(const Camera &camera) const
 void Renderer3D::addWaterTile(WaterTile &waterTile)
 {
 	m_WaterRenderer.addWaterTile(waterTile);
+
+	m_ReflectionCLippingPlane = glm::vec4{0, 1, 0, -waterTile.m_Position.y};
+	m_RefractionCLippingPlane =  glm::vec4{0, -1, 0, waterTile.m_Position.y};
 }
 
 GLuint Renderer3D::getWaterReflectionTexture() const
