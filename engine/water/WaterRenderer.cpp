@@ -50,3 +50,8 @@ void WaterRenderer::addWaterTile(WaterTile &waterTile)
 {
 	m_Tiles.emplace_back(waterTile);
 }
+
+bool WaterRenderer::shouldRender() const
+{
+	return !m_Tiles.empty();
+}

@@ -28,6 +28,8 @@ public:
 
 	void addWaterTile(WaterTile &waterTile);
 
+	[[nodiscard]] bool shouldRender() const;
+
 private:
 	void prepareRendering(const Camera &camera) const;
 
