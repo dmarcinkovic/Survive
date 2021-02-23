@@ -95,3 +95,8 @@ void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &ca
 	m_Shader.loadBloom(object.getBloomStrength());
 }
 
+void ObjectRenderer::setClippingPlane(const glm::vec4 &plane)
+{
+	m_Plane = plane;
+}
+
