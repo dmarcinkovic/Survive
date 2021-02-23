@@ -71,3 +71,8 @@ void TerrainRenderer::finishRendering()
 	Renderer3DUtil::finishRenderingEntity();
 	Renderer3DUtil::finishRendering();
 }
+
+void TerrainRenderer::setClippingPlane(const glm::vec4 &plane)
+{
+	m_Plane = plane;
+}
