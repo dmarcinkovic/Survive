@@ -16,11 +16,15 @@ out vec2 textureCoords;
 out vec3 surfaceNormal;
 out vec3 worldPosition;
 
+uniform vec4 plane;
+
 void main()
 {
     const mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
     vec4 pos = transformationMatrix * vec4(position, 1.0);
     fragmentPositionInLightSpace = lightSpaceMatrix * pos;
+
+    gl_ClipDistance[0] = dot(pos, plane);
 
     gl_Position =  projectionMatrix * viewMatrix * pos;
     textureCoords = textureCoordinates;
