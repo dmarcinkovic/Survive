@@ -18,6 +18,9 @@ private:
 	GLuint m_LocationViewMatrix{};
 	GLuint m_LocationProjectionMatrix{};
 
+	GLuint m_LocationReflectionTexture{};
+	GLuint m_LocationRefractionTexture{};
+
 public:
 	WaterShader();
 
@@ -26,6 +29,8 @@ public:
 	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
 	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+	void loadTextures() const;
 
 private:
 	void loadUniformLocations();

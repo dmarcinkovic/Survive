@@ -30,4 +30,13 @@ void WaterShader::loadUniformLocations()
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
+
+	m_LocationReflectionTexture = glGetUniformLocation(m_Program, "reflectionTexture");
+	m_LocationRefractionTexture = glGetUniformLocation(m_Program, "refractionTexture");
+}
+
+void WaterShader::loadTextures() const
+{
+	loadInteger(m_LocationReflectionTexture, 0);
+	loadInteger(m_LocationRefractionTexture, 1);
 }
