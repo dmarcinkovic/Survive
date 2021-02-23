@@ -31,6 +31,7 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
 
 	m_Shader.loadLight(light);
+	m_Shader.loadPlane(m_Plane);
 
 	glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	finishRendering();

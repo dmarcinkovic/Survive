@@ -16,7 +16,7 @@ private:
 	TerrainShader m_Shader;
 	Terrain *m_Terrain{};
 
-	glm::vec4 m_Plane;
+	glm::vec4 m_Plane{};
 
 	std::vector<Texture> m_Textures;
 
