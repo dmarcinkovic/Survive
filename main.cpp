@@ -43,6 +43,9 @@ int main()
 	Entity gui(TexturedModel(loader.renderQuad(), renderer3D.getWaterReflectionTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
 	guiRenderer.addEntity(gui);
 
+	Entity gui2(TexturedModel(loader.renderQuad(), renderer3D.getWaterRefractionTexture()), glm::vec3{0.5f, 0.5f, 0}, glm::vec3{0.5, 0.5, 1});
+	guiRenderer.addEntity(gui2);
+
 	renderer3D.addWaterTile(waterTile);
 
 	while (display.isRunning())

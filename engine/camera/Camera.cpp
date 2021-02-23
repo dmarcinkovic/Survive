@@ -92,3 +92,8 @@ void Camera::addKeyboardListener()
 	};
 	Display::addKeyListener(keyboardListener);
 }
+
+void Camera::invertPitch()
+{
+	m_Pitch = -m_Pitch;
+}
