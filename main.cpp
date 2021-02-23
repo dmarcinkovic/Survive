@@ -50,10 +50,12 @@ int main()
 	{
 		Display::clearWindow();
 
+		glEnable(GL_CLIP_DISTANCE0);
 		waterFbo.bindReflectionFrameBuffer();
 		Display::clearWindow();
 		renderer3D.renderScene(camera);
 		WaterFbo::unbindFrameBuffer();
+		glDisable(GL_CLIP_DISTANCE0);
 
 		renderer3D.render(camera);
 
