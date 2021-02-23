@@ -21,23 +21,19 @@ private:
 	ObjectShader m_Shader;
 	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
 
-	glm::vec4 m_Plane{};
-
 	const Light &m_Light;
 
 public:
 	explicit ObjectRenderer(const Light &light);
 
-	void render(const Camera &camera, GLuint shadowMap) const;
+	void render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void add3DObject(Object3D &entity);
-
-	void setClippingPlane(const glm::vec4 &plane);
 
 private:
 	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 
-	void loadUniforms(const Camera &camera, GLuint shadowMap) const;
+	void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
 	void loadObjectUniforms(const Object3D &object, const Camera &camera) const;
 };

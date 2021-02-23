@@ -16,18 +16,14 @@ private:
 	TerrainShader m_Shader;
 	Terrain *m_Terrain{};
 
-	glm::vec4 m_Plane{};
-
 	std::vector<Texture> m_Textures;
 
 public:
 	TerrainRenderer();
 
-	void render(const Camera &camera, const Light &light, GLuint shadowMap) const;
+	void render(const Camera &camera, const Light &light, GLuint shadowMap, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addTerrain(Terrain &terrain);
-
-	void setClippingPlane(const glm::vec4 &plane);
 
 private:
 	void prepareRendering() const;

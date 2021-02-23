@@ -10,12 +10,12 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 {
 }
 
-void ObjectRenderer::render(const Camera &camera, GLuint shadowMap) const
+void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 
-	loadUniforms(camera, shadowMap);
+	loadUniforms(camera, shadowMap, plane);
 
 	for (auto const&[texturedModel, objects] : m_Objects)
 	{
@@ -61,7 +61,7 @@ ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> 
 	}
 }
 
-void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap) const
+void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
@@ -74,7 +74,7 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap) const
 	m_Shader.loadTextures();
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
-	m_Shader.loadPlane(m_Plane);
+	m_Shader.loadPlane(plane);
 
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
@@ -94,10 +94,5 @@ void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &ca
 
 	object.getBloomTexture().bindTexture(3);
 	m_Shader.loadBloom(object.getBloomStrength());
-}
-
-void ObjectRenderer::setClippingPlane(const glm::vec4 &plane)
-{
-	m_Plane = plane;
 }
 

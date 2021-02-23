@@ -13,7 +13,7 @@ TerrainRenderer::TerrainRenderer()
 	Shader::stop();
 }
 
-void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap) const
+void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	if (m_Terrain == nullptr)
 	{
@@ -31,7 +31,7 @@ void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint sh
 	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
 
 	m_Shader.loadLight(light);
-	m_Shader.loadPlane(m_Plane);
+	m_Shader.loadPlane(plane);
 
 	glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	finishRendering();
@@ -71,9 +71,4 @@ void TerrainRenderer::finishRendering()
 	Renderer3DUtil::addTransparency(true, false);
 	Renderer3DUtil::finishRenderingEntity();
 	Renderer3DUtil::finishRendering();
-}
-
-void TerrainRenderer::setClippingPlane(const glm::vec4 &plane)
-{
-	m_Plane = plane;
 }
