@@ -18,6 +18,7 @@ struct Constants
 	constexpr static const int SHADOW_HEIGHT = 1024;
 	constexpr static double GRAVITY = -50;
 	constexpr const static glm::vec4 CLEAR_COLOR{0.5f, 0.5f, 0.5f, 1.0f};
+	constexpr static float WATER_HEIGHT = -6;
 };
 
 #endif //SURVIVE_CONSTANTS_H
