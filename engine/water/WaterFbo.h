@@ -17,9 +17,9 @@ private:
 	constexpr static const int REFRACTION_WIDTH = 1280;
 	constexpr static const int REFRACTION_HEIGHT = 720;
 
-	GLuint m_ReflectionColorTexture{};
-	GLuint m_RefractionColorTexture{};
-	GLuint m_RefractionDepthTexture{};
+	Texture m_ReflectionColorTexture{};
+	Texture m_RefractionColorTexture{};
+	Texture m_RefractionDepthTexture{};
 
 	FrameBuffer m_FboReflection;
 	FrameBuffer m_FboRefraction;
@@ -27,11 +27,11 @@ private:
 public:
 	WaterFbo();
 
-	[[nodiscard]] GLuint reflectionColorTexture() const;
+	[[nodiscard]] const Texture &reflectionColorTexture() const;
 
-	[[nodiscard]] GLuint refractionColorTexture() const;
+	[[nodiscard]] const Texture &refractionColorTexture() const;
 
-	[[nodiscard]] GLuint getRefractionDepthBuffer() const;
+	[[nodiscard]] const Texture &getRefractionDepthBuffer() const;
 
 	void bindReflectionFrameBuffer() const;
 
