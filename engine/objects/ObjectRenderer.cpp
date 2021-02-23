@@ -74,6 +74,7 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap) const
 	m_Shader.loadTextures();
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
+	m_Shader.loadPlane(m_Plane);
 
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
