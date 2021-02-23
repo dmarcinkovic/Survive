@@ -57,7 +57,7 @@ public:
 
     void update();
 
-	void renderScene(const Camera &camera) const;
+	void renderScene(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addWaterTile(WaterTile &waterTile);
 

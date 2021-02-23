@@ -13,10 +13,10 @@ Renderer3D::Renderer3D(const Light &light)
 {
 }
 
-void Renderer3D::renderScene(const Camera &camera) const
+void Renderer3D::renderScene(const Camera &camera, const glm::vec4 &plane) const
 {
-	m_ObjectRenderer.render(camera, m_ShadowMap);
-	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
+	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
+	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
 	m_AnimationRenderer.render(camera);
 
 	m_SkyRenderer.render(camera);
@@ -94,7 +94,7 @@ void Renderer3D::renderWaterReflection(const Camera &camera) const
 {
 	m_WaterFbo.bindReflectionFrameBuffer();
 	Display::clearWindow();
-	renderScene(camera);
+	renderScene(camera, m_ReflectionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 
@@ -102,7 +102,7 @@ void Renderer3D::renderWaterRefraction(const Camera &camera) const
 {
 	m_WaterFbo.bindRefractionFrameBuffer();
 	Display::clearWindow();
-	renderScene(camera);
+	renderScene(camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 
