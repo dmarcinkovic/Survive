@@ -24,7 +24,7 @@ private:
 public:
 	WaterRenderer();
 
-	void render(const Camera &camera, const Light &light) const;
+	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const;
 
 	void addWaterTile(WaterTile &waterTile);
 

@@ -11,7 +11,7 @@ WaterRenderer::WaterRenderer()
 
 }
 
-void WaterRenderer::render(const Camera &camera, const Light &light) const
+void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const
 {
 	prepareRendering(camera);
 
@@ -19,6 +19,9 @@ void WaterRenderer::render(const Camera &camera, const Light &light) const
 	{
 		auto const &water = waterTile.get();
 		Renderer3DUtil::prepareEntity(water.m_Texture);
+
+		reflectionTexture.bindTexture(0);
+		refractionTexture.bindTexture(1);
 
 		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
 		m_Shader.loadTransformationMatrix(transformationMatrix);
