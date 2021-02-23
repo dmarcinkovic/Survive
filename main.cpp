@@ -3,7 +3,6 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/terrain/TerrainGenerator.h"
-#include "engine/gui/GuiRenderer.h"
 #include "engine/constant/Constants.h"
 
 int main()
@@ -40,13 +39,6 @@ int main()
 	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
 	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
 
-	GuiRenderer guiRenderer;
-	Entity gui(TexturedModel(loader.renderQuad(), renderer3D.getWaterReflectionTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
-	guiRenderer.addEntity(gui);
-
-	Entity gui2(TexturedModel(loader.renderQuad(), renderer3D.getWaterRefractionTexture()), glm::vec3{0.5f, 0.5f, 0}, glm::vec3{0.5, 0.5, 1});
-	guiRenderer.addEntity(gui2);
-
 	renderer3D.addWaterTile(waterTile);
 
 	while (display.isRunning())
@@ -54,8 +46,6 @@ int main()
 		Display::clearWindow();
 
 		renderer3D.render(camera);
-
-		guiRenderer.render();
 
 		display.update();
 	}
