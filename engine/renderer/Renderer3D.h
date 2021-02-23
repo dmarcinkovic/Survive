@@ -13,6 +13,8 @@
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
 #include "../mousePicking/MousePicking.h"
+#include "../water/WaterRenderer.h"
+#include "../water/WaterFbo.h"
 
 class Renderer3D
 {
@@ -24,10 +26,12 @@ private:
 	SkyRenderer m_SkyRenderer;
 	OutlineRenderer m_OutlineRenderer;
 	MousePicking m_MousePicking;
+	WaterRenderer m_WaterRenderer;
 
 	const Light &m_Light;
 	FrameBuffer m_FrameBuffer;
 	const GLuint m_ShadowMap;
+	WaterFbo m_WaterFbo;
 
 public:
 	explicit Renderer3D(const Light &light);
@@ -51,6 +55,15 @@ public:
     void update();
 
 	void renderScene(const Camera &camera) const;
+
+	void addWaterTile(WaterTile &waterTile);
+
+private:
+	void renderToWaterFrameBuffers(const Camera &camera) const;
+
+	void renderWaterReflection(const Camera &camera) const;
+
+	void renderWaterRefraction(const Camera &camera) const;
 };
 
 

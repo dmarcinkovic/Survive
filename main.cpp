@@ -51,20 +51,14 @@ int main()
 	Entity gui(TexturedModel(loader.renderQuad(), waterFbo.reflectionColorTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
 	guiRenderer.addEntity(gui);
 
+	renderer3D.addWaterTile(waterTile);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		glEnable(GL_CLIP_DISTANCE0);
-		waterFbo.bindReflectionFrameBuffer();
-		Display::clearWindow();
-		renderer3D.renderScene(camera);
-		WaterFbo::unbindFrameBuffer();
-		glDisable(GL_CLIP_DISTANCE0);
-
 		renderer3D.render(camera);
 
-		waterRenderer.render(camera, light);
 		guiRenderer.render();
 
 		display.update();

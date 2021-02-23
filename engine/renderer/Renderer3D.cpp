@@ -4,6 +4,7 @@
 
 #include "Renderer3D.h"
 #include "../constant/Constants.h"
+#include "../display/Display.h"
 
 Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
@@ -28,7 +29,10 @@ void Renderer3D::render(const Camera &camera) const
 	m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 									  Constants::SHADOW_HEIGHT);
 
+	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
+
+	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(camera);
 }
 
@@ -71,4 +75,38 @@ void Renderer3D::addShadow(Object3D &object)
 void Renderer3D::update()
 {
 	m_SkyRenderer.rotateSky();
+}
+
+void Renderer3D::renderToWaterFrameBuffers(const Camera &camera) const
+{
+	if (m_WaterRenderer.shouldRender())
+	{
+		glEnable(GL_CLIP_DISTANCE0);
+
+		renderWaterReflection(camera);
+		renderWaterRefraction(camera);
+
+		glDisable(GL_CLIP_DISTANCE0);
+	}
+}
+
+void Renderer3D::renderWaterReflection(const Camera &camera) const
+{
+	m_WaterFbo.bindReflectionFrameBuffer();
+	Display::clearWindow();
+	renderScene(camera);
+	WaterFbo::unbindFrameBuffer();
+}
+
+void Renderer3D::renderWaterRefraction(const Camera &camera) const
+{
+	m_WaterFbo.bindRefractionFrameBuffer();
+	Display::clearWindow();
+	renderScene(camera);
+	WaterFbo::unbindFrameBuffer();
+}
+
+void Renderer3D::addWaterTile(WaterTile &waterTile)
+{
+	m_WaterRenderer.addWaterTile(waterTile);
 }
