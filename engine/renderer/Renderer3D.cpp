@@ -9,7 +9,8 @@
 Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
 		  m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
-		  m_AnimationRenderer(light)
+		  m_AnimationRenderer(light), m_ReflectionCLippingPlane{0, 1, 0, -Constants::WATER_HEIGHT},
+		  m_RefractionCLippingPlane{0, -1, 0, Constants::WATER_HEIGHT}
 {
 }
 
@@ -93,8 +94,18 @@ void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
 void Renderer3D::renderWaterReflection(Camera &camera) const
 {
 	m_WaterFbo.bindReflectionFrameBuffer();
+
+	float distance = 2.0f * (camera.m_Position.y - Constants::WATER_HEIGHT);
+
+	camera.moveCameraInYDirection(-distance);
+	camera.invertPitch();
+
 	Display::clearWindow();
 	renderScene(camera, m_ReflectionCLippingPlane);
+
+	camera.moveCameraInYDirection(distance);
+	camera.invertPitch();
+
 	WaterFbo::unbindFrameBuffer();
 }
 
@@ -109,9 +120,6 @@ void Renderer3D::renderWaterRefraction(Camera &camera) const
 void Renderer3D::addWaterTile(WaterTile &waterTile)
 {
 	m_WaterRenderer.addWaterTile(waterTile);
-
-	m_ReflectionCLippingPlane = glm::vec4{0, 1, 0, -waterTile.m_Position.y};
-	m_RefractionCLippingPlane =  glm::vec4{0, -1, 0, waterTile.m_Position.y};
 }
 
 GLuint Renderer3D::getWaterReflectionTexture() const
