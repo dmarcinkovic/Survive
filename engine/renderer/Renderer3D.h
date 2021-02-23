@@ -39,7 +39,7 @@ private:
 public:
 	explicit Renderer3D(const Light &light);
 
-	void render(const Camera &camera) const;
+	void render(Camera &camera) const;
 
 	void add3DObject(Object3D &object3D);
 
@@ -57,7 +57,7 @@ public:
 
     void update();
 
-	void renderScene(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addWaterTile(WaterTile &waterTile);
 
@@ -68,11 +68,11 @@ public:
 	GLuint getWaterRefractionTexture() const;
 
 private:
-	void renderToWaterFrameBuffers(const Camera &camera) const;
+	void renderToWaterFrameBuffers(Camera &camera) const;
 
-	void renderWaterReflection(const Camera &camera) const;
+	void renderWaterReflection(Camera &camera) const;
 
-	void renderWaterRefraction(const Camera &camera) const;
+	void renderWaterRefraction(Camera &camera) const;
 };
 
 

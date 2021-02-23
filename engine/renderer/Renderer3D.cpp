@@ -13,7 +13,7 @@ Renderer3D::Renderer3D(const Light &light)
 {
 }
 
-void Renderer3D::renderScene(const Camera &camera, const glm::vec4 &plane) const
+void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
@@ -22,7 +22,7 @@ void Renderer3D::renderScene(const Camera &camera, const glm::vec4 &plane) const
 	m_SkyRenderer.render(camera);
 }
 
-void Renderer3D::render(const Camera &camera) const
+void Renderer3D::render(Camera &camera) const
 {
 //	m_MousePicking.render(camera);
 
@@ -77,7 +77,7 @@ void Renderer3D::update()
 	m_SkyRenderer.rotateSky();
 }
 
-void Renderer3D::renderToWaterFrameBuffers(const Camera &camera) const
+void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
 {
 	if (m_WaterRenderer.shouldRender())
 	{
@@ -90,7 +90,7 @@ void Renderer3D::renderToWaterFrameBuffers(const Camera &camera) const
 	}
 }
 
-void Renderer3D::renderWaterReflection(const Camera &camera) const
+void Renderer3D::renderWaterReflection(Camera &camera) const
 {
 	m_WaterFbo.bindReflectionFrameBuffer();
 	Display::clearWindow();
@@ -98,7 +98,7 @@ void Renderer3D::renderWaterReflection(const Camera &camera) const
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::renderWaterRefraction(const Camera &camera) const
+void Renderer3D::renderWaterRefraction(Camera &camera) const
 {
 	m_WaterFbo.bindRefractionFrameBuffer();
 	Display::clearWindow();
