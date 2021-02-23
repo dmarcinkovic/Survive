@@ -5,7 +5,6 @@
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/water/WaterRenderer.h"
 #include "engine/water/WaterFbo.h"
-#include "engine/gui/GuiRenderer.h"
 
 int main()
 {
@@ -46,10 +45,6 @@ int main()
 	waterRenderer.addWaterTile(waterTile);
 
 	WaterFbo waterFbo;
-	
-	GuiRenderer guiRenderer;
-	Entity gui(TexturedModel(loader.renderQuad(), waterFbo.reflectionColorTexture()), glm::vec3{-0.5f, 0.5f, 0}, glm::vec3{0.5f, 0.5f, 1});
-	guiRenderer.addEntity(gui);
 
 	while (display.isRunning())
 	{
@@ -63,7 +58,6 @@ int main()
 		renderer3D.render(camera);
 
 		waterRenderer.render(camera, light);
-		guiRenderer.render();
 
 		display.update();
 	}
