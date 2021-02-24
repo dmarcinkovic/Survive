@@ -14,6 +14,7 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
 uniform mat4 jointTransforms[MAX_JOINTS];
+uniform vec4 plane;
 
 out vec3 surfaceNormal;
 out vec2 texCoordinates;
@@ -22,6 +23,8 @@ out vec3 worldPosition;
 void main()
 {
     vec4 worldPos = transformationMatrix * vec4(position, 1.0);
+
+    gl_ClipDistance[0] = dot(worldPos, plane);
 
     vec4 totalLocalPos = vec4(0.0);
     vec4 totalNormal = vec4(0.0);
