@@ -45,7 +45,13 @@ void main()
     vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + totalDistortion;
     vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + totalDistortion;
 
+    float near = 0.1;
+    float far = 1000.0f;
     float depth = texture(depthMap, refractionTextureCoordinates).r;
+    float floorDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
+
+    depth = gl_FragCoord.z;
+    float waterDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
 
     refractionTextureCoordinates = clamp(refractionTextureCoordinates, 0.001, 0.999);
 
