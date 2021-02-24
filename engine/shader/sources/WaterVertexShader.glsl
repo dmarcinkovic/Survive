@@ -5,6 +5,7 @@ layout (location = 0) in vec2 position;
 out vec2 textureCoordinates;
 out vec4 clipSpace;
 out vec3 toCameraVector;
+out vec3 fromLightVector;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -23,4 +24,6 @@ void main()
     textureCoordinates = vec2(position.x / 2.0 + 0.5, position.y / 2.0 + 0.5) * tilling;
 
     toCameraVector = cameraPosition - worldPosition.xyz;
+
+    fromLightVector = worldPosition.xyz - lightPosition;
 }
