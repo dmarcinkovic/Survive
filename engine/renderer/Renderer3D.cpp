@@ -18,7 +18,7 @@ void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
-	m_AnimationRenderer.render(camera);
+	m_AnimationRenderer.render(camera, plane);
 
 	m_SkyRenderer.render(camera, plane);
 }
