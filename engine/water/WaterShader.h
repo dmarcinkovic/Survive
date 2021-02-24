@@ -21,8 +21,9 @@ private:
 	GLuint m_LocationReflectionTexture{};
 	GLuint m_LocationRefractionTexture{};
 
-	GLuint m_LocationDuDvMap;
-	GLuint m_LocationNormalMap;
+	GLuint m_LocationDuDvMap{};
+	GLuint m_LocationNormalMap{};
+	GLuint m_LocationMoveFactor{};
 
 public:
 	WaterShader();
@@ -34,6 +35,8 @@ public:
 	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
 	void loadTextures() const;
+
+	void loadMoveFactor(float moveFactor) const;
 
 private:
 	void loadUniformLocations();

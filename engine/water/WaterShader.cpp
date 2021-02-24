@@ -36,6 +36,8 @@ void WaterShader::loadUniformLocations()
 
 	m_LocationDuDvMap = glGetUniformLocation(m_Program, "duDvMap");
 	m_LocationNormalMap = glGetUniformLocation(m_Program, "normalMap");
+
+	m_LocationMoveFactor = glGetUniformLocation(m_Program, "moveFactor");
 }
 
 void WaterShader::loadTextures() const
@@ -44,4 +46,9 @@ void WaterShader::loadTextures() const
 	loadInteger(m_LocationRefractionTexture, 1);
 	loadInteger(m_LocationDuDvMap, 2);
 	loadInteger(m_LocationNormalMap, 3);
+}
+
+void WaterShader::loadMoveFactor(float moveFactor) const
+{
+	loadFloat(m_LocationMoveFactor, moveFactor);
 }
