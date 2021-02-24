@@ -45,6 +45,8 @@ void main()
     vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + totalDistortion;
     vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + totalDistortion;
 
+    float depth = texture(depthMap, refractionTextureCoordinates).r;
+
     refractionTextureCoordinates = clamp(refractionTextureCoordinates, 0.001, 0.999);
 
     reflectionTextureCoordinates.x = clamp(reflectionTextureCoordinates.x, 0.001, 0.999);
