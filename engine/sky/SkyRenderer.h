@@ -21,7 +21,7 @@ private:
 	float m_Rotation = 0;
 
 public:
-	void render(const Camera &camera) const;
+	void render(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addSkyEntity(const Entity &sky);
 

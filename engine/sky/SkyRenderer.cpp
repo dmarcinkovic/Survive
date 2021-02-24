@@ -6,7 +6,7 @@
 #include "../math/Maths.h"
 #include "../display/Display.h"
 
-void SkyRenderer::render(const Camera &camera) const
+void SkyRenderer::render(const Camera &camera, const glm::vec4 &plane) const
 {
 	prepareRendering();
 	loadUniforms(camera);
