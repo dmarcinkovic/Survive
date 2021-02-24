@@ -23,7 +23,8 @@ private:
 	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
 
 public:
-	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const;
+	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
+				const Texture &refractionTexture) const;
 
 	void addWaterTile(WaterTile &waterTile);
 
@@ -38,7 +39,8 @@ private:
 
 	void loadUniforms(const Camera &camera, const WaterTile &waterTile) const;
 
-	static void bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture);
+	static void
+	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture);
 };
 
 
