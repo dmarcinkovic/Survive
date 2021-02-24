@@ -17,7 +17,6 @@ class WaterRenderer
 {
 private:
 	WaterShader m_Shader;
-	std::vector<Texture> m_Textures;
 
 	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
 

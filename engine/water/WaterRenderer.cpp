@@ -22,6 +22,8 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 
 		reflectionTexture.bindTexture(0);
 		refractionTexture.bindTexture(1);
+		water.getDuDvMap().bindTexture(2);
+		water.getNormalMap().bindTexture(3);
 
 		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
 		m_Shader.loadTransformationMatrix(transformationMatrix);
