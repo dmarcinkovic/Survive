@@ -21,6 +21,9 @@ private:
 	GLuint m_LocationReflectionTexture{};
 	GLuint m_LocationRefractionTexture{};
 
+	GLuint m_LocationDuDvMap;
+	GLuint m_LocationNormalMap;
+
 public:
 	WaterShader();
 

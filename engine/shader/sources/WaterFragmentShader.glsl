@@ -7,6 +7,8 @@ out vec4 outColor;
 
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
+uniform sampler2D duDvMap;
+uniform sampler2D normalMap;
 
 void main()
 {
