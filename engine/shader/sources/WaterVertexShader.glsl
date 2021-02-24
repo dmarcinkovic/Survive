@@ -10,6 +10,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 transformationMatrix;
 uniform vec3 cameraPosition;
+uniform vec3 lightPosition;
 
 const float tilling = 6.0f;
 

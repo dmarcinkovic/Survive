@@ -7,6 +7,7 @@
 
 
 #include "../shader/Shader.h"
+#include "../light/Light.h"
 
 class WaterShader : public Shader
 {
@@ -27,6 +28,7 @@ private:
 
 	GLuint m_LocationCameraPosition{};
 	GLuint m_LocationLightColor{};
+	GLuint m_LocationLightPosition{};
 
 public:
 	WaterShader();
@@ -43,7 +45,7 @@ public:
 
 	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 
-	void loadLightColor(const glm::vec3 &lightColor) const;
+	void loadLight(const Light &light) const;
 
 private:
 	void loadUniformLocations();
