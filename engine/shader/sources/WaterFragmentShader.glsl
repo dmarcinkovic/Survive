@@ -13,15 +13,24 @@ uniform float moveFactor;
 
 const float waveStrength = 0.03;
 
+vec2 calculateDistortion()
+{
+    vec2 distortion1 = (texture(duDvMap, vec2(textureCoordinates.x + moveFactor,
+    textureCoordinates.y)).rg * 2.0f - 1.0f) * waveStrength;
+
+    vec2 distortion2 = (texture(duDvMap, vec2(-textureCoordinates.x + moveFactor,
+    textureCoordinates.y + moveFactor)).rg * 2.0f - 1.0f) * waveStrength;
+
+    return distortion1 + distortion2;
+}
+
 void main()
 {
     vec2 normalizedDeviceCoordinates = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
+    vec2 totalDistortion = calculateDistortion();
 
-    vec2 distortion1 = texture(duDvMap, vec2(textureCoordinates.x, textureCoordinates.y)).rg * 2.0f - 1.0f;
-    distortion1 *= waveStrength;
-
-    vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + distortion1;
-    vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + distortion1;
+    vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + totalDistortion;
+    vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + totalDistortion;
 
     refractionTextureCoordinates = clamp(refractionTextureCoordinates, 0.001, 0.999);
 
