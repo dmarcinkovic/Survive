@@ -20,7 +20,7 @@ void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
 	m_AnimationRenderer.render(camera);
 
-	m_SkyRenderer.render(camera);
+	m_SkyRenderer.render(camera, plane);
 }
 
 void Renderer3D::render(Camera &camera) const
