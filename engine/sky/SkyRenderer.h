@@ -32,7 +32,7 @@ private:
 
 	static void finishRendering();
 
-	void loadUniforms(const Camera &camera) const;
+	void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
 };
 
 

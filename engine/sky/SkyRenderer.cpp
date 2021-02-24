@@ -9,7 +9,7 @@
 void SkyRenderer::render(const Camera &camera, const glm::vec4 &plane) const
 {
 	prepareRendering();
-	loadUniforms(camera);
+	loadUniforms(camera, plane);
 
 	glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -45,7 +45,7 @@ void SkyRenderer::finishRendering()
 	SkyShader::stop();
 }
 
-void SkyRenderer::loadUniforms(const Camera &camera) const
+void SkyRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
 {
 	auto viewMatrix = Maths::createViewMatrix(camera);
 	viewMatrix[3][0] = 0;
@@ -59,6 +59,7 @@ void SkyRenderer::loadUniforms(const Camera &camera) const
 
 	auto transformationMatrix = Maths::createTransformationMatrix(m_Sky.m_Position, m_Sky.m_Scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
+	m_Shader.loadPlane(plane);
 }
 
 void SkyRenderer::rotateSky()
