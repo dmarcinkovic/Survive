@@ -37,7 +37,7 @@ private:
 
 	static void loadMoveFactor(const WaterShader &shader);
 
-	void loadUniforms(const Camera &camera, const WaterTile &waterTile) const;
+	void loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const;
 
 	static void
 	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture);

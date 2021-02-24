@@ -19,7 +19,7 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		Renderer3DUtil::prepareEntity(water.m_Texture);
 
 		bindTextures(water, reflectionTexture, refractionTexture);
-		loadUniforms(camera, water);
+		loadUniforms(camera, water, light);
 
 		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -65,7 +65,7 @@ void WaterRenderer::loadMoveFactor(const WaterShader &shader)
 	shader.loadMoveFactor(moveFactor);
 }
 
-void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTile) const
+void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const
 {
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(waterTile.m_Position, waterTile.m_Scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
@@ -73,6 +73,8 @@ void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTil
 	m_Shader.loadTextures();
 	m_Shader.loadCameraPosition(camera.m_Position);
 	loadMoveFactor(m_Shader);
+
+	m_Shader.loadLight(light);
 }
 
 void WaterRenderer::bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture,
