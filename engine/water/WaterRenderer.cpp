@@ -25,6 +25,7 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
 		m_Shader.loadTransformationMatrix(transformationMatrix);
 		m_Shader.loadTextures();
+		m_Shader.loadCameraPosition(camera.m_Position);
 
 		loadMoveFactor(m_Shader);
 
