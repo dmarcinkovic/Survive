@@ -40,6 +40,8 @@ void AnimationShader::loadUniformLocations()
 		std::string name = "jointTransforms[" + std::to_string(i) + "]";
 		m_LocationJointTransforms[i] = glGetUniformLocation(m_Program, name.c_str());
 	}
+
+	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 }
 
 void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
@@ -60,4 +62,9 @@ void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &joi
 		glm::mat4 emptyMatrix{};
 		loadMatrix(m_LocationJointTransforms[i], emptyMatrix);
 	}
+}
+
+void AnimationShader::loadPlane(const glm::vec4 &plane) const
+{
+	loadVector4(m_LocationPlane, plane);
 }

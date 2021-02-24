@@ -25,6 +25,7 @@ private:
 	GLuint m_LocationLightColor{};
 
 	GLuint m_LocationJointTransforms[MAX_JOINTS]{};
+	GLuint m_LocationPlane{};
 
 public:
 	AnimationShader();
@@ -38,6 +39,8 @@ public:
 	void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
 
 	void loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const;
+
+	void loadPlane(const glm::vec4 &plane) const;
 
 private:
 	void loadUniformLocations();
