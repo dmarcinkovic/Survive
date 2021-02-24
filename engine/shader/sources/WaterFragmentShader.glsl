@@ -16,13 +16,13 @@ const float waveStrength = 0.03;
 
 vec2 calculateDistortion()
 {
-    vec2 distortion1 = (texture(duDvMap, vec2(textureCoordinates.x + moveFactor,
-    textureCoordinates.y)).rg * 2.0f - 1.0f) * waveStrength;
+    vec2 distortedTextureCoordinates = texture(duDvMap, vec2(textureCoordinates.x + moveFactor,
+                                                textureCoordinates.y)).rg * 0.1;
 
-    vec2 distortion2 = (texture(duDvMap, vec2(-textureCoordinates.x + moveFactor,
-    textureCoordinates.y + moveFactor)).rg * 2.0f - 1.0f) * waveStrength;
+    distortedTextureCoordinates = textureCoordinates + vec2(distortedTextureCoordinates.x,
+                                        distortedTextureCoordinates.y + moveFactor);
 
-    return distortion1 + distortion2;
+    return (texture(duDvMap, distortedTextureCoordinates).rg * 2.0 - 1.0) * waveStrength;
 }
 
 void main()
