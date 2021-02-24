@@ -8,7 +8,8 @@
 #include "../display/Display.h"
 
 
-void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const
+void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
+						   const Texture &refractionTexture) const
 {
 	prepareRendering(camera);
 
@@ -17,17 +18,8 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		auto const &water = waterTile.get();
 		Renderer3DUtil::prepareEntity(water.m_Texture);
 
-		reflectionTexture.bindTexture(0);
-		refractionTexture.bindTexture(1);
-		water.getDuDvMap().bindTexture(2);
-		water.getNormalMap().bindTexture(3);
-
-		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
-		m_Shader.loadTransformationMatrix(transformationMatrix);
-		m_Shader.loadTextures();
-		m_Shader.loadCameraPosition(camera.m_Position);
-
-		loadMoveFactor(m_Shader);
+		bindTextures(water, reflectionTexture, refractionTexture);
+		loadUniforms(camera, water);
 
 		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -71,4 +63,23 @@ void WaterRenderer::loadMoveFactor(const WaterShader &shader)
 	moveFactor = std::fmod(moveFactor, 1);
 
 	shader.loadMoveFactor(moveFactor);
+}
+
+void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTile) const
+{
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(waterTile.m_Position, waterTile.m_Scale);
+	m_Shader.loadTransformationMatrix(transformationMatrix);
+
+	m_Shader.loadTextures();
+	m_Shader.loadCameraPosition(camera.m_Position);
+	loadMoveFactor(m_Shader);
+}
+
+void WaterRenderer::bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture,
+								 const Texture &refractionTexture)
+{
+	reflectionTexture.bindTexture(0);
+	refractionTexture.bindTexture(1);
+	waterTile.getDuDvMap().bindTexture(2);
+	waterTile.getNormalMap().bindTexture(3);
 }

@@ -35,6 +35,10 @@ private:
 	static void finishRendering();
 
 	static void loadMoveFactor(const WaterShader &shader);
+
+	void loadUniforms(const Camera &camera, const WaterTile &waterTile) const;
+
+	static void bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture);
 };
 
 
