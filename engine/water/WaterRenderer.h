@@ -16,13 +16,13 @@
 class WaterRenderer
 {
 private:
+	static constexpr float WAVE_SPEED = 0.03f;
+
 	WaterShader m_Shader;
 
 	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
 
 public:
-	WaterRenderer();
-
 	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const;
 
 	void addWaterTile(WaterTile &waterTile);
@@ -33,6 +33,8 @@ private:
 	void prepareRendering(const Camera &camera) const;
 
 	static void finishRendering();
+
+	static void loadMoveFactor(const WaterShader &shader);
 };
 
 

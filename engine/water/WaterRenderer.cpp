@@ -5,11 +5,8 @@
 #include "WaterRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../display/Display.h"
 
-WaterRenderer::WaterRenderer()
-{
-
-}
 
 void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture, const Texture &refractionTexture) const
 {
@@ -28,6 +25,8 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(water.m_Position, water.m_Scale);
 		m_Shader.loadTransformationMatrix(transformationMatrix);
 		m_Shader.loadTextures();
+		
+		loadMoveFactor(m_Shader);
 
 		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -60,4 +59,15 @@ void WaterRenderer::addWaterTile(WaterTile &waterTile)
 bool WaterRenderer::shouldRender() const
 {
 	return !m_Tiles.empty();
+}
+
+void WaterRenderer::loadMoveFactor(const WaterShader &shader)
+{
+	static float moveFactor = 0;
+
+	auto deltaTime = static_cast<float>(Display::getFrameTime());
+	moveFactor += WAVE_SPEED * deltaTime;
+	moveFactor = std::fmod(moveFactor, 1);
+
+	shader.loadMoveFactor(moveFactor);
 }
