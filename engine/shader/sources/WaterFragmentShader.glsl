@@ -14,21 +14,28 @@ uniform float moveFactor;
 
 const float waveStrength = 0.03;
 
-vec2 calculateDistortion()
+vec2 calculateDistortedCoordinates()
 {
     vec2 distortedTextureCoordinates = texture(duDvMap, vec2(textureCoordinates.x + moveFactor,
-                                                textureCoordinates.y)).rg * 0.1;
+                                            textureCoordinates.y)).rg * 0.1;
 
     distortedTextureCoordinates = textureCoordinates + vec2(distortedTextureCoordinates.x,
                                         distortedTextureCoordinates.y + moveFactor);
 
+    return distortedTextureCoordinates;
+}
+
+vec2 calculateDistortion(vec2 distortedTextureCoordinates)
+{
     return (texture(duDvMap, distortedTextureCoordinates).rg * 2.0 - 1.0) * waveStrength;
 }
 
 void main()
 {
     vec2 normalizedDeviceCoordinates = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
-    vec2 totalDistortion = calculateDistortion();
+
+    vec2 distortedTextureCoordinates = calculateDistortedCoordinates();
+    vec2 totalDistortion = calculateDistortion(distortedTextureCoordinates);
 
     vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + totalDistortion;
     vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + totalDistortion;
@@ -43,6 +50,8 @@ void main()
 
     vec3 viewVector = normalize(toCameraVector);
     float refractiveFactor = dot(viewVector, vec3(0, 1, 0));
+
+//    vec4
 
     outColor = mix(reflectionColor, refractionColor, refractiveFactor);
     outColor = mix(outColor, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
