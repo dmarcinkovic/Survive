@@ -26,6 +26,7 @@ private:
 	GLuint m_LocationMoveFactor{};
 
 	GLuint m_LocationCameraPosition{};
+	GLuint m_LocationLightColor{};
 
 public:
 	WaterShader();
@@ -41,6 +42,8 @@ public:
 	void loadMoveFactor(float moveFactor) const;
 
 	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
+
+	void loadLightColor(const glm::vec3 &lightColor) const;
 
 private:
 	void loadUniformLocations();

@@ -40,6 +40,7 @@ void WaterShader::loadUniformLocations()
 	m_LocationMoveFactor = glGetUniformLocation(m_Program, "moveFactor");
 
 	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
+	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
 }
 
 void WaterShader::loadTextures() const
@@ -58,4 +59,9 @@ void WaterShader::loadMoveFactor(float moveFactor) const
 void WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
 {
 	loadVector3(m_LocationCameraPosition, cameraPosition);
+}
+
+void WaterShader::loadLightColor(const glm::vec3 &lightColor) const
+{
+	loadVector3(m_LocationLightColor, lightColor);
 }

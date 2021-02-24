@@ -11,6 +11,7 @@ uniform sampler2D refractionTexture;
 uniform sampler2D duDvMap;
 uniform sampler2D normalMap;
 uniform float moveFactor;
+uniform vec3 lightColor;
 
 const float waveStrength = 0.03;
 
@@ -53,7 +54,7 @@ void main()
 
     vec4 normalMapColor = texture(normalMap, distortedTextureCoordinates);;
     vec3 normal = vec3(normalMapColor.r * 2.0 - 1.0, normalMapColor.b, normalMapColor.g * 2.0 - 1.0);
-    normal = normalize(normal); 
+    normal = normalize(normal);
 
     outColor = mix(reflectionColor, refractionColor, refractiveFactor);
     outColor = mix(outColor, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
