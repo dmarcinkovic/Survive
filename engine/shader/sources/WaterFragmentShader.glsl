@@ -49,9 +49,7 @@ void main()
     float far = 1000.0f;
     float depth = texture(depthMap, refractionTextureCoordinates).r;
     float floorDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
-
-    depth = gl_FragCoord.z;
-    float waterDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
+    float waterDistance = 2.0 * near * far / (far + near - (2.0 * gl_FragCoord.z - 1.0) * (far - near));
 
     refractionTextureCoordinates = clamp(refractionTextureCoordinates, 0.001, 0.999);
 
