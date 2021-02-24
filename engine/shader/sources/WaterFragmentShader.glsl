@@ -41,4 +41,5 @@ void main()
     vec4 refractionColor = texture(refractionTexture, refractionTextureCoordinates);
 
     outColor = mix(reflectionColor, refractionColor, 0.5);
+    outColor = mix(outColor, vec4(0.0, 0.3, 0.5, 1.0), 0.2);
 }
