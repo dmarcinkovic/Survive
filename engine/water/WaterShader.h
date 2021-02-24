@@ -25,6 +25,8 @@ private:
 	GLuint m_LocationNormalMap{};
 	GLuint m_LocationMoveFactor{};
 
+	GLuint m_LocationCameraPosition{};
+
 public:
 	WaterShader();
 
@@ -37,6 +39,8 @@ public:
 	void loadTextures() const;
 
 	void loadMoveFactor(float moveFactor) const;
+
+	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 
 private:
 	void loadUniformLocations();

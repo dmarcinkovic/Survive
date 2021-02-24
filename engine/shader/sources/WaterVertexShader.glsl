@@ -8,6 +8,7 @@ out vec4 clipSpace;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 transformationMatrix;
+uniform vec3 cameraPosition;
 
 const float tilling = 6.0f;
 

@@ -38,6 +38,8 @@ void WaterShader::loadUniformLocations()
 	m_LocationNormalMap = glGetUniformLocation(m_Program, "normalMap");
 
 	m_LocationMoveFactor = glGetUniformLocation(m_Program, "moveFactor");
+
+	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
 }
 
 void WaterShader::loadTextures() const
@@ -51,4 +53,9 @@ void WaterShader::loadTextures() const
 void WaterShader::loadMoveFactor(float moveFactor) const
 {
 	loadFloat(m_LocationMoveFactor, moveFactor);
+}
+
+void WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+{
+	loadVector3(m_LocationCameraPosition, cameraPosition);
 }
