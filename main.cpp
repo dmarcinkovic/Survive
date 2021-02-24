@@ -7,7 +7,7 @@
 
 int main()
 {
-	constexpr int width = 800;
+	constexpr int width = 1200;
 	constexpr int height = 800;
 
 	Display display(width, height, "Survive");
