@@ -9,7 +9,7 @@
 
 
 void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
-						   const Texture &refractionTexture) const
+						   const Texture &refractionTexture, const Texture &refractionDepthMap) const
 {
 	prepareRendering(camera);
 
@@ -18,7 +18,7 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		auto const &water = waterTile.get();
 		Renderer3DUtil::prepareEntity(water.m_Texture);
 
-		bindTextures(water, reflectionTexture, refractionTexture);
+		bindTextures(water, reflectionTexture, refractionTexture, refractionDepthMap);
 		loadUniforms(camera, water, light);
 
 		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -78,10 +78,11 @@ void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTil
 }
 
 void WaterRenderer::bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture,
-								 const Texture &refractionTexture)
+								 const Texture &refractionTexture, const Texture &refractionDepthMap)
 {
 	reflectionTexture.bindTexture(0);
 	refractionTexture.bindTexture(1);
 	waterTile.getDuDvMap().bindTexture(2);
 	waterTile.getNormalMap().bindTexture(3);
+	refractionDepthMap.bindTexture(4);
 }

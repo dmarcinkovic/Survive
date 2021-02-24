@@ -13,6 +13,7 @@ uniform sampler2D duDvMap;
 uniform sampler2D normalMap;
 uniform float moveFactor;
 uniform vec3 lightColor;
+uniform sampler2D depthMap;
 
 const float waveStrength = 0.03f;
 const float shineDamper = 20.0f;

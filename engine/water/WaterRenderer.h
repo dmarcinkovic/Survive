@@ -24,7 +24,7 @@ private:
 
 public:
 	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
-				const Texture &refractionTexture) const;
+				const Texture &refractionTexture, const Texture &refractionDepthMap) const;
 
 	void addWaterTile(WaterTile &waterTile);
 
@@ -40,7 +40,8 @@ private:
 	void loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const;
 
 	static void
-	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture);
+	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture,
+				 const Texture &refractionDepthMap);
 };
 
 
