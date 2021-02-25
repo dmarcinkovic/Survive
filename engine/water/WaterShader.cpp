@@ -5,7 +5,7 @@
 #include "WaterShader.h"
 
 WaterShader::WaterShader()
-	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
 }
@@ -43,6 +43,9 @@ void WaterShader::loadUniformLocations()
 	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
 	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
 	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+
+	m_LocationNear = glGetUniformLocation(m_Program, "near");
+	m_LocationFar = glGetUniformLocation(m_Program, "far");
 }
 
 void WaterShader::loadTextures() const
@@ -68,4 +71,10 @@ void WaterShader::loadLight(const Light &light) const
 {
 	loadVector3(m_LocationLightColor, light.color());
 	loadVector3(m_LocationLightPosition, light.position());
+}
+
+void WaterShader::loadNearAndFar(float near, float far) const
+{
+	loadFloat(m_LocationNear, near);
+	loadFloat(m_LocationFar, far);
 }

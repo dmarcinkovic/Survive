@@ -12,8 +12,8 @@
 class WaterShader : public Shader
 {
 private:
-	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/WaterVertexShader.glsl";
-	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/WaterFragmentShader.glsl";
+	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/WaterVertexShader.glsl";
+	static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/WaterFragmentShader.glsl";
 
 	GLuint m_LocationTransformationMatrix{};
 	GLuint m_LocationViewMatrix{};
@@ -31,6 +31,9 @@ private:
 	GLuint m_LocationLightColor{};
 	GLuint m_LocationLightPosition{};
 
+	GLuint m_LocationNear{};
+	GLuint m_LocationFar{};
+
 public:
 	WaterShader();
 
@@ -47,6 +50,8 @@ public:
 	void loadCameraPosition(const glm::vec3 &cameraPosition) const;
 
 	void loadLight(const Light &light) const;
+
+	void loadNearAndFar(float near, float far) const;
 
 private:
 	void loadUniformLocations();
