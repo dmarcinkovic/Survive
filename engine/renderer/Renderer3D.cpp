@@ -33,8 +33,7 @@ void Renderer3D::render(Camera &camera) const
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
 
-	m_WaterRenderer.render(camera, m_Light, m_WaterFbo.reflectionColorTexture(),
-						   m_WaterFbo.refractionColorTexture(), m_WaterFbo.getRefractionDepthBuffer());
+	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(camera);
 }
 
@@ -94,7 +93,7 @@ void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
 
 void Renderer3D::renderWaterReflection(Camera &camera) const
 {
-	m_WaterFbo.bindReflectionFrameBuffer();
+	m_WaterRenderer.bindReflectionFrameBuffer();
 
 	float distance = 2.0f * (camera.m_Position.y - Constants::WATER_HEIGHT);
 
@@ -112,7 +111,7 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 
 void Renderer3D::renderWaterRefraction(Camera &camera) const
 {
-	m_WaterFbo.bindRefractionFrameBuffer();
+	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
 	renderScene(camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();

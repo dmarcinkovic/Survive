@@ -9,8 +9,7 @@
 #include "../constant/Constants.h"
 
 
-void WaterRenderer::render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
-						   const Texture &refractionTexture, const Texture &refractionDepthMap) const
+void WaterRenderer::render(const Camera &camera, const Light &light) const
 {
 	prepareRendering(camera);
 
@@ -19,7 +18,8 @@ void WaterRenderer::render(const Camera &camera, const Light &light, const Textu
 		auto const &water = waterTile.get();
 		Renderer3DUtil::prepareEntity(water.m_Texture);
 
-		bindTextures(water, reflectionTexture, refractionTexture, refractionDepthMap);
+		bindTextures(water, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
+					 m_Fbo.getRefractionDepthBuffer());
 		loadUniforms(camera, water, light);
 
 		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -87,4 +87,14 @@ void WaterRenderer::bindTextures(const WaterTile &waterTile, const Texture &refl
 	waterTile.getDuDvMap().bindTexture(2);
 	waterTile.getNormalMap().bindTexture(3);
 	refractionDepthMap.bindTexture(4);
+}
+
+void WaterRenderer::bindReflectionFrameBuffer() const
+{
+	m_Fbo.bindReflectionFrameBuffer();
+}
+
+void WaterRenderer::bindRefractionFrameBuffer() const
+{
+	m_Fbo.bindRefractionFrameBuffer();
 }

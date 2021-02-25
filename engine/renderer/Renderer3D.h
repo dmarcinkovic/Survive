@@ -31,7 +31,6 @@ private:
 	const Light &m_Light;
 	FrameBuffer m_FrameBuffer;
 	const GLuint m_ShadowMap;
-	WaterFbo m_WaterFbo;
 
 	glm::vec4 m_ReflectionCLippingPlane{};
 	glm::vec4 m_RefractionCLippingPlane{};

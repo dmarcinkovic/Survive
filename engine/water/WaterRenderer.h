@@ -12,6 +12,7 @@
 #include "WaterTile.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
+#include "WaterFbo.h"
 
 class WaterRenderer
 {
@@ -19,14 +20,18 @@ private:
 	static constexpr float WAVE_SPEED = 0.03f;
 
 	WaterShader m_Shader;
+	WaterFbo m_Fbo;
 
 	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
 
 public:
-	void render(const Camera &camera, const Light &light, const Texture &reflectionTexture,
-				const Texture &refractionTexture, const Texture &refractionDepthMap) const;
+	void render(const Camera &camera, const Light &light) const;
 
 	void addWaterTile(WaterTile &waterTile);
+
+	void bindReflectionFrameBuffer() const;
+
+	void bindRefractionFrameBuffer() const;
 
 	[[nodiscard]] bool shouldRender() const;
 
