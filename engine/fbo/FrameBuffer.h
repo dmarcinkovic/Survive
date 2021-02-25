@@ -50,6 +50,8 @@ public:
 	void attachDepthComponent(int width, int height);
 
 	GLuint createDepthTexture(int width, int height);
+
+	GLuint createDepthTextureAttachment(int width, int height);
 };
 
 
