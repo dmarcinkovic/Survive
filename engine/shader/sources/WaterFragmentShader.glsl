@@ -14,6 +14,8 @@ uniform sampler2D normalMap;
 uniform float moveFactor;
 uniform vec3 lightColor;
 uniform sampler2D depthMap;
+uniform float near;
+uniform float far;
 
 const float waveStrength = 0.03f;
 const float shineDamper = 20.0f;
@@ -45,8 +47,6 @@ void main()
     vec2 refractionTextureCoordinates = normalizedDeviceCoordinates + totalDistortion;
     vec2 reflectionTextureCoordinates = vec2(normalizedDeviceCoordinates.x, -normalizedDeviceCoordinates.y) + totalDistortion;
 
-    float near = 0.1;
-    float far = 1000.0f;
     float depth = texture(depthMap, normalizedDeviceCoordinates).r;
     float floorDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
     float waterDistance = 2.0 * near * far / (far + near - (2.0 * gl_FragCoord.z - 1.0) * (far - near));

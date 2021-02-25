@@ -74,7 +74,7 @@ void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTil
 	m_Shader.loadTextures();
 	m_Shader.loadCameraPosition(camera.m_Position);
 	loadMoveFactor(m_Shader);
-	
+
 	m_Shader.loadNearAndFar(Constants::NEAR, Constants::FAR);
 	m_Shader.loadLight(light);
 }
