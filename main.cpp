@@ -2,6 +2,7 @@
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/gaussianBlur/BloomRenderer.h"
 
 int main()
 {
@@ -14,30 +15,28 @@ int main()
 	Camera camera;
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Renderer3D renderer3D(light);
+	Renderer3D renderer(light);
 
-	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
-			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
-	Entity sky(texturedModel, glm::vec3{}, glm::vec3{500});
+	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
+								Loader::loadTexture("res/lamp_bloom.png"));
+	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0,-90,0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
+	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 
-	renderer3D.addSkyboxEntity(sky);
+	renderer.add3DObject(lamp);
+	renderer.add3DObject(lamp2);
 
-	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{-5, 0, -30});
-	Object3D dragon2(dragonModel, glm::vec3{5, 0, -30});
+	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
+	BloomRenderer bloomRenderer(width / 8, height / 8);
+	bloomRenderer.addObject(lamp);
 
-	renderer3D.add3DObject(dragon);
-	renderer3D.addShadow(dragon);
-	renderer3D.add3DObject(dragon2);
-	renderer3D.addShadow(dragon2);
-
-	renderer3D.addOutlineToObject(dragon);
+	lamp.addBloomEffect(lampBloom);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		renderer3D.render(camera);
+		renderer.render(camera);
+		bloomRenderer.render();
 
 		display.update();
 	}
