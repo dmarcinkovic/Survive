@@ -13,6 +13,9 @@
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
 #include "../mousePicking/MousePicking.h"
+#include "../water/WaterRenderer.h"
+#include "../water/WaterFbo.h"
+#include "../gaussianBlur/BloomRenderer.h"
 
 class Renderer3D
 {
@@ -24,6 +27,8 @@ private:
 	SkyRenderer m_SkyRenderer;
 	OutlineRenderer m_OutlineRenderer;
 	MousePicking m_MousePicking;
+	WaterRenderer m_WaterRenderer;
+	BloomRenderer m_BloomRenderer;
 
 	const Light &m_Light;
 	FrameBuffer m_ShadowFrameBuffer;
@@ -33,11 +38,13 @@ private:
 
 	FrameBuffer m_SceneFrameBuffer;
 	GLuint m_Scene{};
+	glm::vec4 m_ReflectionCLippingPlane{};
+	glm::vec4 m_RefractionCLippingPlane{};
 
 public:
 	explicit Renderer3D(const Light &light);
 
-	void render(const Camera &camera) const;
+	void render(Camera &camera) const;
 
 	void renderToFbo(const Camera &camera) const;
 
@@ -57,8 +64,22 @@ public:
 
 	void addShadow(Object3D &object);
 
+	void update();
+
+	void addWaterTile(WaterTile &waterTile);
+
+	void addBloom(Object3D &object);
+
+	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+
 private:
 	static void resetViewport();
+
+	void renderToWaterFrameBuffers(Camera &camera) const;
+
+	void renderWaterReflection(Camera &camera) const;
+
+	void renderWaterRefraction(Camera &camera) const;
 };
 
 

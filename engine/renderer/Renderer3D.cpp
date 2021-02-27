@@ -8,24 +8,36 @@
 
 Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
-		  m_ShadowMap(
-				  m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
-		  m_AnimationRenderer(light), m_SceneSize(Display::getWindowSize<int>())
+		  m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
+		  m_AnimationRenderer(light), m_ReflectionCLippingPlane{0, 1, 0, -Constants::WATER_HEIGHT},
+		  m_RefractionCLippingPlane{0, -1, 0, Constants::WATER_HEIGHT},
+		  m_BloomRenderer(Constants::BLOOM_WIDTH, Constants::BLOOM_HEIGHT), m_SceneSize(Display::getWindowSize<int>())
+
 {
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Renderer3D::render(const Camera &camera) const
+void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 {
-	m_MousePicking.render(camera);
+	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
+	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
+	m_AnimationRenderer.render(camera, plane);
+
+	m_SkyRenderer.render(camera, plane);
+}
+
+void Renderer3D::render(Camera &camera) const
+{
+//	m_MousePicking.render(camera);
+
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-											Constants::SHADOW_HEIGHT);
+									  Constants::SHADOW_HEIGHT);
 
-	m_ObjectRenderer.render(camera, m_ShadowMap);
-	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
-	m_AnimationRenderer.render(camera);
+	renderToWaterFrameBuffers(camera);
+	renderScene(camera);
 
-	m_SkyRenderer.render(camera);
+	m_BloomRenderer.render();
+	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(camera);
 }
 
@@ -94,4 +106,58 @@ void Renderer3D::resetViewport()
 {
 	auto[width, height] = Display::getWindowSize<int>();
 	glViewport(0, 0, width, height);
+}
+
+void Renderer3D::update()
+{
+	m_SkyRenderer.rotateSky();
+}
+
+void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
+{
+	if (m_WaterRenderer.shouldRender())
+	{
+		glEnable(GL_CLIP_DISTANCE0);
+
+		renderWaterReflection(camera);
+		renderWaterRefraction(camera);
+
+		glDisable(GL_CLIP_DISTANCE0);
+	}
+}
+
+void Renderer3D::renderWaterReflection(Camera &camera) const
+{
+	m_WaterRenderer.bindReflectionFrameBuffer();
+
+	float distance = 2.0f * (camera.position.y - Constants::WATER_HEIGHT);
+
+	camera.moveCameraInYDirection(-distance);
+	camera.invertPitch();
+
+	Display::clearWindow();
+	renderScene(camera, m_ReflectionCLippingPlane);
+
+	camera.moveCameraInYDirection(distance);
+	camera.invertPitch();
+
+	WaterFbo::unbindFrameBuffer();
+}
+
+void Renderer3D::renderWaterRefraction(Camera &camera) const
+{
+	m_WaterRenderer.bindRefractionFrameBuffer();
+	Display::clearWindow();
+	renderScene(camera, m_RefractionCLippingPlane);
+	WaterFbo::unbindFrameBuffer();
+}
+
+void Renderer3D::addWaterTile(WaterTile &waterTile)
+{
+	m_WaterRenderer.addWaterTile(waterTile);
+}
+
+void Renderer3D::addBloom(Object3D &object)
+{
+	m_BloomRenderer.addObject(object);
 }

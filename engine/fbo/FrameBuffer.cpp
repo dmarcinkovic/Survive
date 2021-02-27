@@ -38,10 +38,8 @@ GLuint FrameBuffer::createTexture()
 GLuint FrameBuffer::createTexture(int width, int height)
 {
 	bindFrameBuffer();
+	GLuint texture = attachColorComponent(width, height);
 
-	GLuint texture = createColorTexture(width, height);
-
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
 	attachDepthComponent(width, height);
 
 	unbindFrameBuffer();
@@ -67,12 +65,20 @@ GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 	return texture;
 }
 
+GLuint FrameBuffer::attachColorComponent(int width, int height)
+{
+	GLuint colorComponent = createColorTexture(width, height);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, colorComponent, 0);
+
+	return colorComponent;
+}
+
 GLuint FrameBuffer::createColorTexture(int width, int height)
 {
-    GLuint texture;
+	GLuint texture;
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-    glGenTextures(1, &texture);
+	glGenTextures(1, &texture);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
@@ -148,4 +154,32 @@ void FrameBuffer::bindDrawBuffer() const
 void FrameBuffer::unbindDrawFrameBuffer()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void FrameBuffer::drawBuffer()
+{
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+}
+
+GLuint FrameBuffer::getRenderBuffer(int renderBufferNumber) const
+{
+	return m_RenderBuffers[renderBufferNumber];
+}
+
+GLuint FrameBuffer::createDepthTextureAttachment(int width, int height)
+{
+	GLuint texture;
+	glGenTextures(1, &texture);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture, 0);
+
+	m_Textures.emplace_back(texture);
+	return texture;
 }

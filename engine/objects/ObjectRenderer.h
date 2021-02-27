@@ -26,14 +26,14 @@ private:
 public:
 	explicit ObjectRenderer(const Light &light);
 
-	void render(const Camera &camera, GLuint shadowMap) const;
+	void render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void add3DObject(Object3D &entity);
 
 private:
 	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
 
-	void loadUniforms(const Camera &camera, GLuint shadowMap) const;
+	void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
 	void loadObjectUniforms(const Object3D &object, const Camera &camera) const;
 };

@@ -37,6 +37,11 @@ void TexturedModel::unbind()
 	Texture::unbindTexture();
 }
 
+void TexturedModel::unbindVao()
+{
+	glBindVertexArray(0);
+}
+
 size_t TexturedModel::vertexCount() const
 {
 	return m_VertexCount;

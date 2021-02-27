@@ -100,3 +100,8 @@ void Shader::loadInteger(GLuint location, int value)
 {
 	glUniform1i(location, value);
 }
+
+void Shader::loadUnsigned(GLuint location, unsigned int value)
+{
+	glUniform1ui(location, value);
+}

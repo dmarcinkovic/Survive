@@ -19,19 +19,24 @@ void Renderer2DUtil::finishRendering()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer2DUtil::prepareEntity(const TexturedModel &texture)
+void Renderer2DUtil::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
 {
 	texture.bind();
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
+
+	for (int vaoUnit = 0; vaoUnit < numberOfVertexUnits; ++vaoUnit)
+	{
+		glEnableVertexAttribArray(vaoUnit);
+	}
 }
 
-void Renderer2DUtil::finishRenderingEntity()
+void Renderer2DUtil::finishRenderingEntity(int numberOfVertexUnits)
 {
 	TexturedModel::unbind();
 
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
+	for (int vaoUnit = numberOfVertexUnits - 1; vaoUnit >= 0; --vaoUnit)
+	{
+		glDisableVertexAttribArray(vaoUnit);
+	}
 
 	Loader::unbindVao();
 }

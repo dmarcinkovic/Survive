@@ -8,6 +8,11 @@
 
 void SpritesRenderer::renderSprite() const
 {
+	if (m_Sprites.empty())
+	{
+		return;
+	}
+
 	Renderer2DUtil::prepareRendering(m_Shader);
 
 	for (auto const&[texture, batch] : m_Sprites)

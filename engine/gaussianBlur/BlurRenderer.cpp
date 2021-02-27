@@ -18,6 +18,11 @@ BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 
 void BlurRenderer::render(const Camera &camera) const
 {
+	if (!m_ShouldRender)
+	{
+		return;
+	}
+
 	renderToFbo(camera);
 	renderBlur();
 }
@@ -44,16 +49,19 @@ void BlurRenderer::finishRendering()
 void BlurRenderer::addAnimatedObject(AnimatedObject &animatedObject)
 {
 	m_AnimationRenderer.addAnimatedModel(animatedObject);
+	m_ShouldRender = true;
 }
 
 void BlurRenderer::addObject(Object3D &object)
 {
 	m_ObjectRenderer.add3DObject(object);
+	m_ShouldRender = true;
 }
 
 void BlurRenderer::addTerrain(Terrain &terrain)
 {
 	m_TerrainRenderer.addTerrain(terrain);
+	m_ShouldRender = true;
 }
 
 void BlurRenderer::renderToFbo(const Camera &camera) const

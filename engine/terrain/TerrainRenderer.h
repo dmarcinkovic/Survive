@@ -13,8 +13,6 @@
 class TerrainRenderer
 {
 private:
-	constexpr static const float rotationX = 90.0f;
-
 	TerrainShader m_Shader;
 	Terrain *m_Terrain{};
 
@@ -23,7 +21,7 @@ private:
 public:
 	TerrainRenderer();
 
-	void render(const Camera &camera, const Light &light, GLuint shadowMap) const;
+	void render(const Camera &camera, const Light &light, GLuint shadowMap, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addTerrain(Terrain &terrain);
 

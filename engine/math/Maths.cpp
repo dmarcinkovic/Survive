@@ -2,6 +2,7 @@
 // Created by david on 28. 03. 2020..
 //
 
+#include <random>
 #include "Maths.h"
 #include "../display/Display.h"
 #include "../constant/Constants.h"
@@ -58,4 +59,13 @@ glm::mat4 Maths::createLightProjectionMatrix()
 glm::mat4 Maths::createOrthographicProjectionMatrix(float width, float height)
 {
 	return glm::ortho(-width, width, -height, height);
+}
+
+float Maths::getRandom(float first, float second)
+{
+	static std::random_device device;
+	static std::mt19937_64 mt(device());
+	static std::uniform_real_distribution<> distribution(first, second);
+
+	return distribution(mt);
 }

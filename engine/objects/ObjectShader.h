@@ -40,6 +40,8 @@ private:
 	GLuint m_LocationBloomTexture{};
 	GLuint m_LocationBloomStrength{};
 
+	GLuint m_LocationPlane{};
+
 public:
 	ObjectShader();
 
@@ -66,6 +68,8 @@ public:
 	void loadAddShadow(bool addShadow) const;
 
 	void loadBloom(float bloomStrength) const;
+
+	void loadPlane(const glm::vec4 &plane) const;
 
 private:
 	void loadUniformLocations();

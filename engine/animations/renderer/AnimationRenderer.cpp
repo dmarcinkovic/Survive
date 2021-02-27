@@ -10,13 +10,19 @@ AnimationRenderer::AnimationRenderer(const Light &light)
 {
 }
 
-void AnimationRenderer::render(const Camera &camera) const
+void AnimationRenderer::render(const Camera &camera, const glm::vec4 &plane) const
 {
+	if (m_Objects.empty())
+	{
+		return;
+	}
+
 	Renderer3DUtil::prepareRendering(m_Shader);
 
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadPlane(plane);
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color());
 

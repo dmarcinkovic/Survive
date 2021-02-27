@@ -7,6 +7,7 @@
 
 #include "../shader/Shader.h"
 #include "../texture/Texture.h"
+#include "../light/Light.h"
 
 class TerrainShader : public Shader
 {
@@ -21,11 +22,17 @@ private:
 	GLuint m_LocationLightProjection{};
 	GLuint m_LocationLightView{};
 
+	GLuint m_LocationLightPosition{};
+	GLuint m_LocationLightColor{};
+
+	GLuint m_LocationShadowMap{};
 	GLuint m_LocationBlendMap{};
 	GLuint m_LocationGrass{};
 	GLuint m_LocationDirt{};
 	GLuint m_LocationRock{};
 	GLuint m_LocationFlowers{};
+
+	GLuint m_LocationPlane{};
 
 public:
 	TerrainShader();
@@ -41,6 +48,10 @@ public:
 	void loadLightViewMatrix(const glm::mat4 &viewMatrix) const;
 
 	void loadTextures() const;
+
+	void loadLight(const Light &light) const;
+
+	void loadPlane(const glm::vec4 &plane) const;
 
 private:
 	void getUniformLocations();

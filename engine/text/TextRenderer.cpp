@@ -9,6 +9,11 @@
 
 void TextRenderer::renderText() const
 {
+	if (m_Texts.empty())
+	{
+		return;
+	}
+
 	Renderer2DUtil::prepareRendering(m_Shader);
 
 	for (auto const&[texture, batch] : m_Texts)

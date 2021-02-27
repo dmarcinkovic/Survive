@@ -24,6 +24,13 @@ void TerrainShader::getUniformLocations()
 	m_LocationGrass = glGetUniformLocation(m_Program, "grass");
 	m_LocationDirt = glGetUniformLocation(m_Program, "dirt");
 	m_LocationFlowers = glGetUniformLocation(m_Program, "flowers");
+
+	m_LocationShadowMap = glGetUniformLocation(m_Program, "shadowMap");
+
+	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
+	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+
+	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -53,9 +60,22 @@ void TerrainShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
 
 void TerrainShader::loadTextures() const
 {
-	loadInteger(m_LocationBlendMap, 0);
-	loadInteger(m_LocationDirt, 1);
-	loadInteger(m_LocationGrass, 2);
-	loadInteger(m_LocationRock, 3);
-	loadInteger(m_LocationFlowers, 4);
+	loadInteger(m_LocationShadowMap, 0);
+	loadInteger(m_LocationBlendMap, 1);
+	loadInteger(m_LocationDirt, 2);
+	loadInteger(m_LocationGrass, 3);
+	loadInteger(m_LocationRock, 4);
+	loadInteger(m_LocationFlowers, 5);
 }
+
+void TerrainShader::loadLight(const Light &light) const
+{
+	loadVector3(m_LocationLightColor, light.color());
+	loadVector3(m_LocationLightPosition, light.position());
+}
+
+void TerrainShader::loadPlane(const glm::vec4 &plane) const
+{
+	loadVector4(m_LocationPlane, plane);
+}
+

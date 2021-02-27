@@ -15,6 +15,7 @@ out vec3 worldPosition;
 
 uniform mat4 lightProjectionMatrix;
 uniform mat4 lightViewMatrix;
+uniform vec4 plane;
 
 out vec4 fragmentPositionInLightSpace;
 
@@ -22,6 +23,8 @@ void main()
 {
     vec4 pos = transformationMatrix * vec4(position, 1.0);
     fragmentPositionInLightSpace = lightProjectionMatrix * lightViewMatrix * pos;
+
+    gl_ClipDistance[0] = dot(pos, plane);
 
     gl_Position = projectionMatrix * viewMatrix * pos;
     textCoords = textureCoordinates;

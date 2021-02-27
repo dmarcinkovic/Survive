@@ -13,24 +13,25 @@ TerrainRenderer::TerrainRenderer()
 	Shader::stop();
 }
 
-void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap) const
+void TerrainRenderer::render(const Camera &camera, const Light &light, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	if (m_Terrain == nullptr)
 	{
 		return;
 	}
 
-	renderShadow(shadowMap, light);
 	prepareRendering();
+	renderShadow(shadowMap, light);
 
-	auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_Scale,
-																  glm::vec3{rotationX, 0, 0});
+	auto transformationMatrix = Maths::createTransformationMatrix(m_Terrain->m_Position, m_Terrain->m_Scale);
 
 	m_Shader.loadTransformationMatrix(transformationMatrix);
-
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
+
+	m_Shader.loadLight(light);
+	m_Shader.loadPlane(plane);
 
 	glDrawElements(GL_TRIANGLES, m_Terrain->m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	finishRendering();
@@ -57,15 +58,16 @@ void TerrainRenderer::prepareRendering() const
 	Renderer3DUtil::prepareEntity(m_Terrain->m_Texture);
 	Renderer3DUtil::addTransparency(false, true);
 
-	for (int i = 0; i < m_Textures.size(); ++i)
+	for (int i = 1; i <= m_Textures.size(); ++i)
 	{
-		m_Textures[i].bindTexture(i);
+		m_Textures[i - 1].bindTexture(i);
 	}
 }
 
 void TerrainRenderer::finishRendering()
 {
 	Texture::unbindTexture();
+
 	Renderer3DUtil::addTransparency(true, false);
 	Renderer3DUtil::finishRenderingEntity();
 	Renderer3DUtil::finishRendering();

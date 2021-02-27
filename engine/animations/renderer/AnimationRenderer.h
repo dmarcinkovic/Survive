@@ -27,7 +27,7 @@ private:
 public:
 	explicit AnimationRenderer(const Light &light);
 
-	void render(const Camera &camera) const;
+	void render(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addAnimatedModel(AnimatedObject &entity);
 

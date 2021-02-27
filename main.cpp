@@ -22,7 +22,7 @@ int main()
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 
-	Entity sky(texturedModel, glm::vec3{});
+	Entity sky(texturedModel, glm::vec3{}, glm::vec3{500});
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	Renderer3D renderer(light);
 

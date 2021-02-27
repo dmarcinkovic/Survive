@@ -96,7 +96,8 @@ bool Display::isRunning() const
 
 void Display::clearWindow()
 {
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glm::vec4 clearColor = Constants::CLEAR_COLOR;
+	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
