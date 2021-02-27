@@ -12,6 +12,11 @@ BloomRenderer::BloomRenderer(int width, int height)
 
 void BloomRenderer::render() const
 {
+	if (m_Objects.empty())
+	{
+		return;
+	}
+
 	prepare();
 
 	for (auto const& object : m_Objects)

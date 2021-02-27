@@ -11,6 +11,11 @@
 
 void WaterRenderer::render(const Camera &camera, const Light &light) const
 {
+	if (m_Tiles.empty())
+	{
+		return;
+	}
+
 	prepareRendering(camera);
 
 	for (auto const &waterTile : m_Tiles)

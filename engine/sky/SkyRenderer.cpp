@@ -8,17 +8,21 @@
 
 void SkyRenderer::render(const Camera &camera, const glm::vec4 &plane) const
 {
-	prepareRendering();
-	loadUniforms(camera, plane);
+	if (m_ShouldRender)
+	{
+		prepareRendering();
+		loadUniforms(camera, plane);
 
-	glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-	finishRendering();
+		finishRendering();
+	}
 }
 
 void SkyRenderer::addSkyEntity(const Entity &sky)
 {
 	m_Sky = sky;
+	m_ShouldRender = true;
 }
 
 void SkyRenderer::prepareRendering() const

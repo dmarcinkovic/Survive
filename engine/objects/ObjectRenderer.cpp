@@ -12,6 +12,11 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 
 void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
+	if (m_Objects.empty())
+	{
+		return;
+	}
+
 	Renderer3DUtil::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 

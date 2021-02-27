@@ -9,6 +9,11 @@
 
 void GuiRenderer::render() const
 {
+	if (m_Entities.empty())
+	{
+		return;
+	}
+
 	Renderer2DUtil::prepareRendering(m_Shader);
 
 	m_Shader.loadProjectionMatrix(Maths::orthographicProjectionMatrix);

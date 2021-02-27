@@ -20,6 +20,8 @@ private:
 
 	float m_Rotation = 0;
 
+	bool m_ShouldRender = false;
+
 public:
 	void render(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
