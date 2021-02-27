@@ -235,3 +235,11 @@ int Display::getHeight()
 {
 	return m_Height;
 }
+
+std::pair<int, int> Display::getViewportSize()
+{
+	static GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	static const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+	return {mode->width, mode->height};
+}

@@ -62,6 +62,8 @@ public:
 		return {static_cast<T>(m_Width), static_cast<T>(m_Height)};
 	}
 
+	static std::pair<int, int> getViewportSize();
+
 	static int getWidth();
 
 	static int getHeight();
