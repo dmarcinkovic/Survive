@@ -8,7 +8,6 @@
 #include "engine/parser/ObjParser.h"
 #include "editor/editor/Editor.h"
 #include "engine/events/EventHandler.h"
-#include "engine/constant/Constants.h"
 #include "engine/terrain/TerrainGenerator.h"
 
 int main()
@@ -40,12 +39,6 @@ int main()
 
 	renderer.add3DObject(dragon);
 	renderer.addShadow(dragon);
-
-	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
-	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
-	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
-
-	renderer.addWaterTile(waterTile);
 
 	Editor editor(renderer.getRenderedTexture());
 	EventHandler eventHandler(camera);
