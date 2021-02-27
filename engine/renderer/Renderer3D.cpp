@@ -77,9 +77,9 @@ void Renderer3D::renderToFbo(Camera &camera) const
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
 
+	renderToWaterFrameBuffers(camera);
 	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
-	renderToWaterFrameBuffers(camera);
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
