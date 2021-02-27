@@ -2,8 +2,6 @@
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/terrain/TerrainGenerator.h"
-#include "engine/constant/Constants.h"
 
 int main()
 {
@@ -16,12 +14,7 @@ int main()
 	Camera camera;
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.jpeg"), glm::vec3{-200, -10, -200},
-					glm::vec3{400, 1, 400});
-	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
-
 	Renderer3D renderer3D(light);
-	renderer3D.addTerrain(terrain);
 
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
@@ -30,16 +23,15 @@ int main()
 	renderer3D.addSkyboxEntity(sky);
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
-	Object3D dragon(dragonModel, glm::vec3{0, 0, -30});
+	Object3D dragon(dragonModel, glm::vec3{-5, 0, -30});
+	Object3D dragon2(dragonModel, glm::vec3{5, 0, -30});
 
 	renderer3D.add3DObject(dragon);
 	renderer3D.addShadow(dragon);
+	renderer3D.add3DObject(dragon2);
+	renderer3D.addShadow(dragon2);
 
-	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
-	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
-	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
-
-	renderer3D.addWaterTile(waterTile);
+	renderer3D.addOutlineToObject(dragon);
 
 	while (display.isRunning())
 	{
