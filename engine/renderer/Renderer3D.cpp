@@ -72,7 +72,7 @@ void Renderer3D::removeOutlineToObject()
 	m_OutlineRenderer.removeObject();
 }
 
-void Renderer3D::renderToFbo(const Camera &camera) const
+void Renderer3D::renderToFbo(Camera &camera) const
 {
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
@@ -82,10 +82,7 @@ void Renderer3D::renderToFbo(const Camera &camera) const
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
-	m_ObjectRenderer.render(camera, m_ShadowMap);
-	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap);
-	m_AnimationRenderer.render(camera);
-	m_SkyRenderer.render(camera);
+	renderScene(camera);
 
 	FrameBuffer::unbindFrameBuffer();
 

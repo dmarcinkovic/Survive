@@ -46,7 +46,7 @@ public:
 
 	void render(Camera &camera) const;
 
-	void renderToFbo(const Camera &camera) const;
+	void renderToFbo(Camera &camera) const;
 
 	void add3DObject(Object3D &object3D);
 
