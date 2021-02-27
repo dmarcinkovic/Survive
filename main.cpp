@@ -8,6 +8,8 @@
 #include "engine/parser/ObjParser.h"
 #include "editor/editor/Editor.h"
 #include "engine/events/EventHandler.h"
+#include "engine/constant/Constants.h"
+#include "engine/terrain/TerrainGenerator.h"
 
 int main()
 {
@@ -17,30 +19,33 @@ int main()
 	Display display(width, height, "Survive");
 
 	Loader loader;
-
 	Camera camera;
-	TexturedModel skyModel(loader.renderCube(), Loader::loadCubeMap(
-			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Entity sky(skyModel, glm::vec3{}, glm::vec3{500});
-	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
+	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.jpeg"), glm::vec3{-200, -10, -200},
+					glm::vec3{400, 1, 400});
+	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
+
 	Renderer3D renderer(light);
+	renderer.addTerrain(terrain);
+
+	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
+			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
+	Entity sky(texturedModel, glm::vec3{}, glm::vec3{500});
+
 	renderer.addSkyboxEntity(sky);
 
-	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
-								Loader::loadTexture("res/lamp_bloom.png"));
-	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
-	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
+	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader), Loader::loadTexture("res/lamp.jpg"));
+	Object3D dragon(dragonModel, glm::vec3{0, 0, -30});
 
-	renderer.add3DObject(lamp);
-	renderer.add3DObject(lamp2);
+	renderer.add3DObject(dragon);
+	renderer.addShadow(dragon);
 
-	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
-	renderer.addBloom(lamp);
-	renderer.addBloom(lamp2);
+	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
+	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
+	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
 
-	lamp.addBloomEffect(lampBloom);
-	lamp2.addBloomEffect(lampBloom);
+	renderer.addWaterTile(waterTile);
 
 	Editor editor(renderer.getRenderedTexture());
 	EventHandler eventHandler(camera);

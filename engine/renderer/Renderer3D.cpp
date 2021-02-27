@@ -79,6 +79,7 @@ void Renderer3D::renderToFbo(Camera &camera) const
 
 	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
+	renderToWaterFrameBuffers(camera);
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
