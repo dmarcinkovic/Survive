@@ -15,6 +15,7 @@
 #include "../mousePicking/MousePicking.h"
 #include "../water/WaterRenderer.h"
 #include "../water/WaterFbo.h"
+#include "../gaussianBlur/BloomRenderer.h"
 
 class Renderer3D
 {
@@ -27,6 +28,7 @@ private:
 	OutlineRenderer m_OutlineRenderer;
 	MousePicking m_MousePicking;
 	WaterRenderer m_WaterRenderer;
+	BloomRenderer m_BloomRenderer;
 
 	const Light &m_Light;
 	FrameBuffer m_FrameBuffer;
@@ -59,6 +61,8 @@ public:
 	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addWaterTile(WaterTile &waterTile);
+
+	void addBloom(Object3D &object);
 
 private:
 	void renderToWaterFrameBuffers(Camera &camera) const;

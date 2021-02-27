@@ -10,7 +10,8 @@ Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
 		  m_ShadowMap(m_FrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
 		  m_AnimationRenderer(light), m_ReflectionCLippingPlane{0, 1, 0, -Constants::WATER_HEIGHT},
-		  m_RefractionCLippingPlane{0, -1, 0, Constants::WATER_HEIGHT}
+		  m_RefractionCLippingPlane{0, -1, 0, Constants::WATER_HEIGHT},
+		  m_BloomRenderer(Constants::BLOOM_WIDTH, Constants::BLOOM_HEIGHT)
 {
 }
 
@@ -33,6 +34,7 @@ void Renderer3D::render(Camera &camera) const
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
 
+	m_BloomRenderer.render();
 	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(camera);
 }
@@ -120,4 +122,9 @@ void Renderer3D::renderWaterRefraction(Camera &camera) const
 void Renderer3D::addWaterTile(WaterTile &waterTile)
 {
 	m_WaterRenderer.addWaterTile(waterTile);
+}
+
+void Renderer3D::addBloom(Object3D &object)
+{
+	m_BloomRenderer.addObject(object);
 }

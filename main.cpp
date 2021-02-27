@@ -2,7 +2,6 @@
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/gaussianBlur/BloomRenderer.h"
 
 int main()
 {
@@ -19,16 +18,15 @@ int main()
 
 	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
 								Loader::loadTexture("res/lamp_bloom.png"));
-	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0,-90,0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
+	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 
 	renderer.add3DObject(lamp);
 	renderer.add3DObject(lamp2);
 
 	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
-	BloomRenderer bloomRenderer(width / 8, height / 8);
-	bloomRenderer.addObject(lamp);
-	bloomRenderer.addObject(lamp2);
+	renderer.addBloom(lamp);
+	renderer.addBloom(lamp2);
 
 	lamp.addBloomEffect(lampBloom);
 	lamp2.addBloomEffect(lampBloom);
@@ -38,7 +36,6 @@ int main()
 		Display::clearWindow();
 
 		renderer.render(camera);
-		bloomRenderer.render();
 
 		display.update();
 	}
