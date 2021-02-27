@@ -14,6 +14,7 @@ void OutlineRenderer::render(const Camera &camera) const
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
+	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
 	prepareObject();
@@ -25,6 +26,7 @@ void OutlineRenderer::render(const Camera &camera) const
 
 	resetStencilFunctions();
 	Renderer3DUtil::finishRendering();
+	glDisable(GL_STENCIL_TEST);
 }
 
 void OutlineRenderer::add3DObject(Object3D &object)
