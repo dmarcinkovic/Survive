@@ -44,7 +44,7 @@ public:
 	bool &isSceneWindowFocused();
 
 	template<typename T>
-	static std::pair<T, T> getViewportSize()
+	static std::pair<T, T> getSceneWindowSize()
 	{
 		return {static_cast<T>(m_ViewportWidth), static_cast<T>(m_ViewportHeight)};
 	}
