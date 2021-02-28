@@ -236,7 +236,7 @@ int Display::getHeight()
 	return m_Height;
 }
 
-std::pair<int, int> Display::getViewportSize()
+std::pair<int, int> Display::getMaxViewportSize()
 {
 	static GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	static const GLFWvidmode* mode = glfwGetVideoMode(monitor);
