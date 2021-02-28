@@ -14,6 +14,9 @@
 class Editor
 {
 private:
+	static float m_ViewportWidth;
+	static float m_ViewportHeight;
+
 	ImGuiIO &m_Io;
 	GLuint m_Scene;
 	ImVec4 m_ClearColor;
@@ -39,6 +42,12 @@ public:
 	[[nodiscard]] std::pair<int, int> getSceneWindowSize() const;
 
 	bool &isSceneWindowFocused();
+
+	template<typename T>
+	static std::pair<T, T> getViewportSize()
+	{
+		return {static_cast<T>(m_ViewportWidth), static_cast<T>(m_ViewportHeight)};
+	}
 
 private:
 	void renderSceneWindow();

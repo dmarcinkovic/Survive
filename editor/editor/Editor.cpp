@@ -7,6 +7,9 @@
 
 #include "Editor.h"
 
+float Editor::m_ViewportWidth = 0;
+float Editor::m_ViewportHeight = 0;
+
 Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
@@ -51,6 +54,8 @@ void Editor::renderSceneWindow()
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
 	m_SceneSize = ImGui::GetWindowSize();
+	m_ViewportWidth = m_SceneSize.x;
+	m_ViewportHeight = m_SceneSize.y;
 
 	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
 										 ImVec2(pos.x + m_SceneSize.x, pos.y + m_SceneSize.y), ImVec2(0, 1),
