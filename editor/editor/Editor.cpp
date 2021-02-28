@@ -4,18 +4,21 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <iostream>
 
 #include "Editor.h"
 
-float Editor::m_ViewportWidth = 0;
-float Editor::m_ViewportHeight = 0;
+float Editor::m_ViewportWidth;
+float Editor::m_ViewportHeight;
+float Editor::m_SceneWindowX;
+float Editor::m_SceneWindowY;
 
 Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
 	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
-	
+
 	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
 
 	setColorStyle();
@@ -51,6 +54,9 @@ void Editor::renderSceneWindow()
 	m_IsSceneWindowFocused = ImGui::IsWindowFocused();
 
 	ImVec2 pos = ImGui::GetCursorScreenPos();
+	m_SceneWindowX = pos.x;
+	m_SceneWindowY = pos.y;
+
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
 	m_SceneSize = ImGui::GetWindowSize();
@@ -88,11 +94,6 @@ void Editor::renderPropertyWindow()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
 				ImGui::GetIO().Framerate);
 	ImGui::End();
-}
-
-std::pair<int, int> Editor::getSceneWindowSize() const
-{
-	return {m_SceneSize.x, m_SceneSize.y};
 }
 
 void Editor::setColorStyle()
@@ -134,4 +135,14 @@ void Editor::renderOpenDialog()
 bool &Editor::isSceneWindowFocused()
 {
 	return m_IsSceneWindowFocused;
+}
+
+std::pair<float, float> Editor::getSceneWindowSize()
+{
+	return {m_ViewportWidth, m_ViewportHeight};
+}
+
+std::pair<float, float> Editor::getSceneWindowPos()
+{
+	return {m_SceneWindowX, m_SceneWindowY};
 }
