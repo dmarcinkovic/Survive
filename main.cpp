@@ -39,6 +39,7 @@ int main()
 
 	renderer.add3DObject(dragon);
 	renderer.addShadow(dragon);
+	renderer.addOutlineToObject(dragon);
 
 	Editor editor(renderer.getRenderedTexture());
 	EventHandler eventHandler(camera);

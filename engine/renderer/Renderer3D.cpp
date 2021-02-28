@@ -88,6 +88,7 @@ void Renderer3D::renderToFbo(Camera &camera) const
 	renderScene(camera);
 	m_WaterRenderer.render(camera, m_Light);
 
+	m_OutlineRenderer.render(camera);
 	FrameBuffer::unbindFrameBuffer();
 
 	m_BloomRenderer.render();
