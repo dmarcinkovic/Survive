@@ -83,7 +83,7 @@ void Renderer3D::renderToFbo(Camera &camera) const
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
-	m_MousePicking.render(camera);
+//	m_MousePicking.render(camera);
 
 	renderScene(camera);
 	m_WaterRenderer.render(camera, m_Light);
