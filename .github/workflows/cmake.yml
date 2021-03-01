@@ -77,7 +77,7 @@ jobs:
           cd build
           conan install ..
           cmake .. -G "Visual Studio 16" -D CONAN_DISABLE_CHECK_COMPILER=ON
-          make
+          cmake --build . --config Release
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
