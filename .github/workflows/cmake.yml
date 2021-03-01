@@ -28,15 +28,12 @@ jobs:
         run : |
           sudo apt-get update
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
-
       - name: Build executable
         run: |
           cd ${{github.workspace}}
           mkdir build
           cd build
+          conan install ..
           cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
 
