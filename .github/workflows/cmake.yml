@@ -81,7 +81,7 @@ jobs:
           mkdir build
           cd build
           conan install .. --settings compiler="gcc"
-          cmake -D .. -D CONAN_DISABLE_CHECK_COMPILER=ON
+          cmake .. -D CONAN_DISABLE_CHECK_COMPILER=ON
           make
 
       - name: Upload artifact
