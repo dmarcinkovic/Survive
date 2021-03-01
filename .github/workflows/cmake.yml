@@ -46,7 +46,7 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          sudo conan install .. -e CONAN_SYSREQUIRES_MODE=enabled
+          sudo conan install .. --settings compiler="g++-10"
           cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
 
