@@ -42,7 +42,7 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          conan install ..
+          sudo conan install ..
           cmake -D CMAKE_CXX_COMPILER=g++-10 ..
           make
 
