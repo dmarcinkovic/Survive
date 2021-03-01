@@ -28,6 +28,10 @@ jobs:
         run : |
           sudo apt-get update
 
+      - name : Install libgl
+        run : |
+          sudo apt install libgl-dev
+
       - name: Install conan
         run : |
           sudo pip install conan
