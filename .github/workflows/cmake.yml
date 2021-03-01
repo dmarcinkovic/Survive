@@ -46,8 +46,8 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          sudo conan install .. --settings compiler="g++-10"
-          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
+          sudo conan install .. --settings compiler="gcc"
+          cmake -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON
           make
 
       - name: Upload artifact
