@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - conan
 
 env:
   BUILD_TYPE: Release
