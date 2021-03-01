@@ -68,7 +68,7 @@ jobs:
 
       - name: Install conan
         run: |
-          sudo pip install conan
+          pip install conan
 
       - name: Set conan profile
         run: |
