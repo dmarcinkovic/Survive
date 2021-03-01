@@ -80,8 +80,8 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          conan install .. --settings compiler="gcc"
-          cmake .. -D CONAN_DISABLE_CHECK_COMPILER=ON
+          conan install ..
+          cmake .. -G "Visual Studio 19" -D CONAN_DISABLE_CHECK_COMPILER=ON
           make
 
       - name: Upload artifact
