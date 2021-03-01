@@ -55,3 +55,37 @@ jobs:
         with:
           name: Artifact
           path: ${{github.workspace}}/build
+
+  Windows:
+    name: Survive
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Install conan
+        run: |
+          sudo pip install conan
+
+      - name: Set conan profile
+        run: |
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          conan install .. --settings compiler="gcc"
+          cmake -D .. -D CONAN_DISABLE_CHECK_COMPILER=ON
+          make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Artifact
+          path: ${{github.workspace}}/build
