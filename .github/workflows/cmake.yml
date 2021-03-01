@@ -37,6 +37,10 @@ jobs:
           conan profile new default --detect
           conan profile update settings.compiler.libcxx=libstdc++11 default
 
+      - name : Install libgl
+        run : |
+          sudo apt-get install libgl-dev libgl1-mesa-dev libglu1-mesa-dev
+
       - name: Build executable
         run: |
           cd ${{github.workspace}}
