@@ -11,7 +11,7 @@ env:
 
 jobs:
   Linux:
-    name: Survive
+    name: Linux
     runs-on: ubuntu-20.04
 
     steps:
@@ -57,7 +57,7 @@ jobs:
           path: ${{github.workspace}}/build
 
   Windows:
-    name: Survive
+    name: Windows
     runs-on: windows-latest
 
     steps:
