@@ -1,6 +1,9 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
+#include "engine/gui/GuiRenderer.h"
+#include "engine/components/TransformComponent.h"
+#include "engine/components/RenderComponent.h"
 
 int main()
 {
@@ -11,10 +14,25 @@ int main()
 
 	Loader loader;
 
+	GuiRenderer guiRenderer;
+
+	entt::registry registry;
+
+	auto entity = registry.create();
+
+	registry.emplace<RenderComponent>(entity, TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
+	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
+
+	Entity gui(TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")), glm::vec3{0.5, 0.5, 0},
+			   glm::vec3{0.5, 0.5, 0});
+
+	guiRenderer.addEntity(gui);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
+		guiRenderer.render();
 
 		display.update();
 	}
