@@ -23,16 +23,13 @@ int main()
 	registry.emplace<RenderComponent>(entity, TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
 
-	Entity gui(TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")), glm::vec3{0.5, 0.5, 0},
-			   glm::vec3{0.5, 0.5, 0});
-
-	guiRenderer.addEntity(gui);
+	guiRenderer.addEntity(registry, entity);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		guiRenderer.render();
+		guiRenderer.render(registry);
 
 		display.update();
 	}

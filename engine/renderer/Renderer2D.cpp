@@ -12,7 +12,7 @@ Renderer2D::Renderer2D(Loader &loader)
 
 void Renderer2D::render() const
 {
-	m_GuiRenderer.render();
+//	m_GuiRenderer.render();
 
 	auto[width, height] = Display::getWindowSize<int>();
 
@@ -26,10 +26,10 @@ void Renderer2D::render() const
 	m_SpriteRenderer.renderSprite();
 }
 
-void Renderer2D::addGui(Entity &entity2D) noexcept
-{
-	m_GuiRenderer.addEntity(entity2D);
-}
+//void Renderer2D::addGui(Entity &entity2D) noexcept
+//{
+//	m_GuiRenderer.addEntity(entity2D);
+//}
 
 void Renderer2D::addText(Text &text) noexcept
 {

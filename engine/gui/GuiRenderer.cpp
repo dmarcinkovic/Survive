@@ -6,8 +6,10 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer2DUtil.h"
 #include "../display/Display.h"
+#include "../components/RenderComponent.h"
+#include "../components/TransformComponent.h"
 
-void GuiRenderer::render() const
+void GuiRenderer::render(const entt::registry &registry) const
 {
 	if (m_Entities.empty())
 	{
@@ -18,14 +20,15 @@ void GuiRenderer::render() const
 
 	m_Shader.loadProjectionMatrix(Maths::orthographicProjectionMatrix);
 
-	for (auto const&[texture, batch] : m_Entities)
+	for (auto const&[texture, entities] : m_Entities)
 	{
 		Renderer2DUtil::prepareEntity(texture);
-		for (auto const &entity2D : batch)
+		for (auto const &entity : entities)
 		{
-			const Entity &e = entity2D.get();
+			TransformComponent transformComponent = registry.get<TransformComponent>(entity);
 			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(e.m_Position, e.m_Scale));
+					Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
+													  transformComponent.rotation));
 
 			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 		}
@@ -36,8 +39,10 @@ void GuiRenderer::render() const
 	Renderer2DUtil::finishRendering();
 }
 
-void GuiRenderer::addEntity(Entity &entity2D) noexcept
+void GuiRenderer::addEntity(const entt::registry &registry, entt::entity entity) noexcept
 {
-	std::vector<std::reference_wrapper<Entity>> &batch = m_Entities[entity2D.m_Texture];
-	batch.emplace_back(entity2D);
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
+
+	std::vector<entt::entity> &batch = m_Entities[renderComponent.texturedModel];
+	batch.emplace_back(entity);
 }
