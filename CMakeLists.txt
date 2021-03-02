@@ -4,6 +4,7 @@ project(Survive)
 set(CMAKE_CXX_STANDARD 20)
 
 set(OpenGlLinkers -lGLU -lGL -lGLEW -lopenal)
+set(TBB_LIBRARY -ltbb)
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
@@ -16,4 +17,4 @@ target_link_libraries(Survive ${OpenGlLinkers})
 include_directories(${GLFW_INCLUDE_DIRS})
 include_directories(${GLEW_INCLUDE_DIRS})
 
-target_link_libraries(Survive ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY})
+target_link_libraries(Survive ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY} ${TBB_LIBRARY})
