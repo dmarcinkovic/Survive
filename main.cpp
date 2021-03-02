@@ -16,15 +16,17 @@ int main()
 
 	Renderer3D renderer(light);
 
+	auto textures = Loader::loadTextures({"res/lamp_bloom.png", "res/lamp_bloom_emissive.png"});
+
 	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
-								Loader::loadTexture("res/lamp_bloom.png"));
+								textures["res/lamp_bloom.png"]);
 	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
 
 	renderer.add3DObject(lamp);
 	renderer.add3DObject(lamp2);
 
-	Texture lampBloom(Loader::loadTexture("res/lamp_bloom_emissive.png"));
+	Texture lampBloom(textures["res/lamp_bloom_emissive.png"]);
 	renderer.addBloom(lamp);
 	renderer.addBloom(lamp2);
 
