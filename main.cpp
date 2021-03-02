@@ -1,8 +1,9 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/terrain/TerrainGenerator.h"
+#include "ecs/entt.hpp"
 
 int main()
 {
@@ -17,10 +18,44 @@ int main()
 
 	Renderer3D renderer(light);
 
-	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.jpeg"), glm::vec3{-200, -10, -200},
-					glm::vec3{400, 1, 400});
-	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
-	renderer.addTerrain(terrain);
+	struct TransformComponent {
+		glm::vec3 pos;
+	};
+
+	struct RenderComponent {
+		glm::vec3 color;
+	};
+
+	struct IdComponent {
+		std::uint32_t id;
+
+		IdComponent() = default;
+
+		explicit IdComponent(std::uint32_t id)
+			: id(id) {}
+	};
+
+	entt::registry registry;
+
+	auto entity1 = registry.create();
+	registry.emplace<TransformComponent>(entity1);
+	registry.emplace<IdComponent>(entity1, 1);
+
+	auto entity2 = registry.create();
+	registry.emplace<RenderComponent>(entity2);
+	registry.emplace<IdComponent>(entity2, 2);
+
+	auto entity3 = registry.create();
+	registry.emplace<RenderComponent>(entity3);
+	registry.emplace<TransformComponent>(entity3);
+	registry.emplace<IdComponent>(entity3, 3);
+
+	auto group = registry.view<TransformComponent, IdComponent>();
+	for (auto entity : group)
+	{
+		auto idComponent = group.get<IdComponent>(entity);
+		std::cout << "Entity with ID: " << idComponent.id << '\n';
+	}
 
 	auto textures = Loader::loadTextures({"res/lamp_bloom.png", "res/lamp_bloom_emissive.png"});
 
