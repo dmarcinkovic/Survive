@@ -14,7 +14,8 @@ struct RenderComponent
 	RenderComponent() = default;
 
 	explicit RenderComponent(const TexturedModel &texturedModel)
-		: texturedModel(texturedModel) {}
+			: texturedModel(texturedModel)
+	{}
 };
 
 #endif //SURVIVE_RENDERCOMPONENT_H
