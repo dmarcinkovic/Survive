@@ -6,6 +6,7 @@
 #define SURVIVE_LOADER_H
 
 #include <vector>
+#include <cstdint>
 #include <unordered_map>
 #include <GL/glew.h>
 
