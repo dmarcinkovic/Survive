@@ -19,7 +19,7 @@ class Renderer2D
 private:
 	Loader &m_Loader;
 
-	GuiRenderer m_GuiRenderer{};
+//	GuiRenderer m_GuiRenderer{};
 	TextRenderer m_TextRenderer;
 	ButtonRenderer m_ButtonRenderer{};
 	SpritesRenderer m_SpriteRenderer{};
@@ -29,7 +29,7 @@ public:
 
 	void render() const;
 
-	void addGui(Entity &entity2D) noexcept;
+//	void addGui(Entity &entity2D) noexcept;
 
 	void addText(Text &text) noexcept;
 

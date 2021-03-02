@@ -12,17 +12,18 @@
 #include "../entity/Entity.h"
 #include "../texture/TexturedModel.h"
 #include "GuiShader.h"
+#include "../../ecs/entt.hpp"
 
 class GuiRenderer
 {
 private:
 	GuiShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Entities;
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Entities;
 
 public:
-	void render() const;
+	void render(const entt::registry &registry) const;
 
-	void addEntity(Entity &entity2D) noexcept;
+	void addEntity(const entt::registry &registry, entt::entity entity) noexcept;
 };
 
 
