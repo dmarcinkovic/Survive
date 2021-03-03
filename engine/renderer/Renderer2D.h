@@ -22,7 +22,7 @@ private:
 //	GuiRenderer m_GuiRenderer{};
 	TextRenderer m_TextRenderer;
 	ButtonRenderer m_ButtonRenderer{};
-	SpritesRenderer m_SpriteRenderer{};
+//	SpritesRenderer m_SpriteRenderer{};
 
 public:
 	explicit Renderer2D(Loader &loader);
@@ -35,7 +35,7 @@ public:
 
 	void addButton(Button &button) noexcept;
 
-	void addSprite(Sprite &sprite) noexcept;
+//	void addSprite(Sprite &sprite) noexcept;
 };
 
 #endif //SURVIVE_RENDERER2D_H

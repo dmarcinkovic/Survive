@@ -1,9 +1,9 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
-#include "engine/gui/GuiRenderer.h"
 #include "engine/components/TransformComponent.h"
 #include "engine/components/RenderComponent.h"
+#include "engine/sprites/SpritesRenderer.h"
 
 int main()
 {
@@ -13,21 +13,24 @@ int main()
 	Display display(width, height, "Survive");
 	Loader loader;
 
-	GuiRenderer guiRenderer;
+	SpritesRenderer spritesRenderer;
 
 	entt::registry registry;
 
 	auto entity = registry.create();
 
 	registry.emplace<RenderComponent>(entity,
-									  TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
+									  TexturedModel(loader.renderQuad(), Loader::loadTexture("res/loading.png")));
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
+	registry.emplace<Sprite>(entity, 4, 4, 12);
+
+	spritesRenderer.addSprite(registry, entity);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		guiRenderer.render(registry);
+		spritesRenderer.renderSprite(registry);
 
 		display.update();
 	}

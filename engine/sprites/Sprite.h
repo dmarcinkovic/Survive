@@ -5,10 +5,9 @@
 #ifndef SURVIVE_SPRITE_H
 #define SURVIVE_SPRITE_H
 
-#include "../entity/Entity.h"
 #include "../texture/TexturedModel.h"
 
-class Sprite : public Entity
+struct Sprite
 {
 private:
 	double m_Time{};
@@ -18,24 +17,21 @@ private:
 	int m_CurrentEpoch{};
 	int m_PreviousFrameIndex{};
 
-public:
 	int m_CurrentFrameIndex{};
-	const int m_Row, m_Col;
-	bool m_Animate{};
-
 	int m_SpritesInSecond{};
 
-	Sprite(const TexturedModel &texture, const glm::vec3 &position, float scale, int row = 1, int col = 1);
+public:
+	int row, col;
 
-	void animate(int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
+	Sprite();
 
-	void animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
+	Sprite(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
 
-	void drawSprite(int row, int col);
+	Sprite(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
 
-	void stopAnimation();
+	void update();
 
-	void animate();
+	[[nodiscard]] int getFrameIndex() const;
 
 private:
 	int calculateFrameIndex(int startIndex, int endIndex);

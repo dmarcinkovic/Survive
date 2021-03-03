@@ -5,8 +5,10 @@
 #include "SpritesRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer2DUtil.h"
+#include "../components/RenderComponent.h"
+#include "../components/TransformComponent.h"
 
-void SpritesRenderer::renderSprite() const
+void SpritesRenderer::renderSprite(entt::registry &registry) const
 {
 	if (m_Sprites.empty())
 	{
@@ -15,15 +17,20 @@ void SpritesRenderer::renderSprite() const
 
 	Renderer2DUtil::prepareRendering(m_Shader);
 
-	for (auto const&[texture, batch] : m_Sprites)
+	for (auto const&[texture, entities] : m_Sprites)
 	{
 		Renderer2DUtil::prepareEntity(texture);
-		for (auto const &sprite : batch)
+		for (auto const &sprite : entities)
 		{
-			auto &s = sprite.get();
+			TransformComponent transformComponent = registry.get<TransformComponent>(sprite);
+			Sprite &spriteComponent = registry.get<Sprite>(sprite);
+
 			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(s.m_Position, s.m_Scale));
-			animate(s);
+					Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale));
+			m_Shader.loadSpriteSize(spriteComponent.row, spriteComponent.col);
+			m_Shader.loadSpritePosition(spriteComponent.getFrameIndex());
+
+			animate(spriteComponent);
 
 			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 		}
@@ -34,20 +41,15 @@ void SpritesRenderer::renderSprite() const
 	Renderer2DUtil::finishRendering();
 }
 
-void SpritesRenderer::addSprite(Sprite &sprite) noexcept
+void SpritesRenderer::addSprite(const entt::registry &registry, entt::entity entity) noexcept
 {
-	std::vector<std::reference_wrapper<Sprite>> &batch = m_Sprites[sprite.m_Texture];
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
 
-	batch.emplace_back(sprite);
+	std::vector<entt::entity> &batch = m_Sprites[renderComponent.texturedModel];
+	batch.emplace_back(entity);
 }
 
-void SpritesRenderer::animate(Sprite &sprite) const
+void SpritesRenderer::animate(Sprite &sprite)
 {
-	if (sprite.m_Animate)
-	{
-		sprite.animate();
-	}
-
-	m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
-	m_Shader.loadSpritePosition(sprite.m_CurrentFrameIndex);
+	sprite.update();
 }
