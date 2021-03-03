@@ -2,12 +2,12 @@
 // Created by david on 29. 03. 2020..
 //
 
-#ifndef SURVIVE_SPRITE_H
-#define SURVIVE_SPRITE_H
+#ifndef SURVIVE_SPRITESHEETCOMPONENT_H
+#define SURVIVE_SPRITESHEETCOMPONENT_H
 
 #include "../texture/TexturedModel.h"
 
-struct Sprite
+struct SpriteSheetComponent
 {
 private:
 	double m_Time{};
@@ -23,11 +23,11 @@ private:
 public:
 	int row, col;
 
-	Sprite();
+	SpriteSheetComponent();
 
-	Sprite(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
+	SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
 
-	Sprite(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
+	SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
 
 	void update();
 
@@ -38,4 +38,4 @@ private:
 };
 
 
-#endif //SURVIVE_SPRITE_H
+#endif //SURVIVE_SPRITESHEETCOMPONENT_H

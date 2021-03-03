@@ -4,31 +4,31 @@
 
 #include <cmath>
 
-#include "Sprite.h"
+#include "SpriteSheetComponent.h"
 #include "../display/Display.h"
 
-Sprite::Sprite()
+SpriteSheetComponent::SpriteSheetComponent()
 		: row(1), col(1)
 {
 
 }
 
-Sprite::Sprite(int row, int col, int spritesInSecond, int numberOfEpochs, int startRow, int startCol)
+SpriteSheetComponent::SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs, int startRow, int startCol)
 		: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
 		  m_CurrentFrameIndex(startRow * col + startCol), m_EndRow(row - 1), m_EndCol(col - 1)
 {
 
 }
 
-Sprite::Sprite(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol,
-			   int numberOfEpochs)
+SpriteSheetComponent::SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol,
+										   int numberOfEpochs)
 		: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
 		  m_CurrentFrameIndex(startRow * col + startCol), m_EndRow(endRow), m_EndCol(endCol)
 {
 
 }
 
-void Sprite::update()
+void SpriteSheetComponent::update()
 {
 	static int startIndex = m_CurrentFrameIndex;
 
@@ -49,7 +49,7 @@ void Sprite::update()
 	}
 }
 
-int Sprite::calculateFrameIndex(int startIndex, int endIndex)
+int SpriteSheetComponent::calculateFrameIndex(int startIndex, int endIndex)
 {
 	m_Time += Display::getFrameTime() * m_SpritesInSecond;
 	m_Time = std::fmod(m_Time, endIndex - startIndex + 1);
@@ -57,7 +57,7 @@ int Sprite::calculateFrameIndex(int startIndex, int endIndex)
 	return std::floor(m_Time);
 }
 
-int Sprite::getFrameIndex() const
+int SpriteSheetComponent::getFrameIndex() const
 {
 	return m_CurrentFrameIndex;
 }

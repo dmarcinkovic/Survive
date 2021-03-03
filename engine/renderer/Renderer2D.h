@@ -35,7 +35,7 @@ public:
 
 	void addButton(Button &button) noexcept;
 
-//	void addSprite(Sprite &sprite) noexcept;
+//	void addSprite(SpriteSheetComponent &sprite) noexcept;
 };
 
 #endif //SURVIVE_RENDERER2D_H
