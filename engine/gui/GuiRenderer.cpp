@@ -8,7 +8,7 @@
 #include "../display/Display.h"
 #include "../components/RenderComponent.h"
 #include "../components/TransformComponent.h"
-#include "../sprites/SpriteSheetComponent.h"
+#include "../components/SpriteSheetComponent.h"
 
 void GuiRenderer::render(entt::registry &registry) const
 {
