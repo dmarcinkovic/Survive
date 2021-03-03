@@ -47,12 +47,12 @@ void SpritesRenderer::loadUniforms(const TransformComponent &transform, const Sp
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, TransformComponent, Sprite>();
+	auto group = registry.group<RenderComponent, TransformComponent, Sprite>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : view)
+	for (auto const &entity : group)
 	{
-		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		RenderComponent renderComponent = group.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
