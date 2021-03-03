@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
@@ -11,7 +12,6 @@ int main()
 	constexpr int height = 800;
 
 	Display display(width, height, "Survive");
-
 	Loader loader;
 
 	GuiRenderer guiRenderer;
@@ -20,10 +20,12 @@ int main()
 
 	auto entity = registry.create();
 
-	registry.emplace<RenderComponent>(entity, TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
+	registry.emplace<RenderComponent>(entity,
+									  TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
 
-	guiRenderer.addEntity(registry, entity);
+	auto group = registry.view<RenderComponent>();
+	std::cout << "Number of entities that have render component attached: " << group.size() << '\n';
 
 	while (display.isRunning())
 	{
