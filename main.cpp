@@ -14,6 +14,7 @@ int main()
 	Loader loader;
 
 	SpritesRenderer spritesRenderer;
+	GuiRenderer guiRenderer;
 
 	entt::registry registry;
 
@@ -24,11 +25,16 @@ int main()
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
 	registry.emplace<Sprite>(entity, 4, 4, 12);
 
+	auto gui = registry.create();
+	registry.emplace<RenderComponent>(gui, TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
+	registry.emplace<TransformComponent>(gui, glm::vec3{-0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		spritesRenderer.render(registry);
+		guiRenderer.render(registry);
 
 		display.update();
 	}
