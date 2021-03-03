@@ -6,6 +6,8 @@
 #define SURVIVE_LOADER_H
 
 #include <vector>
+#include <cstdint>
+#include <unordered_map>
 #include <GL/glew.h>
 
 struct Model
@@ -52,6 +54,8 @@ public:
 
 	static GLuint loadTexture(const char *texture) noexcept;
 
+	static std::unordered_map<const char *, GLuint> loadTextures(const std::vector<const char *> &textures);
+
 	static GLuint loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
 	Model renderQuad();
@@ -85,6 +89,9 @@ private:
 	static void addMipMap();
 
 	static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
+
+	static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
+	loadImages(const std::vector<const char *> &textures);
 };
 
 

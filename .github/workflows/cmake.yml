@@ -29,7 +29,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev
+          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev
 
       - name: Build executable
         run: |
