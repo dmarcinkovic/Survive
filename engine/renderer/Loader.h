@@ -95,6 +95,9 @@ private:
 
 	static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
 	loadImages(const std::vector<const char *> &textures);
+
+	static GLuint loadTexture(const std::tuple<std::uint8_t *, int, int> &imageData);
+
 };
 
 
