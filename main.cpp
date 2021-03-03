@@ -24,13 +24,11 @@ int main()
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
 	registry.emplace<Sprite>(entity, 4, 4, 12);
 
-	spritesRenderer.addSprite(registry, entity);
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		spritesRenderer.renderSprite(registry);
+		spritesRenderer.render(registry);
 
 		display.update();
 	}

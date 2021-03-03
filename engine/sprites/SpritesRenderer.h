@@ -16,17 +16,20 @@ class SpritesRenderer
 {
 private:
 	SpritesShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Sprites;
 
 public:
-	void renderSprite(entt::registry &registry) const;
-
-	void addSprite(const entt::registry &registry, entt::entity entity) noexcept;
+	void render(entt::registry &registry) const;
 
 private:
 	static void animate(Sprite &sprite);
 
 	void loadUniforms(const TransformComponent &transform, const Sprite &sprite) const;
+
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
+
+	void renderSprites(const std::vector<entt::entity> &sprites, entt::registry &registry,
+					   const TexturedModel &texturedModel) const;
 };
 
 
