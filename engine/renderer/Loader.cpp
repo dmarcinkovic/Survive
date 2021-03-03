@@ -219,7 +219,7 @@ std::unordered_map<const char *, GLuint> Loader::loadTextures(const std::vector<
 
 	auto images = loadImages(textures);
 
-	std::unordered_map<const char*, GLuint> result;
+	std::unordered_map<const char *, GLuint> result;
 	for (auto const&[filename, imageData] : images)
 	{
 		GLuint textureId = loadTexture(imageData);
@@ -237,7 +237,7 @@ std::vector<Texture> Loader::loadAllTextures(const std::vector<const char *> &te
 	auto images = loadImages(textures);
 	std::vector<Texture> result;
 
-	for (auto const& filename : textures)
+	for (auto const &filename : textures)
 	{
 		auto const &imageData = images[filename];
 
@@ -334,16 +334,15 @@ void Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
 {
 	stbi_set_flip_vertically_on_load(0);
 
-	int width, height, BPP;
+	auto images = loadImages(faces);
+
 	for (int i = 0; i < faces.size(); ++i)
 	{
-		std::uint8_t *image = stbi_load(faces[i], &width, &height, &BPP, 4);
-		if (!image)
-		{
-			std::cout << "Error while loading image to cube map\n";
-			stbi_image_free(image);
-			return;
-		}
+		auto const &imageData = images[faces[i]];
+
+		std::uint8_t *image = std::get<0>(imageData);
+		int width = std::get<1>(imageData);
+		int height = std::get<2>(imageData);
 
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 					 image);
