@@ -25,13 +25,24 @@ private:
 	int m_StartIndex{};
 
 public:
-	SpriteSheetComponent();
+	SpriteSheetComponent()
+			: row(1), col(1), currentFrameIndex(0)
+	{}
 
 	SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0,
-						 int startCol = 0);
+						 int startCol = 0)
+			: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
+			  currentFrameIndex(startRow * col + startCol), m_EndRow(row - 1), m_EndCol(col - 1),
+			  m_StartIndex(currentFrameIndex)
+	{}
 
-	SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol,
-						 int numberOfEpochs = -1);
+	SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol,
+						 int endRow, int endCol,
+						 int numberOfEpochs = -1)
+			: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
+			  currentFrameIndex(startRow * col + startCol), m_EndRow(endRow), m_EndCol(endCol),
+			  m_StartIndex(currentFrameIndex)
+	{}
 
 	friend class SpriteUpdate;
 };
