@@ -9,7 +9,7 @@
 
 Font::Font(const char *textureAtlas, Loader &loader)
 {
-	m_TextureId = loader.loadTexture(textureAtlas);
+	m_TextureId = Loader::loadTexture(textureAtlas);
 }
 
 void Font::loadFontFromFntFile(const char *fntFile)
