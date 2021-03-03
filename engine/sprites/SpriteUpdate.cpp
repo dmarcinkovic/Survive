@@ -8,7 +8,10 @@
 void SpriteUpdate::update(entt::registry &registry)
 {
 	registry.view<SpriteSheetComponent>().each([](SpriteSheetComponent &sprite) {
-		updateSprite(sprite);
+		if (sprite.animating)
+		{
+			updateSprite(sprite);
+		}
 	});
 }
 
