@@ -8,6 +8,7 @@
 #include "../display/Display.h"
 #include "../components/RenderComponent.h"
 #include "../components/TransformComponent.h"
+#include "../sprites/SpriteSheetComponent.h"
 
 void GuiRenderer::render(entt::registry &registry) const
 {
@@ -35,12 +36,12 @@ void GuiRenderer::render(entt::registry &registry) const
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto group = registry.group<RenderComponent, TransformComponent>();
+	auto view = registry.view<RenderComponent, TransformComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : group)
+	for (auto const &entity : view)
 	{
-		RenderComponent renderComponent = group.get<RenderComponent>(entity);
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
