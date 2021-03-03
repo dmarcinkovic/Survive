@@ -36,6 +36,10 @@ int main()
 		spritesRenderer.render(registry);
 		guiRenderer.render(registry);
 
+		registry.view<SpriteSheetComponent>().each([&](SpriteSheetComponent &sprite) {
+			sprite.update();
+		});
+
 		display.update();
 	}
 
