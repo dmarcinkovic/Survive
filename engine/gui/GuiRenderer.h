@@ -18,12 +18,16 @@ class GuiRenderer
 {
 private:
 	GuiShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Entities;
 
 public:
-	void render(const entt::registry &registry) const;
+	void render(entt::registry &registry) const;
 
-	void addEntity(const entt::registry &registry, entt::entity entity) noexcept;
+private:
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
+
+	void renderGuis(const std::vector<entt::entity> &guis, entt::registry &registry,
+					const TexturedModel &texturedModel) const;
 };
 
 
