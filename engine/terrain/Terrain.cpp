@@ -14,10 +14,8 @@ void Terrain::addTextures(const char *blendMap, const std::vector<const char *> 
 {
 	m_Textures.emplace_back(Loader::loadTexture(blendMap));
 
-	for (auto const &texture : textures)
-	{
-		m_Textures.emplace_back(Loader::loadTexture(texture));
-	}
+	auto loadedTextures = Loader::loadAllTextures(textures);
+	m_Textures.insert(m_Textures.end(), loadedTextures.begin(), loadedTextures.end());
 }
 
 const std::vector<Texture> &Terrain::textures() const

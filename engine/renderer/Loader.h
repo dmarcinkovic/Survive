@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <GL/glew.h>
+#include "../texture/Texture.h"
 
 struct Model
 {
@@ -56,6 +57,8 @@ public:
 
 	static std::unordered_map<const char *, GLuint> loadTextures(const std::vector<const char *> &textures);
 
+	static std::vector<Texture> loadAllTextures(const std::vector<const char*> &textures);
+
 	static GLuint loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
 	Model renderQuad();
@@ -92,6 +95,9 @@ private:
 
 	static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
 	loadImages(const std::vector<const char *> &textures);
+
+	static GLuint loadTexture(const std::tuple<std::uint8_t *, int, int> &imageData);
+
 };
 
 

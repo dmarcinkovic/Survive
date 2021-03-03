@@ -16,6 +16,7 @@ Model TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 	calculateVertexInfo(vertices, normals, textureCoordinates, image, width, height);
 	std::vector<unsigned> indices = generateIndices(width, height);
 
+	stbi_image_free(image);
 	return loader.loadToVao(vertices, textureCoordinates, normals, indices);
 }
 
