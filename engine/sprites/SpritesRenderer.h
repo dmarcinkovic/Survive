@@ -10,6 +10,7 @@
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
 #include "Sprite.h"
+#include "../components/TransformComponent.h"
 
 class SpritesRenderer
 {
@@ -24,6 +25,8 @@ public:
 
 private:
 	static void animate(Sprite &sprite);
+
+	void loadUniforms(const TransformComponent &transform, const Sprite &sprite) const;
 };
 
 
