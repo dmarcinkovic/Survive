@@ -4,6 +4,7 @@
 #include "engine/components/TransformComponent.h"
 #include "engine/components/RenderComponent.h"
 #include "engine/sprites/SpritesRenderer.h"
+#include "engine/sprites/SpriteUpdate.h"
 
 int main()
 {
@@ -36,9 +37,7 @@ int main()
 		spritesRenderer.render(registry);
 		guiRenderer.render(registry);
 
-		registry.view<SpriteSheetComponent>().each([&](SpriteSheetComponent &sprite) {
-			sprite.update();
-		});
+		SpriteUpdate::update(registry);
 
 		display.update();
 	}

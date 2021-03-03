@@ -36,7 +36,7 @@ void SpritesRenderer::loadUniforms(const TransformComponent &transform, const Sp
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadSpriteSize(sprite.row, sprite.col);
-	m_Shader.loadSpritePosition(sprite.getFrameIndex());
+	m_Shader.loadSpritePosition(sprite.currentFrameIndex);
 }
 
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
