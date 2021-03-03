@@ -43,7 +43,7 @@ void Renderer2D::addButton(Button &button) noexcept
 	addText(button.getText());
 }
 
-//void Renderer2D::addSprite(Sprite &sprite) noexcept
+//void Renderer2D::addSprite(SpriteSheetComponent &sprite) noexcept
 //{
 //	m_SpriteRenderer.addSprite(sprite);
 //}

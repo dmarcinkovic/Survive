@@ -23,7 +23,7 @@ int main()
 	registry.emplace<RenderComponent>(entity,
 									  TexturedModel(loader.renderQuad(), Loader::loadTexture("res/loading.png")));
 	registry.emplace<TransformComponent>(entity, glm::vec3{0.5, 0.5, 0}, glm::vec3{0.5, 0.5, 0});
-	registry.emplace<Sprite>(entity, 4, 4, 12);
+	registry.emplace<SpriteSheetComponent>(entity, 4, 4, 12);
 
 	auto gui = registry.create();
 	registry.emplace<RenderComponent>(gui, TexturedModel(loader.renderQuad(), Loader::loadTexture("res/circle.png")));
