@@ -6,9 +6,17 @@
 #define SURVIVE_SPRITEUPDATE_H
 
 
+#include "SpritesRenderer.h"
+
 class SpriteUpdate
 {
+public:
+	static void update(entt::registry &registry);
 
+private:
+	static void updateSprite(SpriteSheetComponent &sprite);
+
+	static int calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex);
 };
 
 

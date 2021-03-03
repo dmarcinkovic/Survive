@@ -9,6 +9,10 @@
 
 struct SpriteSheetComponent
 {
+public:
+	int row, col;
+	int currentFrameIndex;
+
 private:
 	double m_Time{};
 
@@ -17,24 +21,19 @@ private:
 	int m_CurrentEpoch{};
 	int m_PreviousFrameIndex{};
 
-	int m_CurrentFrameIndex{};
 	int m_SpritesInSecond{};
+	int m_StartIndex{};
 
 public:
-	int row, col;
-
 	SpriteSheetComponent();
 
-	SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0, int startCol = 0);
+	SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0,
+						 int startCol = 0);
 
-	SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs = -1);
+	SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol,
+						 int numberOfEpochs = -1);
 
-	void update();
-
-	[[nodiscard]] int getFrameIndex() const;
-
-private:
-	int calculateFrameIndex(int startIndex, int endIndex);
+	friend class SpriteUpdate;
 };
 
 
