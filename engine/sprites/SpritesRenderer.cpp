@@ -30,11 +30,6 @@ void SpritesRenderer::render(entt::registry &registry) const
 	Renderer2DUtil::finishRendering();
 }
 
-void SpritesRenderer::animate(SpriteSheetComponent &sprite)
-{
-	sprite.update();
-}
-
 void SpritesRenderer::loadUniforms(const TransformComponent &transform, const SpriteSheetComponent &sprite) const
 {
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
@@ -70,7 +65,6 @@ void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, en
 		SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
 
 		loadUniforms(transformComponent, spriteComponent);
-		animate(spriteComponent);
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
