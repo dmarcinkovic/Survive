@@ -7,43 +7,38 @@
 #include "Sprite.h"
 #include "../display/Display.h"
 
-Sprite::Sprite(const TexturedModel &texture, const glm::vec3 &position, float scale, int row, int col)
-		: Entity(texture, position, glm::vec3{scale, scale, 1.0f}), m_Row(row), m_Col(col)
+Sprite::Sprite()
+		: row(1), col(1)
 {
 
 }
 
-void Sprite::animate(int spritesInSecond, int numberOfEpochs, int startRow, int startCol)
+Sprite::Sprite(int row, int col, int spritesInSecond, int numberOfEpochs, int startRow, int startCol)
+		: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
+		  m_CurrentFrameIndex(startRow * col + startCol), m_EndRow(row - 1), m_EndCol(col - 1)
 {
-	animate(spritesInSecond, startRow, startCol, m_Row - 1, m_Col - 1, numberOfEpochs);
+
 }
 
-void Sprite::animate(int spritesInSecond, int startRow, int startCol, int endRow, int endCol, int numberOfEpochs)
+Sprite::Sprite(int row, int col, int spritesInSecond, int startRow, int startCol, int endRow, int endCol,
+			   int numberOfEpochs)
+		: row(row), col(col), m_SpritesInSecond(spritesInSecond), m_NumberOfEpochs(numberOfEpochs),
+		  m_CurrentFrameIndex(startRow * col + startCol), m_EndRow(endRow), m_EndCol(endCol)
 {
-	m_NumberOfEpochs = numberOfEpochs;
-	m_Animate = true;
-	m_SpritesInSecond = spritesInSecond;
-	m_EndRow = endRow;
-	m_EndCol = endCol;
-	m_CurrentFrameIndex = startRow * m_Col + startCol;
+
 }
 
-void Sprite::drawSprite(int row, int col)
-{
-	m_CurrentFrameIndex = row * m_Col + col;
-}
-
-void Sprite::animate()
+void Sprite::update()
 {
 	static int startIndex = m_CurrentFrameIndex;
 
 	if (m_NumberOfEpochs == -1)
 	{
-		m_CurrentFrameIndex = startIndex + calculateFrameIndex(startIndex, m_EndRow * m_Col + m_EndCol);
+		m_CurrentFrameIndex = startIndex + calculateFrameIndex(startIndex, m_EndRow * col + m_EndCol);
 	} else if (m_CurrentEpoch < m_NumberOfEpochs)
 	{
-		const static int size = m_Row * m_Col;
-		m_CurrentFrameIndex = startIndex + calculateFrameIndex(startIndex, m_EndRow * m_Col + m_EndCol);
+		const static int size = row * col;
+		m_CurrentFrameIndex = startIndex + calculateFrameIndex(startIndex, m_EndRow * col + m_EndCol);
 
 		if (m_PreviousFrameIndex != m_CurrentFrameIndex &&
 			(m_CurrentFrameIndex + 1) % size == startIndex)
@@ -62,7 +57,9 @@ int Sprite::calculateFrameIndex(int startIndex, int endIndex)
 	return std::floor(m_Time);
 }
 
-void Sprite::stopAnimation()
+int Sprite::getFrameIndex() const
 {
-	m_Animate = false;
+	return m_CurrentFrameIndex;
 }
+
+
