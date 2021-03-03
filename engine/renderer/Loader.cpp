@@ -245,6 +245,39 @@ std::unordered_map<const char *, GLuint> Loader::loadTextures(const std::vector<
 	return result;
 }
 
+std::vector<Texture> Loader::loadAllTextures(const std::vector<const char *> &textures)
+{
+	stbi_set_flip_vertically_on_load(1);
+
+	auto images = loadImages(textures);
+	std::vector<Texture> result;
+
+	for (auto const& filename : textures)
+	{
+		auto texture = images[filename];
+		std::uint8_t *image = std::get<0>(texture);
+		int width = std::get<1>(texture);
+		int height = std::get<2>(texture);
+
+		GLuint textureId;
+		glGenTextures(1, &textureId);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+		stbi_image_free(image);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		m_Textures.emplace_back(textureId);
+
+		result.emplace_back(textureId);
+	}
+
+	return result;
+}
+
 std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
 Loader::loadImages(const std::vector<const char *> &textures)
 {
