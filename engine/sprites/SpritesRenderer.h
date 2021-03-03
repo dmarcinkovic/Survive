@@ -9,7 +9,7 @@
 
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
-#include "SpriteSheetComponent.h"
+#include "../components/SpriteSheetComponent.h"
 #include "../components/TransformComponent.h"
 
 class SpritesRenderer
