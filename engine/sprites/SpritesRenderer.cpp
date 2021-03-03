@@ -25,11 +25,7 @@ void SpritesRenderer::renderSprite(entt::registry &registry) const
 			TransformComponent transformComponent = registry.get<TransformComponent>(sprite);
 			Sprite &spriteComponent = registry.get<Sprite>(sprite);
 
-			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale));
-			m_Shader.loadSpriteSize(spriteComponent.row, spriteComponent.col);
-			m_Shader.loadSpritePosition(spriteComponent.getFrameIndex());
-
+			loadUniforms(transformComponent, spriteComponent);
 			animate(spriteComponent);
 
 			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -52,4 +48,13 @@ void SpritesRenderer::addSprite(const entt::registry &registry, entt::entity ent
 void SpritesRenderer::animate(Sprite &sprite)
 {
 	sprite.update();
+}
+
+void SpritesRenderer::loadUniforms(const TransformComponent &transform, const Sprite &sprite) const
+{
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
+
+	m_Shader.loadTransformationMatrix(modelMatrix);
+	m_Shader.loadSpriteSize(sprite.row, sprite.col);
+	m_Shader.loadSpritePosition(sprite.getFrameIndex());
 }
