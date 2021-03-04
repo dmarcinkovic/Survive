@@ -53,13 +53,13 @@ public:
 
 	Model loadToVao(const std::vector<float> &vertices, size_t size);
 
-	static GLuint loadTexture(const char *texture) noexcept;
+	static Texture loadTexture(const char *texture) noexcept;
 
-	static std::unordered_map<const char *, GLuint> loadTextures(const std::vector<const char *> &textures);
+	static std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
 
 	static std::vector<Texture> loadAllTextures(const std::vector<const char*> &textures);
 
-	static GLuint loadCubeMap(const std::vector<const char *> &faces) noexcept;
+	static Texture loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
 	Model renderQuad();
 
@@ -97,7 +97,6 @@ private:
 	loadImages(const std::vector<const char *> &textures);
 
 	static GLuint loadTexture(const std::tuple<std::uint8_t *, int, int> &imageData);
-
 };
 
 

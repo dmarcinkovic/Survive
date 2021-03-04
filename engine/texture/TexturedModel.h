@@ -18,7 +18,7 @@ private:
 	Texture m_Texture;
 
 public:
-	TexturedModel(const Model &model, GLuint textureId);
+	TexturedModel(const Model &model, const Texture &texture);
 
 	TexturedModel();
 

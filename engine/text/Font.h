@@ -14,7 +14,7 @@ class Font
 {
 private:
 	std::unordered_map<int, Character> m_Characters;
-	GLuint m_TextureId{};
+	Texture m_FontTexture{};
 
 public:
 	Font(const char *textureAtlas, Loader &loader);
@@ -27,7 +27,7 @@ public:
 
 	const Character &getCharacter(int ascii) const;
 
-	GLuint getMTextureId() const;
+	const Texture &getTexture() const;
 };
 
 

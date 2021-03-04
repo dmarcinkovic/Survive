@@ -6,7 +6,7 @@
 
 WaterTile::WaterTile(const Model &model, float centerX, float height, float centerZ, const Texture &duDvMap,
 					 const Texture &normalMap)
-		: Entity(TexturedModel(model, 0), glm::vec3{centerX, height, centerZ},
+		: Entity(TexturedModel(model, Texture(0)), glm::vec3{centerX, height, centerZ},
 				 glm::vec3{TILE_SIZE, TILE_SIZE, TILE_SIZE}), m_DuDvMap(duDvMap), m_NormalMap(normalMap)
 {
 

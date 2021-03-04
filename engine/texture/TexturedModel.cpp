@@ -4,8 +4,8 @@
 
 #include "TexturedModel.h"
 
-TexturedModel::TexturedModel(const Model &model, GLuint textureId)
-		: m_Vao(model.m_Vao), m_Texture(textureId), m_VertexCount(model.m_VertexCount)
+TexturedModel::TexturedModel(const Model &model, const Texture &texture)
+		: m_Vao(model.m_Vao), m_Texture(texture), m_VertexCount(model.m_VertexCount)
 {
 
 }

@@ -21,7 +21,7 @@ private:
 	bool m_Centered{};
 	glm::vec3 m_Color{};
 
-	GLuint m_TextTexture{};
+	Texture m_TextTexture{};
 
 	glm::vec3 m_BorderColor{};
 	float m_BorderWidth{};

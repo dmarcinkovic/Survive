@@ -5,7 +5,7 @@
 #include "Terrain.h"
 
 Terrain::Terrain(const Model &model, const glm::vec3 &position, const glm::vec3 &scale)
-		: Entity(TexturedModel(model, 0), position, scale)
+		: Entity(TexturedModel(model, Texture(0)), position, scale)
 {
 
 }
