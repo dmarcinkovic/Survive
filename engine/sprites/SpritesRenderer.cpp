@@ -32,7 +32,9 @@ void SpritesRenderer::render(entt::registry &registry) const
 
 void SpritesRenderer::loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const
 {
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(glm::vec3{transform.position, 0},
+															  glm::vec3{transform.scale, 0},
+															  glm::vec3{transform.rotation, 0});
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadSpriteSize(sprite.row, sprite.col);

@@ -57,8 +57,9 @@ void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, entt::regist
 	{
 		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(entity);
 		m_Shader.loadTransformationMatrix(
-				Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
-												  transformComponent.rotation));
+				Maths::createTransformationMatrix(glm::vec3{transformComponent.position, 0},
+												  glm::vec3{transformComponent.scale, 0},
+												  glm::vec3{transformComponent.rotation, 0}));
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
