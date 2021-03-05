@@ -1,16 +1,19 @@
 //
 // Created by david on 17. 05. 2020..
 //
+
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../components/Components.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
 {
 }
 
-void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
+void
+ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	if (m_Objects.empty())
 	{
@@ -25,7 +28,7 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::v
 	for (auto const&[texturedModel, objects] : m_Objects)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
-		renderScene(objects, camera);
+		renderScene(registry, objects, camera);
 
 		Renderer3DUtil::finishRenderingEntity();
 	}
@@ -34,34 +37,38 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::v
 	glDisable(GL_STENCIL_TEST);
 }
 
-void ObjectRenderer::add3DObject(Object3D &entity)
+void ObjectRenderer::add3DObject(entt::registry &registry, entt::entity entity)
 {
-	auto &batch = m_Objects[entity.m_Texture];
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
+	auto &batch = m_Objects[renderComponent.texturedModel];
+
 	batch.emplace_back(entity);
 }
 
 void
-ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+							const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
-		auto const &o = object.get();
-		loadObjectUniforms(o, camera);
+		loadObjectUniforms(registry, object, camera);
 
-		if (o.m_DrawOutline)
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-		} else
-		{
-			glStencilMask(0x00);
-		}
+//		if (o.m_DrawOutline)
+//		{
+//			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+//			glStencilMask(0xFF);
+//		} else
+//		{
+//			glStencilMask(0x00);
+//		}
 
-		Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
+		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
+		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
-		Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 		Texture::unbindCubeTexture();
 	}
 }
@@ -86,18 +93,41 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
-void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &camera) const
+void ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity, const Camera &camera) const
 {
-	auto rotation = camera.m_Rotation + object.m_Rotation;
+	Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
+	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
 
-	object.m_Skybox.bindCubeTexture(2);
-	m_Shader.loadReflectiveFactor(object.m_ReflectiveFactor);
-	m_Shader.loadRefractionData(object.m_RefractiveIndex, object.m_RefractionFactor);
-
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_Scale, rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
 
-	object.getBloomTexture().bindTexture(3);
-	m_Shader.loadBloom(object.getBloomStrength());
+	if (registry.has<ReflectionComponent>(entity))
+	{
+		ReflectionComponent reflection = registry.get<ReflectionComponent>(entity);
+
+		reflection.reflectionTexture.bindCubeTexture(2);
+		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
+	}
+
+	if (registry.has<RefractionComponent>(entity))
+	{
+		RefractionComponent refraction = registry.get<RefractionComponent>(entity);
+
+		refraction.refractionTexture.bindCubeTexture(2);
+		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
+	}
+
+	if (registry.has<BloomComponent>(entity))
+	{
+		BloomComponent bloomComponent = registry.get<BloomComponent>(entity);
+
+		bloomComponent.bloomTexture.bindTexture(3);
+		m_Shader.loadBloom(bloomComponent.bloomStrength);
+	}
+}
+
+void ObjectRenderer::add3DObject(Object3D &entity)
+{
+
 }
 

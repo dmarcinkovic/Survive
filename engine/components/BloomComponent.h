@@ -11,15 +11,13 @@ struct BloomComponent
 {
 	Texture emissiveTexture{};
 	float bloomStrength{};
+	Texture bloomTexture{};
 
 	BloomComponent(const Texture &emissiveTexture, float bloomStrength)
 			: emissiveTexture(emissiveTexture), bloomStrength(bloomStrength)
 	{}
 
 	BloomComponent() = default;
-
-private:
-	Texture m_BloomTexture{};
 };
 
 #endif //SURVIVE_BLOOMCOMPONENT_H

@@ -1,8 +1,12 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
-#include "engine/text/Text.h"
 #include "engine/text/TextRenderer.h"
+#include "engine/objects/ObjectRenderer.h"
+#include "engine/components/RenderComponent.h"
+#include "engine/components/Transform3DComponent.h"
+#include "engine/components/RigidBodyComponent.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -12,23 +16,25 @@ int main()
 	Display display(width, height, "Survive");
 	Loader loader;
 
-	Font font("res/arial.png", loader);
-	font.loadFontFromFntFile("res/arial.fnt");
-	Text text("Some text", font, glm::vec3{}, glm::vec3{1, 0, 0}, 1);
-	text.centerText();
-
-	TextRenderer textRenderer;
-	textRenderer.addText(text, loader);
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 0, 0});
+	ObjectRenderer objectRenderer(light);
+	Camera camera;
 
 	entt::registry registry;
 
 	auto entity = registry.create();
+	registry.emplace<RenderComponent>(entity, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
+															Loader::loadTexture("res/lamp.jpg")));
+	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
+	registry.emplace<RigidBodyComponent>(entity, false);
+
+	objectRenderer.add3DObject(registry, entity);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		textRenderer.renderText();
+		objectRenderer.render(registry, camera, 0);
 
 		display.update();
 	}

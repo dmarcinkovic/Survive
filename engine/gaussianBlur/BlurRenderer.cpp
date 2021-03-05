@@ -72,7 +72,7 @@ void BlurRenderer::renderToFbo(const Camera &camera) const
 	Display::clearWindow();
 
 	m_AnimationRenderer.render(camera);
-	m_ObjectRenderer.render(camera, 0);
+//	m_ObjectRenderer.render(camera, 0);
 	m_TerrainRenderer.render(camera,m_Light, 0);
 
 	FrameBuffer::unbindDrawFrameBuffer();
