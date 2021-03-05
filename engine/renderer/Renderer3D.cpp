@@ -41,7 +41,7 @@ void Renderer3D::render(Camera &camera) const
 
 void Renderer3D::add3DObject(Object3D &object3D)
 {
-	m_ObjectRenderer.add3DObject(object3D);
+//	m_ObjectRenderer.add3DObject(object3D);
 	m_MousePicking.add3DObject(object3D);
 }
 

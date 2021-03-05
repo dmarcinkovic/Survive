@@ -54,7 +54,7 @@ void BlurRenderer::addAnimatedObject(AnimatedObject &animatedObject)
 
 void BlurRenderer::addObject(Object3D &object)
 {
-	m_ObjectRenderer.add3DObject(object);
+//	m_ObjectRenderer.add3DObject(object);
 	m_ShouldRender = true;
 }
 

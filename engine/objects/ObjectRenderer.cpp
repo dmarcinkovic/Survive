@@ -126,9 +126,3 @@ void ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity e
 		m_Shader.loadBloom(bloomComponent.bloomStrength);
 	}
 }
-
-void ObjectRenderer::add3DObject(Object3D &entity)
-{
-
-}
-

@@ -32,8 +32,6 @@ public:
 
 	void add3DObject(entt::registry &registry, entt::entity entity);
 
-	void add3DObject(Object3D &entity);
-
 private:
 	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
 
