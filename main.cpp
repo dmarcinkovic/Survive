@@ -14,7 +14,7 @@ int main()
 
 	Font font("res/arial.png", loader);
 	font.loadFontFromFntFile("res/arial.fnt");
-	Text text("Some text", font, glm::vec3{}, glm::vec3{1,0,0}, 1);
+	Text text("Some text", font, glm::vec3{}, glm::vec3{1, 0, 0}, 1);
 	text.centerText();
 
 	TextRenderer textRenderer;
