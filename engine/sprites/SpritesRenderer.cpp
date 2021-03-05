@@ -30,7 +30,7 @@ void SpritesRenderer::render(entt::registry &registry) const
 	Renderer2DUtil::finishRendering();
 }
 
-void SpritesRenderer::loadUniforms(const Transform3DComponent &transform, const SpriteSheetComponent &sprite) const
+void SpritesRenderer::loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const
 {
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
 
@@ -42,7 +42,7 @@ void SpritesRenderer::loadUniforms(const Transform3DComponent &transform, const 
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	auto group = registry.group<RenderComponent, Transform3DComponent, SpriteSheetComponent>();
+	auto group = registry.group<RenderComponent, Transform2DComponent, SpriteSheetComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : group)
@@ -61,7 +61,7 @@ void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, en
 {
 	for (auto const &sprite : sprites)
 	{
-		Transform3DComponent transformComponent = registry.get<Transform3DComponent>(sprite);
+		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(sprite);
 		SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
 
 		loadUniforms(transformComponent, spriteComponent);

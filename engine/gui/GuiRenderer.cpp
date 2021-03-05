@@ -7,7 +7,7 @@
 #include "../renderer/Renderer2DUtil.h"
 #include "../display/Display.h"
 #include "../components/RenderComponent.h"
-#include "../components/Transform3DComponent.h"
+#include "../components/Transform2DComponent.h"
 #include "../components/SpriteSheetComponent.h"
 
 void GuiRenderer::render(entt::registry &registry) const
@@ -36,7 +36,7 @@ void GuiRenderer::render(entt::registry &registry) const
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
+	auto view = registry.view<RenderComponent, Transform2DComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
@@ -55,7 +55,7 @@ void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, entt::regist
 {
 	for (auto const &entity : guis)
 	{
-		Transform3DComponent transformComponent = registry.get<Transform3DComponent>(entity);
+		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(entity);
 		m_Shader.loadTransformationMatrix(
 				Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
 												  transformComponent.rotation));
