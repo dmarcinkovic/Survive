@@ -7,6 +7,8 @@
 #include "engine/components/Transform3DComponent.h"
 #include "engine/components/RigidBodyComponent.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/fbo/FrameBuffer.h"
+#include "engine/constant/Constants.h"
 
 int main()
 {
@@ -30,11 +32,19 @@ int main()
 
 	objectRenderer.add3DObject(registry, entity);
 
+	FrameBuffer frameBuffer;
+	GLuint shadowMap = frameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT);
+
+	ShadowRenderer shadowRenderer;
+	shadowRenderer.add3DObject(registry, entity);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		objectRenderer.render(registry, camera, 0);
+		frameBuffer.renderToFrameBuffer(registry, shadowRenderer, camera, light, Constants::SHADOW_WIDTH,
+										Constants::SHADOW_HEIGHT);
+		objectRenderer.render(registry, camera, shadowMap);
 
 		display.update();
 	}
