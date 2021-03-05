@@ -5,6 +5,8 @@
 #ifndef SURVIVE_BLOOMCOMPONENT_H
 #define SURVIVE_BLOOMCOMPONENT_H
 
+#include "../texture/Texture.h"
+
 struct BloomComponent
 {
 	Texture emissiveTexture{};
