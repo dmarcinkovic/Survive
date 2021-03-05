@@ -21,7 +21,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
-	glEnable(GL_STENCIL_TEST);
+//	glEnable(GL_STENCIL_TEST);
 
 	loadUniforms(camera, shadowMap, plane);
 
@@ -34,7 +34,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 	}
 
 	Renderer3DUtil::finishRendering();
-	glDisable(GL_STENCIL_TEST);
+//	glDisable(GL_STENCIL_TEST);
 }
 
 void ObjectRenderer::add3DObject(entt::registry &registry, entt::entity entity)
@@ -90,6 +90,7 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
+
 	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
@@ -98,7 +99,7 @@ void ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity e
 	Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
 
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
 
 	if (registry.has<ReflectionComponent>(entity))
