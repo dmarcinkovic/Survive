@@ -10,7 +10,7 @@
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
 #include "../components/SpriteSheetComponent.h"
-#include "../components/TransformComponent.h"
+#include "../components/Transform3DComponent.h"
 
 class SpritesRenderer
 {
@@ -21,7 +21,7 @@ public:
 	void render(entt::registry &registry) const;
 
 private:
-	void loadUniforms(const TransformComponent &transform, const SpriteSheetComponent &sprite) const;
+	void loadUniforms(const Transform3DComponent &transform, const SpriteSheetComponent &sprite) const;
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
