@@ -28,8 +28,8 @@ void Renderer3D::render(Camera &camera) const
 {
 //	m_MousePicking.render(camera);
 
-	m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-									  Constants::SHADOW_HEIGHT);
+//	m_FrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+//									  Constants::SHADOW_HEIGHT);
 
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
@@ -70,10 +70,10 @@ void Renderer3D::removeOutlineToObject()
 	m_OutlineRenderer.removeObject();
 }
 
-void Renderer3D::addShadow(Object3D &object)
-{
-	m_ShadowRenderer.add3DObject(object);
-}
+//void Renderer3D::addShadow(Object3D &object)
+//{
+//	m_ShadowRenderer.add3DObject(object);
+//}
 
 void Renderer3D::update()
 {
