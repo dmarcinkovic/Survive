@@ -34,7 +34,7 @@ void Renderer3D::render(Camera &camera) const
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
 
-	m_BloomRenderer.render();
+//	m_BloomRenderer.render();
 	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(camera);
 }
@@ -124,7 +124,7 @@ void Renderer3D::addWaterTile(WaterTile &waterTile)
 	m_WaterRenderer.addWaterTile(waterTile);
 }
 
-void Renderer3D::addBloom(Object3D &object)
-{
-	m_BloomRenderer.addObject(object);
-}
+//void Renderer3D::addBloom(Object3D &object)
+//{
+//	m_BloomRenderer.addObject(object);
+//}

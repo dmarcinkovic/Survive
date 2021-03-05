@@ -62,7 +62,7 @@ public:
 
 	void addWaterTile(WaterTile &waterTile);
 
-	void addBloom(Object3D &object);
+//	void addBloom(Object3D &object);
 
 private:
 	void renderToWaterFrameBuffers(Camera &camera) const;
