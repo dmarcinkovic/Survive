@@ -7,15 +7,15 @@
 
 #include <glm/glm.hpp>
 
-struct Transform3DComponent
+struct Transform2DComponent
 {
 	glm::vec2 position;
 	glm::vec2 rotation;
 	glm::vec2 scale;
 
-	Transform3DComponent() = default;
+	Transform2DComponent() = default;
 
-	explicit Transform3DComponent(const glm::vec2 &position, const glm::vec2 &scale = glm::vec2{1.0f},
+	explicit Transform2DComponent(const glm::vec2 &position, const glm::vec2 &scale = glm::vec2{1.0f},
 								  const glm::vec2 &rotation = glm::vec2{0.0f})
 			: position(position), rotation(rotation), scale(scale)
 	{}
