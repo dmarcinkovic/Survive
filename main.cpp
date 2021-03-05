@@ -16,7 +16,7 @@ int main()
 	Display display(width, height, "Survive");
 	Loader loader;
 
-	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 0, 0});
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	ObjectRenderer objectRenderer(light);
 	Camera camera;
 
