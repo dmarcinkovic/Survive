@@ -16,6 +16,8 @@ struct BloomComponent
 			: emissiveTexture(emissiveTexture), bloomStrength(bloomStrength)
 	{}
 
+	BloomComponent() = default;
+
 private:
 	Texture m_BloomTexture{};
 };
