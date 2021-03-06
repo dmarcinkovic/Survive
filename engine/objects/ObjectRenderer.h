@@ -38,6 +38,9 @@ private:
 	void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
 	void loadObjectUniforms(entt::registry &registry, entt::entity, const Camera &camera) const;
+
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H

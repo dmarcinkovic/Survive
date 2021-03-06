@@ -6,6 +6,7 @@
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
 #include "../components/Components.h"
+#include "../components/AnimationComponent.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
@@ -125,4 +126,22 @@ void ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity e
 		bloomComponent.bloomTexture.bindTexture(3);
 		m_Shader.loadBloom(bloomComponent.bloomStrength);
 	}
+}
+
+std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+ObjectRenderer::prepareEntities(entt::registry &registry)
+{
+	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
+			entt::exclude<AnimationComponent>);
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : view)
+	{
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
 }
