@@ -20,8 +20,6 @@ class ObjectRenderer
 {
 private:
 	ObjectShader m_Shader;
-	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
-
 	const Light &m_Light;
 
 public:
@@ -29,8 +27,6 @@ public:
 
 	void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
 				const glm::vec4 &plane = glm::vec4{}) const;
-
-	void add3DObject(entt::registry &registry, entt::entity entity);
 
 private:
 	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;

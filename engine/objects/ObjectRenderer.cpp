@@ -16,7 +16,9 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 void
 ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
-	if (m_Objects.empty())
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
 	{
 		return;
 	}
@@ -26,7 +28,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texturedModel, objects] : m_Objects)
+	for (auto const&[texturedModel, objects] : entities)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
 		renderScene(registry, objects, camera);
@@ -36,14 +38,6 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 
 	Renderer3DUtil::finishRendering();
 //	glDisable(GL_STENCIL_TEST);
-}
-
-void ObjectRenderer::add3DObject(entt::registry &registry, entt::entity entity)
-{
-	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
-	auto &batch = m_Objects[renderComponent.texturedModel];
-
-	batch.emplace_back(entity);
 }
 
 void
