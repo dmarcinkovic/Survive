@@ -14,6 +14,7 @@
 #include "RigidBodyComponent.h"
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"
+#include "TexturedComponent.h"
 #include "Transform2DComponent.h"
 #include "Transform3DComponent.h"
 
