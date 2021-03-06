@@ -16,6 +16,7 @@
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
+#include "../../ecs/entt.hpp"
 
 class BlurRenderer
 {
@@ -40,18 +41,16 @@ private:
 public:
 	BlurRenderer(const Light &light, int width, int height);
 
-	void render(const Camera &camera) const;
+	void render(entt::registry  &registry, const Camera &camera) const;
 
 	const Texture &getTexture() const;
 
-	void addAnimatedObject(AnimatedObject &animatedObject);
-
-	void addObject(Object3D &object);
+	void addEntity(entt::registry &registry, entt::entity entity);
 
 	void addTerrain(Terrain &terrain);
 
 private:
-	void renderToFbo(const Camera &camera) const;
+	void renderToFbo(entt::registry  &registry, const Camera &camera) const;
 
 	void renderBlur() const;
 
