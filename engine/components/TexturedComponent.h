@@ -9,7 +9,7 @@
 
 struct TexturedComponent
 {
-	std::vector<Texture> textures;
+	std::vector<Texture> textures{};
 
 	TexturedComponent() = default;
 
