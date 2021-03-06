@@ -8,6 +8,7 @@
 #include "engine/components/RenderComponent.h"
 #include "engine/parser/DaeParser.h"
 #include "engine/components/RigidBodyComponent.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -18,26 +19,22 @@ int main()
 	Loader loader;
 
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
-	AnimationRenderer animationRenderer(light);
+	ObjectRenderer objectRenderer(light);
 	Camera camera;
 
 	entt::registry registry;
 
-	DaeParser daeParser;
-
 	auto entity = registry.create();
-	registry.emplace<RenderComponent>(entity, TexturedModel(daeParser.loadDae("res/character.xml", loader),
+	registry.emplace<RenderComponent>(entity, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
 															Loader::loadTexture("res/character.png")));
 	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
 	registry.emplace<RigidBodyComponent>(entity, false);
-
-	animationRenderer.addAnimatedModel(registry, entity);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		animationRenderer.render(registry, camera);
+		objectRenderer.render(registry, camera, 0);
 
 		display.update();
 	}
