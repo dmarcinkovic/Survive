@@ -1,13 +1,11 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
-#include "engine/text/TextRenderer.h"
-#include "engine/objects/ObjectRenderer.h"
-#include "engine/components/Transform3DComponent.h"
-#include "engine/components/RenderComponent.h"
-#include "engine/components/RigidBodyComponent.h"
-#include "engine/animations/renderer/AnimationRenderer.h"
-#include "engine/parser/DaeParser.h"
+#include "engine/light/Light.h"
+#include "engine/camera/Camera.h"
+#include "engine/terrain/Terrain.h"
+#include "engine/terrain/TerrainGenerator.h"
+#include "engine/terrain/TerrainRenderer.h"
 
 int main()
 {
@@ -18,24 +16,25 @@ int main()
 	Loader loader;
 
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
-	ObjectRenderer objectRenderer(light);
-	AnimationRenderer animationRenderer(light);
+
 	Camera camera;
 
-	DaeParser daeParser;
 	entt::registry registry;
 
 	auto entity = registry.create();
-	registry.emplace<RenderComponent>(entity, TexturedModel(daeParser.loadDae("res/character.xml", loader),
-															Loader::loadTexture("res/character.png")));
-	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
-	registry.emplace<RigidBodyComponent>(entity, false);
+
+	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.jpeg"), glm::vec3{-200, -10, -200},
+					glm::vec3{400, 1, 400});
+	TerrainRenderer terrainRenderer;
+	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
+
+	terrainRenderer.addTerrain(terrain);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		objectRenderer.render(registry, camera, 0);
+		terrainRenderer.render(camera, light, 0);
 
 		display.update();
 	}
