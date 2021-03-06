@@ -23,14 +23,7 @@ void TerrainRenderer::render(entt::registry &registry, const Camera &camera, con
 		auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
 																	  transform.rotation);
 
-		m_Shader.loadTextures();
-		m_Shader.loadTransformationMatrix(transformationMatrix);
-		m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
-		m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-		m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
-
-		m_Shader.loadLight(light);
-		m_Shader.loadPlane(plane);
+		loadUniforms(camera, light, plane, transform);
 		m_Shader.loadAddShadow(shadowMap != 0);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -66,4 +59,20 @@ void TerrainRenderer::finishRendering()
 
 	Renderer3DUtil::addTransparency(true, false);
 	Renderer3DUtil::finishRenderingEntity();
+}
+
+void TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
+								   const Transform3DComponent &transform) const
+{
+	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
+																  transform.rotation);
+
+	m_Shader.loadTextures();
+	m_Shader.loadTransformationMatrix(transformationMatrix);
+	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
+	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
+
+	m_Shader.loadLight(light);
+	m_Shader.loadPlane(plane);
 }
