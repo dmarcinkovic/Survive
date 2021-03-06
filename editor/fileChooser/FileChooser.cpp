@@ -26,7 +26,8 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
 
-	if (ImGui::Begin("Open", open, ImGuiWindowFlags_NoDocking))
+	ImGui::OpenPopup("Open");
+	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
 	{
 		drawNavigationArrows();
 
@@ -41,10 +42,10 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 		drawTable(windowHeight, open);
 		drawFilenameTextbox(open);
 
-		ImGui::End();
+		ImGui::EndPopup();
 	}
 
-	ImGui::PopStyleColor(2);
+	ImGui::PopStyleColor(4);
 }
 
 std::vector<File> FileChooser::listDirectory(const std::string &directory, bool showHidden)
@@ -181,6 +182,8 @@ void FileChooser::setupDarkStyleColors()
 {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.11f, 0.11f, 0.11f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
 }
 
 void FileChooser::drawNavigationArrows()
