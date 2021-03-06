@@ -15,24 +15,25 @@
 #include "AnimationShader.h"
 #include "../../objects/ObjectShader.h"
 #include "../animation/AnimatedObject.h"
+#include "../../../ecs/entt.hpp"
 
 class AnimationRenderer
 {
 private:
 	AnimationShader m_Shader;
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<AnimatedObject>>, TextureHash> m_Objects;
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
 
 	const Light &m_Light;
 
 public:
 	explicit AnimationRenderer(const Light &light);
 
-	void render(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+	void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-	void addAnimatedModel(AnimatedObject &entity);
+	void addAnimatedModel(entt::registry &registry, entt::entity);
 
 private:
-	void renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects, const Camera &camera) const;
+	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
 };
 
 #endif //SURVIVE_ANIMATIONRENDERER_H

@@ -19,7 +19,7 @@ void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 {
 //	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
-	m_AnimationRenderer.render(camera, plane);
+//	m_AnimationRenderer.render(camera, plane);
 
 	m_SkyRenderer.render(camera, plane);
 }
@@ -52,7 +52,7 @@ void Renderer3D::addTerrain(Terrain &terrain)
 
 void Renderer3D::addAnimatedObject(AnimatedObject &object3D)
 {
-	m_AnimationRenderer.addAnimatedModel(object3D);
+//	m_AnimationRenderer.addAnimatedModel(object3D);
 }
 
 void Renderer3D::addSkyboxEntity(const Entity &entity)

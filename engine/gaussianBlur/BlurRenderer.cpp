@@ -48,7 +48,7 @@ void BlurRenderer::finishRendering()
 
 void BlurRenderer::addAnimatedObject(AnimatedObject &animatedObject)
 {
-	m_AnimationRenderer.addAnimatedModel(animatedObject);
+//	m_AnimationRenderer.addAnimatedModel(animatedObject);
 	m_ShouldRender = true;
 }
 
@@ -71,7 +71,7 @@ void BlurRenderer::renderToFbo(const Camera &camera) const
 	m_Fbo.bindDrawBuffer();
 	Display::clearWindow();
 
-	m_AnimationRenderer.render(camera);
+//	m_AnimationRenderer.render(camera);
 //	m_ObjectRenderer.render(camera, 0);
 	m_TerrainRenderer.render(camera,m_Light, 0);
 

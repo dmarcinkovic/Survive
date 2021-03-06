@@ -4,13 +4,16 @@
 #include "AnimationRenderer.h"
 #include "../../renderer/Renderer3DUtil.h"
 #include "../../math/Maths.h"
+#include "../../components/RenderComponent.h"
+#include "../../components/Transform3DComponent.h"
+#include "../../components/RigidBodyComponent.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
 		: m_Light(light)
 {
 }
 
-void AnimationRenderer::render(const Camera &camera, const glm::vec4 &plane) const
+void AnimationRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	if (m_Objects.empty())
 	{
@@ -29,7 +32,7 @@ void AnimationRenderer::render(const Camera &camera, const glm::vec4 &plane) con
 	for (auto const&[texture, objects] : m_Objects)
 	{
 		Renderer3DUtil::prepareEntity(texture);
-		renderScene(objects, camera);
+		renderScene(registry, objects, camera);
 
 		Renderer3DUtil::finishRenderingEntity();
 	}
@@ -37,27 +40,31 @@ void AnimationRenderer::render(const Camera &camera, const glm::vec4 &plane) con
 	Renderer3DUtil::finishRendering();
 }
 
-void AnimationRenderer::addAnimatedModel(AnimatedObject &entity)
+void AnimationRenderer::addAnimatedModel(entt::registry &registry, entt::entity entity)
 {
-	auto &batch = m_Objects[entity.m_Texture];
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
+	auto &batch = m_Objects[renderComponent.texturedModel];
+
 	batch.emplace_back(entity);
 }
 
 void
-AnimationRenderer::renderScene(const std::vector<std::reference_wrapper<AnimatedObject>> &objects,
-							   const Camera &camera) const
+AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
-		auto const &o = object.get();
-		auto rotation = camera.m_Rotation + o.m_Rotation;
+		Transform3DComponent transform = registry.get<Transform3DComponent>(object);
+		auto rotation = camera.m_Rotation + transform.rotation;
 
-		glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
+		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 		m_Shader.loadTransformationMatrix(modelMatrix);
-		Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
 
-		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
+		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
+		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+
+		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 	}
 }
