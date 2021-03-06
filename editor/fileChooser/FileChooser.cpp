@@ -183,7 +183,7 @@ void FileChooser::setupDarkStyleColors()
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.11f, 0.11f, 0.11f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.15f));
 }
 
 void FileChooser::drawNavigationArrows()
