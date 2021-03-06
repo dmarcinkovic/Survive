@@ -4,9 +4,7 @@
 #include "engine/text/TextRenderer.h"
 #include "engine/objects/ObjectRenderer.h"
 #include "engine/components/Transform3DComponent.h"
-#include "engine/animations/renderer/AnimationRenderer.h"
 #include "engine/components/RenderComponent.h"
-#include "engine/parser/DaeParser.h"
 #include "engine/components/RigidBodyComponent.h"
 #include "engine/parser/ObjParser.h"
 
@@ -26,7 +24,7 @@ int main()
 
 	auto entity = registry.create();
 	registry.emplace<RenderComponent>(entity, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															Loader::loadTexture("res/character.png")));
+															Loader::loadTexture("res/lamp.jpg")));
 	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
 	registry.emplace<RigidBodyComponent>(entity, false);
 

@@ -49,7 +49,7 @@ void BlurRenderer::finishRendering()
 void BlurRenderer::addEntity(entt::registry &registry, entt::entity entity)
 {
 	m_AnimationRenderer.addAnimatedModel(registry, entity);
-	m_ObjectRenderer.add3DObject(registry, entity);
+//	m_ObjectRenderer.add3DObject(registry, entity);
 	m_ShouldRender = true;
 }
 
