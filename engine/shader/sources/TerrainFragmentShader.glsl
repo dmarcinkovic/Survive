@@ -53,7 +53,7 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
-    float shadow = shadowCalculation(fragmentPositionInLightSpace);
+    float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
