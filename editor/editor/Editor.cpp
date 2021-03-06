@@ -51,7 +51,7 @@ void Editor::renderSceneWindow()
 {
 	ImGui::Begin("Scene window");
 
-	m_IsSceneWindowFocused = ImGui::IsWindowFocused();
+	m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 	m_SceneWindowX = pos.x;
