@@ -5,6 +5,7 @@
 #ifndef SURVIVE_COMPONENTS_H
 #define SURVIVE_COMPONENTS_H
 
+#include "AnimationComponent.h"
 #include "BloomComponent.h"
 #include "IdComponent.h"
 #include "ReflectionComponent.h"
