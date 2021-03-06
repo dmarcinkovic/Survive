@@ -15,8 +15,6 @@ struct Camera
 
 	glm::vec3 rotation{};
 
-	Camera();
-
 	void invertPitch();
 
 	void moveCameraInYDirection(float yDistance);
@@ -29,14 +27,6 @@ private:
 	glm::vec3 m_CurrentRotation{};
 	float m_CurrentYaw{};
 	float m_CurrentPitch{};
-
-	void addScrollListener();
-
-	void addMousePressedListener();
-
-	void addMouseMovedListener();
-
-	void addKeyboardListener();
 };
 
 
