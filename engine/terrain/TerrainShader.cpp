@@ -61,12 +61,12 @@ void TerrainShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
 
 void TerrainShader::loadTextures() const
 {
-	loadInteger(m_LocationShadowMap, 0);
-	loadInteger(m_LocationBlendMap, 1);
-	loadInteger(m_LocationDirt, 2);
-	loadInteger(m_LocationGrass, 3);
-	loadInteger(m_LocationRock, 4);
-	loadInteger(m_LocationFlowers, 5);
+	loadInteger(m_LocationBlendMap, 0);
+	loadInteger(m_LocationDirt, 1);
+	loadInteger(m_LocationGrass, 2);
+	loadInteger(m_LocationRock, 3);
+	loadInteger(m_LocationFlowers, 4);
+	loadInteger(m_LocationShadowMap, 5);
 }
 
 void TerrainShader::loadLight(const Light &light) const

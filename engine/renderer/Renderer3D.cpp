@@ -18,7 +18,7 @@ Renderer3D::Renderer3D(const Light &light)
 void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
 {
 //	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
-	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
+//	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
 //	m_AnimationRenderer.render(camera, plane);
 
 	m_SkyRenderer.render(camera, plane);
@@ -47,7 +47,7 @@ void Renderer3D::add3DObject(Object3D &object3D)
 
 void Renderer3D::addTerrain(Terrain &terrain)
 {
-	m_TerrainRenderer.addTerrain(terrain);
+//	m_TerrainRenderer.addTerrain(terrain);
 }
 
 void Renderer3D::addAnimatedObject(AnimatedObject &object3D)

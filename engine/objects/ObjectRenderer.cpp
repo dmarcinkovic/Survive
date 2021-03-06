@@ -6,7 +6,6 @@
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
 #include "../components/Components.h"
-#include "../components/AnimationComponent.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)

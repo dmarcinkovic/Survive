@@ -55,7 +55,7 @@ void BlurRenderer::addEntity(entt::registry &registry, entt::entity entity)
 
 void BlurRenderer::addTerrain(Terrain &terrain)
 {
-	m_TerrainRenderer.addTerrain(terrain);
+//	m_TerrainRenderer.addTerrain(terrain);
 	m_ShouldRender = true;
 }
 
@@ -68,7 +68,7 @@ void BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) c
 
 	m_AnimationRenderer.render(registry, camera);
 	m_ObjectRenderer.render(registry, camera, 0);
-	m_TerrainRenderer.render(camera, m_Light, 0);
+//	m_TerrainRenderer.render(camera, m_Light, 0);
 
 	FrameBuffer::unbindDrawFrameBuffer();
 
