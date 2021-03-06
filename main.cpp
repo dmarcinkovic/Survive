@@ -5,6 +5,9 @@
 #include "engine/objects/ObjectRenderer.h"
 #include "engine/components/Transform3DComponent.h"
 #include "engine/animations/renderer/AnimationRenderer.h"
+#include "engine/components/RenderComponent.h"
+#include "engine/parser/DaeParser.h"
+#include "engine/components/RigidBodyComponent.h"
 
 int main()
 {
@@ -20,8 +23,15 @@ int main()
 
 	entt::registry registry;
 
+	DaeParser daeParser;
+
 	auto entity = registry.create();
-	
+	registry.emplace<RenderComponent>(entity, TexturedModel(daeParser.loadDae("res/character.xml", loader),
+															Loader::loadTexture("res/character.png")));
+	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
+	registry.emplace<RigidBodyComponent>(entity, false);
+
+	animationRenderer.addAnimatedModel(registry, entity);
 
 	while (display.isRunning())
 	{
