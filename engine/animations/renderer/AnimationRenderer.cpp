@@ -24,13 +24,7 @@ void AnimationRenderer::render(entt::registry &registry, const Camera &camera, c
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
-
-	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-	m_Shader.loadViewMatrix(viewMatrix);
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-	m_Shader.loadPlane(plane);
-
-	m_Shader.loadLight(m_Light.position(), m_Light.color());
+	loadUniforms(camera, plane);
 
 	for (auto const&[texture, objects] : entities)
 	{
@@ -80,4 +74,14 @@ AnimationRenderer::prepareEntities(entt::registry &registry)
 	}
 
 	return entities;
+}
+
+void AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
+{
+	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	m_Shader.loadViewMatrix(viewMatrix);
+	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadPlane(plane);
+
+	m_Shader.loadLight(m_Light.position(), m_Light.color());
 }

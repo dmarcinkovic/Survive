@@ -33,6 +33,8 @@ private:
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
+
+	void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
 };
 
 #endif //SURVIVE_ANIMATIONRENDERER_H
