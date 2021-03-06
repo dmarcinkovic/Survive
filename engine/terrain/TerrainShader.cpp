@@ -31,6 +31,7 @@ void TerrainShader::getUniformLocations()
 	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
 
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
+	m_LocationAddShadow = glGetUniformLocation(m_Program, "addShadow");
 }
 
 void TerrainShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
@@ -77,5 +78,10 @@ void TerrainShader::loadLight(const Light &light) const
 void TerrainShader::loadPlane(const glm::vec4 &plane) const
 {
 	loadVector4(m_LocationPlane, plane);
+}
+
+void TerrainShader::loadAddShadow(int addShadow) const
+{
+	loadInteger(m_LocationAddShadow, addShadow);
 }
 

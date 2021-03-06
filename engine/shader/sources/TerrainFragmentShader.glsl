@@ -21,6 +21,8 @@ in vec3 worldPosition;
 
 const float scaleFactor = 40;
 
+uniform int addShadow;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;

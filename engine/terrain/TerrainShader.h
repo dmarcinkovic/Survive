@@ -33,6 +33,7 @@ private:
 	GLuint m_LocationFlowers{};
 
 	GLuint m_LocationPlane{};
+	GLuint m_LocationAddShadow{};
 
 public:
 	TerrainShader();
@@ -52,6 +53,8 @@ public:
 	void loadLight(const Light &light) const;
 
 	void loadPlane(const glm::vec4 &plane) const;
+
+	void loadAddShadow(int addShadow) const;
 
 private:
 	void getUniformLocations();
