@@ -21,8 +21,6 @@ class AnimationRenderer
 {
 private:
 	AnimationShader m_Shader;
-	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
-
 	const Light &m_Light;
 
 public:
@@ -30,10 +28,11 @@ public:
 
 	void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-	void addAnimatedModel(entt::registry &registry, entt::entity);
-
 private:
 	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
+
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
 };
 
 #endif //SURVIVE_ANIMATIONRENDERER_H

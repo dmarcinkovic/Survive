@@ -7,6 +7,7 @@
 #include "../../components/RenderComponent.h"
 #include "../../components/Transform3DComponent.h"
 #include "../../components/RigidBodyComponent.h"
+#include "../../components/AnimationComponent.h"
 
 AnimationRenderer::AnimationRenderer(const Light &light)
 		: m_Light(light)
@@ -15,7 +16,9 @@ AnimationRenderer::AnimationRenderer(const Light &light)
 
 void AnimationRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
-	if (m_Objects.empty())
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
 	{
 		return;
 	}
@@ -29,7 +32,7 @@ void AnimationRenderer::render(entt::registry &registry, const Camera &camera, c
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color());
 
-	for (auto const&[texture, objects] : m_Objects)
+	for (auto const&[texture, objects] : entities)
 	{
 		Renderer3DUtil::prepareEntity(texture);
 		renderScene(registry, objects, camera);
@@ -40,16 +43,9 @@ void AnimationRenderer::render(entt::registry &registry, const Camera &camera, c
 	Renderer3DUtil::finishRendering();
 }
 
-void AnimationRenderer::addAnimatedModel(entt::registry &registry, entt::entity entity)
-{
-	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
-	auto &batch = m_Objects[renderComponent.texturedModel];
-
-	batch.emplace_back(entity);
-}
-
 void
-AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const
+AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+							   const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
@@ -67,4 +63,21 @@ AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt:
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 	}
+}
+
+std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+AnimationRenderer::prepareEntities(entt::registry &registry)
+{
+	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : view)
+	{
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
 }
