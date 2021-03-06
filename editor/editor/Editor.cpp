@@ -127,7 +127,6 @@ void Editor::renderOpenDialog()
 {
 	if (m_OpenDialog)
 	{
-		ImGui::SetWindowFocus("Open");
 		m_FileChooser.open(600.0f, 400.0f, &m_OpenDialog);
 	}
 }
