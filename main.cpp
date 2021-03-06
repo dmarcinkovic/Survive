@@ -6,7 +6,8 @@
 #include "engine/components/Transform3DComponent.h"
 #include "engine/components/RenderComponent.h"
 #include "engine/components/RigidBodyComponent.h"
-#include "engine/parser/ObjParser.h"
+#include "engine/animations/renderer/AnimationRenderer.h"
+#include "engine/parser/DaeParser.h"
 
 int main()
 {
@@ -18,13 +19,15 @@ int main()
 
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1, 1, 1});
 	ObjectRenderer objectRenderer(light);
+	AnimationRenderer animationRenderer(light);
 	Camera camera;
 
+	DaeParser daeParser;
 	entt::registry registry;
 
 	auto entity = registry.create();
-	registry.emplace<RenderComponent>(entity, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															Loader::loadTexture("res/lamp.jpg")));
+	registry.emplace<RenderComponent>(entity, TexturedModel(daeParser.loadDae("res/character.xml", loader),
+															Loader::loadTexture("res/character.png")));
 	registry.emplace<Transform3DComponent>(entity, glm::vec3{0, -10, -30});
 	registry.emplace<RigidBodyComponent>(entity, false);
 

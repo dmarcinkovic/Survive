@@ -43,7 +43,7 @@ public:
 
 	void render(entt::registry  &registry, const Camera &camera) const;
 
-	const Texture &getTexture() const;
+	[[nodiscard]] const Texture &getTexture() const;
 
 	void addEntity(entt::registry &registry, entt::entity entity);
 
