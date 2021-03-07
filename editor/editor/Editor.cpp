@@ -2,16 +2,11 @@
 // Created by david on 31. 12. 2020..
 //
 
+
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
-#include <iostream>
 
 #include "Editor.h"
-
-float Editor::m_ViewportWidth;
-float Editor::m_ViewportHeight;
-float Editor::m_SceneWindowX;
-float Editor::m_SceneWindowY;
 
 Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
@@ -30,6 +25,7 @@ void Editor::render()
 	renderSceneWindow();
 	renderMenu();
 	renderOpenDialog();
+	Log::logWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -54,14 +50,10 @@ void Editor::renderSceneWindow()
 	m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
 	ImVec2 pos = ImGui::GetCursorScreenPos();
-	m_SceneWindowX = pos.x;
-	m_SceneWindowY = pos.y;
 
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
 	m_SceneSize = ImGui::GetWindowSize();
-	m_ViewportWidth = m_SceneSize.x;
-	m_ViewportHeight = m_SceneSize.y;
 
 	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
 										 ImVec2(pos.x + m_SceneSize.x, pos.y + m_SceneSize.y), ImVec2(0, 1),
@@ -134,14 +126,4 @@ void Editor::renderOpenDialog()
 bool &Editor::isSceneWindowFocused()
 {
 	return m_IsSceneWindowFocused;
-}
-
-std::pair<float, float> Editor::getSceneWindowSize()
-{
-	return {m_ViewportWidth, m_ViewportHeight};
-}
-
-std::pair<float, float> Editor::getSceneWindowPos()
-{
-	return {m_SceneWindowX, m_SceneWindowY};
 }

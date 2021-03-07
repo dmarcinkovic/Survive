@@ -10,15 +10,11 @@
 #include <imgui.h>
 #include <utility>
 #include "../fileChooser/FileChooser.h"
+#include "Log.h"
 
 class Editor
 {
 private:
-	static float m_ViewportWidth;
-	static float m_ViewportHeight;
-	static float m_SceneWindowX;
-	static float m_SceneWindowY;
-
 	ImGuiIO &m_Io;
 	GLuint m_Scene;
 	ImVec4 m_ClearColor;
@@ -43,10 +39,6 @@ public:
 
 	bool &isSceneWindowFocused();
 
-	static std::pair<float, float> getSceneWindowSize();
-
-	static std::pair<float, float> getSceneWindowPos();
-
 private:
 	void renderSceneWindow();
 
@@ -58,6 +50,7 @@ private:
 
 	static void setColorStyle();
 };
+
 
 
 #endif //SURVIVE_EDITOR_H
