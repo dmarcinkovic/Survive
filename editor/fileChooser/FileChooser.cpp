@@ -402,7 +402,7 @@ void FileChooser::openPressed(bool *open)
 
 bool FileChooser::sortByFilename(const File &file1, const File &file2)
 {
-	return file1.name < file2.name;
+	return file1.name.compare(file2.name) < 0;
 }
 
 bool FileChooser::sortBySize(const File &file1, const File &file2)
