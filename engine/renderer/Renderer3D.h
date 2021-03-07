@@ -40,13 +40,11 @@ private:
 public:
 	explicit Renderer3D(const Light &light);
 
-	void render(Camera &camera) const;
+	void render(entt::registry &registry, Camera &camera) const;
 
-	void add3DObject(Object3D &object3D);
+//	void add3DObject(Object3D &object3D);
 
-	void addTerrain(Terrain &terrain);
-
-	void addAnimatedObject(AnimatedObject &object3D);
+//	void addAnimatedObject(AnimatedObject &object3D);
 
 	void addSkyboxEntity(const Entity &entity);
 
@@ -54,9 +52,9 @@ public:
 
 	void removeOutlineToObject();
 
-//    void addShadow(Object3D &object);
+	void addShadow(entt::registry &registry, entt::entity entity);
 
-    void update();
+	void update();
 
 	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
