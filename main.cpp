@@ -46,16 +46,13 @@ int main()
 	registry.emplace<RigidBodyComponent>(dragon2, false);
 
 	renderer.addShadow(registry, dragon2);
-
-	OutlineRenderer outlineRenderer;
-	outlineRenderer.add3DObject(registry, dragon2);
+	renderer.addOutlineToObject(registry, dragon2);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(registry, camera);
-		outlineRenderer.render(registry, camera);
 
 		display.update();
 	}

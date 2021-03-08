@@ -39,7 +39,7 @@ void Renderer3D::render(entt::registry &registry, Camera &camera) const
 
 	m_BloomRenderer.render(registry);
 //	m_WaterRenderer.render(camera, m_Light);
-//	m_OutlineRenderer.render(camera);
+	m_OutlineRenderer.render(registry, camera);
 }
 
 //void Renderer3D::add3DObject(Object3D &object3D)
@@ -53,14 +53,14 @@ void Renderer3D::addSkyboxEntity(const Entity &entity)
 	m_SkyRenderer.addSkyEntity(entity);
 }
 
-void Renderer3D::addOutlineToObject(Object3D &object)
+void Renderer3D::addOutlineToObject(entt::registry &registry, entt::entity entity)
 {
-//	m_OutlineRenderer.add3DObject(object);
+	m_OutlineRenderer.add3DObject(registry, entity);
 }
 
-void Renderer3D::removeOutlineToObject()
+void Renderer3D::removeOutlineToObject(entt::registry &registry)
 {
-//	m_OutlineRenderer.removeObject();
+	m_OutlineRenderer.removeObject(registry);
 }
 
 void Renderer3D::update()

@@ -48,9 +48,9 @@ public:
 
 	void addSkyboxEntity(const Entity &entity);
 
-	void addOutlineToObject(Object3D &object);
+	void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-	void removeOutlineToObject();
+	void removeOutlineToObject(entt::registry &registry);
 
 	void addShadow(entt::registry &registry, entt::entity entity);
 
