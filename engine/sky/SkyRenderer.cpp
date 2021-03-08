@@ -6,35 +6,39 @@
 #include "../math/Maths.h"
 #include "../display/Display.h"
 
-void SkyRenderer::render(const Camera &camera, const glm::vec4 &plane) const
+
+void SkyRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	if (m_ShouldRender)
 	{
-		prepareRendering();
-		loadUniforms(camera, plane);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(m_Sky);
+		const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Sky);
 
-		glDrawElements(GL_TRIANGLES, m_Sky.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		prepareRendering(renderComponent);
+		loadUniforms(transform, camera, plane);
+
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 		finishRendering();
 	}
 }
 
-void SkyRenderer::addSkyEntity(const Entity &sky)
+void SkyRenderer::addSkyEntity(entt::entity sky)
 {
 	m_Sky = sky;
 	m_ShouldRender = true;
 }
 
-void SkyRenderer::prepareRendering() const
+void SkyRenderer::prepareRendering(const RenderComponent &renderComponent) const
 {
 	m_Shader.start();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
-	glBindVertexArray(m_Sky.m_Texture.vaoID());
+	glBindVertexArray(renderComponent.texturedModel.vaoID());
 	glEnableVertexAttribArray(0);
 
-	m_Sky.m_Texture.bindCubeTexture(0);
+	renderComponent.texturedModel.bindCubeTexture(0);
 }
 
 void SkyRenderer::finishRendering()
@@ -49,7 +53,8 @@ void SkyRenderer::finishRendering()
 	SkyShader::stop();
 }
 
-void SkyRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
+void
+SkyRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera, const glm::vec4 &plane) const
 {
 	auto viewMatrix = Maths::createViewMatrix(camera);
 	viewMatrix[3][0] = 0;
@@ -61,7 +66,7 @@ void SkyRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) con
 	auto projectionMatrix = Maths::projectionMatrix;
 	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
 
-	auto transformationMatrix = Maths::createTransformationMatrix(m_Sky.m_Position, m_Sky.m_Scale);
+	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 	m_Shader.loadPlane(plane);
 }
