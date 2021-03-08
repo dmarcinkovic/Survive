@@ -8,7 +8,7 @@
 struct OutlineComponent
 {
 	bool drawOutline{};
-	
+
 	explicit OutlineComponent(bool drawOutline)
 		: drawOutline(drawOutline)
 	{}

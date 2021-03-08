@@ -55,12 +55,12 @@ void Renderer3D::addSkyboxEntity(const Entity &entity)
 
 void Renderer3D::addOutlineToObject(Object3D &object)
 {
-	m_OutlineRenderer.add3DObject(object);
+//	m_OutlineRenderer.add3DObject(object);
 }
 
 void Renderer3D::removeOutlineToObject()
 {
-	m_OutlineRenderer.removeObject();
+//	m_OutlineRenderer.removeObject();
 }
 
 void Renderer3D::update()

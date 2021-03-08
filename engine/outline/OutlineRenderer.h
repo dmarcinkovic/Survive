@@ -13,6 +13,10 @@
 #include "../objects/Object3D.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
+#include "../../ecs/entt.hpp"
+#include "../components/Transform3DComponent.h"
+#include "../components/RenderComponent.h"
+
 
 class OutlineRenderer
 {
@@ -20,23 +24,24 @@ private:
 	static constexpr float SCALE = 1.04f;
 
 	OutlineShader m_Shader;
-	Object3D *m_Object{};
+	entt::entity m_Entity{};
+	bool m_Render{};
 
 public:
-	void render(const Camera &camera) const;
+	void render(entt::registry &registry, const Camera &camera) const;
 
-	void add3DObject(Object3D &object);
+	void add3DObject(entt::registry &registry, entt::entity entity);
 
-	void removeObject();
+	void removeObject(entt::registry &registry);
 
 private:
 	static void setStencilFunctions();
 
 	static void resetStencilFunctions();
 
-	void loadUniforms(const Camera &camera) const;
+	void loadUniforms(const Transform3DComponent &transform, const Camera &camera) const;
 
-	void prepareObject() const;
+	static void prepareObject(const RenderComponent &renderComponent) ;
 
 	static void finishRenderingObject();
 };

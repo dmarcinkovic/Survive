@@ -23,7 +23,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
-//	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_STENCIL_TEST);
 
 	loadUniforms(camera, shadowMap, plane);
 
@@ -36,7 +36,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 	}
 
 	Renderer3DUtil::finishRendering();
-//	glDisable(GL_STENCIL_TEST);
+	glDisable(GL_STENCIL_TEST);
 }
 
 void
@@ -47,14 +47,15 @@ ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::en
 	{
 		loadObjectUniforms(registry, object, camera);
 
-//		if (o.m_DrawOutline)
-//		{
-//			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-//			glStencilMask(0xFF);
-//		} else
-//		{
-//			glStencilMask(0x00);
-//		}
+		const OutlineComponent &outline = registry.get<OutlineComponent>(object);
+		if (outline.drawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		} else
+		{
+			glStencilMask(0x00);
+		}
 
 		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);

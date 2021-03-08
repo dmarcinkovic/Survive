@@ -3,7 +3,6 @@
 #include "ecs/entt.hpp"
 #include "engine/light/Light.h"
 #include "engine/camera/Camera.h"
-#include "engine/terrain/Terrain.h"
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/renderer/Renderer3D.h"
@@ -37,14 +36,19 @@ int main()
 															Loader::loadTexture("res/lamp.jpg")));
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -30});
 	registry.emplace<RigidBodyComponent>(dragon, false);
+	registry.emplace<OutlineComponent>(dragon, true);
 
 	renderer.addShadow(registry, dragon);
+
+	OutlineRenderer outlineRenderer;
+	outlineRenderer.add3DObject(registry, dragon);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(registry, camera);
+		outlineRenderer.render(registry, camera);
 
 		display.update();
 	}
