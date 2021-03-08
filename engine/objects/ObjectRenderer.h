@@ -37,6 +37,8 @@ private:
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
+
+	static void drawOutline(entt::registry &registry, entt::entity entity);
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H

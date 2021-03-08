@@ -46,19 +46,7 @@ ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::en
 	for (auto const &object : objects)
 	{
 		loadObjectUniforms(registry, object, camera);
-
-		if (registry.has<OutlineComponent>(object))
-		{
-			const OutlineComponent &outline = registry.get<OutlineComponent>(object);
-			if (outline.drawOutline)
-			{
-				glStencilFunc(GL_ALWAYS, 1, 0xFF);
-				glStencilMask(0xFF);
-			}
-		} else
-		{
-			glStencilMask(0x00);
-		}
+		drawOutline(registry, object);
 
 		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
@@ -141,4 +129,20 @@ ObjectRenderer::prepareEntities(entt::registry &registry)
 	}
 
 	return entities;
+}
+
+void ObjectRenderer::drawOutline(entt::registry &registry, entt::entity entity)
+{
+	if (registry.has<OutlineComponent>(entity))
+	{
+		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		if (outline.drawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+	} else
+	{
+		glStencilMask(0x00);
+	}
 }
