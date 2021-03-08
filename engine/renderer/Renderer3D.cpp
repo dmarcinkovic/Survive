@@ -15,13 +15,13 @@ Renderer3D::Renderer3D(const Light &light)
 {
 }
 
-void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
+void Renderer3D::renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
 {
-//	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
-//	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
-//	m_AnimationRenderer.render(camera, plane);
+	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
+	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
+	m_AnimationRenderer.render(registry, camera, plane);
 
-//	m_SkyRenderer.render(camera, plane);
+	m_SkyRenderer.render(registry, camera, plane);
 }
 
 void Renderer3D::render(entt::registry &registry, Camera &camera) const
@@ -32,11 +32,7 @@ void Renderer3D::render(entt::registry &registry, Camera &camera) const
 									  Constants::SHADOW_HEIGHT);
 
 //	renderToWaterFrameBuffers(camera);
-//	renderScene(camera);
-	m_ObjectRenderer.render(registry, camera, m_ShadowMap);
-	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap);
-	m_AnimationRenderer.render(registry, camera);
-	m_SkyRenderer.render(registry, camera);
+	renderScene(registry, camera);
 
 	m_BloomRenderer.render(registry);
 //	m_WaterRenderer.render(camera, m_Light);
@@ -92,7 +88,7 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 	camera.invertPitch();
 
 	Display::clearWindow();
-	renderScene(camera, m_ReflectionCLippingPlane);
+//	renderScene(camera, m_ReflectionCLippingPlane);
 
 	camera.moveCameraInYDirection(distance);
 	camera.invertPitch();
@@ -104,7 +100,7 @@ void Renderer3D::renderWaterRefraction(Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
-	renderScene(camera, m_RefractionCLippingPlane);
+//	renderScene(camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 

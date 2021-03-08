@@ -56,7 +56,7 @@ public:
 
 	void update();
 
-	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+	void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addWaterTile(WaterTile &waterTile);
 
