@@ -5,6 +5,7 @@
 #include "engine/camera/Camera.h"
 #include "engine/entity/Entity.h"
 #include "engine/sky/SkyRenderer.h"
+#include "engine/renderer/Renderer3D.h"
 
 int main()
 {
@@ -26,8 +27,8 @@ int main()
 	registry.emplace<RenderComponent>(sky, texturedModel);
 	registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500});
 
-	SkyRenderer renderer;
-	renderer.addSkyEntity(sky);
+	Renderer3D renderer(light);
+	renderer.addSkyboxEntity(sky);
 
 	while (display.isRunning())
 	{

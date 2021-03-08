@@ -46,7 +46,7 @@ public:
 
 //	void addAnimatedObject(AnimatedObject &object3D);
 
-	void addSkyboxEntity(const Entity &entity);
+	void addSkyboxEntity(entt::entity sky);
 
 	void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
