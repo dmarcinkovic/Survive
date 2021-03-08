@@ -18,7 +18,7 @@ private:
 	static constexpr float ROTATE_SPEED = 5.0f;
 
 	SkyShader m_Shader;
-	entt::entity m_Sky;
+	entt::entity m_Sky{};
 
 	float m_Rotation = 0;
 	bool m_ShouldRender = false;
