@@ -2,7 +2,6 @@
 // Created by david on 27. 12. 2020..
 //
 
-#include <iostream>
 #include "OutlineRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
@@ -45,8 +44,7 @@ void OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
 	m_Entity = entity;
 
 	m_Render = true;
-	OutlineComponent &outline = registry.get<OutlineComponent>(entity);
-	outline.drawOutline = true;
+	registry.emplace<OutlineComponent>(entity, true);
 }
 
 void OutlineRenderer::removeObject(entt::registry &registry)

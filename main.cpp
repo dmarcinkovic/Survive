@@ -34,14 +34,21 @@ int main()
 	auto dragon = registry.create();
 	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
 															Loader::loadTexture("res/lamp.jpg")));
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -30});
+	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, 0, -30});
 	registry.emplace<RigidBodyComponent>(dragon, false);
-	registry.emplace<OutlineComponent>(dragon, true);
 
 	renderer.addShadow(registry, dragon);
 
+	auto dragon2 = registry.create();
+	registry.emplace<RenderComponent>(dragon2, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
+															Loader::loadTexture("res/lamp.jpg")));
+	registry.emplace<Transform3DComponent>(dragon2, glm::vec3{5, 0, -30});
+	registry.emplace<RigidBodyComponent>(dragon2, false);
+
+	renderer.addShadow(registry, dragon2);
+
 	OutlineRenderer outlineRenderer;
-	outlineRenderer.add3DObject(registry, dragon);
+	outlineRenderer.add3DObject(registry, dragon2);
 
 	while (display.isRunning())
 	{
