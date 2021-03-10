@@ -8,6 +8,7 @@
 #include "AnimationComponent.h"
 #include "BloomComponent.h"
 #include "IdComponent.h"
+#include "MoveComponent.h"
 #include "OutlineComponent.h"
 #include "ReflectionComponent.h"
 #include "RefractionComponent.h"
