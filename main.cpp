@@ -6,6 +6,7 @@
 #include "engine/entity/Entity.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainGenerator.h"
+#include "engine/constant/Constants.h"
 
 int main()
 {
@@ -41,7 +42,7 @@ int main()
 
 	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
 	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
-	WaterTile waterTile(loader.renderQuad(), 0, -6, -20, duDvTexture, normalMap);
+	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
 
 	renderer.addWaterTile(waterTile);
 

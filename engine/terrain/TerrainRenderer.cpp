@@ -20,9 +20,6 @@ void TerrainRenderer::render(entt::registry &registry, const Camera &camera, con
 		prepareRendering(renderComponent, textures);
 		renderShadow(shadowMap, light);
 
-		auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
-																	  transform.rotation);
-
 		loadUniforms(camera, light, plane, transform);
 		m_Shader.loadAddShadow(shadowMap != 0);
 
