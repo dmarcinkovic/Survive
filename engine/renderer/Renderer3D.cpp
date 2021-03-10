@@ -31,19 +31,13 @@ void Renderer3D::render(entt::registry &registry, Camera &camera) const
 	m_FrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 									  Constants::SHADOW_HEIGHT);
 
-//	renderToWaterFrameBuffers(camera);
+	renderToWaterFrameBuffers(registry, camera);
 	renderScene(registry, camera);
 
 	m_BloomRenderer.render(registry);
-//	m_WaterRenderer.render(camera, m_Light);
+	m_WaterRenderer.render(camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
 }
-
-//void Renderer3D::add3DObject(Object3D &object3D)
-//{
-//	m_ObjectRenderer.add3DObject(object3D);
-//	m_MousePicking.add3DObject(object3D);
-//}
 
 void Renderer3D::addSkyboxEntity(entt::entity sky)
 {
@@ -65,20 +59,20 @@ void Renderer3D::update()
 	m_SkyRenderer.rotateSky();
 }
 
-void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
+void Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
 	if (m_WaterRenderer.shouldRender())
 	{
 		glEnable(GL_CLIP_DISTANCE0);
 
-		renderWaterReflection(camera);
-		renderWaterRefraction(camera);
+		renderWaterReflection(registry, camera);
+		renderWaterRefraction(registry, camera);
 
 		glDisable(GL_CLIP_DISTANCE0);
 	}
 }
 
-void Renderer3D::renderWaterReflection(Camera &camera) const
+void Renderer3D::renderWaterReflection(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindReflectionFrameBuffer();
 
@@ -88,7 +82,7 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 	camera.invertPitch();
 
 	Display::clearWindow();
-//	renderScene(camera, m_ReflectionCLippingPlane);
+	renderScene(registry, camera, m_ReflectionCLippingPlane);
 
 	camera.moveCameraInYDirection(distance);
 	camera.invertPitch();
@@ -96,11 +90,11 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::renderWaterRefraction(Camera &camera) const
+void Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
-//	renderScene(camera, m_RefractionCLippingPlane);
+	renderScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 

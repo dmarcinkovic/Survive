@@ -42,10 +42,6 @@ public:
 
 	void render(entt::registry &registry, Camera &camera) const;
 
-//	void add3DObject(Object3D &object3D);
-
-//	void addAnimatedObject(AnimatedObject &object3D);
-
 	void addSkyboxEntity(entt::entity sky);
 
 	void addOutlineToObject(entt::registry &registry, entt::entity entity);
@@ -60,14 +56,12 @@ public:
 
 	void addWaterTile(WaterTile &waterTile);
 
-//	void addBloom(Object3D &object);
-
 private:
-	void renderToWaterFrameBuffers(Camera &camera) const;
+	void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterReflection(Camera &camera) const;
+	void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterRefraction(Camera &camera) const;
+	void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
 };
 
 
