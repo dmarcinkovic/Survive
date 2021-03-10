@@ -9,14 +9,14 @@
 void TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
 							 const glm::vec4 &plane) const
 {
-	auto group = registry.group<RenderComponent, Transform3DComponent, TexturedComponent>();
-	if (group.empty())
+	auto view = registry.view<RenderComponent, Transform3DComponent, TexturedComponent>(entt::exclude<MoveComponent>);
+	if (view.begin() == view.end())
 	{
 		return;
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
-	group.each([&](RenderComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures) {
+	view.each([&](RenderComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures) {
 		prepareRendering(renderComponent, textures);
 		renderShadow(shadowMap, light);
 
