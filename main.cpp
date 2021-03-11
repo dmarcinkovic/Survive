@@ -44,7 +44,11 @@ int main()
 	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
 	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
 
-	renderer.addWaterTile(waterTile);
+	auto water = registry.create();
+	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
+	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
+	registry.emplace<TexturedComponent>(water, Loader::loadAllTextures({"res/waterDUDV.png", "res/normalMap.png"}));
+	registry.emplace<MoveComponent>(water, 0.03f);
 
 	while (display.isRunning())
 	{

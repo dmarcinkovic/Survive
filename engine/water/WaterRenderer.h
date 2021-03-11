@@ -13,39 +13,36 @@
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "WaterFbo.h"
+#include "../../ecs/entt.hpp"
+#include "../components/Components.h"
 
 class WaterRenderer
 {
 private:
-	static constexpr float WAVE_SPEED = 0.03f;
-
 	WaterShader m_Shader;
 	WaterFbo m_Fbo;
 
-	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
-
 public:
-	void render(const Camera &camera, const Light &light) const;
-
-	void addWaterTile(WaterTile &waterTile);
+	void render(entt::registry &registry, const Camera &camera, const Light &light) const;
 
 	void bindReflectionFrameBuffer() const;
 
 	void bindRefractionFrameBuffer() const;
 
-	[[nodiscard]] bool shouldRender() const;
+	[[nodiscard]] static bool shouldRender(entt::registry &registry);
 
 private:
 	void prepareRendering(const Camera &camera) const;
 
 	static void finishRendering();
 
-	static void loadMoveFactor(const WaterShader &shader);
+	static void loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent);
 
-	void loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const;
+	void loadUniforms(const Camera &camera, const Transform3DComponent &transform, MoveComponent &moveComponent,
+					  const Light &light) const;
 
 	static void
-	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture,
+	bindTextures(const TexturedComponent &textures, const Texture &reflectionTexture, const Texture &refractionTexture,
 				 const Texture &refractionDepthMap);
 };
 

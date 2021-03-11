@@ -35,7 +35,7 @@ void Renderer3D::render(entt::registry &registry, Camera &camera) const
 	renderScene(registry, camera);
 
 	m_BloomRenderer.render(registry);
-	m_WaterRenderer.render(camera, m_Light);
+	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
 }
 
@@ -61,7 +61,7 @@ void Renderer3D::update()
 
 void Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
-	if (m_WaterRenderer.shouldRender())
+	if (m_WaterRenderer.shouldRender(registry))
 	{
 		glEnable(GL_CLIP_DISTANCE0);
 
@@ -96,11 +96,6 @@ void Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera)
 	Display::clearWindow();
 	renderScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
-}
-
-void Renderer3D::addWaterTile(WaterTile &waterTile)
-{
-	m_WaterRenderer.addWaterTile(waterTile);
 }
 
 void Renderer3D::addShadow(entt::registry &registry, entt::entity entity)
