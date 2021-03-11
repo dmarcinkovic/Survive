@@ -9,7 +9,6 @@
 
 #include "../texture/Texture.h"
 #include "WaterShader.h"
-#include "WaterTile.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "WaterFbo.h"
