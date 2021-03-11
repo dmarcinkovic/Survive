@@ -40,10 +40,6 @@ int main()
 
 	renderer.addSkyboxEntity(sky);
 
-	Texture duDvTexture(Loader::loadTexture("res/waterDUDV.png"));
-	Texture normalMap(Loader::loadTexture("res/normalMap.png"));
-	WaterTile waterTile(loader.renderQuad(), 0, Constants::WATER_HEIGHT, -20, duDvTexture, normalMap);
-
 	auto water = registry.create();
 	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
 	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
