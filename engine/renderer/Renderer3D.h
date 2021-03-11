@@ -54,8 +54,6 @@ public:
 
 	void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-	void addWaterTile(WaterTile &waterTile);
-
 private:
 	void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 
