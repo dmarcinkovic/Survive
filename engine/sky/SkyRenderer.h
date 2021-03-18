@@ -20,7 +20,7 @@ private:
 	SkyShader m_Shader;
 	entt::entity m_Sky{};
 
-	float m_Rotation = 0;
+	float m_Rotation = -90;
 	bool m_ShouldRender = false;
 
 public:
