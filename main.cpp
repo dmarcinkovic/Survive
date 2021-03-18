@@ -6,7 +6,6 @@
 #include "engine/entity/Entity.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainGenerator.h"
-#include "engine/constant/Constants.h"
 #include "engine/parser/ObjParser.h"
 
 int main()
@@ -41,13 +40,6 @@ int main()
 
 	renderer.addSkyboxEntity(sky);
 
-	BlurRenderer blurRenderer(light, 400, 400);
-	GuiRenderer guiRenderer;
-
-	auto blurredTexture = registry.create();
-	registry.emplace<RenderComponent>(blurredTexture, TexturedModel(loader.renderQuad(), blurRenderer.getTexture()));
-	registry.emplace<Transform2DComponent>(blurredTexture, glm::vec2{0.5, 0.5}, glm::vec2{0.5, 0.5});
-
 	auto dragon = registry.create();
 	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
 															Loader::loadTexture("res/lamp.jpg")));
@@ -59,9 +51,6 @@ int main()
 		Display::clearWindow();
 
 		renderer.render(registry, camera);
-
-		blurRenderer.render(registry, camera);
-		guiRenderer.render(registry);
 
 		display.update();
 	}

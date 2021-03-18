@@ -39,12 +39,12 @@ private:
 public:
 	BlurRenderer(const Light &light, int width, int height);
 
-	void render(entt::registry  &registry, const Camera &camera) const;
+	void render(entt::registry &registry, const Camera &camera) const;
 
 	[[nodiscard]] const Texture &getTexture() const;
 
 private:
-	void renderToFbo(entt::registry  &registry, const Camera &camera) const;
+	void renderToFbo(entt::registry &registry, const Camera &camera) const;
 
 	void renderBlur() const;
 
