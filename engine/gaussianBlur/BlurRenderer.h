@@ -47,8 +47,6 @@ public:
 
 	void addEntity(entt::registry &registry, entt::entity entity);
 
-	void addTerrain(Terrain &terrain);
-
 private:
 	void renderToFbo(entt::registry  &registry, const Camera &camera) const;
 
