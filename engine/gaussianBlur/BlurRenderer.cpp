@@ -18,11 +18,6 @@ BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 
 void BlurRenderer::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!m_ShouldRender)
-	{
-		return;
-	}
-
 	renderToFbo(registry, camera);
 	renderBlur();
 }
@@ -44,13 +39,6 @@ void BlurRenderer::finishRendering()
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-}
-
-void BlurRenderer::addEntity(entt::registry &registry, entt::entity entity)
-{
-//	m_AnimationRenderer.addAnimatedModel(registry, entity);
-//	m_ObjectRenderer.add3DObject(registry, entity);
-	m_ShouldRender = true;
 }
 
 void BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) const

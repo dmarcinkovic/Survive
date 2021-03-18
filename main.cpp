@@ -7,6 +7,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/constant/Constants.h"
+#include "engine/parser/ObjParser.h"
 
 int main()
 {
@@ -40,17 +41,27 @@ int main()
 
 	renderer.addSkyboxEntity(sky);
 
-	auto water = registry.create();
-	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
-	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
-	registry.emplace<TexturedComponent>(water, Loader::loadAllTextures({"res/waterDUDV.png", "res/normalMap.png"}));
-	registry.emplace<MoveComponent>(water, 0.03f);
+	BlurRenderer blurRenderer(light, 400, 400);
+	GuiRenderer guiRenderer;
+
+	auto blurredTexture = registry.create();
+	registry.emplace<RenderComponent>(blurredTexture, TexturedModel(loader.renderQuad(), blurRenderer.getTexture()));
+	registry.emplace<Transform2DComponent>(blurredTexture, glm::vec2{0.5, 0.5}, glm::vec2{0.5, 0.5});
+
+	auto dragon = registry.create();
+	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
+															Loader::loadTexture("res/lamp.jpg")));
+	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -30});
+	registry.emplace<RigidBodyComponent>(dragon, false);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(registry, camera);
+
+		blurRenderer.render(registry, camera);
+		guiRenderer.render(registry);
 
 		display.update();
 	}

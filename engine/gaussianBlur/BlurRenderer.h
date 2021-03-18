@@ -45,8 +45,6 @@ public:
 
 	[[nodiscard]] const Texture &getTexture() const;
 
-	void addEntity(entt::registry &registry, entt::entity entity);
-
 private:
 	void renderToFbo(entt::registry  &registry, const Camera &camera) const;
 
