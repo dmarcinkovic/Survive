@@ -33,8 +33,6 @@ private:
 	int m_Width, m_Height;
 
 	Texture m_Texture;
-
-	bool m_ShouldRender = false;
 	HorizontalBlurRenderer m_HorizontalBlurRenderer;
 	VerticalBlurRenderer m_VerticalBlurRenderer;
 
