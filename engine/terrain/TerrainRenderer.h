@@ -6,7 +6,6 @@
 #define SURVIVE_TERRAINRENDERER_H
 
 #include "TerrainShader.h"
-#include "Terrain.h"
 #include "../camera/Camera.h"
 #include "../light/Light.h"
 #include "../../ecs/entt.hpp"
