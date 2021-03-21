@@ -61,7 +61,7 @@ void Renderer3D::update()
 
 void Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
-	if (m_WaterRenderer.shouldRender(registry))
+	if (WaterRenderer::shouldRender(registry))
 	{
 		glEnable(GL_CLIP_DISTANCE0);
 
