@@ -14,7 +14,6 @@
 #include "../../light/Light.h"
 #include "AnimationShader.h"
 #include "../../objects/ObjectShader.h"
-#include "../animation/AnimatedObject.h"
 #include "../../../ecs/entt.hpp"
 
 class AnimationRenderer

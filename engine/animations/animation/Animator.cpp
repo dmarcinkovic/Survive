@@ -4,9 +4,10 @@
 
 #include "Animator.h"
 #include "../../display/Display.h"
+#include "../../components/AnimationComponent.h"
 
-Animator::Animator(Animation animation, AnimatedObject animatedModel)
-		: m_Animation(std::move(animation)), m_Model(std::move(animatedModel))
+Animator::Animator(Animation animation, entt::entity animatedObject)
+		: m_Animation(std::move(animation)), m_Model(animatedObject)
 {
 
 }
@@ -34,11 +35,13 @@ void Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4
 	joint.setAnimatedTransform(currentTransform);
 }
 
-void Animator::update()
+void Animator::update(entt::registry &registry)
 {
+	AnimationComponent animationComponent = registry.get<AnimationComponent>(m_Model);
+
 	increaseAnimationTime();
 	std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-	applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{});
+	applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{});
 }
 
 void Animator::increaseAnimationTime()

@@ -9,7 +9,6 @@
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
-#include "../animations/animation/AnimatedObject.h"
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
 #include "../mousePicking/MousePicking.h"
