@@ -19,9 +19,6 @@ class MousePicking
 {
 private:
 	static bool mousePressed;
-
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
-
 	MousePickingShader m_Shader;
 
 	glm::vec2 m_MousePosition{};
@@ -29,14 +26,12 @@ private:
 public:
 	explicit MousePicking();
 
-	void add3DObject(Object3D &entity);
-
-	void render(const Camera &camera) const;
+	void render(entt::registry &registry, const Camera &camera) const;
 
 private:
 	void mousePressedHandler();
 
-	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
+	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 	void getRenderedObject() const;
 
@@ -46,6 +41,8 @@ private:
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
+
+	void loadTransformationMatrix(const Camera &camera, entt::registry &registry, entt::entity entity) const;
 };
 
 

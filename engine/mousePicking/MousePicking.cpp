@@ -30,12 +30,6 @@ void MousePicking::mousePressedHandler()
 	});
 }
 
-void MousePicking::add3DObject(Object3D &entity)
-{
-	auto &batch = m_Objects[entity.m_Texture];
-	batch.emplace_back(entity);
-}
-
 glm::vec4 MousePicking::getColor(int id)
 {
 	int r = (id & 0x000000FF) >> 0;
@@ -45,24 +39,26 @@ glm::vec4 MousePicking::getColor(int id)
 	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
 }
 
-void MousePicking::render(const Camera &camera) const
+void MousePicking::render(entt::registry  &registry, const Camera &camera) const
 {
 	if (!mousePressed)
 	{
 		return;
 	}
 
+	auto entities = prepareEntities(registry);
+
 	Renderer3DUtil::prepareRendering(m_Shader);
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 
-	for (auto const&[texturedModel, objects] : m_Objects)
+	for (auto const&[texturedModel, objects] : entities)
 	{
 		glBindVertexArray(texturedModel.vaoID());
 		glEnableVertexAttribArray(0);
 
-		renderScene(objects, camera);
+		renderScene(registry, objects, camera);
 
 		glDisableVertexAttribArray(0);
 		Loader::unbindVao();
@@ -77,18 +73,18 @@ void MousePicking::render(const Camera &camera) const
 	mousePressed = false;
 }
 
-void MousePicking::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+void MousePicking::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
-		auto const &o = object.get();
-		m_Shader.loadTransformationMatrix(
-				Maths::createTransformationMatrix(o.m_Position, o.m_Scale, camera.m_Rotation));
+		loadTransformationMatrix(camera, registry, object);
 
-		glm::vec4 color = getColor(o.m_Id);
+		IdComponent id = registry.get<IdComponent>(object);
+		glm::vec4 color = getColor(id.id);
 		m_Shader.loadPickingColor(color);
 
-		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 	}
 }
 
@@ -146,4 +142,30 @@ MousePicking::prepareEntities(entt::registry &registry)
 	}
 
 	return entities;
+}
+
+void MousePicking::loadTransformationMatrix(const Camera &camera, entt::registry &registry, entt::entity entity) const
+{
+	glm::vec3 position;
+	glm::vec3 scale;
+	glm::vec3 rotation = camera.m_Rotation;
+
+	if (registry.has<Transform2DComponent>(entity))
+	{
+			Transform2DComponent transform = registry.get<Transform2DComponent>(entity);
+
+			position = glm::vec3{transform.position.x, transform.position.y, 0};
+			scale = glm::vec3{transform.scale.x, transform.scale.y, 1};
+			rotation += glm::vec3{transform.rotation.x, transform.rotation.y, 0};
+	} else
+	{
+		Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
+
+		position = transform.position;
+		scale = transform.scale;
+		rotation += transform.rotation;
+	}
+
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(position, scale, rotation);
+	m_Shader.loadTransformationMatrix(transformationMatrix);
 }
