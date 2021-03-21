@@ -9,7 +9,6 @@
 #include <unordered_map>
 
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"

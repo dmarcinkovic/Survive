@@ -11,7 +11,6 @@
 
 #include "../camera/Camera.h"
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "MousePickingShader.h"
 #include "../../ecs/entt.hpp"
 

@@ -11,9 +11,9 @@
 
 #include "ShadowShader.h"
 #include "../light/Light.h"
-#include "../objects/Object3D.h"
 #include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"
+#include "../texture/TexturedModel.h"
 
 class ShadowRenderer
 {

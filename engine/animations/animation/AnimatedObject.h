@@ -9,9 +9,8 @@
 
 #include "../joints/Joint.h"
 #include "../../entity/Entity.h"
-#include "../../objects/Object3D.h"
 
-class AnimatedObject : public Object3D
+class AnimatedObject
 {
 private:
 	Joint m_RootJoint;

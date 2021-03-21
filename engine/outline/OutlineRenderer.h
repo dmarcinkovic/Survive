@@ -10,7 +10,6 @@
 
 #include "OutlineShader.h"
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"

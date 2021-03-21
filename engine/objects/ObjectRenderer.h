@@ -13,7 +13,6 @@
 #include "../entity/Entity.h"
 #include "../camera/Camera.h"
 #include "../light/Light.h"
-#include "Object3D.h"
 #include "../gui/GuiRenderer.h"
 
 class ObjectRenderer
