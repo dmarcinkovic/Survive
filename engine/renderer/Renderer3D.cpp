@@ -26,7 +26,7 @@ void Renderer3D::renderScene(entt::registry &registry, Camera &camera, const glm
 
 void Renderer3D::render(entt::registry &registry, Camera &camera) const
 {
-//	m_MousePicking.render(camera);
+	m_MousePicking.render(registry, camera);
 
 	m_FrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 									  Constants::SHADOW_HEIGHT);

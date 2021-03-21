@@ -45,6 +45,7 @@ int main()
 															Loader::loadTexture("res/lamp.jpg")));
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -30});
 	registry.emplace<RigidBodyComponent>(dragon, false);
+	registry.emplace<IdComponent>(dragon, 1);
 
 	while (display.isRunning())
 	{
