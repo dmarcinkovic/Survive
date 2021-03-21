@@ -7,6 +7,8 @@
 
 #include <glm/glm.hpp>
 
+#include "Transform3DComponent.h"
+
 struct Transform2DComponent
 {
 	glm::vec2 position;
@@ -19,6 +21,12 @@ struct Transform2DComponent
 								  const glm::vec2 &rotation = glm::vec2{0.0f})
 			: position(position), rotation(rotation), scale(scale)
 	{}
+
+	explicit operator Transform3DComponent() const
+	{
+		return Transform3DComponent(glm::vec3{position, 0},
+									glm::vec3{scale, 1}, glm::vec3{rotation, 0});
+	}
 };
 
 #endif //SURVIVE_TRANSFORM2DCOMPONENT_H
