@@ -13,6 +13,7 @@
 #include "../texture/TexturedModel.h"
 #include "../objects/Object3D.h"
 #include "MousePickingShader.h"
+#include "../../ecs/entt.hpp"
 
 class MousePicking
 {
@@ -42,6 +43,9 @@ private:
 	static glm::vec4 getColor(int id);
 
 	static int getID(const std::uint8_t *data);
+
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
 };
 
 

@@ -8,6 +8,7 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../constant/Constants.h"
+#include "../components/Components.h"
 
 bool MousePicking::mousePressed = false;
 
@@ -119,4 +120,30 @@ int MousePicking::getID(const std::uint8_t *data)
 	}
 
 	return r + g + b;
+}
+
+std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+MousePicking::prepareEntities(entt::registry &registry)
+{
+	auto entities3D = registry.group<RenderComponent, Transform3DComponent, IdComponent>();
+	auto entities2D = registry.group<RenderComponent, Transform2DComponent, IdComponent>();
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : entities2D)
+	{
+		RenderComponent renderComponent = entities2D.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	for (auto const &entity : entities3D)
+	{
+		RenderComponent renderComponent = entities3D.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
 }
