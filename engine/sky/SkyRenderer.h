@@ -7,7 +7,6 @@
 
 
 #include "SkyShader.h"
-#include "../entity/Entity.h"
 #include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"
 #include "../components/Components.h"

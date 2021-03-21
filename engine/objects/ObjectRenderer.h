@@ -10,7 +10,6 @@
 
 #include "ObjectShader.h"
 #include "../texture/TexturedModel.h"
-#include "../entity/Entity.h"
 #include "../camera/Camera.h"
 #include "../light/Light.h"
 #include "../gui/GuiRenderer.h"

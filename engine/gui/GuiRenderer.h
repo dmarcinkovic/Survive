@@ -9,7 +9,6 @@
 #include <unordered_map>
 
 #include "../renderer/Loader.h"
-#include "../entity/Entity.h"
 #include "../texture/TexturedModel.h"
 #include "GuiShader.h"
 #include "../../ecs/entt.hpp"

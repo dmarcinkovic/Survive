@@ -3,7 +3,6 @@
 #include "ecs/entt.hpp"
 #include "engine/light/Light.h"
 #include "engine/camera/Camera.h"
-#include "engine/entity/Entity.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/parser/ObjParser.h"
