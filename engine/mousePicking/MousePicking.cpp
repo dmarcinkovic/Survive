@@ -39,7 +39,7 @@ glm::vec4 MousePicking::getColor(int id)
 	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
 }
 
-void MousePicking::render(entt::registry  &registry, const Camera &camera) const
+void MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
 	if (!mousePressed)
 	{
@@ -73,7 +73,8 @@ void MousePicking::render(entt::registry  &registry, const Camera &camera) const
 	mousePressed = false;
 }
 
-void MousePicking::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const
+void MousePicking::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+							   const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
@@ -146,26 +147,12 @@ MousePicking::prepareEntities(entt::registry &registry)
 
 void MousePicking::loadTransformationMatrix(const Camera &camera, entt::registry &registry, entt::entity entity) const
 {
-	glm::vec3 position;
-	glm::vec3 scale;
-	glm::vec3 rotation = camera.m_Rotation;
+	Transform3DComponent transform = registry.has<Transform2DComponent>(entity)
+									 ? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(entity))
+									 : registry.get<Transform3DComponent>(entity);
 
-	if (registry.has<Transform2DComponent>(entity))
-	{
-			Transform2DComponent transform = registry.get<Transform2DComponent>(entity);
+	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
 
-			position = glm::vec3{transform.position.x, transform.position.y, 0};
-			scale = glm::vec3{transform.scale.x, transform.scale.y, 1};
-			rotation += glm::vec3{transform.rotation.x, transform.rotation.y, 0};
-	} else
-	{
-		Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
-
-		position = transform.position;
-		scale = transform.scale;
-		rotation += transform.rotation;
-	}
-
-	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(position, scale, rotation);
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 }
