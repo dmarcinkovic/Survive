@@ -10,14 +10,17 @@
 
 void ButtonRenderer::render() const
 {
-	if (m_Buttons.empty()) return;
+	if (m_Buttons.empty())
+	{
+		return;
+	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
-	Renderer2DUtil::prepareEntity(m_Buttons[0].get().m_Texture);
 
 	for (auto const &buttons : m_Buttons)
 	{
 		const Button &button = buttons.get();
+		Renderer2DUtil::prepareEntity(button.m_Texture);
 
 		m_Shader.loadColor(button.m_Color);
 		m_Shader.loadTransformationMatrix(
@@ -26,9 +29,9 @@ void ButtonRenderer::render() const
 		m_Shader.loadIsLoadingImage(button.m_Texture.isValidTexture());
 
 		glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		Renderer2DUtil::finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRenderingEntity();
 	Renderer2DUtil::finishRendering();
 }
 

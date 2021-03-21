@@ -3,6 +3,8 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/terrain/TerrainGenerator.h"
+#include "engine/ui/button/Button.h"
+#include "engine/ui/button/ButtonRenderer.h"
 
 int main()
 {
@@ -39,11 +41,22 @@ int main()
 	lamp.addBloomEffect(lampBloom);
 	lamp2.addBloomEffect(lampBloom);
 
+	Button button(TexturedModel(loader.renderQuad(), Texture(0)), glm::vec3{0.5, 0.5, 0}, 0.3f, 0.1f, glm::vec4{1, 0, 0, 1});
+	ButtonRenderer buttonRenderer;
+
+	buttonRenderer.addButton(button);
+
+	Button button2(TexturedModel(loader.renderQuad(), Texture(Loader::loadTexture("res/dirt.png"))), glm::vec3{-0.5, 0.5, 0}, 0.3f, 0.1f, glm::vec4{0, 1, 0, 1});
+	buttonRenderer.addButton(button2);
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(camera);
+
+		buttonRenderer.render();
+
 
 		display.update();
 	}
