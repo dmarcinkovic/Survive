@@ -84,7 +84,6 @@ void TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int
 								  const std::vector<std::vector<float>> &terrainHeight)
 {
 	glm::vec3 normal = calculateNormal(x, y, width, height, terrainHeight);
-
 	normals.emplace_back(normal.x);
 	normals.emplace_back(normal.y);
 	normals.emplace_back(normal.z);

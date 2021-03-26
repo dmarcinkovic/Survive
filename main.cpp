@@ -3,8 +3,6 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/terrain/TerrainGenerator.h"
-#include "engine/ui/button/Button.h"
-#include "engine/ui/button/ButtonRenderer.h"
 
 int main()
 {
@@ -24,39 +22,11 @@ int main()
 	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
 	renderer.addTerrain(terrain);
 
-	auto textures = Loader::loadTextures({"res/lamp_bloom.png", "res/lamp_bloom_emissive.png"});
-
-	TexturedModel texturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
-								textures["res/lamp_bloom.png"]);
-	Object3D lamp(texturedModel, glm::vec3{-5, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
-	Object3D lamp2(texturedModel, glm::vec3{8, -10, -40}, glm::vec3{0, -90, 0}, false, glm::vec3{0.1f, 0.1f, 0.1f});
-
-	renderer.add3DObject(lamp);
-	renderer.add3DObject(lamp2);
-
-	Texture lampBloom(textures["res/lamp_bloom_emissive.png"]);
-	renderer.addBloom(lamp);
-	renderer.addBloom(lamp2);
-
-	lamp.addBloomEffect(lampBloom);
-	lamp2.addBloomEffect(lampBloom);
-
-	Button button(TexturedModel(loader.renderQuad(), Texture(0)), glm::vec3{0.5, 0.5, 0}, 0.3f, 0.1f, glm::vec4{1, 0, 0, 1});
-	ButtonRenderer buttonRenderer;
-
-	buttonRenderer.addButton(button);
-
-	Button button2(TexturedModel(loader.renderQuad(), Texture(Loader::loadTexture("res/dirt.png"))), glm::vec3{-0.5, 0.5, 0}, 0.3f, 0.1f, glm::vec4{0, 1, 0, 1});
-	buttonRenderer.addButton(button2);
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		renderer.render(camera);
-
-		buttonRenderer.render();
-
 
 		display.update();
 	}
