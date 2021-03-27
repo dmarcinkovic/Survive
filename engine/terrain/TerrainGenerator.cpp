@@ -42,7 +42,7 @@ void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::ve
 			auto y = static_cast<float>(j);
 
 			setVertices(vertices, x, y, terrainHeight[j][i], imageWidth, imageHeight);
-			setNormals(normals, x, y, width, height, terrainHeight);
+			setNormals(normals, y, x, width, height, terrainHeight);
 			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
 	}
@@ -75,9 +75,9 @@ std::vector<unsigned> TerrainGenerator::generateIndices(int width, int height)
 void TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width,
 								   float height)
 {
-	vertices.emplace_back(y / (height - 1));
-	vertices.emplace_back(-terrainHeight);
-	vertices.emplace_back(x / (width - 1));
+	vertices.emplace_back(y / (height - 1) * SIZE);
+	vertices.emplace_back(terrainHeight);
+	vertices.emplace_back(x / (width - 1) * SIZE);
 }
 
 void TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int width, int height,
@@ -135,7 +135,9 @@ std::vector<std::vector<float>> TerrainGenerator::preprocessHeight(const std::ui
 		for (int x = 0; x < width; ++x)
 		{
 			result[y][x] = getHTerrainHeight(x, y, image, width);
+//			std::cout << result[y][x] << ' ';
 		}
+//		std::cout << '\n';
 	}
 
 	return result;

@@ -53,10 +53,10 @@ void main()
 {
     float shadow = shadowCalculation(fragmentPositionInLightSpace);
 
-    const float ambientFactor = 0.2;
+    const float ambientFactor = 0.3;
     vec3 ambient = lightColor * ambientFactor;
 
-    float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
+    float diffuseFactor = max(dot(normalize(lightDirection), surfaceNormal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     vec2 coordinate = textureCoords * scaleFactor;
@@ -69,6 +69,6 @@ void main()
     vec4 color3 = texture(rock, coordinate) * blendColor.b;
     vec4 color4 = texture(grass, coordinate) * backTexture;
 
-    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (diffuse * (1- shadow) + ambient);
+    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (diffuse * (1 - shadow) + ambient);
     outColor = vec4(totalColor, 1.0);
 }
