@@ -11,10 +11,13 @@ uniform mat4 viewMatrix;
 uniform mat4 lightProjectionMatrix;
 uniform mat4 lightViewMatrix;
 
+uniform vec3 lightPosition;
+
 out vec4 fragmentPositionInLightSpace;
 out vec2 textureCoords;
 out vec3 surfaceNormal;
 out vec3 worldPosition;
+out vec3 lightDirection;
 
 uniform vec4 plane;
 
@@ -33,4 +36,5 @@ void main()
     surfaceNormal = normalize(surfaceNormal);
 
     worldPosition = pos.xyz;
+    lightDirection = normalize(lightPosition - worldPosition);
 }
