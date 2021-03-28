@@ -12,8 +12,8 @@ struct MoveComponent
 
 	MoveComponent() = default;
 
-	explicit MoveComponent(float moveSpeed)
-			: moveSpeed(moveSpeed)
+	explicit MoveComponent(float moveSpeed, float initialMoveValue = 0.0f)
+			: moveSpeed(moveSpeed), currentMoveValue(initialMoveValue)
 	{}
 };
 
