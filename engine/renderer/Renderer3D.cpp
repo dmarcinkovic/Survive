@@ -54,11 +54,6 @@ void Renderer3D::removeOutlineToObject(entt::registry &registry)
 	m_OutlineRenderer.removeObject(registry);
 }
 
-void Renderer3D::update()
-{
-	m_SkyRenderer.rotateSky();
-}
-
 void Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
 	if (WaterRenderer::shouldRender(registry))

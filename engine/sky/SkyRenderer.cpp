@@ -15,7 +15,7 @@ void SkyRenderer::render(entt::registry &registry, const Camera &camera, const g
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Sky);
 
 		prepareRendering(renderComponent);
-		loadUniforms(transform, camera, plane);
+		loadUniforms(registry, transform, camera, plane);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -54,14 +54,23 @@ void SkyRenderer::finishRendering()
 }
 
 void
-SkyRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera, const glm::vec4 &plane) const
+SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform, const Camera &camera,
+						  const glm::vec4 &plane) const
 {
 	auto viewMatrix = Maths::createViewMatrix(camera);
 	viewMatrix[3][0] = 0;
 	viewMatrix[3][1] = 0;
 	viewMatrix[3][2] = 0;
 
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(m_Rotation), glm::vec3{0, 1, 0});
+	float skyRotation = 0.0f;
+
+	if (registry.has<MoveComponent>(m_Sky))
+	{
+		const MoveComponent &moveComponent = registry.get<MoveComponent>(m_Sky);
+		skyRotation = moveComponent.currentMoveValue;
+	}
+
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(skyRotation), glm::vec3{0, 1, 0});
 
 	auto projectionMatrix = Maths::projectionMatrix;
 	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
@@ -69,10 +78,4 @@ SkyRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &c
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 	m_Shader.loadPlane(plane);
-}
-
-void SkyRenderer::rotateSky()
-{
-	auto deltaTime = static_cast<float>(Display::getFrameTime());
-	m_Rotation += ROTATE_SPEED * deltaTime;
 }
