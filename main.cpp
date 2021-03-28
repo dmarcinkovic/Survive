@@ -6,6 +6,7 @@
 #include "engine/renderer/Renderer3D.h"
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/parser/ObjParser.h"
+#include "engine/sky/SkyRotateSystem.h"
 
 int main()
 {
@@ -36,6 +37,7 @@ int main()
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
 	registry.emplace<RenderComponent>(sky, texturedModel);
 	registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500});
+	registry.emplace<MoveComponent>(sky, 1.0f, -90.0f);
 
 	renderer.addSkyboxEntity(sky);
 
@@ -49,6 +51,8 @@ int main()
 	while (display.isRunning())
 	{
 		Display::clearWindow();
+
+		SkyRotateSystem::rotateSky(registry, sky);
 
 		renderer.render(registry, camera);
 
