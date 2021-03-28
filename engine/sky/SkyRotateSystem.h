@@ -5,10 +5,12 @@
 #ifndef SURVIVE_SKYROTATESYSTEM_H
 #define SURVIVE_SKYROTATESYSTEM_H
 
+#include "../../ecs/entt.hpp"
 
 class SkyRotateSystem
 {
-
+public:
+	static void rotateSky(entt::registry &registry, entt::entity sky);
 };
 
 
