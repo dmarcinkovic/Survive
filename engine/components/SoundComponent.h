@@ -13,8 +13,8 @@ struct SoundComponent
 
 	SoundComponent() = default;
 
-	SoundComponent(Source source)
-			: audioSource(std::move(source))
+	explicit SoundComponent(const Source& source)
+			: audioSource(source)
 	{}
 };
 
