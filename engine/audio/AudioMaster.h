@@ -8,6 +8,7 @@
 #include <AL/alc.h>
 #include <AL/al.h>
 #include <vector>
+#include <glm/vec3.hpp>
 
 class AudioMaster
 {
@@ -22,7 +23,7 @@ public:
 
 	~AudioMaster();
 
-	static void setListenerData();
+	static void setListenerData(const glm::vec3 listenerPosition = glm::vec3{});
 
 private:
 	static char *loadWav(const char *filename, std::uint8_t &channels,
