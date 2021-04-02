@@ -122,8 +122,8 @@ int MousePicking::getID(const std::uint8_t *data)
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 MousePicking::prepareEntities(entt::registry &registry)
 {
-	const auto &entities3D = registry.group<RenderComponent, Transform3DComponent, IdComponent>();
-	const auto &entities2D = registry.group<RenderComponent, Transform2DComponent, IdComponent>();
+	const auto &entities3D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
+	const auto &entities2D = registry.view<RenderComponent, Transform2DComponent, IdComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
