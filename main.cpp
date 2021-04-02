@@ -7,6 +7,7 @@
 #include "engine/terrain/TerrainGenerator.h"
 #include "engine/parser/ObjParser.h"
 #include "engine/sky/SkyRotateSystem.h"
+#include "engine/constant/Constants.h"
 
 int main()
 {
@@ -45,10 +46,28 @@ int main()
 	auto dragon = registry.create();
 	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
 															Loader::loadTexture("res/lamp.jpg")));
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, -10, -30});
+	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, -6, -30});
 	registry.emplace<RigidBodyComponent>(dragon, false);
 	registry.emplace<IdComponent>(dragon, 1);
 	renderer.addShadow(registry, dragon);
+
+	renderer.addOutlineToObject(registry, dragon);
+
+	auto water = registry.create();
+	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
+	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
+	registry.emplace<TexturedComponent>(water, Loader::loadAllTextures({"res/waterDUDV.png", "res/normalMap.png"}));
+	registry.emplace<MoveComponent>(water, 0.03f);
+
+	auto lamp = registry.create();
+	registry.emplace<RenderComponent>(lamp, TexturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
+														  Loader::loadTexture("res/lamp_bloom.png")));
+	registry.emplace<Transform3DComponent>(lamp, glm::vec3{10, -6, -40}, glm::vec3{0.05f});
+	registry.emplace<RigidBodyComponent>(lamp, false);
+	registry.emplace<IdComponent>(lamp, 2);
+	registry.emplace<BloomComponent>(lamp, Loader::loadTexture("res/lamp_bloom_emissive.png"), 10.0f);
+
+	renderer.addShadow(registry, lamp);
 
 	while (display.isRunning())
 	{
