@@ -49,7 +49,7 @@ SpritesRenderer::prepareEntities(entt::registry &registry)
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : group)
 	{
-		RenderComponent renderComponent = group.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = group.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -63,7 +63,7 @@ void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, co
 {
 	for (auto const &sprite : sprites)
 	{
-		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(sprite);
+		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(sprite);
 		const SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
 
 		loadUniforms(transformComponent, spriteComponent);

@@ -18,8 +18,8 @@ void OutlineRenderer::render(const entt::registry &registry, const Camera &camer
 	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
-	RenderComponent renderComponent = registry.get<RenderComponent>(m_Entity);
-	Transform3DComponent transform = registry.get<Transform3DComponent>(m_Entity);
+	const RenderComponent &renderComponent = registry.get<RenderComponent>(m_Entity);
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Entity);
 
 	prepareObject(renderComponent);
 	loadUniforms(transform, camera);

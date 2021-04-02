@@ -28,7 +28,7 @@ void ShadowRenderer::render(const entt::registry &registry, const Light &light, 
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_FRONT);
 
-			Transform3DComponent transform = registry.get<Transform3DComponent>(object);
+			const Transform3DComponent &transform = registry.get<Transform3DComponent>(object);
 
 			glm::vec3 rotation = transform.rotation + camera.m_Rotation;
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
@@ -47,7 +47,7 @@ void ShadowRenderer::render(const entt::registry &registry, const Light &light, 
 
 void ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
 {
-	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
+	const RenderComponent &renderComponent = registry.get<RenderComponent>(entity);
 	auto &batch = m_Objects[renderComponent.texturedModel];
 
 	batch.emplace_back(entity);

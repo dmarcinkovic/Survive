@@ -80,11 +80,11 @@ void MousePicking::renderScene(const entt::registry &registry, const std::vector
 	{
 		loadTransformationMatrix(camera, registry, object);
 
-		IdComponent id = registry.get<IdComponent>(object);
+		const IdComponent &id = registry.get<IdComponent>(object);
 		glm::vec4 color = getColor(id.id);
 		m_Shader.loadPickingColor(color);
 
-		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 	}
 }
@@ -122,13 +122,13 @@ int MousePicking::getID(const std::uint8_t *data)
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 MousePicking::prepareEntities(entt::registry &registry)
 {
-	auto entities3D = registry.group<RenderComponent, Transform3DComponent, IdComponent>();
-	auto entities2D = registry.group<RenderComponent, Transform2DComponent, IdComponent>();
+	const auto &entities3D = registry.group<RenderComponent, Transform3DComponent, IdComponent>();
+	const auto &entities2D = registry.group<RenderComponent, Transform2DComponent, IdComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
 	{
-		RenderComponent renderComponent = entities2D.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = entities2D.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -136,7 +136,7 @@ MousePicking::prepareEntities(entt::registry &registry)
 
 	for (auto const &entity : entities3D)
 	{
-		RenderComponent renderComponent = entities3D.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = entities3D.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -148,7 +148,7 @@ MousePicking::prepareEntities(entt::registry &registry)
 void MousePicking::loadTransformationMatrix(const Camera &camera,
 											const entt::registry &registry, entt::entity entity) const
 {
-	Transform3DComponent transform = registry.has<Transform2DComponent>(entity)
+	const Transform3DComponent &transform = registry.has<Transform2DComponent>(entity)
 									 ? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(entity))
 									 : registry.get<Transform3DComponent>(entity);
 

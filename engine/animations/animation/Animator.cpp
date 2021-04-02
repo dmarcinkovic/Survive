@@ -37,7 +37,7 @@ void Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4
 
 void Animator::update(entt::registry &registry)
 {
-	AnimationComponent animationComponent = registry.get<AnimationComponent>(m_Model);
+	AnimationComponent &animationComponent = registry.get<AnimationComponent>(m_Model);
 
 	increaseAnimationTime();
 	std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();

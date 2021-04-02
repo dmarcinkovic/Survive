@@ -12,7 +12,7 @@ BloomRenderer::BloomRenderer(int width, int height)
 
 void BloomRenderer::render(entt::registry &registry) const
 {
-	auto view = registry.view<BloomComponent>();
+	auto const &view = registry.view<BloomComponent>();
 
 	if (view.empty())
 	{
@@ -23,7 +23,7 @@ void BloomRenderer::render(entt::registry &registry) const
 
 	for (auto const &entity : view)
 	{
-		BloomComponent bloom = view.get<BloomComponent>(entity);
+		const BloomComponent &bloom = view.get<BloomComponent>(entity);
 
 		m_HorizontalRenderer.render(bloom.emissiveTexture, m_Model);
 		m_VerticalRenderer.render(m_HorizontalRenderer.getTexture(), m_Model);

@@ -49,10 +49,10 @@ ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<en
 		loadObjectUniforms(registry, object, camera);
 		drawOutline(registry, object);
 
-		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
+		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
@@ -83,7 +83,7 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 
 void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity, const Camera &camera) const
 {
-	Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
 
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
@@ -91,7 +91,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 
 	if (registry.has<ReflectionComponent>(entity))
 	{
-		ReflectionComponent reflection = registry.get<ReflectionComponent>(entity);
+		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
 
 		reflection.reflectionTexture.bindCubeTexture(2);
 		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
@@ -99,7 +99,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 
 	if (registry.has<RefractionComponent>(entity))
 	{
-		RefractionComponent refraction = registry.get<RefractionComponent>(entity);
+		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
 
 		refraction.refractionTexture.bindCubeTexture(2);
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
@@ -107,7 +107,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 
 	if (registry.has<BloomComponent>(entity))
 	{
-		BloomComponent bloomComponent = registry.get<BloomComponent>(entity);
+		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
 		bloomComponent.bloomTexture.bindTexture(3);
 		m_Shader.loadBloom(bloomComponent.bloomStrength);
@@ -117,13 +117,13 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 ObjectRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
+	const auto &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);

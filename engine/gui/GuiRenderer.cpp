@@ -41,7 +41,7 @@ GuiRenderer::prepareEntities(entt::registry &registry)
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -55,7 +55,7 @@ void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, const entt::
 {
 	for (auto const &entity : guis)
 	{
-		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(entity);
+		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(entity);
 		m_Shader.loadTransformationMatrix(
 				Maths::createTransformationMatrix(glm::vec3{transformComponent.position, 0},
 												  glm::vec3{transformComponent.scale, 0},

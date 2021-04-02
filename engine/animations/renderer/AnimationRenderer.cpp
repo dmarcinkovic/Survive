@@ -43,16 +43,16 @@ AnimationRenderer::renderScene(const entt::registry &registry, const std::vector
 {
 	for (auto const &object : objects)
 	{
-		Transform3DComponent transform = registry.get<Transform3DComponent>(object);
+		const Transform3DComponent &transform = registry.get<Transform3DComponent>(object);
 		auto rotation = camera.m_Rotation + transform.rotation;
 
 		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 		m_Shader.loadTransformationMatrix(modelMatrix);
 
-		RigidBodyComponent rigidBody = registry.get<RigidBodyComponent>(object);
+		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		RenderComponent renderComponent = registry.get<RenderComponent>(object);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
@@ -62,12 +62,12 @@ AnimationRenderer::renderScene(const entt::registry &registry, const std::vector
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 AnimationRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
+	const auto &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -79,6 +79,7 @@ AnimationRenderer::prepareEntities(entt::registry &registry)
 void AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadPlane(plane);
