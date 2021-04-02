@@ -8,7 +8,6 @@
 #include "../display/Display.h"
 #include "../constant/Constants.h"
 
-
 void WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
 	auto waterTiles = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();

@@ -3,7 +3,6 @@
 //
 
 #include "BloomRenderer.h"
-#include "../components/BloomComponent.h"
 
 BloomRenderer::BloomRenderer(int width, int height)
 		: m_HorizontalRenderer(width, height), m_VerticalRenderer(width, height), m_Model(m_Loader.renderQuad())

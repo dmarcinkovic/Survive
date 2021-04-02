@@ -50,7 +50,7 @@ GuiRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, entt::registry &registry,
+void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
 							 const TexturedModel &texturedModel) const
 {
 	for (auto const &entity : guis)

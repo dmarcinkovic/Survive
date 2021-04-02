@@ -7,7 +7,7 @@
 #include "../math/Maths.h"
 #include "../components/OutlineComponent.h"
 
-void OutlineRenderer::render(entt::registry &registry, const Camera &camera) const
+void OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
 {
 	if (!m_Render)
 	{

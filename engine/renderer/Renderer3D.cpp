@@ -93,7 +93,7 @@ void Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera)
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::addShadow(entt::registry &registry, entt::entity entity)
+void Renderer3D::addShadow(const entt::registry &registry, entt::entity entity)
 {
 	m_ShadowRenderer.add3DObject(registry, entity);
 }

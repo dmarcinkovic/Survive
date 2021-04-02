@@ -25,7 +25,7 @@ private:
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
 
-	void renderGuis(const std::vector<entt::entity> &guis, entt::registry &registry,
+	void renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
 					const TexturedModel &texturedModel) const;
 };
 

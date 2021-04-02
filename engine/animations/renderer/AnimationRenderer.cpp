@@ -38,7 +38,7 @@ void AnimationRenderer::render(entt::registry &registry, const Camera &camera, c
 }
 
 void
-AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+AnimationRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
 							   const Camera &camera) const
 {
 	for (auto const &object : objects)

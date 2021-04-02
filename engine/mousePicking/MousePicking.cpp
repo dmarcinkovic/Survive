@@ -73,7 +73,7 @@ void MousePicking::render(entt::registry &registry, const Camera &camera) const
 	mousePressed = false;
 }
 
-void MousePicking::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+void MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
 							   const Camera &camera) const
 {
 	for (auto const &object : objects)
@@ -145,7 +145,8 @@ MousePicking::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void MousePicking::loadTransformationMatrix(const Camera &camera, entt::registry &registry, entt::entity entity) const
+void MousePicking::loadTransformationMatrix(const Camera &camera,
+											const entt::registry &registry, entt::entity entity) const
 {
 	Transform3DComponent transform = registry.has<Transform2DComponent>(entity)
 									 ? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(entity))

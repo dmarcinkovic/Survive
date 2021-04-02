@@ -7,7 +7,7 @@
 #include "../display/Display.h"
 
 
-void SkyRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
+void SkyRenderer::render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	if (m_ShouldRender)
 	{

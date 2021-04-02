@@ -22,9 +22,9 @@ private:
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
 
 public:
-	void render(entt::registry &registry, const Light &light, const Camera &camera) const;
+	void render(const entt::registry &registry, const Light &light, const Camera &camera) const;
 
-	void add3DObject(entt::registry &registry, entt::entity entity);
+	void add3DObject(const entt::registry &registry, entt::entity entity);
 };
 
 

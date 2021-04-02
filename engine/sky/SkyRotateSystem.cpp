@@ -2,7 +2,6 @@
 // Created by david on 29. 03. 2021..
 //
 
-#include <iostream>
 #include "SkyRotateSystem.h"
 #include "../display/Display.h"
 #include "../components/MoveComponent.h"

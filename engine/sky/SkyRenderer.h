@@ -20,7 +20,7 @@ private:
 	bool m_ShouldRender = false;
 
 public:
-	void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+	void render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	void addSkyEntity(entt::entity sky);
 

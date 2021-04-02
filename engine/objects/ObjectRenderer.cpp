@@ -13,7 +13,8 @@ ObjectRenderer::ObjectRenderer(const Light &light)
 }
 
 void
-ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
+ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+					   const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -40,7 +41,7 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 }
 
 void
-ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
 							const Camera &camera) const
 {
 	for (auto const &object : objects)
@@ -80,7 +81,7 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
-void ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity, const Camera &camera) const
+void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity, const Camera &camera) const
 {
 	Transform3DComponent transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
@@ -131,7 +132,7 @@ ObjectRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void ObjectRenderer::drawOutline(entt::registry &registry, entt::entity entity)
+void ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
 {
 	if (registry.has<OutlineComponent>(entity))
 	{

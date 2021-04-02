@@ -27,16 +27,17 @@ public:
 				const glm::vec4 &plane = glm::vec4{}) const;
 
 private:
-	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
+	void
+	renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 	void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
-	void loadObjectUniforms(entt::registry &registry, entt::entity, const Camera &camera) const;
+	void loadObjectUniforms(const entt::registry &registry, entt::entity, const Camera &camera) const;
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
 
-	static void drawOutline(entt::registry &registry, entt::entity entity);
+	static void drawOutline(const entt::registry &registry, entt::entity entity);
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H

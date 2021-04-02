@@ -27,7 +27,7 @@ public:
 	void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 private:
-	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
+	void renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);

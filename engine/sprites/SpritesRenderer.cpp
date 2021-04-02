@@ -58,13 +58,13 @@ SpritesRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, entt::registry &registry,
+void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, const entt::registry &registry,
 									const TexturedModel &texturedModel) const
 {
 	for (auto const &sprite : sprites)
 	{
 		Transform2DComponent transformComponent = registry.get<Transform2DComponent>(sprite);
-		SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
+		const SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
 
 		loadUniforms(transformComponent, spriteComponent);
 

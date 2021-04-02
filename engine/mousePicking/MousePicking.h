@@ -30,7 +30,8 @@ public:
 private:
 	void mousePressedHandler();
 
-	void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects, const Camera &camera) const;
+	void renderScene(const entt::registry &registry,
+			 const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 	void getRenderedObject() const;
 
@@ -41,7 +42,7 @@ private:
 	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 	prepareEntities(entt::registry &registry);
 
-	void loadTransformationMatrix(const Camera &camera, entt::registry &registry, entt::entity entity) const;
+	void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
 };
 
 

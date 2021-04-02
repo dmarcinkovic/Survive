@@ -27,7 +27,7 @@ private:
 	bool m_Render{};
 
 public:
-	void render(entt::registry &registry, const Camera &camera) const;
+	void render(const entt::registry &registry, const Camera &camera) const;
 
 	void add3DObject(entt::registry &registry, entt::entity entity);
 

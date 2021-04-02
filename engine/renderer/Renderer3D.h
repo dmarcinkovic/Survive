@@ -47,7 +47,7 @@ public:
 
 	void removeOutlineToObject(entt::registry &registry);
 
-	void addShadow(entt::registry &registry, entt::entity entity);
+	void addShadow(const entt::registry &registry, entt::entity entity);
 
 	void update();
 
