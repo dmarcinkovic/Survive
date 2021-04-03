@@ -56,7 +56,7 @@ ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<en
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
-		Texture::unbindCubeTexture();
+		Texture::unbindTexture();
 	}
 }
 
