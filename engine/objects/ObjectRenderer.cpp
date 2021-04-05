@@ -26,11 +26,10 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 	Renderer3DUtil::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 
-	loadUniforms(camera, shadowMap, plane);
-
 	for (auto const&[texturedModel, objects] : entities)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
+		loadUniforms(camera, shadowMap, plane);
 		renderScene(registry, objects, camera);
 
 		Renderer3DUtil::finishRenderingEntity();
@@ -66,11 +65,10 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
-	m_Shader.loadAddShadow(shadowMap != 0);
-
+	// TODO fix this
+	m_Shader.loadAddShadow(true);
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadLightViewMatrix(lightViewMatrix);
-	m_Shader.loadTextures();
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
 	m_Shader.loadPlane(plane);
@@ -88,6 +86,10 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
+	m_Shader.loadTextures();
+
+	Texture texture(50);
+	texture.bindTexture(3);
 
 	if (registry.has<ReflectionComponent>(entity))
 	{
@@ -110,20 +112,24 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
 		bloomComponent.bloomTexture.bindTexture(3);
-		m_Shader.loadBloom(bloomComponent.bloomStrength);
+		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
+		m_Shader.loadBloom(true);
+	} else
+	{
+		m_Shader.loadBloom(false);
 	}
 }
 
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 ObjectRenderer::prepareEntities(entt::registry &registry)
 {
-	const auto &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
+	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);

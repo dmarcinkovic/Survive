@@ -105,14 +105,18 @@ void ObjectShader::loadAddShadow(bool addShadow) const
 	loadInteger(m_LocationAddShadow, addShadow);
 }
 
-void ObjectShader::loadBloom(float bloomStrength) const
-{
-	loadInteger(m_LocationBloomTexture, 3);
-	loadInteger(m_LocationAddBloom, 1);
-	loadFloat(m_LocationBloomStrength, bloomStrength);
-}
-
 void ObjectShader::loadPlane(const glm::vec4 &plane) const
 {
 	loadVector4(m_LocationPlane, plane);
+}
+
+void ObjectShader::loadBloomTexture(float bloomStrength) const
+{
+	loadInteger(m_LocationBloomTexture, 3);
+	loadFloat(m_LocationBloomStrength, bloomStrength);
+}
+
+void ObjectShader::loadBloom(bool loadBloom) const
+{
+	loadInteger(m_LocationAddBloom, loadBloom);
 }

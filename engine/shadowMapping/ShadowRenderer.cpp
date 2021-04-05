@@ -47,7 +47,7 @@ void ShadowRenderer::render(const entt::registry &registry, const Light &light, 
 
 void ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
 {
-	const RenderComponent &renderComponent = registry.get<RenderComponent>(entity);
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
 	auto &batch = m_Objects[renderComponent.texturedModel];
 
 	batch.emplace_back(entity);

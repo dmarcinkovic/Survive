@@ -1,3 +1,4 @@
+#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
@@ -25,6 +26,7 @@ int main()
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader),
 							  Loader::loadTexture("res/lamp.jpg"));
+	std::cout << "Dragon texture: " << dragonModel.getTexture().textureId() << '\n';
 
 	auto dragon = registry.create();
 	registry.emplace<RenderComponent>(dragon, dragonModel);
@@ -33,13 +35,6 @@ int main()
 	registry.emplace<IdComponent>(dragon, 1);
 	renderer.addShadow(registry, dragon);
 	renderer.addOutlineToObject(registry, dragon);
-
-	auto dragon2 = registry.create();
-	registry.emplace<RenderComponent>(dragon2, dragonModel);
-	registry.emplace<Transform3DComponent>(dragon2, glm::vec3{-10, -6, -30});
-	registry.emplace<RigidBodyComponent>(dragon2, false);
-	registry.emplace<IdComponent>(dragon2, 3);
-	renderer.addShadow(registry, dragon2);
 
 	auto lamp = registry.create();
 	registry.emplace<RenderComponent>(lamp, TexturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
@@ -50,11 +45,18 @@ int main()
 	registry.emplace<BloomComponent>(lamp, Loader::loadTexture("res/lamp_bloom_emissive.png"), 10.0f);
 	renderer.addShadow(registry, lamp);
 
-	auto water = registry.create();
-	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
-	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
-	registry.emplace<TexturedComponent>(water, Loader::loadAllTextures({"res/waterDUDV.png", "res/normalMap.png"}));
-	registry.emplace<MoveComponent>(water, 0.03f);
+	auto dragon2 = registry.create();
+	registry.emplace<RenderComponent>(dragon2, dragonModel);
+	registry.emplace<Transform3DComponent>(dragon2, glm::vec3{-10, -6, -30});
+	registry.emplace<RigidBodyComponent>(dragon2, false);
+	registry.emplace<IdComponent>(dragon2, 3);
+	renderer.addShadow(registry, dragon2);
+
+//	auto water = registry.create();
+//	registry.emplace<RenderComponent>(water, TexturedModel(loader.renderQuad(), Texture(0)));
+//	registry.emplace<Transform3DComponent>(water, glm::vec3{0, Constants::WATER_HEIGHT, -20}, glm::vec3{200});
+//	registry.emplace<TexturedComponent>(water, Loader::loadAllTextures({"res/waterDUDV.png", "res/normalMap.png"}));
+//	registry.emplace<MoveComponent>(water, 0.03f);
 
 	auto sky = registry.create();
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
