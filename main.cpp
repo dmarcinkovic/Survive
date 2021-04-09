@@ -1,4 +1,3 @@
-#include <iostream>
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
 #include "ecs/entt.hpp"
@@ -26,8 +25,6 @@ int main()
 
 	TexturedModel dragonModel(ObjParser::loadObj("res/dragon.obj", loader),
 							  Loader::loadTexture("res/lamp.jpg"));
-	std::cout << "Dragon texture: " << dragonModel.getTexture().textureId() << '\n';
-
 	auto dragon = registry.create();
 	registry.emplace<RenderComponent>(dragon, dragonModel);
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, -6, -30});
