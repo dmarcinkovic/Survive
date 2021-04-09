@@ -123,7 +123,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 ObjectRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
+	auto const &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
