@@ -8,9 +8,8 @@
 
 LogInfo Log::m_LogInfo;
 
-void Log::logWindow(const char *title, const char *message, const ImVec2 &size, double time)
+void Log::logWindow(const char *message, const ImVec2 &size, double time)
 {
-	m_LogInfo.title = title;
 	m_LogInfo.message = message;
 
 	m_LogInfo.width = size.x;
@@ -23,7 +22,7 @@ void Log::logWindow(const char *title, const char *message, const ImVec2 &size, 
 void Log::drawLogWindow()
 {
 	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-									ImGuiWindowFlags_NoFocusOnAppearing;
+									ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoTitleBar;
 
 	if (m_LogInfo.open)
 	{
