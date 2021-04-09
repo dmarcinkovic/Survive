@@ -11,7 +11,7 @@
 Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
-	m_Io.ConfigFlags = static_cast<unsigned>(m_Io.ConfigFlags) | ImGuiConfigFlags_DockingEnable |
+	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
 
 	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
@@ -77,7 +77,7 @@ void Editor::renderPropertyWindow()
 
 	if (ImGui::Button("Button"))
 	{
-//		Log::drawLogWindow();
+		Log::logWindow("Warning", "Cannot load something");
 		counter++;
 	}
 
