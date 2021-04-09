@@ -10,9 +10,10 @@
 
 LogInfo Log::m_LogInfo;
 
-void Log::logWindow(const char *message, const ImVec2 &size, double time)
+void Log::logWindow(LogType logType, const char *message, const ImVec2 &size, double time)
 {
 	m_LogInfo.message = message;
+	m_LogInfo.logType = logType;
 
 	m_LogInfo.width = size.x;
 	m_LogInfo.height = size.y;
@@ -28,6 +29,7 @@ void Log::drawLogWindow()
 
 	static GLuint errorIcon = Loader::loadTexture("res/error.png");
 	static GLuint infoIcon = Loader::loadTexture("res/info.png");
+	static GLuint warnIcon = Loader::loadTexture("res/warn.png");
 
 	if (m_LogInfo.open)
 	{
@@ -41,12 +43,7 @@ void Log::drawLogWindow()
 		auto[width, height] = Display::getWindowSize<float>();
 		ImGui::Begin("", &m_LogInfo.open, flags);
 
-		static GLuint icon = Loader::loadTexture("res/error.png");
-		auto image = reinterpret_cast<void *>(icon);
-
-		ImVec2 imageSize(m_LogInfo.height / 2.0f, m_LogInfo.height / 2.0f);
-		ImGui::Image(image, imageSize);
-
+		drawIcon(warnIcon, errorIcon, infoIcon);
 		ImGui::SameLine();
 		ImGui::SetWindowFontScale(1.2f);
 		ImGui::TextWrapped("%s", m_LogInfo.message);
@@ -58,12 +55,12 @@ void Log::drawLogWindow()
 	}
 }
 
-void Log::drawIcon(const LogInfo &logInfo, GLuint warnIcon, GLuint errorIcon, GLuint infoIcon)
+void Log::drawIcon(GLuint warnIcon, GLuint errorIcon, GLuint infoIcon)
 {
-	ImVec2 imageSize(logInfo.height / 2.0f, logInfo.height / 2.0f);
+	float height = ImGui::GetTextLineHeight();
 	ImTextureID icon = nullptr;
 
-	switch (logInfo.logType)
+	switch (m_LogInfo.logType)
 	{
 		case LogType::ERROR:
 			icon = reinterpret_cast<ImTextureID>(errorIcon);
@@ -76,5 +73,5 @@ void Log::drawIcon(const LogInfo &logInfo, GLuint warnIcon, GLuint errorIcon, GL
 			break;
 	}
 
-	ImGui::Image(icon, imageSize);
+	ImGui::Image(icon, ImVec2(height, height), ImVec2(0, 1), ImVec2(1, 0));
 }

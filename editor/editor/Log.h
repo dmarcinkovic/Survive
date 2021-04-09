@@ -31,12 +31,12 @@ private:
 
 public:
 	static void
-	logWindow(const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
+	logWindow(LogType logType, const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
 
 private:
 	static void drawLogWindow();
 
-	static void drawIcon(const LogInfo &logInfo, GLuint warnIcon, GLuint errorIcon, GLuint infoIcon);
+	static void drawIcon(GLuint warnIcon, GLuint errorIcon, GLuint infoIcon);
 
 	friend class Editor;
 };

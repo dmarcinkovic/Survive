@@ -77,7 +77,7 @@ void Editor::renderPropertyWindow()
 
 	if (ImGui::Button("Button"))
 	{
-		Log::logWindow("Cannot load something");
+		Log::logWindow(LogType::WARN, "Cannot load something");
 		counter++;
 	}
 
