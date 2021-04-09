@@ -25,11 +25,11 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 
 	Renderer3DUtil::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
+	loadUniforms(camera, shadowMap, plane);
 
 	for (auto const&[texturedModel, objects] : entities)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
-		loadUniforms(camera, shadowMap, plane);
 		renderScene(registry, objects, camera);
 
 		Renderer3DUtil::finishRenderingEntity();
