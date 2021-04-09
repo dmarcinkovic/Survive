@@ -6,6 +6,7 @@
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
 #include "../components/Components.h"
+#include "../components/ShadowComponent.h"
 
 ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
@@ -86,8 +87,8 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 
-	// TODO fix this
-	m_Shader.loadAddShadow(false);
+	ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
+	m_Shader.loadAddShadow(shadowComponent.loadShadow);
 
 	if (registry.has<ReflectionComponent>(entity))
 	{
