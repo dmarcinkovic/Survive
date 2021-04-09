@@ -28,7 +28,7 @@ public:
 	logWindow(const char *title, const char *message, const ImVec2 &size = ImVec2(300, 100), double time = 3.0);
 
 private:
-	static void logWindow();
+	static void drawLogWindow();
 
 	friend class Editor;
 };

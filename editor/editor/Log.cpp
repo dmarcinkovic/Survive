@@ -20,7 +20,7 @@ void Log::logWindow(const char *title, const char *message, const ImVec2 &size, 
 	m_LogInfo.time = time;
 }
 
-void Log::logWindow()
+void Log::drawLogWindow()
 {
 	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
 									ImGuiWindowFlags_NoFocusOnAppearing;

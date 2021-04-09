@@ -25,7 +25,7 @@ void Editor::render()
 	renderSceneWindow();
 	renderMenu();
 	renderOpenDialog();
-	Log::logWindow();
+	Log::drawLogWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -77,6 +77,7 @@ void Editor::renderPropertyWindow()
 
 	if (ImGui::Button("Button"))
 	{
+//		Log::drawLogWindow();
 		counter++;
 	}
 
