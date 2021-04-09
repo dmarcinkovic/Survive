@@ -7,6 +7,12 @@
 
 #include <imgui.h>
 
+
+enum class LogType
+{
+	WARN, INFO; ERROR
+};
+
 struct LogInfo
 {
 	const char *message;
