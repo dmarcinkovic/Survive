@@ -36,6 +36,7 @@ void Log::drawLogWindow()
 		auto[width, height] = Display::getWindowSize<float>();
 		ImGui::Begin("", &m_LogInfo.open, flags);
 
+		ImGui::SetWindowFontScale(1.2f);
 		ImGui::TextWrapped("%s", m_LogInfo.message);
 
 		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width, height - m_LogInfo.height));
