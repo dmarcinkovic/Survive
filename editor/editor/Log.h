@@ -23,7 +23,7 @@ private:
 
 public:
 	static void
-	logWindow(const char *message, const ImVec2 &size = ImVec2(300, 100), double time = 3.0);
+	logWindow(const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
 
 private:
 	static void drawLogWindow();
