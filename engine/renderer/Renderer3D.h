@@ -47,7 +47,7 @@ public:
 
 	void removeOutlineToObject(entt::registry &registry);
 
-	void addShadow(const entt::registry &registry, entt::entity entity);
+	void addShadow(entt::registry &registry, entt::entity entity);
 
 	void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 

@@ -5,6 +5,7 @@
 #include "Renderer3D.h"
 #include "../constant/Constants.h"
 #include "../display/Display.h"
+#include "../components/ShadowComponent.h"
 
 Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
@@ -93,7 +94,8 @@ void Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera)
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::addShadow(const entt::registry &registry, entt::entity entity)
+void Renderer3D::addShadow(entt::registry &registry, entt::entity entity)
 {
 	m_ShadowRenderer.add3DObject(registry, entity);
+	registry.emplace<ShadowComponent>(entity, true);
 }
