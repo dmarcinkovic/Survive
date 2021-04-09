@@ -40,6 +40,8 @@ private:
 	static void drawOutline(const entt::registry &registry, entt::entity entity);
 
 	void renderBloom(const entt::registry &registry, entt::entity entity) const;
+
+	void renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const;
 };
 
 #endif //SURVIVE_OBJECTRENDERER_H

@@ -90,22 +90,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 	ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
 	m_Shader.loadAddShadow(shadowComponent.loadShadow);
 
-	if (registry.has<ReflectionComponent>(entity))
-	{
-		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
-
-		reflection.reflectionTexture.bindCubeTexture(2);
-		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
-	}
-
-	if (registry.has<RefractionComponent>(entity))
-	{
-		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
-
-		refraction.refractionTexture.bindCubeTexture(2);
-		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
-	}
-
+	renderReflectionAndRefraction(registry, entity);
 	renderBloom(registry, entity);
 }
 
@@ -158,5 +143,27 @@ void ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity en
 
 		static Texture bloomDefaultTexture(0);
 		bloomDefaultTexture.bindTexture(3);
+	}
+}
+
+void ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+{
+	static Texture defaultReflection(0);
+	defaultReflection.bindTexture(2);
+
+	if (registry.has<ReflectionComponent>(entity))
+	{
+		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
+
+		reflection.reflectionTexture.bindCubeTexture(2);
+		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
+	}
+
+	if (registry.has<RefractionComponent>(entity))
+	{
+		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
+
+		refraction.refractionTexture.bindCubeTexture(2);
+		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	}
 }
