@@ -65,8 +65,6 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
-	// TODO fix this
-	m_Shader.loadAddShadow(true);
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadLightViewMatrix(lightViewMatrix);
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
@@ -87,6 +85,9 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
+
+	// TODO fix this
+	m_Shader.loadAddShadow(false);
 
 	if (registry.has<ReflectionComponent>(entity))
 	{
