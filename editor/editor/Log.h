@@ -7,16 +7,16 @@
 
 #include <imgui.h>
 
-
 enum class LogType
 {
-	WARN, INFO; ERROR
+	WARN, INFO, ERROR
 };
 
 struct LogInfo
 {
 	const char *message;
 	float width, height;
+	LogType logType;
 
 	bool open;
 	double time;
@@ -27,12 +27,16 @@ class Log
 private:
 	static LogInfo m_LogInfo;
 
+	using GLuint = unsigned;
+
 public:
 	static void
 	logWindow(const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
 
 private:
 	static void drawLogWindow();
+
+	static void drawIcon(const LogInfo &logInfo, GLuint warnIcon, GLuint errorIcon, GLuint infoIcon);
 
 	friend class Editor;
 };
