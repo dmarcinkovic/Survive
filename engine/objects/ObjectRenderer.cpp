@@ -88,9 +88,6 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 
-	Texture texture(50);
-	texture.bindTexture(3);
-
 	if (registry.has<ReflectionComponent>(entity))
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
@@ -107,17 +104,7 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	}
 
-	if (registry.has<BloomComponent>(entity))
-	{
-		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
-
-		bloomComponent.bloomTexture.bindTexture(3);
-		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
-		m_Shader.loadBloom(true);
-	} else
-	{
-		m_Shader.loadBloom(false);
-	}
+	renderBloom(registry, entity);
 }
 
 std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
@@ -151,5 +138,23 @@ void ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity en
 	} else
 	{
 		glStencilMask(0x00);
+	}
+}
+
+void ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
+{
+	if (registry.has<BloomComponent>(entity))
+	{
+		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
+
+		bloomComponent.bloomTexture.bindTexture(3);
+		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
+		m_Shader.loadBloom(true);
+	} else
+	{
+		m_Shader.loadBloom(false);
+
+		static Texture bloomDefaultTexture(0);
+		bloomDefaultTexture.bindTexture(3);
 	}
 }
