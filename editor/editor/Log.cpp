@@ -34,7 +34,7 @@ void Log::drawLogWindow()
 			return;
 		}
 
-		auto[width, height] = Display::getWindowSize<int>();
+		auto[width, height] = Display::getWindowSize<float>();
 		ImGui::Begin(m_LogInfo.title, &m_LogInfo.open, flags);
 
 		ImGui::TextWrapped("%s", m_LogInfo.message);
