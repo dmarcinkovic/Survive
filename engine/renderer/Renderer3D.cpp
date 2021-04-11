@@ -33,9 +33,9 @@ void Renderer3D::render(entt::registry &registry, Camera &camera) const
 									  Constants::SHADOW_HEIGHT);
 
 	renderToWaterFrameBuffers(registry, camera);
+	m_BloomRenderer.render(registry);
 	renderScene(registry, camera);
 
-	m_BloomRenderer.render(registry);
 	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
 }
