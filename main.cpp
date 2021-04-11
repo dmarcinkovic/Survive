@@ -5,7 +5,6 @@
 #include "engine/camera/Camera.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/constant/Constants.h"
 
 int main()
 {
@@ -30,13 +29,10 @@ int main()
 	registry.emplace<BloomComponent>(lamp, Loader::loadTexture("res/lamp_bloom_emissive.png"), 3.0f);
 	renderer.addShadow(registry, lamp);
 
-	BloomRenderer bloomRenderer(Constants::BLOOM_WIDTH, Constants::BLOOM_HEIGHT);
-
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		bloomRenderer.render(registry);
 		renderer.render(registry, camera);
 
 		display.update();
