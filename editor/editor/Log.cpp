@@ -33,10 +33,13 @@ void Log::drawLogWindow()
 
 	if (m_LogInfo.open)
 	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13, 0.13, 0.13, 1));
+
 		m_LogInfo.time -= Display::getFrameTime();
 		if (m_LogInfo.time <= 0)
 		{
 			m_LogInfo.open = false;
+			ImGui::PopStyleColor();
 			return;
 		}
 
@@ -52,6 +55,7 @@ void Log::drawLogWindow()
 		ImGui::SetWindowSize(ImVec2(m_LogInfo.width, m_LogInfo.height));
 
 		ImGui::End();
+		ImGui::PopStyleColor();
 	}
 }
 
