@@ -8,6 +8,7 @@
 
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
+#include "BlurRenderer.h"
 
 class BloomRenderer
 {
@@ -18,14 +19,10 @@ private:
 	Loader m_Loader{};
 	Model m_Model;
 
-	std::vector<std::reference_wrapper<Object3D>> m_Objects;
-
 public:
 	BloomRenderer(int width, int height);
 
-	void render() const;
-
-	void addObject(Object3D &object);
+	void render(entt::registry &registry) const;
 
 private:
 	void prepare() const;

@@ -7,9 +7,9 @@
 
 
 #include "Animation.h"
-#include "AnimatedObject.h"
 #include "../joints/Joint.h"
 #include "KeyFrame.h"
+#include "../renderer/AnimationRenderer.h"
 
 class Animator
 {
@@ -17,12 +17,12 @@ private:
 	Animation m_Animation;
 	float m_AnimationTime{};
 
-	AnimatedObject m_Model;
+	entt::entity m_Model;
 
 public:
-	Animator(Animation animation, AnimatedObject animatedModel);
+	Animator(Animation animation, entt::entity animatedObject);
 
-	void update();
+	void update(entt::registry  &registry);
 
 private:
 	[[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;

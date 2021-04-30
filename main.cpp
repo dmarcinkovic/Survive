@@ -1,8 +1,10 @@
 #include "engine/display/Display.h"
 #include "engine/renderer/Loader.h"
+#include "ecs/entt.hpp"
+#include "engine/light/Light.h"
+#include "engine/camera/Camera.h"
 #include "engine/renderer/Renderer3D.h"
 #include "engine/parser/ObjParser.h"
-#include "engine/terrain/TerrainGenerator.h"
 
 int main()
 {
@@ -10,23 +12,28 @@ int main()
 	constexpr int height = 800;
 
 	Display display(width, height, "Survive");
-
 	Loader loader;
-	Camera camera;
-	Light light(glm::vec3{10000, 10000, 10000}, glm::vec3{1.0f, 1.0f, 1.0f});
 
+	Camera camera;
+	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 	Renderer3D renderer(light);
 
-	Terrain terrain(TerrainGenerator::generateTerrain(loader, "res/heightmap.png"), glm::vec3{-200, -10, -200},
-					glm::vec3{1, 1, 1});
-	terrain.addTextures("res/blendMap.png", {"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"});
-	renderer.addTerrain(terrain);
+	entt::registry registry;
+
+	auto lamp = registry.create();
+	registry.emplace<RenderComponent>(lamp, TexturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
+														  Loader::loadTexture("res/lamp_bloom.png")));
+	registry.emplace<Transform3DComponent>(lamp, glm::vec3{0, -6, -15}, glm::vec3{0.05f}, glm::vec3{0, -90, 0,});
+	registry.emplace<RigidBodyComponent>(lamp, false);
+	registry.emplace<IdComponent>(lamp, 2);
+	registry.emplace<BloomComponent>(lamp, Loader::loadTexture("res/lamp_bloom_emissive.png"), 3.0f);
+	renderer.addShadow(registry, lamp);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-		renderer.render(camera);
+		renderer.render(registry, camera);
 
 		display.update();
 	}

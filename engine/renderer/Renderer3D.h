@@ -9,7 +9,6 @@
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
-#include "../animations/animation/AnimatedObject.h"
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
 #include "../mousePicking/MousePicking.h"
@@ -40,36 +39,24 @@ private:
 public:
 	explicit Renderer3D(const Light &light);
 
-	void render(Camera &camera) const;
+	void render(entt::registry &registry, Camera &camera) const;
 
-	void add3DObject(Object3D &object3D);
+	void addSkyboxEntity(entt::entity sky);
 
-	void addTerrain(Terrain &terrain);
+	void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-	void addAnimatedObject(AnimatedObject &object3D);
+	void removeOutlineToObject(entt::registry &registry);
 
-	void addSkyboxEntity(const Entity &entity);
+	void addShadow(entt::registry &registry, entt::entity entity);
 
-	void addOutlineToObject(Object3D &object);
-
-	void removeOutlineToObject();
-
-    void addShadow(Object3D &object);
-
-    void update();
-
-	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
-
-	void addWaterTile(WaterTile &waterTile);
-
-	void addBloom(Object3D &object);
+	void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 private:
-	void renderToWaterFrameBuffers(Camera &camera) const;
+	void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterReflection(Camera &camera) const;
+	void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterRefraction(Camera &camera) const;
+	void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
 };
 
 

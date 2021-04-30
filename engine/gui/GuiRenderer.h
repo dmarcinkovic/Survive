@@ -9,20 +9,24 @@
 #include <unordered_map>
 
 #include "../renderer/Loader.h"
-#include "../entity/Entity.h"
 #include "../texture/TexturedModel.h"
 #include "GuiShader.h"
+#include "../../ecs/entt.hpp"
 
 class GuiRenderer
 {
 private:
 	GuiShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Entity>>, TextureHash> m_Entities;
 
 public:
-	void render() const;
+	void render(entt::registry &registry) const;
 
-	void addEntity(Entity &entity2D) noexcept;
+private:
+	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+	prepareEntities(entt::registry &registry);
+
+	void renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
+					const TexturedModel &texturedModel) const;
 };
 
 
