@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../shadowMapping/ShadowRenderer.h"
+#include "../../ecs/entt.hpp"
 
 class FrameBuffer
 {
@@ -22,8 +23,8 @@ public:
 
 	~FrameBuffer();
 
-	void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
-							 int height) const;
+	void renderToFrameBuffer(entt::registry &registry, const ShadowRenderer &renderer, const Camera &camera,
+							 const Light &light, int width, int height) const;
 
 	GLuint createTexture();
 

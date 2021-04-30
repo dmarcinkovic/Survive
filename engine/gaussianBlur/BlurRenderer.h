@@ -9,13 +9,13 @@
 #include <unordered_map>
 
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
+#include "../../ecs/entt.hpp"
 
 class BlurRenderer
 {
@@ -32,26 +32,18 @@ private:
 	int m_Width, m_Height;
 
 	Texture m_Texture;
-
-	bool m_ShouldRender = false;
 	HorizontalBlurRenderer m_HorizontalBlurRenderer;
 	VerticalBlurRenderer m_VerticalBlurRenderer;
 
 public:
 	BlurRenderer(const Light &light, int width, int height);
 
-	void render(const Camera &camera) const;
+	void render(entt::registry &registry, const Camera &camera) const;
 
-	const Texture &getTexture() const;
-
-	void addAnimatedObject(AnimatedObject &animatedObject);
-
-	void addObject(Object3D &object);
-
-	void addTerrain(Terrain &terrain);
+	[[nodiscard]] const Texture &getTexture() const;
 
 private:
-	void renderToFbo(const Camera &camera) const;
+	void renderToFbo(entt::registry &registry, const Camera &camera) const;
 
 	void renderBlur() const;
 

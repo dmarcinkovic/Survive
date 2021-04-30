@@ -13,13 +13,15 @@ uniform sampler2D rock;
 uniform sampler2D flowers;
 
 uniform vec3 lightColor;
-uniform vec3 lightPosition;
 
 in vec2 textureCoords;
 in vec3 surfaceNormal;
 in vec3 worldPosition;
+in vec3 lightDirection;
 
 const float scaleFactor = 40;
+
+uniform int addShadow;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {
@@ -51,14 +53,12 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
-    float shadow = shadowCalculation(fragmentPositionInLightSpace);
+    float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
 
-    const float ambientFactor = 0.2;
+    const float ambientFactor = 0.3;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPosition - worldPosition);
-
-    float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
+    float diffuseFactor = max(dot(normalize(lightDirection), surfaceNormal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     vec2 coordinate = textureCoords * scaleFactor;
@@ -71,6 +71,6 @@ void main()
     vec4 color3 = texture(rock, coordinate) * blendColor.b;
     vec4 color4 = texture(grass, coordinate) * backTexture;
 
-    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (diffuse * (1- shadow) + ambient);
+    vec3 totalColor = vec3(color1 + color2 + color3 + color4) * (diffuse * (1 - shadow) + ambient);
     outColor = vec4(totalColor, 1.0);
 }

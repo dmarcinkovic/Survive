@@ -119,15 +119,15 @@ void FrameBuffer::attachDepthComponent(int width, int height)
 }
 
 void
-FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
-								 int height) const
+FrameBuffer::renderToFrameBuffer(entt::registry &registry, const ShadowRenderer &renderer, const Camera &camera,
+								 const Light &light, int width, int height) const
 {
 	glViewport(0, 0, width, height);
 
 	bindFrameBuffer();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	renderer.render(light, camera);
+	renderer.render(registry, light, camera);
 
 	unbindFrameBuffer();
 

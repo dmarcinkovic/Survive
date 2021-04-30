@@ -14,7 +14,8 @@
 class TerrainGenerator
 {
 private:
-	static constexpr float MAX_HEIGHT = 30;
+	static constexpr float MAX_HEIGHT = 40;
+	static constexpr float SIZE = 400.0f;
 
 public:
 	static Model generateTerrain(Loader &loader, const char *heightMap);

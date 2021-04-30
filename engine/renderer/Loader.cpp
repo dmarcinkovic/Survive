@@ -178,7 +178,7 @@ void Loader::addMipMap()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4);
 }
 
-GLuint Loader::loadTexture(const char *texture) noexcept
+Texture Loader::loadTexture(const char *texture) noexcept
 {
 	GLuint textureId;
 	glGenTextures(1, &textureId);
@@ -193,7 +193,7 @@ GLuint Loader::loadTexture(const char *texture) noexcept
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	m_Textures.emplace_back(textureId);
-	return textureId;
+	return Texture(textureId);
 }
 
 void Loader::loadImage(const char *texture) noexcept
@@ -213,18 +213,18 @@ void Loader::loadImage(const char *texture) noexcept
 	stbi_image_free(image);
 }
 
-std::unordered_map<const char *, GLuint> Loader::loadTextures(const std::vector<const char *> &textures)
+std::unordered_map<const char *, Texture> Loader::loadTextures(const std::vector<const char *> &textures)
 {
 	stbi_set_flip_vertically_on_load(1);
 
 	auto images = loadImages(textures);
 
-	std::unordered_map<const char *, GLuint> result;
+	std::unordered_map<const char *, Texture> result;
 	for (auto const&[filename, imageData] : images)
 	{
 		GLuint textureId = loadTexture(imageData);
 
-		result[filename] = textureId;
+		result[filename] = Texture(textureId);
 	}
 
 	return result;
@@ -310,7 +310,7 @@ Model Loader::renderCube()
 	return Model(loadToVao(vertices, indices, 3));
 }
 
-GLuint Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
+Texture Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
 {
 	GLuint cubeMap;
 	glGenTextures(1, &cubeMap);
@@ -327,7 +327,7 @@ GLuint Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	m_Textures.emplace_back(cubeMap);
 
-	return cubeMap;
+	return Texture(cubeMap);
 }
 
 void Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept

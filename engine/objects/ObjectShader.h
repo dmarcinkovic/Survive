@@ -67,7 +67,9 @@ public:
 
 	void loadAddShadow(bool addShadow) const;
 
-	void loadBloom(float bloomStrength) const;
+	void loadBloomTexture(float bloomStrength) const;
+
+	void loadBloom(bool loadBloom) const;
 
 	void loadPlane(const glm::vec4 &plane) const;
 

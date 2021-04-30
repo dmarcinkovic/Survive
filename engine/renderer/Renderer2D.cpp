@@ -12,7 +12,7 @@ Renderer2D::Renderer2D(Loader &loader)
 
 void Renderer2D::render() const
 {
-	m_GuiRenderer.render();
+//	m_GuiRenderer.render();
 
 	auto[width, height] = Display::getWindowSize<int>();
 
@@ -23,13 +23,13 @@ void Renderer2D::render() const
 
 	m_TextRenderer.renderText();
 	m_ButtonRenderer.render();
-	m_SpriteRenderer.renderSprite();
+//	m_SpriteRenderer.renderSprite();
 }
 
-void Renderer2D::addGui(Entity &entity2D) noexcept
-{
-	m_GuiRenderer.addEntity(entity2D);
-}
+//void Renderer2D::addGui(Entity &entity2D) noexcept
+//{
+//	m_GuiRenderer.addEntity(entity2D);
+//}
 
 void Renderer2D::addText(Text &text) noexcept
 {
@@ -43,8 +43,8 @@ void Renderer2D::addButton(Button &button) noexcept
 	addText(button.getText());
 }
 
-void Renderer2D::addSprite(Sprite &sprite) noexcept
-{
-	m_SpriteRenderer.addSprite(sprite);
-}
+//void Renderer2D::addSprite(SpriteSheetComponent &sprite) noexcept
+//{
+//	m_SpriteRenderer.addSprite(sprite);
+//}
 

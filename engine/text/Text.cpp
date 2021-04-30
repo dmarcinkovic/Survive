@@ -10,7 +10,7 @@
 Text::Text(std::string text, Font font, const glm::vec3 &position,
 		   const glm::vec3 &color, float scale)
 		: Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_Color(color),
-		  m_BorderColor(color), m_TextTexture(font.getMTextureId())
+		  m_BorderColor(color), m_TextTexture(font.getTexture())
 {
 	m_Position = position;
 	m_Scale.x = m_Scale.y = scale;

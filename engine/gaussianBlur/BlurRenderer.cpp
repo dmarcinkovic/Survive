@@ -16,14 +16,9 @@ BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 	m_Height = screenHeight;
 }
 
-void BlurRenderer::render(const Camera &camera) const
+void BlurRenderer::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!m_ShouldRender)
-	{
-		return;
-	}
-
-	renderToFbo(camera);
+	renderToFbo(registry, camera);
 	renderBlur();
 }
 
@@ -46,34 +41,16 @@ void BlurRenderer::finishRendering()
 	glBindVertexArray(0);
 }
 
-void BlurRenderer::addAnimatedObject(AnimatedObject &animatedObject)
-{
-	m_AnimationRenderer.addAnimatedModel(animatedObject);
-	m_ShouldRender = true;
-}
-
-void BlurRenderer::addObject(Object3D &object)
-{
-	m_ObjectRenderer.add3DObject(object);
-	m_ShouldRender = true;
-}
-
-void BlurRenderer::addTerrain(Terrain &terrain)
-{
-	m_TerrainRenderer.addTerrain(terrain);
-	m_ShouldRender = true;
-}
-
-void BlurRenderer::renderToFbo(const Camera &camera) const
+void BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) const
 {
 	glViewport(0, 0, m_Width, m_Height);
 
 	m_Fbo.bindDrawBuffer();
 	Display::clearWindow();
 
-	m_AnimationRenderer.render(camera);
-	m_ObjectRenderer.render(camera, 0);
-	m_TerrainRenderer.render(camera,m_Light, 0);
+	m_AnimationRenderer.render(registry, camera);
+	m_ObjectRenderer.render(registry, camera, 0);
+	m_TerrainRenderer.render(registry, camera, m_Light, 0);
 
 	FrameBuffer::unbindDrawFrameBuffer();
 

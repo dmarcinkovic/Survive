@@ -11,19 +11,20 @@
 
 #include "ShadowShader.h"
 #include "../light/Light.h"
-#include "../objects/Object3D.h"
 #include "../camera/Camera.h"
+#include "../../ecs/entt.hpp"
+#include "../texture/TexturedModel.h"
 
 class ShadowRenderer
 {
 private:
 	ShadowShader m_ShadowShader{};
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
 
 public:
-	void render(const Light &light, const Camera &camera) const;
+	void render(const entt::registry &registry, const Light &light, const Camera &camera) const;
 
-	void add3DObject(Object3D &object);
+	void add3DObject(const entt::registry &registry, entt::entity entity);
 };
 
 

@@ -135,8 +135,8 @@ int AudioMaster::convertToInt(const char *buffer, std::size_t len)
 	return number;
 }
 
-void AudioMaster::setListenerData()
+void AudioMaster::setListenerData(const glm::vec3 listenerPosition)
 {
-	alListener3f(AL_POSITION, 0, 0, 0);
+	alListener3f(AL_POSITION, listenerPosition.x, listenerPosition.y, listenerPosition.z);
 	alListener3f(AL_VELOCITY, 0, 0, 0);
 }

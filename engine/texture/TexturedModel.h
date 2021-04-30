@@ -14,11 +14,11 @@ class TexturedModel
 {
 private:
 	GLuint m_Vao{};
-	size_t m_VertexCount{};
+	GLsizei m_VertexCount{};
 	Texture m_Texture;
 
 public:
-	TexturedModel(const Model &model, GLuint textureId);
+	TexturedModel(const Model &model, const Texture &texture);
 
 	TexturedModel();
 
@@ -38,7 +38,7 @@ public:
 
 	void setVertexCount(int vertexCount);
 
-	[[nodiscard]] size_t vertexCount() const;
+	[[nodiscard]] GLsizei vertexCount() const;
 
 	bool operator==(const TexturedModel &rhs) const;
 

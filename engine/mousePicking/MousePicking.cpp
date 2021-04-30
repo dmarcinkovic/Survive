@@ -8,6 +8,7 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../constant/Constants.h"
+#include "../components/Components.h"
 
 bool MousePicking::mousePressed = false;
 
@@ -29,12 +30,6 @@ void MousePicking::mousePressedHandler()
 	});
 }
 
-void MousePicking::add3DObject(Object3D &entity)
-{
-	auto &batch = m_Objects[entity.m_Texture];
-	batch.emplace_back(entity);
-}
-
 glm::vec4 MousePicking::getColor(int id)
 {
 	int r = (id & 0x000000FF) >> 0;
@@ -44,24 +39,26 @@ glm::vec4 MousePicking::getColor(int id)
 	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
 }
 
-void MousePicking::render(const Camera &camera) const
+void MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
 	if (!mousePressed)
 	{
 		return;
 	}
 
+	auto entities = prepareEntities(registry);
+
 	Renderer3DUtil::prepareRendering(m_Shader);
 
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 
-	for (auto const&[texturedModel, objects] : m_Objects)
+	for (auto const&[texturedModel, objects] : entities)
 	{
 		glBindVertexArray(texturedModel.vaoID());
 		glEnableVertexAttribArray(0);
 
-		renderScene(objects, camera);
+		renderScene(registry, objects, camera);
 
 		glDisableVertexAttribArray(0);
 		Loader::unbindVao();
@@ -76,18 +73,19 @@ void MousePicking::render(const Camera &camera) const
 	mousePressed = false;
 }
 
-void MousePicking::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+void MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+							   const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
-		auto const &o = object.get();
-		m_Shader.loadTransformationMatrix(
-				Maths::createTransformationMatrix(o.m_Position, o.m_Scale, camera.m_Rotation));
+		loadTransformationMatrix(camera, registry, object);
 
-		glm::vec4 color = getColor(o.m_Id);
+		const IdComponent &id = registry.get<IdComponent>(object);
+		glm::vec4 color = getColor(id.id);
 		m_Shader.loadPickingColor(color);
 
-		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 	}
 }
 
@@ -119,4 +117,43 @@ int MousePicking::getID(const std::uint8_t *data)
 	}
 
 	return r + g + b;
+}
+
+std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+MousePicking::prepareEntities(entt::registry &registry)
+{
+	const auto &entities3D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
+	const auto &entities2D = registry.view<RenderComponent, Transform2DComponent, IdComponent>();
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : entities2D)
+	{
+		const RenderComponent &renderComponent = entities2D.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	for (auto const &entity : entities3D)
+	{
+		const RenderComponent &renderComponent = entities3D.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
+}
+
+void MousePicking::loadTransformationMatrix(const Camera &camera,
+											const entt::registry &registry, entt::entity entity) const
+{
+	const Transform3DComponent &transform = registry.has<Transform2DComponent>(entity)
+									 ? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(entity))
+									 : registry.get<Transform3DComponent>(entity);
+
+	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
+
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+	m_Shader.loadTransformationMatrix(transformationMatrix);
 }

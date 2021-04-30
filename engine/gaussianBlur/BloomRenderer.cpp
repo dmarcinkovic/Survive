@@ -10,21 +10,25 @@ BloomRenderer::BloomRenderer(int width, int height)
 
 }
 
-void BloomRenderer::render() const
+void BloomRenderer::render(entt::registry &registry) const
 {
-	if (m_Objects.empty())
+	auto const &view = registry.view<BloomComponent>();
+
+	if (view.empty())
 	{
 		return;
 	}
 
 	prepare();
 
-	for (auto const& object : m_Objects)
+	for (auto const &entity : view)
 	{
-		const Texture &emissiveTexture = object.get().getEmissiveTexture();
+		BloomComponent &bloom = view.get<BloomComponent>(entity);
 
-		m_HorizontalRenderer.render(emissiveTexture, m_Model);
+		m_HorizontalRenderer.render(bloom.emissiveTexture, m_Model);
 		m_VerticalRenderer.render(m_HorizontalRenderer.getTexture(), m_Model);
+
+		bloom.bloomTexture = m_VerticalRenderer.getTexture();
 	}
 
 	finishRendering();
@@ -42,10 +46,4 @@ void BloomRenderer::finishRendering()
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-}
-
-void BloomRenderer::addObject(Object3D &object)
-{
-	m_Objects.emplace_back(object);
-	object.addBloomTexture(m_VerticalRenderer.getTexture());
 }

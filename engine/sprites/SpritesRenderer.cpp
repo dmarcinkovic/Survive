@@ -5,28 +5,24 @@
 #include "SpritesRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer2DUtil.h"
+#include "../components/RenderComponent.h"
 
-void SpritesRenderer::renderSprite() const
+
+void SpritesRenderer::render(entt::registry &registry) const
 {
-	if (m_Sprites.empty())
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
 	{
 		return;
 	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
 
-	for (auto const&[texture, batch] : m_Sprites)
+	for (auto const&[texture, sprites] : entities)
 	{
 		Renderer2DUtil::prepareEntity(texture);
-		for (auto const &sprite : batch)
-		{
-			auto &s = sprite.get();
-			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(s.m_Position, s.m_Scale));
-			animate(s);
-
-			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		}
+		renderSprites(sprites, registry, texture);
 
 		Renderer2DUtil::finishRenderingEntity();
 	}
@@ -34,20 +30,44 @@ void SpritesRenderer::renderSprite() const
 	Renderer2DUtil::finishRendering();
 }
 
-void SpritesRenderer::addSprite(Sprite &sprite) noexcept
+void SpritesRenderer::loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const
 {
-	std::vector<std::reference_wrapper<Sprite>> &batch = m_Sprites[sprite.m_Texture];
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(glm::vec3{transform.position, 0},
+															  glm::vec3{transform.scale, 0},
+															  glm::vec3{transform.rotation, 0});
 
-	batch.emplace_back(sprite);
+	m_Shader.loadTransformationMatrix(modelMatrix);
+	m_Shader.loadSpriteSize(sprite.row, sprite.col);
+	m_Shader.loadSpritePosition(sprite.currentFrameIndex);
 }
 
-void SpritesRenderer::animate(Sprite &sprite) const
+std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	if (sprite.m_Animate)
+	auto group = registry.group<RenderComponent, Transform2DComponent, SpriteSheetComponent>();
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : group)
 	{
-		sprite.animate();
+		const RenderComponent &renderComponent = group.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
 	}
 
-	m_Shader.loadSpriteSize(sprite.m_Row, sprite.m_Col);
-	m_Shader.loadSpritePosition(sprite.m_CurrentFrameIndex);
+	return entities;
+}
+
+void SpritesRenderer::renderSprites(const std::vector<entt::entity> &sprites, const entt::registry &registry,
+									const TexturedModel &texturedModel) const
+{
+	for (auto const &sprite : sprites)
+	{
+		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(sprite);
+		const SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
+
+		loadUniforms(transformComponent, spriteComponent);
+
+		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+	}
 }

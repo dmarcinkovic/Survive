@@ -14,11 +14,23 @@ private:
 	ALuint m_Source{};
 
 public:
-	explicit Source(const glm::vec3 &sourcePosition);
+	explicit Source(float gain = 1.0f, float pitch = 1.0f);
 
 	~Source();
 
 	void play(ALuint buffer) const;
+
+	void stop() const;
+
+	void pause() const;
+
+	void continuePlaying() const;
+
+	[[nodiscard]] bool isPlaying() const;
+
+	void setOnLoop(bool loop) const;
+
+	void setPosition(const glm::vec3 &pos) const;
 };
 
 

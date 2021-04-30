@@ -8,8 +8,8 @@
 #include "../util/Util.h"
 
 Font::Font(const char *textureAtlas, Loader &loader)
+	: m_FontTexture(Loader::loadTexture(textureAtlas))
 {
-	m_TextureId = loader.loadTexture(textureAtlas);
 }
 
 void Font::loadFontFromFntFile(const char *fntFile)
@@ -66,7 +66,7 @@ const Character &Font::getCharacter(int ascii) const
 	return m_Characters.at(ascii);
 }
 
-GLuint Font::getMTextureId() const
+const Texture &Font::getTexture() const
 {
-	return m_TextureId;
+	return m_FontTexture;
 }
