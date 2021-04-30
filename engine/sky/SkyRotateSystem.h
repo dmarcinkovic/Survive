@@ -7,11 +7,13 @@
 
 #include "../../ecs/entt.hpp"
 
-class SkyRotateSystem
+namespace Survive
 {
-public:
-	static void rotateSky(entt::registry &registry, entt::entity sky);
-};
-
+	class SkyRotateSystem
+	{
+	public:
+		static void rotateSky(entt::registry &registry, entt::entity sky);
+	};
+}
 
 #endif //SURVIVE_SKYROTATESYSTEM_H

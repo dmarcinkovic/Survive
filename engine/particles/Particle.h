@@ -11,49 +11,52 @@
 #include "../camera/Camera.h"
 #include "ParticleModel.h"
 
-class Particle : public Entity
+namespace Survive
 {
-private:
-	glm::vec3 m_Velocity, m_Rotation;
+	class Particle : public Entity
+	{
+	private:
+		glm::vec3 m_Velocity, m_Rotation;
 
-	glm::vec3 m_InitialVelocity, m_InitialPosition;
+		glm::vec3 m_InitialVelocity, m_InitialPosition;
 
-	float m_BlendFactor{};
-	unsigned m_Rows, m_Cols;
+		float m_BlendFactor{};
+		unsigned m_Rows, m_Cols;
 
-	float m_GravityEffect{};
-	float m_LifeLength{};
+		float m_GravityEffect{};
+		float m_LifeLength{};
 
-	float m_ElapsedTime{};
+		float m_ElapsedTime{};
 
-	glm::vec2 m_TextureOffset1{};
-	glm::vec2 m_TextureOffset2{};
+		glm::vec2 m_TextureOffset1{};
+		glm::vec2 m_TextureOffset2{};
 
-	float m_Distance{};
+		float m_Distance{};
 
-public:
-	Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
-			 float gravityEffect, float lifeLength, float rotation = 0.0f, float scale = 1.0f);
+	public:
+		Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
+				 float gravityEffect, float lifeLength, float rotation = 0.0f, float scale = 1.0f);
 
-	bool update(const Camera &camera);
+		bool update(const Camera &camera);
 
-	void reset();
+		void reset();
 
-private:
-	void updateTextureCoordInfo();
+	private:
+		void updateTextureCoordInfo();
 
-	[[nodiscard]] glm::vec2 setTextureOffset(int index) const;
+		[[nodiscard]] glm::vec2 setTextureOffset(int index) const;
 
-	[[nodiscard]] float getAtlasProgression(unsigned stageCount) const;
+		[[nodiscard]] float getAtlasProgression(unsigned stageCount) const;
 
-	void updateTextureOffsets(float atlasProgression, unsigned stageCount);
+		void updateTextureOffsets(float atlasProgression, unsigned stageCount);
 
-	void applyGravity();
+		void applyGravity();
 
-	void updateTimeElapsed();
+		void updateTimeElapsed();
 
-	friend class ParticleRenderer;
-};
+		friend class ParticleRenderer;
+	};
+}
 
 
 #endif //SURVIVE_PARTICLE_H

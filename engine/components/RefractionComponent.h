@@ -7,17 +7,21 @@
 
 #include "../texture/Texture.h"
 
-struct RefractionComponent
+namespace Survive
 {
-	Texture refractionTexture{};
-	float refractiveIndex{};
-	float refractiveFactor{};
+	struct RefractionComponent
+	{
+		Texture refractionTexture{};
+		float refractiveIndex{};
+		float refractiveFactor{};
 
-	RefractionComponent(const Texture &refractionTexture, float refractiveIndex, float refractiveFactor)
-			: refractionTexture(refractionTexture), refractiveIndex(refractiveIndex), refractiveFactor(refractiveFactor)
-	{}
+		RefractionComponent(const Texture &refractionTexture, float refractiveIndex, float refractiveFactor)
+				: refractionTexture(refractionTexture), refractiveIndex(refractiveIndex),
+				  refractiveFactor(refractiveFactor)
+		{}
 
-	RefractionComponent() = default;
-};
+		RefractionComponent() = default;
+	};
+}
 
 #endif //SURVIVE_REFRACTIONCOMPONENT_H

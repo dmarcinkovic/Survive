@@ -7,16 +7,19 @@
 
 #include "../texture/Texture.h"
 
-struct ReflectionComponent
+namespace Survive
 {
-	Texture reflectionTexture{};
-	float reflectionFactor{};
+	struct ReflectionComponent
+	{
+		Texture reflectionTexture{};
+		float reflectionFactor{};
 
-	ReflectionComponent(const Texture &reflectionTexture, float reflectionFactor)
-		: reflectionTexture(reflectionTexture), reflectionFactor(reflectionFactor)
-	{}
+		ReflectionComponent(const Texture &reflectionTexture, float reflectionFactor)
+				: reflectionTexture(reflectionTexture), reflectionFactor(reflectionFactor)
+		{}
 
-	ReflectionComponent() = default;
-};
+		ReflectionComponent() = default;
+	};
+}
 
 #endif //SURVIVE_REFLECTIONCOMPONENT_H

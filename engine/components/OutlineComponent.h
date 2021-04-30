@@ -5,15 +5,18 @@
 #ifndef SURVIVE_OUTLINECOMPONENT_H
 #define SURVIVE_OUTLINECOMPONENT_H
 
-struct OutlineComponent
+namespace Survive
 {
-	bool drawOutline{};
+	struct OutlineComponent
+	{
+		bool drawOutline{};
 
-	explicit OutlineComponent(bool drawOutline)
-		: drawOutline(drawOutline)
-	{}
+		explicit OutlineComponent(bool drawOutline)
+				: drawOutline(drawOutline)
+		{}
 
-	OutlineComponent() = default;
-};
+		OutlineComponent() = default;
+	};
+}
 
 #endif //SURVIVE_OUTLINECOMPONENT_H

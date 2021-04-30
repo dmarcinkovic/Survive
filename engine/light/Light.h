@@ -7,19 +7,21 @@
 
 #include <glm/glm.hpp>
 
-class Light
+namespace Survive
 {
-private:
-	const glm::vec3 m_Position;
-	const glm::vec3 m_Color;
+	class Light
+	{
+	private:
+		const glm::vec3 m_Position;
+		const glm::vec3 m_Color;
 
-public:
-	Light(const glm::vec3 &position, const glm::vec3 &color);
+	public:
+		Light(const glm::vec3 &position, const glm::vec3 &color);
 
-	[[nodiscard]] const glm::vec3 &position() const;
+		[[nodiscard]] const glm::vec3 &position() const;
 
-	[[nodiscard]] const glm::vec3 &color() const;
-};
-
+		[[nodiscard]] const glm::vec3 &color() const;
+	};
+}
 
 #endif //SURVIVE_LIGHT_H

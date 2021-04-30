@@ -8,28 +8,31 @@
 
 #include "../../shader/Shader.h"
 
-class ButtonShader : public Shader
+namespace Survive
 {
-private:
-	constexpr static const char *VERTEX_FILE = "engine/shader/sources/ButtonVertexShader.glsl";
-	constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/ButtonFragmentShader.glsl";
+	class ButtonShader : public Shader
+	{
+	private:
+		constexpr static const char *VERTEX_FILE = "engine/shader/sources/ButtonVertexShader.glsl";
+		constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/ButtonFragmentShader.glsl";
 
-	GLuint m_LocationTransformationMatrix{};
-	GLuint m_LocationColor{};
-	GLuint m_LocationIsLoadingImage{};
+		GLuint m_LocationTransformationMatrix{};
+		GLuint m_LocationColor{};
+		GLuint m_LocationIsLoadingImage{};
 
-public:
-	ButtonShader();
+	public:
+		ButtonShader();
 
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-	void loadColor(const glm::vec4 &color) const;
+		void loadColor(const glm::vec4 &color) const;
 
-	void loadIsLoadingImage(bool value) const;
+		void loadIsLoadingImage(bool value) const;
 
-private:
-	void getUniformLocations();
-};
+	private:
+		void getUniformLocations();
+	};
+}
 
 
 #endif //SURVIVE_BUTTONSHADER_H

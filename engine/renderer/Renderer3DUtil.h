@@ -9,19 +9,21 @@
 #include "../shader/Shader.h"
 #include "../texture/TexturedModel.h"
 
-class Renderer3DUtil
+namespace Survive
 {
-public:
-	static void prepareRendering(const Shader &shader);
+	class Renderer3DUtil
+	{
+	public:
+		static void prepareRendering(const Shader &shader);
 
-	static void finishRendering();
+		static void finishRendering();
 
-	static void prepareEntity(const TexturedModel &texture);
+		static void prepareEntity(const TexturedModel &texture);
 
-	static void finishRenderingEntity();
+		static void finishRenderingEntity();
 
-	static void addTransparency(bool cullFace, bool blend);
-};
-
+		static void addTransparency(bool cullFace, bool blend);
+	};
+}
 
 #endif //SURVIVE_RENDERER3DUTIL_H

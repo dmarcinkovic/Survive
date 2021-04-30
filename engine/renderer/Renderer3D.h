@@ -16,48 +16,50 @@
 #include "../water/WaterFbo.h"
 #include "../gaussianBlur/BloomRenderer.h"
 
-class Renderer3D
+namespace Survive
 {
-private:
-	ObjectRenderer m_ObjectRenderer;
-	TerrainRenderer m_TerrainRenderer;
-	ShadowRenderer m_ShadowRenderer;
-	AnimationRenderer m_AnimationRenderer;
-	SkyRenderer m_SkyRenderer;
-	OutlineRenderer m_OutlineRenderer;
-	MousePicking m_MousePicking;
-	WaterRenderer m_WaterRenderer;
-	BloomRenderer m_BloomRenderer;
+	class Renderer3D
+	{
+	private:
+		ObjectRenderer m_ObjectRenderer;
+		TerrainRenderer m_TerrainRenderer;
+		ShadowRenderer m_ShadowRenderer;
+		AnimationRenderer m_AnimationRenderer;
+		SkyRenderer m_SkyRenderer;
+		OutlineRenderer m_OutlineRenderer;
+		MousePicking m_MousePicking;
+		WaterRenderer m_WaterRenderer;
+		BloomRenderer m_BloomRenderer;
 
-	const Light &m_Light;
-	FrameBuffer m_FrameBuffer;
-	const GLuint m_ShadowMap;
+		const Light &m_Light;
+		FrameBuffer m_FrameBuffer;
+		const GLuint m_ShadowMap;
 
-	glm::vec4 m_ReflectionCLippingPlane{};
-	glm::vec4 m_RefractionCLippingPlane{};
+		glm::vec4 m_ReflectionCLippingPlane{};
+		glm::vec4 m_RefractionCLippingPlane{};
 
-public:
-	explicit Renderer3D(const Light &light);
+	public:
+		explicit Renderer3D(const Light &light);
 
-	void render(entt::registry &registry, Camera &camera) const;
+		void render(entt::registry &registry, Camera &camera) const;
 
-	void addSkyboxEntity(entt::entity sky);
+		void addSkyboxEntity(entt::entity sky);
 
-	void addOutlineToObject(entt::registry &registry, entt::entity entity);
+		void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-	void removeOutlineToObject(entt::registry &registry);
+		void removeOutlineToObject(entt::registry &registry);
 
-	void addShadow(entt::registry &registry, entt::entity entity);
+		void addShadow(entt::registry &registry, entt::entity entity);
 
-	void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-private:
-	void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
+	private:
+		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterReflection(entt::registry &registry, Camera &camera) const;
+		void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-	void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
-};
-
+		void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
+	};
+}
 
 #endif //SURVIVE_RENDERER3D_H

@@ -7,37 +7,39 @@
 
 #include <glm/glm.hpp>
 
-struct Camera
+namespace Survive
 {
-	glm::vec3 m_Position{};
-	float m_Pitch{};
-	float m_Yaw{};
+	struct Camera
+	{
+		glm::vec3 m_Position{};
+		float m_Pitch{};
+		float m_Yaw{};
 
-	glm::vec3 m_Rotation{};
+		glm::vec3 m_Rotation{};
 
-	Camera();
+		Camera();
 
-	void invertPitch();
+		void invertPitch();
 
-	void moveCameraInYDirection(float yDistance);
+		void moveCameraInYDirection(float yDistance);
 
-private:
-	bool m_LeftButtonPressed{};
-	bool m_RightButtonPressed{};
+	private:
+		bool m_LeftButtonPressed{};
+		bool m_RightButtonPressed{};
 
-	glm::vec2 m_MousePos{};
-	glm::vec3 m_CurrentRotation{};
-	float m_CurrentYaw{};
-	float m_CurrentPitch{};
+		glm::vec2 m_MousePos{};
+		glm::vec3 m_CurrentRotation{};
+		float m_CurrentYaw{};
+		float m_CurrentPitch{};
 
-	void addScrollListener();
+		void addScrollListener();
 
-	void addMousePressedListener();
+		void addMousePressedListener();
 
-	void addMouseMovedListener();
+		void addMouseMovedListener();
 
-	void addKeyboardListener();
-};
-
+		void addKeyboardListener();
+	};
+}
 
 #endif //SURVIVE_CAMERA_H

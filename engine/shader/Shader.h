@@ -8,40 +8,42 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-class Shader
+namespace Survive
 {
-protected:
-	GLuint m_VertexShader;
-	GLuint m_FragmentShader;
-	GLuint m_Program;
+	class Shader
+	{
+	protected:
+		GLuint m_VertexShader;
+		GLuint m_FragmentShader;
+		GLuint m_Program;
 
-private:
-	static GLuint loadShader(const char *filename, GLenum type);
+	private:
+		static GLuint loadShader(const char *filename, GLenum type);
 
-	static void debug(GLuint shaderId, const char *filename);
+		static void debug(GLuint shaderId, const char *filename);
 
-public:
-	Shader(const char *vertexShaderFile, const char *fragmentShaderFile);
+	public:
+		Shader(const char *vertexShaderFile, const char *fragmentShaderFile);
 
-	~Shader();
+		~Shader();
 
-	void start() const;
+		void start() const;
 
-	static void stop();
+		static void stop();
 
-protected:
-	static void loadMatrix(GLuint location, const glm::mat4 &matrix);
+	protected:
+		static void loadMatrix(GLuint location, const glm::mat4 &matrix);
 
-	static void loadVector3(GLuint location, const glm::vec3 &vector);
+		static void loadVector3(GLuint location, const glm::vec3 &vector);
 
-	static void loadFloat(GLuint location, float value);
+		static void loadFloat(GLuint location, float value);
 
-	static void loadVector4(GLuint location, const glm::vec4 &vector);
+		static void loadVector4(GLuint location, const glm::vec4 &vector);
 
-	static void loadInteger(GLuint location, int value);
+		static void loadInteger(GLuint location, int value);
 
-	static void loadUnsigned(GLuint location, unsigned value);
-};
-
+		static void loadUnsigned(GLuint location, unsigned value);
+	};
+}
 
 #endif //SURVIVE_SHADER_H

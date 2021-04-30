@@ -14,55 +14,57 @@
 #include "ParticleModel.h"
 #include "ParticleRenderer.h"
 
-class ParticleSystem
+namespace Survive
 {
-private:
-	float m_ParticlesPerSecond, m_Speed, m_Gravity, m_LifeLength, m_AverageScale;
-	float m_SpeedError{}, m_LifeError{}, m_ScaleError{};
+	class ParticleSystem
+	{
+	private:
+		float m_ParticlesPerSecond, m_Speed, m_Gravity, m_LifeLength, m_AverageScale;
+		float m_SpeedError{}, m_LifeError{}, m_ScaleError{};
 
-	bool m_RandomRotation = false;
-	bool m_EmitParticles = true;
+		bool m_RandomRotation = false;
+		bool m_EmitParticles = true;
 
-	glm::vec3 m_Direction{};
-	float m_DirectionDeviation{};
+		glm::vec3 m_Direction{};
+		float m_DirectionDeviation{};
 
-public:
-	ParticleSystem(float particlesPerSecond, float speed, float gravity,
-				   float lifeLength, float scale);
+	public:
+		ParticleSystem(float particlesPerSecond, float speed, float gravity,
+					   float lifeLength, float scale);
 
-	void generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
-						   ParticleRenderer &particleRenderer, const Camera &camera);
+		void generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
+							   ParticleRenderer &particleRenderer, const Camera &camera);
 
-	void setDirection(const glm::vec3 &direction, float deviation);
+		void setDirection(const glm::vec3 &direction, float deviation);
 
-	void randomizeRotation();
+		void randomizeRotation();
 
-	void setSpeedError(float speedError);
+		void setSpeedError(float speedError);
 
-	void setLifeError(float lifeError);
+		void setLifeError(float lifeError);
 
-	void setScaleError(float scaleError);
+		void setScaleError(float scaleError);
 
-private:
-	void emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
-					  std::vector<Particle> &particles) const;
+	private:
+		void emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
+						  std::vector<Particle> &particles) const;
 
-	static float generateValue(float average, float errorMargin);
+		static float generateValue(float average, float errorMargin);
 
-	[[nodiscard]] float generateRotation() const;
+		[[nodiscard]] float generateRotation() const;
 
-	static glm::vec3 generateRandomUnitVectorWithinCone(const glm::vec3 &coneDirection, float angle);
+		static glm::vec3 generateRandomUnitVectorWithinCone(const glm::vec3 &coneDirection, float angle);
 
-	static glm::vec3 generateRandomUnitVector();
+		static glm::vec3 generateRandomUnitVector();
 
-	static glm::vec4 getDirection(float angle);
+		static glm::vec4 getDirection(float angle);
 
-	static glm::vec4 rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction);
+		static glm::vec4 rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction);
 
-	static glm::vec3 getDirection(float z, float theta);
+		static glm::vec3 getDirection(float z, float theta);
 
-	int updateParticles(std::vector<Particle> &particles, const Camera &camera, int count);
-};
-
+		int updateParticles(std::vector<Particle> &particles, const Camera &camera, int count);
+	};
+}
 
 #endif //SURVIVE_PARTICLESYSTEM_H

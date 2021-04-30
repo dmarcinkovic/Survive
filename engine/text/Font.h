@@ -10,25 +10,27 @@
 #include "Character.h"
 #include "../renderer/Loader.h"
 
-class Font
+namespace Survive
 {
-private:
-	std::unordered_map<int, Character> m_Characters;
-	Texture m_FontTexture{};
+	class Font
+	{
+	private:
+		std::unordered_map<int, Character> m_Characters;
+		Texture m_FontTexture{};
 
-public:
-	Font(const char *textureAtlas, Loader &loader);
+	public:
+		Font(const char *textureAtlas, Loader &loader);
 
-	Font() = default;
+		Font() = default;
 
-	void loadFontFromFntFile(const char *fntFile);
+		void loadFontFromFntFile(const char *fntFile);
 
-	void loadFontFromJsonFile(const char *jsonFile);
+		void loadFontFromJsonFile(const char *jsonFile);
 
-	const Character &getCharacter(int ascii) const;
+		const Character &getCharacter(int ascii) const;
 
-	const Texture &getTexture() const;
-};
-
+		const Texture &getTexture() const;
+	};
+}
 
 #endif //SURVIVE_FONT_H

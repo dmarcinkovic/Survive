@@ -9,17 +9,20 @@
 
 #include <glm/vec3.hpp>
 
-struct Entity
+namespace Survive
 {
-	TexturedModel m_Texture;
-	glm::vec3 m_Position{};
-	glm::vec3 m_Scale{};
+	struct Entity
+	{
+		TexturedModel m_Texture;
+		glm::vec3 m_Position{};
+		glm::vec3 m_Scale{};
 
-	Entity(const TexturedModel &texture, const glm::vec3 &position,
-		   const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
+		Entity(const TexturedModel &texture, const glm::vec3 &position,
+			   const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f});
 
-	Entity() = default;
-};
+		Entity() = default;
+	};
+}
 
 
 #endif //SURVIVE_ENTITY_H

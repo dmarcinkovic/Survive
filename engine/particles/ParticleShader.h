@@ -8,26 +8,29 @@
 
 #include "../shader/Shader.h"
 
-class ParticleShader : public Shader
+namespace Survive
 {
-private:
-	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ParticleVertexShader.glsl";
-	static constexpr const char  *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
+	class ParticleShader : public Shader
+	{
+	private:
+		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ParticleVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
 
-	GLuint m_LocationNumberOfRows{};
-	GLuint m_LocationNumberOfCols{};
-	GLuint m_LocationProjectionMatrix{};
+		GLuint m_LocationNumberOfRows{};
+		GLuint m_LocationNumberOfCols{};
+		GLuint m_LocationProjectionMatrix{};
 
-public:
-	ParticleShader();
+	public:
+		ParticleShader();
 
-	void loadDimensions(unsigned rows, unsigned cols) const;
+		void loadDimensions(unsigned rows, unsigned cols) const;
 
-	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-private:
-	void getUniformLocations();
-};
+	private:
+		void getUniformLocations();
+	};
+}
 
 
 #endif //SURVIVE_PARTICLESHADER_H

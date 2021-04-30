@@ -11,93 +11,95 @@
 #include <GL/glew.h>
 #include "../texture/Texture.h"
 
-struct Model
+namespace Survive
 {
-	GLuint m_Vao{};
-	GLsizei m_VertexCount{};
+	struct Model
+	{
+		GLuint m_Vao{};
+		GLsizei m_VertexCount{};
 
-	Model(GLuint vao, size_t vertexCount);
+		Model(GLuint vao, size_t vertexCount);
 
-	Model() = default;
-};
+		Model() = default;
+	};
 
-class Loader
-{
-private:
-	std::vector<GLuint> m_Vaos;
-	std::vector<GLuint> m_Vbos;
+	class Loader
+	{
+	private:
+		std::vector<GLuint> m_Vaos;
+		std::vector<GLuint> m_Vbos;
 
-	static std::vector<GLuint> m_Textures;
+		static std::vector<GLuint> m_Textures;
 
-public:
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
+	public:
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
 
-	~Loader();
+		~Loader();
 
-	static void unbindVao();
+		static void unbindVao();
 
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-					const std::vector<float> &textureCoordinates, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
+						const std::vector<float> &textureCoordinates, size_t size);
 
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
-					const std::vector<float> &normals);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						const std::vector<float> &normals);
 
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
-					const std::vector<float> &normals, const std::vector<unsigned> &indices);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						const std::vector<float> &normals, const std::vector<unsigned> &indices);
 
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
-					const std::vector<float> &normals, const std::vector<float> &jointWeights,
-					const std::vector<unsigned> &jointIds);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
+						const std::vector<float> &normals, const std::vector<float> &jointWeights,
+						const std::vector<unsigned> &jointIds);
 
-	Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
 
-	Model loadToVao(const std::vector<float> &vertices, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, size_t size);
 
-	static Texture loadTexture(const char *texture) noexcept;
+		static Texture loadTexture(const char *texture) noexcept;
 
-	static std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
+		static std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
 
-	static std::vector<Texture> loadAllTextures(const std::vector<const char*> &textures);
+		static std::vector<Texture> loadAllTextures(const std::vector<const char *> &textures);
 
-	static Texture loadCubeMap(const std::vector<const char *> &faces) noexcept;
+		static Texture loadCubeMap(const std::vector<const char *> &faces) noexcept;
 
-	Model renderQuad();
+		Model renderQuad();
 
-	Model renderQuadStrip();
+		Model renderQuadStrip();
 
-	Model renderCube();
+		Model renderCube();
 
-	GLuint createEmptyVBO(int vertexCount);
+		GLuint createEmptyVBO(int vertexCount);
 
-	static void updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData);
+		static void updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData);
 
-	static void
-	addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
-						  int offset);
+		static void
+		addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
+							  int offset);
 
-	void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
+		void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
-private:
-	void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
-								  GLenum usage = GL_STATIC_DRAW);
+	private:
+		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
+									  GLenum usage = GL_STATIC_DRAW);
 
-	void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
+		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
 
-	void createIndexBuffer(const std::vector<unsigned> &indices);
+		void createIndexBuffer(const std::vector<unsigned> &indices);
 
-	GLuint createVao();
+		GLuint createVao();
 
-	static void loadImage(const char *texture) noexcept;
+		static void loadImage(const char *texture) noexcept;
 
-	static void addMipMap();
+		static void addMipMap();
 
-	static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
+		static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
 
-	static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
-	loadImages(const std::vector<const char *> &textures);
+		static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
+		loadImages(const std::vector<const char *> &textures);
 
-	static GLuint loadTexture(const std::tuple<std::uint8_t *, int, int> &imageData);
-};
-
+		static GLuint loadTexture(const std::tuple<std::uint8_t *, int, int> &imageData);
+	};
+}
 
 #endif //SURVIVE_LOADER_H

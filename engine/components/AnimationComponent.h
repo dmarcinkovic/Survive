@@ -7,16 +7,19 @@
 
 #include "../animations/joints/Joint.h"
 
-struct AnimationComponent
+namespace Survive
 {
-	Joint rootJoint;
-	int numberOfJoints{};
+	struct AnimationComponent
+	{
+		Joint rootJoint;
+		int numberOfJoints{};
 
-	AnimationComponent() = default;
+		AnimationComponent() = default;
 
-	AnimationComponent(Joint rootJoint, int numberOfJoints)
-			: rootJoint(std::move(rootJoint)), numberOfJoints(numberOfJoints)
-	{}
-};
+		AnimationComponent(Joint rootJoint, int numberOfJoints)
+				: rootJoint(std::move(rootJoint)), numberOfJoints(numberOfJoints)
+		{}
+	};
+}
 
 #endif //SURVIVE_ANIMATIONCOMPONENT_H

@@ -8,16 +8,18 @@
 
 #include "SpritesRenderer.h"
 
-class SpriteUpdate
+namespace Survive
 {
-public:
-	static void update(entt::registry &registry);
+	class SpriteUpdate
+	{
+	public:
+		static void update(entt::registry &registry);
 
-private:
-	static void updateSprite(SpriteSheetComponent &sprite);
+	private:
+		static void updateSprite(SpriteSheetComponent &sprite);
 
-	static int calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex);
-};
-
+		static int calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex);
+	};
+}
 
 #endif //SURVIVE_SPRITEUPDATE_H

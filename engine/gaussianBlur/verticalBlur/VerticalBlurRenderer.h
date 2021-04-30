@@ -9,22 +9,24 @@
 #include "VerticalBlurShader.h"
 #include "../../fbo/FrameBuffer.h"
 
-class VerticalBlurRenderer
+namespace Survive
 {
-private:
-	FrameBuffer m_Fbo;
-	int m_Width, m_Height;
+	class VerticalBlurRenderer
+	{
+	private:
+		FrameBuffer m_Fbo;
+		int m_Width, m_Height;
 
-	VerticalBlurShader m_Shader;
-	Texture m_VerticalBlurTexture;
+		VerticalBlurShader m_Shader;
+		Texture m_VerticalBlurTexture;
 
-public:
-	VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
+	public:
+		VerticalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
-	void render(const Texture &texture, const Model &model) const;
+		void render(const Texture &texture, const Model &model) const;
 
-	[[nodiscard]] const Texture &getTexture() const;
-};
-
+		[[nodiscard]] const Texture &getTexture() const;
+	};
+}
 
 #endif //SURVIVE_VERTICALBLURRENDERER_H

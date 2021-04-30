@@ -16,34 +16,36 @@
 #include "../components/Transform3DComponent.h"
 #include "../components/RenderComponent.h"
 
-
-class OutlineRenderer
+namespace Survive
 {
-private:
-	static constexpr float SCALE = 1.04f;
+	class OutlineRenderer
+	{
+	private:
+		static constexpr float SCALE = 1.04f;
 
-	OutlineShader m_Shader;
-	entt::entity m_Entity{};
-	bool m_Render{};
+		OutlineShader m_Shader;
+		entt::entity m_Entity{};
+		bool m_Render{};
 
-public:
-	void render(const entt::registry &registry, const Camera &camera) const;
+	public:
+		void render(const entt::registry &registry, const Camera &camera) const;
 
-	void add3DObject(entt::registry &registry, entt::entity entity);
+		void add3DObject(entt::registry &registry, entt::entity entity);
 
-	void removeObject(entt::registry &registry);
+		void removeObject(entt::registry &registry);
 
-private:
-	static void setStencilFunctions();
+	private:
+		static void setStencilFunctions();
 
-	static void resetStencilFunctions();
+		static void resetStencilFunctions();
 
-	void loadUniforms(const Transform3DComponent &transform, const Camera &camera) const;
+		void loadUniforms(const Transform3DComponent &transform, const Camera &camera) const;
 
-	static void prepareObject(const RenderComponent &renderComponent) ;
+		static void prepareObject(const RenderComponent &renderComponent);
 
-	static void finishRenderingObject();
-};
+		static void finishRenderingObject();
+	};
+}
 
 
 #endif //SURVIVE_OUTLINERENDERER_H

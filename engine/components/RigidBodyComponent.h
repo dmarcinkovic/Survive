@@ -5,15 +5,18 @@
 #ifndef SURVIVE_RIGIDBODYCOMPONENT_H
 #define SURVIVE_RIGIDBODYCOMPONENT_H
 
-struct RigidBodyComponent
+namespace Survive
 {
-	bool isTransparent{};
+	struct RigidBodyComponent
+	{
+		bool isTransparent{};
 
-	explicit RigidBodyComponent(bool isTransparent)
-		: isTransparent(isTransparent)
-	{}
+		explicit RigidBodyComponent(bool isTransparent)
+				: isTransparent(isTransparent)
+		{}
 
-	RigidBodyComponent() = default;
-};
+		RigidBodyComponent() = default;
+	};
+}
 
 #endif //SURVIVE_RIGIDBODYCOMPONENT_H

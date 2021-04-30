@@ -14,36 +14,38 @@
 #include "MousePickingShader.h"
 #include "../../ecs/entt.hpp"
 
-class MousePicking
+namespace Survive
 {
-private:
-	static bool mousePressed;
-	MousePickingShader m_Shader;
+	class MousePicking
+	{
+	private:
+		static bool mousePressed;
+		MousePickingShader m_Shader;
 
-	glm::vec2 m_MousePosition{};
+		glm::vec2 m_MousePosition{};
 
-public:
-	explicit MousePicking();
+	public:
+		explicit MousePicking();
 
-	void render(entt::registry &registry, const Camera &camera) const;
+		void render(entt::registry &registry, const Camera &camera) const;
 
-private:
-	void mousePressedHandler();
+	private:
+		void mousePressedHandler();
 
-	void renderScene(const entt::registry &registry,
-			 const std::vector<entt::entity> &objects, const Camera &camera) const;
+		void renderScene(const entt::registry &registry,
+						 const std::vector<entt::entity> &objects, const Camera &camera) const;
 
-	void getRenderedObject() const;
+		void getRenderedObject() const;
 
-	static glm::vec4 getColor(int id);
+		static glm::vec4 getColor(int id);
 
-	static int getID(const std::uint8_t *data);
+		static int getID(const std::uint8_t *data);
 
-	static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
-	prepareEntities(entt::registry &registry);
+		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+		prepareEntities(entt::registry &registry);
 
-	void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
-};
-
+		void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
+	};
+}
 
 #endif //SURVIVE_MOUSEPICKING_H

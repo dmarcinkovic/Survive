@@ -4,7 +4,7 @@
 
 #include "WaterShader.h"
 
-WaterShader::WaterShader()
+Survive::WaterShader::WaterShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
@@ -62,18 +62,18 @@ void WaterShader::loadMoveFactor(float moveFactor) const
 	loadFloat(m_LocationMoveFactor, moveFactor);
 }
 
-void WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+void Survive::WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
 {
 	loadVector3(m_LocationCameraPosition, cameraPosition);
 }
 
-void WaterShader::loadLight(const Light &light) const
+void Survive::WaterShader::loadLight(const Light &light) const
 {
 	loadVector3(m_LocationLightColor, light.color());
 	loadVector3(m_LocationLightPosition, light.position());
 }
 
-void WaterShader::loadNearAndFar(float near, float far) const
+void Survive::WaterShader::loadNearAndFar(float near, float far) const
 {
 	loadFloat(m_LocationNear, near);
 	loadFloat(m_LocationFar, far);

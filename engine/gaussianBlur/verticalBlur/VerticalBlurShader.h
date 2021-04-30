@@ -8,22 +8,24 @@
 
 #include "../../shader/Shader.h"
 
-class VerticalBlurShader : public Shader
+namespace Survive
 {
-private:
-	static constexpr const char* VERTEX_SHADER = "engine/shader/sources/VerticalBlurVertexShader.glsl";
-	static constexpr const char* FRAGMENT_SHADER = "engine/shader/sources/BlurFragmentShader.glsl";
+	class VerticalBlurShader : public Shader
+	{
+	private:
+		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/VerticalBlurVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/BlurFragmentShader.glsl";
 
-	GLuint m_LocationTargetHeight{};
+		GLuint m_LocationTargetHeight{};
 
-public:
-	VerticalBlurShader();
+	public:
+		VerticalBlurShader();
 
-	void loadTargetHeight(float targetHeight) const;
+		void loadTargetHeight(float targetHeight) const;
 
-private:
-	void loadUniformLocations();
-};
-
+	private:
+		void loadUniformLocations();
+	};
+}
 
 #endif //SURVIVE_VERTICALBLURSHADER_H

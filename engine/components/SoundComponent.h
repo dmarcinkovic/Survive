@@ -7,15 +7,18 @@
 
 #include "../audio/Source.h"
 
-struct SoundComponent
+namespace Survive
 {
-	Source audioSource;
+	struct SoundComponent
+	{
+		Source audioSource;
 
-	SoundComponent() = default;
+		SoundComponent() = default;
 
-	explicit SoundComponent(const Source& source)
-			: audioSource(source)
-	{}
-};
+		explicit SoundComponent(const Source &source)
+				: audioSource(source)
+		{}
+	};
+}
 
 #endif //SURVIVE_SOUNDCOMPONENT_H
