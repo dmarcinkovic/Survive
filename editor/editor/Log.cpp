@@ -43,6 +43,7 @@ void Log::drawLogWindow()
 			return;
 		}
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.0f);
 		auto[width, height] = Display::getWindowSize<float>();
 		ImGui::Begin("", &m_LogInfo.open, flags);
 
@@ -51,10 +52,11 @@ void Log::drawLogWindow()
 		ImGui::SetWindowFontScale(1.2f);
 		ImGui::TextWrapped("%s", m_LogInfo.message);
 
-		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width, height - m_LogInfo.height));
+		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width - OFFSET_X, height - m_LogInfo.height - OFFSET_Y));
 		ImGui::SetWindowSize(ImVec2(m_LogInfo.width, m_LogInfo.height));
 
 		ImGui::End();
+		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 	}
 }

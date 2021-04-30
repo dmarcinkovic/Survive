@@ -25,6 +25,9 @@ struct LogInfo
 class Log
 {
 private:
+	static constexpr int OFFSET_X = 4;
+	static constexpr int OFFSET_Y = 1;
+
 	static LogInfo m_LogInfo;
 
 	using GLuint = unsigned;
