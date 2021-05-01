@@ -7,12 +7,12 @@
 #include "Font.h"
 #include "../util/Util.h"
 
-Font::Font(const char *textureAtlas, Loader &loader)
-	: m_FontTexture(Loader::loadTexture(textureAtlas))
+Survive::Font::Font(const char *textureAtlas, Loader &loader)
+		: m_FontTexture(Loader::loadTexture(textureAtlas))
 {
 }
 
-void Font::loadFontFromFntFile(const char *fntFile)
+void Survive::Font::loadFontFromFntFile(const char *fntFile)
 {
 	std::ifstream reader(fntFile);
 
@@ -36,7 +36,7 @@ void Font::loadFontFromFntFile(const char *fntFile)
 	reader.close();
 }
 
-void Font::loadFontFromJsonFile(const char *jsonFile)
+void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 {
 	std::ifstream reader(jsonFile);
 
@@ -61,12 +61,12 @@ void Font::loadFontFromJsonFile(const char *jsonFile)
 	reader.close();
 }
 
-const Character &Font::getCharacter(int ascii) const
+const Survive::Character &Survive::Font::getCharacter(int ascii) const
 {
 	return m_Characters.at(ascii);
 }
 
-const Texture &Font::getTexture() const
+const Survive::Texture &Survive::Font::getTexture() const
 {
 	return m_FontTexture;
 }

@@ -5,7 +5,7 @@
 #include "BlurRenderer.h"
 #include "../display/Display.h"
 
-BlurRenderer::BlurRenderer(const Light &light, int width, int height)
+Survive::BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 		: m_AnimationRenderer(light), m_ObjectRenderer(light),
 		  m_Model(m_Loader.renderQuad()), m_Light(light), m_Texture(m_Fbo.createTexture()),
 		  m_HorizontalBlurRenderer(width, height), m_VerticalBlurRenderer(width, height)
@@ -16,32 +16,32 @@ BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 	m_Height = screenHeight;
 }
 
-void BlurRenderer::render(entt::registry &registry, const Camera &camera) const
+void Survive::BlurRenderer::render(entt::registry &registry, const Camera &camera) const
 {
 	renderToFbo(registry, camera);
 	renderBlur();
 }
 
-const Texture &BlurRenderer::getTexture() const
+const Survive::Texture &Survive::BlurRenderer::getTexture() const
 {
 	return m_VerticalBlurRenderer.getTexture();
 }
 
-void BlurRenderer::prepareRendering() const
+void Survive::BlurRenderer::prepareRendering() const
 {
 	glBindVertexArray(m_Model.m_Vao);
 	glEnableVertexAttribArray(0);
 	glDisable(GL_DEPTH_TEST);
 }
 
-void BlurRenderer::finishRendering()
+void Survive::BlurRenderer::finishRendering()
 {
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 }
 
-void BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) const
+void Survive::BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) const
 {
 	glViewport(0, 0, m_Width, m_Height);
 
@@ -58,7 +58,7 @@ void BlurRenderer::renderToFbo(entt::registry &registry, const Camera &camera) c
 	glViewport(0, 0, screenWidth, screenHeight);
 }
 
-void BlurRenderer::renderBlur() const
+void Survive::BlurRenderer::renderBlur() const
 {
 	prepareRendering();
 

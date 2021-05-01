@@ -10,7 +10,7 @@
 #include "../components/Transform2DComponent.h"
 #include "../components/SpriteSheetComponent.h"
 
-void GuiRenderer::render(entt::registry &registry) const
+void Survive::GuiRenderer::render(entt::registry &registry) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -33,8 +33,8 @@ void GuiRenderer::render(entt::registry &registry) const
 	Renderer2DUtil::finishRendering();
 }
 
-std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
-GuiRenderer::prepareEntities(entt::registry &registry)
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
 	auto view = registry.view<RenderComponent, Transform2DComponent>(entt::exclude<SpriteSheetComponent>);
 
@@ -50,8 +50,8 @@ GuiRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
-							 const TexturedModel &texturedModel) const
+void Survive::GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
+									  const TexturedModel &texturedModel) const
 {
 	for (auto const &entity : guis)
 	{

@@ -4,13 +4,13 @@
 
 #include "BloomRenderer.h"
 
-BloomRenderer::BloomRenderer(int width, int height)
+Survive::BloomRenderer::BloomRenderer(int width, int height)
 		: m_HorizontalRenderer(width, height), m_VerticalRenderer(width, height), m_Model(m_Loader.renderQuad())
 {
 
 }
 
-void BloomRenderer::render(entt::registry &registry) const
+void Survive::BloomRenderer::render(entt::registry &registry) const
 {
 	auto const &view = registry.view<BloomComponent>();
 
@@ -34,14 +34,14 @@ void BloomRenderer::render(entt::registry &registry) const
 	finishRendering();
 }
 
-void BloomRenderer::prepare() const
+void Survive::BloomRenderer::prepare() const
 {
 	glBindVertexArray(m_Model.m_Vao);
 	glEnableVertexAttribArray(0);
 	glDisable(GL_DEPTH_TEST);
 }
 
-void BloomRenderer::finishRendering()
+void Survive::BloomRenderer::finishRendering()
 {
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);

@@ -8,7 +8,7 @@
 #include "DaeParser.h"
 #include "../util/Util.h"
 
-Model DaeParser::loadDae(const char *daeFile, Loader &loader)
+Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
 	std::ifstream reader(daeFile);
 	std::vector<std::string> jointNames;
@@ -41,17 +41,17 @@ Model DaeParser::loadDae(const char *daeFile, Loader &loader)
 	return parseIndices(loader);
 }
 
-Animation DaeParser::getAnimation() const
+Survive::Animation Survive::DaeParser::getAnimation() const
 {
 	return Animation(m_LengthInSeconds, m_KeyFrames);
 }
 
-std::pair<Joint, int> DaeParser::getJointData() const
+std::pair<Survive::Joint, int> Survive::DaeParser::getJointData() const
 {
 	return {m_JointData.rootJoint, m_JointData.numberOfJoints};
 }
 
-void DaeParser::loadGeometry(std::ifstream &reader)
+void Survive::DaeParser::loadGeometry(std::ifstream &reader)
 {
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -91,7 +91,7 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 	}
 }
 
-void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices)
+void Survive::DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices)
 {
 	int index = line.find('>');
 	auto numbers = Util::split(line.substr(index + 1), ' ');
@@ -105,7 +105,7 @@ void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &verti
 	}
 }
 
-void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures)
+void Survive::DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures)
 {
 	int index = line.find('>');
 	auto numbers = Util::split(line.substr(index + 1), ' ');
@@ -118,7 +118,7 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
 	}
 }
 
-Model DaeParser::parseIndices(Loader &loader)
+Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 {
 	int index = m_VertexData.indicesLine.find('>');
 	auto numbers = Util::split(m_VertexData.indicesLine.substr(index + 1), ' ');
@@ -145,7 +145,7 @@ Model DaeParser::parseIndices(Loader &loader)
 	return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds);
 }
 
-void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames)
+void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames)
 {
 	std::vector<float> weights;
 	std::vector<int> count;
@@ -212,7 +212,7 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
 	normalizeWeights();
 }
 
-void DaeParser::normalizeWeights()
+void Survive::DaeParser::normalizeWeights()
 {
 	for (glm::vec3 &vec : m_VertexData.jointWeights)
 	{
@@ -227,7 +227,7 @@ void DaeParser::normalizeWeights()
 	}
 }
 
-std::vector<std::string> DaeParser::getData(std::string &line)
+std::vector<std::string> Survive::DaeParser::getData(std::string &line)
 {
 	int start = line.find('>');
 	int end = line.find_last_of('<');
@@ -240,8 +240,8 @@ std::vector<std::string> DaeParser::getData(std::string &line)
 	return Util::split(line.substr(start + 1, end - start - 1), ' ');
 }
 
-void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
-								  unsigned int index)
+void Survive::DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
+										   unsigned int index)
 {
 	const auto &weight = m_VertexData.jointWeights[index];
 	resultWeights.emplace_back(weight.x);
@@ -254,7 +254,7 @@ void DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector
 	resultWeights.emplace_back(id.z);
 }
 
-Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
+Survive::Joint Survive::DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
 {
 	std::string line;
 	bool initialized = false;
@@ -287,7 +287,8 @@ Joint DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::s
 	return root;
 }
 
-Joint DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
+Survive::Joint
+Survive::DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
 {
 	static const int OFFSET = 4;
 
@@ -303,7 +304,7 @@ Joint DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::v
 	return Joint(name, index, getJointTransform(line));
 }
 
-glm::mat4 DaeParser::getJointTransform(std::string &line)
+glm::mat4 Survive::DaeParser::getJointTransform(std::string &line)
 {
 	auto data = getData(line);
 	glm::mat4 transform{};
@@ -322,7 +323,7 @@ glm::mat4 DaeParser::getJointTransform(std::string &line)
 	return transform;
 }
 
-void DaeParser::loadAnimation(std::ifstream &reader)
+void Survive::DaeParser::loadAnimation(std::ifstream &reader)
 {
 	std::string line;
 	std::vector<AnimationData> animationData;
@@ -341,7 +342,7 @@ void DaeParser::loadAnimation(std::ifstream &reader)
 	m_KeyFrames = getKeyFrames(animationData);
 }
 
-AnimationData DaeParser::getAnimationData(std::ifstream &reader)
+Survive::AnimationData Survive::DaeParser::getAnimationData(std::ifstream &reader)
 {
 	AnimationData animationData;
 	std::string line;
@@ -373,7 +374,7 @@ AnimationData DaeParser::getAnimationData(std::ifstream &reader)
 	return animationData;
 }
 
-std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
+std::vector<glm::mat4> Survive::DaeParser::getTransforms(std::string &line)
 {
 	auto data = getData(line);
 	std::vector<glm::mat4> transforms;
@@ -399,7 +400,7 @@ std::vector<glm::mat4> DaeParser::getTransforms(std::string &line)
 	return transforms;
 }
 
-std::vector<KeyFrame> DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
+std::vector<Survive::KeyFrame> Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
 {
 	std::vector<KeyFrame> keyFrames;
 	std::vector<float> timeStamps = animationData.front().timestamps;

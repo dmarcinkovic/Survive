@@ -4,28 +4,28 @@
 
 #include "ObjectShader.h"
 
-ObjectShader::ObjectShader()
+Survive::ObjectShader::ObjectShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
 }
 
-void ObjectShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
+void Survive::ObjectShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void ObjectShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+void Survive::ObjectShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
 {
 	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
-void ObjectShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::ObjectShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationViewMatrix, viewMatrix);
 }
 
-void ObjectShader::loadUniformLocations()
+void Survive::ObjectShader::loadUniformLocations()
 {
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
@@ -58,7 +58,8 @@ void ObjectShader::loadUniformLocations()
 }
 
 void
-ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper, int material) const
+Survive::ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper,
+								 int material) const
 {
 	loadVector3(m_LocationLightPos, lightPos);
 	loadVector3(m_LocationLightColor, lightColor);
@@ -67,56 +68,56 @@ ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, 
 	loadInteger(m_LocationMaterial, material);
 }
 
-void ObjectShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+void Survive::ObjectShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
 {
 	loadVector3(m_LocationCameraPosition, cameraPosition);
 }
 
-void ObjectShader::loadLightProjection(const glm::mat4 &lightProjection) const
+void Survive::ObjectShader::loadLightProjection(const glm::mat4 &lightProjection) const
 {
 	loadMatrix(m_LocationLightProjection, lightProjection);
 }
 
-void ObjectShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::ObjectShader::loadLightViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationLightViewMatrix, viewMatrix);
 }
 
-void ObjectShader::loadTextures() const
+void Survive::ObjectShader::loadTextures() const
 {
 	loadInteger(m_LocationObjectTexture, 0);
 	loadInteger(m_LocationShadowMap, 1);
 	loadInteger(m_LocationSkybox, 2);
 }
 
-void ObjectShader::loadReflectiveFactor(float reflectiveFactor) const
+void Survive::ObjectShader::loadReflectiveFactor(float reflectiveFactor) const
 {
 	loadFloat(m_LocationReflectiveFactor, reflectiveFactor);
 }
 
-void ObjectShader::loadRefractionData(float refractionIndex, float refractionFactor) const
+void Survive::ObjectShader::loadRefractionData(float refractionIndex, float refractionFactor) const
 {
 	loadFloat(m_LocationRefractionIndex, refractionIndex);
 	loadFloat(m_LocationRefractionFactor, refractionFactor);
 }
 
-void ObjectShader::loadAddShadow(bool addShadow) const
+void Survive::ObjectShader::loadAddShadow(bool addShadow) const
 {
 	loadInteger(m_LocationAddShadow, addShadow);
 }
 
-void ObjectShader::loadPlane(const glm::vec4 &plane) const
+void Survive::ObjectShader::loadPlane(const glm::vec4 &plane) const
 {
 	loadVector4(m_LocationPlane, plane);
 }
 
-void ObjectShader::loadBloomTexture(float bloomStrength) const
+void Survive::ObjectShader::loadBloomTexture(float bloomStrength) const
 {
 	loadInteger(m_LocationBloomTexture, 3);
 	loadFloat(m_LocationBloomStrength, bloomStrength);
 }
 
-void ObjectShader::loadBloom(bool loadBloom) const
+void Survive::ObjectShader::loadBloom(bool loadBloom) const
 {
 	loadInteger(m_LocationAddBloom, loadBloom);
 }

@@ -8,14 +8,14 @@
 #include "../components/Components.h"
 #include "../components/ShadowComponent.h"
 
-ObjectRenderer::ObjectRenderer(const Light &light)
+Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
 {
 }
 
 void
-ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
-					   const glm::vec4 &plane) const
+Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+								const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -41,8 +41,8 @@ ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint sh
 }
 
 void
-ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
-							const Camera &camera) const
+Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+									 const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
@@ -60,7 +60,7 @@ ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<en
 	}
 }
 
-void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
+void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
@@ -78,7 +78,8 @@ void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const 
 	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
-void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity, const Camera &camera) const
+void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+												 const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
@@ -94,8 +95,8 @@ void ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::en
 	renderBloom(registry, entity);
 }
 
-std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
-ObjectRenderer::prepareEntities(entt::registry &registry)
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 {
 	auto const &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
 			entt::exclude<AnimationComponent>);
@@ -112,7 +113,7 @@ ObjectRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
+void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
 {
 	if (registry.has<OutlineComponent>(entity))
 	{
@@ -128,7 +129,7 @@ void ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity en
 	}
 }
 
-void ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
 {
 	if (registry.has<BloomComponent>(entity))
 	{
@@ -146,7 +147,7 @@ void ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity en
 	}
 }
 
-void ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
 {
 	static Texture defaultReflection(0);
 	defaultReflection.bindTexture(2);

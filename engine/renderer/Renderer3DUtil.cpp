@@ -4,19 +4,19 @@
 
 #include "Renderer3DUtil.h"
 
-void Renderer3DUtil::prepareRendering(const Shader &shader)
+void Survive::Renderer3DUtil::prepareRendering(const Shader &shader)
 {
 	shader.start();
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer3DUtil::finishRendering()
+void Survive::Renderer3DUtil::finishRendering()
 {
 	Shader::stop();
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
+void Survive::Renderer3DUtil::prepareEntity(const TexturedModel &texture)
 {
 	texture.bind();
 	glEnableVertexAttribArray(0);
@@ -24,7 +24,7 @@ void Renderer3DUtil::prepareEntity(const TexturedModel &texture)
 	glEnableVertexAttribArray(2);
 }
 
-void Renderer3DUtil::finishRenderingEntity()
+void Survive::Renderer3DUtil::finishRenderingEntity()
 {
 	TexturedModel::unbind();
 	glDisableVertexAttribArray(2);
@@ -34,7 +34,7 @@ void Renderer3DUtil::finishRenderingEntity()
 	Loader::unbindVao();
 }
 
-void Renderer3DUtil::addTransparency(bool cullFace, bool blend)
+void Survive::Renderer3DUtil::addTransparency(bool cullFace, bool blend)
 {
 	if (cullFace)
 	{

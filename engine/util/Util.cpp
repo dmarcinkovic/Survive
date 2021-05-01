@@ -7,7 +7,7 @@
 
 #include "Util.h"
 
-std::vector<std::string> Util::splitByRegex(const std::string &string)
+std::vector<std::string> Survive::Util::splitByRegex(const std::string &string)
 {
 	static std::regex pattern(R"([^\s+]+)");
 	std::sregex_token_iterator begin(string.begin(), string.end(), pattern);
@@ -19,13 +19,13 @@ std::vector<std::string> Util::splitByRegex(const std::string &string)
 	return result;
 }
 
-float Util::getNumber(const std::string &string, char delimiter)
+float Survive::Util::getNumber(const std::string &string, char delimiter)
 {
-	int index = string.find(delimiter);
+	unsigned int index = string.find(delimiter);
 	return std::stof(string.substr(index + 1));
 }
 
-Character Util::getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h)
+Survive::Character Survive::Util::getCharacterFromFntFile(const std::vector<std::string> &line, float w, float h)
 {
 	int id = std::floor(getNumber(line[1]));
 	float x = getNumber(line[2]);
@@ -39,7 +39,8 @@ Character Util::getCharacterFromFntFile(const std::vector<std::string> &line, fl
 	return Character(id, x, y, width, height, xOffset, yOffset, advance, w, h);
 }
 
-std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
+std::optional<Survive::Character>
+Survive::Util::getCharacterFromJsonFile(const std::string &line, float scaleW, float scaleH)
 {
 	static std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
 								 R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";
@@ -55,7 +56,7 @@ std::optional<Character> Util::getCharacterFromJsonFile(const std::string &line,
 	return getCharacterFromJsonFile(result, scaleW, scaleH);
 }
 
-Character Util::getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH)
+Survive::Character Survive::Util::getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH)
 {
 	int id = result[1].str().length() == 2 ? result[1].str()[1] : result[1].str()[0];
 	float x = std::stof(result[2].str());
@@ -69,12 +70,12 @@ Character Util::getCharacterFromJsonFile(const std::smatch &result, float scaleW
 	return Character(id, x, y, width, height, xOffset, yOffset, advance, scaleW, scaleH);
 }
 
-std::vector<std::string> Util::split(std::string string, char delimiter)
+std::vector<std::string> Survive::Util::split(std::string string, char delimiter)
 {
 	std::vector<std::string> result;
 	removeTrailingSpaces(string);
 
-	int index;
+	unsigned int index;
 	while ((index = string.find(delimiter)) != -1)
 	{
 		result.emplace_back(string.substr(0, index));
@@ -89,7 +90,7 @@ std::vector<std::string> Util::split(std::string string, char delimiter)
 	return result;
 }
 
-void Util::removeTrailingSpaces(std::string &string)
+void Survive::Util::removeTrailingSpaces(std::string &string)
 {
 	while (isspace(string.back()))
 	{
@@ -97,10 +98,10 @@ void Util::removeTrailingSpaces(std::string &string)
 	}
 }
 
-void Util::processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
-						 const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
-						 std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-						 unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex)
+void Survive::Util::processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+								  const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+								  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+								  unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex)
 {
 	const auto &point = vertices[vertexIndex];
 	resultPoints.emplace_back(point.x);

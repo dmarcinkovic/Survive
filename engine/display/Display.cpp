@@ -8,19 +8,19 @@
 #include "../math/Maths.h"
 #include "../constant/Constants.h"
 
-std::vector<KeyListener> Display::m_KeyEventListeners;
-std::vector<MouseListener> Display::m_MouseEventListeners;
-std::vector<MouseMovedListener> Display::m_MouseMoveListeners;
-std::vector<WindowListener> Display::m_WindowListeners;
-std::vector<ScrollListener> Display::m_ScrollListeners;
+std::vector<Survive::KeyListener> Survive::Display::m_KeyEventListeners;
+std::vector<Survive::MouseListener> Survive::Display::m_MouseEventListeners;
+std::vector<Survive::MouseMovedListener> Survive::Display::m_MouseMoveListeners;
+std::vector<Survive::WindowListener> Survive::Display::m_WindowListeners;
+std::vector<Survive::ScrollListener> Survive::Display::m_ScrollListeners;
 
-double Display::m_LastFrameTime{};
-double Display::m_DeltaTime{};
+double Survive::Display::m_LastFrameTime{};
+double Survive::Display::m_DeltaTime{};
 
-int Display::m_Width;
-int Display::m_Height;
+int Survive::Display::m_Width;
+int Survive::Display::m_Height;
 
-Display::Display(int width, int height, const char *title)
+Survive::Display::Display(int width, int height, const char *title)
 {
 	glfwInit();
 
@@ -43,7 +43,7 @@ Display::Display(int width, int height, const char *title)
 	setStencilProperties();
 }
 
-void Display::addCallbacks() const
+void Survive::Display::addCallbacks() const
 {
 	glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
 	glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
@@ -52,13 +52,13 @@ void Display::addCallbacks() const
 	glfwSetScrollCallback(m_Window, scrollCallback);
 }
 
-Display::~Display()
+Survive::Display::~Display()
 {
 	glfwDestroyWindow(m_Window);
 	glfwTerminate();
 }
 
-void Display::update() const
+void Survive::Display::update() const
 {
 	double currentTime = glfwGetTime();
 	m_DeltaTime = currentTime - m_LastFrameTime;
@@ -68,12 +68,12 @@ void Display::update() const
 	glfwSwapBuffers(m_Window);
 }
 
-bool Display::isRunning() const
+bool Survive::Display::isRunning() const
 {
 	return !glfwWindowShouldClose(m_Window);
 }
 
-void Display::clearWindow()
+void Survive::Display::clearWindow()
 {
 	glm::vec4 clearColor = Constants::CLEAR_COLOR;
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
@@ -83,7 +83,7 @@ void Display::clearWindow()
 	glClear(GL_STENCIL_BUFFER_BIT);
 }
 
-void Display::setWindowHints()
+void Survive::Display::setWindowHints()
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
@@ -91,7 +91,7 @@ void Display::setWindowHints()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
-void Display::windowResizeCallback(GLFWwindow *, int width, int height)
+void Survive::Display::windowResizeCallback(GLFWwindow *, int width, int height)
 {
 	setViewport(width, height);
 
@@ -106,7 +106,7 @@ void Display::windowResizeCallback(GLFWwindow *, int width, int height)
 	setProjectionMatrices(width, height);
 }
 
-void Display::setViewport(int width, int height)
+void Survive::Display::setViewport(int width, int height)
 {
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
@@ -117,7 +117,7 @@ void Display::setViewport(int width, int height)
 	glLoadIdentity();
 }
 
-void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
+void Survive::Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
 {
 	for (auto const &listener : m_KeyEventListeners)
 	{
@@ -125,7 +125,7 @@ void Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
 	}
 }
 
-void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int)
+void Survive::Display::mouseEventCallback(GLFWwindow *window, int button, int action, int)
 {
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -136,22 +136,22 @@ void Display::mouseEventCallback(GLFWwindow *window, int button, int action, int
 	}
 }
 
-void Display::addKeyListener(const KeyListener &listener)
+void Survive::Display::addKeyListener(const KeyListener &listener)
 {
 	m_KeyEventListeners.emplace_back(listener);
 }
 
-void Display::addMouseListener(const MouseListener &listener)
+void Survive::Display::addMouseListener(const MouseListener &listener)
 {
 	m_MouseEventListeners.emplace_back(listener);
 }
 
-double Display::getFrameTime()
+double Survive::Display::getFrameTime()
 {
 	return m_DeltaTime;
 }
 
-void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
+void Survive::Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 {
 	for (auto const &listener : m_MouseMoveListeners)
 	{
@@ -159,17 +159,17 @@ void Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 	}
 }
 
-void Display::addMouseMovedListener(const MouseMovedListener &listener)
+void Survive::Display::addMouseMovedListener(const MouseMovedListener &listener)
 {
 	m_MouseMoveListeners.emplace_back(listener);
 }
 
-void Display::addWindowResizeListener(const WindowListener &listener)
+void Survive::Display::addWindowResizeListener(const WindowListener &listener)
 {
 	m_WindowListeners.emplace_back(listener);
 }
 
-void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
+void Survive::Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 {
 	for (auto const &listener : m_ScrollListeners)
 	{
@@ -177,12 +177,12 @@ void Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 	}
 }
 
-void Display::addScrollListener(const ScrollListener &listener)
+void Survive::Display::addScrollListener(const ScrollListener &listener)
 {
 	m_ScrollListeners.emplace_back(listener);
 }
 
-void Display::setProjectionMatrices(int width, int height)
+void Survive::Display::setProjectionMatrices(int width, int height)
 {
 	Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
 	Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
@@ -191,18 +191,18 @@ void Display::setProjectionMatrices(int width, int height)
 	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
 }
 
-void Display::setStencilProperties()
+void Survive::Display::setStencilProperties()
 {
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 }
 
-int Display::getWidth()
+int Survive::Display::getWidth()
 {
 	return m_Width;
 }
 
-int Display::getHeight()
+int Survive::Display::getHeight()
 {
 	return m_Height;
 }

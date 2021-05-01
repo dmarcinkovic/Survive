@@ -6,13 +6,13 @@
 
 #include "JointTransform.h"
 
-JointTransform::JointTransform(const glm::vec3 &position, const Quaternion &quaternion)
+Survive::JointTransform::JointTransform(const glm::vec3 &position, const Quaternion &quaternion)
 		: m_Position(position), m_Rotation(quaternion)
 {
 
 }
 
-glm::mat4 JointTransform::getLocalTransform() const
+glm::mat4 Survive::JointTransform::getLocalTransform() const
 {
 	glm::mat4 matrix{1};
 	matrix = glm::translate(matrix, m_Position);
@@ -20,15 +20,15 @@ glm::mat4 JointTransform::getLocalTransform() const
 	return matrix;
 }
 
-JointTransform
-JointTransform::interpolate(const JointTransform &frameA, const JointTransform &frameB, float progression)
+Survive::JointTransform
+Survive::JointTransform::interpolate(const JointTransform &frameA, const JointTransform &frameB, float progression)
 {
 	glm::vec3 position = interpolate(frameA.m_Position, frameB.m_Position, progression);
 	Quaternion rotation = Quaternion::interpolate(frameA.m_Rotation, frameB.m_Rotation, progression);
 	return JointTransform(position, rotation);
 }
 
-glm::vec3 JointTransform::interpolate(const glm::vec3 &start, const glm::vec3 &end, float progression)
+glm::vec3 Survive::JointTransform::interpolate(const glm::vec3 &start, const glm::vec3 &end, float progression)
 {
 	float x = start.x + (end.x - start.x) * progression;
 	float y = start.y + (end.y - start.y) * progression;

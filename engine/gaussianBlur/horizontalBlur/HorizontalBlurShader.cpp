@@ -4,18 +4,18 @@
 
 #include "HorizontalBlurShader.h"
 
-HorizontalBlurShader::HorizontalBlurShader()
-	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+Survive::HorizontalBlurShader::HorizontalBlurShader()
+		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
 }
 
-void HorizontalBlurShader::loadUniformLocations()
+void Survive::HorizontalBlurShader::loadUniformLocations()
 {
 	m_LocationTargetWidth = glGetUniformLocation(m_Program, "targetWidth");
 }
 
-void HorizontalBlurShader::loadTargetWidth(float targetWidth) const
+void Survive::HorizontalBlurShader::loadTargetWidth(float targetWidth) const
 {
 	loadFloat(m_LocationTargetWidth, targetWidth);
 }

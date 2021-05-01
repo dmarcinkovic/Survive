@@ -7,7 +7,7 @@
 #include "../renderer/Renderer2DUtil.h"
 #include "../math/Maths.h"
 
-void TextRenderer::renderText() const
+void Survive::TextRenderer::renderText() const
 {
 	if (m_Texts.empty())
 	{
@@ -37,7 +37,7 @@ void TextRenderer::renderText() const
 	Renderer2DUtil::finishRendering();
 }
 
-void TextRenderer::addText(Text &text, Loader &loader)
+void Survive::TextRenderer::addText(Text &text, Loader &loader)
 {
 	text.loadTexture(loader);
 	auto &texts = m_Texts[text.m_Texture];

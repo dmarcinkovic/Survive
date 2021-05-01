@@ -4,18 +4,18 @@
 
 #include "Animation.h"
 
-Animation::Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames)
+Survive::Animation::Animation(float lengthInSeconds, std::vector<KeyFrame> keyFrames)
 		: m_Length(lengthInSeconds), m_KeyFrames(std::move(keyFrames))
 {
 
 }
 
-float Animation::getLength() const
+float Survive::Animation::getLength() const
 {
 	return m_Length;
 }
 
-const std::vector<KeyFrame> &Animation::keyFrames() const
+const std::vector<Survive::KeyFrame> &Survive::Animation::keyFrames() const
 {
 	return m_KeyFrames;
 }

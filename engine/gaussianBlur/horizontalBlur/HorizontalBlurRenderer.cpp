@@ -5,7 +5,7 @@
 #include "HorizontalBlurRenderer.h"
 #include "../../display/Display.h"
 
-HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight)
+Survive::HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight),
 		  m_HorizontalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
@@ -17,7 +17,7 @@ HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFbo
 	HorizontalBlurShader::stop();
 }
 
-void HorizontalBlurRenderer::render(const Texture &texture, const Model &model) const
+void Survive::HorizontalBlurRenderer::render(const Texture &texture, const Model &model) const
 {
 	m_Shader.start();
 	texture.bindTexture(0);
@@ -36,7 +36,7 @@ void HorizontalBlurRenderer::render(const Texture &texture, const Model &model) 
 	HorizontalBlurShader::stop();
 }
 
-const Texture &HorizontalBlurRenderer::getTexture() const
+const Survive::Texture &Survive::HorizontalBlurRenderer::getTexture() const
 {
 	return m_HorizontalBlurTexture;
 }

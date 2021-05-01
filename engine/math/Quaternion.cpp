@@ -4,13 +4,13 @@
 
 #include "Quaternion.h"
 
-Quaternion::Quaternion(float x, float y, float z, float w)
+Survive::Quaternion::Quaternion(float x, float y, float z, float w)
 		: m_X(x), m_Y(y), m_Z(z), m_W(w)
 {
 	normalize();
 }
 
-void Quaternion::normalize()
+void Survive::Quaternion::normalize()
 {
 	auto magnitude = static_cast<float>(std::sqrt(m_X * m_X + m_Y * m_Y + m_Z * m_Z + m_W + m_W));
 	m_X /= magnitude;
@@ -19,7 +19,7 @@ void Quaternion::normalize()
 	m_W /= magnitude;
 }
 
-glm::mat4 Quaternion::toRotationMatrix() const
+glm::mat4 Survive::Quaternion::toRotationMatrix() const
 {
 	float xx = m_X * m_X;
 	float xy = m_X * m_Y;
@@ -51,7 +51,7 @@ glm::mat4 Quaternion::toRotationMatrix() const
 	return m;
 }
 
-Quaternion Quaternion::fromMatrix(const glm::mat4 &matrix)
+Survive::Quaternion Survive::Quaternion::fromMatrix(const glm::mat4 &matrix)
 {
 	float w, x, y, z;
 	float diagonal = matrix[0][0] + matrix[1][1] + matrix[2][2];
@@ -87,7 +87,7 @@ Quaternion Quaternion::fromMatrix(const glm::mat4 &matrix)
 	return Quaternion(x, y, z, w);
 }
 
-Quaternion Quaternion::interpolate(const Quaternion &a, const Quaternion &b, float blend)
+Survive::Quaternion Survive::Quaternion::interpolate(const Quaternion &a, const Quaternion &b, float blend)
 {
 	Quaternion result(0, 0, 0, 1);
 	float dot = a.m_W * b.m_W + a.m_X * b.m_X + a.m_Y * b.m_Y + a.m_Z * b.m_Z;

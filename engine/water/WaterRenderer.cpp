@@ -8,7 +8,7 @@
 #include "../display/Display.h"
 #include "../constant/Constants.h"
 
-void WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
+void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
 	auto waterTiles = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 	if (waterTiles.empty())
@@ -31,7 +31,7 @@ void WaterRenderer::render(entt::registry &registry, const Camera &camera, const
 	});
 }
 
-void WaterRenderer::prepareRendering(const Camera &camera) const
+void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
 	Renderer3DUtil::addTransparency(false, true);
@@ -40,19 +40,19 @@ void WaterRenderer::prepareRendering(const Camera &camera) const
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 }
 
-void WaterRenderer::finishRendering()
+void Survive::WaterRenderer::finishRendering()
 {
 	Renderer3DUtil::addTransparency(false, false);
 	Renderer3DUtil::finishRendering();
 }
 
-bool WaterRenderer::shouldRender(entt::registry &registry)
+bool Survive::WaterRenderer::shouldRender(entt::registry &registry)
 {
 	auto group = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 	return !group.empty();
 }
 
-void WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent)
+void Survive::WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent)
 {
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
 	moveComponent.currentMoveValue += moveComponent.moveSpeed * deltaTime;
@@ -62,8 +62,8 @@ void WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveComponent &mov
 }
 
 void
-WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &transform, MoveComponent &moveComponent,
-							const Light &light) const
+Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &transform,
+									 MoveComponent &moveComponent, const Light &light) const
 {
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
@@ -76,8 +76,8 @@ WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &tr
 	m_Shader.loadLight(light);
 }
 
-void WaterRenderer::bindTextures(const TexturedComponent &textures, const Texture &reflectionTexture,
-								 const Texture &refractionTexture, const Texture &refractionDepthMap)
+void Survive::WaterRenderer::bindTextures(const TexturedComponent &textures, const Texture &reflectionTexture,
+										  const Texture &refractionTexture, const Texture &refractionDepthMap)
 {
 	reflectionTexture.bindTexture(0);
 	refractionTexture.bindTexture(1);
@@ -86,12 +86,12 @@ void WaterRenderer::bindTextures(const TexturedComponent &textures, const Textur
 	refractionDepthMap.bindTexture(4);
 }
 
-void WaterRenderer::bindReflectionFrameBuffer() const
+void Survive::WaterRenderer::bindReflectionFrameBuffer() const
 {
 	m_Fbo.bindReflectionFrameBuffer();
 }
 
-void WaterRenderer::bindRefractionFrameBuffer() const
+void Survive::WaterRenderer::bindRefractionFrameBuffer() const
 {
 	m_Fbo.bindRefractionFrameBuffer();
 }

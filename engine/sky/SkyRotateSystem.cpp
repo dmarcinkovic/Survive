@@ -6,7 +6,7 @@
 #include "../display/Display.h"
 #include "../components/MoveComponent.h"
 
-void SkyRotateSystem::rotateSky(entt::registry &registry, entt::entity sky)
+void Survive::SkyRotateSystem::rotateSky(entt::registry &registry, entt::entity sky)
 {
 	MoveComponent &moveComponent = registry.get<MoveComponent>(sky);
 

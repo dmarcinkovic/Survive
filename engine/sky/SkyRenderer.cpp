@@ -7,7 +7,7 @@
 #include "../display/Display.h"
 
 
-void SkyRenderer::render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
+void Survive::SkyRenderer::render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	if (m_ShouldRender)
 	{
@@ -23,13 +23,13 @@ void SkyRenderer::render(const entt::registry &registry, const Camera &camera, c
 	}
 }
 
-void SkyRenderer::addSkyEntity(entt::entity sky)
+void Survive::SkyRenderer::addSkyEntity(entt::entity sky)
 {
 	m_Sky = sky;
 	m_ShouldRender = true;
 }
 
-void SkyRenderer::prepareRendering(const RenderComponent &renderComponent) const
+void Survive::SkyRenderer::prepareRendering(const RenderComponent &renderComponent) const
 {
 	m_Shader.start();
 	glEnable(GL_DEPTH_TEST);
@@ -41,7 +41,7 @@ void SkyRenderer::prepareRendering(const RenderComponent &renderComponent) const
 	renderComponent.texturedModel.bindCubeTexture(0);
 }
 
-void SkyRenderer::finishRendering()
+void Survive::SkyRenderer::finishRendering()
 {
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
@@ -53,9 +53,8 @@ void SkyRenderer::finishRendering()
 	SkyShader::stop();
 }
 
-void
-SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform, const Camera &camera,
-						  const glm::vec4 &plane) const
+void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform,
+										const Camera &camera, const glm::vec4 &plane) const
 {
 	auto viewMatrix = Maths::createViewMatrix(camera);
 	viewMatrix[3][0] = 0;

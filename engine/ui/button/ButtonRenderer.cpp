@@ -8,7 +8,7 @@
 #include "../../renderer/Renderer2DUtil.h"
 #include "../../math/Maths.h"
 
-void ButtonRenderer::render() const
+void Survive::ButtonRenderer::render() const
 {
 	if (m_Buttons.empty())
 	{
@@ -35,7 +35,7 @@ void ButtonRenderer::render() const
 	Renderer2DUtil::finishRendering();
 }
 
-void ButtonRenderer::addButton(Button &button) noexcept
+void Survive::ButtonRenderer::addButton(Button &button) noexcept
 {
 	m_Buttons.emplace_back(button);
 }

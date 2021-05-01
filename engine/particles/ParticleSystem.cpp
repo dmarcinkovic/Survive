@@ -6,15 +6,16 @@
 #include "../display/Display.h"
 #include "../math/Maths.h"
 
-ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength, float scale)
+Survive::ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength,
+										float scale)
 		: m_ParticlesPerSecond(particlesPerSecond), m_Speed(speed), m_Gravity(gravity), m_LifeLength(lifeLength),
 		  m_AverageScale(scale)
 {
 
 }
 
-void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
-									   ParticleRenderer &particleRenderer, const Camera &camera)
+void Survive::ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
+												ParticleRenderer &particleRenderer, const Camera &camera)
 {
 	std::vector<Particle> &particles = particleRenderer.getParticles(particleModel);
 
@@ -30,8 +31,8 @@ void ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const Part
 	}
 }
 
-void ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
-								  std::vector<Particle> &particles) const
+void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
+										   std::vector<Particle> &particles) const
 {
 	float dirX = Maths::getRandom() * 1.2f - 1.0f;
 	float dirZ = Maths::getRandom() * 1.2f - 1.0f;
@@ -42,35 +43,35 @@ void ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &
 	particles.emplace_back(Particle(particleModel, center, velocity, m_Gravity, m_LifeLength));
 }
 
-void ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
+void Survive::ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
 {
 	m_Direction = direction;
 	m_DirectionDeviation = deviation;
 }
 
-void ParticleSystem::randomizeRotation()
+void Survive::ParticleSystem::randomizeRotation()
 {
 	m_RandomRotation = true;
 }
 
-void ParticleSystem::setSpeedError(float speedError)
+void Survive::ParticleSystem::setSpeedError(float speedError)
 {
 	m_SpeedError = speedError;
 }
 
-void ParticleSystem::setLifeError(float lifeError)
+void Survive::ParticleSystem::setLifeError(float lifeError)
 {
 	m_LifeError = lifeError;
 }
 
-float ParticleSystem::generateValue(float average, float errorMargin)
+float Survive::ParticleSystem::generateValue(float average, float errorMargin)
 {
 	float offset = (Maths::getRandom() - 0.5f) * 2.0f * errorMargin;
 
 	return average + offset;
 }
 
-float ParticleSystem::generateRotation() const
+float Survive::ParticleSystem::generateRotation() const
 {
 	if (m_RandomRotation)
 	{
@@ -80,7 +81,7 @@ float ParticleSystem::generateRotation() const
 	return 0;
 }
 
-glm::vec3 ParticleSystem::generateRandomUnitVectorWithinCone(const glm::vec3 &coneDirection, float angle)
+glm::vec3 Survive::ParticleSystem::generateRandomUnitVectorWithinCone(const glm::vec3 &coneDirection, float angle)
 {
 	glm::vec4 direction = getDirection(angle);
 
@@ -95,7 +96,7 @@ glm::vec3 ParticleSystem::generateRandomUnitVectorWithinCone(const glm::vec3 &co
 	return glm::vec3(direction);
 }
 
-glm::vec3 ParticleSystem::generateRandomUnitVector()
+glm::vec3 Survive::ParticleSystem::generateRandomUnitVector()
 {
 	float theta = Maths::getRandom() * 2.0f * std::numbers::pi_v<float>;
 	float z = Maths::getRandom() * 2.0f - 1;
@@ -103,12 +104,12 @@ glm::vec3 ParticleSystem::generateRandomUnitVector()
 	return getDirection(z, theta);
 }
 
-void ParticleSystem::setScaleError(float scaleError)
+void Survive::ParticleSystem::setScaleError(float scaleError)
 {
 	m_ScaleError = scaleError;
 }
 
-glm::vec4 ParticleSystem::getDirection(float angle)
+glm::vec4 Survive::ParticleSystem::getDirection(float angle)
 {
 	float cosAngle = std::cos(angle);
 	float theta = Maths::getRandom() * 2.0f * std::numbers::pi_v<float>;
@@ -117,7 +118,7 @@ glm::vec4 ParticleSystem::getDirection(float angle)
 	return glm::vec4{getDirection(z, theta), 1.0f};
 }
 
-glm::vec4 ParticleSystem::rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction)
+glm::vec4 Survive::ParticleSystem::rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction)
 {
 	glm::vec3 rotateAxis = glm::cross(coneDirection, glm::vec3{0, 0, 1});
 	rotateAxis = glm::normalize(rotateAxis);
@@ -129,7 +130,7 @@ glm::vec4 ParticleSystem::rotateDirection(const glm::vec3 &coneDirection, const 
 	return rotationMatrix * direction;
 }
 
-glm::vec3 ParticleSystem::getDirection(float z, float theta)
+glm::vec3 Survive::ParticleSystem::getDirection(float z, float theta)
 {
 	float k = std::sqrt(1 - z * z);
 	float x = k * std::cos(theta);
@@ -138,7 +139,7 @@ glm::vec3 ParticleSystem::getDirection(float z, float theta)
 	return glm::vec3{x, y, z};
 }
 
-int ParticleSystem::updateParticles(std::vector<Particle> &particles, const Camera &camera, int count)
+int Survive::ParticleSystem::updateParticles(std::vector<Particle> &particles, const Camera &camera, int count)
 {
 	for (Particle &particle : particles)
 	{

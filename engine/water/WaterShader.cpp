@@ -10,22 +10,22 @@ Survive::WaterShader::WaterShader()
 	loadUniformLocations();
 }
 
-void WaterShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
+void Survive::WaterShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void WaterShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::WaterShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationViewMatrix, viewMatrix);
 }
 
-void WaterShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+void Survive::WaterShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
 {
 	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
-void WaterShader::loadUniformLocations()
+void Survive::WaterShader::loadUniformLocations()
 {
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
@@ -48,7 +48,7 @@ void WaterShader::loadUniformLocations()
 	m_LocationFar = glGetUniformLocation(m_Program, "far");
 }
 
-void WaterShader::loadTextures() const
+void Survive::WaterShader::loadTextures() const
 {
 	loadInteger(m_LocationReflectionTexture, 0);
 	loadInteger(m_LocationRefractionTexture, 1);
@@ -57,7 +57,7 @@ void WaterShader::loadTextures() const
 	loadInteger(m_LocationDepthMap, 4);
 }
 
-void WaterShader::loadMoveFactor(float moveFactor) const
+void Survive::WaterShader::loadMoveFactor(float moveFactor) const
 {
 	loadFloat(m_LocationMoveFactor, moveFactor);
 }

@@ -9,12 +9,12 @@
 #include "../../components/RigidBodyComponent.h"
 #include "../../components/AnimationComponent.h"
 
-AnimationRenderer::AnimationRenderer(const Light &light)
+Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 		: m_Light(light)
 {
 }
 
-void AnimationRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -38,8 +38,8 @@ void AnimationRenderer::render(entt::registry &registry, const Camera &camera, c
 }
 
 void
-AnimationRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
-							   const Camera &camera) const
+Survive::AnimationRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+										const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
@@ -59,8 +59,8 @@ AnimationRenderer::renderScene(const entt::registry &registry, const std::vector
 	}
 }
 
-std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
-AnimationRenderer::prepareEntities(entt::registry &registry)
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 {
 	const auto &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
 
@@ -76,7 +76,7 @@ AnimationRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 

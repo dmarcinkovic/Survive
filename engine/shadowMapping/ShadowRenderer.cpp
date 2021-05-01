@@ -11,7 +11,7 @@
 #include "../components/Transform3DComponent.h"
 
 
-void ShadowRenderer::render(const entt::registry &registry, const Light &light, const Camera &camera) const
+void Survive::ShadowRenderer::render(const entt::registry &registry, const Light &light, const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
 
@@ -45,7 +45,7 @@ void ShadowRenderer::render(const entt::registry &registry, const Light &light, 
 	Renderer3DUtil::finishRendering();
 }
 
-void ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
+void Survive::ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
 {
 	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
 	auto &batch = m_Objects[renderComponent.texturedModel];

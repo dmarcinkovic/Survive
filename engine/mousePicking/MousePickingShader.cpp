@@ -4,13 +4,13 @@
 
 #include "MousePickingShader.h"
 
-MousePickingShader::MousePickingShader()
+Survive::MousePickingShader::MousePickingShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	getUniformLocations();
 }
 
-void MousePickingShader::getUniformLocations()
+void Survive::MousePickingShader::getUniformLocations()
 {
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
@@ -18,22 +18,22 @@ void MousePickingShader::getUniformLocations()
 	m_LocationPickingColor = glGetUniformLocation(m_Program, "pickingColor");
 }
 
-void MousePickingShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
+void Survive::MousePickingShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void MousePickingShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::MousePickingShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationViewMatrix, viewMatrix);
 }
 
-void MousePickingShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+void Survive::MousePickingShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
 {
 	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
-void MousePickingShader::loadPickingColor(const glm::vec4 &pickingColor) const
+void Survive::MousePickingShader::loadPickingColor(const glm::vec4 &pickingColor) const
 {
 	loadVector4(m_LocationPickingColor, pickingColor);
 }

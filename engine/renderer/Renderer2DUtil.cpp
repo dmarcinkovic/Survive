@@ -4,7 +4,7 @@
 
 #include "Renderer2DUtil.h"
 
-void Renderer2DUtil::prepareRendering(const Shader &shader)
+void Survive::Renderer2DUtil::prepareRendering(const Shader &shader)
 {
 	shader.start();
 	glEnable(GL_BLEND);
@@ -12,14 +12,14 @@ void Renderer2DUtil::prepareRendering(const Shader &shader)
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Renderer2DUtil::finishRendering()
+void Survive::Renderer2DUtil::finishRendering()
 {
 	Shader::stop();
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Renderer2DUtil::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
+void Survive::Renderer2DUtil::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
 {
 	texture.bind();
 
@@ -29,7 +29,7 @@ void Renderer2DUtil::prepareEntity(const TexturedModel &texture, int numberOfVer
 	}
 }
 
-void Renderer2DUtil::finishRenderingEntity(int numberOfVertexUnits)
+void Survive::Renderer2DUtil::finishRenderingEntity(int numberOfVertexUnits)
 {
 	TexturedModel::unbind();
 

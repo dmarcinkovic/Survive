@@ -8,6 +8,8 @@
 
 int main()
 {
+	using namespace Survive;
+
 	constexpr int width = 1200;
 	constexpr int height = 800;
 

@@ -7,7 +7,7 @@
 #include "../math/Maths.h"
 #include "../components/OutlineComponent.h"
 
-void OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
+void Survive::OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
 {
 	if (!m_Render)
 	{
@@ -33,7 +33,7 @@ void OutlineRenderer::render(const entt::registry &registry, const Camera &camer
 	glDisable(GL_STENCIL_TEST);
 }
 
-void OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
+void Survive::OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
 {
 	if (m_Render)
 	{
@@ -47,7 +47,7 @@ void OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
 	registry.emplace<OutlineComponent>(entity, true);
 }
 
-void OutlineRenderer::removeObject(entt::registry &registry)
+void Survive::OutlineRenderer::removeObject(entt::registry &registry)
 {
 	OutlineComponent &outline = registry.get<OutlineComponent>(m_Entity);
 	outline.drawOutline = false;
@@ -55,19 +55,19 @@ void OutlineRenderer::removeObject(entt::registry &registry)
 	m_Render = false;
 }
 
-void OutlineRenderer::setStencilFunctions()
+void Survive::OutlineRenderer::setStencilFunctions()
 {
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilMask(0x00);
 }
 
-void OutlineRenderer::resetStencilFunctions()
+void Survive::OutlineRenderer::resetStencilFunctions()
 {
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 0, 0xFF);
 }
 
-void OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera) const
+void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera) const
 {
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
@@ -77,13 +77,13 @@ void OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 }
 
-void OutlineRenderer::prepareObject(const RenderComponent &renderComponent)
+void Survive::OutlineRenderer::prepareObject(const RenderComponent &renderComponent)
 {
 	glBindVertexArray(renderComponent.texturedModel.vaoID());
 	glEnableVertexAttribArray(0);
 }
 
-void OutlineRenderer::finishRenderingObject()
+void Survive::OutlineRenderer::finishRenderingObject()
 {
 	glBindVertexArray(0);
 	glDisableVertexAttribArray(0);

@@ -5,7 +5,7 @@
 #include "SpriteUpdate.h"
 #include "../display/Display.h"
 
-void SpriteUpdate::update(entt::registry &registry)
+void Survive::SpriteUpdate::update(entt::registry &registry)
 {
 	registry.view<SpriteSheetComponent>().each([](SpriteSheetComponent &sprite) {
 		if (sprite.animating)
@@ -15,7 +15,7 @@ void SpriteUpdate::update(entt::registry &registry)
 	});
 }
 
-void SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
+void Survive::SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 {
 	int epochs = sprite.m_NumberOfEpochs;
 	int startIndex = sprite.m_StartIndex;
@@ -42,7 +42,7 @@ void SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 	}
 }
 
-int SpriteUpdate::calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex)
+int Survive::SpriteUpdate::calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex)
 {
 	sprite.m_Time += Display::getFrameTime() * sprite.m_SpritesInSecond;
 	sprite.m_Time = std::fmod(sprite.m_Time, endIndex - startIndex + 1);

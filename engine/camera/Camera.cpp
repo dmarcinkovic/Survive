@@ -5,7 +5,7 @@
 #include "../display/Display.h"
 #include "Camera.h"
 
-Camera::Camera()
+Survive::Camera::Camera()
 {
 	addScrollListener();
 	addMousePressedListener();
@@ -13,7 +13,7 @@ Camera::Camera()
 	addKeyboardListener();
 }
 
-void Camera::addScrollListener()
+void Survive::Camera::addScrollListener()
 {
 	auto scrollListener = [this](double xOffset, double yOffset) {
 		m_Position.z -= yOffset * 2.0;
@@ -21,7 +21,7 @@ void Camera::addScrollListener()
 	Display::addScrollListener(scrollListener);
 }
 
-void Camera::addMousePressedListener()
+void Survive::Camera::addMousePressedListener()
 {
 	auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS)
@@ -47,7 +47,7 @@ void Camera::addMousePressedListener()
 	Display::addMouseListener(mousePressedListener);
 }
 
-void Camera::addMouseMovedListener()
+void Survive::Camera::addMouseMovedListener()
 {
 	auto mouseMovedListener = [this](double mouseX, double mouseY) {
 		double dy = mouseY - m_MousePos.y;
@@ -66,7 +66,7 @@ void Camera::addMouseMovedListener()
 	Display::addMouseMovedListener(mouseMovedListener);
 }
 
-void Camera::addKeyboardListener()
+void Survive::Camera::addKeyboardListener()
 {
 	auto keyboardListener = [this](int key, int action) {
 		if (action == GLFW_PRESS)
@@ -93,12 +93,12 @@ void Camera::addKeyboardListener()
 	Display::addKeyListener(keyboardListener);
 }
 
-void Camera::invertPitch()
+void Survive::Camera::invertPitch()
 {
 	m_Pitch = -m_Pitch;
 }
 
-void Camera::moveCameraInYDirection(float yDistance)
+void Survive::Camera::moveCameraInYDirection(float yDistance)
 {
 	m_Position.y += yDistance;
 }

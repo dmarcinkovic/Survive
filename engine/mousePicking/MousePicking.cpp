@@ -10,14 +10,14 @@
 #include "../constant/Constants.h"
 #include "../components/Components.h"
 
-bool MousePicking::mousePressed = false;
+bool Survive::MousePicking::mousePressed = false;
 
-MousePicking::MousePicking()
+Survive::MousePicking::MousePicking()
 {
 	mousePressedHandler();
 }
 
-void MousePicking::mousePressedHandler()
+void Survive::MousePicking::mousePressedHandler()
 {
 	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
@@ -30,7 +30,7 @@ void MousePicking::mousePressedHandler()
 	});
 }
 
-glm::vec4 MousePicking::getColor(int id)
+glm::vec4 Survive::MousePicking::getColor(int id)
 {
 	int r = (id & 0x000000FF) >> 0;
 	int g = (id & 0x0000FF00) >> 8;
@@ -39,7 +39,7 @@ glm::vec4 MousePicking::getColor(int id)
 	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
 }
 
-void MousePicking::render(entt::registry &registry, const Camera &camera) const
+void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
 	if (!mousePressed)
 	{
@@ -73,8 +73,8 @@ void MousePicking::render(entt::registry &registry, const Camera &camera) const
 	mousePressed = false;
 }
 
-void MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
-							   const Camera &camera) const
+void Survive::MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+										const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
@@ -89,7 +89,7 @@ void MousePicking::renderScene(const entt::registry &registry, const std::vector
 	}
 }
 
-void MousePicking::getRenderedObject() const
+void Survive::MousePicking::getRenderedObject() const
 {
 	glFlush();
 	glFinish();
@@ -103,7 +103,7 @@ void MousePicking::getRenderedObject() const
 	std::cout << id << '\n';
 }
 
-int MousePicking::getID(const std::uint8_t *data)
+int Survive::MousePicking::getID(const std::uint8_t *data)
 {
 	int r = data[0];
 	int g = data[1] << 8;
@@ -119,8 +119,8 @@ int MousePicking::getID(const std::uint8_t *data)
 	return r + g + b;
 }
 
-std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
-MousePicking::prepareEntities(entt::registry &registry)
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
 	const auto &entities3D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
 	const auto &entities2D = registry.view<RenderComponent, Transform2DComponent, IdComponent>();
@@ -145,12 +145,13 @@ MousePicking::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void MousePicking::loadTransformationMatrix(const Camera &camera,
-											const entt::registry &registry, entt::entity entity) const
+void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
+													 const entt::registry &registry, entt::entity entity) const
 {
 	const Transform3DComponent &transform = registry.has<Transform2DComponent>(entity)
-									 ? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(entity))
-									 : registry.get<Transform3DComponent>(entity);
+											? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(
+					entity))
+											: registry.get<Transform3DComponent>(entity);
 
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
 

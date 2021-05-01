@@ -6,7 +6,7 @@
 #include "TerrainGenerator.h"
 #include "../texture/stb_image.h"
 
-Model TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
+Survive::Model Survive::TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 {
 	int width, height;
 	std::uint8_t *image = loadHeightMap(heightMap, width, height);
@@ -20,9 +20,10 @@ Model TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 	return loader.loadToVao(vertices, textureCoordinates, normals, indices);
 }
 
-void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::vector<float> &normals,
-										   std::vector<float> &textureCoordinates, const std::uint8_t *image, int width,
-										   int height)
+void Survive::TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::vector<float> &normals,
+													std::vector<float> &textureCoordinates, const std::uint8_t *image,
+													int width,
+													int height)
 {
 	int numberOfVertices = width * height;
 	auto imageWidth = static_cast<float>(width);
@@ -48,7 +49,7 @@ void TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::ve
 	}
 }
 
-std::vector<unsigned> TerrainGenerator::generateIndices(int width, int height)
+std::vector<unsigned> Survive::TerrainGenerator::generateIndices(int width, int height)
 {
 	std::vector<unsigned> indices;
 	for (int y = 0; y < height - 1; ++y)
@@ -72,16 +73,17 @@ std::vector<unsigned> TerrainGenerator::generateIndices(int width, int height)
 	return indices;
 }
 
-void TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width,
-								   float height)
+void
+Survive::TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width,
+									   float height)
 {
 	vertices.emplace_back(y / (height - 1) * SIZE);
 	vertices.emplace_back(terrainHeight);
 	vertices.emplace_back(x / (width - 1) * SIZE);
 }
 
-void TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int width, int height,
-								  const std::vector<std::vector<float>> &terrainHeight)
+void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int width, int height,
+										   const std::vector<std::vector<float>> &terrainHeight)
 {
 	glm::vec3 normal = calculateNormal(x, y, width, height, terrainHeight);
 	normals.emplace_back(normal.x);
@@ -89,14 +91,15 @@ void TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int
 	normals.emplace_back(normal.z);
 }
 
-void TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width,
-											 float height)
+void
+Survive::TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width,
+												 float height)
 {
 	textureCoordinates.emplace_back(y / (height - 1));
 	textureCoordinates.emplace_back(x / (width - 1));
 }
 
-std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width, int &height)
+std::uint8_t *Survive::TerrainGenerator::loadHeightMap(const char *heightMap, int &width, int &height)
 {
 	stbi_set_flip_vertically_on_load(1);
 
@@ -112,7 +115,7 @@ std::uint8_t *TerrainGenerator::loadHeightMap(const char *heightMap, int &width,
 	return image;
 }
 
-float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth)
+float Survive::TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *image, int imageWidth)
 {
 	int index = 4 * (y * imageWidth + x);
 
@@ -126,7 +129,8 @@ float TerrainGenerator::getHTerrainHeight(int x, int y, const std::uint8_t *imag
 	return 2 * height * MAX_HEIGHT - MAX_HEIGHT;
 }
 
-std::vector<std::vector<float>> TerrainGenerator::preprocessHeight(const std::uint8_t *image, int width, int height)
+std::vector<std::vector<float>>
+Survive::TerrainGenerator::preprocessHeight(const std::uint8_t *image, int width, int height)
 {
 	std::vector<std::vector<float>> result(height, std::vector<float>(width));
 
@@ -135,16 +139,14 @@ std::vector<std::vector<float>> TerrainGenerator::preprocessHeight(const std::ui
 		for (int x = 0; x < width; ++x)
 		{
 			result[y][x] = getHTerrainHeight(x, y, image, width);
-//			std::cout << result[y][x] << ' ';
 		}
-//		std::cout << '\n';
 	}
 
 	return result;
 }
 
-glm::vec3 TerrainGenerator::calculateNormal(int x, int y, int width, int height,
-											const std::vector<std::vector<float>> &terrainHeight)
+glm::vec3 Survive::TerrainGenerator::calculateNormal(int x, int y, int width, int height,
+													 const std::vector<std::vector<float>> &terrainHeight)
 {
 	float heightL = getPreprocessedValue(x - 1, y, height, width, terrainHeight);
 	float heightR = getPreprocessedValue(x + 1, y, height, width, terrainHeight);
@@ -156,8 +158,8 @@ glm::vec3 TerrainGenerator::calculateNormal(int x, int y, int width, int height,
 	return glm::normalize(normal);
 }
 
-float
-TerrainGenerator::getPreprocessedValue(int i, int j, int rows, int cols, const std::vector<std::vector<float>> &matrix)
+float Survive::TerrainGenerator::getPreprocessedValue(int i, int j,
+													  int rows, int cols, const std::vector<std::vector<float>> &matrix)
 {
 	if (i < 0 || i >= cols || j < 0 || j >= rows)
 	{

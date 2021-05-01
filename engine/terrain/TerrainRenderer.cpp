@@ -6,7 +6,7 @@
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
 
-void TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
+void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
 							 const glm::vec4 &plane) const
 {
 	auto view = registry.view<RenderComponent, Transform3DComponent, TexturedComponent>(entt::exclude<MoveComponent>);
@@ -30,7 +30,7 @@ void TerrainRenderer::render(entt::registry &registry, const Camera &camera, con
 	Renderer3DUtil::finishRendering();
 }
 
-void TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
+void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
 {
 	glm::mat4 lightView = Maths::createLightViewMatrix(light);
 	m_Shader.loadLightViewMatrix(lightView);
@@ -39,7 +39,7 @@ void TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
 	texture.bindTexture(5);
 }
 
-void TerrainRenderer::prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures)
+void Survive::TerrainRenderer::prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures)
 {
 	Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
 	Renderer3DUtil::addTransparency(false, true);
@@ -50,7 +50,7 @@ void TerrainRenderer::prepareRendering(const RenderComponent &renderComponent, c
 	}
 }
 
-void TerrainRenderer::finishRendering()
+void Survive::TerrainRenderer::finishRendering()
 {
 	Texture::unbindTexture();
 
@@ -58,7 +58,7 @@ void TerrainRenderer::finishRendering()
 	Renderer3DUtil::finishRenderingEntity();
 }
 
-void TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
+void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
 								   const Transform3DComponent &transform) const
 {
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
