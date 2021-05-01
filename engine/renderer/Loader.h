@@ -18,7 +18,7 @@ namespace Survive
 		GLuint m_Vao{};
 		GLsizei m_VertexCount{};
 
-		Model(GLuint vao, size_t vertexCount);
+		Model(GLuint vao, GLsizei vertexCount);
 
 		Model() = default;
 	};
@@ -32,14 +32,14 @@ namespace Survive
 		static std::vector<GLuint> m_Textures;
 
 	public:
-		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, GLint size);
 
 		~Loader();
 
 		static void unbindVao();
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-						const std::vector<float> &textureCoordinates, size_t size);
+						const std::vector<float> &textureCoordinates, GLint size);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						const std::vector<float> &normals);
@@ -51,9 +51,9 @@ namespace Survive
 						const std::vector<float> &normals, const std::vector<float> &jointWeights,
 						const std::vector<unsigned> &jointIds);
 
-		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, GLsizei size);
 
-		Model loadToVao(const std::vector<float> &vertices, size_t size);
+		Model loadToVao(const std::vector<float> &vertices, GLsizei size);
 
 		static Texture loadTexture(const char *texture) noexcept;
 
@@ -69,9 +69,9 @@ namespace Survive
 
 		Model renderCube();
 
-		GLuint createEmptyVBO(int vertexCount);
+		GLuint createEmptyVBO(GLsizeiptr vertexCount);
 
-		static void updateVBO(GLuint vbo, const std::vector<float> &data, size_t sizeOfData);
+		static void updateVBO(GLuint vbo, const std::vector<float> &data, GLsizeiptr sizeOfData);
 
 		static void
 		addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount, int instancedDataLength,
@@ -80,10 +80,9 @@ namespace Survive
 		void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
 	private:
-		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, size_t size,
-									  GLenum usage = GL_STATIC_DRAW);
+		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size);
 
-		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<unsigned> &data, size_t size);
+		void storeDataInAttributeList(const std::vector<unsigned int> &data);
 
 		void createIndexBuffer(const std::vector<unsigned> &indices);
 
