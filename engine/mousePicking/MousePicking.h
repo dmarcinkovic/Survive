@@ -23,7 +23,7 @@ private:
 
 	MousePickingShader m_Shader;
 
-	glm::vec2 m_MousePosition{};
+	glm::ivec2 m_MousePosition{};
 
 public:
 	explicit MousePicking();

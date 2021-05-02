@@ -24,7 +24,7 @@ void MousePicking::mousePressedHandler()
 			mousePressed = true;
 
 			int height = Display::getHeight();
-			m_MousePosition = glm::vec2{mouseX, height - mouseY};
+			m_MousePosition = glm::ivec2{mouseX, height - mouseY};
 		}
 	});
 }
