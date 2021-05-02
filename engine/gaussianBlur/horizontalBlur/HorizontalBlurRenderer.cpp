@@ -3,7 +3,7 @@
 //
 
 #include "HorizontalBlurRenderer.h"
-#include "../../display/Display.h"
+#include "../../core/display/Display.h"
 
 Survive::HorizontalBlurRenderer::HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight),

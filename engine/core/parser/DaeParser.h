@@ -9,10 +9,10 @@
 #include <vector>
 #include <stack>
 
+#include "../../animations/joints/Joint.h"
+#include "../../animations/animation/KeyFrame.h"
+#include "../../animations/animation/Animation.h"
 #include "../renderer/Loader.h"
-#include "../animations/joints/Joint.h"
-#include "../animations/animation/KeyFrame.h"
-#include "../animations/animation/Animation.h"
 
 namespace Survive
 {

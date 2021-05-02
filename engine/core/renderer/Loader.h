@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <GL/glew.h>
+
 #include "../texture/Texture.h"
 
 namespace Survive

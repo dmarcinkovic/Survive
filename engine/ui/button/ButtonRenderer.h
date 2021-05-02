@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "ButtonShader.h"
-#include "../../texture/TexturedModel.h"
 #include "Button.h"
 
 namespace Survive

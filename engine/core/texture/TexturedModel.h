@@ -7,8 +7,8 @@
 
 #include <GL/glew.h>
 
-#include "../renderer/Loader.h"
 #include "Texture.h"
+#include "../renderer/Loader.h"
 
 namespace Survive
 {

@@ -7,12 +7,12 @@
 
 #include <vector>
 
-#include "../gui/GuiRenderer.h"
-#include "../text/TextRenderer.h"
-#include "../text/Text.h"
-#include "../ui/button/Button.h"
-#include "../ui/button/ButtonRenderer.h"
-#include "../sprites/SpritesRenderer.h"
+#include "../../gui/GuiRenderer.h"
+#include "../../text/TextRenderer.h"
+#include "../../text/Text.h"
+#include "../../ui/button/Button.h"
+#include "../../ui/button/ButtonRenderer.h"
+#include "../../sprites/SpritesRenderer.h"
 
 namespace Survive
 {

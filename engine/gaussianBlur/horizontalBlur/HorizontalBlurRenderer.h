@@ -6,8 +6,8 @@
 #define SURVIVE_HORIZONTALBLURRENDERER_H
 
 
-#include "../../fbo/FrameBuffer.h"
 #include "HorizontalBlurShader.h"
+#include "../../core/fbo/FrameBuffer.h"
 
 namespace Survive
 {

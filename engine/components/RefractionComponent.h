@@ -5,7 +5,6 @@
 #ifndef SURVIVE_REFRACTIONCOMPONENT_H
 #define SURVIVE_REFRACTIONCOMPONENT_H
 
-#include "../texture/Texture.h"
 
 namespace Survive
 {

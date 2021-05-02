@@ -2,12 +2,9 @@
 // Created by david on 17. 05. 2020..
 //
 #include "AnimationRenderer.h"
-#include "../../renderer/Renderer3DUtil.h"
-#include "../../math/Maths.h"
-#include "../../components/RenderComponent.h"
-#include "../../components/Transform3DComponent.h"
-#include "../../components/RigidBodyComponent.h"
-#include "../../components/AnimationComponent.h"
+#include "../../components/Components.h"
+#include "../../core/math/Maths.h"
+#include "../../core/renderer/Renderer3DUtil.h"
 
 Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 		: m_Light(light)

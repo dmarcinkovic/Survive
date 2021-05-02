@@ -9,7 +9,6 @@
 #include <glm/vec3.hpp>
 #include <numbers>
 
-#include "../texture/TexturedModel.h"
 #include "Particle.h"
 #include "ParticleModel.h"
 #include "ParticleRenderer.h"

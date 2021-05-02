@@ -6,7 +6,7 @@
 #define SURVIVE_RENDERER3DUTIL_H
 
 
-#include "../shader/Shader.h"
+#include "../../shader/Shader.h"
 #include "../texture/TexturedModel.h"
 
 namespace Survive

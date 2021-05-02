@@ -4,8 +4,8 @@
 
 #include <random>
 #include "Maths.h"
+#include "../../constant/Constants.h"
 #include "../display/Display.h"
-#include "../constant/Constants.h"
 
 glm::mat4 Survive::Maths::projectionMatrix;
 glm::mat4 Survive::Maths::lightProjectionMatrix;

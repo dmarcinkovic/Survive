@@ -5,6 +5,8 @@
 #ifndef SURVIVE_CONSTANTS_H
 #define SURVIVE_CONSTANTS_H
 
+#include <glm/vec4.hpp>
+
 namespace Survive
 {
 	struct Constants

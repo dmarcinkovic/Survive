@@ -8,8 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../camera/Camera.h"
-#include "../light/Light.h"
+#include "../../camera/Camera.h"
+#include "../../light/Light.h"
 
 namespace Survive
 {

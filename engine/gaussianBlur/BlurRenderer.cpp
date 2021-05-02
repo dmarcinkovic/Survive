@@ -3,7 +3,7 @@
 //
 
 #include "BlurRenderer.h"
-#include "../display/Display.h"
+#include "../core/display/Display.h"
 
 Survive::BlurRenderer::BlurRenderer(const Light &light, int width, int height)
 		: m_AnimationRenderer(light), m_ObjectRenderer(light),

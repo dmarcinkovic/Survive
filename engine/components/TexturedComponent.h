@@ -5,7 +5,6 @@
 #ifndef SURVIVE_TEXTUREDCOMPONENT_H
 #define SURVIVE_TEXTUREDCOMPONENT_H
 
-#include "../texture/Texture.h"
 
 namespace Survive
 {

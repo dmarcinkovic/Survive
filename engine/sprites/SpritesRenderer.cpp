@@ -3,9 +3,9 @@
 //
 
 #include "SpritesRenderer.h"
-#include "../math/Maths.h"
-#include "../renderer/Renderer2DUtil.h"
 #include "../components/RenderComponent.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer2DUtil.h"
 
 
 void Survive::SpritesRenderer::render(entt::registry &registry) const

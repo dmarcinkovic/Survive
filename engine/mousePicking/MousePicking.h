@@ -10,9 +10,9 @@
 #include <functional>
 
 #include "../camera/Camera.h"
-#include "../texture/TexturedModel.h"
 #include "MousePickingShader.h"
 #include "../../ecs/entt.hpp"
+#include "../core/texture/TexturedModel.h"
 
 namespace Survive
 {
@@ -22,7 +22,7 @@ namespace Survive
 		static bool mousePressed;
 		MousePickingShader m_Shader;
 
-		glm::vec2 m_MousePosition{};
+		glm::ivec2 m_MousePosition{};
 
 	public:
 		explicit MousePicking();
@@ -37,7 +37,7 @@ namespace Survive
 
 		void getRenderedObject() const;
 
-		static glm::vec4 getColor(int id);
+		static glm::vec4 getColor(std::uint32_t id);
 
 		static int getID(const std::uint8_t *data);
 

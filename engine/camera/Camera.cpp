@@ -2,8 +2,8 @@
 // Created by david on 17. 05. 2020..
 //
 
-#include "../display/Display.h"
 #include "Camera.h"
+#include "../core/display/Display.h"
 
 Survive::Camera::Camera()
 {

@@ -3,8 +3,8 @@
 //
 
 #include "Animator.h"
-#include "../../display/Display.h"
 #include "../../components/AnimationComponent.h"
+#include "../../core/display/Display.h"
 
 Survive::Animator::Animator(Animation animation, entt::entity animatedObject)
 		: m_Animation(std::move(animation)), m_Model(animatedObject)

@@ -3,7 +3,7 @@
 //
 
 #include "SpriteUpdate.h"
-#include "../display/Display.h"
+#include "../core/display/Display.h"
 
 void Survive::SpriteUpdate::update(entt::registry &registry)
 {

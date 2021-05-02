@@ -6,6 +6,7 @@
 #define SURVIVE_OBJPARSER_H
 
 #include <glm/glm.hpp>
+#include <vector>
 
 #include "../renderer/Loader.h"
 

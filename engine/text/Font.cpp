@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include "Font.h"
-#include "../util/Util.h"
+#include "../core/util/Util.h"
 
 Survive::Font::Font(const char *textureAtlas, Loader &loader)
 		: m_FontTexture(Loader::loadTexture(textureAtlas))

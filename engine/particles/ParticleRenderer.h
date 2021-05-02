@@ -10,7 +10,6 @@
 
 #include "ParticleShader.h"
 #include "../camera/Camera.h"
-#include "../texture/TexturedModel.h"
 #include "Particle.h"
 #include "ParticleModel.h"
 

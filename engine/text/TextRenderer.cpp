@@ -4,8 +4,8 @@
 
 
 #include "TextRenderer.h"
-#include "../renderer/Renderer2DUtil.h"
-#include "../math/Maths.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer2DUtil.h"
 
 void Survive::TextRenderer::renderText() const
 {

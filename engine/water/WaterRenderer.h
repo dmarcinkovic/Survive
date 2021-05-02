@@ -7,7 +7,6 @@
 
 #include <functional>
 
-#include "../texture/Texture.h"
 #include "WaterShader.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"

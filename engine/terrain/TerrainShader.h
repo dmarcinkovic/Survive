@@ -6,7 +6,6 @@
 #define SURVIVE_TERRAINSHADER_H
 
 #include "../shader/Shader.h"
-#include "../texture/Texture.h"
 #include "../light/Light.h"
 
 namespace Survive

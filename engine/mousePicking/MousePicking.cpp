@@ -3,12 +3,13 @@
 //
 
 #include <iostream>
+
 #include "MousePicking.h"
-#include "../display/Display.h"
-#include "../math/Maths.h"
-#include "../renderer/Renderer3DUtil.h"
 #include "../constant/Constants.h"
 #include "../components/Components.h"
+#include "../core/display/Display.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer3DUtil.h"
 
 bool Survive::MousePicking::mousePressed = false;
 
@@ -25,16 +26,16 @@ void Survive::MousePicking::mousePressedHandler()
 			mousePressed = true;
 
 			int height = Display::getHeight();
-			m_MousePosition = glm::vec2{mouseX, height - mouseY};
+			m_MousePosition = glm::ivec2{mouseX, height - mouseY};
 		}
 	});
 }
 
-glm::vec4 Survive::MousePicking::getColor(int id)
+glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 {
-	int r = (id & 0x000000FF) >> 0;
-	int g = (id & 0x0000FF00) >> 8;
-	int b = (id & 0x00FF0000) >> 16;
+	std::uint32_t r = (id & 0x000000FF) >> 0;
+	std::uint32_t g = (id & 0x0000FF00) >> 8;
+	std::uint32_t b = (id & 0x00FF0000) >> 16;
 
 	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
 }

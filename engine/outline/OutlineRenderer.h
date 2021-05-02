@@ -9,7 +9,6 @@
 #include <unordered_map>
 
 #include "OutlineShader.h"
-#include "../texture/TexturedModel.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"

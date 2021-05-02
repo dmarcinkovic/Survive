@@ -11,7 +11,7 @@
 #include "../../entity/Entity.h"
 #include "../../text/Font.h"
 #include "../../text/Text.h"
-#include "../../display/Display.h"
+#include "../../core/display/Display.h"
 
 namespace Survive
 {

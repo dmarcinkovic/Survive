@@ -3,8 +3,8 @@
 //
 
 #include "ParticleSystem.h"
-#include "../display/Display.h"
-#include "../math/Maths.h"
+#include "../core/display/Display.h"
+#include "../core/math/Maths.h"
 
 Survive::ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength,
 										float scale)

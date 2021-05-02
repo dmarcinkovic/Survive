@@ -3,10 +3,10 @@
 //
 
 #include "WaterRenderer.h"
-#include "../renderer/Renderer3DUtil.h"
-#include "../math/Maths.h"
-#include "../display/Display.h"
 #include "../constant/Constants.h"
+#include "../core/display/Display.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer3DUtil.h"
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {

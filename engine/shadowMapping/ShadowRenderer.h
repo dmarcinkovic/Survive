@@ -13,7 +13,7 @@
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"
-#include "../texture/TexturedModel.h"
+#include "../core/texture/TexturedModel.h"
 
 namespace Survive
 {

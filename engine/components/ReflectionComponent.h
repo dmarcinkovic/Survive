@@ -5,7 +5,7 @@
 #ifndef SURVIVE_REFLECTIONCOMPONENT_H
 #define SURVIVE_REFLECTIONCOMPONENT_H
 
-#include "../texture/Texture.h"
+#include "../core/texture/Texture.h"
 
 namespace Survive
 {

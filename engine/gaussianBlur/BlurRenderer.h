@@ -8,8 +8,6 @@
 #include <functional>
 #include <unordered_map>
 
-#include "../texture/TexturedModel.h"
-#include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"

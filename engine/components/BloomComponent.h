@@ -5,7 +5,7 @@
 #ifndef SURVIVE_BLOOMCOMPONENT_H
 #define SURVIVE_BLOOMCOMPONENT_H
 
-#include "../texture/Texture.h"
+#include "../core/texture/Texture.h"
 
 namespace Survive
 {

@@ -5,9 +5,9 @@
 #ifndef SURVIVE_ENTITY_H
 #define SURVIVE_ENTITY_H
 
-#include "../texture/TexturedModel.h"
-
 #include <glm/vec3.hpp>
+
+#include "../core/texture/TexturedModel.h"
 
 namespace Survive
 {

@@ -11,7 +11,7 @@
 #include <optional>
 #include <glm/glm.hpp>
 
-#include "../text/Character.h"
+#include "../../text/Character.h"
 
 namespace Survive
 {

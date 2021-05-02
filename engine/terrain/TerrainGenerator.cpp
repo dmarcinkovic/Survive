@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "TerrainGenerator.h"
-#include "../texture/stb_image.h"
+#include "../core/texture/stb_image.h"
 
 Survive::Model Survive::TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 {

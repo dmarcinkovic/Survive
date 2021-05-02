@@ -6,7 +6,7 @@
 #define SURVIVE_PARTICLEMODEL_H
 
 
-#include "../texture/TexturedModel.h"
+#include "../core/texture/TexturedModel.h"
 
 namespace Survive
 {

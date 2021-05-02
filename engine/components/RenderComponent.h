@@ -5,13 +5,13 @@
 #ifndef SURVIVE_RENDERCOMPONENT_H
 #define SURVIVE_RENDERCOMPONENT_H
 
-#include "../texture/TexturedModel.h"
+#include "../core/texture/TexturedModel.h"
 
 namespace Survive
 {
 	struct RenderComponent
 	{
-		TexturedModel texturedModel;
+		TexturedModel texturedModel{};
 
 		RenderComponent() = default;
 

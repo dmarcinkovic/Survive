@@ -3,9 +3,9 @@
 //
 
 #include "OutlineRenderer.h"
-#include "../renderer/Renderer3DUtil.h"
-#include "../math/Maths.h"
 #include "../components/OutlineComponent.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer3DUtil.h"
 
 void Survive::OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
 {

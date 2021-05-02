@@ -3,10 +3,10 @@
 //
 
 #include "ObjectRenderer.h"
-#include "../renderer/Renderer3DUtil.h"
-#include "../math/Maths.h"
 #include "../components/Components.h"
 #include "../components/ShadowComponent.h"
+#include "../core/math/Maths.h"
+#include "../core/renderer/Renderer3DUtil.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
