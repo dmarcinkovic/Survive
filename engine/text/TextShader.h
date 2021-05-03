@@ -13,8 +13,8 @@ namespace Survive
 	class TextShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/shader/sources/TextVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/TextFragmentShader.glsl";
+		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/TextVertexShader.glsl";
+		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/TextFragmentShader.glsl";
 
 		GLuint m_LocationColor{};
 		GLuint m_LocationBorderWidth{};

@@ -14,8 +14,8 @@ namespace Survive
 	class GuiShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
+		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/GuiVertexShader.glsl";
+		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/GuiFragmentShader.glsl";
 
 		GLuint m_LocationTransformationMatrix{};
 		GLuint m_LocationProjectionMatrix{};

@@ -13,8 +13,8 @@ namespace Survive
 	class ObjectShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_SHADER = "engine/shader/sources/ObjectVertexShader.glsl";
-		constexpr static const char *FRAGMENT_SHADER = "engine/shader/sources/ObjectFragmentShader.glsl";
+		constexpr static const char *VERTEX_SHADER = "engine/core/shader/sources/ObjectVertexShader.glsl";
+		constexpr static const char *FRAGMENT_SHADER = "engine/core/shader/sources/ObjectFragmentShader.glsl";
 
 		GLuint m_LocationTransformationMatrix{};
 		GLuint m_LocationProjectionMatrix{};

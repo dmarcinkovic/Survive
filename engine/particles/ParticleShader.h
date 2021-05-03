@@ -13,8 +13,8 @@ namespace Survive
 	class ParticleShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ParticleVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ParticleFragmentShader.glsl";
+		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ParticleVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ParticleFragmentShader.glsl";
 
 		GLuint m_LocationNumberOfRows{};
 		GLuint m_LocationNumberOfCols{};

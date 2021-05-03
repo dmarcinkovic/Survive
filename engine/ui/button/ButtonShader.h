@@ -13,8 +13,8 @@ namespace Survive
 	class ButtonShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/shader/sources/ButtonVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/ButtonFragmentShader.glsl";
+		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/ButtonVertexShader.glsl";
+		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/ButtonFragmentShader.glsl";
 
 		GLuint m_LocationTransformationMatrix{};
 		GLuint m_LocationColor{};

@@ -14,8 +14,8 @@ namespace Survive
 	class WaterShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/WaterVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/WaterFragmentShader.glsl";
+		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/WaterVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/WaterFragmentShader.glsl";
 
 		GLuint m_LocationTransformationMatrix{};
 		GLuint m_LocationViewMatrix{};
