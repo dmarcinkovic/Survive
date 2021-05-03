@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "../shader/Shader.h"
+#include "../core/shader/Shader.h"
 
 namespace Survive
 {

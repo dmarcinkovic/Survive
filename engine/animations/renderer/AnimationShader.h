@@ -7,8 +7,9 @@
 
 
 #include <vector>
-#include "../../shader/Shader.h"
+
 #include "../joints/JointTransform.h"
+#include "../../core/shader/Shader.h"
 
 namespace Survive
 {

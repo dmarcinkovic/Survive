@@ -6,7 +6,7 @@
 #define SURVIVE_OUTLINESHADER_H
 
 
-#include "../shader/Shader.h"
+#include "../core/shader/Shader.h"
 
 namespace Survive
 {

@@ -26,7 +26,7 @@ namespace Survive
 		Loader m_Loader;
 		GLuint m_Vbo{};
 
-		std::unordered_map<ParticleModel, std::vector<Particle>, ParticleHash> m_Particles;
+		std::unordered_map<ParticleModel, std::vector<Particle>, ParticleHash> m_Particles{};
 
 		ParticleShader m_Shader;
 

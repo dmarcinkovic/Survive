@@ -5,7 +5,8 @@
 #ifndef SURVIVE_OBJECTSHADER_H
 #define SURVIVE_OBJECTSHADER_H
 
-#include "../shader/Shader.h"
+
+#include "../core/shader/Shader.h"
 
 namespace Survive
 {
