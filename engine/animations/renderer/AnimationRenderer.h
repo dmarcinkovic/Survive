@@ -9,7 +9,6 @@
 #include <functional>
 
 #include "AnimationShader.h"
-#include "../../objects/ObjectShader.h"
 #include "../../../ecs/entt.hpp"
 #include "../../core/texture/TexturedModel.h"
 #include "../../scene/camera/Camera.h"

@@ -7,8 +7,6 @@
 
 #include <vector>
 
-#include "../../gui/GuiRenderer.h"
-#include "../../sprites/SpritesRenderer.h"
 #include "../../entities/ui/button/ButtonRenderer.h"
 #include "../../entities/text/Text.h"
 #include "../../entities/text/TextRenderer.h"

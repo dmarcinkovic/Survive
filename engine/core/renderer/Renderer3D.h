@@ -5,14 +5,14 @@
 #ifndef SURVIVE_RENDERER3D_H
 #define SURVIVE_RENDERER3D_H
 
-#include "../../objects/ObjectRenderer.h"
 #include "../../animations/renderer/AnimationRenderer.h"
-#include "../../sky/SkyRenderer.h"
-#include "../../outline/OutlineRenderer.h"
-#include "../../mousePicking/MousePicking.h"
-#include "../../gaussianBlur/BloomRenderer.h"
 #include "../../entities/water/WaterRenderer.h"
 #include "../../entities/terrain/TerrainRenderer.h"
+#include "../../entities/sky/SkyRenderer.h"
+#include "../../entities/objects/ObjectRenderer.h"
+#include "../../editor/mousePicking/MousePicking.h"
+#include "../../editor/outline/OutlineRenderer.h"
+#include "../../scene/gaussianBlur/BloomRenderer.h"
 
 namespace Survive
 {
