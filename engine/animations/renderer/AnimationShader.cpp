@@ -3,6 +3,7 @@
 //
 
 #include <string>
+
 #include "AnimationShader.h"
 
 Survive::AnimationShader::AnimationShader()

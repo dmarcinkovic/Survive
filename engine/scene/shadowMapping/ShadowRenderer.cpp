@@ -5,10 +5,10 @@
 #include <glm/glm.hpp>
 
 #include "ShadowRenderer.h"
-#include "../../components/RenderComponent.h"
-#include "../../components/Transform3DComponent.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer3DUtil.h"
+#include "RenderComponent.h"
+#include "Transform3DComponent.h"
+#include "Maths.h"
+#include "Renderer3DUtil.h"
 
 void Survive::ShadowRenderer::render(const entt::registry &registry, const Light &light, const Camera &camera) const
 {

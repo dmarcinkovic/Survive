@@ -8,8 +8,8 @@
 #include <glm/vec2.hpp>
 
 #include "ParticleModel.h"
-#include "../camera/Camera.h"
-#include "../../entities/entity/Entity.h"
+#include "Camera.h"
+#include "Entity.h"
 
 namespace Survive
 {

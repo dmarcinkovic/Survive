@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "DaeParser.h"
-#include "../util/Util.h"
+#include "Util.h"
 
 Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 {

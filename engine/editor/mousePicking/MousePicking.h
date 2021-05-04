@@ -10,9 +10,9 @@
 #include <functional>
 
 #include "MousePickingShader.h"
-#include "../../../ecs/entt.hpp"
-#include "../../core/texture/TexturedModel.h"
-#include "../../scene/camera/Camera.h"
+#include "entt.hpp"
+#include "TexturedModel.h"
+#include "Camera.h"
 
 namespace Survive
 {

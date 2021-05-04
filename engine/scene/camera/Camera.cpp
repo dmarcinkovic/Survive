@@ -3,7 +3,7 @@
 //
 
 #include "Camera.h"
-#include "../../core/display/Display.h"
+#include "Display.h"
 
 Survive::Camera::Camera()
 {

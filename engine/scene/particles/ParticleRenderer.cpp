@@ -5,8 +5,8 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "ParticleRenderer.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer2DUtil.h"
+#include "Maths.h"
+#include "Renderer2DUtil.h"
 
 int Survive::ParticleRenderer::pointer = 0;
 

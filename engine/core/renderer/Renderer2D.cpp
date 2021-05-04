@@ -2,6 +2,7 @@
 // Created by david on 27. 03. 2020..
 //
 
+#include "Display.h"
 #include "Renderer2D.h"
 
 Survive::Renderer2D::Renderer2D(Loader &loader)

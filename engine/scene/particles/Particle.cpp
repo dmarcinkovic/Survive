@@ -3,8 +3,8 @@
 //
 
 #include "Particle.h"
-#include "../../constant/Constants.h"
-#include "../../core/display/Display.h"
+#include "Constants.h"
+#include "Display.h"
 
 Survive::Particle::Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
 							float gravityEffect, float lifeLength, float rotation, float scale)

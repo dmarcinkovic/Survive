@@ -1,11 +1,10 @@
-#include "ecs/entt.hpp"
-#include "engine/core/display/Display.h"
-#include "engine/core/texture/TexturedModel.h"
-#include "engine/core/renderer/Renderer3D.h"
-#include "engine/core/renderer/Loader.h"
-#include "engine/core/parser/ObjParser.h"
-#include "engine/scene/camera/Camera.h"
-#include "engine/scene/light/Light.h"
+#include "Loader.h"
+#include "ObjParser.h"
+#include "Camera.h"
+#include "Light.h"
+#include "Renderer3D.h"
+#include "Display.h"
+#include "entt.hpp"
 
 int main()
 {

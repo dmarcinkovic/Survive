@@ -5,8 +5,8 @@
 #include <iostream>
 
 #include "Display.h"
-#include "../../constant/Constants.h"
-#include "../math/Maths.h"
+#include "Constants.h"
+#include "Maths.h"
 
 std::vector<Survive::KeyListener> Survive::Display::m_KeyEventListeners;
 std::vector<Survive::MouseListener> Survive::Display::m_MouseEventListeners;

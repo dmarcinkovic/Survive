@@ -7,9 +7,9 @@
 
 
 #include "Animation.h"
-#include "../joints/Joint.h"
+#include "Joint.h"
 #include "KeyFrame.h"
-#include "../renderer/AnimationRenderer.h"
+#include "AnimationRenderer.h"
 
 namespace Survive
 {

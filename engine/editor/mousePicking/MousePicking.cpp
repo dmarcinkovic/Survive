@@ -5,11 +5,11 @@
 #include <iostream>
 
 #include "MousePicking.h"
-#include "../../constant/Constants.h"
-#include "../../components/Components.h"
-#include "../../core/display/Display.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer3DUtil.h"
+#include "Constants.h"
+#include "Components.h"
+#include "Display.h"
+#include "Maths.h"
+#include "Renderer3DUtil.h"
 
 bool Survive::MousePicking::mousePressed = false;
 

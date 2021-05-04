@@ -8,11 +8,11 @@
 #include <functional>
 #include <unordered_map>
 
+#include "entt.hpp"
 #include "OutlineShader.h"
-#include "../../../ecs/entt.hpp"
-#include "../../components/Transform3DComponent.h"
-#include "../../components/RenderComponent.h"
-#include "../../scene/camera/Camera.h"
+#include "Transform3DComponent.h"
+#include "RenderComponent.h"
+#include "Camera.h"
 
 namespace Survive
 {

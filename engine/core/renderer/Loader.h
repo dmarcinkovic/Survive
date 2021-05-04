@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <GL/glew.h>
 
-#include "../texture/Texture.h"
+#include "Texture.h"
 
 namespace Survive
 {

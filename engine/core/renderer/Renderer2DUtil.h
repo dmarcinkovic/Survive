@@ -6,8 +6,8 @@
 #define SURVIVE_RENDERER2DUTIL_H
 
 
-#include "../texture/TexturedModel.h"
-#include "../shader/Shader.h"
+#include "TexturedModel.h"
+#include "Shader.h"
 
 namespace Survive
 {

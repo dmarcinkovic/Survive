@@ -8,12 +8,12 @@
 #include <functional>
 #include <unordered_map>
 
-#include "horizontalBlur/HorizontalBlurRenderer.h"
+#include "entt.hpp"
+#include "AnimationRenderer.h"
+#include "TerrainRenderer.h"
+#include "ObjectRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
-#include "../../animations/renderer/AnimationRenderer.h"
-#include "../../../ecs/entt.hpp"
-#include "../../entities/terrain/TerrainRenderer.h"
-#include "../../entities/objects/ObjectRenderer.h"
+#include "horizontalBlur/HorizontalBlurRenderer.h"
 
 namespace Survive
 {

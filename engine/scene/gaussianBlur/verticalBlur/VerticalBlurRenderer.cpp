@@ -4,7 +4,7 @@
 
 #include "VerticalBlurRenderer.h"
 #include "VerticalBlurShader.h"
-#include "../../../core/display/Display.h"
+#include "Display.h"
 
 Survive::VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight),

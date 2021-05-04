@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "../../entities/ui/button/ButtonRenderer.h"
-#include "../../entities/text/Text.h"
-#include "../../entities/text/TextRenderer.h"
+#include "button/ButtonRenderer.h"
+#include "Text.h"
+#include "TextRenderer.h"
 
 namespace Survive
 {

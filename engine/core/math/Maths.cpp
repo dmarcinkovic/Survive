@@ -3,9 +3,10 @@
 //
 
 #include <random>
+
 #include "Maths.h"
-#include "../../constant/Constants.h"
-#include "../display/Display.h"
+#include "Constants.h"
+#include "Display.h"
 
 glm::mat4 Survive::Maths::projectionMatrix;
 glm::mat4 Survive::Maths::lightProjectionMatrix;

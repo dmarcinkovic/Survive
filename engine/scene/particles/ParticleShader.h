@@ -6,7 +6,7 @@
 #define SURVIVE_PARTICLESHADER_H
 
 
-#include "../../core/shader/Shader.h"
+#include "Shader.h"
 
 namespace Survive
 {

@@ -6,7 +6,8 @@
 #define SURVIVE_JOINTTRANSFORM_H
 
 #include <glm/glm.hpp>
-#include "../../core/math/Quaternion.h"
+
+#include "Quaternion.h"
 
 namespace Survive
 {

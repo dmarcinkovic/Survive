@@ -8,8 +8,8 @@
 #include <GL/glew.h>
 #include <vector>
 
-#include "../../../ecs/entt.hpp"
-#include "../../scene/shadowMapping/ShadowRenderer.h"
+#include "entt.hpp"
+#include "ShadowRenderer.h"
 
 namespace Survive
 {

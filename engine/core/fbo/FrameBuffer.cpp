@@ -3,7 +3,7 @@
 //
 
 #include "FrameBuffer.h"
-#include "../display/Display.h"
+#include "Display.h"
 
 Survive::FrameBuffer::FrameBuffer()
 {

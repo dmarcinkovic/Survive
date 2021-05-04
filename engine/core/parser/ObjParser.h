@@ -7,8 +7,9 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <string>
 
-#include "../renderer/Loader.h"
+#include "Loader.h"
 
 namespace Survive
 {

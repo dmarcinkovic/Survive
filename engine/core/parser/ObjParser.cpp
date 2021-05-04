@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "ObjParser.h"
-#include "../util/Util.h"
+#include "Util.h"
 
 Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 {

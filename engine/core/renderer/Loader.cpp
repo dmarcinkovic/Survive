@@ -6,7 +6,7 @@
 #include <execution>
 
 #include "Loader.h"
-#include "../texture/stb_image.h"
+#include "stb_image.h"
 
 std::vector<GLuint> Survive::Loader::m_Textures;
 

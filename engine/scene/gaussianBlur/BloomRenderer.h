@@ -6,9 +6,9 @@
 #define SURVIVE_BLOOMRENDERER_H
 
 
+#include "BlurRenderer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
-#include "BlurRenderer.h"
 
 namespace Survive
 {

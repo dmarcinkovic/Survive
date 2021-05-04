@@ -5,7 +5,7 @@
 #ifndef SURVIVE_RENDERCOMPONENT_H
 #define SURVIVE_RENDERCOMPONENT_H
 
-#include "../core/texture/TexturedModel.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {

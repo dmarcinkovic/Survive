@@ -3,9 +3,9 @@
 //
 
 #include "Renderer3D.h"
-#include "../../constant/Constants.h"
-#include "../../components/ShadowComponent.h"
-#include "../display/Display.h"
+#include "Constants.h"
+#include "ShadowComponent.h"
+#include "Display.h"
 
 Survive::Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
