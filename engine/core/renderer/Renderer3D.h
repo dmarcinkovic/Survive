@@ -11,9 +11,8 @@
 #include "../../sky/SkyRenderer.h"
 #include "../../outline/OutlineRenderer.h"
 #include "../../mousePicking/MousePicking.h"
-#include "../../water/WaterRenderer.h"
-#include "../../water/WaterFbo.h"
 #include "../../gaussianBlur/BloomRenderer.h"
+#include "../../entities/water/WaterRenderer.h"
 
 namespace Survive
 {

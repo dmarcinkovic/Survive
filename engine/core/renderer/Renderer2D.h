@@ -8,11 +8,10 @@
 #include <vector>
 
 #include "../../gui/GuiRenderer.h"
-#include "../../text/TextRenderer.h"
-#include "../../text/Text.h"
-#include "../../ui/button/Button.h"
-#include "../../ui/button/ButtonRenderer.h"
 #include "../../sprites/SpritesRenderer.h"
+#include "../../entities/ui/button/ButtonRenderer.h"
+#include "../../entities/text/Text.h"
+#include "../../entities/text/TextRenderer.h"
 
 namespace Survive
 {

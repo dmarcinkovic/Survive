@@ -9,11 +9,10 @@
 #include <unordered_map>
 
 #include "OutlineShader.h"
-#include "../light/Light.h"
-#include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"
 #include "../components/Transform3DComponent.h"
 #include "../components/RenderComponent.h"
+#include "../scene/camera/Camera.h"
 
 namespace Survive
 {

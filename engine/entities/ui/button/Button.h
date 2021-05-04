@@ -8,10 +8,9 @@
 #include <glm/glm.hpp>
 #include <string>
 
-#include "../../entity/Entity.h"
+#include "../../../core/display/Display.h"
 #include "../../text/Font.h"
 #include "../../text/Text.h"
-#include "../../core/display/Display.h"
 
 namespace Survive
 {

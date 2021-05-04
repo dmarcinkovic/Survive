@@ -9,7 +9,6 @@
 #include <unordered_map>
 
 #include "ParticleShader.h"
-#include "../camera/Camera.h"
 #include "Particle.h"
 #include "ParticleModel.h"
 

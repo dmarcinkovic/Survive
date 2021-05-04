@@ -9,10 +9,10 @@
 #include <unordered_map>
 #include <functional>
 
-#include "../camera/Camera.h"
 #include "MousePickingShader.h"
 #include "../../ecs/entt.hpp"
 #include "../core/texture/TexturedModel.h"
+#include "../scene/camera/Camera.h"
 
 namespace Survive
 {

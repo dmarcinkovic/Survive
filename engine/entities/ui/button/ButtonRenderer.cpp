@@ -2,11 +2,9 @@
 // Created by david on 05. 05. 2020..
 //
 
-#include <iostream>
-
 #include "ButtonRenderer.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer2DUtil.h"
+#include "../../../core/math/Maths.h"
+#include "../../../core/renderer/Renderer2DUtil.h"
 
 void Survive::ButtonRenderer::render() const
 {

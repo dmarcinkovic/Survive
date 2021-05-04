@@ -6,7 +6,7 @@
 #define SURVIVE_TEXTSHADER_H
 
 
-#include "../core/shader/Shader.h"
+#include "../../core/shader/Shader.h"
 
 namespace Survive
 {

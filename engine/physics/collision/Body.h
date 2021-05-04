@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 
 #include "BodyType.h"
-#include "../../entity/Entity.h"
+#include "../../entities/entity/Entity.h"
 
 namespace Survive
 {

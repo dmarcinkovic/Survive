@@ -8,12 +8,12 @@
 #include <unordered_map>
 #include <functional>
 
-#include "../../camera/Camera.h"
-#include "../../light/Light.h"
 #include "AnimationShader.h"
 #include "../../objects/ObjectShader.h"
 #include "../../../ecs/entt.hpp"
 #include "../../core/texture/TexturedModel.h"
+#include "../../scene/camera/Camera.h"
+#include "../../scene/light/Light.h"
 
 namespace Survive
 {

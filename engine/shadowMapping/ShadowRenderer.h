@@ -10,10 +10,10 @@
 #include <functional>
 
 #include "ShadowShader.h"
-#include "../light/Light.h"
-#include "../camera/Camera.h"
 #include "../../ecs/entt.hpp"
 #include "../core/texture/TexturedModel.h"
+#include "../scene/camera/Camera.h"
+#include "../scene/light/Light.h"
 
 namespace Survive
 {

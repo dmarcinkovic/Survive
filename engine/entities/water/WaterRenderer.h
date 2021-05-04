@@ -8,11 +8,10 @@
 #include <functional>
 
 #include "WaterShader.h"
-#include "../light/Light.h"
-#include "../camera/Camera.h"
 #include "WaterFbo.h"
-#include "../../ecs/entt.hpp"
-#include "../components/Components.h"
+#include "../../../ecs/entt.hpp"
+#include "../../components/Components.h"
+#include "../../scene/light/Light.h"
 
 namespace Survive
 {

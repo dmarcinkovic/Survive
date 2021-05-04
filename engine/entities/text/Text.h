@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "../entity/Entity.h"
 #include "Font.h"
+#include "../entity/Entity.h"
 
 namespace Survive
 {

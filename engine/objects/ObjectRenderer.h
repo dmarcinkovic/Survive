@@ -9,9 +9,9 @@
 #include <functional>
 
 #include "ObjectShader.h"
-#include "../camera/Camera.h"
-#include "../light/Light.h"
 #include "../gui/GuiRenderer.h"
+#include "../scene/camera/Camera.h"
+#include "../scene/light/Light.h"
 
 namespace Survive
 {

@@ -6,10 +6,9 @@
 #define SURVIVE_TERRAINRENDERER_H
 
 #include "TerrainShader.h"
-#include "../camera/Camera.h"
-#include "../light/Light.h"
 #include "../../ecs/entt.hpp"
 #include "../components/Components.h"
+#include "../scene/camera/Camera.h"
 
 namespace Survive
 {

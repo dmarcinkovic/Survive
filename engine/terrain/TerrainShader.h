@@ -5,8 +5,8 @@
 #ifndef SURVIVE_TERRAINSHADER_H
 #define SURVIVE_TERRAINSHADER_H
 
-#include "../light/Light.h"
 #include "../core/shader/Shader.h"
+#include "../scene/light/Light.h"
 
 namespace Survive
 {
