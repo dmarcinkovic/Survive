@@ -3,8 +3,8 @@
 //
 
 #include "TerrainRenderer.h"
-#include "../core/math/Maths.h"
-#include "../core/renderer/Renderer3DUtil.h"
+#include "../../core/math/Maths.h"
+#include "../../core/renderer/Renderer3DUtil.h"
 
 void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
 							 const glm::vec4 &plane) const

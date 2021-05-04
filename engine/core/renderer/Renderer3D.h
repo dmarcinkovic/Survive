@@ -6,13 +6,13 @@
 #define SURVIVE_RENDERER3D_H
 
 #include "../../objects/ObjectRenderer.h"
-#include "../../terrain/TerrainRenderer.h"
 #include "../../animations/renderer/AnimationRenderer.h"
 #include "../../sky/SkyRenderer.h"
 #include "../../outline/OutlineRenderer.h"
 #include "../../mousePicking/MousePicking.h"
 #include "../../gaussianBlur/BloomRenderer.h"
 #include "../../entities/water/WaterRenderer.h"
+#include "../../entities/terrain/TerrainRenderer.h"
 
 namespace Survive
 {

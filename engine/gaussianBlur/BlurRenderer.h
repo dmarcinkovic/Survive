@@ -12,8 +12,8 @@
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../objects/ObjectRenderer.h"
-#include "../terrain/TerrainRenderer.h"
 #include "../../ecs/entt.hpp"
+#include "../entities/terrain/TerrainRenderer.h"
 
 namespace Survive
 {
