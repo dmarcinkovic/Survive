@@ -8,11 +8,11 @@
 
 Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
-		  m_ShadowMap(m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
+		  m_ShadowMap(
+				  m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
 		  m_AnimationRenderer(light), m_ReflectionCLippingPlane{0, 1, 0, -Constants::WATER_HEIGHT},
 		  m_RefractionCLippingPlane{0, -1, 0, Constants::WATER_HEIGHT},
 		  m_BloomRenderer(Constants::BLOOM_WIDTH, Constants::BLOOM_HEIGHT), m_SceneSize(Display::getWindowSize<int>())
-
 {
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
@@ -31,7 +31,7 @@ void Renderer3D::render(Camera &camera) const
 //	m_MousePicking.render(camera);
 
 	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-									  Constants::SHADOW_HEIGHT);
+											Constants::SHADOW_HEIGHT);
 
 	renderToWaterFrameBuffers(camera);
 	renderScene(camera);
