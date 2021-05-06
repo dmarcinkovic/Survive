@@ -1,13 +1,15 @@
-#include "engine/display/Display.h"
-#include "engine/renderer/Loader.h"
-#include "ecs/entt.hpp"
-#include "engine/light/Light.h"
-#include "engine/camera/Camera.h"
-#include "engine/renderer/Renderer3D.h"
-#include "engine/parser/ObjParser.h"
+#include "Loader.h"
+#include "ObjParser.h"
+#include "Camera.h"
+#include "Light.h"
+#include "Renderer3D.h"
+#include "Display.h"
+#include "entt.hpp"
 
 int main()
 {
+	using namespace Survive;
+
 	constexpr int width = 1200;
 	constexpr int height = 800;
 

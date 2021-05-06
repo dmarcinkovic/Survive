@@ -7,13 +7,16 @@
 
 #include <glm/glm.hpp>
 
-struct SpriteComponent
+namespace Survive
 {
-	glm::vec3 color;
+	struct SpriteComponent
+	{
+		glm::vec3 color;
 
-	explicit SpriteComponent(const glm::vec3 &color)
-			: color(color)
-	{}
-};
+		explicit SpriteComponent(const glm::vec3 &color)
+				: color(color)
+		{}
+	};
+}
 
 #endif //SURVIVE_SPRITECOMPONENT_H

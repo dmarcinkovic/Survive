@@ -4,12 +4,12 @@
 
 #include "World.h"
 
-void World::addBody(std::unique_ptr<Body> body)
+void Survive::World::addBody(std::unique_ptr<Body> body)
 {
 	m_Bodies.emplace_back(std::move(body));
 }
 
-void World::step()
+void Survive::World::step()
 {
 	for (int i = 0; i < m_Bodies.size(); ++i)
 	{

@@ -5,19 +5,22 @@
 #ifndef SURVIVE_BLOOMCOMPONENT_H
 #define SURVIVE_BLOOMCOMPONENT_H
 
-#include "../texture/Texture.h"
+#include "Texture.h"
 
-struct BloomComponent
+namespace Survive
 {
-	Texture emissiveTexture{};
-	float bloomStrength{};
-	Texture bloomTexture{};
+	struct BloomComponent
+	{
+		Texture emissiveTexture{};
+		float bloomStrength{};
+		Texture bloomTexture{};
 
-	BloomComponent(const Texture &emissiveTexture, float bloomStrength)
-			: emissiveTexture(emissiveTexture), bloomStrength(bloomStrength)
-	{}
+		BloomComponent(const Texture &emissiveTexture, float bloomStrength)
+				: emissiveTexture(emissiveTexture), bloomStrength(bloomStrength)
+		{}
 
-	BloomComponent() = default;
-};
+		BloomComponent() = default;
+	};
+}
 
 #endif //SURVIVE_BLOOMCOMPONENT_H

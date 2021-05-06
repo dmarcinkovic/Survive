@@ -3,30 +3,31 @@
 //
 
 #include <string>
+
 #include "AnimationShader.h"
 
-AnimationShader::AnimationShader()
+Survive::AnimationShader::AnimationShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
 }
 
-void AnimationShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
+void Survive::AnimationShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void AnimationShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::AnimationShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationViewMatrix, viewMatrix);
 }
 
-void AnimationShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+void Survive::AnimationShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
 {
 	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
-void AnimationShader::loadUniformLocations()
+void Survive::AnimationShader::loadUniformLocations()
 {
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
@@ -44,13 +45,13 @@ void AnimationShader::loadUniformLocations()
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 }
 
-void AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
+void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
 {
 	loadVector3(m_LocationLightPosition, lightPosition);
 	loadVector3(m_LocationLightColor, lightColor);
 }
 
-void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
+void Survive::AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
 {
 	for (int i = 0; i < jointTransforms.size(); ++i)
 	{
@@ -64,7 +65,7 @@ void AnimationShader::loadJointTransforms(const std::vector<JointTransform> &joi
 	}
 }
 
-void AnimationShader::loadPlane(const glm::vec4 &plane) const
+void Survive::AnimationShader::loadPlane(const glm::vec4 &plane) const
 {
 	loadVector4(m_LocationPlane, plane);
 }

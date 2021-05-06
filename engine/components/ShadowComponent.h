@@ -5,15 +5,18 @@
 #ifndef SURVIVE_SHADOWCOMPONENT_H
 #define SURVIVE_SHADOWCOMPONENT_H
 
-struct ShadowComponent
+namespace Survive
 {
-	bool loadShadow;
+	struct ShadowComponent
+	{
+		bool loadShadow;
 
-	explicit ShadowComponent(bool loadShadow)
-			: loadShadow(loadShadow)
-	{}
+		explicit ShadowComponent(bool loadShadow)
+				: loadShadow(loadShadow)
+		{}
 
-	ShadowComponent() = default;
-};
+		ShadowComponent() = default;
+	};
+}
 
 #endif //SURVIVE_SHADOWCOMPONENT_H

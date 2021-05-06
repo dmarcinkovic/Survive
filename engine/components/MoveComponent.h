@@ -5,16 +5,19 @@
 #ifndef SURVIVE_MOVECOMPONENT_H
 #define SURVIVE_MOVECOMPONENT_H
 
-struct MoveComponent
+namespace Survive
 {
-	float moveSpeed{};
-	float currentMoveValue{};
+	struct MoveComponent
+	{
+		float moveSpeed{};
+		float currentMoveValue{};
 
-	MoveComponent() = default;
+		MoveComponent() = default;
 
-	explicit MoveComponent(float moveSpeed, float initialMoveValue = 0.0f)
-			: moveSpeed(moveSpeed), currentMoveValue(initialMoveValue)
-	{}
-};
+		explicit MoveComponent(float moveSpeed, float initialMoveValue = 0.0f)
+				: moveSpeed(moveSpeed), currentMoveValue(initialMoveValue)
+		{}
+	};
+}
 
 #endif //SURVIVE_MOVECOMPONENT_H

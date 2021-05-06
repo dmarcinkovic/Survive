@@ -8,21 +8,23 @@
 #include <unordered_map>
 #include <string>
 
-#include "../joints/JointTransform.h"
+#include "JointTransform.h"
 
-class KeyFrame
+namespace Survive
 {
-private:
-	float m_TimeStamp;
-	std::unordered_map<std::string, JointTransform> m_Pose;
+	class KeyFrame
+	{
+	private:
+		float m_TimeStamp;
+		std::unordered_map<std::string, JointTransform> m_Pose;
 
-public:
-	KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransform> jointKeyFrames);
+	public:
+		KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransform> jointKeyFrames);
 
-	float timeStamp() const;
+		float timeStamp() const;
 
-	const std::unordered_map<std::string, JointTransform> &getPose() const;
-};
-
+		const std::unordered_map<std::string, JointTransform> &getPose() const;
+	};
+}
 
 #endif //SURVIVE_KEYFRAME_H

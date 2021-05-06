@@ -7,15 +7,18 @@
 
 #include <cstdint>
 
-struct IdComponent
+namespace Survive
 {
-	std::uint32_t id;
+	struct IdComponent
+	{
+		std::uint32_t id;
 
-	IdComponent() = default;
+		IdComponent() = default;
 
-	explicit IdComponent(std::uint32_t id)
-			: id(id)
-	{}
-};
+		explicit IdComponent(std::uint32_t id)
+				: id(id)
+		{}
+	};
+}
 
 #endif //SURVIVE_IDCOMPONENT_H

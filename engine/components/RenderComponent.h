@@ -5,17 +5,20 @@
 #ifndef SURVIVE_RENDERCOMPONENT_H
 #define SURVIVE_RENDERCOMPONENT_H
 
-#include "../texture/TexturedModel.h"
+#include "TexturedModel.h"
 
-struct RenderComponent
+namespace Survive
 {
-	TexturedModel texturedModel;
+	struct RenderComponent
+	{
+		TexturedModel texturedModel{};
 
-	RenderComponent() = default;
+		RenderComponent() = default;
 
-	explicit RenderComponent(const TexturedModel &texturedModel)
-			: texturedModel(texturedModel)
-	{}
-};
+		explicit RenderComponent(const TexturedModel &texturedModel)
+				: texturedModel(texturedModel)
+		{}
+	};
+}
 
 #endif //SURVIVE_RENDERCOMPONENT_H
