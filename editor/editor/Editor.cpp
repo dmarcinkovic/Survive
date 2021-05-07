@@ -5,6 +5,7 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <iostream>
 
 #include "Editor.h"
 
@@ -64,9 +65,20 @@ void Survive::Editor::renderSceneWindow()
 
 void Survive::Editor::renderPropertyWindow()
 {
-	ImGui::Begin("Scene hierarchy");
+	static float value = 0.5f;
 
-	ImGui::End();
+	if (ImGui::Begin("Scene hierarchy"))
+	{
+		if (ImGui::BeginPopupContextWindow())
+		{
+			if (ImGui::Selectable("Create new entity"))
+			{
+				std::cout << "User wants to create new entity\n";
+			}
+			ImGui::EndPopup();
+		}
+		ImGui::End();
+	}
 }
 
 void Survive::Editor::setColorStyle()
