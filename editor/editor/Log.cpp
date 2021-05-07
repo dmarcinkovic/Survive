@@ -10,7 +10,7 @@
 
 Survive::LogInfo Survive::Log::m_LogInfo;
 
-void Survive::Log::logWindow(LogType logType, const char *message, const ImVec2 &size, double time)
+void Survive::Log::logWindow(LogType logType, const std::string& message, const ImVec2 &size, double time)
 {
 	m_LogInfo.message = message;
 	m_LogInfo.logType = logType;
@@ -50,7 +50,7 @@ void Survive::Log::drawLogWindow()
 		drawIcon(warnIcon, errorIcon, infoIcon);
 		ImGui::SameLine();
 		ImGui::SetWindowFontScale(1.2f);
-		ImGui::TextWrapped("%s", m_LogInfo.message);
+		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
 
 		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width - OFFSET_X, height - m_LogInfo.height - OFFSET_Y));
 		ImGui::SetWindowSize(ImVec2(m_LogInfo.width, m_LogInfo.height));

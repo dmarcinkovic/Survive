@@ -27,7 +27,7 @@ int main()
 	auto terrain = registry.create();
 	registry.emplace<RenderComponent>(terrain,
 									  TexturedModel(TerrainGenerator::generateTerrain(loader, "res/heightmap.png"),
-													Loader::loadTexture("res/blendMap.png2")));
+													Loader::loadTexture("res/blendMap.png")));
 
 	registry.emplace<Transform3DComponent>(terrain, glm::vec3{-200, -10, -200}, glm::vec3{1, 1, 1});
 	registry.emplace<TexturedComponent>(terrain, Loader::loadAllTextures(

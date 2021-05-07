@@ -5,6 +5,7 @@
 #ifndef SURVIVE_LOG_H
 #define SURVIVE_LOG_H
 
+#include <string>
 #include <imgui.h>
 
 #include "Texture.h"
@@ -18,7 +19,7 @@ namespace Survive
 
 	struct LogInfo
 	{
-		const char *message;
+		std::string message;
 		float width, height;
 		LogType logType;
 
@@ -38,7 +39,7 @@ namespace Survive
 
 	public:
 		static void
-		logWindow(LogType logType, const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
+		logWindow(LogType logType, const std::string& message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
 
 	private:
 		static void drawLogWindow();
