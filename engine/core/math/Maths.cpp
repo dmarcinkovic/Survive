@@ -66,7 +66,7 @@ float Survive::Maths::getRandom(float first, float second)
 {
 	static std::random_device device;
 	static std::mt19937_64 mt(device());
-	static std::uniform_real_distribution<> distribution(first, second);
+	static std::uniform_real_distribution<float> distribution(first, second);
 
 	return distribution(mt);
 }
