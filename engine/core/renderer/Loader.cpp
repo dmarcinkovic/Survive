@@ -5,6 +5,7 @@
 #include <iostream>
 #include <execution>
 
+#include "Log.h"
 #include "Loader.h"
 #include "stb_image.h"
 
@@ -214,7 +215,9 @@ void Survive::Loader::loadImage(const char *texture) noexcept
 
 	if (!image)
 	{
-		std::cout << "Error while loading image " << texture << '\n';
+		std::string message = "Error while loading " + std::string(texture);
+		Log::logWindow(LogType::ERROR, message.c_str());
+		std::cout << message << '\n';
 		return;
 	}
 
