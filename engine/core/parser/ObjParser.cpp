@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "Log.h"
 #include "ObjParser.h"
 #include "Util.h"
 
@@ -14,7 +15,11 @@ Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 
 	if (!reader)
 	{
+		std::string message = "Could not load " + std::string(objFile);
+		Log::logWindow(LogType::ERROR, message);
 		std::cout << "Could not load: " << objFile << '\n';
+
+		return Model();
 	}
 
 	std::vector<glm::vec3> vertices;

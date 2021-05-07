@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "Log.h"
 #include "DaeParser.h"
 #include "Util.h"
 
@@ -15,7 +16,11 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 
 	if (!reader)
 	{
+		std::string message = "Could not load " + std::string(daeFile);
+		Log::logWindow(LogType::ERROR, message);
 		std::cout << "Could not open: " << daeFile << '\n';
+
+		return Model();
 	}
 
 	std::string line;
