@@ -1,13 +1,13 @@
-#include "engine/display/Display.h"
-#include "engine/renderer/Loader.h"
-#include "engine/texture/TexturedModel.h"
-#include "engine/camera/Camera.h"
-#include "engine/light/Light.h"
-#include "engine/renderer/Renderer3D.h"
-#include "engine/parser/ObjParser.h"
-#include "editor/editor/Editor.h"
-#include "engine/events/EventHandler.h"
-#include "engine/terrain/TerrainGenerator.h"
+#include "ObjParser.h"
+#include "Editor.h"
+#include "EventHandler.h"
+#include "TerrainGenerator.h"
+#include "Loader.h"
+#include "Camera.h"
+#include "Light.h"
+#include "Renderer3D.h"
+#include "Display.h"
+#include "entt.hpp"
 
 int main()
 {

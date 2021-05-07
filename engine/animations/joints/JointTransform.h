@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include "../../math/Quaternion.h"
+#include "Quaternion.h"
 
 namespace Survive
 {

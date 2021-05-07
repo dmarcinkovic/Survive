@@ -7,16 +7,17 @@
 
 
 #include <vector>
-#include "../../shader/Shader.h"
-#include "../joints/JointTransform.h"
+
+#include "JointTransform.h"
+#include "Shader.h"
 
 namespace Survive
 {
 	class AnimationShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
+		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/AnimationVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/AnimationFragmentShader.glsl";
 		static constexpr int MAX_JOINTS = 50;
 
 		GLuint m_LocationTransformationMatrix{};

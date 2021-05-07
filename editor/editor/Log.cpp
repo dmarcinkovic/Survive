@@ -3,9 +3,9 @@
 //
 
 #include "Log.h"
-#include "../../engine/display/Display.h"
-#include "../../engine/texture/Texture.h"
-#include "../../engine/renderer/Loader.h"
+#include "Display.h"
+#include "Texture.h"
+#include "Loader.h"
 
 
 Survive::LogInfo Survive::Log::m_LogInfo;

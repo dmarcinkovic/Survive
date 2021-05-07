@@ -7,7 +7,8 @@
 
 #include <imgui.h>
 #include <utility>
-#include "../fileChooser/FileChooser.h"
+
+#include "FileChooser.h"
 #include "Log.h"
 
 namespace Survive

@@ -5,7 +5,6 @@
 #ifndef SURVIVE_SPRITESHEETCOMPONENT_H
 #define SURVIVE_SPRITESHEETCOMPONENT_H
 
-#include "../texture/TexturedModel.h"
 
 namespace Survive
 {

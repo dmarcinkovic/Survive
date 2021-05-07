@@ -6,8 +6,8 @@
 #include <iostream>
 
 #include "FileChooser.h"
-#include "../../engine/display/Display.h"
-#include "../../engine/renderer/Loader.h"
+#include "Display.h"
+#include "Loader.h"
 
 Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),

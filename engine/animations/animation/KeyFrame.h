@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "../joints/JointTransform.h"
+#include "JointTransform.h"
 
 namespace Survive
 {

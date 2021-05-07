@@ -6,7 +6,8 @@
 #define SURVIVE_LOG_H
 
 #include <imgui.h>
-#include "../../engine/texture/Texture.h"
+
+#include "Texture.h"
 
 namespace Survive
 {

@@ -5,7 +5,7 @@
 #ifndef SURVIVE_ANIMATIONCOMPONENT_H
 #define SURVIVE_ANIMATIONCOMPONENT_H
 
-#include "../animations/joints/Joint.h"
+#include "Joint.h"
 
 namespace Survive
 {
