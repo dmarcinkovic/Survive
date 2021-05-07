@@ -18,11 +18,7 @@ namespace Survive
 	private:
 		ImGuiIO &m_Io;
 		GLuint m_Scene;
-		ImVec4 m_ClearColor;
 		ImVec2 m_SceneSize;
-
-		bool m_ShowDemoWindow = true;
-		bool m_ShowAnotherWindow = false;
 
 		FileChooser m_FileChooser;
 		bool m_OpenDialog = false;

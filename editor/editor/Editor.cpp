@@ -9,7 +9,7 @@
 #include "Editor.h"
 
 Survive::Editor::Editor(GLuint scene)
-		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
+		: m_Io(ImGui::GetIO()), m_Scene(scene)
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
@@ -64,28 +64,8 @@ void Survive::Editor::renderSceneWindow()
 
 void Survive::Editor::renderPropertyWindow()
 {
-	static float f = 0.0f;
-	static int counter = 0;
+	ImGui::Begin("Scene hierarchy");
 
-	ImGui::Begin("Hello, world!");
-	ImGui::Text("This is some useful text.");
-	ImGui::Checkbox("Demo Window", &m_ShowDemoWindow);
-	ImGui::Checkbox("Another Window", &m_ShowAnotherWindow);
-
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-	ImGui::ColorEdit3("clear color", reinterpret_cast<float *>(&m_ClearColor));
-
-	if (ImGui::Button("Button"))
-	{
-		Log::logWindow(LogType::WARN, "Cannot load something");
-		counter++;
-	}
-
-	ImGui::SameLine();
-	ImGui::Text("counter = %d", counter);
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-				ImGui::GetIO().Framerate);
 	ImGui::End();
 }
 
