@@ -5,8 +5,9 @@
 #include "Renderer3D.h"
 #include "../constant/Constants.h"
 #include "../display/Display.h"
+#include "../components/ShadowComponent.h"
 
-Renderer3D::Renderer3D(const Light &light)
+Survive::Renderer3D::Renderer3D(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
 		  m_ShadowMap(
 				  m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
@@ -17,67 +18,51 @@ Renderer3D::Renderer3D(const Light &light)
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Renderer3D::renderScene(Camera &camera, const glm::vec4 &plane) const
+void Survive::Renderer3D::renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
 {
-	m_ObjectRenderer.render(camera, m_ShadowMap, plane);
-	m_TerrainRenderer.render(camera, m_Light, m_ShadowMap, plane);
-	m_AnimationRenderer.render(camera, plane);
+	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
+	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
+	m_AnimationRenderer.render(registry, camera, plane);
 
-	m_SkyRenderer.render(camera, plane);
+	m_SkyRenderer.render(registry, camera, plane);
 }
 
-void Renderer3D::render(Camera &camera) const
+void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
 {
-//	m_MousePicking.render(camera);
+//	m_MousePicking.render(registry, camera);
 
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
 
-	renderToWaterFrameBuffers(camera);
-	renderScene(camera);
+	renderToWaterFrameBuffers(registry, camera);
+	m_BloomRenderer.render(registry);
+	renderScene(registry, camera);
 
-	m_BloomRenderer.render();
-	m_WaterRenderer.render(camera, m_Light);
-	m_OutlineRenderer.render(camera);
+	m_WaterRenderer.render(registry, camera, m_Light);
+	m_OutlineRenderer.render(registry, camera);
 }
 
-void Renderer3D::add3DObject(Object3D &object3D)
+void Survive::Renderer3D::addSkyboxEntity(entt::entity sky)
 {
-	m_ObjectRenderer.add3DObject(object3D);
-	m_MousePicking.add3DObject(object3D);
+	m_SkyRenderer.addSkyEntity(sky);
 }
 
-void Renderer3D::addTerrain(Terrain &terrain)
+void Survive::Renderer3D::addOutlineToObject(entt::registry &registry, entt::entity entity)
 {
-	m_TerrainRenderer.addTerrain(terrain);
+	m_OutlineRenderer.add3DObject(registry, entity);
 }
 
-void Renderer3D::addAnimatedObject(AnimatedObject &object3D)
+void Survive::Renderer3D::removeOutlineToObject(entt::registry &registry)
 {
-	m_AnimationRenderer.addAnimatedModel(object3D);
+	m_OutlineRenderer.removeObject(registry);
 }
 
-void Renderer3D::addSkyboxEntity(const Entity &entity)
+void Survive::Renderer3D::renderToFbo(entt::registry &registry, Camera &camera) const
 {
-	m_SkyRenderer.addSkyEntity(entity);
-}
-
-void Renderer3D::addOutlineToObject(Object3D &object)
-{
-	m_OutlineRenderer.add3DObject(object);
-}
-
-void Renderer3D::removeOutlineToObject()
-{
-	m_OutlineRenderer.removeObject();
-}
-
-void Renderer3D::renderToFbo(Camera &camera) const
-{
-	m_ShadowFrameBuffer.renderToFrameBuffer(m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
 
-	renderToWaterFrameBuffers(camera);
+	renderToWaterFrameBuffers(registry, camera);
 	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
 	m_SceneFrameBuffer.bindFrameBuffer();
@@ -85,52 +70,43 @@ void Renderer3D::renderToFbo(Camera &camera) const
 
 //	m_MousePicking.render(camera);
 
-	renderScene(camera);
-	m_WaterRenderer.render(camera, m_Light);
+	renderScene(registry, camera);
+	m_WaterRenderer.render(registry, camera, m_Light);
 
-	m_OutlineRenderer.render(camera);
+	m_OutlineRenderer.render(registry, camera);
 	FrameBuffer::unbindFrameBuffer();
 
-	m_BloomRenderer.render();
+	m_BloomRenderer.render(registry);
 
 	resetViewport();
 }
 
-GLuint Renderer3D::getRenderedTexture() const
+GLuint Survive::Renderer3D::getRenderedTexture() const
 {
 	return m_Scene;
 }
 
-void Renderer3D::addShadow(Object3D &object)
-{
-	m_ShadowRenderer.add3DObject(object);
-}
-
-void Renderer3D::resetViewport()
+void Survive::Renderer3D::resetViewport()
 {
 	auto[width, height] = Display::getWindowSize<int>();
 	glViewport(0, 0, width, height);
 }
 
-void Renderer3D::update()
+void Survive::Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
-	m_SkyRenderer.rotateSky();
-}
 
-void Renderer3D::renderToWaterFrameBuffers(Camera &camera) const
-{
-	if (m_WaterRenderer.shouldRender())
+	if (WaterRenderer::shouldRender(registry))
 	{
 		glEnable(GL_CLIP_DISTANCE0);
 
-		renderWaterReflection(camera);
-		renderWaterRefraction(camera);
+		renderWaterReflection(registry, camera);
+		renderWaterRefraction(registry, camera);
 
 		glDisable(GL_CLIP_DISTANCE0);
 	}
 }
 
-void Renderer3D::renderWaterReflection(Camera &camera) const
+void Survive::Renderer3D::renderWaterReflection(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindReflectionFrameBuffer();
 
@@ -140,7 +116,7 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 	camera.invertPitch();
 
 	Display::clearWindow();
-	renderScene(camera, m_ReflectionCLippingPlane);
+	renderScene(registry, camera, m_ReflectionCLippingPlane);
 
 	camera.moveCameraInYDirection(distance);
 	camera.invertPitch();
@@ -148,20 +124,16 @@ void Renderer3D::renderWaterReflection(Camera &camera) const
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::renderWaterRefraction(Camera &camera) const
+void Survive::Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
-	renderScene(camera, m_RefractionCLippingPlane);
+	renderScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Renderer3D::addWaterTile(WaterTile &waterTile)
+void Survive::Renderer3D::addShadow(entt::registry &registry, entt::entity entity)
 {
-	m_WaterRenderer.addWaterTile(waterTile);
-}
-
-void Renderer3D::addBloom(Object3D &object)
-{
-	m_BloomRenderer.addObject(object);
+	m_ShadowRenderer.add3DObject(registry, entity);
+	registry.emplace<ShadowComponent>(entity, true);
 }

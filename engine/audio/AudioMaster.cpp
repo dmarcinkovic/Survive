@@ -10,7 +10,7 @@
 
 #include "AudioMaster.h"
 
-ALuint AudioMaster::loadSound(const char *filename)
+ALuint Survive::AudioMaster::loadSound(const char *filename)
 {
 	m_Device = alcOpenDevice(nullptr);
 	m_Context = alcCreateContext(m_Device, nullptr);
@@ -36,7 +36,7 @@ ALuint AudioMaster::loadSound(const char *filename)
 	return buffer;
 }
 
-AudioMaster::~AudioMaster()
+Survive::AudioMaster::~AudioMaster()
 {
 	alDeleteBuffers(m_Buffers.size(), m_Buffers.data());
 	alcMakeContextCurrent(nullptr);
@@ -44,8 +44,8 @@ AudioMaster::~AudioMaster()
 	alcCloseDevice(m_Device);
 }
 
-char *AudioMaster::loadWav(const char *filename, uint8_t &channels, int32_t &sampleRate, uint8_t &bitsPerSample,
-						   ALsizei &size)
+char *Survive::AudioMaster::loadWav(const char *filename, uint8_t &channels,
+									int32_t &sampleRate, uint8_t &bitsPerSample, ALsizei &size)
 {
 	std::ifstream reader(filename, std::ios::binary);
 
@@ -64,7 +64,7 @@ char *AudioMaster::loadWav(const char *filename, uint8_t &channels, int32_t &sam
 	return data;
 }
 
-ALenum AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
+ALenum Survive::AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
 {
 	if (channels == 1 && bitsPerSample == 8)
 	{
@@ -79,8 +79,9 @@ ALenum AudioMaster::getFormat(std::uint8_t channels, std::uint8_t bitsPerSample)
 	return AL_FORMAT_STEREO16;
 }
 
-void AudioMaster::loadWavHelper(std::ifstream &reader, uint8_t &channels, int32_t &sampleRate, uint8_t &bitsPerSample,
-								ALsizei &size)
+void Survive::AudioMaster::loadWavHelper(std::ifstream &reader, uint8_t &channels, int32_t &sampleRate,
+										 uint8_t &bitsPerSample,
+										 ALsizei &size)
 {
 	const int N = 4;
 	char buffer[N];
@@ -127,7 +128,7 @@ void AudioMaster::loadWavHelper(std::ifstream &reader, uint8_t &channels, int32_
 	size = convertToInt(buffer, N);
 }
 
-int AudioMaster::convertToInt(const char *buffer, std::size_t len)
+int Survive::AudioMaster::convertToInt(const char *buffer, std::size_t len)
 {
 	std::int32_t number = 0;
 	std::memcpy(&number, buffer, len);
@@ -135,8 +136,8 @@ int AudioMaster::convertToInt(const char *buffer, std::size_t len)
 	return number;
 }
 
-void AudioMaster::setListenerData()
+void Survive::AudioMaster::setListenerData(const glm::vec3 listenerPosition)
 {
-	alListener3f(AL_POSITION, 0, 0, 0);
+	alListener3f(AL_POSITION, listenerPosition.x, listenerPosition.y, listenerPosition.z);
 	alListener3f(AL_VELOCITY, 0, 0, 0);
 }

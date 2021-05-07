@@ -9,7 +9,6 @@
 #include "../terrain/TerrainRenderer.h"
 #include "../fbo/FrameBuffer.h"
 #include "../animations/renderer/AnimationRenderer.h"
-#include "../animations/animation/AnimatedObject.h"
 #include "../sky/SkyRenderer.h"
 #include "../outline/OutlineRenderer.h"
 #include "../mousePicking/MousePicking.h"
@@ -17,70 +16,60 @@
 #include "../water/WaterFbo.h"
 #include "../gaussianBlur/BloomRenderer.h"
 
-class Renderer3D
+namespace Survive
 {
-private:
-	ObjectRenderer m_ObjectRenderer;
-	TerrainRenderer m_TerrainRenderer;
-	ShadowRenderer m_ShadowRenderer;
-	AnimationRenderer m_AnimationRenderer;
-	SkyRenderer m_SkyRenderer;
-	OutlineRenderer m_OutlineRenderer;
-	MousePicking m_MousePicking;
-	WaterRenderer m_WaterRenderer;
-	BloomRenderer m_BloomRenderer;
+	class Renderer3D
+	{
+	private:
+		ObjectRenderer m_ObjectRenderer;
+		TerrainRenderer m_TerrainRenderer;
+		ShadowRenderer m_ShadowRenderer;
+		AnimationRenderer m_AnimationRenderer;
+		SkyRenderer m_SkyRenderer;
+		OutlineRenderer m_OutlineRenderer;
+		MousePicking m_MousePicking;
+		WaterRenderer m_WaterRenderer;
+		BloomRenderer m_BloomRenderer;
 
-	const Light &m_Light;
-	FrameBuffer m_ShadowFrameBuffer;
-	const GLuint m_ShadowMap;
+		const Light &m_Light;
+		FrameBuffer m_ShadowFrameBuffer;
+		const GLuint m_ShadowMap;
 
-	std::pair<int, int> m_SceneSize;
+		std::pair<int, int> m_SceneSize;
 
-	FrameBuffer m_SceneFrameBuffer;
-	GLuint m_Scene{};
-	glm::vec4 m_ReflectionCLippingPlane{};
-	glm::vec4 m_RefractionCLippingPlane{};
+		FrameBuffer m_SceneFrameBuffer;
+		GLuint m_Scene{};
+		glm::vec4 m_ReflectionCLippingPlane{};
+		glm::vec4 m_RefractionCLippingPlane{};
 
-public:
-	explicit Renderer3D(const Light &light);
+	public:
+		explicit Renderer3D(const Light &light);
 
-	void render(Camera &camera) const;
+		void render(entt::registry &registry, Camera &camera) const;
 
-	void renderToFbo(Camera &camera) const;
+		void renderToFbo(entt::registry &registry, Camera &camera) const;
 
-	void add3DObject(Object3D &object3D);
+		void addSkyboxEntity(entt::entity sky);
 
-	void addTerrain(Terrain &terrain);
+		void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-	GLuint getRenderedTexture() const;
+		GLuint getRenderedTexture() const;
 
-	void addAnimatedObject(AnimatedObject &object3D);
+		void removeOutlineToObject(entt::registry &registry);
 
-	void addSkyboxEntity(const Entity &entity);
+		void addShadow(entt::registry &registry, entt::entity entity);
 
-	void addOutlineToObject(Object3D &object);
+		void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-	void removeOutlineToObject();
+	private:
+		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 
-	void addShadow(Object3D &object);
+		static void resetViewport();
 
-	void update();
+		void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-	void addWaterTile(WaterTile &waterTile);
-
-	void addBloom(Object3D &object);
-
-	void renderScene(Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
-
-private:
-	static void resetViewport();
-
-	void renderToWaterFrameBuffers(Camera &camera) const;
-
-	void renderWaterReflection(Camera &camera) const;
-
-	void renderWaterRefraction(Camera &camera) const;
-};
-
+		void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
+	};
+}
 
 #endif //SURVIVE_RENDERER3D_H

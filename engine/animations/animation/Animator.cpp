@@ -4,14 +4,15 @@
 
 #include "Animator.h"
 #include "../../display/Display.h"
+#include "../../components/AnimationComponent.h"
 
-Animator::Animator(Animation animation, AnimatedObject animatedModel)
-		: m_Animation(std::move(animation)), m_Model(std::move(animatedModel))
+Survive::Animator::Animator(Animation animation, entt::entity animatedObject)
+		: m_Animation(std::move(animation)), m_Model(animatedObject)
 {
 
 }
 
-std::unordered_map<std::string, glm::mat4> Animator::calculatePose() const
+std::unordered_map<std::string, glm::mat4> Survive::Animator::calculatePose() const
 {
 	auto[prev, next] = nextAndPreviousFrames();
 	float progression = calculateProgression(prev, next);
@@ -19,8 +20,8 @@ std::unordered_map<std::string, glm::mat4> Animator::calculatePose() const
 	return interpolatePoses(prev, next, progression);
 }
 
-void Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
-								 const glm::mat4 &parentTransformation)
+void Survive::Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4> &currentPose, Joint &joint,
+										  const glm::mat4 &parentTransformation)
 {
 	glm::mat4 currentLocalTransform = currentPose.at(joint.name());
 	glm::mat4 currentTransform = parentTransformation * currentLocalTransform;
@@ -34,14 +35,16 @@ void Animator::applyPoseToJoints(const std::unordered_map<std::string, glm::mat4
 	joint.setAnimatedTransform(currentTransform);
 }
 
-void Animator::update()
+void Survive::Animator::update(entt::registry &registry)
 {
+	AnimationComponent &animationComponent = registry.get<AnimationComponent>(m_Model);
+
 	increaseAnimationTime();
 	std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-	applyPoseToJoints(currentPose, m_Model.rootJoint(), glm::mat4{});
+	applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{});
 }
 
-void Animator::increaseAnimationTime()
+void Survive::Animator::increaseAnimationTime()
 {
 	m_AnimationTime += static_cast<float>(Display::getFrameTime());
 	if (m_AnimationTime > m_Animation.getLength())
@@ -50,7 +53,7 @@ void Animator::increaseAnimationTime()
 	}
 }
 
-std::pair<KeyFrame, KeyFrame> Animator::nextAndPreviousFrames() const
+std::pair<Survive::KeyFrame, Survive::KeyFrame> Survive::Animator::nextAndPreviousFrames() const
 {
 	std::vector<KeyFrame> keyFrames = m_Animation.keyFrames();
 	KeyFrame previous = keyFrames.front();
@@ -69,7 +72,7 @@ std::pair<KeyFrame, KeyFrame> Animator::nextAndPreviousFrames() const
 	return {previous, next};
 }
 
-float Animator::calculateProgression(const KeyFrame &prev, const KeyFrame &next) const
+float Survive::Animator::calculateProgression(const KeyFrame &prev, const KeyFrame &next) const
 {
 	float totalTime = next.timeStamp() - prev.timeStamp();
 	float currentTime = m_AnimationTime - prev.timeStamp();
@@ -77,7 +80,7 @@ float Animator::calculateProgression(const KeyFrame &prev, const KeyFrame &next)
 }
 
 std::unordered_map<std::string, glm::mat4>
-Animator::interpolatePoses(const KeyFrame &prev, const KeyFrame &next, float progression)
+Survive::Animator::interpolatePoses(const KeyFrame &prev, const KeyFrame &next, float progression)
 {
 	std::unordered_map<std::string, glm::mat4> currentPose;
 	for (auto const&[jointName, previousTransform] : prev.getPose())

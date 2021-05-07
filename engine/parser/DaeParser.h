@@ -14,78 +14,80 @@
 #include "../animations/animation/KeyFrame.h"
 #include "../animations/animation/Animation.h"
 
-struct VertexData
+namespace Survive
 {
-	int size{};
-	std::string indicesLine;
+	struct VertexData
+	{
+		int size{};
+		std::string indicesLine;
 
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> textures;
-	std::vector<glm::ivec3> jointIds;
-	std::vector<glm::vec3> jointWeights;
-};
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> textures;
+		std::vector<glm::ivec3> jointIds;
+		std::vector<glm::vec3> jointWeights;
+	};
 
-struct AnimationData
-{
-	std::vector<float> timestamps;
-	std::string jointName;
-	std::vector<glm::mat4> transforms;
-};
+	struct AnimationData
+	{
+		std::vector<float> timestamps;
+		std::string jointName;
+		std::vector<glm::mat4> transforms;
+	};
 
-struct JointData
-{
-	Joint rootJoint;
-	int numberOfJoints{};
-};
+	struct JointData
+	{
+		Joint rootJoint;
+		int numberOfJoints{};
+	};
 
-class DaeParser
-{
-private:
-	VertexData m_VertexData;
-	JointData m_JointData;
-	std::vector<KeyFrame> m_KeyFrames;
+	class DaeParser
+	{
+	private:
+		VertexData m_VertexData;
+		JointData m_JointData;
+		std::vector<KeyFrame> m_KeyFrames;
 
-	float m_LengthInSeconds;
+		float m_LengthInSeconds;
 
-public:
-	Model loadDae(const char *daeFile, Loader &loader);
+	public:
+		Model loadDae(const char *daeFile, Loader &loader);
 
-	[[nodiscard]] Animation getAnimation() const;
+		[[nodiscard]] Animation getAnimation() const;
 
-	[[nodiscard]] std::pair<Joint, int> getJointData() const;
+		[[nodiscard]] std::pair<Joint, int> getJointData() const;
 
-private:
-	void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
+	private:
+		void loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames);
 
-	void loadGeometry(std::ifstream &reader);
+		void loadGeometry(std::ifstream &reader);
 
-	static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+		static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-	void loadAnimation(std::ifstream &reader);
+		void loadAnimation(std::ifstream &reader);
 
-	static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
+		static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
-	static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
+		static void parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures);
 
-	Model parseIndices(Loader &loader);
+		Model parseIndices(Loader &loader);
 
-	static std::vector<std::string> getData(std::string &line);
+		static std::vector<std::string> getData(std::string &line);
 
-	void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+		void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
 
-	static glm::mat4 getJointTransform(std::string &line);
+		static glm::mat4 getJointTransform(std::string &line);
 
-	static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
+		static Joint getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames);
 
-	static AnimationData getAnimationData(std::ifstream &reader);
+		static AnimationData getAnimationData(std::ifstream &reader);
 
-	static std::vector<glm::mat4> getTransforms(std::string &line);
+		static std::vector<glm::mat4> getTransforms(std::string &line);
 
-	std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+		std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
 
-	void normalizeWeights();
-};
-
+		void normalizeWeights();
+	};
+}
 
 #endif //SURVIVE_DAEPARSER_H

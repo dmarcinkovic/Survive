@@ -5,23 +5,24 @@
 #include "WaterFbo.h"
 #include "../display/Display.h"
 
-WaterFbo::WaterFbo()
+Survive::WaterFbo::WaterFbo()
 {
 	initializeReflectionFrameBuffer();
 	initializeRefractionFrameBuffer();
 }
 
-void WaterFbo::initializeRefractionFrameBuffer()
+void Survive::WaterFbo::initializeRefractionFrameBuffer()
 {
 	m_FboRefraction.bindFrameBuffer();
 	FrameBuffer::drawBuffer();
 	m_RefractionColorTexture = Texture(m_FboRefraction.attachColorComponent(REFRACTION_WIDTH, REFRACTION_HEIGHT));
-	m_RefractionDepthTexture = Texture(m_FboRefraction.createDepthTextureAttachment(REFRACTION_WIDTH, REFRACTION_HEIGHT));
+	m_RefractionDepthTexture = Texture(
+			m_FboRefraction.createDepthTextureAttachment(REFRACTION_WIDTH, REFRACTION_HEIGHT));
 
 	unbindFrameBuffer();
 }
 
-void WaterFbo::initializeReflectionFrameBuffer()
+void Survive::WaterFbo::initializeReflectionFrameBuffer()
 {
 	m_FboReflection.bindFrameBuffer();
 	FrameBuffer::drawBuffer();
@@ -31,34 +32,34 @@ void WaterFbo::initializeReflectionFrameBuffer()
 	unbindFrameBuffer();
 }
 
-const Texture &WaterFbo::reflectionColorTexture() const
+const Survive::Texture &Survive::WaterFbo::reflectionColorTexture() const
 {
 	return m_ReflectionColorTexture;
 }
 
-const Texture &WaterFbo::refractionColorTexture() const
+const Survive::Texture &Survive::WaterFbo::refractionColorTexture() const
 {
 	return m_RefractionColorTexture;
 }
 
-const Texture &WaterFbo::getRefractionDepthBuffer() const
+const Survive::Texture &Survive::WaterFbo::getRefractionDepthBuffer() const
 {
 	return m_RefractionDepthTexture;
 }
 
-void WaterFbo::bindReflectionFrameBuffer() const
+void Survive::WaterFbo::bindReflectionFrameBuffer() const
 {
 	m_FboReflection.bindFrameBuffer();
 	glViewport(0, 0, REFLECTION_WIDTH, REFLECTION_HEIGHT);
 }
 
-void WaterFbo::bindRefractionFrameBuffer() const
+void Survive::WaterFbo::bindRefractionFrameBuffer() const
 {
 	m_FboRefraction.bindFrameBuffer();
 	glViewport(0, 0, REFRACTION_WIDTH, REFRACTION_HEIGHT);
 }
 
-void WaterFbo::unbindFrameBuffer()
+void Survive::WaterFbo::unbindFrameBuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

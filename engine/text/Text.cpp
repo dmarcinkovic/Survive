@@ -7,16 +7,16 @@
 #include <utility>
 #include <iostream>
 
-Text::Text(std::string text, Font font, const glm::vec3 &position,
-		   const glm::vec3 &color, float scale)
+Survive::Text::Text(std::string text, Font font, const glm::vec3 &position,
+					const glm::vec3 &color, float scale)
 		: Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_Color(color),
-		  m_BorderColor(color), m_TextTexture(font.getMTextureId())
+		  m_BorderColor(color), m_TextTexture(font.getTexture())
 {
 	m_Position = position;
 	m_Scale.x = m_Scale.y = scale;
 }
 
-Model Text::calculateVertices(Loader &loader)
+Survive::Model Survive::Text::calculateVertices(Loader &loader)
 {
 	m_Vertices.clear();
 	m_TextureCoordinates.clear();
@@ -26,7 +26,7 @@ Model Text::calculateVertices(Loader &loader)
 	return loader.loadToVao(m_Vertices, m_TextureCoordinates, 2);
 }
 
-void Text::calculateTextureVertices()
+void Survive::Text::calculateTextureVertices()
 {
 	float cursorX = m_Position.x;
 	float cursorY = m_Position.y;
@@ -47,7 +47,7 @@ void Text::calculateTextureVertices()
 	if (m_Centered) alignText();
 }
 
-void Text::addVertices(const Character &character, float cursorX, float cursorY)
+void Survive::Text::addVertices(const Character &character, float cursorX, float cursorY)
 {
 	float minX = cursorX + character.m_XOffset / character.m_ScaleW;
 	float maxX = minX + character.m_Width / character.m_ScaleW;
@@ -68,17 +68,17 @@ void Text::addVertices(const Character &character, float cursorX, float cursorY)
 	m_Vertices.emplace_back(maxY);
 }
 
-void Text::loadTexture(Loader &loader)
+void Survive::Text::loadTexture(Loader &loader)
 {
 	m_Texture = TexturedModel(calculateVertices(loader), m_TextTexture);
 }
 
-void Text::centerText()
+void Survive::Text::centerText()
 {
 	m_Centered = true;
 }
 
-void Text::setText(std::string newText, Loader &loader)
+void Survive::Text::setText(std::string newText, Loader &loader)
 {
 	m_Text = std::move(newText);
 
@@ -91,12 +91,12 @@ void Text::setText(std::string newText, Loader &loader)
 	m_Texture.setVertexCount(static_cast<int>(m_Vertices.size()) / 2);
 }
 
-const glm::vec3 &Text::color() const
+const glm::vec3 &Survive::Text::color() const
 {
 	return m_Color;
 }
 
-void Text::alignText()
+void Survive::Text::alignText()
 {
 	float startX = m_Vertices.front();
 	float endX = m_Vertices[m_Vertices.size() - 4];
@@ -113,7 +113,7 @@ void Text::alignText()
 	}
 }
 
-std::pair<float, float> Text::minMax() const
+std::pair<float, float> Survive::Text::minMax() const
 {
 	float max = -1.0f;
 	float min = std::numeric_limits<float>::infinity();
@@ -127,28 +127,28 @@ std::pair<float, float> Text::minMax() const
 	return {min, max};
 }
 
-void Text::addBorder(float borderWidth, const glm::vec3 &borderColor)
+void Survive::Text::addBorder(float borderWidth, const glm::vec3 &borderColor)
 {
 	m_BorderWidth = borderWidth;
 	m_BorderColor = borderColor;
 }
 
-const glm::vec3 &Text::getMBorderColor() const
+const glm::vec3 &Survive::Text::getMBorderColor() const
 {
 	return m_BorderColor;
 }
 
-float Text::getMBorderWidth() const
+float Survive::Text::getMBorderWidth() const
 {
 	return m_BorderWidth;
 }
 
-float Text::getScale() const
+float Survive::Text::getScale() const
 {
 	return m_Scale.x;
 }
 
-void Text::scaleFor(float scaleFactor)
+void Survive::Text::scaleFor(float scaleFactor)
 {
 	m_Scale.x = m_Scale.y * scaleFactor;
 }

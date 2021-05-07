@@ -8,30 +8,32 @@
 
 #include "../shader/Shader.h"
 
-class SkyShader : public Shader
+namespace Survive
 {
-private:
-	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/SkyVertexShader.glsl";
-	static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/SkyFragmentShader.glsl";
+	class SkyShader : public Shader
+	{
+	private:
+		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/SkyVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/SkyFragmentShader.glsl";
 
-	GLuint m_LocationProjectionMatrix{};
-	GLuint m_LocationViewMatrix{};
-	GLuint m_LocationTransformationMatrix{};
+		GLuint m_LocationProjectionMatrix{};
+		GLuint m_LocationViewMatrix{};
+		GLuint m_LocationTransformationMatrix{};
 
-	GLuint m_LocationPlane{};
+		GLuint m_LocationPlane{};
 
-public:
-	SkyShader();
+	public:
+		SkyShader();
 
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-	void loadViewAndProjectionMatrices(const glm::mat4 &viewMatrix, const glm::mat4 &projectionMatrix) const;
+		void loadViewAndProjectionMatrices(const glm::mat4 &viewMatrix, const glm::mat4 &projectionMatrix) const;
 
-	void loadPlane(const glm::vec4 &plane) const;
+		void loadPlane(const glm::vec4 &plane) const;
 
-private:
-	void getUniformLocations();
-};
-
+	private:
+		void getUniformLocations();
+	};
+}
 
 #endif //SURVIVE_SKYSHADER_H

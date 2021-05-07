@@ -6,8 +6,8 @@
 #include "../constant/Constants.h"
 #include "../display/Display.h"
 
-Particle::Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
-				   float gravityEffect, float lifeLength, float rotation, float scale)
+Survive::Particle::Particle(const ParticleModel &particleModel, const glm::vec3 &position, const glm::vec3 &velocity,
+							float gravityEffect, float lifeLength, float rotation, float scale)
 		: Entity(particleModel.texturedModel, position, glm::vec3{scale, scale, scale}), m_InitialPosition(position),
 		  m_InitialVelocity(velocity), m_Rows(particleModel.rows),
 		  m_Cols(particleModel.cols), m_Velocity(velocity),
@@ -16,7 +16,7 @@ Particle::Particle(const ParticleModel &particleModel, const glm::vec3 &position
 
 }
 
-bool Particle::update(const Camera &camera)
+bool Survive::Particle::update(const Camera &camera)
 {
 	applyGravity();
 
@@ -32,7 +32,7 @@ bool Particle::update(const Camera &camera)
 	return m_ElapsedTime < m_LifeLength;
 }
 
-void Particle::updateTextureCoordInfo()
+void Survive::Particle::updateTextureCoordInfo()
 {
 	unsigned stageCount = m_Rows * m_Cols;
 	float atlasProgression = getAtlasProgression(stageCount);
@@ -42,7 +42,7 @@ void Particle::updateTextureCoordInfo()
 	updateTextureOffsets(atlasProgression, stageCount);
 }
 
-glm::vec2 Particle::setTextureOffset(int index) const
+glm::vec2 Survive::Particle::setTextureOffset(int index) const
 {
 	auto col = static_cast<float>(index % m_Cols);
 	auto row = static_cast<float>(std::floor(index / m_Cols));
@@ -51,7 +51,7 @@ glm::vec2 Particle::setTextureOffset(int index) const
 	return glm::vec2{col / numberOfRows, row / numberOfRows};
 }
 
-float Particle::getAtlasProgression(unsigned stageCount) const
+float Survive::Particle::getAtlasProgression(unsigned stageCount) const
 {
 	float lifeFactor = m_ElapsedTime / m_LifeLength;
 	auto stage = static_cast<float>(stageCount);
@@ -59,7 +59,7 @@ float Particle::getAtlasProgression(unsigned stageCount) const
 	return lifeFactor * stage;
 }
 
-void Particle::updateTextureOffsets(float atlasProgression, unsigned stageCount)
+void Survive::Particle::updateTextureOffsets(float atlasProgression, unsigned stageCount)
 {
 	int i = std::floor(atlasProgression);
 	int j = i < stageCount - 1 ? i + 1 : i;
@@ -68,17 +68,17 @@ void Particle::updateTextureOffsets(float atlasProgression, unsigned stageCount)
 	m_TextureOffset2 = setTextureOffset(j);
 }
 
-void Particle::applyGravity()
+void Survive::Particle::applyGravity()
 {
 	m_Velocity.y += Constants::GRAVITY * m_GravityEffect * Display::getFrameTime();
 }
 
-void Particle::updateTimeElapsed()
+void Survive::Particle::updateTimeElapsed()
 {
 	m_ElapsedTime += static_cast<float>(Display::getFrameTime());
 }
 
-void Particle::reset()
+void Survive::Particle::reset()
 {
 	m_ElapsedTime = m_Distance = 0;
 

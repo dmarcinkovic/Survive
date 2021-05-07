@@ -6,32 +6,32 @@
 #define SURVIVE_TERRAINRENDERER_H
 
 #include "TerrainShader.h"
-#include "Terrain.h"
 #include "../camera/Camera.h"
 #include "../light/Light.h"
+#include "../../ecs/entt.hpp"
+#include "../components/Components.h"
 
-class TerrainRenderer
+namespace Survive
 {
-private:
-	TerrainShader m_Shader;
-	Terrain *m_Terrain{};
+	class TerrainRenderer
+	{
+	private:
+		TerrainShader m_Shader;
 
-	std::vector<Texture> m_Textures;
+	public:
+		void render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
+					const glm::vec4 &plane = glm::vec4{}) const;
 
-public:
-	TerrainRenderer();
+	private:
+		static void prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures);
 
-	void render(const Camera &camera, const Light &light, GLuint shadowMap, const glm::vec4 &plane = glm::vec4{}) const;
+		static void finishRendering();
 
-	void addTerrain(Terrain &terrain);
+		void renderShadow(GLuint shadowMap, const Light &light) const;
 
-private:
-	void prepareRendering() const;
-
-	static void finishRendering();
-
-	void renderShadow(GLuint shadowMap, const Light &light) const;
-};
-
+		void loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
+						  const Transform3DComponent &transform) const;
+	};
+}
 
 #endif //SURVIVE_TERRAINRENDERER_H

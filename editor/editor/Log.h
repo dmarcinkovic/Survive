@@ -6,43 +6,47 @@
 #define SURVIVE_LOG_H
 
 #include <imgui.h>
+#include "../../engine/texture/Texture.h"
 
-enum class LogType
+namespace Survive
 {
-	WARN, INFO, ERROR
-};
+	enum class LogType
+	{
+		WARN, INFO, ERROR
+	};
 
-struct LogInfo
-{
-	const char *message;
-	float width, height;
-	LogType logType;
+	struct LogInfo
+	{
+		const char *message;
+		float width, height;
+		LogType logType;
 
-	bool open;
-	double time;
-};
+		bool open;
+		double time;
+	};
 
-class Log
-{
-private:
-	static constexpr int OFFSET_X = 4;
-	static constexpr int OFFSET_Y = 1;
+	class Log
+	{
+	private:
+		static constexpr int OFFSET_X = 4;
+		static constexpr int OFFSET_Y = 1;
 
-	static LogInfo m_LogInfo;
+		static LogInfo m_LogInfo;
 
-	using GLuint = unsigned;
+		using GLuint = unsigned;
 
-public:
-	static void
-	logWindow(LogType logType, const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
+	public:
+		static void
+		logWindow(LogType logType, const char *message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
 
-private:
-	static void drawLogWindow();
+	private:
+		static void drawLogWindow();
 
-	static void drawIcon(GLuint warnIcon, GLuint errorIcon, GLuint infoIcon);
+		static void drawIcon(const Texture &warnIcon, const Texture &errorIcon, const Texture &infoIcon);
 
-	friend class Editor;
-};
+		friend class Editor;
+	};
+}
 
 
 #endif //SURVIVE_LOG_H

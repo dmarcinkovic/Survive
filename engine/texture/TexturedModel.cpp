@@ -4,72 +4,72 @@
 
 #include "TexturedModel.h"
 
-TexturedModel::TexturedModel(const Model &model, GLuint textureId)
-		: m_Vao(model.m_Vao), m_Texture(textureId), m_VertexCount(model.m_VertexCount)
+Survive::TexturedModel::TexturedModel(const Model &model, const Texture &texture)
+		: m_Vao(model.m_Vao), m_Texture(texture), m_VertexCount(model.m_VertexCount)
 {
 
 }
 
-TexturedModel::TexturedModel()
+Survive::TexturedModel::TexturedModel()
 		: m_Texture(0)
 {
 
 }
 
-void TexturedModel::bind() const
+void Survive::TexturedModel::bind() const
 {
 	glBindVertexArray(m_Vao);
 	bindTexture(0);
 }
 
-void TexturedModel::bindTexture(int index) const
+void Survive::TexturedModel::bindTexture(int index) const
 {
 	m_Texture.bindTexture(index);
 }
 
-void TexturedModel::bindCubeTexture(int index) const
+void Survive::TexturedModel::bindCubeTexture(int index) const
 {
 	m_Texture.bindCubeTexture(index);
 }
 
-void TexturedModel::unbind()
+void Survive::TexturedModel::unbind()
 {
 	Texture::unbindTexture();
 }
 
-void TexturedModel::unbindVao()
+void Survive::TexturedModel::unbindVao()
 {
 	glBindVertexArray(0);
 }
 
-size_t TexturedModel::vertexCount() const
+GLsizei Survive::TexturedModel::vertexCount() const
 {
 	return m_VertexCount;
 }
 
-bool TexturedModel::operator==(const TexturedModel &rhs) const
+bool Survive::TexturedModel::operator==(const TexturedModel &rhs) const
 {
 	return m_Vao == rhs.m_Vao &&
 		   m_VertexCount == rhs.m_VertexCount &&
 		   m_Texture.textureId() == rhs.m_Texture.textureId();
 }
 
-GLuint TexturedModel::vaoID() const
+GLuint Survive::TexturedModel::vaoID() const
 {
 	return m_Vao;
 }
 
-void TexturedModel::setVertexCount(int vertexCount)
+void Survive::TexturedModel::setVertexCount(int vertexCount)
 {
 	m_VertexCount = vertexCount;
 }
 
-bool TexturedModel::isValidTexture() const
+bool Survive::TexturedModel::isValidTexture() const
 {
 	return m_Texture.textureId() != 0;
 }
 
-const Texture &TexturedModel::getTexture() const
+const Survive::Texture &Survive::TexturedModel::getTexture() const
 {
 	return m_Texture;
 }

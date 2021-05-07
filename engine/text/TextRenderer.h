@@ -11,17 +11,19 @@
 #include <functional>
 #include <unordered_set>
 
-class TextRenderer
+namespace Survive
 {
-private:
-	TextShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
+	class TextRenderer
+	{
+	private:
+		TextShader m_Shader{};
+		std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
 
-public:
-	void renderText() const;
+	public:
+		void renderText() const;
 
-	void addText(Text &text, Loader &loader);
-};
-
+		void addText(Text &text, Loader &loader);
+	};
+}
 
 #endif //SURVIVE_TEXTRENDERER_H

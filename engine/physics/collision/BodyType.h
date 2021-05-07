@@ -5,9 +5,12 @@
 #ifndef SURVIVE_BODYTYPE_H
 #define SURVIVE_BODYTYPE_H
 
-enum class BodyType
+namespace Survive
 {
-	DYNAMIC, STATIC
-};
+	enum class BodyType
+	{
+		DYNAMIC, STATIC
+	};
+}
 
 #endif //SURVIVE_BODYTYPE_H

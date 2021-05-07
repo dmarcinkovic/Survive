@@ -8,25 +8,28 @@
 
 #include <GL/glew.h>
 
-class Texture
+namespace Survive
 {
-private:
-	GLuint m_TextureId{};
+	class Texture
+	{
+	private:
+		GLuint m_TextureId{};
 
-public:
-	explicit Texture(GLuint textureId);
+	public:
+		explicit Texture(GLuint textureId);
 
-	Texture() = default;
+		Texture() = default;
 
-	void bindTexture(int textureIndex) const;
+		void bindTexture(int textureIndex) const;
 
-	void bindCubeTexture(int textureIndex) const;
+		void bindCubeTexture(int textureIndex) const;
 
-	static void unbindCubeTexture();
+		static void unbindCubeTexture();
 
-	static void unbindTexture();
+		static void unbindTexture();
 
-	[[nodiscard]] GLuint textureId() const;
-};
+		[[nodiscard]] GLuint textureId() const;
+	};
+}
 
 #endif //SURVIVE_TEXTURE_H

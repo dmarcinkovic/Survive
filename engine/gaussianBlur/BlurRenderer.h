@@ -9,56 +9,51 @@
 #include <unordered_map>
 
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "../fbo/FrameBuffer.h"
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
 #include "../animations/renderer/AnimationRenderer.h"
 #include "../objects/ObjectRenderer.h"
 #include "../terrain/TerrainRenderer.h"
+#include "../../ecs/entt.hpp"
 
-class BlurRenderer
+namespace Survive
 {
-private:
-	AnimationRenderer m_AnimationRenderer;
-	ObjectRenderer m_ObjectRenderer;
-	TerrainRenderer m_TerrainRenderer;
+	class BlurRenderer
+	{
+	private:
+		AnimationRenderer m_AnimationRenderer;
+		ObjectRenderer m_ObjectRenderer;
+		TerrainRenderer m_TerrainRenderer;
 
-	Loader m_Loader{};
-	FrameBuffer m_Fbo{};
-	Model m_Model;
-	const Light &m_Light;
+		Loader m_Loader{};
+		FrameBuffer m_Fbo{};
+		Model m_Model;
+		const Light &m_Light;
 
-	int m_Width, m_Height;
+		int m_Width, m_Height;
 
-	Texture m_Texture;
+		Texture m_Texture;
+		HorizontalBlurRenderer m_HorizontalBlurRenderer;
+		VerticalBlurRenderer m_VerticalBlurRenderer;
 
-	bool m_ShouldRender = false;
-	HorizontalBlurRenderer m_HorizontalBlurRenderer;
-	VerticalBlurRenderer m_VerticalBlurRenderer;
+	public:
+		BlurRenderer(const Light &light, int width, int height);
 
-public:
-	BlurRenderer(const Light &light, int width, int height);
+		void render(entt::registry &registry, const Camera &camera) const;
 
-	void render(const Camera &camera) const;
+		[[nodiscard]] const Texture &getTexture() const;
 
-	const Texture &getTexture() const;
+	private:
+		void renderToFbo(entt::registry &registry, const Camera &camera) const;
 
-	void addAnimatedObject(AnimatedObject &animatedObject);
+		void renderBlur() const;
 
-	void addObject(Object3D &object);
+		void prepareRendering() const;
 
-	void addTerrain(Terrain &terrain);
-
-private:
-	void renderToFbo(const Camera &camera) const;
-
-	void renderBlur() const;
-
-	void prepareRendering() const;
-
-	static void finishRendering();
-};
+		static void finishRendering();
+	};
+}
 
 
 #endif //SURVIVE_BLURRENDERER_H

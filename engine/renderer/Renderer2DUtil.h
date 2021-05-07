@@ -9,17 +9,19 @@
 #include "../texture/TexturedModel.h"
 #include "../shader/Shader.h"
 
-class Renderer2DUtil
+namespace Survive
 {
-public:
-	static void prepareRendering(const Shader &shader);
+	class Renderer2DUtil
+	{
+	public:
+		static void prepareRendering(const Shader &shader);
 
-	static void prepareEntity(const TexturedModel &texture, int numberOfVertexUnits = 2);
+		static void prepareEntity(const TexturedModel &texture, int numberOfVertexUnits = 2);
 
-	static void finishRenderingEntity(int numberOfVertexUnits = 2);
+		static void finishRenderingEntity(int numberOfVertexUnits = 2);
 
-	static void finishRendering();
-};
-
+		static void finishRendering();
+	};
+}
 
 #endif //SURVIVE_RENDERER2DUTIL_H

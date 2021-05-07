@@ -7,7 +7,7 @@
 
 #include "Shader.h"
 
-Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
+Survive::Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
 {
 	m_VertexShader = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
 	m_FragmentShader = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
@@ -20,7 +20,7 @@ Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
 	glValidateProgram(m_Program);
 }
 
-Shader::~Shader()
+Survive::Shader::~Shader()
 {
 	glDetachShader(m_Program, m_VertexShader);
 	glDetachShader(m_Program, m_FragmentShader);
@@ -30,17 +30,17 @@ Shader::~Shader()
 	glDeleteProgram(m_Program);
 }
 
-void Shader::start() const
+void Survive::Shader::start() const
 {
 	glUseProgram(m_Program);
 }
 
-void Shader::stop()
+void Survive::Shader::stop()
 {
 	glUseProgram(0);
 }
 
-GLuint Shader::loadShader(const char *filename, GLenum type)
+GLuint Survive::Shader::loadShader(const char *filename, GLenum type)
 {
 	std::ifstream reader(filename);
 	std::string source((std::istreambuf_iterator<char>(reader)),
@@ -58,7 +58,7 @@ GLuint Shader::loadShader(const char *filename, GLenum type)
 	return shader;
 }
 
-void Shader::debug(GLuint shaderId, const char *filename)
+void Survive::Shader::debug(GLuint shaderId, const char *filename)
 {
 	int result;
 	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
@@ -76,32 +76,32 @@ void Shader::debug(GLuint shaderId, const char *filename)
 	}
 }
 
-void Shader::loadMatrix(GLuint location, const glm::mat4 &matrix)
+void Survive::Shader::loadMatrix(GLuint location, const glm::mat4 &matrix)
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Shader::loadVector3(GLuint location, const glm::vec3 &vector)
+void Survive::Shader::loadVector3(GLuint location, const glm::vec3 &vector)
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
-void Shader::loadFloat(GLuint location, float value)
+void Survive::Shader::loadFloat(GLuint location, float value)
 {
 	glUniform1f(location, value);
 }
 
-void Shader::loadVector4(GLuint location, const glm::vec4 &vector)
+void Survive::Shader::loadVector4(GLuint location, const glm::vec4 &vector)
 {
 	glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 }
 
-void Shader::loadInteger(GLuint location, int value)
+void Survive::Shader::loadInteger(GLuint location, int value)
 {
 	glUniform1i(location, value);
 }
 
-void Shader::loadUnsigned(GLuint location, unsigned int value)
+void Survive::Shader::loadUnsigned(GLuint location, unsigned int value)
 {
 	glUniform1ui(location, value);
 }

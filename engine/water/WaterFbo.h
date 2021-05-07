@@ -9,41 +9,43 @@
 #include <GL/glew.h>
 #include "../fbo/FrameBuffer.h"
 
-class WaterFbo
+namespace Survive
 {
-private:
-	constexpr static const int REFLECTION_WIDTH = 320;
-	constexpr static const int REFLECTION_HEIGHT = 180;
-	constexpr static const int REFRACTION_WIDTH = 1280;
-	constexpr static const int REFRACTION_HEIGHT = 720;
+	class WaterFbo
+	{
+	private:
+		constexpr static const int REFLECTION_WIDTH = 320;
+		constexpr static const int REFLECTION_HEIGHT = 180;
+		constexpr static const int REFRACTION_WIDTH = 1280;
+		constexpr static const int REFRACTION_HEIGHT = 720;
 
-	Texture m_ReflectionColorTexture{};
-	Texture m_RefractionColorTexture{};
-	Texture m_RefractionDepthTexture{};
+		Texture m_ReflectionColorTexture{};
+		Texture m_RefractionColorTexture{};
+		Texture m_RefractionDepthTexture{};
 
-	FrameBuffer m_FboReflection;
-	FrameBuffer m_FboRefraction;
+		FrameBuffer m_FboReflection;
+		FrameBuffer m_FboRefraction;
 
-public:
-	WaterFbo();
+	public:
+		WaterFbo();
 
-	[[nodiscard]] const Texture &reflectionColorTexture() const;
+		[[nodiscard]] const Texture &reflectionColorTexture() const;
 
-	[[nodiscard]] const Texture &refractionColorTexture() const;
+		[[nodiscard]] const Texture &refractionColorTexture() const;
 
-	[[nodiscard]] const Texture &getRefractionDepthBuffer() const;
+		[[nodiscard]] const Texture &getRefractionDepthBuffer() const;
 
-	void bindReflectionFrameBuffer() const;
+		void bindReflectionFrameBuffer() const;
 
-	void bindRefractionFrameBuffer() const;
+		void bindRefractionFrameBuffer() const;
 
-	static void unbindFrameBuffer();
+		static void unbindFrameBuffer();
 
-private:
-	void initializeRefractionFrameBuffer();
+	private:
+		void initializeRefractionFrameBuffer();
 
-	void initializeReflectionFrameBuffer();
-};
-
+		void initializeReflectionFrameBuffer();
+	};
+}
 
 #endif //SURVIVE_WATERFBO_H

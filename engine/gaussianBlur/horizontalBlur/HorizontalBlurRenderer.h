@@ -9,22 +9,24 @@
 #include "../../fbo/FrameBuffer.h"
 #include "HorizontalBlurShader.h"
 
-class HorizontalBlurRenderer
+namespace Survive
 {
-private:
-	FrameBuffer m_Fbo;
-	int m_Width, m_Height;
+	class HorizontalBlurRenderer
+	{
+	private:
+		FrameBuffer m_Fbo;
+		int m_Width, m_Height;
 
-	Texture m_HorizontalBlurTexture;
-	HorizontalBlurShader m_Shader;
+		Texture m_HorizontalBlurTexture;
+		HorizontalBlurShader m_Shader;
 
-public:
-	HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight);
+	public:
+		HorizontalBlurRenderer(int targetFboWidth, int targetFboHeight);
 
-	void render(const Texture &texture, const Model &model) const;
+		void render(const Texture &texture, const Model &model) const;
 
-	[[nodiscard]] const Texture &getTexture() const;
-};
-
+		[[nodiscard]] const Texture &getTexture() const;
+	};
+}
 
 #endif //SURVIVE_HORIZONTALBLURRENDERER_H

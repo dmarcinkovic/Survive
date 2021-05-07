@@ -8,7 +8,7 @@
 #include "ObjParser.h"
 #include "../util/Util.h"
 
-Model ObjParser::loadObj(const char *objFile, Loader &loader)
+Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 {
 	std::ifstream reader(objFile);
 
@@ -57,10 +57,10 @@ Model ObjParser::loadObj(const char *objFile, Loader &loader)
 	return loader.loadToVao(resultPoints, resultTextures, resultNormals);
 }
 
-void ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
-							   const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
-							   std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-							   const std::string &line)
+void Survive::ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
+										const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
+										std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+										const std::string &line)
 {
 	auto numbers = Util::split(line, ' ');
 	processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[1]);
@@ -75,10 +75,11 @@ void ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std
 	}
 }
 
-void ObjParser::processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
-							  const std::vector<glm::vec2> &textureCoordinates, std::vector<float> &resultPoints,
-							  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-							  const std::string &line)
+void Survive::ObjParser::processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
+									   const std::vector<glm::vec2> &textureCoordinates,
+									   std::vector<float> &resultPoints,
+									   std::vector<float> &resultNormals, std::vector<float> &resultTextures,
+									   const std::string &line)
 {
 	auto index = Util::split(line, '/');
 

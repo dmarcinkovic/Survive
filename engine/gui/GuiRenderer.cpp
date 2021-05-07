@@ -6,29 +6,26 @@
 #include "../math/Maths.h"
 #include "../renderer/Renderer2DUtil.h"
 #include "../display/Display.h"
+#include "../components/RenderComponent.h"
+#include "../components/Transform2DComponent.h"
+#include "../components/SpriteSheetComponent.h"
 
-void GuiRenderer::render() const
+void Survive::GuiRenderer::render(entt::registry &registry) const
 {
-	if (m_Entities.empty())
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
 	{
 		return;
 	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
-
 	m_Shader.loadProjectionMatrix(Maths::orthographicProjectionMatrix);
 
-	for (auto const&[texture, batch] : m_Entities)
+	for (auto const&[texture, guis] : entities)
 	{
 		Renderer2DUtil::prepareEntity(texture);
-		for (auto const &entity2D : batch)
-		{
-			const Entity &e = entity2D.get();
-			m_Shader.loadTransformationMatrix(
-					Maths::createTransformationMatrix(e.m_Position, e.m_Scale));
-
-			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		}
+		renderGuis(guis, registry, texture);
 
 		Renderer2DUtil::finishRenderingEntity();
 	}
@@ -36,8 +33,34 @@ void GuiRenderer::render() const
 	Renderer2DUtil::finishRendering();
 }
 
-void GuiRenderer::addEntity(Entity &entity2D) noexcept
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	std::vector<std::reference_wrapper<Entity>> &batch = m_Entities[entity2D.m_Texture];
-	batch.emplace_back(entity2D);
+	auto view = registry.view<RenderComponent, Transform2DComponent>(entt::exclude<SpriteSheetComponent>);
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : view)
+	{
+		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
+}
+
+void Survive::GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, const entt::registry &registry,
+									  const TexturedModel &texturedModel) const
+{
+	for (auto const &entity : guis)
+	{
+		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(entity);
+		m_Shader.loadTransformationMatrix(
+				Maths::createTransformationMatrix(glm::vec3{transformComponent.position, 0},
+												  glm::vec3{transformComponent.scale, 0},
+												  glm::vec3{transformComponent.rotation, 0}));
+
+		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+	}
 }

@@ -11,38 +11,41 @@
 
 #include "../camera/Camera.h"
 #include "../texture/TexturedModel.h"
-#include "../objects/Object3D.h"
 #include "MousePickingShader.h"
+#include "../../ecs/entt.hpp"
 
-class MousePicking
+namespace Survive
 {
-private:
-	static bool mousePressed;
+	class MousePicking
+	{
+	private:
+		static bool mousePressed;
+		MousePickingShader m_Shader;
 
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Object3D>>, TextureHash> m_Objects;
+		glm::ivec2 m_MousePosition{};
 
-	MousePickingShader m_Shader;
+	public:
+		explicit MousePicking();
 
-	glm::ivec2 m_MousePosition{};
+		void render(entt::registry &registry, const Camera &camera) const;
 
-public:
-	explicit MousePicking();
+	private:
+		void mousePressedHandler();
 
-	void add3DObject(Object3D &entity);
+		void renderScene(const entt::registry &registry,
+						 const std::vector<entt::entity> &objects, const Camera &camera) const;
 
-	void render(const Camera &camera) const;
+		void getRenderedObject() const;
 
-private:
-	void mousePressedHandler();
+		static glm::vec4 getColor(std::uint32_t id);
 
-	void renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const;
+		static int getID(const std::uint8_t *data);
 
-	void getRenderedObject() const;
+		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+		prepareEntities(entt::registry &registry);
 
-	static glm::vec4 getColor(int id);
-
-	static int getID(const std::uint8_t *data);
-};
-
+		void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
+	};
+}
 
 #endif //SURVIVE_MOUSEPICKING_H

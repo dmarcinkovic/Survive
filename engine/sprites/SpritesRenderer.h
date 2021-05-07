@@ -9,22 +9,28 @@
 
 #include "../gui/GuiRenderer.h"
 #include "SpritesShader.h"
-#include "Sprite.h"
+#include "../components/SpriteSheetComponent.h"
+#include "../components/Transform2DComponent.h"
 
-class SpritesRenderer
+namespace Survive
 {
-private:
-	SpritesShader m_Shader{};
-	std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Sprite>>, TextureHash> m_Sprites;
+	class SpritesRenderer
+	{
+	private:
+		SpritesShader m_Shader{};
 
-public:
-	void renderSprite() const;
+	public:
+		void render(entt::registry &registry) const;
 
-	void addSprite(Sprite &sprite) noexcept;
+	private:
+		void loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const;
 
-private:
-	void animate(Sprite &sprite) const;
-};
+		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+		prepareEntities(entt::registry &registry);
 
+		void renderSprites(const std::vector<entt::entity> &sprites, const entt::registry &registry,
+						   const TexturedModel &texturedModel) const;
+	};
+}
 
 #endif //SURVIVE_SPRITESRENDERER_H

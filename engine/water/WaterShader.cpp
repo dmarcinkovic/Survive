@@ -4,28 +4,28 @@
 
 #include "WaterShader.h"
 
-WaterShader::WaterShader()
+Survive::WaterShader::WaterShader()
 		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
 }
 
-void WaterShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
+void Survive::WaterShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
 }
 
-void WaterShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
+void Survive::WaterShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
 {
 	loadMatrix(m_LocationViewMatrix, viewMatrix);
 }
 
-void WaterShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+void Survive::WaterShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
 {
 	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
-void WaterShader::loadUniformLocations()
+void Survive::WaterShader::loadUniformLocations()
 {
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
@@ -48,7 +48,7 @@ void WaterShader::loadUniformLocations()
 	m_LocationFar = glGetUniformLocation(m_Program, "far");
 }
 
-void WaterShader::loadTextures() const
+void Survive::WaterShader::loadTextures() const
 {
 	loadInteger(m_LocationReflectionTexture, 0);
 	loadInteger(m_LocationRefractionTexture, 1);
@@ -57,23 +57,23 @@ void WaterShader::loadTextures() const
 	loadInteger(m_LocationDepthMap, 4);
 }
 
-void WaterShader::loadMoveFactor(float moveFactor) const
+void Survive::WaterShader::loadMoveFactor(float moveFactor) const
 {
 	loadFloat(m_LocationMoveFactor, moveFactor);
 }
 
-void WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+void Survive::WaterShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
 {
 	loadVector3(m_LocationCameraPosition, cameraPosition);
 }
 
-void WaterShader::loadLight(const Light &light) const
+void Survive::WaterShader::loadLight(const Light &light) const
 {
 	loadVector3(m_LocationLightColor, light.color());
 	loadVector3(m_LocationLightPosition, light.position());
 }
 
-void WaterShader::loadNearAndFar(float near, float far) const
+void Survive::WaterShader::loadNearAndFar(float near, float far) const
 {
 	loadFloat(m_LocationNear, near);
 	loadFloat(m_LocationFar, far);

@@ -1,31 +1,37 @@
 //
 // Created by david on 17. 05. 2020..
 //
+
 #include "ObjectRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../components/Components.h"
+#include "../components/ShadowComponent.h"
 
-ObjectRenderer::ObjectRenderer(const Light &light)
+Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
 {
 }
 
-void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
+void
+Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+								const glm::vec4 &plane) const
 {
-	if (m_Objects.empty())
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
 	{
 		return;
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
-
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texturedModel, objects] : m_Objects)
+	for (auto const&[texturedModel, objects] : entities)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
-		renderScene(objects, camera);
+		renderScene(registry, objects, camera);
 
 		Renderer3DUtil::finishRenderingEntity();
 	}
@@ -34,70 +40,131 @@ void ObjectRenderer::render(const Camera &camera, GLuint shadowMap, const glm::v
 	glDisable(GL_STENCIL_TEST);
 }
 
-void ObjectRenderer::add3DObject(Object3D &entity)
-{
-	auto &batch = m_Objects[entity.m_Texture];
-	batch.emplace_back(entity);
-}
-
 void
-ObjectRenderer::renderScene(const std::vector<std::reference_wrapper<Object3D>> &objects, const Camera &camera) const
+Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+									 const Camera &camera) const
 {
 	for (auto const &object : objects)
 	{
-		auto const &o = object.get();
-		loadObjectUniforms(o, camera);
+		loadObjectUniforms(registry, object, camera);
+		drawOutline(registry, object);
 
-		if (o.m_DrawOutline)
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-		} else
-		{
-			glStencilMask(0x00);
-		}
+		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
+		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		Renderer3DUtil::addTransparency(!o.m_IsTransparent, !o.m_IsTransparent);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
-		glDrawArrays(GL_TRIANGLES, 0, o.m_Texture.vertexCount());
-
-		Renderer3DUtil::addTransparency(o.m_IsTransparent, o.m_IsTransparent);
-		Texture::unbindCubeTexture();
+		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
+		Texture::unbindTexture();
 	}
 }
 
-void ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
+void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
-	m_Shader.loadAddShadow(shadowMap != 0);
-
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadLightViewMatrix(lightViewMatrix);
-	m_Shader.loadTextures();
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
 	m_Shader.loadPlane(plane);
 
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
+
 	m_Shader.loadCameraPosition(camera.position);
 }
 
-void ObjectRenderer::loadObjectUniforms(const Object3D &object, const Camera &camera) const
+void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+												 const Camera &camera) const
 {
-	auto rotation = camera.rotation + object.m_Rotation;
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
+	glm::vec3 rotation = camera.rotation + transform.rotation;
 
-	object.m_Skybox.bindCubeTexture(2);
-	m_Shader.loadReflectiveFactor(object.m_ReflectiveFactor);
-	m_Shader.loadRefractionData(object.m_RefractiveIndex, object.m_RefractionFactor);
-
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(object.m_Position, object.m_Scale, rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
+	m_Shader.loadTextures();
 
-	object.getBloomTexture().bindTexture(3);
-	m_Shader.loadBloom(object.getBloomStrength());
+	ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
+	m_Shader.loadAddShadow(shadowComponent.loadShadow);
+
+	renderReflectionAndRefraction(registry, entity);
+	renderBloom(registry, entity);
 }
 
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
+{
+	auto const &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent>(
+			entt::exclude<AnimationComponent>);
+
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : view)
+	{
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
+}
+
+void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
+{
+	if (registry.has<OutlineComponent>(entity))
+	{
+		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		if (outline.drawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+	} else
+	{
+		glStencilMask(0x00);
+	}
+}
+
+void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
+{
+	if (registry.has<BloomComponent>(entity))
+	{
+		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
+
+		bloomComponent.bloomTexture.bindTexture(3);
+		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
+		m_Shader.loadBloom(true);
+	} else
+	{
+		m_Shader.loadBloom(false);
+
+		static Texture bloomDefaultTexture(0);
+		bloomDefaultTexture.bindTexture(3);
+	}
+}
+
+void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+{
+	static Texture defaultReflection(0);
+	defaultReflection.bindTexture(2);
+
+	if (registry.has<ReflectionComponent>(entity))
+	{
+		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
+
+		reflection.reflectionTexture.bindCubeTexture(2);
+		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
+	}
+
+	if (registry.has<RefractionComponent>(entity))
+	{
+		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
+
+		refraction.refractionTexture.bindCubeTexture(2);
+		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
+	}
+}

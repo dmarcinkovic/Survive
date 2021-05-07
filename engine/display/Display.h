@@ -9,90 +9,92 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 
-using KeyListener = std::function<void(int, int)>;
-using MouseListener = std::function<void(int, int, double, double)>;
-using MouseMovedListener = std::function<void(double, double)>;
-using WindowListener = std::function<void(int, int)>;
-using ScrollListener = std::function<void(double, double)>;
-
-class Display
+namespace Survive
 {
-private:
-	GLFWwindow *m_Window{};
+	using KeyListener = std::function<void(int, int)>;
+	using MouseListener = std::function<void(int, int, double, double)>;
+	using MouseMovedListener = std::function<void(double, double)>;
+	using WindowListener = std::function<void(int, int)>;
+	using ScrollListener = std::function<void(double, double)>;
 
-	static std::vector<KeyListener> m_KeyEventListeners;
-	static std::vector<MouseListener> m_MouseEventListeners;
-	static std::vector<MouseMovedListener> m_MouseMoveListeners;
-	static std::vector<WindowListener> m_WindowListeners;
-	static std::vector<ScrollListener> m_ScrollListeners;
-
-	static double m_LastFrameTime;
-	static double m_DeltaTime;
-
-	static int m_Width, m_Height;
-
-public:
-	Display(int width, int height, const char *title);
-
-	explicit Display(const char *title);
-
-	~Display();
-
-	void update() const;
-
-	static void clearWindow();
-
-	[[nodiscard]] bool isRunning() const;
-
-	static void addKeyListener(const KeyListener &listener);
-
-	static void addMouseListener(const MouseListener &listener);
-
-	static void addScrollListener(const ScrollListener &listener);
-
-	static void addMouseMovedListener(const MouseMovedListener &listener);
-
-	static void addWindowResizeListener(const WindowListener &listener);
-
-	static double getFrameTime();
-
-	template<typename T>
-	static std::pair<T, T> getWindowSize()
+	class Display
 	{
-		return {static_cast<T>(m_Width), static_cast<T>(m_Height)};
-	}
+	private:
+		GLFWwindow *m_Window{};
 
-	static std::pair<int, int> getMaxViewportSize();
+		static std::vector<KeyListener> m_KeyEventListeners;
+		static std::vector<MouseListener> m_MouseEventListeners;
+		static std::vector<MouseMovedListener> m_MouseMoveListeners;
+		static std::vector<WindowListener> m_WindowListeners;
+		static std::vector<ScrollListener> m_ScrollListeners;
 
-	static int getWidth();
+		static double m_LastFrameTime;
+		static double m_DeltaTime;
 
-	static int getHeight();
+		static int m_Width, m_Height;
 
-private:
-	void init(int width, int height, const char *title);
+	public:
+		Display(int width, int height, const char *title);
 
-	static void windowResizeCallback(GLFWwindow *window, int width, int height);
+		explicit Display(const char* title);
 
-	static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
+		~Display();
 
-	static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
+		void update() const;
 
-	static void mousePositionCallback(GLFWwindow *window, double mouseX, double mouseY);
+		static void clearWindow();
 
-	static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
+		[[nodiscard]] bool isRunning() const;
 
-	void initializeImGui();
+		static void addKeyListener(const KeyListener &listener);
 
-	void addCallbacks() const;
+		static void addMouseListener(const MouseListener &listener);
 
-	static void setProjectionMatrices(int width, int height);
+		static void addScrollListener(const ScrollListener &listener);
 
-	static void setViewport(int width, int height);
+		static void addMouseMovedListener(const MouseMovedListener &listener);
 
-	static void setWindowHints();
+		static void addWindowResizeListener(const WindowListener &listener);
 
-	static void setStencilProperties();
-};
+		static double getFrameTime();
 
+		static std::pair<int, int> getMaxViewportSize();
+
+		template<typename T>
+		static std::pair<T, T> getWindowSize()
+		{
+			return {static_cast<T>(m_Width), static_cast<T>(m_Height)};
+		}
+
+		static int getWidth();
+
+		static int getHeight();
+
+	private:
+		void init(int width, int height, const char *title);
+
+		static void windowResizeCallback(GLFWwindow *window, int width, int height);
+
+		static void keyEventCallback(GLFWwindow *window1, int key, int code, int action, int mods);
+
+		static void mouseEventCallback(GLFWwindow *window, int button, int action, int mods);
+
+		static void mousePositionCallback(GLFWwindow *window, double mouseX, double mouseY);
+
+		void initializeImGui();
+
+		void addCallbacks() const;
+
+		static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
+
+		static void setProjectionMatrices(int width, int height);
+
+		static void setViewport(int width, int height);
+
+		static void setWindowHints();
+
+		static void setStencilProperties();
+	};
+}
 
 #endif //SURVIVE_DISPLAY_H

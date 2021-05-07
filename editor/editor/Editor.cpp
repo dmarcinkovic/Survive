@@ -8,7 +8,7 @@
 
 #include "Editor.h"
 
-Editor::Editor(GLuint scene)
+Survive::Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene), m_ClearColor(0.45f, 0.55f, 0.60f, 1.00f)
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
@@ -19,7 +19,7 @@ Editor::Editor(GLuint scene)
 	setColorStyle();
 }
 
-void Editor::render()
+void Survive::Editor::render()
 {
 	renderPropertyWindow();
 	renderSceneWindow();
@@ -31,19 +31,19 @@ void Editor::render()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Editor::newFrame()
+void Survive::Editor::newFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void Editor::dock()
+void Survive::Editor::dock()
 {
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 }
 
-void Editor::renderSceneWindow()
+void Survive::Editor::renderSceneWindow()
 {
 	ImGui::Begin("Scene window");
 
@@ -62,7 +62,7 @@ void Editor::renderSceneWindow()
 	ImGui::End();
 }
 
-void Editor::renderPropertyWindow()
+void Survive::Editor::renderPropertyWindow()
 {
 	static float f = 0.0f;
 	static int counter = 0;
@@ -89,7 +89,7 @@ void Editor::renderPropertyWindow()
 	ImGui::End();
 }
 
-void Editor::setColorStyle()
+void Survive::Editor::setColorStyle()
 {
 	ImGuiStyle *style = &ImGui::GetStyle();
 	ImVec4 *colors = style->Colors;
@@ -103,7 +103,7 @@ void Editor::setColorStyle()
 	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
 }
 
-void Editor::renderMenu()
+void Survive::Editor::renderMenu()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -116,7 +116,7 @@ void Editor::renderMenu()
 	}
 }
 
-void Editor::renderOpenDialog()
+void Survive::Editor::renderOpenDialog()
 {
 	if (m_OpenDialog)
 	{
@@ -124,7 +124,7 @@ void Editor::renderOpenDialog()
 	}
 }
 
-bool &Editor::isSceneWindowFocused()
+bool &Survive::Editor::isSceneWindowFocused()
 {
 	return m_IsSceneWindowFocused;
 }

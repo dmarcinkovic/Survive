@@ -8,30 +8,29 @@
 
 #include "horizontalBlur/HorizontalBlurRenderer.h"
 #include "verticalBlur/VerticalBlurRenderer.h"
+#include "BlurRenderer.h"
 
-class BloomRenderer
+namespace Survive
 {
-private:
-	HorizontalBlurRenderer m_HorizontalRenderer;
-	VerticalBlurRenderer m_VerticalRenderer;
+	class BloomRenderer
+	{
+	private:
+		HorizontalBlurRenderer m_HorizontalRenderer;
+		VerticalBlurRenderer m_VerticalRenderer;
 
-	Loader m_Loader{};
-	Model m_Model;
+		Loader m_Loader{};
+		Model m_Model;
 
-	std::vector<std::reference_wrapper<Object3D>> m_Objects;
+	public:
+		BloomRenderer(int width, int height);
 
-public:
-	BloomRenderer(int width, int height);
+		void render(entt::registry &registry) const;
 
-	void render() const;
+	private:
+		void prepare() const;
 
-	void addObject(Object3D &object);
-
-private:
-	void prepare() const;
-
-	static void finishRendering();
-};
-
+		static void finishRendering();
+	};
+}
 
 #endif //SURVIVE_BLOOMRENDERER_H

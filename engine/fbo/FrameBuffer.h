@@ -9,52 +9,55 @@
 #include <vector>
 
 #include "../shadowMapping/ShadowRenderer.h"
+#include "../../ecs/entt.hpp"
 
-class FrameBuffer
+namespace Survive
 {
-private:
-	GLuint m_FrameBuffer{};
-	std::vector<GLuint> m_Textures;
-	std::vector<GLuint> m_RenderBuffers;
+	class FrameBuffer
+	{
+	private:
+		GLuint m_FrameBuffer{};
+		std::vector<GLuint> m_Textures;
+		std::vector<GLuint> m_RenderBuffers;
 
-public:
-	FrameBuffer();
+	public:
+		FrameBuffer();
 
-	~FrameBuffer();
+		~FrameBuffer();
 
-	void renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
-							 int height) const;
+		void renderToFrameBuffer(entt::registry &registry, const ShadowRenderer &renderer, const Camera &camera,
+								 const Light &light, int width, int height) const;
 
-	GLuint createTexture(int width, int height);
+		GLuint createTexture(int width, int height);
 
-	GLuint createTexture();
+		GLuint createTexture();
 
-	GLuint attachColorComponent(int width, int height);
+		GLuint attachColorComponent(int width, int height);
 
-	GLuint attachToDepthBufferTexture(int width, int height);
+		GLuint attachToDepthBufferTexture(int width, int height);
 
-	void bindFrameBuffer() const;
+		void bindFrameBuffer() const;
 
-	void bindDrawBuffer() const;
+		void bindDrawBuffer() const;
 
-	static void unbindFrameBuffer();
+		static void unbindFrameBuffer();
 
-	static void unbindDrawFrameBuffer();
+		static void unbindDrawFrameBuffer();
 
-	GLuint createColorTexture(int width, int height);
+		GLuint createColorTexture(int width, int height);
 
-	static void attachColorAttachment(GLuint texture);
+		static void attachColorAttachment(GLuint texture);
 
-	static void drawBuffer();
+		static void drawBuffer();
 
-	[[nodiscard]] GLuint getRenderBuffer(int renderBufferNumber) const;
+		[[nodiscard]] GLuint getRenderBuffer(int renderBufferNumber) const;
 
-	void attachDepthComponent(int width, int height);
+		void attachDepthComponent(int width, int height);
 
-	GLuint createDepthTexture(int width, int height);
+		GLuint createDepthTexture(int width, int height);
 
-	GLuint createDepthTextureAttachment(int width, int height);
-};
-
+		GLuint createDepthTextureAttachment(int width, int height);
+	};
+}
 
 #endif //SURVIVE_FRAMEBUFFER_H

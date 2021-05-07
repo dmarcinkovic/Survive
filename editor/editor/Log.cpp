@@ -8,9 +8,9 @@
 #include "../../engine/renderer/Loader.h"
 
 
-LogInfo Log::m_LogInfo;
+Survive::LogInfo Survive::Log::m_LogInfo;
 
-void Log::logWindow(LogType logType, const char *message, const ImVec2 &size, double time)
+void Survive::Log::logWindow(LogType logType, const char *message, const ImVec2 &size, double time)
 {
 	m_LogInfo.message = message;
 	m_LogInfo.logType = logType;
@@ -22,14 +22,14 @@ void Log::logWindow(LogType logType, const char *message, const ImVec2 &size, do
 	m_LogInfo.time = time;
 }
 
-void Log::drawLogWindow()
+void Survive::Log::drawLogWindow()
 {
 	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
 									ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoTitleBar;
 
-	static GLuint errorIcon = Loader::loadTexture("res/error.png");
-	static GLuint infoIcon = Loader::loadTexture("res/info.png");
-	static GLuint warnIcon = Loader::loadTexture("res/warn.png");
+	static Texture errorIcon = Loader::loadTexture("res/error.png");
+	static Texture infoIcon = Loader::loadTexture("res/info.png");
+	static Texture warnIcon = Loader::loadTexture("res/warn.png");
 
 	if (m_LogInfo.open)
 	{
@@ -61,7 +61,7 @@ void Log::drawLogWindow()
 	}
 }
 
-void Log::drawIcon(GLuint warnIcon, GLuint errorIcon, GLuint infoIcon)
+void Survive::Log::drawIcon(const Texture &warnIcon, const Texture &errorIcon, const Texture &infoIcon)
 {
 	float height = ImGui::GetTextLineHeight();
 	ImTextureID icon = nullptr;
@@ -69,13 +69,13 @@ void Log::drawIcon(GLuint warnIcon, GLuint errorIcon, GLuint infoIcon)
 	switch (m_LogInfo.logType)
 	{
 		case LogType::ERROR:
-			icon = reinterpret_cast<ImTextureID>(errorIcon);
+			icon = reinterpret_cast<ImTextureID>(errorIcon.textureId());
 			break;
 		case LogType::WARN:
-			icon = reinterpret_cast<ImTextureID>(warnIcon);
+			icon = reinterpret_cast<ImTextureID>(warnIcon.textureId());
 			break;
 		case LogType::INFO:
-			icon = reinterpret_cast<ImTextureID>(infoIcon);
+			icon = reinterpret_cast<ImTextureID>(infoIcon.textureId());
 			break;
 	}
 

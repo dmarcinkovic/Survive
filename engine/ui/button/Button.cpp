@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Button.h"
 
-Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
+Survive::Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
 			   const glm::vec4 &color)
 		: Entity(texture, position, glm::vec3{scaleX, scaleY, 1.0f}), m_Color(color), m_OriginalScaleX(scaleX),
 		  m_OriginalScaleY(scaleY)
@@ -17,7 +17,7 @@ Button::Button(const TexturedModel &texture, const glm::vec3 &position, float sc
 	addWindowResizeListener();
 }
 
-void Button::convertToScreenSpace(float width, float height)
+void Survive::Button::convertToScreenSpace(float width, float height)
 {
 	int newX = static_cast<int>(convertPoint(m_Position.x, width));
 	int newY = static_cast<int>(convertPoint(-m_Position.y, height));
@@ -27,13 +27,13 @@ void Button::convertToScreenSpace(float width, float height)
 	m_Height = static_cast<int>(m_Scale.y * height);
 }
 
-float Button::convertPoint(float point, float size)
+float Survive::Button::convertPoint(float point, float size)
 {
 	float scale = size / 2.0f;
 	return scale * point + scale;
 }
 
-bool Button::isInsideButton(double x, double y) const
+bool Survive::Button::isInsideButton(double x, double y) const
 {
 	int buttonX = m_Center.x - m_Width / 2;
 	int buttonY = m_Center.y - m_Height / 2;
@@ -42,7 +42,7 @@ bool Button::isInsideButton(double x, double y) const
 		   y >= buttonY && y <= buttonY + m_Height;
 }
 
-void Button::addMouseMoveListener()
+void Survive::Button::addMouseMoveListener()
 {
 	auto mouseListener = [&](double x, double y) {
 		if (isInsideButton(x, y))
@@ -61,7 +61,7 @@ void Button::addMouseMoveListener()
 	Display::addMouseMovedListener(mouseListener);
 }
 
-void Button::addWindowResizeListener()
+void Survive::Button::addWindowResizeListener()
 {
 	auto windowResizeListener = [&](int width, int height) {
 		convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
@@ -70,12 +70,12 @@ void Button::addWindowResizeListener()
 	Display::addWindowResizeListener(windowResizeListener);
 }
 
-Text &Button::getText()
+Survive::Text &Survive::Button::getText()
 {
 	return m_Text;
 }
 
-void Button::setText(const std::string &text, const Font &font, const glm::vec3 &textColor)
+void Survive::Button::setText(const std::string &text, const Font &font, const glm::vec3 &textColor)
 {
 	m_Text = Text(text, font, m_Position, textColor);
 	m_Text.centerText();

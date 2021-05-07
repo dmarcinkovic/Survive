@@ -7,11 +7,13 @@
 #include "ShadowRenderer.h"
 #include "../math/Maths.h"
 #include "../renderer/Renderer3DUtil.h"
+#include "../components/RenderComponent.h"
+#include "../components/Transform3DComponent.h"
 
-
-void ShadowRenderer::render(const Light &light, const Camera &camera) const
+void Survive::ShadowRenderer::render(const entt::registry &registry, const Light &light, const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
+
 	glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
 	m_ShadowShader.loadViewMatrix(viewMatrix);
 	m_ShadowShader.loadProjectionMatrix(Maths::lightProjectionMatrix);
@@ -22,13 +24,14 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
 		glEnableVertexAttribArray(0);
 		for (auto const &object : objects)
 		{
-			const Object3D &o = object.get();
-
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_FRONT);
 
-			auto rotation = o.m_Rotation + camera.rotation;
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(o.m_Position, o.m_Scale, rotation);
+			const Transform3DComponent &transform = registry.get<Transform3DComponent>(object);
+
+			glm::vec3 rotation = transform.rotation + camera.rotation;
+			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
 			glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
@@ -42,8 +45,10 @@ void ShadowRenderer::render(const Light &light, const Camera &camera) const
 	Renderer3DUtil::finishRendering();
 }
 
-void ShadowRenderer::add3DObject(Object3D &object)
+void Survive::ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
 {
-	auto &batch = m_Objects[object.m_Texture];
-	batch.emplace_back(object);
+	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
+	auto &batch = m_Objects[renderComponent.texturedModel];
+
+	batch.emplace_back(entity);
 }

@@ -5,12 +5,12 @@
 #include "EventHandler.h"
 #include "../display/Display.h"
 
-EventHandler::EventHandler(Camera &camera)
+Survive::EventHandler::EventHandler(Camera &camera)
 	: m_Camera(camera)
 {
 }
 
-void EventHandler::registerListener(bool &active)
+void Survive::EventHandler::registerListener(bool &active)
 {
 	m_Active = &active;
 
@@ -23,19 +23,19 @@ void EventHandler::registerListener(bool &active)
 	addKeyboardListener();
 }
 
-void EventHandler::addScrollListener()
+void Survive::EventHandler::addScrollListener()
 {
 	auto scrollListener = [this](double xOffset, double yOffset) {
 		if (*m_Active)
 		{
-			m_Camera.position.z -= yOffset * 2.0;
+			m_Camera.position.z -= yOffset * 2.0f;
 		}
 	};
 
 	Display::addScrollListener(scrollListener);
 }
 
-void EventHandler::addMousePressedListener()
+void Survive::EventHandler::addMousePressedListener()
 {
 	auto mousePressedListener = [this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && *m_Active)
@@ -62,7 +62,7 @@ void EventHandler::addMousePressedListener()
 	Display::addMouseListener(mousePressedListener);
 }
 
-void EventHandler::addMouseMovedListener()
+void Survive::EventHandler::addMouseMovedListener()
 {
 	auto mouseMovedListener = [this](double mouseX, double mouseY) {
 		if (!*m_Active)
@@ -75,8 +75,8 @@ void EventHandler::addMouseMovedListener()
 
 		if (m_LeftButtonPressed)
 		{
-			m_Camera.rotation.y = m_CurrentRotation.y + dx / 2.0;
-			m_Camera.rotation.x = m_CurrentRotation.x + dy / 2.0;
+			m_Camera.rotation.y = m_CurrentRotation.y + dx / 2.0f;
+			m_Camera.rotation.x = m_CurrentRotation.x + dy / 2.0f;
 		} else if (m_RightButtonPressed)
 		{
 			m_Camera.pitch = m_CurrentPitch + static_cast<float >(dy / 5.0);
@@ -87,7 +87,7 @@ void EventHandler::addMouseMovedListener()
 	Display::addMouseMovedListener(mouseMovedListener);
 }
 
-void EventHandler::addKeyboardListener()
+void Survive::EventHandler::addKeyboardListener()
 {
 	auto keyboardListener = [this](int key, int action) {
 		if (action == GLFW_PRESS && *m_Active)

@@ -9,15 +9,15 @@
 #include "../../engine/display/Display.h"
 #include "../../engine/renderer/Loader.h"
 
-FileChooser::FileChooser()
+Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(listCurrentDirectory()), m_SelectedFileName(m_DirectoryContent.front().name)
 {
-	GLuint folder = Loader::loadTexture("res/folder.png");
-	m_Icon = reinterpret_cast<ImTextureID>(folder);
+	Texture folder = Loader::loadTexture("res/folder.png");
+	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
 }
 
-void FileChooser::open(float windowWidth, float windowHeight, bool *open)
+void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
 	setupDarkStyleColors();
 
@@ -48,7 +48,7 @@ void FileChooser::open(float windowWidth, float windowHeight, bool *open)
 	ImGui::PopStyleColor(4);
 }
 
-std::vector<File> FileChooser::listDirectory(const std::string &directory, bool showHidden)
+std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string &directory, bool showHidden)
 {
 	std::filesystem::directory_iterator directoryIterator(directory);
 	std::vector<File> files;
@@ -75,14 +75,14 @@ std::vector<File> FileChooser::listDirectory(const std::string &directory, bool 
 	return files;
 }
 
-std::vector<File> FileChooser::listCurrentDirectory(bool showHidden)
+std::vector<Survive::File> Survive::FileChooser::listCurrentDirectory(bool showHidden)
 {
 	auto workingDirectory = std::filesystem::current_path();
 
 	return listDirectory(std::filesystem::absolute(workingDirectory), showHidden);
 }
 
-std::string FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
+std::string Survive::FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
 {
 	if (type != std::filesystem::file_type::regular)
 	{
@@ -129,7 +129,7 @@ std::string FileChooser::getFileSize(unsigned long fileSize, std::filesystem::fi
 	return stream.str();
 }
 
-const char *FileChooser::getFileType(std::filesystem::file_type type)
+const char *Survive::FileChooser::getFileType(std::filesystem::file_type type)
 {
 	switch (type)
 	{
@@ -158,7 +158,7 @@ const char *FileChooser::getFileType(std::filesystem::file_type type)
 	}
 }
 
-void FileChooser::helpMarker(const char *description)
+void Survive::FileChooser::helpMarker(const char *description)
 {
 	ImGui::TextDisabled("(?)");
 	if (ImGui::IsItemHovered())
@@ -171,14 +171,14 @@ void FileChooser::helpMarker(const char *description)
 	}
 }
 
-std::filesystem::path FileChooser::getParentPath(const std::string &currentDirectory)
+std::filesystem::path Survive::FileChooser::getParentPath(const std::string &currentDirectory)
 {
 	std::filesystem::path path(currentDirectory.c_str());
 
 	return path.parent_path();
 }
 
-void FileChooser::setupDarkStyleColors()
+void Survive::FileChooser::setupDarkStyleColors()
 {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.11f, 0.11f, 0.11f, 1.0f));
@@ -186,14 +186,14 @@ void FileChooser::setupDarkStyleColors()
 	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.15f));
 }
 
-void FileChooser::drawNavigationArrows()
+void Survive::FileChooser::drawNavigationArrows()
 {
 	drawLeftArrow();
 	drawRightArrow();
 	drawUpArrow();
 }
 
-void FileChooser::drawLeftArrow()
+void Survive::FileChooser::drawLeftArrow()
 {
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
@@ -211,7 +211,7 @@ void FileChooser::drawLeftArrow()
 	ImGui::SameLine();
 }
 
-void FileChooser::drawRightArrow()
+void Survive::FileChooser::drawRightArrow()
 {
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
@@ -229,7 +229,7 @@ void FileChooser::drawRightArrow()
 	ImGui::SameLine();
 }
 
-void FileChooser::drawUpArrow()
+void Survive::FileChooser::drawUpArrow()
 {
 	if (ImGui::ArrowButton("up", ImGuiDir_Up) && m_CurrentDirectory != m_Root)
 	{
@@ -244,7 +244,7 @@ void FileChooser::drawUpArrow()
 	ImGui::SameLine();
 }
 
-void FileChooser::drawCheckbox()
+void Survive::FileChooser::drawCheckbox()
 {
 	ImGui::Checkbox("Hidden", &m_Hidden);
 
@@ -258,7 +258,7 @@ void FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void FileChooser::drawFilenameTextbox(bool *open)
+void Survive::FileChooser::drawFilenameTextbox(bool *open)
 {
 	if (ImGui::BeginChild("text box"))
 	{
@@ -274,7 +274,7 @@ void FileChooser::drawFilenameTextbox(bool *open)
 	}
 }
 
-void FileChooser::drawTable(float windowHeight, bool *open)
+void Survive::FileChooser::drawTable(float windowHeight, bool *open)
 {
 	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 	{
@@ -295,7 +295,7 @@ void FileChooser::drawTable(float windowHeight, bool *open)
 	}
 }
 
-void FileChooser::drawHeader()
+void Survive::FileChooser::drawHeader()
 {
 	ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_DefaultSort);
 	ImGui::TableSetupColumn("Size");
@@ -307,7 +307,7 @@ void FileChooser::drawHeader()
 	sortDirectoryContent();
 }
 
-void FileChooser::drawCancelButton(bool *open)
+void Survive::FileChooser::drawCancelButton(bool *open)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.345f, 0.345f, 0.345f, 1.0f));
 
@@ -319,7 +319,7 @@ void FileChooser::drawCancelButton(bool *open)
 	ImGui::PopStyleColor();
 }
 
-void FileChooser::drawOpenButton(bool *open)
+void Survive::FileChooser::drawOpenButton(bool *open)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.337f, 0.5f, 0.76f, 1.0f));
 
@@ -331,19 +331,19 @@ void FileChooser::drawOpenButton(bool *open)
 	ImGui::PopStyleColor();
 }
 
-std::string FileChooser::getSelectedFile() const
+std::string Survive::FileChooser::getSelectedFile() const
 {
 	std::filesystem::path path(m_CurrentDirectory);
 	return path.append(m_SelectedFileName);
 }
 
-void FileChooser::resetSelectedFile()
+void Survive::FileChooser::resetSelectedFile()
 {
 	m_SelectedFile = 0;
 	m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 }
 
-void FileChooser::drawIcon()
+void Survive::FileChooser::drawIcon()
 {
 	ImVec2 uv0(0.0f, 1.0f);
 	ImVec2 uv1(1.0f, 0.0f);
@@ -352,7 +352,7 @@ void FileChooser::drawIcon()
 	ImGui::SameLine();
 }
 
-void FileChooser::fillTableRow(const File &file, int index, bool *open)
+void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open)
 {
 	ImGui::TableNextColumn();
 	drawIcon();
@@ -383,7 +383,7 @@ void FileChooser::fillTableRow(const File &file, int index, bool *open)
 	}
 }
 
-void FileChooser::openPressed(bool *open)
+void Survive::FileChooser::openPressed(bool *open)
 {
 	if (m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
 	{
@@ -400,17 +400,17 @@ void FileChooser::openPressed(bool *open)
 	}
 }
 
-bool FileChooser::sortByFilename(const File &file1, const File &file2)
+bool Survive::FileChooser::sortByFilename(const File &file1, const File &file2)
 {
 	return file1.name.compare(file2.name) < 0;
 }
 
-bool FileChooser::sortBySize(const File &file1, const File &file2)
+bool Survive::FileChooser::sortBySize(const File &file1, const File &file2)
 {
 	return file1.size < file2.size;
 }
 
-void FileChooser::sortDirectoryContent()
+void Survive::FileChooser::sortDirectoryContent()
 {
 	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
 	{

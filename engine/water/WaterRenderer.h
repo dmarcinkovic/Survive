@@ -9,45 +9,45 @@
 
 #include "../texture/Texture.h"
 #include "WaterShader.h"
-#include "WaterTile.h"
 #include "../light/Light.h"
 #include "../camera/Camera.h"
 #include "WaterFbo.h"
+#include "../../ecs/entt.hpp"
+#include "../components/Components.h"
 
-class WaterRenderer
+namespace Survive
 {
-private:
-	static constexpr float WAVE_SPEED = 0.03f;
+	class WaterRenderer
+	{
+	private:
+		WaterShader m_Shader;
+		WaterFbo m_Fbo;
 
-	WaterShader m_Shader;
-	WaterFbo m_Fbo;
+	public:
+		void render(entt::registry &registry, const Camera &camera, const Light &light) const;
 
-	std::vector<std::reference_wrapper<WaterTile>> m_Tiles;
+		void bindReflectionFrameBuffer() const;
 
-public:
-	void render(const Camera &camera, const Light &light) const;
+		void bindRefractionFrameBuffer() const;
 
-	void addWaterTile(WaterTile &waterTile);
+		[[nodiscard]] static bool shouldRender(entt::registry &registry);
 
-	void bindReflectionFrameBuffer() const;
+	private:
+		void prepareRendering(const Camera &camera) const;
 
-	void bindRefractionFrameBuffer() const;
+		static void finishRendering();
 
-	[[nodiscard]] bool shouldRender() const;
+		static void loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent);
 
-private:
-	void prepareRendering(const Camera &camera) const;
+		void loadUniforms(const Camera &camera, const Transform3DComponent &transform, MoveComponent &moveComponent,
+						  const Light &light) const;
 
-	static void finishRendering();
-
-	static void loadMoveFactor(const WaterShader &shader);
-
-	void loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const;
-
-	static void
-	bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture, const Texture &refractionTexture,
-				 const Texture &refractionDepthMap);
-};
+		static void
+		bindTextures(const TexturedComponent &textures, const Texture &reflectionTexture,
+					 const Texture &refractionTexture,
+					 const Texture &refractionDepthMap);
+	};
+}
 
 
 #endif //SURVIVE_WATERRENDERER_H

@@ -8,28 +8,30 @@
 
 #include "../shader/Shader.h"
 
-class ShadowShader : public Shader
+namespace Survive
 {
-private:
-	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
-	static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ShadowFragmentShader.glsl";
+	class ShadowShader : public Shader
+	{
+	private:
+		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/ShadowVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/ShadowFragmentShader.glsl";
 
-	GLuint m_LocationTransformationMatrix{};
-	GLuint m_LocationViewMatrix{};
-	GLuint m_LocationProjectionMatrix{};
+		GLuint m_LocationTransformationMatrix{};
+		GLuint m_LocationViewMatrix{};
+		GLuint m_LocationProjectionMatrix{};
 
-public:
-	ShadowShader();
+	public:
+		ShadowShader();
 
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+		void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
-private:
-	void getUniformLocations();
-};
-
+	private:
+		void getUniformLocations();
+	};
+}
 
 #endif //SURVIVE_SHADOWSHADER_H

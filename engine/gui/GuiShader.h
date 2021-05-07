@@ -9,25 +9,27 @@
 
 #include "../shader/Shader.h"
 
-class GuiShader : public Shader
+namespace Survive
 {
-private:
-	constexpr static const char *VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
-	constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
+	class GuiShader : public Shader
+	{
+	private:
+		constexpr static const char *VERTEX_FILE = "engine/shader/sources/GuiVertexShader.glsl";
+		constexpr static const char *FRAGMENT_FILE = "engine/shader/sources/GuiFragmentShader.glsl";
 
-	GLuint m_LocationTransformationMatrix{};
-	GLuint m_LocationProjectionMatrix{};
+		GLuint m_LocationTransformationMatrix{};
+		GLuint m_LocationProjectionMatrix{};
 
-public:
-	GuiShader();
+	public:
+		GuiShader();
 
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-private:
-	void getUniformLocations();
-};
-
+	private:
+		void getUniformLocations();
+	};
+}
 
 #endif //SURVIVE_GUISHADER_H

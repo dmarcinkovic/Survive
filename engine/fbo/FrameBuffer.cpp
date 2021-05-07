@@ -2,40 +2,39 @@
 // Created by david on 22. 05. 2020..
 //
 
-#include <iostream>
 #include "FrameBuffer.h"
 #include "../display/Display.h"
 
-FrameBuffer::FrameBuffer()
+Survive::FrameBuffer::FrameBuffer()
 {
 	glGenFramebuffers(1, &m_FrameBuffer);
 }
 
-FrameBuffer::~FrameBuffer()
+Survive::FrameBuffer::~FrameBuffer()
 {
 	glDeleteFramebuffers(1, &m_FrameBuffer);
 	glDeleteTextures(m_Textures.size(), m_Textures.data());
 	glDeleteRenderbuffers(m_RenderBuffers.size(), m_RenderBuffers.data());
 }
 
-void FrameBuffer::bindFrameBuffer() const
+void Survive::FrameBuffer::bindFrameBuffer() const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
 }
 
-void FrameBuffer::unbindFrameBuffer()
+void Survive::FrameBuffer::unbindFrameBuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-GLuint FrameBuffer::createTexture()
+GLuint Survive::FrameBuffer::createTexture()
 {
 	auto[width, height] = Display::getWindowSize<int>();
 
 	return createTexture(width, height);
 }
 
-GLuint FrameBuffer::createTexture(int width, int height)
+GLuint Survive::FrameBuffer::createTexture(int width, int height)
 {
 	bindFrameBuffer();
 	GLuint texture = attachColorComponent(width, height);
@@ -48,7 +47,7 @@ GLuint FrameBuffer::createTexture(int width, int height)
 	return texture;
 }
 
-GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
+GLuint Survive::FrameBuffer::attachToDepthBufferTexture(int width, int height)
 {
 	bindFrameBuffer();
 
@@ -65,7 +64,7 @@ GLuint FrameBuffer::attachToDepthBufferTexture(int width, int height)
 	return texture;
 }
 
-GLuint FrameBuffer::attachColorComponent(int width, int height)
+GLuint Survive::FrameBuffer::attachColorComponent(int width, int height)
 {
 	GLuint colorComponent = createColorTexture(width, height);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, colorComponent, 0);
@@ -73,7 +72,7 @@ GLuint FrameBuffer::attachColorComponent(int width, int height)
 	return colorComponent;
 }
 
-GLuint FrameBuffer::createColorTexture(int width, int height)
+GLuint Survive::FrameBuffer::createColorTexture(int width, int height)
 {
 	GLuint texture;
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBuffer);
@@ -90,7 +89,7 @@ GLuint FrameBuffer::createColorTexture(int width, int height)
 	return texture;
 }
 
-GLuint FrameBuffer::createDepthTexture(int width, int height)
+GLuint Survive::FrameBuffer::createDepthTexture(int width, int height)
 {
 	GLuint texture;
 	glGenTextures(1, &texture);
@@ -111,7 +110,7 @@ GLuint FrameBuffer::createDepthTexture(int width, int height)
 	return texture;
 }
 
-void FrameBuffer::attachDepthComponent(int width, int height)
+void Survive::FrameBuffer::attachDepthComponent(int width, int height)
 {
 	GLuint renderBuffer;
 	glGenRenderbuffers(1, &renderBuffer);
@@ -126,15 +125,16 @@ void FrameBuffer::attachDepthComponent(int width, int height)
 }
 
 void
-FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &camera, const Light &light, int width,
-								 int height) const
+Survive::FrameBuffer::renderToFrameBuffer(entt::registry &registry, const ShadowRenderer &renderer,
+										  const Camera &camera,
+										  const Light &light, int width, int height) const
 {
 	glViewport(0, 0, width, height);
 
 	bindFrameBuffer();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	renderer.render(light, camera);
+	renderer.render(registry, light, camera);
 
 	unbindFrameBuffer();
 
@@ -142,32 +142,32 @@ FrameBuffer::renderToFrameBuffer(const ShadowRenderer &renderer, const Camera &c
 	glViewport(0, 0, w, h);
 }
 
-void FrameBuffer::attachColorAttachment(GLuint texture)
+void Survive::FrameBuffer::attachColorAttachment(GLuint texture)
 {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 }
 
-void FrameBuffer::bindDrawBuffer() const
+void Survive::FrameBuffer::bindDrawBuffer() const
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_FrameBuffer);
 }
 
-void FrameBuffer::unbindDrawFrameBuffer()
+void Survive::FrameBuffer::unbindDrawFrameBuffer()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
-void FrameBuffer::drawBuffer()
+void Survive::FrameBuffer::drawBuffer()
 {
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 
-GLuint FrameBuffer::getRenderBuffer(int renderBufferNumber) const
+GLuint Survive::FrameBuffer::getRenderBuffer(int renderBufferNumber) const
 {
 	return m_RenderBuffers[renderBufferNumber];
 }
 
-GLuint FrameBuffer::createDepthTextureAttachment(int width, int height)
+GLuint Survive::FrameBuffer::createDepthTextureAttachment(int width, int height)
 {
 	GLuint texture;
 	glGenTextures(1, &texture);

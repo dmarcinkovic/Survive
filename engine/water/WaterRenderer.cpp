@@ -8,34 +8,30 @@
 #include "../display/Display.h"
 #include "../constant/Constants.h"
 
-
-void WaterRenderer::render(const Camera &camera, const Light &light) const
+void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
-	if (m_Tiles.empty())
+	auto waterTiles = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
+	if (waterTiles.empty())
 	{
 		return;
 	}
 
 	prepareRendering(camera);
+	waterTiles.each([&](RenderComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
+						MoveComponent &moveComponent) {
+		Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
 
-	for (auto const &waterTile : m_Tiles)
-	{
-		auto const &water = waterTile.get();
-		Renderer3DUtil::prepareEntity(water.m_Texture);
-
-		bindTextures(water, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
+		bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
 					 m_Fbo.getRefractionDepthBuffer());
-		loadUniforms(camera, water, light);
 
-		glDrawElements(GL_TRIANGLES, water.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		loadUniforms(camera, transform, moveComponent, light);
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 		Renderer3DUtil::finishRenderingEntity();
-	}
-
-	finishRendering();
+	});
 }
 
-void WaterRenderer::prepareRendering(const Camera &camera) const
+void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
 	Renderer3DUtil::addTransparency(false, true);
@@ -44,62 +40,58 @@ void WaterRenderer::prepareRendering(const Camera &camera) const
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 }
 
-void WaterRenderer::finishRendering()
+void Survive::WaterRenderer::finishRendering()
 {
 	Renderer3DUtil::addTransparency(false, false);
 	Renderer3DUtil::finishRendering();
 }
 
-void WaterRenderer::addWaterTile(WaterTile &waterTile)
+bool Survive::WaterRenderer::shouldRender(entt::registry &registry)
 {
-	m_Tiles.emplace_back(waterTile);
+	auto group = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
+	return !group.empty();
 }
 
-bool WaterRenderer::shouldRender() const
+void Survive::WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent)
 {
-	return !m_Tiles.empty();
-}
-
-void WaterRenderer::loadMoveFactor(const WaterShader &shader)
-{
-	static float moveFactor = 0;
-
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
-	moveFactor += WAVE_SPEED * deltaTime;
-	moveFactor = std::fmod(moveFactor, 1);
+	moveComponent.currentMoveValue += moveComponent.moveSpeed * deltaTime;
+	moveComponent.currentMoveValue = std::fmod(moveComponent.currentMoveValue, 1);
 
-	shader.loadMoveFactor(moveFactor);
+	shader.loadMoveFactor(moveComponent.currentMoveValue);
 }
 
-void WaterRenderer::loadUniforms(const Camera &camera, const WaterTile &waterTile, const Light &light) const
+void
+Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &transform,
+									 MoveComponent &moveComponent, const Light &light) const
 {
-	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(waterTile.m_Position, waterTile.m_Scale);
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 
 	m_Shader.loadTextures();
 	m_Shader.loadCameraPosition(camera.position);
-	loadMoveFactor(m_Shader);
+	loadMoveFactor(m_Shader, moveComponent);
 
 	m_Shader.loadNearAndFar(Constants::NEAR, Constants::FAR);
 	m_Shader.loadLight(light);
 }
 
-void WaterRenderer::bindTextures(const WaterTile &waterTile, const Texture &reflectionTexture,
-								 const Texture &refractionTexture, const Texture &refractionDepthMap)
+void Survive::WaterRenderer::bindTextures(const TexturedComponent &textures, const Texture &reflectionTexture,
+										  const Texture &refractionTexture, const Texture &refractionDepthMap)
 {
 	reflectionTexture.bindTexture(0);
 	refractionTexture.bindTexture(1);
-	waterTile.getDuDvMap().bindTexture(2);
-	waterTile.getNormalMap().bindTexture(3);
+	textures.textures[0].bindTexture(2);
+	textures.textures[1].bindTexture(3);
 	refractionDepthMap.bindTexture(4);
 }
 
-void WaterRenderer::bindReflectionFrameBuffer() const
+void Survive::WaterRenderer::bindReflectionFrameBuffer() const
 {
 	m_Fbo.bindReflectionFrameBuffer();
 }
 
-void WaterRenderer::bindRefractionFrameBuffer() const
+void Survive::WaterRenderer::bindRefractionFrameBuffer() const
 {
 	m_Fbo.bindRefractionFrameBuffer();
 }

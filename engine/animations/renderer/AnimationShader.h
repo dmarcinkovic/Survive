@@ -10,41 +10,43 @@
 #include "../../shader/Shader.h"
 #include "../joints/JointTransform.h"
 
-class AnimationShader : public Shader
+namespace Survive
 {
-private:
-	static constexpr const char *VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
-	static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
-	static constexpr int MAX_JOINTS = 50;
+	class AnimationShader : public Shader
+	{
+	private:
+		static constexpr const char *VERTEX_SHADER = "engine/shader/sources/AnimationVertexShader.glsl";
+		static constexpr const char *FRAGMENT_SHADER = "engine/shader/sources/AnimationFragmentShader.glsl";
+		static constexpr int MAX_JOINTS = 50;
 
-	GLuint m_LocationTransformationMatrix{};
-	GLuint m_LocationViewMatrix{};
-	GLuint m_LocationProjectionMatrix{};
+		GLuint m_LocationTransformationMatrix{};
+		GLuint m_LocationViewMatrix{};
+		GLuint m_LocationProjectionMatrix{};
 
-	GLuint m_LocationLightPosition{};
-	GLuint m_LocationLightColor{};
+		GLuint m_LocationLightPosition{};
+		GLuint m_LocationLightColor{};
 
-	GLuint m_LocationJointTransforms[MAX_JOINTS]{};
-	GLuint m_LocationPlane{};
+		GLuint m_LocationJointTransforms[MAX_JOINTS]{};
+		GLuint m_LocationPlane{};
 
-public:
-	AnimationShader();
+	public:
+		AnimationShader();
 
-	void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
-	void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+		void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
-	void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-	void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
+		void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
 
-	void loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const;
+		void loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const;
 
-	void loadPlane(const glm::vec4 &plane) const;
+		void loadPlane(const glm::vec4 &plane) const;
 
-private:
-	void loadUniformLocations();
-};
-
+	private:
+		void loadUniformLocations();
+	};
+}
 
 #endif //SURVIVE_ANIMATIONSHADER_H

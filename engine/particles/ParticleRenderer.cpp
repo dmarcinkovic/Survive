@@ -8,14 +8,14 @@
 #include "../renderer/Renderer2DUtil.h"
 #include "../math/Maths.h"
 
-int ParticleRenderer::pointer = 0;
+int Survive::ParticleRenderer::pointer = 0;
 
-ParticleRenderer::ParticleRenderer()
+Survive::ParticleRenderer::ParticleRenderer()
 		: m_Vbo(m_Loader.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES))
 {
 }
 
-void ParticleRenderer::render(const Camera &camera) const
+void Survive::ParticleRenderer::render(const Camera &camera) const
 {
 	prepare();
 	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
@@ -43,7 +43,7 @@ void ParticleRenderer::render(const Camera &camera) const
 }
 
 std::vector<float>
-ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
+Survive::ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
 {
 	pointer = 0;
 	std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
@@ -57,7 +57,7 @@ ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const 
 	return data;
 }
 
-void ParticleRenderer::prepare() const
+void Survive::ParticleRenderer::prepare() const
 {
 	m_Shader.start();
 
@@ -67,7 +67,7 @@ void ParticleRenderer::prepare() const
 	enableBlending();
 }
 
-void ParticleRenderer::finish()
+void Survive::ParticleRenderer::finish()
 {
 	Shader::stop();
 
@@ -76,7 +76,7 @@ void ParticleRenderer::finish()
 	glDepthMask(true);
 }
 
-void ParticleRenderer::enableBlending()
+void Survive::ParticleRenderer::enableBlending()
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -84,8 +84,9 @@ void ParticleRenderer::enableBlending()
 }
 
 void
-ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
-										const glm::mat4 &viewMatrix, std::vector<float> &data)
+Survive::ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
+												 const glm::vec3 &scale,
+												 const glm::mat4 &viewMatrix, std::vector<float> &data)
 {
 	glm::mat4 modelMatrix{1};
 
@@ -108,7 +109,7 @@ ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::ve
 	storeMatrixData(modelViewMatrix, data);
 }
 
-void ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data)
+void Survive::ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data)
 {
 	data[pointer++] = matrix[0][0];
 	data[pointer++] = matrix[0][1];
@@ -128,7 +129,7 @@ void ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<floa
 	data[pointer++] = matrix[3][3];
 }
 
-void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::vector<float> &data)
+void Survive::ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::vector<float> &data)
 {
 	data[pointer++] = particle.m_TextureOffset1.x;
 	data[pointer++] = particle.m_TextureOffset1.y;
@@ -137,7 +138,7 @@ void ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::v
 	data[pointer++] = particle.m_BlendFactor;
 }
 
-void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
+void Survive::ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 {
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
@@ -147,7 +148,7 @@ void ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
 	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 }
 
-std::vector<Particle> &ParticleRenderer::getParticles(const ParticleModel &model)
+std::vector<Survive::Particle> &Survive::ParticleRenderer::getParticles(const ParticleModel &model)
 {
 	std::vector<Particle> &particles = m_Particles[model];
 

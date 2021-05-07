@@ -6,7 +6,7 @@
 #include "VerticalBlurShader.h"
 #include "../../display/Display.h"
 
-VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight)
+Survive::VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeight)
 		: m_Width(targetFboWidth), m_Height(targetFboHeight),
 		  m_VerticalBlurTexture(m_Fbo.createColorTexture(targetFboWidth, targetFboHeight))
 {
@@ -17,7 +17,7 @@ VerticalBlurRenderer::VerticalBlurRenderer(int targetFboWidth, int targetFboHeig
 	VerticalBlurShader::stop();
 }
 
-void VerticalBlurRenderer::render(const Texture &texture, const Model &model) const
+void Survive::VerticalBlurRenderer::render(const Texture &texture, const Model &model) const
 {
 	m_Shader.start();
 	texture.bindTexture(0);
@@ -36,7 +36,7 @@ void VerticalBlurRenderer::render(const Texture &texture, const Model &model) co
 	VerticalBlurShader::stop();
 }
 
-const Texture &VerticalBlurRenderer::getTexture() const
+const Survive::Texture &Survive::VerticalBlurRenderer::getTexture() const
 {
 	return m_VerticalBlurTexture;
 }

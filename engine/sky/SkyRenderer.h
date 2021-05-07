@@ -7,35 +7,33 @@
 
 
 #include "SkyShader.h"
-#include "../entity/Entity.h"
 #include "../camera/Camera.h"
+#include "../../ecs/entt.hpp"
+#include "../components/Components.h"
 
-class SkyRenderer
+namespace Survive
 {
-private:
-	static constexpr float ROTATE_SPEED = 5.0f;
+	class SkyRenderer
+	{
+	private:
+		SkyShader m_Shader;
+		entt::entity m_Sky{};
 
-	SkyShader m_Shader;
-	Entity m_Sky;
+		bool m_ShouldRender = false;
 
-	float m_Rotation = 0;
+	public:
+		void render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-	bool m_ShouldRender = false;
+		void addSkyEntity(entt::entity sky);
 
-public:
-	void render(const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+	private:
+		void prepareRendering(const RenderComponent &renderComponent) const;
 
-	void addSkyEntity(const Entity &sky);
+		static void finishRendering();
 
-	void rotateSky();
-
-private:
-	void prepareRendering() const;
-
-	static void finishRendering();
-
-	void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
-};
-
+		void loadUniforms(const entt::registry &registry, const Transform3DComponent &transform, const Camera &camera,
+						  const glm::vec4 &plane) const;
+	};
+}
 
 #endif //SURVIVE_SKYRENDERER_H

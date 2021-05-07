@@ -4,12 +4,12 @@
 
 #include "Camera.h"
 
-void Camera::invertPitch()
+void Survive::Camera::invertPitch()
 {
 	pitch = -pitch;
 }
 
-void Camera::moveCameraInYDirection(float yDistance)
+void Survive::Camera::moveCameraInYDirection(float yDistance)
 {
 	position.y += yDistance;
 }

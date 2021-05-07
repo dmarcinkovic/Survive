@@ -10,16 +10,18 @@
 
 #include "collision/Body.h"
 
-class World
+namespace Survive
 {
-private:
-	std::vector<std::unique_ptr<Body>> m_Bodies;
+	class World
+	{
+	private:
+		std::vector<std::unique_ptr<Body>> m_Bodies;
 
-public:
-	void addBody(std::unique_ptr<Body> body);
+	public:
+		void addBody(std::unique_ptr<Body> body);
 
-	void step();
-};
-
+		void step();
+	};
+}
 
 #endif //SURVIVE_WORLD_H

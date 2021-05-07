@@ -5,10 +5,11 @@
 #include "OutlineRenderer.h"
 #include "../renderer/Renderer3DUtil.h"
 #include "../math/Maths.h"
+#include "../components/OutlineComponent.h"
 
-void OutlineRenderer::render(const Camera &camera) const
+void Survive::OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
 {
-	if (m_Object == nullptr)
+	if (!m_Render)
 	{
 		return;
 	}
@@ -17,10 +18,13 @@ void OutlineRenderer::render(const Camera &camera) const
 	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
-	prepareObject();
-	loadUniforms(camera);
+	const RenderComponent &renderComponent = registry.get<RenderComponent>(m_Entity);
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Entity);
 
-	glDrawArrays(GL_TRIANGLES, 0, m_Object->m_Texture.vertexCount());
+	prepareObject(renderComponent);
+	loadUniforms(transform, camera);
+
+	glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 	finishRenderingObject();
 
@@ -29,53 +33,58 @@ void OutlineRenderer::render(const Camera &camera) const
 	glDisable(GL_STENCIL_TEST);
 }
 
-void OutlineRenderer::add3DObject(Object3D &object)
+void Survive::OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
 {
-	if (m_Object != nullptr)
+	if (m_Render)
 	{
-		m_Object->m_DrawOutline = false;
+		OutlineComponent &previousOutline = registry.get<OutlineComponent>(m_Entity);
+		previousOutline.drawOutline = false;
 	}
 
-	m_Object = &object;
-	m_Object->m_DrawOutline = true;
+	m_Entity = entity;
+
+	m_Render = true;
+	registry.emplace<OutlineComponent>(entity, true);
 }
 
-void OutlineRenderer::removeObject()
+void Survive::OutlineRenderer::removeObject(entt::registry &registry)
 {
-	m_Object->m_DrawOutline = false;
-	m_Object = nullptr;
+	OutlineComponent &outline = registry.get<OutlineComponent>(m_Entity);
+	outline.drawOutline = false;
+
+	m_Render = false;
 }
 
-void OutlineRenderer::setStencilFunctions()
+void Survive::OutlineRenderer::setStencilFunctions()
 {
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glStencilMask(0x00);
 }
 
-void OutlineRenderer::resetStencilFunctions()
+void Survive::OutlineRenderer::resetStencilFunctions()
 {
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 0, 0xFF);
 }
 
-void OutlineRenderer::loadUniforms(const Camera &camera) const
+void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera) const
 {
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 
-	auto rotation = m_Object->m_Rotation + camera.rotation;
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(m_Object->m_Position, m_Object->m_Scale * SCALE,
-															  rotation);
+	glm::vec3 rotation = transform.rotation + camera.rotation;
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale * SCALE, rotation);
+
 	m_Shader.loadTransformationMatrix(modelMatrix);
 }
 
-void OutlineRenderer::prepareObject() const
+void Survive::OutlineRenderer::prepareObject(const RenderComponent &renderComponent)
 {
-	glBindVertexArray(m_Object->m_Texture.vaoID());
+	glBindVertexArray(renderComponent.texturedModel.vaoID());
 	glEnableVertexAttribArray(0);
 }
 
-void OutlineRenderer::finishRenderingObject()
+void Survive::OutlineRenderer::finishRenderingObject()
 {
 	glBindVertexArray(0);
 	glDisableVertexAttribArray(0);

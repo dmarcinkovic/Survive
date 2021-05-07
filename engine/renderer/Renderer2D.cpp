@@ -4,15 +4,15 @@
 
 #include "Renderer2D.h"
 
-Renderer2D::Renderer2D(Loader &loader)
+Survive::Renderer2D::Renderer2D(Loader &loader)
 		: m_Loader(loader)
 {
 
 }
 
-void Renderer2D::render() const
+void Survive::Renderer2D::render() const
 {
-	m_GuiRenderer.render();
+//	m_GuiRenderer.render();
 
 	auto[width, height] = Display::getWindowSize<int>();
 
@@ -23,28 +23,28 @@ void Renderer2D::render() const
 
 	m_TextRenderer.renderText();
 	m_ButtonRenderer.render();
-	m_SpriteRenderer.renderSprite();
+//	m_SpriteRenderer.renderSprite();
 }
 
-void Renderer2D::addGui(Entity &entity2D) noexcept
-{
-	m_GuiRenderer.addEntity(entity2D);
-}
+//void Survive::Renderer2D::addGui(Entity &entity2D) noexcept
+//{
+//	m_GuiRenderer.addEntity(entity2D);
+//}
 
-void Renderer2D::addText(Text &text) noexcept
+void Survive::Renderer2D::addText(Text &text) noexcept
 {
 	m_TextRenderer.addText(text, m_Loader);
 	auto color = text.color();
 }
 
-void Renderer2D::addButton(Button &button) noexcept
+void Survive::Renderer2D::addButton(Button &button) noexcept
 {
 	m_ButtonRenderer.addButton(button);
 	addText(button.getText());
 }
 
-void Renderer2D::addSprite(Sprite &sprite) noexcept
-{
-	m_SpriteRenderer.addSprite(sprite);
-}
+//void Survive::Renderer2D::addSprite(SpriteSheetComponent &sprite) noexcept
+//{
+//	m_SpriteRenderer.addSprite(sprite);
+//}
 
