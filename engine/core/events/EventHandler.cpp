@@ -3,7 +3,7 @@
 //
 
 #include "EventHandler.h"
-#include "../display/Display.h"
+#include "Display.h"
 
 Survive::EventHandler::EventHandler(Camera &camera)
 	: m_Camera(camera)

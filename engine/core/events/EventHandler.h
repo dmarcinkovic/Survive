@@ -6,7 +6,7 @@
 #define SURVIVE_EVENTHANDLER_H
 
 
-#include "../camera/Camera.h"
+#include "Camera.h"
 
 namespace Survive
 {
