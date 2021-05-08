@@ -5,8 +5,6 @@
 #ifndef SURVIVE_TAGCOMPONENT_H
 #define SURVIVE_TAGCOMPONENT_H
 
-#endif //SURVIVE_TAGCOMPONENT_H
-
 #include <string>
 #include <utility>
 
@@ -24,3 +22,5 @@ namespace Survive
 		}
 	};
 }
+
+#endif //SURVIVE_TAGCOMPONENT_H
