@@ -8,7 +8,7 @@
 
 void Survive::EntityManager::addEntity(entt::registry &registry)
 {
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 	if (ImGui::Button("Create new entity"))
 	{
 		ImGui::OpenPopup("Create entity");
@@ -80,32 +80,41 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 
 void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 {
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+
 	if (m_AddNewComponent)
 	{
-
-	} else
+		addNewComponent();
+	} else if (m_Selected >= 0)
 	{
-		drawTag(registry.get<TagComponent>(m_SelectedEntity));
-
 		listComponents(registry);
 	}
+
+	ImGui::PopStyleColor();
 }
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
+	drawTag(registry.get<TagComponent>(m_SelectedEntity));
+	ImGui::SameLine();
+
+	if (ImGui::Button("Add component"))
+	{
+		m_AddNewComponent = true;
+	}
 
 }
 
 void Survive::EntityManager::drawTag(const TagComponent &tag)
 {
-	if (m_Selected == -1)
-	{
-		return;
-	}
-
 	char *buffer = const_cast<char *>(tag.tag.c_str());
 
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.2f, 0.2f, 1.0f));
 	ImGui::InputText("", buffer, tag.tag.capacity(), ImGuiInputTextFlags_ReadOnly);
 	ImGui::PopStyleColor();
+}
+
+void Survive::EntityManager::addNewComponent()
+{
+
 }
