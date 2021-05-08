@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <TagComponent.h>
 
 #include "EntityManager.h"
 
@@ -20,6 +21,10 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 		if (ImGui::InputText("Entity name", buffer, BUFFER_SIZE,
 							 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
 		{
+			auto entity = registry.create();
+			registry.emplace<TagComponent>(entity, buffer);
+
+			memset(buffer, 0, BUFFER_SIZE);
 			ImGui::CloseCurrentPopup();
 		}
 

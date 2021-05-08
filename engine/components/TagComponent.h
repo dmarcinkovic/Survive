@@ -7,6 +7,9 @@
 
 #endif //SURVIVE_TAGCOMPONENT_H
 
+#include <string>
+#include <utility>
+
 namespace Survive
 {
 	struct TagComponent
@@ -15,8 +18,8 @@ namespace Survive
 
 		TagComponent() = default;
 
-		explicit TagComponent(const std::string &tag)
-				: tag(tag)
+		explicit TagComponent(std::string tag)
+				: tag(std::move(tag))
 		{
 		}
 	};
