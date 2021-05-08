@@ -73,6 +73,11 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 
 		ImGui::End();
 	}
+
+	if (ImGui::Begin("Property panel"))
+	{
+		ImGui::End();
+	}
 }
 
 void Survive::Editor::setColorStyle()
