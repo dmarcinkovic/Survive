@@ -27,6 +27,9 @@ int main()
 	EventHandler eventHandler(camera);
 	eventHandler.registerListener(editor.isSceneWindowFocused());
 
+	auto entity = registry.create();
+	registry.emplace<TagComponent>(entity, "dragon");
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
