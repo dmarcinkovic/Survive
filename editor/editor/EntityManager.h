@@ -21,6 +21,8 @@ namespace Survive
 
 	private:
 		void createEntity(entt::registry &registry);
+
+		static void listEntities(entt::registry &registry);
 	};
 }
 

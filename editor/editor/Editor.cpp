@@ -70,6 +70,8 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 	if (ImGui::Begin("Scene hierarchy"))
 	{
 		m_Manager.addEntity(registry);
+
+		ImGui::End();
 	}
 }
 

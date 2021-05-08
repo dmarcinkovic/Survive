@@ -23,7 +23,8 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 
 	ImGui::Separator();
 
-	ImGui::End();
+	listEntities(registry);
+
 	ImGui::PopStyleColor();
 }
 
@@ -41,4 +42,13 @@ void Survive::EntityManager::createEntity(entt::registry &registry)
 	}
 
 	ImGui::PopStyleColor();
+}
+
+void Survive::EntityManager::listEntities(entt::registry &registry)
+{
+	registry.each([&](const entt::entity entity){
+		const TagComponent &tag = registry.get<TagComponent>(entity);
+
+		ImGui::Selectable(tag.tag.c_str());
+	});
 }
