@@ -10,6 +10,7 @@
 
 #include "FileChooser.h"
 #include "Log.h"
+#include "EntityManager.h"
 
 namespace Survive
 {
@@ -21,6 +22,7 @@ namespace Survive
 		ImVec2 m_SceneSize;
 
 		FileChooser m_FileChooser;
+		EntityManager m_Manager{};
 		bool m_OpenDialog = false;
 
 		bool m_IsSceneWindowFocused = true;
@@ -28,7 +30,7 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render();
+		void render(entt::registry &registry);
 
 		static void dock();
 
@@ -39,7 +41,7 @@ namespace Survive
 	private:
 		void renderSceneWindow();
 
-		void renderPropertyWindow();
+		void renderPropertyWindow(entt::registry &registry);
 
 		void renderMenu();
 

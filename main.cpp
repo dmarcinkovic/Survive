@@ -60,7 +60,7 @@ int main()
 
 		Editor::newFrame();
 		Editor::dock();
-		editor.render();
+		editor.render(registry);
 
 		renderer.renderToFbo(registry, camera);
 
