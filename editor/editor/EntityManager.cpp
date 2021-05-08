@@ -17,23 +17,28 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 
 	if (ImGui::BeginPopup("Create entity"))
 	{
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.2, 0.2, 1.0f));
-		if (ImGui::InputText("Entity name", buffer, BUFFER_SIZE,
-							 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
-		{
-			auto entity = registry.create();
-			registry.emplace<TagComponent>(entity, buffer);
-
-			memset(buffer, 0, BUFFER_SIZE);
-			ImGui::CloseCurrentPopup();
-		}
-
-		ImGui::PopStyleColor();
+		createEntity(registry);
 		ImGui::EndPopup();
 	}
 
 	ImGui::Separator();
 
 	ImGui::End();
+	ImGui::PopStyleColor();
+}
+
+void Survive::EntityManager::createEntity(entt::registry &registry)
+{
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.2, 0.2, 1.0f));
+	if (ImGui::InputText("Entity name", buffer, BUFFER_SIZE,
+						 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
+	{
+		auto entity = registry.create();
+		registry.emplace<TagComponent>(entity, buffer);
+
+		memset(buffer, 0, BUFFER_SIZE);
+		ImGui::CloseCurrentPopup();
+	}
+
 	ImGui::PopStyleColor();
 }

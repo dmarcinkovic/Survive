@@ -18,6 +18,9 @@ namespace Survive
 
 	public:
 		void addEntity(entt::registry &registry);
+
+	private:
+		void createEntity(entt::registry &registry);
 	};
 }
 
