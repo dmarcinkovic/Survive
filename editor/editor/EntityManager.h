@@ -34,8 +34,6 @@ namespace Survive
 
 		void listComponents(entt::registry &registry);
 
-		static void drawTag(const TagComponent &tag);
-
 		void addNewComponent();
 	};
 }

@@ -61,6 +61,7 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 			m_SelectedEntity = entities[i];
 			m_AddNewComponent = false;
 			m_Selected = i;
+			m_CurrentItem = -1;
 		}
 
 		if (ImGui::BeginPopupContextItem())
@@ -69,7 +70,8 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 
 			if (m_AddNewComponent)
 			{
-				m_Selected = -1;
+				m_CurrentItem = -1;
+				m_Selected = i;
 			}
 
 			ImGui::EndPopup();
@@ -96,22 +98,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	drawTag(registry.get<TagComponent>(m_SelectedEntity));
-	ImGui::SameLine();
 
-	if (ImGui::Button("Add component"))
-	{
-		m_AddNewComponent = true;
-	}
-}
-
-void Survive::EntityManager::drawTag(const TagComponent &tag)
-{
-	char *buffer = const_cast<char *>(tag.tag.c_str());
-
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.2f, 0.2f, 1.0f));
-	ImGui::InputText("", buffer, tag.tag.capacity(), ImGuiInputTextFlags_ReadOnly);
-	ImGui::PopStyleColor();
 }
 
 void Survive::EntityManager::addNewComponent()
