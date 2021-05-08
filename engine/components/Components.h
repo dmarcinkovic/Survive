@@ -17,6 +17,7 @@
 #include "SoundComponent.h"
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"
+#include "TagComponent.h"
 #include "TexturedComponent.h"
 #include "Transform2DComponent.h"
 #include "Transform3DComponent.h"
