@@ -27,8 +27,11 @@ int main()
 	EventHandler eventHandler(camera);
 	eventHandler.registerListener(editor.isSceneWindowFocused());
 
-	auto entity = registry.create();
-	registry.emplace<TagComponent>(entity, "dragon");
+	auto dragon = registry.create();
+	registry.emplace<TagComponent>(dragon, "dragon");
+
+	auto lamp = registry.create();
+	registry.emplace<TagComponent>(lamp, "lamp");
 
 	while (display.isRunning())
 	{
