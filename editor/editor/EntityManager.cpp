@@ -4,6 +4,7 @@
 
 #include <imgui.h>
 
+#include "ComponentType.h"
 #include "EntityManager.h"
 
 void Survive::EntityManager::addEntity(entt::registry &registry)
@@ -102,7 +103,6 @@ void Survive::EntityManager::listComponents(entt::registry &registry)
 	{
 		m_AddNewComponent = true;
 	}
-
 }
 
 void Survive::EntityManager::drawTag(const TagComponent &tag)
@@ -116,5 +116,8 @@ void Survive::EntityManager::drawTag(const TagComponent &tag)
 
 void Survive::EntityManager::addNewComponent()
 {
+	static std::vector<const char *> m_Components = ComponentList::getListOfComponents();
+	static int currentItem = -1;
 
+	ImGui::Combo("Component type", &currentItem, m_Components.data(), m_Components.size());
 }
