@@ -3,7 +3,7 @@
 //
 
 #include "WaterFbo.h"
-#include "../../core/display/Display.h"
+#include "Display.h"
 
 Survive::WaterFbo::WaterFbo()
 {

@@ -7,7 +7,8 @@
 
 
 #include <GL/glew.h>
-#include "../../core/fbo/FrameBuffer.h"
+
+#include "FrameBuffer.h"
 
 namespace Survive
 {

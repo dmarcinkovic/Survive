@@ -3,11 +3,11 @@
 //
 
 #include "GuiRenderer.h"
-#include "../../components/RenderComponent.h"
-#include "../../components/Transform2DComponent.h"
-#include "../../components/SpriteSheetComponent.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer2DUtil.h"
+#include "RenderComponent.h"
+#include "Transform2DComponent.h"
+#include "SpriteSheetComponent.h"
+#include "Maths.h"
+#include "Renderer2DUtil.h"
 
 void Survive::GuiRenderer::render(entt::registry &registry) const
 {

@@ -8,7 +8,8 @@
 #include <vector>
 #include <cstdint>
 #include <glm/glm.hpp>
-#include "../../core/renderer/Loader.h"
+
+#include "Loader.h"
 
 namespace Survive
 {

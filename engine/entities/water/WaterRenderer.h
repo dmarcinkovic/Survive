@@ -7,11 +7,11 @@
 
 #include <functional>
 
+#include "entt.hpp"
 #include "WaterShader.h"
 #include "WaterFbo.h"
-#include "../../../ecs/entt.hpp"
-#include "../../components/Components.h"
-#include "../../scene/light/Light.h"
+#include "Components.h"
+#include "Light.h"
 
 namespace Survive
 {

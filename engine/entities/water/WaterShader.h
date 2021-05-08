@@ -6,8 +6,8 @@
 #define SURVIVE_WATERSHADER_H
 
 
-#include "../../core/shader/Shader.h"
-#include "../../scene/light/Light.h"
+#include "Shader.h"
+#include "Light.h"
 
 namespace Survive
 {

@@ -7,7 +7,7 @@
 
 #include <glm/vec3.hpp>
 
-#include "../../core/texture/TexturedModel.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {
