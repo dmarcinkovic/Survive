@@ -64,9 +64,6 @@ void Survive::Editor::renderSceneWindow()
 
 void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 {
-	static char buffer[256];
-	static bool open = false;
-
 	if (ImGui::Begin("Scene hierarchy"))
 	{
 		m_Manager.addEntity(registry);
