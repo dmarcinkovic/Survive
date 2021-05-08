@@ -18,7 +18,7 @@ namespace Survive
 	{
 	private:
 		constexpr static int MAX_INSTANCES = 10'000;
-		constexpr static int INSTANCE_DATA_LENGTH = 21;
+		constexpr static size_t INSTANCE_DATA_LENGTH = 21;
 		constexpr static int VAO_UNITS = 7;
 
 		static int pointer;

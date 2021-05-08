@@ -16,9 +16,9 @@ namespace Survive
 		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/ButtonVertexShader.glsl";
 		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/ButtonFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationColor{};
-		GLuint m_LocationIsLoadingImage{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationColor{};
+		GLint m_LocationIsLoadingImage{};
 
 	public:
 		ButtonShader();

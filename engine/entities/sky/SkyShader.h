@@ -6,7 +6,7 @@
 #define SURVIVE_SKYSHADER_H
 
 
-#include "../../core/shader/Shader.h"
+#include "Shader.h"
 
 namespace Survive
 {
@@ -16,11 +16,11 @@ namespace Survive
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/SkyVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/SkyFragmentShader.glsl";
 
-		GLuint m_LocationProjectionMatrix{};
-		GLuint m_LocationViewMatrix{};
-		GLuint m_LocationTransformationMatrix{};
+		GLint m_LocationProjectionMatrix{};
+		GLint m_LocationViewMatrix{};
+		GLint m_LocationTransformationMatrix{};
 
-		GLuint m_LocationPlane{};
+		GLint m_LocationPlane{};
 
 	public:
 		SkyShader();

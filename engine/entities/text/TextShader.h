@@ -16,11 +16,11 @@ namespace Survive
 		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/TextVertexShader.glsl";
 		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/TextFragmentShader.glsl";
 
-		GLuint m_LocationColor{};
-		GLuint m_LocationBorderWidth{};
-		GLuint m_LocationBorderColor{};
+		GLint m_LocationColor{};
+		GLint m_LocationBorderWidth{};
+		GLint m_LocationBorderColor{};
 
-		GLuint m_LocationTransformationMatrix{};
+		GLint m_LocationTransformationMatrix{};
 
 	public:
 		TextShader();

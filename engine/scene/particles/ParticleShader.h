@@ -16,9 +16,9 @@ namespace Survive
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ParticleVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ParticleFragmentShader.glsl";
 
-		GLuint m_LocationNumberOfRows{};
-		GLuint m_LocationNumberOfCols{};
-		GLuint m_LocationProjectionMatrix{};
+		GLint m_LocationNumberOfRows{};
+		GLint m_LocationNumberOfCols{};
+		GLint m_LocationProjectionMatrix{};
 
 	public:
 		ParticleShader();

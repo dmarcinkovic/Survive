@@ -13,8 +13,9 @@ Survive::FrameBuffer::FrameBuffer()
 Survive::FrameBuffer::~FrameBuffer()
 {
 	glDeleteFramebuffers(1, &m_FrameBuffer);
-	glDeleteTextures(m_Textures.size(), m_Textures.data());
-	glDeleteRenderbuffers(m_RenderBuffers.size(), m_RenderBuffers.data());
+
+	glDeleteTextures(static_cast<GLsizei>(m_Textures.size()), m_Textures.data());
+	glDeleteRenderbuffers(static_cast<GLsizei>(m_RenderBuffers.size()), m_RenderBuffers.data());
 }
 
 void Survive::FrameBuffer::bindFrameBuffer() const

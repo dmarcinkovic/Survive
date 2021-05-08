@@ -16,7 +16,7 @@ Survive::Camera::Camera()
 void Survive::Camera::addScrollListener()
 {
 	auto scrollListener = [this](double xOffset, double yOffset) {
-		m_Position.z -= yOffset * 2.0;
+		m_Position.z -= static_cast<float>(yOffset) * 2.0f;
 	};
 	Display::addScrollListener(scrollListener);
 }
@@ -50,17 +50,17 @@ void Survive::Camera::addMousePressedListener()
 void Survive::Camera::addMouseMovedListener()
 {
 	auto mouseMovedListener = [this](double mouseX, double mouseY) {
-		double dy = mouseY - m_MousePos.y;
-		double dx = mouseX - m_MousePos.x;
+		float dy = static_cast<float>(mouseY) - m_MousePos.y;
+		float dx = static_cast<float>(mouseX) - m_MousePos.x;
 
 		if (m_LeftButtonPressed)
 		{
-			m_Rotation.y = m_CurrentRotation.y + dx / 2.0;
-			m_Rotation.x = m_CurrentRotation.x + dy / 2.0;
+			m_Rotation.y = m_CurrentRotation.y + dx / 2.0f;
+			m_Rotation.x = m_CurrentRotation.x + dy / 2.0f;
 		} else if (m_RightButtonPressed)
 		{
-			m_Pitch = m_CurrentPitch + static_cast<float >(dy / 5.0);
-			m_Yaw = m_CurrentYaw + static_cast<float >(dx / 5.0);
+			m_Pitch = m_CurrentPitch + dy / 5.0f;
+			m_Yaw = m_CurrentYaw + dx / 5.0f;
 		}
 	};
 	Display::addMouseMovedListener(mouseMovedListener);

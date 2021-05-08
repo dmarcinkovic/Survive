@@ -3,7 +3,7 @@
 //
 
 #include "SkyRenderer.h"
-#include "../../core/math/Maths.h"
+#include "Maths.h"
 
 void Survive::SkyRenderer::render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {

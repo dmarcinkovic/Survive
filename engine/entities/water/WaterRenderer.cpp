@@ -56,7 +56,7 @@ void Survive::WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveCompo
 {
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
 	moveComponent.currentMoveValue += moveComponent.moveSpeed * deltaTime;
-	moveComponent.currentMoveValue = std::fmod(moveComponent.currentMoveValue, 1);
+	moveComponent.currentMoveValue = static_cast<float>(std::fmod(moveComponent.currentMoveValue, 1));
 
 	shader.loadMoveFactor(moveComponent.currentMoveValue);
 }

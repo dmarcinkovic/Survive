@@ -20,7 +20,7 @@ namespace Survive
 
 		~Source();
 
-		void play(ALuint buffer) const;
+		void play(ALint buffer) const;
 
 		void stop() const;
 
