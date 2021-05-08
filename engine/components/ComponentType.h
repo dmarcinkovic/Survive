@@ -1,0 +1,18 @@
+//
+// Created by david on 08. 05. 2021..
+//
+
+#ifndef SURVIVE_COMPONENTTYPE_H
+#define SURVIVE_COMPONENTTYPE_H
+
+namespace Survive
+{
+	enum class ComponentType
+	{
+		ANIMATION, BLOOM, MOVE, REFLECTION, REFRACTION, RENDER,
+		RIGID_BODY, SHADOW, SOUND, SPRITE, SPRITE_SHEET, TEXTURED,
+		TRANSFORM_2D, TRANSFORM_3D
+	};
+}
+
+#endif //SURVIVE_COMPONENTTYPE_H
