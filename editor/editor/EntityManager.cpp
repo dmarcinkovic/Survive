@@ -31,13 +31,13 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 void Survive::EntityManager::createEntity(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.1f, 0.2f, 0.3f, 1.0f));
-	if (ImGui::InputText("Entity name", buffer, BUFFER_SIZE,
+	if (ImGui::InputText("Entity name", m_Buffer, BUFFER_SIZE,
 						 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
 	{
 		auto entity = registry.create();
-		registry.emplace<TagComponent>(entity, buffer);
+		registry.emplace<TagComponent>(entity, m_Buffer);
 
-		memset(buffer, 0, BUFFER_SIZE);
+		memset(m_Buffer, 0, BUFFER_SIZE);
 		ImGui::CloseCurrentPopup();
 	}
 

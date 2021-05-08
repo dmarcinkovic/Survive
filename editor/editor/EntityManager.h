@@ -14,7 +14,7 @@ namespace Survive
 	private:
 		static constexpr int BUFFER_SIZE = 256;
 
-		char buffer[BUFFER_SIZE]{};
+		char m_Buffer[BUFFER_SIZE]{};
 
 	public:
 		void addEntity(entt::registry &registry);
