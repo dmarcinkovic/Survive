@@ -7,9 +7,11 @@
 
 #include <vector>
 
-#include "button/ButtonRenderer.h"
+#include "SpritesRenderer.h"
+#include "GuiRenderer.h"
 #include "Text.h"
 #include "TextRenderer.h"
+#include "button/ButtonRenderer.h"
 
 namespace Survive
 {
@@ -18,23 +20,19 @@ namespace Survive
 	private:
 		Loader &m_Loader;
 
-//	GuiRenderer m_GuiRenderer{};
+		GuiRenderer m_GuiRenderer{};
 		TextRenderer m_TextRenderer;
 		ButtonRenderer m_ButtonRenderer{};
-//	SpritesRenderer m_SpriteRenderer{};
+		SpritesRenderer m_SpriteRenderer{};
 
 	public:
 		explicit Renderer2D(Loader &loader);
 
-		void render() const;
-
-//	void addGui(Entity &entity2D) noexcept;
+		void render(entt::registry &registry) const;
 
 		void addText(Text &text) noexcept;
 
 		void addButton(Button &button) noexcept;
-
-//	void addSprite(SpriteSheetComponent &sprite) noexcept;
 	};
 }
 

@@ -11,9 +11,9 @@ Survive::Renderer2D::Renderer2D(Loader &loader)
 
 }
 
-void Survive::Renderer2D::render() const
+void Survive::Renderer2D::render(entt::registry &registry) const
 {
-//	m_GuiRenderer.render();
+	m_GuiRenderer.render(registry);
 
 	auto[width, height] = Display::getWindowSize<int>();
 
@@ -24,13 +24,8 @@ void Survive::Renderer2D::render() const
 
 	m_TextRenderer.renderText();
 	m_ButtonRenderer.render();
-//	m_SpriteRenderer.renderSprite();
+	m_SpriteRenderer.render(registry);
 }
-
-//void Survive::Renderer2D::addGui(Entity &entity2D) noexcept
-//{
-//	m_GuiRenderer.addEntity(entity2D);
-//}
 
 void Survive::Renderer2D::addText(Text &text) noexcept
 {
@@ -43,9 +38,3 @@ void Survive::Renderer2D::addButton(Button &button) noexcept
 	m_ButtonRenderer.addButton(button);
 	addText(button.getText());
 }
-
-//void Survive::Renderer2D::addSprite(SpriteSheetComponent &sprite) noexcept
-//{
-//	m_SpriteRenderer.addSprite(sprite);
-//}
-
