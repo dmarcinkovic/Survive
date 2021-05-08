@@ -75,11 +75,11 @@ std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string
 	return files;
 }
 
-std::vector<Survive::File> Survive::FileChooser::listCurrentDirectory(bool showHidden)
+std::vector<Survive::File> Survive::FileChooser::listCurrentDirectory()
 {
 	auto workingDirectory = std::filesystem::current_path();
 
-	return listDirectory(std::filesystem::absolute(workingDirectory), showHidden);
+	return listDirectory(std::filesystem::absolute(workingDirectory), false);
 }
 
 std::string Survive::FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
