@@ -20,6 +20,7 @@ namespace Survive
 
 		entt::entity m_SelectedEntity{};
 		int m_Selected = -1;
+		int m_CurrentItem = -1;
 
 	public:
 		void addEntity(entt::registry &registry);

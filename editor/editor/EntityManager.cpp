@@ -117,7 +117,13 @@ void Survive::EntityManager::drawTag(const TagComponent &tag)
 void Survive::EntityManager::addNewComponent()
 {
 	static std::vector<const char *> m_Components = ComponentList::getListOfComponents();
-	static int currentItem = -1;
+	static int size = static_cast<int>(m_Components.size());
 
-	ImGui::Combo("Component type", &currentItem, m_Components.data(), m_Components.size());
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.2f, 0.2f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.4f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.2f, 0.2f, 1.0f));
+
+	ImGui::Combo("Component type", &m_CurrentItem, m_Components.data(), size);
+	ImGui::PopStyleColor(4);
 }
