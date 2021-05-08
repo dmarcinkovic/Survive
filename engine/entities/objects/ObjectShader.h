@@ -6,7 +6,7 @@
 #define SURVIVE_OBJECTSHADER_H
 
 
-#include "../../core/shader/Shader.h"
+#include "Shader.h"
 
 namespace Survive
 {
@@ -16,34 +16,34 @@ namespace Survive
 		constexpr static const char *VERTEX_SHADER = "engine/core/shader/sources/ObjectVertexShader.glsl";
 		constexpr static const char *FRAGMENT_SHADER = "engine/core/shader/sources/ObjectFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationProjectionMatrix{};
-		GLuint m_LocationViewMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationProjectionMatrix{};
+		GLint m_LocationViewMatrix{};
 
-		GLuint m_LocationLightColor{};
-		GLuint m_LocationLightPos{};
-		GLuint m_LocationShineDamper{};
-		GLuint m_LocationMaterial{};
+		GLint m_LocationLightColor{};
+		GLint m_LocationLightPos{};
+		GLint m_LocationShineDamper{};
+		GLint m_LocationMaterial{};
 
-		GLuint m_LocationCameraPosition{};
+		GLint m_LocationCameraPosition{};
 
-		GLuint m_LocationLightViewMatrix{};
-		GLuint m_LocationLightProjection{};
-		GLuint m_LocationObjectTexture{};
-		GLuint m_LocationShadowMap{};
+		GLint m_LocationLightViewMatrix{};
+		GLint m_LocationLightProjection{};
+		GLint m_LocationObjectTexture{};
+		GLint m_LocationShadowMap{};
 
-		GLuint m_LocationSkybox{};
-		GLuint m_LocationReflectiveFactor{};
-		GLuint m_LocationRefractionFactor{};
-		GLuint m_LocationRefractionIndex{};
+		GLint m_LocationSkybox{};
+		GLint m_LocationReflectiveFactor{};
+		GLint m_LocationRefractionFactor{};
+		GLint m_LocationRefractionIndex{};
 
-		GLuint m_LocationAddShadow{};
+		GLint m_LocationAddShadow{};
 
-		GLuint m_LocationAddBloom{};
-		GLuint m_LocationBloomTexture{};
-		GLuint m_LocationBloomStrength{};
+		GLint m_LocationAddBloom{};
+		GLint m_LocationBloomTexture{};
+		GLint m_LocationBloomStrength{};
 
-		GLuint m_LocationPlane{};
+		GLint m_LocationPlane{};
 
 	public:
 		ObjectShader();

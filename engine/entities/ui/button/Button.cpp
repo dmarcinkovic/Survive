@@ -2,7 +2,6 @@
 // Created by david on 05. 05. 2020..
 //
 
-#include <iostream>
 #include "Button.h"
 
 Survive::Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,

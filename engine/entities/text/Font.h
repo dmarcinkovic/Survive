@@ -8,8 +8,8 @@
 #include <unordered_map>
 
 #include "Character.h"
-#include "../../core/texture/Texture.h"
-#include "../../core/renderer/Loader.h"
+#include "Texture.h"
+#include "Loader.h"
 
 namespace Survive
 {

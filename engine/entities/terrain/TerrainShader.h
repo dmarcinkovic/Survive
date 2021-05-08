@@ -5,8 +5,8 @@
 #ifndef SURVIVE_TERRAINSHADER_H
 #define SURVIVE_TERRAINSHADER_H
 
-#include "../../core/shader/Shader.h"
-#include "../../scene/light/Light.h"
+#include "Shader.h"
+#include "Light.h"
 
 namespace Survive
 {
@@ -16,25 +16,25 @@ namespace Survive
 		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/TerrainVertexShader.glsl";
 		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/TerrainFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationProjectionMatrix{};
-		GLuint m_LocationViewMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationProjectionMatrix{};
+		GLint m_LocationViewMatrix{};
 
-		GLuint m_LocationLightProjection{};
-		GLuint m_LocationLightView{};
+		GLint m_LocationLightProjection{};
+		GLint m_LocationLightView{};
 
-		GLuint m_LocationLightPosition{};
-		GLuint m_LocationLightColor{};
+		GLint m_LocationLightPosition{};
+		GLint m_LocationLightColor{};
 
-		GLuint m_LocationShadowMap{};
-		GLuint m_LocationBlendMap{};
-		GLuint m_LocationGrass{};
-		GLuint m_LocationDirt{};
-		GLuint m_LocationRock{};
-		GLuint m_LocationFlowers{};
+		GLint m_LocationShadowMap{};
+		GLint m_LocationBlendMap{};
+		GLint m_LocationGrass{};
+		GLint m_LocationDirt{};
+		GLint m_LocationRock{};
+		GLint m_LocationFlowers{};
 
-		GLuint m_LocationPlane{};
-		GLuint m_LocationAddShadow{};
+		GLint m_LocationPlane{};
+		GLint m_LocationAddShadow{};
 
 	public:
 		TerrainShader();

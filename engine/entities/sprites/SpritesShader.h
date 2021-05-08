@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "../../core/shader/Shader.h"
+#include "Shader.h"
 
 namespace Survive
 {
@@ -18,10 +18,10 @@ namespace Survive
 		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/SpriteVertexShader.glsl";
 		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/SpriteFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationRow{};
-		GLuint m_LocationCol{};
-		GLuint m_LocationSpriteIndex{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationRow{};
+		GLint m_LocationCol{};
+		GLint m_LocationSpriteIndex{};
 
 	public:
 		SpritesShader();

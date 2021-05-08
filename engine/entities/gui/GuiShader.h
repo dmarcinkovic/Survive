@@ -7,7 +7,7 @@
 
 #include <glm/glm.hpp>
 
-#include "../../core/shader/Shader.h"
+#include "Shader.h"
 
 namespace Survive
 {
@@ -17,8 +17,8 @@ namespace Survive
 		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/GuiVertexShader.glsl";
 		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/GuiFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationProjectionMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationProjectionMatrix{};
 
 	public:
 		GuiShader();

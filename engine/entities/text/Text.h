@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "Font.h"
-#include "../entity/Entity.h"
+#include "Entity.h"
 
 namespace Survive
 {

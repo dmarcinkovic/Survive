@@ -76,32 +76,32 @@ void Survive::Shader::debug(GLuint shaderId, const char *filename)
 	}
 }
 
-void Survive::Shader::loadMatrix(GLuint location, const glm::mat4 &matrix)
+void Survive::Shader::loadMatrix(GLint location, const glm::mat4 &matrix)
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
 
-void Survive::Shader::loadVector3(GLuint location, const glm::vec3 &vector)
+void Survive::Shader::loadVector3(GLint location, const glm::vec3 &vector)
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
-void Survive::Shader::loadFloat(GLuint location, float value)
+void Survive::Shader::loadFloat(GLint location, float value)
 {
 	glUniform1f(location, value);
 }
 
-void Survive::Shader::loadVector4(GLuint location, const glm::vec4 &vector)
+void Survive::Shader::loadVector4(GLint location, const glm::vec4 &vector)
 {
 	glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 }
 
-void Survive::Shader::loadInteger(GLuint location, int value)
+void Survive::Shader::loadInteger(GLint location, int value)
 {
 	glUniform1i(location, value);
 }
 
-void Survive::Shader::loadUnsigned(GLuint location, unsigned int value)
+void Survive::Shader::loadUnsigned(GLint location, unsigned int value)
 {
 	glUniform1ui(location, value);
 }

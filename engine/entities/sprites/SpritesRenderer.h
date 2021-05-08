@@ -7,11 +7,11 @@
 
 #include <functional>
 
+#include "entt.hpp"
 #include "SpritesShader.h"
-#include "../../components/SpriteSheetComponent.h"
-#include "../../components/Transform2DComponent.h"
-#include "../../../ecs/entt.hpp"
-#include "../../core/texture/TexturedModel.h"
+#include "SpriteSheetComponent.h"
+#include "Transform2DComponent.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {

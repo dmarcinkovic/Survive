@@ -5,10 +5,10 @@
 #ifndef SURVIVE_TERRAINRENDERER_H
 #define SURVIVE_TERRAINRENDERER_H
 
+#include "entt.hpp"
 #include "TerrainShader.h"
-#include "../../../ecs/entt.hpp"
-#include "../../components/Components.h"
-#include "../../scene/camera/Camera.h"
+#include "Components.h"
+#include "Camera.h"
 
 namespace Survive
 {

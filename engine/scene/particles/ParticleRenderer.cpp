@@ -33,8 +33,10 @@ void Survive::ParticleRenderer::render(const Camera &camera) const
 
 		std::vector<float> data = updateParticles(particles, viewMatrix);
 
-		Loader::updateVBO(m_Vbo, data, particles.size() * INSTANCE_DATA_LENGTH);
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(), particles.size());
+		auto sizeOfData = static_cast<GLsizeiptr>(particles.size() * INSTANCE_DATA_LENGTH);
+		Loader::updateVBO(m_Vbo, data, sizeOfData);
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(),
+							  static_cast<GLsizei>(particles.size()));
 
 		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
 	}

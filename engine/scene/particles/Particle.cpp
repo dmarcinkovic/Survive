@@ -37,7 +37,7 @@ void Survive::Particle::updateTextureCoordInfo()
 	unsigned stageCount = m_Rows * m_Cols;
 	float atlasProgression = getAtlasProgression(stageCount);
 
-	m_BlendFactor = std::fmod(atlasProgression, 1);
+	m_BlendFactor = static_cast<float>(std::fmod(atlasProgression, 1));
 
 	updateTextureOffsets(atlasProgression, stageCount);
 }
@@ -70,7 +70,8 @@ void Survive::Particle::updateTextureOffsets(float atlasProgression, unsigned st
 
 void Survive::Particle::applyGravity()
 {
-	m_Velocity.y += Constants::GRAVITY * m_GravityEffect * Display::getFrameTime();
+	auto frameTime = static_cast<float>(Display::getFrameTime());
+	m_Velocity.y += Constants::GRAVITY * m_GravityEffect * frameTime;
 }
 
 void Survive::Particle::updateTimeElapsed()

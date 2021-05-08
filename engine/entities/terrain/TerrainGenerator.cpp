@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "TerrainGenerator.h"
-#include "../../core/texture/stb_image.h"
+#include "stb_image.h"
 
 Survive::Model Survive::TerrainGenerator::generateTerrain(Loader &loader, const char *heightMap)
 {
@@ -83,10 +83,13 @@ Survive::TerrainGenerator::setVertices(std::vector<float> &vertices, float x, fl
 	vertices.emplace_back(x / (width - 1) * SIZE);
 }
 
-void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, int x, int y, int width, int height,
+void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, float x, float y, int width, int height,
 										   const std::vector<std::vector<float>> &terrainHeight)
 {
-	glm::vec3 normal = calculateNormal(x, y, width, height, terrainHeight);
+	auto i = static_cast<int>(x);
+	auto j = static_cast<int>(y);
+
+	glm::vec3 normal = calculateNormal(i, j, width, height, terrainHeight);
 	normals.emplace_back(normal.x);
 	normals.emplace_back(normal.y);
 	normals.emplace_back(normal.z);

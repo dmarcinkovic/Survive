@@ -58,7 +58,7 @@ void Survive::AnimationShader::loadJointTransforms(const std::vector<JointTransf
 		loadMatrix(m_LocationJointTransforms[i], jointTransforms[i].getLocalTransform());
 	}
 
-	for (int i = jointTransforms.size(); i < MAX_JOINTS; ++i)
+	for (size_t i = jointTransforms.size(); i < MAX_JOINTS; ++i)
 	{
 		glm::mat4 emptyMatrix{};
 		loadMatrix(m_LocationJointTransforms[i], emptyMatrix);

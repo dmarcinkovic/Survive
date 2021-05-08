@@ -5,7 +5,7 @@
 #ifndef SURVIVE_SKYROTATESYSTEM_H
 #define SURVIVE_SKYROTATESYSTEM_H
 
-#include "../../../ecs/entt.hpp"
+#include "entt.hpp"
 
 namespace Survive
 {

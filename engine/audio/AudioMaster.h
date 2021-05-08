@@ -25,7 +25,7 @@ namespace Survive
 
 		~AudioMaster();
 
-		static void setListenerData(const glm::vec3 listenerPosition = glm::vec3{});
+		static void setListenerData(glm::vec3 listenerPosition = glm::vec3{});
 
 	private:
 		static char *loadWav(const char *filename, std::uint8_t &channels,

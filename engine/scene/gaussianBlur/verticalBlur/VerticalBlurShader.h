@@ -16,7 +16,7 @@ namespace Survive
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/VerticalBlurVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/BlurFragmentShader.glsl";
 
-		GLuint m_LocationTargetHeight{};
+		GLint m_LocationTargetHeight{};
 
 	public:
 		VerticalBlurShader();

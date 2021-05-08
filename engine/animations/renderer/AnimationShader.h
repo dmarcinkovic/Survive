@@ -20,15 +20,15 @@ namespace Survive
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/AnimationFragmentShader.glsl";
 		static constexpr int MAX_JOINTS = 50;
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationViewMatrix{};
-		GLuint m_LocationProjectionMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationViewMatrix{};
+		GLint m_LocationProjectionMatrix{};
 
-		GLuint m_LocationLightPosition{};
-		GLuint m_LocationLightColor{};
+		GLint m_LocationLightPosition{};
+		GLint m_LocationLightColor{};
 
-		GLuint m_LocationJointTransforms[MAX_JOINTS]{};
-		GLuint m_LocationPlane{};
+		GLint m_LocationJointTransforms[MAX_JOINTS]{};
+		GLint m_LocationPlane{};
 
 	public:
 		AnimationShader();

@@ -3,8 +3,8 @@
 //
 
 #include "ButtonRenderer.h"
-#include "../../../core/math/Maths.h"
-#include "../../../core/renderer/Renderer2DUtil.h"
+#include "Maths.h"
+#include "Renderer2DUtil.h"
 
 void Survive::ButtonRenderer::render() const
 {

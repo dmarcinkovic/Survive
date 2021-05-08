@@ -32,17 +32,17 @@ namespace Survive
 		static void stop();
 
 	protected:
-		static void loadMatrix(GLuint location, const glm::mat4 &matrix);
+		static void loadMatrix(GLint location, const glm::mat4 &matrix);
 
-		static void loadVector3(GLuint location, const glm::vec3 &vector);
+		static void loadVector3(GLint location, const glm::vec3 &vector);
 
-		static void loadFloat(GLuint location, float value);
+		static void loadFloat(GLint location, float value);
 
-		static void loadVector4(GLuint location, const glm::vec4 &vector);
+		static void loadVector4(GLint location, const glm::vec4 &vector);
 
-		static void loadInteger(GLuint location, int value);
+		static void loadInteger(GLint location, int value);
 
-		static void loadUnsigned(GLuint location, unsigned value);
+		static void loadUnsigned(GLint location, unsigned value);
 	};
 }
 

@@ -38,7 +38,7 @@ ALuint Survive::AudioMaster::loadSound(const char *filename)
 
 Survive::AudioMaster::~AudioMaster()
 {
-	alDeleteBuffers(m_Buffers.size(), m_Buffers.data());
+	alDeleteBuffers(static_cast<ALsizei>(m_Buffers.size()), m_Buffers.data());
 	alcMakeContextCurrent(nullptr);
 	alcDestroyContext(m_Context);
 	alcCloseDevice(m_Device);

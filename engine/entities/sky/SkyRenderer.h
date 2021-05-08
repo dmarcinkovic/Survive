@@ -7,9 +7,9 @@
 
 
 #include "SkyShader.h"
-#include "../../../ecs/entt.hpp"
-#include "../../components/Components.h"
-#include "../../scene/camera/Camera.h"
+#include "entt.hpp"
+#include "Components.h"
+#include "Camera.h"
 
 namespace Survive
 {

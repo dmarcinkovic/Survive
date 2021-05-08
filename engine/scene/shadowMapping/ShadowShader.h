@@ -16,9 +16,9 @@ namespace Survive
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ShadowVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ShadowFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationViewMatrix{};
-		GLuint m_LocationProjectionMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationViewMatrix{};
+		GLint m_LocationProjectionMatrix{};
 
 	public:
 		ShadowShader();

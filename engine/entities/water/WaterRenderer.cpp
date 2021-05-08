@@ -3,10 +3,10 @@
 //
 
 #include "WaterRenderer.h"
-#include "../../constant/Constants.h"
-#include "../../core/display/Display.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer3DUtil.h"
+#include "Constants.h"
+#include "Display.h"
+#include "Maths.h"
+#include "Renderer3DUtil.h"
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
@@ -56,7 +56,7 @@ void Survive::WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveCompo
 {
 	auto deltaTime = static_cast<float>(Display::getFrameTime());
 	moveComponent.currentMoveValue += moveComponent.moveSpeed * deltaTime;
-	moveComponent.currentMoveValue = std::fmod(moveComponent.currentMoveValue, 1);
+	moveComponent.currentMoveValue = static_cast<float>(std::fmod(moveComponent.currentMoveValue, 1));
 
 	shader.loadMoveFactor(moveComponent.currentMoveValue);
 }

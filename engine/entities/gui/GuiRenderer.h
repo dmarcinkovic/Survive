@@ -9,8 +9,8 @@
 #include <unordered_map>
 
 #include "GuiShader.h"
-#include "../../../ecs/entt.hpp"
-#include "../../core/texture/TexturedModel.h"
+#include "entt.hpp"
+#include "TexturedModel.h"
 
 namespace Survive
 {

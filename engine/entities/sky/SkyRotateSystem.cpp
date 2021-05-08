@@ -3,8 +3,8 @@
 //
 
 #include "SkyRotateSystem.h"
-#include "../../components/MoveComponent.h"
-#include "../../core/display/Display.h"
+#include "MoveComponent.h"
+#include "Display.h"
 
 void Survive::SkyRotateSystem::rotateSky(entt::registry &registry, entt::entity sky)
 {

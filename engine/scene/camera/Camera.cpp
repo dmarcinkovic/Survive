@@ -3,7 +3,6 @@
 //
 
 #include "Camera.h"
-#include "Display.h"
 
 void Survive::Camera::invertPitch()
 {

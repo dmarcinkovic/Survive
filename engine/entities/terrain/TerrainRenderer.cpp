@@ -3,11 +3,12 @@
 //
 
 #include "TerrainRenderer.h"
-#include "../../core/math/Maths.h"
-#include "../../core/renderer/Renderer3DUtil.h"
+#include "Maths.h"
+#include "Renderer3DUtil.h"
 
-void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
-							 const glm::vec4 &plane) const
+void
+Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
+								 const glm::vec4 &plane) const
 {
 	auto view = registry.view<RenderComponent, Transform3DComponent, TexturedComponent>(entt::exclude<MoveComponent>);
 	if (view.begin() == view.end())
@@ -39,7 +40,8 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 	texture.bindTexture(5);
 }
 
-void Survive::TerrainRenderer::prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures)
+void
+Survive::TerrainRenderer::prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures)
 {
 	Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
 	Renderer3DUtil::addTransparency(false, true);
@@ -59,7 +61,7 @@ void Survive::TerrainRenderer::finishRendering()
 }
 
 void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
-								   const Transform3DComponent &transform) const
+											const Transform3DComponent &transform) const
 {
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
 																  transform.rotation);

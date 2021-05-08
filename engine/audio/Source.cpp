@@ -18,7 +18,7 @@ Survive::Source::~Source()
 	alDeleteSources(1, &m_Source);
 }
 
-void Survive::Source::play(ALuint buffer) const
+void Survive::Source::play(ALint buffer) const
 {
 	stop();
 	alSourcei(m_Source, AL_BUFFER, buffer);

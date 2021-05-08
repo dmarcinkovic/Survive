@@ -6,8 +6,8 @@
 #define SURVIVE_WATERSHADER_H
 
 
-#include "../../core/shader/Shader.h"
-#include "../../scene/light/Light.h"
+#include "Shader.h"
+#include "Light.h"
 
 namespace Survive
 {
@@ -17,24 +17,24 @@ namespace Survive
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/WaterVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/WaterFragmentShader.glsl";
 
-		GLuint m_LocationTransformationMatrix{};
-		GLuint m_LocationViewMatrix{};
-		GLuint m_LocationProjectionMatrix{};
+		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationViewMatrix{};
+		GLint m_LocationProjectionMatrix{};
 
-		GLuint m_LocationReflectionTexture{};
-		GLuint m_LocationRefractionTexture{};
-		GLuint m_LocationDepthMap{};
+		GLint m_LocationReflectionTexture{};
+		GLint m_LocationRefractionTexture{};
+		GLint m_LocationDepthMap{};
 
-		GLuint m_LocationDuDvMap{};
-		GLuint m_LocationNormalMap{};
-		GLuint m_LocationMoveFactor{};
+		GLint m_LocationDuDvMap{};
+		GLint m_LocationNormalMap{};
+		GLint m_LocationMoveFactor{};
 
-		GLuint m_LocationCameraPosition{};
-		GLuint m_LocationLightColor{};
-		GLuint m_LocationLightPosition{};
+		GLint m_LocationCameraPosition{};
+		GLint m_LocationLightColor{};
+		GLint m_LocationLightPosition{};
 
-		GLuint m_LocationNear{};
-		GLuint m_LocationFar{};
+		GLint m_LocationNear{};
+		GLint m_LocationFar{};
 
 	public:
 		WaterShader();
