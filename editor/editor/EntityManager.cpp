@@ -4,7 +4,6 @@
 
 #include <imgui.h>
 
-#include "TagComponent.h"
 #include "EntityManager.h"
 
 void Survive::EntityManager::addEntity(entt::registry &registry)
@@ -36,6 +35,7 @@ void Survive::EntityManager::createEntity(entt::registry &registry)
 	{
 		auto entity = registry.create();
 		registry.emplace<TagComponent>(entity, m_Buffer);
+		m_Selected = -1;
 
 		memset(m_Buffer, 0, BUFFER_SIZE);
 		ImGui::CloseCurrentPopup();
@@ -50,11 +50,62 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.35f, 0.5f, 0.5f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
 
-	registry.each([&](const entt::entity entity) {
-		const TagComponent &tag = registry.get<TagComponent>(entity);
+	auto entities = registry.data();
+	for (int i = 0; i < registry.size(); ++i)
+	{
+		const TagComponent &tag = registry.get<TagComponent>(entities[i]);
 
-		ImGui::CollapsingHeader(tag.tag.c_str());
-	});
+		if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
+		{
+			m_SelectedEntity = entities[i];
+			m_AddNewComponent = false;
+			m_Selected = i;
+		}
+
+		if (ImGui::BeginPopupContextItem())
+		{
+			m_AddNewComponent = ImGui::Selectable("Add new component");
+
+			if (m_AddNewComponent)
+			{
+				m_Selected = -1;
+			}
+
+			ImGui::EndPopup();
+		}
+	}
 
 	ImGui::PopStyleColor(3);
+}
+
+void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
+{
+	if (m_AddNewComponent)
+	{
+
+	} else
+	{
+		drawTag(registry.get<TagComponent>(m_SelectedEntity));
+
+		listComponents(registry);
+	}
+}
+
+void Survive::EntityManager::listComponents(entt::registry &registry)
+{
+
+}
+
+void Survive::EntityManager::drawTag(const TagComponent &tag)
+{
+	if (m_Selected == -1)
+	{
+		return;
+	}
+
+	char *buffer = const_cast<char *>(tag.tag.c_str());
+
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.2f, 0.2f, 1.0f));
+	ImGui::InputText("", buffer, tag.tag.capacity(), ImGuiInputTextFlags_ReadOnly);
+	ImGui::PopStyleColor();
 }

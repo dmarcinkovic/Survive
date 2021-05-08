@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Editor.h"
 #include "EventHandler.h"
 #include "Loader.h"

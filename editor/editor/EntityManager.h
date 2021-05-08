@@ -6,6 +6,7 @@
 #define SURVIVE_ENTITYMANAGER_H
 
 #include "entt.hpp"
+#include "TagComponent.h"
 
 namespace Survive
 {
@@ -15,14 +16,24 @@ namespace Survive
 		static constexpr int BUFFER_SIZE = 256;
 
 		char m_Buffer[BUFFER_SIZE]{};
+		bool m_AddNewComponent{};
+
+		entt::entity m_SelectedEntity{};
+		int m_Selected = -1;
 
 	public:
 		void addEntity(entt::registry &registry);
 
+		void drawPropertyPanel(entt::registry &registry);
+
 	private:
 		void createEntity(entt::registry &registry);
 
-		static void listEntities(entt::registry &registry);
+		void listEntities(entt::registry &registry);
+
+		void listComponents(entt::registry &registry);
+
+		void drawTag(const TagComponent &tag);
 	};
 }
 

@@ -73,6 +73,8 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 
 	if (ImGui::Begin("Property panel"))
 	{
+		m_Manager.drawPropertyPanel(registry);
+
 		ImGui::End();
 	}
 }
