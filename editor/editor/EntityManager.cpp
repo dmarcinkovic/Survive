@@ -56,26 +56,8 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	{
 		const TagComponent &tag = registry.get<TagComponent>(entities[i]);
 
-		if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
-		{
-			m_SelectedEntity = entities[i];
-			m_AddNewComponent = false;
-			m_Selected = i;
-			m_CurrentItem = -1;
-		}
-
-		if (ImGui::BeginPopupContextItem())
-		{
-			m_AddNewComponent = ImGui::Selectable("Add new component");
-
-			if (m_AddNewComponent)
-			{
-				m_CurrentItem = -1;
-				m_Selected = i;
-			}
-
-			ImGui::EndPopup();
-		}
+		drawSelectable(tag, entities[i], i);
+		drawPopupContext(i);
 	}
 
 	ImGui::PopStyleColor(3);
@@ -113,4 +95,31 @@ void Survive::EntityManager::addNewComponent()
 
 	ImGui::Combo("Component type", &m_CurrentItem, m_Components.data(), size);
 	ImGui::PopStyleColor(4);
+}
+
+void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
+{
+	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
+	{
+		m_SelectedEntity = selectedEntity;
+		m_AddNewComponent = false;
+		m_Selected = i;
+		m_CurrentItem = -1;
+	}
+}
+
+void Survive::EntityManager::drawPopupContext(int i)
+{
+	if (ImGui::BeginPopupContextItem())
+	{
+		m_AddNewComponent = ImGui::Selectable("Add new component");
+
+		if (m_AddNewComponent)
+		{
+			m_CurrentItem = -1;
+			m_Selected = i;
+		}
+
+		ImGui::EndPopup();
+	}
 }

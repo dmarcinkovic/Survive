@@ -35,6 +35,10 @@ namespace Survive
 		void listComponents(entt::registry &registry);
 
 		void addNewComponent();
+
+		inline void drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i);
+
+		inline void drawPopupContext(int i);
 	};
 }
 
