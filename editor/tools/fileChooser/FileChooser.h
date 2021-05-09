@@ -48,6 +48,8 @@ namespace Survive
 
 		void open(float windowWidth, float windowHeight, bool *open);
 
+		[[nodiscard]] std::string getSelectedFile() const;
+
 	private:
 		static void setupDarkStyleColors();
 
@@ -82,8 +84,6 @@ namespace Survive
 		static void helpMarker(const char *description);
 
 		static std::filesystem::path getParentPath(const std::string &currentDirectory);
-
-		[[nodiscard]] std::string getSelectedFile() const;
 
 		void resetSelectedFile();
 
