@@ -10,7 +10,7 @@
 
 Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
-		  m_DirectoryContent(listCurrentDirectory()), m_SelectedFileName(m_DirectoryContent.front().name)
+		  m_DirectoryContent(listCurrentDirectory())
 {
 	Texture folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
