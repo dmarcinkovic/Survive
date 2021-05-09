@@ -6,6 +6,8 @@
 
 #include "ComponentType.h"
 #include "EntityManager.h"
+#include "ComponentTemplate.h"
+#include "EditorUtil.h"
 
 void Survive::EntityManager::addEntity(entt::registry &registry)
 {
@@ -88,13 +90,16 @@ void Survive::EntityManager::addNewComponent()
 	static std::vector<const char *> m_Components = ComponentList::getListOfComponents();
 	static int size = static_cast<int>(m_Components.size());
 
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.2f, 0.2f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.4f, 0.35f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.2f, 0.2f, 1.0f));
-
+	EditorUtil::setStyleColors();
 	ImGui::Combo("Component type", &m_CurrentItem, m_Components.data(), size);
-	ImGui::PopStyleColor(4);
+
+	if (m_CurrentItem >= 0)
+	{
+		Transform3DComponent transform3DComponent{};
+		ComponentTemplate::drawComponent(transform3DComponent);
+	}
+
+	ImGui::PopStyleColor(5);
 }
 
 void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)

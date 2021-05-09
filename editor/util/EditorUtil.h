@@ -8,7 +8,8 @@
 
 class EditorUtil
 {
-
+public:
+	static void setStyleColors();
 };
 
 
