@@ -18,6 +18,11 @@ namespace Survive
 		static void drawTransform3DHeader();
 
 		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z);
+
+	private:
+		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment);
+
+		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 	};
 }
 
