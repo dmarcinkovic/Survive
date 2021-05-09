@@ -7,6 +7,7 @@
 
 #include "entt.hpp"
 #include "TagComponent.h"
+#include "Transform3DComponent.h"
 
 namespace Survive
 {
@@ -21,6 +22,8 @@ namespace Survive
 		entt::entity m_SelectedEntity{};
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
+
+		Transform3DComponent t{};
 
 	public:
 		void addEntity(entt::registry &registry);

@@ -95,8 +95,8 @@ void Survive::EntityManager::addNewComponent()
 
 	if (m_CurrentItem >= 0)
 	{
-		Transform3DComponent transform3DComponent{};
-		ComponentTemplate::drawComponent(transform3DComponent);
+//		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, )
+		ComponentTemplate::drawComponent(t);
 	}
 
 	ImGui::PopStyleColor(5);
