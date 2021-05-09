@@ -30,8 +30,8 @@ void Survive::EditorUtil::drawTransform3DHeader()
 void Survive::EditorUtil::drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z)
 {
 	setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1));
-	setDragFloat(vec.x, y, ImVec4(0, 0.5f, 0, 1), ImVec4(0, 0.25f, 0, 1));
-	setDragFloat(vec.x, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1));
+	setDragFloat(vec.y, y, ImVec4(0, 0.5f, 0, 1), ImVec4(0, 0.25f, 0, 1));
+	setDragFloat(vec.z, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1));
 
 	ImGui::NextColumn();
 }
