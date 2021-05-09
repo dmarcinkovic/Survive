@@ -50,6 +50,8 @@ namespace Survive
 
 		[[nodiscard]] std::string getSelectedFile() const;
 
+		[[nodiscard]] std::string getSelectedFilename() const;
+
 	private:
 		static void setupDarkStyleColors();
 

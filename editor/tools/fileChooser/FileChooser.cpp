@@ -430,3 +430,8 @@ void Survive::FileChooser::sortDirectoryContent()
 		}
 	}
 }
+
+std::string Survive::FileChooser::getSelectedFilename() const
+{
+	return m_SelectedFileName;
+}
