@@ -7,15 +7,15 @@
 #include "Texture.h"
 #include "Loader.h"
 
-
 Survive::LogInfo Survive::Log::m_LogInfo;
 
 void Survive::Log::logWindow(LogType logType, const std::string& message, const ImVec2 &size, double time)
 {
 	m_LogInfo.message = message;
+	float textWidth = ImGui::CalcTextSize(message.c_str()).x;
 	m_LogInfo.logType = logType;
 
-	m_LogInfo.width = size.x;
+	m_LogInfo.width = std::min(std::max(size.x, textWidth), MAX_WIDTH);
 	m_LogInfo.height = size.y;
 
 	m_LogInfo.open = true;

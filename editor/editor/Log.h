@@ -32,6 +32,7 @@ namespace Survive
 	private:
 		static constexpr int OFFSET_X = 4;
 		static constexpr int OFFSET_Y = 1;
+		static constexpr float MAX_WIDTH = 500.0f;
 
 		static LogInfo m_LogInfo;
 
