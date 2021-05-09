@@ -6,9 +6,13 @@
 #define SURVIVE_COMPONENTTEMPLATE_H
 
 #include <imgui.h>
+#include <iostream>
 
+#include "ObjParser.h"
 #include "Components.h"
 #include "EditorUtil.h"
+#include "FileChooser.h"
+#include "Loader.h"
 
 namespace Survive
 {
@@ -34,6 +38,61 @@ namespace Survive
 			EditorUtil::drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
 			ImGui::Text("Scale");
 			EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ");
+		}
+	}
+
+	template<>
+	void ComponentTemplate::drawComponent(RenderComponent &component)
+	{
+		static bool loadModel = false;
+		static bool loadTexture = false;
+		static FileChooser fileChooser{};
+		static Loader loader;
+		static std::string loadedModel;
+		static std::string loadedTexture;
+
+		if (ImGui::CollapsingHeader("Render"))
+		{
+			ImGui::Text("Model: %s", loadedModel.c_str());
+			if (ImGui::Button("Load model"))
+			{
+				loadModel = true;
+			}
+
+			ImGui::Text("Texture: %s", loadedTexture.c_str());
+			if (ImGui::Button("Load texture"))
+			{
+				loadTexture = true;
+			}
+
+			if (loadModel)
+			{
+				fileChooser.open(600.0f, 400.0f, &loadModel);
+				if (!loadModel)
+				{
+					std::cout << "File chooser just got closed\n";
+					loadedModel = fileChooser.getSelectedFilename();
+					std::cout << "Loaded model: " << loadedModel << '\n';
+
+					std::string selectedFileFullPath = fileChooser.getSelectedFile();
+					Model model = ObjParser::loadObj(selectedFileFullPath.c_str(), loader);
+				}
+			}
+
+			if (loadTexture)
+			{
+				fileChooser.open(600.0f, 400.0f, &loadTexture);
+				if (!loadTexture)
+				{
+					std::cout << "File chooser just got closed\n";
+					loadedTexture = fileChooser.getSelectedFilename();
+					std::cout << "Loaded texture: " << loadedTexture << '\n';
+
+					std::string selectedFileFullPath = fileChooser.getSelectedFile();
+					Texture texture = Loader::loadTexture(selectedFileFullPath.c_str());
+					std::cout << selectedFileFullPath << '\n';
+				}
+			}
 		}
 	}
 }

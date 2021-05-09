@@ -95,7 +95,6 @@ void Survive::EntityManager::addNewComponent()
 
 	if (m_CurrentItem >= 0)
 	{
-//		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, )
 		ComponentTemplate::drawComponent(t);
 	}
 
