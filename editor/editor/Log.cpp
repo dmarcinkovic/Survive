@@ -49,7 +49,6 @@ void Survive::Log::drawLogWindow()
 
 		drawIcon(warnIcon, errorIcon, infoIcon);
 		ImGui::SameLine();
-		ImGui::SetWindowFontScale(1.2f);
 		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
 
 		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width - OFFSET_X, height - m_LogInfo.height - OFFSET_Y));
