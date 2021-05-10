@@ -24,6 +24,7 @@ void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *ope
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
+	m_OpenedFile = false;
 
 	ImGui::OpenPopup("Open");
 	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
