@@ -53,13 +53,17 @@ namespace Survive
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
+			ImGui::Columns(2);
 			ImGui::Text("Model: %s", loadedModel.c_str());
+			ImGui::NextColumn();
 			if (ImGui::Button("Load model"))
 			{
 				loadModel = true;
 			}
 
+			ImGui::NextColumn();
 			ImGui::Text("Texture: %s", loadedTexture.c_str());
+			ImGui::NextColumn();
 			if (ImGui::Button("Load texture"))
 			{
 				loadTexture = true;
@@ -75,7 +79,14 @@ namespace Survive
 					std::cout << "Loaded model: " << loadedModel << '\n';
 
 					std::string selectedFileFullPath = fileChooser.getSelectedFile();
-					Model model = ObjParser::loadObj(selectedFileFullPath.c_str(), loader);
+
+					try
+					{
+						Model model = ObjParser::loadObj(selectedFileFullPath.c_str(), loader);
+					} catch(const std::exception &exception)
+					{
+
+					}
 				}
 			}
 
