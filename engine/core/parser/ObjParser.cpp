@@ -12,12 +12,13 @@
 Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 {
 	std::ifstream reader(objFile);
+	std::string file(objFile);
 
-	if (!reader)
+	if (!reader || !file.ends_with("obj"))
 	{
-		std::string message = "Could not load " + std::string(objFile);
+		std::string message = "Could not load " + file;
 		Log::logWindow(LogType::ERROR, message);
-		std::cout << "Could not load: " << objFile << '\n';
+		std::cout << message << '\n';
 
 		return Model();
 	}
