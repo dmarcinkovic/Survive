@@ -417,14 +417,14 @@ bool Survive::FileChooser::sortBySize(const File &file1, const File &file2)
 
 void Survive::FileChooser::sortDirectoryContent()
 {
-	if (ImGuiTableSortSpecs *sorts_specs = ImGui::TableGetSortSpecs())
+	if (ImGuiTableSortSpecs *sortSpecs = ImGui::TableGetSortSpecs())
 	{
-		if (sorts_specs->SpecsDirty)
+		if (sortSpecs->SpecsDirty)
 		{
 			std::function<bool(const File &, const File &)> comparator =
-					sorts_specs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
+					sortSpecs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
 
-			if (sorts_specs->Specs->SortDirection == ImGuiSortDirection_Ascending)
+			if (sortSpecs->Specs->SortDirection == ImGuiSortDirection_Ascending)
 			{
 				std::sort(m_DirectoryContent.begin(), m_DirectoryContent.end(), comparator);
 			} else
@@ -432,7 +432,7 @@ void Survive::FileChooser::sortDirectoryContent()
 				std::sort(m_DirectoryContent.rbegin(), m_DirectoryContent.rend(), comparator);
 			}
 
-			sorts_specs->SpecsDirty = false;
+			sortSpecs->SpecsDirty = false;
 		}
 	}
 }
