@@ -5,6 +5,8 @@
 #include <imgui.h>
 #include <glm/vec4.hpp>
 
+#include "Loader.h"
+#include "ObjParser.h"
 #include "EditorUtil.h"
 
 void Survive::EditorUtil::setStyleColors()
@@ -55,4 +57,42 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 {
 	return ImVec4(vec1.x + vec2.x, vec1.y + vec2.y,
 				  vec1.z + vec2.z, vec1.w + vec2.w);
+}
+
+std::optional<Survive::Model> Survive::EditorUtil::loadModel(FileChooser &fileChooser)
+{
+	static bool load{};
+	static std::string modelName;
+	static Loader loader;
+
+	ImGui::Text("Model: %s", modelName.c_str());
+	ImGui::NextColumn();
+	if (ImGui::Button("Load model"))
+	{
+		load = true;
+	}
+
+	if (load)
+	{
+		fileChooser.open(600.0f, 400.0f, &load);
+		if (!load)
+		{
+			std::optional<Model> model = getLoadedModel(fileChooser, loader);
+			modelName = model.has_value() ? fileChooser.getSelectedFilename() : "";
+
+			return model;
+		}
+	}
+	return {};
+}
+
+std::optional<Survive::Model>
+Survive::EditorUtil::getLoadedModel(const Survive::FileChooser &fileChooser, Loader &loader)
+try
+{
+	std::string selectedFile = fileChooser.getSelectedFile();
+	return ObjParser::loadObj(selectedFile.c_str(), loader);
+} catch (const std::exception &exception)
+{
+	return {};
 }
