@@ -29,6 +29,8 @@ namespace Survive
 		static void unbindTexture();
 
 		[[nodiscard]] GLuint textureId() const;
+
+		[[nodiscard]] bool isValidTexture() const;
 	};
 }
 

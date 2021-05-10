@@ -66,7 +66,7 @@ void Survive::TexturedModel::setVertexCount(int vertexCount)
 
 bool Survive::TexturedModel::isValidTexture() const
 {
-	return m_Texture.textureId() != 0;
+	return m_Texture.isValidTexture();
 }
 
 const Survive::Texture &Survive::TexturedModel::getTexture() const
