@@ -332,6 +332,11 @@ void Survive::FileChooser::drawOpenButton(bool *open)
 
 std::string Survive::FileChooser::getSelectedFile() const
 {
+	if (m_OpenedFile)
+	{
+		return "";
+	}
+	
 	std::filesystem::path path(m_CurrentDirectory);
 	return path.append(m_SelectedFileName);
 }
