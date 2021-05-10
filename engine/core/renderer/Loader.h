@@ -22,6 +22,8 @@ namespace Survive
 		Model(GLuint vao, GLsizei vertexCount);
 
 		Model() = default;
+
+		[[nodiscard]] bool isValidModel() const;
 	};
 
 	class Loader

@@ -216,7 +216,7 @@ void Survive::Loader::loadImage(const char *texture) noexcept
 	if (!image)
 	{
 		std::string message = "Error while loading " + std::string(texture);
-		Log::logWindow(LogType::ERROR, message.c_str());
+		Log::logWindow(LogType::ERROR, message);
 		std::cout << message << '\n';
 		return;
 	}
@@ -409,4 +409,9 @@ Survive::Model::Model(GLuint vao, GLsizei vertexCount)
 		: m_Vao(vao), m_VertexCount(vertexCount)
 {
 
+}
+
+bool Survive::Model::isValidModel() const
+{
+	return m_Vao != 0 && m_VertexCount != 0;
 }
