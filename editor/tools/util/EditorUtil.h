@@ -24,12 +24,16 @@ namespace Survive
 
 		static std::optional<Model> loadModel(FileChooser &fileChooser);
 
+		static std::optional<Texture> loadTexture(FileChooser &fileChooser);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment);
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
 		static std::optional<Model> getLoadedModel(const FileChooser &fileChooser, Loader &loader);
+
+		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 	};
 }
 

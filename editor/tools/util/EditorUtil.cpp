@@ -91,8 +91,54 @@ Survive::EditorUtil::getLoadedModel(const Survive::FileChooser &fileChooser, Loa
 try
 {
 	std::string selectedFile = fileChooser.getSelectedFile();
-	return ObjParser::loadObj(selectedFile.c_str(), loader);
+	Model model = ObjParser::loadObj(selectedFile.c_str(), loader);
+
+	return model.isValidModel() ? model : std::optional<Survive::Model>{};
 } catch (const std::exception &exception)
 {
+	// TODO log
+	return {};
+}
+
+std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser)
+{
+	static bool load{};
+	std::string textureName;
+
+	ImGui::Text("Texture: %s", textureName.c_str());
+	ImGui::NextColumn();
+	if (ImGui::Button("Load texture"))
+	{
+		load = true;
+	}
+
+	if (load)
+	{
+		fileChooser.open(600.0f, 400.0f, &load);
+		if (!load)
+		{
+			std::optional<Texture> texture = getLoadedTexture(fileChooser);
+			textureName = texture.has_value() ? fileChooser.getSelectedFilename() : "";
+
+			return texture;
+		}
+	}
+	return {};
+}
+
+std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Survive::FileChooser &fileChooser)
+{
+	std::string selectedFile = fileChooser.getSelectedFile();
+
+	if (!selectedFile.empty())
+	{
+		Texture texture = Loader::loadTexture(selectedFile.c_str());
+
+		if (texture.isValidTexture())
+		{
+			return texture;
+		}
+	}
+
 	return {};
 }

@@ -74,18 +74,19 @@ namespace Survive
 				fileChooser.open(600.0f, 400.0f, &loadModel);
 				if (!loadModel)
 				{
-					std::cout << "File chooser just got closed\n";
-					loadedModel = fileChooser.getSelectedFilename();
-					std::cout << "Loaded model: " << loadedModel << '\n';
-
-					std::string selectedFileFullPath = fileChooser.getSelectedFile();
-
 					try
 					{
-						Model model = ObjParser::loadObj(selectedFileFullPath.c_str(), loader);
-					} catch(const std::exception &exception)
+						std::string selectedFile = fileChooser.getSelectedFile();
+						std::cout << "Selected file: " << selectedFile << '\n';
+						if (!selectedFile.empty())
+						{
+							Model model = ObjParser::loadObj(selectedFile.c_str(), loader);
+							loadedModel = fileChooser.getSelectedFilename();
+						}
+					} catch(const std::exception &ignorable)
 					{
-
+						std::cout << "Caught an exception\n";
+						// TODO Log
 					}
 				}
 			}
@@ -95,13 +96,15 @@ namespace Survive
 				fileChooser.open(600.0f, 400.0f, &loadTexture);
 				if (!loadTexture)
 				{
-					std::cout << "File chooser just got closed\n";
-					loadedTexture = fileChooser.getSelectedFilename();
-					std::cout << "Loaded texture: " << loadedTexture << '\n';
-
-					std::string selectedFileFullPath = fileChooser.getSelectedFile();
-					Texture texture = Loader::loadTexture(selectedFileFullPath.c_str());
-					std::cout << selectedFileFullPath << '\n';
+					std::string selectedFile = fileChooser.getSelectedFile();
+					if (!selectedFile.empty())
+					{
+						Texture texture = Loader::loadTexture(selectedFile.c_str());
+						if (texture.isValidTexture())
+						{
+							loadedTexture = fileChooser.getSelectedFilename();
+						}
+					}
 				}
 			}
 		}
