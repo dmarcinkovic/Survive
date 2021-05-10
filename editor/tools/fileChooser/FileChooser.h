@@ -43,6 +43,8 @@ namespace Survive
 		std::stack<std::string> m_Undo;
 		std::stack<std::string> m_Redo;
 
+		bool m_OpenedFile = false;
+
 	public:
 		FileChooser();
 

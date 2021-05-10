@@ -396,6 +396,7 @@ void Survive::FileChooser::openPressed(bool *open)
 	} else
 	{
 		*open = false;
+		m_OpenedFile = true;
 	}
 }
 
@@ -433,5 +434,5 @@ void Survive::FileChooser::sortDirectoryContent()
 
 std::string Survive::FileChooser::getSelectedFilename() const
 {
-	return m_SelectedFileName;
+	return m_OpenedFile ? m_SelectedFileName : "";
 }
