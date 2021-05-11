@@ -75,7 +75,7 @@ std::optional<Survive::Model> Survive::EditorUtil::loadModel(FileChooser &fileCh
 	if (load)
 	{
 		fileChooser.open(600.0f, 400.0f, &load);
-		if (!load)
+		if (!load && !fileChooser.getSelectedFilename().empty())
 		{
 			std::optional<Model> model = getLoadedModel(fileChooser, loader);
 			modelName = model.has_value() ? fileChooser.getSelectedFilename() : "";
@@ -115,7 +115,7 @@ std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileCh
 	if (load)
 	{
 		fileChooser.open(600.0f, 400.0f, &load);
-		if (!load)
+		if (!load && !fileChooser.getSelectedFilename().empty())
 		{
 			std::optional<Texture> texture = getLoadedTexture(fileChooser);
 			textureName = texture.has_value() ? fileChooser.getSelectedFilename() : "";
@@ -129,15 +129,11 @@ std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileCh
 std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Survive::FileChooser &fileChooser)
 {
 	std::string selectedFile = fileChooser.getSelectedFile();
+	Texture texture = Loader::loadTexture(selectedFile.c_str());
 
-	if (!selectedFile.empty())
+	if (texture.isValidTexture())
 	{
-		Texture texture = Loader::loadTexture(selectedFile.c_str());
-
-		if (texture.isValidTexture())
-		{
-			return texture;
-		}
+		return texture;
 	}
 
 	return {};
