@@ -3,7 +3,7 @@
 //
 
 #include <imgui.h>
-#include <glm/vec4.hpp>
+#include <Log.h>
 
 #include "Loader.h"
 #include "ObjParser.h"
@@ -96,7 +96,7 @@ try
 	return model.isValidModel() ? model : std::optional<Survive::Model>{};
 } catch (const std::exception &exception)
 {
-	// TODO log
+	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
 	return {};
 }
 

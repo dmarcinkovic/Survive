@@ -27,8 +27,6 @@ void Survive::Editor::render(entt::registry &registry)
 	renderOpenDialog();
 	Log::drawLogWindow();
 
-	ImGui::ShowDemoWindow();
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
