@@ -91,7 +91,7 @@ namespace Survive
 
 		GLuint createVao();
 
-		static void loadImage(const char *texture) noexcept;
+		static bool loadImage(const char *texture) noexcept;
 
 		static void addMipMap();
 

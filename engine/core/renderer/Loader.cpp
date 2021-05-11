@@ -197,7 +197,12 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	loadImage(texture);
+	bool loaded = loadImage(texture);
+	if (!loaded)
+	{
+		textureId = 0;
+	}
+
 	addMipMap();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -206,7 +211,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
 	return Texture(textureId);
 }
 
-void Survive::Loader::loadImage(const char *texture) noexcept
+bool Survive::Loader::loadImage(const char *texture) noexcept
 {
 	stbi_set_flip_vertically_on_load(1);
 
@@ -218,11 +223,13 @@ void Survive::Loader::loadImage(const char *texture) noexcept
 		std::string message = "Error while loading " + std::string(texture);
 		Log::logWindow(LogType::ERROR, message);
 		std::cout << message << '\n';
-		return;
+
+		return false;
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	stbi_image_free(image);
+	return true;
 }
 
 std::unordered_map<const char *, Survive::Texture>
