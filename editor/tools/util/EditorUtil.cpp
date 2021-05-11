@@ -103,7 +103,7 @@ try
 std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser)
 {
 	static bool load{};
-	std::string textureName;
+	static std::string textureName;
 
 	ImGui::Text("Texture: %s", textureName.c_str());
 	ImGui::NextColumn();
