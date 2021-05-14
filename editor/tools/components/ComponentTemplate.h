@@ -6,6 +6,7 @@
 #define SURVIVE_COMPONENTTEMPLATE_H
 
 #include <imgui.h>
+#include <iostream>
 
 #include "ObjParser.h"
 #include "Components.h"
@@ -44,13 +45,24 @@ namespace Survive
 	void ComponentTemplate::drawComponent(RenderComponent &component)
 	{
 		static FileChooser fileChooser{};
+		static Model model;
+		static Texture texture;
+
+		static bool changed = true;
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
 			ImGui::Columns(2);
-			EditorUtil::loadModel(fileChooser);
+			EditorUtil::loadModel(fileChooser, model, changed);
 			ImGui::NextColumn();
-			EditorUtil::loadTexture(fileChooser);
+			EditorUtil::loadTexture(fileChooser, texture, changed);
+
+			if (changed && texture.isValidTexture() && model.isValidModel())
+			{
+				std::cout << "Created textured model\n";
+				TexturedModel texturedModel(model, texture);
+				changed = false;
+			}
 		}
 	}
 }

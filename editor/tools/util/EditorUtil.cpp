@@ -59,7 +59,7 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 				  vec1.z + vec2.z, vec1.w + vec2.w);
 }
 
-std::optional<Survive::Model> Survive::EditorUtil::loadModel(FileChooser &fileChooser)
+void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, bool &changed)
 {
 	static bool load{};
 	static std::string modelName;
@@ -77,13 +77,16 @@ std::optional<Survive::Model> Survive::EditorUtil::loadModel(FileChooser &fileCh
 		fileChooser.open(600.0f, 400.0f, &load);
 		if (!load && !fileChooser.getSelectedFilename().empty())
 		{
-			std::optional<Model> model = getLoadedModel(fileChooser, loader);
-			modelName = model.has_value() ? fileChooser.getSelectedFilename() : "";
+			std::optional<Model> loadedModel = getLoadedModel(fileChooser, loader);
 
-			return model;
+			if (loadedModel.has_value())
+			{
+				modelName = fileChooser.getSelectedFilename();
+				model = loadedModel.value();
+				changed = true;
+			}
 		}
 	}
-	return {};
 }
 
 std::optional<Survive::Model>
@@ -100,7 +103,8 @@ try
 	return {};
 }
 
-std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser)
+
+void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, bool &changed)
 {
 	static bool load{};
 	static std::string textureName;
@@ -117,13 +121,16 @@ std::optional<Survive::Texture> Survive::EditorUtil::loadTexture(Survive::FileCh
 		fileChooser.open(600.0f, 400.0f, &load);
 		if (!load && !fileChooser.getSelectedFilename().empty())
 		{
-			std::optional<Texture> texture = getLoadedTexture(fileChooser);
-			textureName = texture.has_value() ? fileChooser.getSelectedFilename() : "";
+			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser);
 
-			return texture;
+			if (loadedTexture.has_value())
+			{
+				textureName = fileChooser.getSelectedFilename();
+				texture = loadedTexture.value();
+				changed = true;
+			}
 		}
 	}
-	return {};
 }
 
 std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Survive::FileChooser &fileChooser)
