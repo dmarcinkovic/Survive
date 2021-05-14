@@ -5,9 +5,9 @@
 #ifndef SURVIVE_ENTITYMANAGER_H
 #define SURVIVE_ENTITYMANAGER_H
 
+#include <RigidBodyComponent.h>
 #include "entt.hpp"
-#include "TagComponent.h"
-#include "RenderComponent.h"
+#include "Components.h"
 
 namespace Survive
 {
@@ -23,7 +23,7 @@ namespace Survive
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
 
-		RenderComponent t{};
+		RigidBodyComponent t{};
 
 	public:
 		void addEntity(entt::registry &registry);

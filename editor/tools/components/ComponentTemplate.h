@@ -67,7 +67,10 @@ namespace Survive
 	template<>
 	void ComponentTemplate::drawComponent(RigidBodyComponent &component)
 	{
-
+		if (ImGui::CollapsingHeader("Rigid body"))
+		{
+			ImGui::Checkbox("Transparent", &component.isTransparent);
+		}
 	}
 }
 
