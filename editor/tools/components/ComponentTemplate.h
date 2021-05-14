@@ -63,6 +63,12 @@ namespace Survive
 			}
 		}
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(RigidBodyComponent &component)
+	{
+
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
