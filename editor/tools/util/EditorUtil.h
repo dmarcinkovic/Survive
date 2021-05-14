@@ -34,6 +34,8 @@ namespace Survive
 		static std::optional<Model> getLoadedModel(const FileChooser &fileChooser, Loader &loader);
 
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
+
+		static void setButtonColors();
 	};
 }
 

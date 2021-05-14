@@ -67,10 +67,13 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, bool
 
 	ImGui::Text("Model: %s", modelName.c_str());
 	ImGui::NextColumn();
-	if (ImGui::Button("Load model"))
+
+	setButtonColors();
+	if (ImGui::Button("Load model", ImVec2(150, ImGui::GetTextLineHeight() * 2.0f)))
 	{
 		load = true;
 	}
+	ImGui::PopStyleColor(3);
 
 	if (load)
 	{
@@ -103,7 +106,6 @@ try
 	return {};
 }
 
-
 void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, bool &changed)
 {
 	static bool load{};
@@ -111,10 +113,13 @@ void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture
 
 	ImGui::Text("Texture: %s", textureName.c_str());
 	ImGui::NextColumn();
-	if (ImGui::Button("Load texture"))
+
+	setButtonColors();
+	if (ImGui::Button("Load texture", ImVec2(150, ImGui::GetTextLineHeight() * 2.0f)))
 	{
 		load = true;
 	}
+	ImGui::PopStyleColor(3);
 
 	if (load)
 	{
@@ -144,4 +149,11 @@ std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Surv
 	}
 
 	return {};
+}
+
+void Survive::EditorUtil::setButtonColors()
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.5f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.1f, 1.0f));
 }
