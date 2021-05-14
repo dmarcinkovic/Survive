@@ -58,7 +58,7 @@ namespace Survive
 
 			if (changed && texture.isValidTexture() && model.isValidModel())
 			{
-				TexturedModel texturedModel(model, texture);
+				component.texturedModel = TexturedModel(model, texture);
 				changed = false;
 			}
 		}
