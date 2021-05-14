@@ -6,7 +6,6 @@
 #define SURVIVE_COMPONENTTEMPLATE_H
 
 #include <imgui.h>
-#include <iostream>
 
 #include "ObjParser.h"
 #include "Components.h"
@@ -59,7 +58,6 @@ namespace Survive
 
 			if (changed && texture.isValidTexture() && model.isValidModel())
 			{
-				std::cout << "Created textured model\n";
 				TexturedModel texturedModel(model, texture);
 				changed = false;
 			}

@@ -35,7 +35,8 @@ namespace Survive
 
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 
-		static void setButtonColors();
+		static void showRenderComponent(const char *format,
+										const std::string &name, const char *label, bool &load);
 	};
 }
 
