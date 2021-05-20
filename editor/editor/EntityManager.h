@@ -37,7 +37,7 @@ namespace Survive
 
 		void listComponents(entt::registry &registry);
 
-		void addNewComponent();
+		void addNewComponent(entt::registry &registry);
 
 		inline void drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i);
 

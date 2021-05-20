@@ -71,7 +71,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 	if (m_AddNewComponent)
 	{
-		addNewComponent();
+		addNewComponent(registry);
 	} else if (m_Selected >= 0)
 	{
 		listComponents(registry);
@@ -82,10 +82,13 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-
+	if (registry.has<AnimationComponent>(m_SelectedEntity))
+	{
+		ComponentTemplate::drawComponent(registry.get<AnimationComponent>(m_SelectedEntity));
+	}
 }
 
-void Survive::EntityManager::addNewComponent()
+void Survive::EntityManager::addNewComponent(entt::registry &registry)
 {
 	static std::vector<const char *> m_Components = ComponentList::getListOfComponents();
 	static int size = static_cast<int>(m_Components.size());
@@ -95,7 +98,15 @@ void Survive::EntityManager::addNewComponent()
 
 	if (m_CurrentItem >= 0)
 	{
-		ComponentTemplate::drawComponent(t);
+		using Type = decltype(t);
+		if (registry.has<Type>(m_SelectedEntity))
+		{
+			Type &component = registry.get<Type>(m_SelectedEntity);
+			ComponentTemplate::drawComponent(t);
+		} else
+		{
+			registry.emplace<Type>(m_SelectedEntity);
+		}
 	}
 
 	ImGui::PopStyleColor(5);
