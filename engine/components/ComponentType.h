@@ -7,16 +7,12 @@
 
 #include <string>
 #include <vector>
+#include <variant>
+
+#include "Components.h"
 
 namespace Survive
 {
-	enum class ComponentType
-	{
-		ANIMATION, BLOOM, MOVE, REFLECTION, REFRACTION, RENDER,
-		RIGID_BODY, SHADOW, SOUND, SPRITE, SPRITE_SHEET, TEXTURED,
-		TRANSFORM_2D, TRANSFORM_3D
-	};
-
 	class ComponentList
 	{
 	public:
