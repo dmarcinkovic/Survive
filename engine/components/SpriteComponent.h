@@ -16,6 +16,8 @@ namespace Survive
 		explicit SpriteComponent(const glm::vec3 &color)
 				: color(color)
 		{}
+
+		SpriteComponent() = default;
 	};
 }
 
