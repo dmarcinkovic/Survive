@@ -2,8 +2,8 @@
 // Created by david on 08. 05. 2021..
 //
 
-#ifndef SURVIVE_COMPONENTTYPE_H
-#define SURVIVE_COMPONENTTYPE_H
+#ifndef SURVIVE_COMPONENTUTIL_H
+#define SURVIVE_COMPONENTUTIL_H
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 
 namespace Survive
 {
-	class ComponentList
+	class ComponentUtil
 	{
 	public:
 		static std::vector<const char *> getListOfComponents()
@@ -31,4 +31,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_COMPONENTTYPE_H
+#endif //SURVIVE_COMPONENTUTIL_H
