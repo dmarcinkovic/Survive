@@ -6,7 +6,6 @@
 
 #include "ComponentUtil.h"
 #include "EntityManager.h"
-#include "ComponentTemplate.h"
 #include "EditorUtil.h"
 
 void Survive::EntityManager::addEntity(entt::registry &registry)
@@ -95,12 +94,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 	if (m_CurrentItem >= 0)
 	{
-		if (!registry.has<RenderComponent>(m_SelectedEntity))
-		{
-			registry.emplace<RenderComponent>(m_SelectedEntity);
-		}
-
-		ComponentTemplate::drawComponent<RenderComponent>(registry, m_SelectedEntity);
+		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
 	}
 
 	ImGui::PopStyleColor(5);

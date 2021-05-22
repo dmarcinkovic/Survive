@@ -46,6 +46,66 @@ namespace Survive
 			ComponentTemplate::drawComponent<Transform2DComponent>(registry, entity);
 			ComponentTemplate::drawComponent<Transform3DComponent>(registry, entity);
 		}
+
+		static void addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
+		{
+			switch (selectedItem)
+			{
+				case 0:
+					addComponent<AnimationComponent>(registry, entity);
+					break;
+				case 1:
+					addComponent<BloomComponent>(registry, entity);
+					break;
+				case 2:
+					addComponent<ReflectionComponent>(registry, entity);
+					break;
+				case 3:
+					addComponent<RefractionComponent>(registry, entity);
+					break;
+				case 4:
+					addComponent<RenderComponent>(registry, entity);
+					break;
+				case 5:
+					addComponent<RigidBodyComponent>(registry, entity);
+					break;
+				case 6:
+					addComponent<ShadowComponent>(registry, entity);
+					break;
+				case 7:
+					addComponent<SoundComponent>(registry, entity);
+					break;
+				case 8:
+					addComponent<SpriteComponent>(registry, entity);
+					break;
+				case 9:
+					addComponent<SpriteSheetComponent>(registry, entity);
+					break;
+				case 10:
+					addComponent<TexturedComponent>(registry, entity);
+					break;
+				case 11:
+					addComponent<Transform2DComponent>(registry, entity);
+					break;
+				case 12:
+					addComponent<Transform3DComponent>(registry, entity);
+					break;
+				default:
+					throw std::runtime_error("Selected item not implemented");
+			}
+		}
+
+	private:
+		template<typename Component>
+		static void addComponent(entt::registry &registry, entt::entity entity)
+		{
+			if (!registry.has<Component>(entity))
+			{
+				registry.emplace<Component>(entity);
+			}
+
+			ComponentTemplate::drawComponent<Component>(registry, entity);
+		}
 	};
 }
 
