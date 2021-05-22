@@ -82,10 +82,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	if (registry.has<AnimationComponent>(m_SelectedEntity))
-	{
-		ComponentTemplate::drawComponent(registry.get<AnimationComponent>(m_SelectedEntity));
-	}
+	ComponentTemplate::drawComponent<Transform3DComponent>(registry, m_SelectedEntity);
 }
 
 void Survive::EntityManager::addNewComponent(entt::registry &registry)
@@ -98,15 +95,12 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 	if (m_CurrentItem >= 0)
 	{
-		using Type = decltype(t);
-		if (registry.has<Type>(m_SelectedEntity))
+		if (!registry.has<RenderComponent>(m_SelectedEntity))
 		{
-			Type &component = registry.get<Type>(m_SelectedEntity);
-			ComponentTemplate::drawComponent(t);
-		} else
-		{
-			registry.emplace<Type>(m_SelectedEntity);
+			registry.emplace<RenderComponent>(m_SelectedEntity);
 		}
+
+		ComponentTemplate::drawComponent<RenderComponent>(registry, m_SelectedEntity);
 	}
 
 	ImGui::PopStyleColor(5);

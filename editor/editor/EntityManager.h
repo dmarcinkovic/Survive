@@ -23,8 +23,6 @@ namespace Survive
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
 
-		RigidBodyComponent t{};
-
 	public:
 		void addEntity(entt::registry &registry);
 
