@@ -82,20 +82,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	ComponentTemplate::drawComponent<AnimationComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<BloomComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<MoveComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<ReflectionComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<RefractionComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<RenderComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<RigidBodyComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<ShadowComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<SoundComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<SpriteComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<SpriteSheetComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<TexturedComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<Transform2DComponent>(registry, m_SelectedEntity);
-	ComponentTemplate::drawComponent<Transform3DComponent>(registry, m_SelectedEntity);
+	ComponentUtil::drawAllComponents(registry, m_SelectedEntity);
 }
 
 void Survive::EntityManager::addNewComponent(entt::registry &registry)
