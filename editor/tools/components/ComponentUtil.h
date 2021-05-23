@@ -58,36 +58,39 @@ namespace Survive
 					addComponent<BloomComponent>(registry, entity);
 					break;
 				case 2:
-					addComponent<ReflectionComponent>(registry, entity);
+					addComponent <MoveComponent>(registry, entity);
 					break;
 				case 3:
-					addComponent<RefractionComponent>(registry, entity);
+					addComponent<ReflectionComponent>(registry, entity);
 					break;
 				case 4:
-					addComponent<RenderComponent>(registry, entity);
+					addComponent<RefractionComponent>(registry, entity);
 					break;
 				case 5:
-					addComponent<RigidBodyComponent>(registry, entity);
+					addComponent<RenderComponent>(registry, entity);
 					break;
 				case 6:
-					addComponent<ShadowComponent>(registry, entity);
+					addComponent<RigidBodyComponent>(registry, entity);
 					break;
 				case 7:
-					addComponent<SoundComponent>(registry, entity);
+					addComponent<ShadowComponent>(registry, entity);
 					break;
 				case 8:
-					addComponent<SpriteComponent>(registry, entity);
+					addComponent<SoundComponent>(registry, entity);
 					break;
 				case 9:
-					addComponent<SpriteSheetComponent>(registry, entity);
+					addComponent<SpriteComponent>(registry, entity);
 					break;
 				case 10:
-					addComponent<TexturedComponent>(registry, entity);
+					addComponent<SpriteSheetComponent>(registry, entity);
 					break;
 				case 11:
-					addComponent<Transform2DComponent>(registry, entity);
+					addComponent<TexturedComponent>(registry, entity);
 					break;
 				case 12:
+					addComponent<Transform2DComponent>(registry, entity);
+					break;
+				case 13:
 					addComponent<Transform3DComponent>(registry, entity);
 					break;
 				default:
