@@ -119,7 +119,7 @@ namespace Survive
 		template<typename Component>
 		static void drawAddButton(entt::registry &registry, entt::entity entity, Component &component)
 		{
-			float width = ImGui::GetColumnWidth() / 2.0f;
+			float width = ImGui::GetColumnWidth() * 0.7f;
 			float height = 2.0f * ImGui::GetFontSize();
 
 			if (ImGui::Button("Add component", ImVec2(width, height)))
