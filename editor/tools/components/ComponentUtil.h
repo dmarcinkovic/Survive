@@ -31,20 +31,20 @@ namespace Survive
 
 		static void drawAllComponents(entt::registry &registry, entt::entity entity)
 		{
-			ComponentTemplate::drawComponent<AnimationComponent>(registry, entity);
-			ComponentTemplate::drawComponent<BloomComponent>(registry, entity);
-			ComponentTemplate::drawComponent<MoveComponent>(registry, entity);
-			ComponentTemplate::drawComponent<ReflectionComponent>(registry, entity);
-			ComponentTemplate::drawComponent<RefractionComponent>(registry, entity);
-			ComponentTemplate::drawComponent<RenderComponent>(registry, entity);
-			ComponentTemplate::drawComponent<RigidBodyComponent>(registry, entity);
-			ComponentTemplate::drawComponent<ShadowComponent>(registry, entity);
-			ComponentTemplate::drawComponent<SoundComponent>(registry, entity);
-			ComponentTemplate::drawComponent<SpriteComponent>(registry, entity);
-			ComponentTemplate::drawComponent<SpriteSheetComponent>(registry, entity);
-			ComponentTemplate::drawComponent<TexturedComponent>(registry, entity);
-			ComponentTemplate::drawComponent<Transform2DComponent>(registry, entity);
-			ComponentTemplate::drawComponent<Transform3DComponent>(registry, entity);
+			drawComponent<AnimationComponent>(registry, entity);
+			drawComponent<BloomComponent>(registry, entity);
+			drawComponent<MoveComponent>(registry, entity);
+			drawComponent<ReflectionComponent>(registry, entity);
+			drawComponent<RefractionComponent>(registry, entity);
+			drawComponent<RenderComponent>(registry, entity);
+			drawComponent<RigidBodyComponent>(registry, entity);
+			drawComponent<ShadowComponent>(registry, entity);
+			drawComponent<SoundComponent>(registry, entity);
+			drawComponent<SpriteComponent>(registry, entity);
+			drawComponent<SpriteSheetComponent>(registry, entity);
+			drawComponent<TexturedComponent>(registry, entity);
+			drawComponent<Transform2DComponent>(registry, entity);
+			drawComponent<Transform3DComponent>(registry, entity);
 		}
 
 		static void addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
@@ -102,12 +102,42 @@ namespace Survive
 		template<typename Component>
 		static void addComponent(entt::registry &registry, entt::entity entity)
 		{
-			if (!registry.has<Component>(entity))
+			static Component component;
+
+			if (registry.has<Component>(entity))
 			{
-				registry.emplace<Component>(entity);
+				ComponentTemplate::drawComponent(registry.get<Component>(entity));
+			} else
+			{
+				ComponentTemplate::drawComponent(component);
 			}
 
-			ComponentTemplate::drawComponent<Component>(registry, entity);
+			ImGui::Columns();
+			drawAddButton(registry, entity, component);
+		}
+
+		template<typename Component>
+		static void drawAddButton(entt::registry &registry, entt::entity entity, Component &component)
+		{
+			float width = ImGui::GetColumnWidth() / 2.0f;
+			float height = 2.0f * ImGui::GetFontSize();
+
+			if (ImGui::Button("Add component", ImVec2(width, height)))
+			{
+				if (!registry.has<Component>(entity))
+				{
+					registry.emplace<Component>(entity, component);
+				}
+			}
+		}
+
+		template<typename Component>
+		static void drawComponent(entt::registry &registry, entt::entity entity)
+		{
+			if (registry.has<Component>(entity))
+			{
+				ComponentTemplate::drawComponent(registry.get<Component>(entity));
+			}
 		}
 	};
 }

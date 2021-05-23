@@ -19,33 +19,29 @@ namespace Survive
 	{
 	public:
 		template<typename ComponentType>
-		static void drawComponent(entt::registry &, entt::entity)
+		static void drawComponent(ComponentType &component)
 		{}
 	};
 
 	template<>
-	void ComponentTemplate::drawComponent<Transform3DComponent>(entt::registry &registry, entt::entity entity)
+	void ComponentTemplate::drawComponent(Transform3DComponent &component)
 	{
-		if (registry.has<Transform3DComponent>(entity))
+		if (ImGui::CollapsingHeader("Transform3D"))
 		{
-			Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
-			if (ImGui::CollapsingHeader("Transform3D"))
-			{
-				ImGui::Columns(4);
-				EditorUtil::drawTransform3DHeader();
+			ImGui::Columns(4);
+			EditorUtil::drawTransform3DHeader();
 
-				ImGui::Text("Position");
-				EditorUtil::drawTransform3DRow(transform.position, "##PosX", "##PosY", "##PosZ");
-				ImGui::Text("Rotation");
-				EditorUtil::drawTransform3DRow(transform.rotation, "##RotX", "##RotY", "##RotZ");
-				ImGui::Text("Scale");
-				EditorUtil::drawTransform3DRow(transform.scale, "##ScX", "##ScY", "##ScZ");
-			}
+			ImGui::Text("Position");
+			EditorUtil::drawTransform3DRow(component.position, "##PosX", "##PosY", "##PosZ");
+			ImGui::Text("Rotation");
+			EditorUtil::drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
+			ImGui::Text("Scale");
+			EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ");
 		}
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent<RenderComponent>(entt::registry &registry, entt::entity entity)
+	void ComponentTemplate::drawComponent(RenderComponent &component)
 	{
 		static FileChooser fileChooser{};
 		static Model model;
@@ -53,35 +49,27 @@ namespace Survive
 
 		static bool changed = true;
 
-		if (registry.has<RenderComponent>(entity))
+		if (ImGui::CollapsingHeader("Render"))
 		{
-			RenderComponent &component = registry.get<RenderComponent>(entity);
-			if (ImGui::CollapsingHeader("Render"))
-			{
-				ImGui::Columns(2);
-				EditorUtil::loadModel(fileChooser, model, changed);
-				ImGui::NextColumn();
-				EditorUtil::loadTexture(fileChooser, texture, changed);
+			ImGui::Columns(2);
+			EditorUtil::loadModel(fileChooser, model, changed);
+			ImGui::NextColumn();
+			EditorUtil::loadTexture(fileChooser, texture, changed);
 
-				if (changed && texture.isValidTexture() && model.isValidModel())
-				{
-					component.texturedModel = TexturedModel(model, texture);
-					changed = false;
-				}
+			if (changed && texture.isValidTexture() && model.isValidModel())
+			{
+				component.texturedModel = TexturedModel(model, texture);
+				changed = false;
 			}
 		}
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent<RigidBodyComponent>(entt::registry &registry, entt::entity entity)
+	void ComponentTemplate::drawComponent(RigidBodyComponent &component)
 	{
-		if (registry.has<RigidBodyComponent>(entity))
+		if (ImGui::CollapsingHeader("Rigid body"))
 		{
-			RigidBodyComponent &component = registry.get<RigidBodyComponent>(entity);
-			if (ImGui::CollapsingHeader("Rigid body"))
-			{
-				ImGui::Checkbox("Transparent", &component.isTransparent);
-			}
+			ImGui::Checkbox("Transparent", &component.isTransparent);
 		}
 	}
 }

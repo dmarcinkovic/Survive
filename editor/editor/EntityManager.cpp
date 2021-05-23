@@ -96,13 +96,6 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	if (m_CurrentItem >= 0)
 	{
 		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
-		ImGui::Columns();
-
-		float width = ImGui::GetColumnWidth() / 2.0f;
-		float height = 2.0f * ImGui::GetFontSize();
-		if (ImGui::Button("Add component", ImVec2(width, height)))
-		{
-		}
 	}
 
 	ImGui::PopStyleColor(5);
