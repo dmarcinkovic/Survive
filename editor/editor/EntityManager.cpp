@@ -98,7 +98,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
 	}
 
-	ImGui::PopStyleColor(5);
+	ImGui::PopStyleColor(7);
 }
 
 void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
