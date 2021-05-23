@@ -95,6 +95,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 	if (m_CurrentItem >= 0)
 	{
+		// TODO disable added component if possible
 		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
 	}
 

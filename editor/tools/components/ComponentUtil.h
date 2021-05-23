@@ -112,7 +112,6 @@ namespace Survive
 				ComponentTemplate::drawComponent(component);
 			}
 
-			ImGui::Columns();
 			drawAddButton(registry, entity, component);
 		}
 

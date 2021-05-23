@@ -37,6 +37,8 @@ namespace Survive
 			EditorUtil::drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
 			ImGui::Text("Scale");
 			EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ");
+
+			ImGui::Columns();
 		}
 	}
 
@@ -61,6 +63,8 @@ namespace Survive
 				component.texturedModel = TexturedModel(model, texture);
 				changed = false;
 			}
+
+			ImGui::Columns();
 		}
 	}
 
