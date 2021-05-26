@@ -15,7 +15,10 @@ namespace Survive
 		glm::vec3 rotation;
 		glm::vec3 scale;
 
-		Transform3DComponent() = default;
+		Transform3DComponent()
+			: position{}, rotation{}, scale{1.0f}
+		{
+		}
 
 		explicit Transform3DComponent(const glm::vec3 &position, const glm::vec3 &scale = glm::vec3{1.0f},
 									  const glm::vec3 &rotation = glm::vec3{0.0f})
