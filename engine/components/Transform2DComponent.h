@@ -17,7 +17,10 @@ namespace Survive
 		glm::vec2 rotation;
 		glm::vec2 scale;
 
-		Transform2DComponent() = default;
+		Transform2DComponent()
+			: position{}, rotation{}, scale{1.0f}
+		{
+		}
 
 		explicit Transform2DComponent(const glm::vec2 &position, const glm::vec2 &scale = glm::vec2{1.0f},
 									  const glm::vec2 &rotation = glm::vec2{0.0f})
