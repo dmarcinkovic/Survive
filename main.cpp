@@ -1,5 +1,4 @@
 #include "Editor.h"
-#include "EventHandler.h"
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
@@ -24,8 +23,6 @@ int main()
 	Renderer3D renderer(light);
 
 	Editor editor(renderer.getRenderedTexture());
-	EventHandler eventHandler(camera);
-	eventHandler.registerListener(editor.isSceneWindowFocused());
 
 	auto dragon = registry.create();
 	registry.emplace<TagComponent>(dragon, "dragon");
