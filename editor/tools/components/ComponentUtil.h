@@ -47,52 +47,38 @@ namespace Survive
 			drawComponent<Transform3DComponent>(registry, entity);
 		}
 
-		static void addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
+		static bool addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
 		{
 			switch (selectedItem)
 			{
 				case 0:
-					addComponent<AnimationComponent>(registry, entity);
-					break;
+					return addComponent<AnimationComponent>(registry, entity);
 				case 1:
-					addComponent<BloomComponent>(registry, entity);
-					break;
+					return addComponent<BloomComponent>(registry, entity);
 				case 2:
-					addComponent <MoveComponent>(registry, entity);
-					break;
+					return addComponent <MoveComponent>(registry, entity);
 				case 3:
-					addComponent<ReflectionComponent>(registry, entity);
-					break;
+					return addComponent<ReflectionComponent>(registry, entity);
 				case 4:
-					addComponent<RefractionComponent>(registry, entity);
-					break;
+					return addComponent<RefractionComponent>(registry, entity);
 				case 5:
-					addComponent<RenderComponent>(registry, entity);
-					break;
+					return addComponent<RenderComponent>(registry, entity);
 				case 6:
-					addComponent<RigidBodyComponent>(registry, entity);
-					break;
+					return addComponent<RigidBodyComponent>(registry, entity);
 				case 7:
-					addComponent<ShadowComponent>(registry, entity);
-					break;
+					return addComponent<ShadowComponent>(registry, entity);
 				case 8:
-					addComponent<SoundComponent>(registry, entity);
-					break;
+					return addComponent<SoundComponent>(registry, entity);
 				case 9:
-					addComponent<SpriteComponent>(registry, entity);
-					break;
+					return addComponent<SpriteComponent>(registry, entity);
 				case 10:
-					addComponent<SpriteSheetComponent>(registry, entity);
-					break;
+					return addComponent<SpriteSheetComponent>(registry, entity);
 				case 11:
-					addComponent<TexturedComponent>(registry, entity);
-					break;
+					return addComponent<TexturedComponent>(registry, entity);
 				case 12:
-					addComponent<Transform2DComponent>(registry, entity);
-					break;
+					return addComponent<Transform2DComponent>(registry, entity);
 				case 13:
-					addComponent<Transform3DComponent>(registry, entity);
-					break;
+					return addComponent<Transform3DComponent>(registry, entity);
 				default:
 					throw std::runtime_error("Selected item not implemented");
 			}
@@ -100,7 +86,7 @@ namespace Survive
 
 	private:
 		template<typename Component>
-		static void addComponent(entt::registry &registry, entt::entity entity)
+		static bool addComponent(entt::registry &registry, entt::entity entity)
 		{
 			static Component component;
 
@@ -112,11 +98,11 @@ namespace Survive
 				ComponentTemplate::drawComponent(component);
 			}
 
-			drawAddButton(registry, entity, component);
+			return drawAddButton(registry, entity, component);
 		}
 
 		template<typename Component>
-		static void drawAddButton(entt::registry &registry, entt::entity entity, Component &component)
+		static bool drawAddButton(entt::registry &registry, entt::entity entity, Component &component)
 		{
 			float width = ImGui::GetColumnWidth() * 0.7f;
 			float height = 2.0f * ImGui::GetFontSize();
@@ -127,7 +113,11 @@ namespace Survive
 				{
 					registry.emplace<Component>(entity, component);
 				}
+
+				return true;
 			}
+
+			return false;
 		}
 
 		template<typename Component>

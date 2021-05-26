@@ -97,8 +97,11 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	if (m_CurrentItem >= 0)
 	{
 		// TODO disable added component if possible
-		// TODO remove add button when button is pressed and set currentItem = -1
-		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
+		bool componentAdded = ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
+		if (componentAdded)
+		{
+			m_CurrentItem = -1;
+		}
 	}
 
 	EditorUtil::resetStyleColors();
