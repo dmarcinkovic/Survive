@@ -18,6 +18,8 @@ namespace Survive
 	public:
 		static void setStyleColors();
 
+		static void resetStyleColors();
+
 		static void drawTransform3DHeader();
 
 		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z);

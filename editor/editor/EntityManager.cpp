@@ -81,8 +81,9 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	// TODO do not forget to change color of collapsing header: It is blue
+	EditorUtil::setStyleColors();
 	ComponentUtil::drawAllComponents(registry, m_SelectedEntity);
+	EditorUtil::resetStyleColors();
 }
 
 void Survive::EntityManager::addNewComponent(entt::registry &registry)
@@ -96,10 +97,12 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	if (m_CurrentItem >= 0)
 	{
 		// TODO disable added component if possible
+		// TODO remove add button when button is pressed and set currentItem = -1
 		ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
 	}
 
-	ImGui::PopStyleColor(7);
+	EditorUtil::resetStyleColors();
+	// TODO do not forget to fix problem with static Component
 }
 
 void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)

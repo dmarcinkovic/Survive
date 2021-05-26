@@ -20,6 +20,11 @@ void Survive::EditorUtil::setStyleColors()
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 }
 
+void Survive::EditorUtil::resetStyleColors()
+{
+	ImGui::PopStyleColor(7);
+}
+
 void Survive::EditorUtil::drawTransform3DHeader()
 {
 	ImGui::NextColumn();
