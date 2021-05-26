@@ -5,7 +5,6 @@
 #ifndef SURVIVE_ENTITYMANAGER_H
 #define SURVIVE_ENTITYMANAGER_H
 
-#include <RigidBodyComponent.h>
 #include "entt.hpp"
 #include "Components.h"
 
