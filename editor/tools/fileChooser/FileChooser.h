@@ -33,7 +33,7 @@ namespace Survive
 		const std::filesystem::path m_Root;
 
 		ImTextureID m_Icon{};
-		int m_SelectedFile{};
+		int m_SelectedFile = -1;
 
 		std::vector<File> m_DirectoryContent;
 		bool m_Hidden{};

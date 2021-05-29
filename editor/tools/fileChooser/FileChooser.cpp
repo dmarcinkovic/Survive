@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <iostream>
 
 #include "FileChooser.h"
 #include "Display.h"
@@ -344,12 +345,13 @@ std::string Survive::FileChooser::getSelectedFile() const
 
 void Survive::FileChooser::resetSelectedFile()
 {
-	m_SelectedFile = 0;
 	if (m_DirectoryContent.empty())
 	{
+		m_SelectedFile = -1;
 		m_SelectedFileName = "";
 	} else
 	{
+		m_SelectedFile = 0;
 		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
 	}
 }
@@ -396,7 +398,7 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open)
 
 void Survive::FileChooser::openPressed(bool *open)
 {
-	if (!m_DirectoryContent.empty() && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
+	if (m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
 	{
 		std::filesystem::path path(m_CurrentDirectory);
 
