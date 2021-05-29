@@ -263,7 +263,7 @@ void Survive::FileChooser::drawFilenameTextbox(bool *open)
 {
 	if (ImGui::BeginChild("text box"))
 	{
-		ImGui::InputText("", m_SelectedFileName.data(), 255);
+		ImGui::InputText("", m_SelectedFileName.data(), 255, ImGuiInputTextFlags_ReadOnly);
 
 		ImGui::SameLine();
 		drawCancelButton(open);
