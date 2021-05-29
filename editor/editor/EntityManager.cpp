@@ -104,7 +104,6 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	}
 
 	EditorUtil::resetStyleColors();
-	// TODO do not forget to fix problem with static Component
 }
 
 void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
