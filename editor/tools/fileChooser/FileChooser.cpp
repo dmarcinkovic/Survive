@@ -46,7 +46,7 @@ void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *ope
 		ImGui::EndPopup();
 	}
 
-	ImGui::PopStyleColor(4);
+	ImGui::PopStyleColor(7);
 }
 
 std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string &directory, bool showHidden)
@@ -185,6 +185,10 @@ void Survive::FileChooser::setupDarkStyleColors()
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.11f, 0.11f, 0.11f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.267f, 0.267f, 0.267f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.15f));
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.337f, 0.5f, 0.76f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.05f, 0.52f, 0.98f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.26f, 0.588f, 0.98f, 1.0f));
 }
 
 void Survive::FileChooser::drawNavigationArrows()
@@ -322,14 +326,10 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 
 void Survive::FileChooser::drawOpenButton(bool *open)
 {
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.337f, 0.5f, 0.76f, 1.0f));
-
 	if (ImGui::Button("Open"))
 	{
 		openPressed(open);
 	}
-
-	ImGui::PopStyleColor();
 }
 
 std::string Survive::FileChooser::getSelectedFile() const
