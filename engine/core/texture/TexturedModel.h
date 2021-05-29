@@ -15,8 +15,7 @@ namespace Survive
 	class TexturedModel
 	{
 	private:
-		GLuint m_Vao{};
-		GLsizei m_VertexCount{};
+		Model m_Model{};
 		Texture m_Texture;
 
 	public:
@@ -46,6 +45,10 @@ namespace Survive
 
 		[[nodiscard]] bool isValidTexture() const;
 
+		Model &getModel();
+
+		Texture &getTexture();
+
 		friend class TextureHash;
 	};
 
@@ -53,7 +56,7 @@ namespace Survive
 	{
 		std::size_t operator()(const TexturedModel &texture) const noexcept
 		{
-			return texture.m_Vao ^ texture.m_Texture.textureId() ^ texture.m_VertexCount;
+			return texture.m_Model.m_Vao ^ texture.m_Texture.textureId() ^ texture.m_Model.m_VertexCount;
 		}
 	};
 }

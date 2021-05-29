@@ -24,9 +24,9 @@ namespace Survive
 
 		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z);
 
-		static void loadModel(FileChooser &fileChooser, Model &model, bool &changed);
+		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
-		static void loadTexture(FileChooser &fileChooser, Texture &texture, bool &changed);
+		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment);

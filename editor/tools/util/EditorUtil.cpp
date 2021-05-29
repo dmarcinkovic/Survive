@@ -66,10 +66,9 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 				  vec1.z + vec2.z, vec1.w + vec2.w);
 }
 
-void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, bool &changed)
+void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed)
 {
 	static bool load{};
-	static std::string modelName;
 	static Loader loader;
 
 	showRenderComponent("Model: %s", modelName, "Load model", load);
@@ -105,10 +104,10 @@ try
 	return {};
 }
 
-void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, bool &changed)
+void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, std::string &textureName,
+									  bool &changed)
 {
 	static bool load{};
-	static std::string textureName;
 
 	showRenderComponent("Texture: %s", textureName, "Load texture", load);
 

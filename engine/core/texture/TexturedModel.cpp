@@ -5,7 +5,7 @@
 #include "TexturedModel.h"
 
 Survive::TexturedModel::TexturedModel(const Model &model, const Texture &texture)
-		: m_Vao(model.m_Vao), m_Texture(texture), m_VertexCount(model.m_VertexCount)
+		: m_Model(model), m_Texture(texture)
 {
 
 }
@@ -18,7 +18,7 @@ Survive::TexturedModel::TexturedModel()
 
 void Survive::TexturedModel::bind() const
 {
-	glBindVertexArray(m_Vao);
+	glBindVertexArray(m_Model.m_Vao);
 	bindTexture(0);
 }
 
@@ -44,24 +44,24 @@ void Survive::TexturedModel::unbindVao()
 
 GLsizei Survive::TexturedModel::vertexCount() const
 {
-	return m_VertexCount;
+	return m_Model.m_VertexCount;
 }
 
 bool Survive::TexturedModel::operator==(const TexturedModel &rhs) const
 {
-	return m_Vao == rhs.m_Vao &&
-		   m_VertexCount == rhs.m_VertexCount &&
+	return m_Model.m_Vao == rhs.m_Model.m_Vao &&
+		   m_Model.m_VertexCount == rhs.m_Model.m_VertexCount &&
 		   m_Texture.textureId() == rhs.m_Texture.textureId();
 }
 
 GLuint Survive::TexturedModel::vaoID() const
 {
-	return m_Vao;
+	return m_Model.m_Vao;
 }
 
 void Survive::TexturedModel::setVertexCount(int vertexCount)
 {
-	m_VertexCount = vertexCount;
+	m_Model.m_VertexCount = vertexCount;
 }
 
 bool Survive::TexturedModel::isValidTexture() const
@@ -70,6 +70,16 @@ bool Survive::TexturedModel::isValidTexture() const
 }
 
 const Survive::Texture &Survive::TexturedModel::getTexture() const
+{
+	return m_Texture;
+}
+
+Survive::Model &Survive::TexturedModel::getModel()
+{
+	return m_Model;
+}
+
+Survive::Texture &Survive::TexturedModel::getTexture()
 {
 	return m_Texture;
 }

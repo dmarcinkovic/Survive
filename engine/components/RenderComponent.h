@@ -11,6 +11,9 @@ namespace Survive
 {
 	struct RenderComponent
 	{
+		std::string modelName{};
+		std::string textureName{};
+
 		TexturedModel texturedModel{};
 
 		RenderComponent() = default;

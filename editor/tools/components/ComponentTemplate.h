@@ -46,21 +46,19 @@ namespace Survive
 	void ComponentTemplate::drawComponent(RenderComponent &component)
 	{
 		static FileChooser fileChooser{};
-		static Model model;
-		static Texture texture;
-
 		static bool changed = true;
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
-			ImGui::Columns(2);
-			EditorUtil::loadModel(fileChooser, model, changed);
-			ImGui::NextColumn();
-			EditorUtil::loadTexture(fileChooser, texture, changed);
+			TexturedModel &texturedModel = component.texturedModel;
 
-			if (changed && texture.isValidTexture() && model.isValidModel())
+			ImGui::Columns(2);
+			EditorUtil::loadModel(fileChooser, texturedModel.getModel(), component.modelName, changed);
+			ImGui::NextColumn();
+			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
+
+			if (changed && texturedModel.isValidTexture() && texturedModel.getModel().isValidModel())
 			{
-				component.texturedModel = TexturedModel(model, texture);
 				changed = false;
 			}
 
