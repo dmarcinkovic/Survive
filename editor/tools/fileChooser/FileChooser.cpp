@@ -284,7 +284,7 @@ void Survive::FileChooser::drawTable(float windowHeight, bool *open)
 
 			for (int i = 0; i < m_DirectoryContent.size(); ++i)
 			{
-				const File &file = m_DirectoryContent[i];
+				File file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
 				fillTableRow(file, i, open);
