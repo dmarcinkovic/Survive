@@ -56,7 +56,7 @@ namespace Survive
 				case 1:
 					return addComponent<BloomComponent>(registry, entity);
 				case 2:
-					return addComponent <MoveComponent>(registry, entity);
+					return addComponent<MoveComponent>(registry, entity);
 				case 3:
 					return addComponent<ReflectionComponent>(registry, entity);
 				case 4:
@@ -98,7 +98,13 @@ namespace Survive
 				ComponentTemplate::drawComponent(component);
 			}
 
-			return drawAddButton(registry, entity, component);
+			if (drawAddButton(registry, entity, component))
+			{
+				component = Component{};
+				return true;
+			}
+
+			return false;
 		}
 
 		template<typename Component>
