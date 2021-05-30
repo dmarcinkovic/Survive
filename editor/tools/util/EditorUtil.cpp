@@ -36,17 +36,21 @@ void Survive::EditorUtil::drawTransform3DHeader()
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z)
+void Survive::EditorUtil::drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y,
+											 const char *z, float lowerBound)
 {
-	setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1));
-	setDragFloat(vec.y, y, ImVec4(0, 0.4f, 0, 1), ImVec4(0, 0.2f, 0, 1));
-	setDragFloat(vec.z, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1));
+	setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1), lowerBound);
+	setDragFloat(vec.y, y, ImVec4(0, 0.4f, 0, 1), ImVec4(0, 0.2f, 0, 1), lowerBound);
+	setDragFloat(vec.z, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1), lowerBound);
 
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment)
+void Survive::EditorUtil::setDragFloat(float &value, const char *label, const ImVec4 &frameBg,
+									   const ImVec4 &increment, float lowerBound)
 {
+	float upperBound = std::numeric_limits<float>::max();
+
 	ImGui::NextColumn();
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, frameBg);
 
@@ -56,7 +60,7 @@ void Survive::EditorUtil::setDragFloat(float &value, const char *label, const Im
 	ImVec4 frameBgActive = add(frameBgHovered, increment);
 	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, frameBgActive);
 
-	ImGui::DragFloat(label, &value);
+	ImGui::DragFloat(label, &value, 1.0f, lowerBound, upperBound);
 	ImGui::PopStyleColor(3);
 }
 

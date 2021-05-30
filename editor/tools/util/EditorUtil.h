@@ -22,14 +22,16 @@ namespace Survive
 
 		static void drawTransform3DHeader();
 
-		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z);
+		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z,
+									   float lowerBound = std::numeric_limits<float>::lowest());
 
 		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
 		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);
 
 	private:
-		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment);
+		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
+								 float lowerBound = std::numeric_limits<float>::min());
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 

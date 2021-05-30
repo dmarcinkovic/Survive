@@ -36,7 +36,7 @@ namespace Survive
 			ImGui::Text("Rotation");
 			EditorUtil::drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
 			ImGui::Text("Scale");
-			EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ");
+			EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ", 0.0f);
 
 			ImGui::Columns();
 		}
