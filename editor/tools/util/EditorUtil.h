@@ -25,6 +25,11 @@ namespace Survive
 		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z,
 									   float lowerBound = std::numeric_limits<float>::lowest());
 
+		static void drawTransform2DRow(glm::vec2 &vec, const char *x, const char *y,
+									   float lowerBound = std::numeric_limits<float>::lowest());
+
+		static void drawTransform2DHeader();
+
 		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
 		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);

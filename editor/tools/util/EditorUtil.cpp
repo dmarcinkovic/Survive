@@ -162,3 +162,20 @@ void Survive::EditorUtil::showRenderComponent(const char *format,
 
 	ImGui::PopStyleColor(3);
 }
+
+void Survive::EditorUtil::drawTransform2DRow(glm::vec2 &vec, const char *x, const char *y, float lowerBound)
+{
+	setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1), lowerBound);
+	setDragFloat(vec.y, y, ImVec4(0, 0.4f, 0, 1), ImVec4(0, 0.2f, 0, 1), lowerBound);
+
+	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawTransform2DHeader()
+{
+	ImGui::NextColumn();
+	ImGui::Text("X");
+	ImGui::NextColumn();
+	ImGui::Text("Y");
+	ImGui::NextColumn();
+}

@@ -74,6 +74,25 @@ namespace Survive
 			ImGui::Checkbox("Transparent", &component.isTransparent);
 		}
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(Transform2DComponent &component)
+	{
+		if (ImGui::CollapsingHeader("Transform2D"))
+		{
+			ImGui::Columns(3);
+			EditorUtil::drawTransform2DHeader();
+
+			ImGui::Text("Position");
+			EditorUtil::drawTransform2DRow(component.position, "##PosX", "##PosY");
+			ImGui::Text("Rotation");
+			EditorUtil::drawTransform2DRow(component.rotation, "##RotX", "##RotY");
+			ImGui::Text("Scale");
+			EditorUtil::drawTransform2DRow(component.scale, "##ScX", "##ScY", 0.0f);
+
+			ImGui::Columns();
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
