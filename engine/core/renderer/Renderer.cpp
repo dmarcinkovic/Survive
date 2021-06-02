@@ -82,11 +82,11 @@ void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) co
 	m_WaterRenderer.render(registry, camera, m_Light);
 
 	m_OutlineRenderer.render(registry, camera);
+	render2DScene(registry);
 	FrameBuffer::unbindFrameBuffer();
 
 	m_BloomRenderer.render(registry);
 
-	render2DScene(registry);
 	resetViewport();
 }
 
