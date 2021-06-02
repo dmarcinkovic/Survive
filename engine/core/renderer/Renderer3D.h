@@ -5,6 +5,8 @@
 #ifndef SURVIVE_RENDERER3D_H
 #define SURVIVE_RENDERER3D_H
 
+#include "GuiRenderer.h"
+#include "SpritesRenderer.h"
 #include "AnimationRenderer.h"
 #include "WaterRenderer.h"
 #include "TerrainRenderer.h"
@@ -28,6 +30,8 @@ namespace Survive
 		MousePicking m_MousePicking;
 		WaterRenderer m_WaterRenderer;
 		BloomRenderer m_BloomRenderer;
+		SpritesRenderer m_SpriteRenderer{};
+		GuiRenderer m_GuiRenderer{};
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;
@@ -58,6 +62,8 @@ namespace Survive
 		void addShadow(entt::registry &registry, entt::entity entity);
 
 		void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+
+		void render2DScene(entt::registry &registry) const;
 
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;

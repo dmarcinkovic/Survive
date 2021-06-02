@@ -7,8 +7,7 @@
 
 #include <vector>
 
-#include "SpritesRenderer.h"
-#include "GuiRenderer.h"
+#include "entt.hpp"
 #include "Text.h"
 #include "TextRenderer.h"
 #include "button/ButtonRenderer.h"
@@ -20,10 +19,8 @@ namespace Survive
 	private:
 		Loader &m_Loader;
 
-		GuiRenderer m_GuiRenderer{};
 		TextRenderer m_TextRenderer;
 		ButtonRenderer m_ButtonRenderer{};
-		SpritesRenderer m_SpriteRenderer{};
 
 	public:
 		explicit Renderer2D(Loader &loader);

@@ -13,8 +13,6 @@ Survive::Renderer2D::Renderer2D(Loader &loader)
 
 void Survive::Renderer2D::render(entt::registry &registry) const
 {
-	m_GuiRenderer.render(registry);
-
 	auto[width, height] = Display::getWindowSize<int>();
 
 	if (width == 0 || height == 0)
@@ -24,7 +22,6 @@ void Survive::Renderer2D::render(entt::registry &registry) const
 
 	m_TextRenderer.renderText();
 	m_ButtonRenderer.render();
-	m_SpriteRenderer.render(registry);
 }
 
 void Survive::Renderer2D::addText(Text &text) noexcept

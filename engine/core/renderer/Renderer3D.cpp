@@ -27,9 +27,15 @@ void Survive::Renderer3D::renderScene(entt::registry &registry, Camera &camera, 
 	m_SkyRenderer.render(registry, camera, plane);
 }
 
+void Survive::Renderer3D::render2DScene(entt::registry &registry) const
+{
+	m_GuiRenderer.render(registry);
+	m_SpriteRenderer.render(registry);
+}
+
 void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
 {
-//	m_MousePicking.render(registry, camera);
+	m_MousePicking.render(registry, camera);
 
 	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
@@ -40,6 +46,8 @@ void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
 
 	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
+
+	render2DScene(registry);
 }
 
 void Survive::Renderer3D::addSkyboxEntity(entt::entity sky)
@@ -78,6 +86,7 @@ void Survive::Renderer3D::renderToFbo(entt::registry &registry, Camera &camera) 
 
 	m_BloomRenderer.render(registry);
 
+	render2DScene(registry);
 	resetViewport();
 }
 
