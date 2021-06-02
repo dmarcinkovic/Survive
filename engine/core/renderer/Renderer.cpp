@@ -4,7 +4,6 @@
 
 #include "Renderer.h"
 #include "Constants.h"
-#include "ShadowComponent.h"
 #include "Display.h"
 
 Survive::Renderer::Renderer(const Light &light)
