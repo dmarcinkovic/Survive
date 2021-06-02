@@ -93,6 +93,15 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(ShadowComponent &component)
+	{
+		if (ImGui::CollapsingHeader("Shadow"))
+		{
+			ImGui::Checkbox("Transparent", &component.loadShadow);
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
