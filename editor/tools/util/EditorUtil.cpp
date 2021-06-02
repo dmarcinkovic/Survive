@@ -27,11 +27,7 @@ void Survive::EditorUtil::resetStyleColors()
 
 void Survive::EditorUtil::drawTransform3DHeader()
 {
-	ImGui::NextColumn();
-	ImGui::Text("X");
-	ImGui::NextColumn();
-	ImGui::Text("Y");
-	ImGui::NextColumn();
+	drawTransform2DHeader();
 	ImGui::Text("Z");
 	ImGui::NextColumn();
 }
