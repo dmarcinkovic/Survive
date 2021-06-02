@@ -1,3 +1,6 @@
 [submodule "editor/imgui"]
 	path = editor/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "editor/ImGuizmo"]
+	path = editor/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git
