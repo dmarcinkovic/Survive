@@ -62,9 +62,13 @@ Survive::ShadowRenderer::prepareEntities(entt::registry &registry)
 	for (auto const &entity : view)
 	{
 		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		ShadowComponent shadowComponent = view.get<ShadowComponent>(entity);
 
-		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
-		batch.emplace_back(entity);
+		if (shadowComponent.loadShadow)
+		{
+			std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+			batch.emplace_back(entity);
+		}
 	}
 
 	return entities;
