@@ -4,21 +4,29 @@
 
 #include <glm/glm.hpp>
 
+#include "ShadowComponent.h"
 #include "ShadowRenderer.h"
 #include "RenderComponent.h"
 #include "Transform3DComponent.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
 
-void Survive::ShadowRenderer::render(const entt::registry &registry, const Light &light, const Camera &camera) const
+void Survive::ShadowRenderer::render(entt::registry &registry, const Light &light, const Camera &camera) const
 {
+	auto entities = prepareEntities(registry);
+
+	if (entities.empty())
+	{
+		return;
+	}
+
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
 
 	glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
 	m_ShadowShader.loadViewMatrix(viewMatrix);
 	m_ShadowShader.loadProjectionMatrix(Maths::lightProjectionMatrix);
 
-	for (auto const&[texture, objects] : m_Objects)
+	for (auto const&[texture, objects] : entities)
 	{
 		texture.bind();
 		glEnableVertexAttribArray(0);
@@ -45,10 +53,19 @@ void Survive::ShadowRenderer::render(const entt::registry &registry, const Light
 	Renderer3DUtil::finishRendering();
 }
 
-void Survive::ShadowRenderer::add3DObject(const entt::registry &registry, entt::entity entity)
+std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
+Survive::ShadowRenderer::prepareEntities(entt::registry &registry)
 {
-	RenderComponent renderComponent = registry.get<RenderComponent>(entity);
-	auto &batch = m_Objects[renderComponent.texturedModel];
+	auto const &view = registry.view<ShadowComponent, Transform3DComponent, RenderComponent>();
 
-	batch.emplace_back(entity);
+	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
+	for (auto const &entity : view)
+	{
+		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+
+		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		batch.emplace_back(entity);
+	}
+
+	return entities;
 }

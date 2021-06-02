@@ -21,12 +21,13 @@ namespace Survive
 	{
 	private:
 		ShadowShader m_ShadowShader{};
-		std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> m_Objects;
 
 	public:
-		void render(const entt::registry &registry, const Light &light, const Camera &camera) const;
+		void render(entt::registry &registry, const Light &light, const Camera &camera) const;
 
-		void add3DObject(const entt::registry &registry, entt::entity entity);
+	private:
+		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
+		prepareEntities(entt::registry &registry);
 	};
 }
 

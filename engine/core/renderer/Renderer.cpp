@@ -141,8 +141,3 @@ void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Survive::Renderer::addShadow(entt::registry &registry, entt::entity entity)
-{
-	m_ShadowRenderer.add3DObject(registry, entity);
-	registry.emplace<ShadowComponent>(entity, true);
-}
