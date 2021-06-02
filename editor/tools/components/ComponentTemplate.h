@@ -97,10 +97,16 @@ namespace Survive
 	template<>
 	void ComponentTemplate::drawComponent(ShadowComponent &component)
 	{
+		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.65f, 0.6f, 0.6f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.55f, 0.5f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));
+
 		if (ImGui::CollapsingHeader("Shadow"))
 		{
-			ImGui::Checkbox("Transparent", &component.loadShadow);
+			ImGui::Checkbox("Add shadow", &component.loadShadow);
 		}
+
+		ImGui::PopStyleColor(3);
 	}
 }
 
