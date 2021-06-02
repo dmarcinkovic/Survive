@@ -2,12 +2,12 @@
 // Created by david on 22. 05. 2020..
 //
 
-#include "Renderer3D.h"
+#include "Renderer.h"
 #include "Constants.h"
 #include "ShadowComponent.h"
 #include "Display.h"
 
-Survive::Renderer3D::Renderer3D(const Light &light)
+Survive::Renderer::Renderer(const Light &light)
 		: m_Light(light), m_ObjectRenderer(light),
 		  m_ShadowMap(
 				  m_ShadowFrameBuffer.attachToDepthBufferTexture(Constants::SHADOW_WIDTH, Constants::SHADOW_HEIGHT)),
@@ -18,7 +18,7 @@ Survive::Renderer3D::Renderer3D(const Light &light)
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Survive::Renderer3D::render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
+void Survive::Renderer::render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
@@ -27,13 +27,13 @@ void Survive::Renderer3D::render3DScene(entt::registry &registry, Camera &camera
 	m_SkyRenderer.render(registry, camera, plane);
 }
 
-void Survive::Renderer3D::render2DScene(entt::registry &registry) const
+void Survive::Renderer::render2DScene(entt::registry &registry) const
 {
 	m_GuiRenderer.render(registry);
 	m_SpriteRenderer.render(registry);
 }
 
-void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
 {
 	m_MousePicking.render(registry, camera);
 
@@ -50,22 +50,22 @@ void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
 	render2DScene(registry);
 }
 
-void Survive::Renderer3D::addSkyboxEntity(entt::entity sky)
+void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 {
 	m_SkyRenderer.addSkyEntity(sky);
 }
 
-void Survive::Renderer3D::addOutlineToObject(entt::registry &registry, entt::entity entity)
+void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
 {
 	m_OutlineRenderer.add3DObject(registry, entity);
 }
 
-void Survive::Renderer3D::removeOutlineToObject(entt::registry &registry)
+void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
 {
 	m_OutlineRenderer.removeObject(registry);
 }
 
-void Survive::Renderer3D::renderToFbo(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) const
 {
 	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
 											Constants::SHADOW_HEIGHT);
@@ -90,18 +90,18 @@ void Survive::Renderer3D::renderToFbo(entt::registry &registry, Camera &camera) 
 	resetViewport();
 }
 
-GLuint Survive::Renderer3D::getRenderedTexture() const
+GLuint Survive::Renderer::getRenderedTexture() const
 {
 	return m_Scene;
 }
 
-void Survive::Renderer3D::resetViewport()
+void Survive::Renderer::resetViewport()
 {
 	auto[width, height] = Display::getWindowSize<int>();
 	glViewport(0, 0, width, height);
 }
 
-void Survive::Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
 
 	if (WaterRenderer::shouldRender(registry))
@@ -115,7 +115,7 @@ void Survive::Renderer3D::renderToWaterFrameBuffers(entt::registry &registry, Ca
 	}
 }
 
-void Survive::Renderer3D::renderWaterReflection(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderWaterReflection(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindReflectionFrameBuffer();
 
@@ -133,7 +133,7 @@ void Survive::Renderer3D::renderWaterReflection(entt::registry &registry, Camera
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Survive::Renderer3D::renderWaterRefraction(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
@@ -141,7 +141,7 @@ void Survive::Renderer3D::renderWaterRefraction(entt::registry &registry, Camera
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Survive::Renderer3D::addShadow(entt::registry &registry, entt::entity entity)
+void Survive::Renderer::addShadow(entt::registry &registry, entt::entity entity)
 {
 	m_ShadowRenderer.add3DObject(registry, entity);
 	registry.emplace<ShadowComponent>(entity, true);

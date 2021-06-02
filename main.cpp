@@ -2,7 +2,7 @@
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
-#include "Renderer3D.h"
+#include "Renderer.h"
 #include "Display.h"
 #include "entt.hpp"
 
@@ -20,7 +20,7 @@ int main()
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
 	entt::registry registry;
-	Renderer3D renderer(light);
+	Renderer renderer(light);
 
 	Editor editor(renderer.getRenderedTexture());
 

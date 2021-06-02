@@ -2,8 +2,8 @@
 // Created by david on 22. 05. 2020..
 //
 
-#ifndef SURVIVE_RENDERER3D_H
-#define SURVIVE_RENDERER3D_H
+#ifndef SURVIVE_RENDERER_H
+#define SURVIVE_RENDERER_H
 
 #include "GuiRenderer.h"
 #include "SpritesRenderer.h"
@@ -18,7 +18,7 @@
 
 namespace Survive
 {
-	class Renderer3D
+	class Renderer
 	{
 	private:
 		ObjectRenderer m_ObjectRenderer;
@@ -45,7 +45,7 @@ namespace Survive
 		glm::vec4 m_RefractionCLippingPlane{};
 
 	public:
-		explicit Renderer3D(const Light &light);
+		explicit Renderer(const Light &light);
 
 		void render(entt::registry &registry, Camera &camera) const;
 
@@ -76,4 +76,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_RENDERER3D_H
+#endif //SURVIVE_RENDERER_H
