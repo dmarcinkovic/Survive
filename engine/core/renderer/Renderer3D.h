@@ -61,7 +61,7 @@ namespace Survive
 
 		void addShadow(entt::registry &registry, entt::entity entity);
 
-		void renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 		void render2DScene(entt::registry &registry) const;
 

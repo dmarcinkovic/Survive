@@ -18,7 +18,7 @@ Survive::Renderer3D::Renderer3D(const Light &light)
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Survive::Renderer3D::renderScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
+void Survive::Renderer3D::render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
@@ -42,7 +42,7 @@ void Survive::Renderer3D::render(entt::registry &registry, Camera &camera) const
 
 	renderToWaterFrameBuffers(registry, camera);
 	m_BloomRenderer.render(registry);
-	renderScene(registry, camera);
+	render3DScene(registry, camera);
 
 	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
@@ -78,7 +78,7 @@ void Survive::Renderer3D::renderToFbo(entt::registry &registry, Camera &camera) 
 
 //	m_MousePicking.render(camera);
 
-	renderScene(registry, camera);
+	render3DScene(registry, camera);
 	m_WaterRenderer.render(registry, camera, m_Light);
 
 	m_OutlineRenderer.render(registry, camera);
@@ -125,7 +125,7 @@ void Survive::Renderer3D::renderWaterReflection(entt::registry &registry, Camera
 	camera.invertPitch();
 
 	Display::clearWindow();
-	renderScene(registry, camera, m_ReflectionCLippingPlane);
+	render3DScene(registry, camera, m_ReflectionCLippingPlane);
 
 	camera.moveCameraInYDirection(distance);
 	camera.invertPitch();
@@ -137,7 +137,7 @@ void Survive::Renderer3D::renderWaterRefraction(entt::registry &registry, Camera
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
 	Display::clearWindow();
-	renderScene(registry, camera, m_RefractionCLippingPlane);
+	render3DScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
 }
 
