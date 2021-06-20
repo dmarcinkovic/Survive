@@ -115,13 +115,15 @@ namespace Survive
 		static FileChooser fileChooser;
 		static bool changed = true;
 
-		ImGui::Columns(2);
 		if (ImGui::CollapsingHeader("Bloom"))
 		{
-			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
-		}
+			ImGui::Columns(2);
 
-		ImGui::Columns();
+			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
+			ImGui::Columns();
+
+			ImGui::SliderFloat("Bloom strength", &component.bloomStrength, 0.0f, 5.0f);
+		}
 	}
 }
 
