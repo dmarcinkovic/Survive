@@ -14,6 +14,7 @@ namespace Survive
 		Texture emissiveTexture{};
 		float bloomStrength{};
 		Texture bloomTexture{};
+		std::string textureName;
 
 		BloomComponent(const Texture &emissiveTexture, float bloomStrength)
 				: emissiveTexture(emissiveTexture), bloomStrength(bloomStrength)

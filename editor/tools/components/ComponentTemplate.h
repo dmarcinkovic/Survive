@@ -108,6 +108,21 @@ namespace Survive
 
 		ImGui::PopStyleColor(3);
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(BloomComponent &component)
+	{
+		static FileChooser fileChooser;
+		static bool changed = true;
+
+		ImGui::Columns(2);
+		if (ImGui::CollapsingHeader("Bloom"))
+		{
+			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
+		}
+
+		ImGui::Columns();
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
