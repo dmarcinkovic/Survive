@@ -175,3 +175,31 @@ void Survive::EditorUtil::drawTransform2DHeader()
 	ImGui::Text("Y");
 	ImGui::NextColumn();
 }
+
+void Survive::EditorUtil::drawBloomStrengthSlider(float &bloomStrength)
+{
+	ImGui::NewLine();
+	centerText("Bloom strength");
+
+	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.87f, 0.19f, 0.14f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.88f, 0.46f, 0.05f, 1.0f));
+
+	ImGui::PushStyleVar(ImGuiStyleVar_GrabMinSize, 16);
+	ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 4);
+
+	ImGui::PushItemWidth(-1);
+	ImGui::SliderFloat("##Bloom strength", &bloomStrength, 0.0f, 5.0f);
+	ImGui::PopItemWidth();
+
+	ImGui::PopStyleColor(3);
+	ImGui::PopStyleVar(2);
+}
+
+void Survive::EditorUtil::centerText(const std::string &text)
+{
+	auto size = static_cast<float>(text.size());
+	float fontSize = ImGui::GetFontSize() * size / 2.0f;
+	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - fontSize + (fontSize / 2));
+	ImGui::Text("%s", text.c_str());
+}

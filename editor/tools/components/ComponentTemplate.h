@@ -118,11 +118,10 @@ namespace Survive
 		if (ImGui::CollapsingHeader("Bloom"))
 		{
 			ImGui::Columns(2);
-
 			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
 			ImGui::Columns();
 
-			ImGui::SliderFloat("Bloom strength", &component.bloomStrength, 0.0f, 5.0f);
+			EditorUtil::drawBloomStrengthSlider(component.bloomStrength);
 		}
 	}
 }
