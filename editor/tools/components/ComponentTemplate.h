@@ -121,7 +121,16 @@ namespace Survive
 			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
 			ImGui::Columns();
 
-			EditorUtil::drawBloomStrengthSlider(component.bloomStrength);
+			EditorUtil::drawSlider("##Bloom strength", "Bloom strength", component.bloomStrength, 0.0f, 5.0f);
+		}
+	}
+
+	template<>
+	void ComponentTemplate::drawComponent(ReflectionComponent &component)
+	{
+		if (ImGui::CollapsingHeader("Reflection"))
+		{
+
 		}
 	}
 }

@@ -34,7 +34,8 @@ namespace Survive
 
 		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);
 
-		static void drawBloomStrengthSlider(float &bloomStrength);
+		static void drawSlider(const char *label, const std::string &text,
+							   float &value, float start = 0.0f, float end = 1.0f);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,

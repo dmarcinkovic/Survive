@@ -176,10 +176,10 @@ void Survive::EditorUtil::drawTransform2DHeader()
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawBloomStrengthSlider(float &bloomStrength)
+void Survive::EditorUtil::drawSlider(const char *label, const std::string &text, float &value, float start, float end)
 {
 	ImGui::NewLine();
-	centerText("Bloom strength");
+	centerText(text);
 
 	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.87f, 0.19f, 0.14f, 1.0f));
@@ -189,7 +189,7 @@ void Survive::EditorUtil::drawBloomStrengthSlider(float &bloomStrength)
 	ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 4);
 
 	ImGui::PushItemWidth(-1);
-	ImGui::SliderFloat("##Bloom strength", &bloomStrength, 0.0f, 5.0f);
+	ImGui::SliderFloat(label, &value, start, end);
 	ImGui::PopItemWidth();
 
 	ImGui::PopStyleColor(3);
