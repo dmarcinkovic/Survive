@@ -130,7 +130,17 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Reflection"))
 		{
+			EditorUtil::drawSlider("##Reflection factor", "Reflection factor", component.reflectionFactor);
+		}
+	}
 
+	template<>
+	void ComponentTemplate::drawComponent(RefractionComponent &component)
+	{
+		if (ImGui::CollapsingHeader("Refraction"))
+		{
+			EditorUtil::drawSlider("##Refraction index", "Refraction index", component.refractiveIndex, 0.0f, 3.0f);
+			EditorUtil::drawSlider("##Refraction factor", "Refraction factor", component.refractiveFactor);
 		}
 	}
 }
