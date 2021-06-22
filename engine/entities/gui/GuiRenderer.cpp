@@ -33,12 +33,12 @@ void Survive::GuiRenderer::render(entt::registry &registry) const
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<Render3DComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
+	auto view = registry.view<Render2DComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
+		const Render2DComponent &renderComponent = view.get<Render2DComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
