@@ -131,7 +131,13 @@ namespace Survive
 		{
 			if (registry.has<Component>(entity))
 			{
-				ComponentTemplate::drawComponent(registry.get<Component>(entity));
+				bool visible = true;
+				ComponentTemplate::drawComponent(registry.get<Component>(entity), &visible);
+
+				if (!visible)
+				{
+					registry.remove<Component>(entity);
+				}
 			}
 		}
 	};

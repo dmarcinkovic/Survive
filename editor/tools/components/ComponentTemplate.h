@@ -19,14 +19,14 @@ namespace Survive
 	{
 	public:
 		template<typename ComponentType>
-		static void drawComponent(ComponentType &component)
+		static void drawComponent(ComponentType &component, bool *visible = nullptr)
 		{}
 	};
 
 	template<>
-	void ComponentTemplate::drawComponent(Transform3DComponent &component)
+	void ComponentTemplate::drawComponent(Transform3DComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Transform3D"))
+		if (ImGui::CollapsingHeader("Transform3D", visible))
 		{
 			ImGui::Columns(4);
 			EditorUtil::drawTransform3DHeader();
@@ -43,12 +43,12 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(Render3DComponent &component)
+	void ComponentTemplate::drawComponent(Render3DComponent &component, bool *visible)
 	{
 		static FileChooser fileChooser{};
 		static bool changed = true;
 
-		if (ImGui::CollapsingHeader("Render"))
+		if (ImGui::CollapsingHeader("Render", visible))
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
@@ -67,22 +67,22 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(RigidBodyComponent &component)
+	void ComponentTemplate::drawComponent(RigidBodyComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Rigid body"))
+		if (ImGui::CollapsingHeader("Rigid body", visible))
 		{
 			ImGui::Checkbox("Transparent", &component.isTransparent);
 		}
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(ShadowComponent &component)
+	void ComponentTemplate::drawComponent(ShadowComponent &component, bool *visible)
 	{
 		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.65f, 0.6f, 0.6f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.55f, 0.5f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.4f, 0.4f, 0.4f, 1.0f));
 
-		if (ImGui::CollapsingHeader("Shadow"))
+		if (ImGui::CollapsingHeader("Shadow", visible))
 		{
 			ImGui::Checkbox("Add shadow", &component.loadShadow);
 		}
@@ -91,12 +91,12 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(BloomComponent &component)
+	void ComponentTemplate::drawComponent(BloomComponent &component, bool *visible)
 	{
 		static FileChooser fileChooser;
 		static bool changed = true;
 
-		if (ImGui::CollapsingHeader("Bloom"))
+		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
 			ImGui::Columns(2);
 			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
@@ -107,18 +107,18 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(ReflectionComponent &component)
+	void ComponentTemplate::drawComponent(ReflectionComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Reflection"))
+		if (ImGui::CollapsingHeader("Reflection", visible))
 		{
 			EditorUtil::drawSlider("##Reflection factor", "Reflection factor", component.reflectionFactor);
 		}
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(RefractionComponent &component)
+	void ComponentTemplate::drawComponent(RefractionComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Refraction"))
+		if (ImGui::CollapsingHeader("Refraction", visible))
 		{
 			EditorUtil::drawSlider("##Refraction index", "Refraction index", component.refractiveIndex, 0.0f, 3.0f);
 			EditorUtil::drawSlider("##Refraction factor", "Refraction factor", component.refractiveFactor);
@@ -126,13 +126,13 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(Render2DComponent &component)
+	void ComponentTemplate::drawComponent(Render2DComponent &component, bool *visible)
 	{
 		static FileChooser fileChooser{};
 		static bool changed = true;
 		static Loader loader;
 
-		if (ImGui::CollapsingHeader("Render"))
+		if (ImGui::CollapsingHeader("Render", visible))
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
