@@ -203,3 +203,16 @@ void Survive::EditorUtil::centerText(const std::string &text)
 	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - fontSize + (fontSize / 2));
 	ImGui::Text("%s", text.c_str());
 }
+
+void Survive::EditorUtil::loadQuadModel(bool &changed, Survive::TexturedModel &texturedModel, Survive::Loader &loader)
+{
+	if (changed && texturedModel.isValidTexture())
+	{
+		changed = false;
+
+		if (!texturedModel.isValidModel())
+		{
+			texturedModel.getModel() = loader.renderQuad();
+		}
+	}
+}

@@ -138,16 +138,7 @@ namespace Survive
 
 			ImGui::Columns(2);
 			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
-
-			if (changed && texturedModel.isValidTexture())
-			{
-				changed = false;
-
-				if (!texturedModel.isValidModel())
-				{
-					texturedModel.getModel() = loader.renderQuad();
-				}
-			}
+			EditorUtil::loadQuadModel(changed, texturedModel, loader);
 
 			ImGui::Columns();
 		}

@@ -8,6 +8,7 @@
 #include <string>
 #include <glm/vec3.hpp>
 
+#include "TexturedModel.h"
 #include "FileChooser.h"
 #include "Loader.h"
 
@@ -36,6 +37,8 @@ namespace Survive
 
 		static void drawSlider(const char *label, const std::string &text,
 							   float &value, float start = 0.0f, float end = 1.0f);
+
+		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
