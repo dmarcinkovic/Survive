@@ -131,12 +131,17 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 
 		if (ImGui::Selectable("Remove entity"))
 		{
-			registry.destroy(m_SelectedEntity);
-			m_SelectedEntity = entt::entity{};
-
-			m_Selected = m_CurrentItem = -1;
+			removeEntity(registry);
 		}
 
 		ImGui::EndPopup();
 	}
+}
+
+void Survive::EntityManager::removeEntity(entt::registry &registry)
+{
+	registry.destroy(m_SelectedEntity);
+	m_SelectedEntity = entt::entity{};
+
+	m_Selected = m_CurrentItem = -1;
 }
