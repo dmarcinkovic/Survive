@@ -5,6 +5,8 @@
 #ifndef SURVIVE_RENDER2DCOMPONENT_H
 #define SURVIVE_RENDER2DCOMPONENT_H
 
+#include "TexturedModel.h"
+
 namespace Survive
 {
 	struct Render2DComponent

@@ -57,7 +57,7 @@ namespace Survive
 			ImGui::NextColumn();
 			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
 
-			if (changed && texturedModel.isValidTexture() && texturedModel.getModel().isValidModel())
+			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
 				changed = false;
 			}
@@ -130,6 +130,7 @@ namespace Survive
 	{
 		static FileChooser fileChooser{};
 		static bool changed = true;
+		static Loader loader;
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
@@ -141,6 +142,11 @@ namespace Survive
 			if (changed && texturedModel.isValidTexture())
 			{
 				changed = false;
+
+				if (!texturedModel.isValidModel())
+				{
+					texturedModel.getModel() = loader.renderQuad();
+				}
 			}
 
 			ImGui::Columns();

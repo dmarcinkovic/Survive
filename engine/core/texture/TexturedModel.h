@@ -45,6 +45,8 @@ namespace Survive
 
 		[[nodiscard]] bool isValidTexture() const;
 
+		[[nodiscard]] bool isValidModel() const;
+
 		Model &getModel();
 
 		Texture &getTexture();

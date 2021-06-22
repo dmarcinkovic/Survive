@@ -83,3 +83,8 @@ Survive::Texture &Survive::TexturedModel::getTexture()
 {
 	return m_Texture;
 }
+
+bool Survive::TexturedModel::isValidModel() const
+{
+	return m_Model.isValidModel();
+}
