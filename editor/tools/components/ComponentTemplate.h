@@ -124,6 +124,28 @@ namespace Survive
 			EditorUtil::drawSlider("##Refraction factor", "Refraction factor", component.refractiveFactor);
 		}
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(Render2DComponent &component)
+	{
+		static FileChooser fileChooser{};
+		static bool changed = true;
+
+		if (ImGui::CollapsingHeader("Render"))
+		{
+			TexturedModel &texturedModel = component.texturedModel;
+
+			ImGui::Columns(2);
+			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
+
+			if (changed && texturedModel.isValidTexture())
+			{
+				changed = false;
+			}
+
+			ImGui::Columns();
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H

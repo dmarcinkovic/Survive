@@ -12,6 +12,7 @@
 #include "OutlineComponent.h"
 #include "ReflectionComponent.h"
 #include "RefractionComponent.h"
+#include "Render2DComponent.h"
 #include "Render3DComponent.h"
 #include "RigidBodyComponent.h"
 #include "ShadowComponent.h"
