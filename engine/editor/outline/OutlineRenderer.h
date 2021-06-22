@@ -11,7 +11,7 @@
 #include "entt.hpp"
 #include "OutlineShader.h"
 #include "Transform3DComponent.h"
-#include "RenderComponent.h"
+#include "Render3DComponent.h"
 #include "Camera.h"
 
 namespace Survive
@@ -39,7 +39,7 @@ namespace Survive
 
 		void loadUniforms(const Transform3DComponent &transform, const Camera &camera) const;
 
-		static void prepareObject(const RenderComponent &renderComponent);
+		static void prepareObject(const Render3DComponent &renderComponent);
 
 		static void finishRenderingObject();
 	};

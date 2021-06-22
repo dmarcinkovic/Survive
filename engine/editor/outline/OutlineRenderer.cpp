@@ -18,7 +18,7 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
-	const RenderComponent &renderComponent = registry.get<RenderComponent>(m_Entity);
+	const Render3DComponent &renderComponent = registry.get<Render3DComponent>(m_Entity);
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Entity);
 
 	prepareObject(renderComponent);
@@ -78,7 +78,7 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 	m_Shader.loadTransformationMatrix(modelMatrix);
 }
 
-void Survive::OutlineRenderer::prepareObject(const RenderComponent &renderComponent)
+void Survive::OutlineRenderer::prepareObject(const Render3DComponent &renderComponent)
 {
 	glBindVertexArray(renderComponent.texturedModel.vaoID());
 	glEnableVertexAttribArray(0);

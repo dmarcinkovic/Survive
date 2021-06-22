@@ -9,7 +9,7 @@ void Survive::SkyRenderer::render(const entt::registry &registry, const Camera &
 {
 	if (m_ShouldRender)
 	{
-		const RenderComponent &renderComponent = registry.get<RenderComponent>(m_Sky);
+		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(m_Sky);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Sky);
 
 		prepareRendering(renderComponent);
@@ -27,7 +27,7 @@ void Survive::SkyRenderer::addSkyEntity(entt::entity sky)
 	m_ShouldRender = true;
 }
 
-void Survive::SkyRenderer::prepareRendering(const RenderComponent &renderComponent) const
+void Survive::SkyRenderer::prepareRendering(const Render3DComponent &renderComponent) const
 {
 	m_Shader.start();
 	glEnable(GL_DEPTH_TEST);

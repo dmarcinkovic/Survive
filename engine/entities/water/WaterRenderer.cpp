@@ -10,14 +10,14 @@
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
-	auto waterTiles = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
+	auto waterTiles = registry.group<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 	if (waterTiles.empty())
 	{
 		return;
 	}
 
 	prepareRendering(camera);
-	waterTiles.each([&](RenderComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
+	waterTiles.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
 						MoveComponent &moveComponent) {
 		Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
 
@@ -48,7 +48,7 @@ void Survive::WaterRenderer::finishRendering()
 
 bool Survive::WaterRenderer::shouldRender(entt::registry &registry)
 {
-	auto group = registry.group<RenderComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
+	auto group = registry.group<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 	return !group.empty();
 }
 

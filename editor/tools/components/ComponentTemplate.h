@@ -43,7 +43,7 @@ namespace Survive
 	}
 
 	template<>
-	void ComponentTemplate::drawComponent(RenderComponent &component)
+	void ComponentTemplate::drawComponent(Render3DComponent &component)
 	{
 		static FileChooser fileChooser{};
 		static bool changed = true;

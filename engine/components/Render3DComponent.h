@@ -2,26 +2,26 @@
 // Created by david on 02. 03. 2021..
 //
 
-#ifndef SURVIVE_RENDERCOMPONENT_H
-#define SURVIVE_RENDERCOMPONENT_H
+#ifndef SURVIVE_RENDER3DCOMPONENT_H
+#define SURVIVE_RENDER3DCOMPONENT_H
 
 #include "TexturedModel.h"
 
 namespace Survive
 {
-	struct RenderComponent
+	struct Render3DComponent
 	{
 		std::string modelName{};
 		std::string textureName{};
 
 		TexturedModel texturedModel{};
 
-		RenderComponent() = default;
+		Render3DComponent() = default;
 
-		explicit RenderComponent(const TexturedModel &texturedModel)
+		explicit Render3DComponent(const TexturedModel &texturedModel)
 				: texturedModel(texturedModel)
 		{}
 	};
 }
 
-#endif //SURVIVE_RENDERCOMPONENT_H
+#endif //SURVIVE_RENDER3DCOMPONENT_H

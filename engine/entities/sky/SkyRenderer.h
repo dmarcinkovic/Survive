@@ -27,7 +27,7 @@ namespace Survive
 		void addSkyEntity(entt::entity sky);
 
 	private:
-		void prepareRendering(const RenderComponent &renderComponent) const;
+		void prepareRendering(const Render3DComponent &renderComponent) const;
 
 		static void finishRendering();
 

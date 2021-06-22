@@ -85,7 +85,7 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const st
 		glm::vec4 color = getColor(id.id);
 		m_Shader.loadPickingColor(color);
 
-		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 	}
 }
@@ -123,13 +123,13 @@ int Survive::MousePicking::getID(const std::uint8_t *data)
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
-	const auto &entities3D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
-	const auto &entities2D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
+	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
+	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
 	{
-		const RenderComponent &renderComponent = entities2D.get<RenderComponent>(entity);
+		const Render3DComponent &renderComponent = entities2D.get<Render3DComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -137,7 +137,7 @@ Survive::MousePicking::prepareEntities(entt::registry &registry)
 
 	for (auto const &entity : entities3D)
 	{
-		const RenderComponent &renderComponent = entities3D.get<RenderComponent>(entity);
+		const Render3DComponent &renderComponent = entities3D.get<Render3DComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);

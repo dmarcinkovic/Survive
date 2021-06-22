@@ -49,7 +49,7 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
@@ -59,12 +59,12 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 {
-	const auto &view = registry.view<RenderComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
+	const auto &view = registry.view<Render3DComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		const RenderComponent &renderComponent = view.get<RenderComponent>(entity);
+		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);

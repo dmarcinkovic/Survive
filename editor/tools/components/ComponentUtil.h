@@ -36,7 +36,7 @@ namespace Survive
 			drawComponent<MoveComponent>(registry, entity);
 			drawComponent<ReflectionComponent>(registry, entity);
 			drawComponent<RefractionComponent>(registry, entity);
-			drawComponent<RenderComponent>(registry, entity);
+			drawComponent<Render3DComponent>(registry, entity);
 			drawComponent<RigidBodyComponent>(registry, entity);
 			drawComponent<ShadowComponent>(registry, entity);
 			drawComponent<SoundComponent>(registry, entity);
@@ -61,7 +61,7 @@ namespace Survive
 				case 4:
 					return addComponent<RefractionComponent>(registry, entity);
 				case 5:
-					return addComponent<RenderComponent>(registry, entity);
+					return addComponent<Render3DComponent>(registry, entity);
 				case 6:
 					return addComponent<RigidBodyComponent>(registry, entity);
 				case 7:

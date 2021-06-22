@@ -22,7 +22,7 @@ namespace Survive
 					const glm::vec4 &plane = glm::vec4{}) const;
 
 	private:
-		static void prepareRendering(const RenderComponent &renderComponent, const TexturedComponent &textures);
+		static void prepareRendering(const Render3DComponent &renderComponent, const TexturedComponent &textures);
 
 		static void finishRendering();
 

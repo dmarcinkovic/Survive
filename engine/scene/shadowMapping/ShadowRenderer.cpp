@@ -6,7 +6,7 @@
 
 #include "ShadowComponent.h"
 #include "ShadowRenderer.h"
-#include "RenderComponent.h"
+#include "Render3DComponent.h"
 #include "Transform3DComponent.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
@@ -56,12 +56,12 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::ShadowRenderer::prepareEntities(entt::registry &registry)
 {
-	auto const &view = registry.view<ShadowComponent, Transform3DComponent, RenderComponent>();
+	auto const &view = registry.view<ShadowComponent, Transform3DComponent, Render3DComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
 	{
-		RenderComponent renderComponent = view.get<RenderComponent>(entity);
+		Render3DComponent renderComponent = view.get<Render3DComponent>(entity);
 		ShadowComponent shadowComponent = view.get<ShadowComponent>(entity);
 
 		if (shadowComponent.loadShadow)
