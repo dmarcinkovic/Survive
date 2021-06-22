@@ -52,14 +52,14 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.35f, 0.5f, 0.5f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
 
-	auto entities = registry.data();
-	for (int i = 0; i < registry.size(); ++i)
-	{
-		const TagComponent &tag = registry.get<TagComponent>(entities[i]);
+	int index = 0;
+	registry.each([&](const entt::entity entity) {
+		const TagComponent &tag = registry.get<TagComponent>(entity);
 
-		drawSelectable(tag, entities[i], i);
-		drawPopupContext(i);
-	}
+		drawSelectable(tag, entity, index);
+		drawPopupContext(registry, index);
+		++index;
+	});
 
 	ImGui::PopStyleColor(3);
 }
@@ -117,7 +117,7 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 	}
 }
 
-void Survive::EntityManager::drawPopupContext(int i)
+void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
@@ -127,6 +127,14 @@ void Survive::EntityManager::drawPopupContext(int i)
 		{
 			m_CurrentItem = -1;
 			m_Selected = i;
+		}
+
+		if (ImGui::Selectable("Remove entity"))
+		{
+			registry.destroy(m_SelectedEntity);
+			m_SelectedEntity = entt::entity{};
+
+			m_Selected = m_CurrentItem = -1;
 		}
 
 		ImGui::EndPopup();
