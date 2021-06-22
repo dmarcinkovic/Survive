@@ -3,9 +3,8 @@
 //
 
 #include "SpritesRenderer.h"
-#include "RenderComponent.h"
-#include "Maths.h"
 #include "Renderer2DUtil.h"
+#include "Maths.h"
 
 
 void Survive::SpritesRenderer::render(entt::registry &registry) const
@@ -31,11 +30,9 @@ void Survive::SpritesRenderer::render(entt::registry &registry) const
 }
 
 void
-Survive::SpritesRenderer::loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const
+Survive::SpritesRenderer::loadUniforms(const Transform3DComponent &transform, const SpriteSheetComponent &sprite) const
 {
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(glm::vec3{transform.position, 0},
-															  glm::vec3{transform.scale, 0},
-															  glm::vec3{transform.rotation, 0});
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadSpriteSize(sprite.row, sprite.col);
@@ -45,7 +42,7 @@ Survive::SpritesRenderer::loadUniforms(const Transform2DComponent &transform, co
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	auto group = registry.group<RenderComponent, Transform2DComponent, SpriteSheetComponent>();
+	auto group = registry.group<RenderComponent, Transform3DComponent, SpriteSheetComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : group)
@@ -64,7 +61,7 @@ void Survive::SpritesRenderer::renderSprites(const std::vector<entt::entity> &sp
 {
 	for (auto const &sprite : sprites)
 	{
-		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(sprite);
+		const Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(sprite);
 		const SpriteSheetComponent &spriteComponent = registry.get<SpriteSheetComponent>(sprite);
 
 		loadUniforms(transformComponent, spriteComponent);

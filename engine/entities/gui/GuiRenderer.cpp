@@ -2,10 +2,8 @@
 // Created by david on 28. 03. 2020..
 //
 
+#include "Components.h"
 #include "GuiRenderer.h"
-#include "RenderComponent.h"
-#include "Transform2DComponent.h"
-#include "SpriteSheetComponent.h"
 #include "Maths.h"
 #include "Renderer2DUtil.h"
 
@@ -35,7 +33,7 @@ void Survive::GuiRenderer::render(entt::registry &registry) const
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<RenderComponent, Transform2DComponent>(entt::exclude<SpriteSheetComponent>);
+	auto view = registry.view<RenderComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
@@ -54,11 +52,10 @@ void Survive::GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, con
 {
 	for (auto const &entity : guis)
 	{
-		const Transform2DComponent &transformComponent = registry.get<Transform2DComponent>(entity);
+		const Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(entity);
 		m_Shader.loadTransformationMatrix(
-				Maths::createTransformationMatrix(glm::vec3{transformComponent.position, 0},
-												  glm::vec3{transformComponent.scale, 0},
-												  glm::vec3{transformComponent.rotation, 0}));
+				Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
+												  transformComponent.rotation));
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}

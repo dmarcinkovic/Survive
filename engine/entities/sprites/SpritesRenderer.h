@@ -7,10 +7,9 @@
 
 #include <functional>
 
+#include "Components.h"
 #include "entt.hpp"
 #include "SpritesShader.h"
-#include "SpriteSheetComponent.h"
-#include "Transform2DComponent.h"
 #include "TexturedModel.h"
 
 namespace Survive
@@ -24,7 +23,7 @@ namespace Survive
 		void render(entt::registry &registry) const;
 
 	private:
-		void loadUniforms(const Transform2DComponent &transform, const SpriteSheetComponent &sprite) const;
+		void loadUniforms(const Transform3DComponent &transform, const SpriteSheetComponent &sprite) const;
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);

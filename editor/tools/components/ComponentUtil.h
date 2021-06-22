@@ -43,7 +43,6 @@ namespace Survive
 			drawComponent<SpriteComponent>(registry, entity);
 			drawComponent<SpriteSheetComponent>(registry, entity);
 			drawComponent<TexturedComponent>(registry, entity);
-			drawComponent<Transform2DComponent>(registry, entity);
 			drawComponent<Transform3DComponent>(registry, entity);
 		}
 
@@ -76,8 +75,6 @@ namespace Survive
 				case 11:
 					return addComponent<TexturedComponent>(registry, entity);
 				case 12:
-					return addComponent<Transform2DComponent>(registry, entity);
-				case 13:
 					return addComponent<Transform3DComponent>(registry, entity);
 				default:
 					throw std::runtime_error("Selected item not implemented");

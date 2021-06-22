@@ -124,7 +124,7 @@ std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::T
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
 	const auto &entities3D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
-	const auto &entities2D = registry.view<RenderComponent, Transform2DComponent, IdComponent>();
+	const auto &entities2D = registry.view<RenderComponent, Transform3DComponent, IdComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
@@ -149,10 +149,7 @@ Survive::MousePicking::prepareEntities(entt::registry &registry)
 void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
 													 const entt::registry &registry, entt::entity entity) const
 {
-	const Transform3DComponent &transform = registry.has<Transform2DComponent>(entity)
-											? static_cast<Transform3DComponent>(registry.get<Transform2DComponent>(
-					entity))
-											: registry.get<Transform3DComponent>(entity);
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 
 	glm::vec3 rotation = camera.rotation + transform.rotation;
 

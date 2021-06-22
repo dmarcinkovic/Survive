@@ -20,7 +20,6 @@
 #include "SpriteSheetComponent.h"
 #include "TagComponent.h"
 #include "TexturedComponent.h"
-#include "Transform2DComponent.h"
 #include "Transform3DComponent.h"
 
 #endif //SURVIVE_COMPONENTS_H
