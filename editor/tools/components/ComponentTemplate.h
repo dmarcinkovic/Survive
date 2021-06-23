@@ -19,7 +19,7 @@ namespace Survive
 	{
 	public:
 		template<typename ComponentType>
-		static void drawComponent(ComponentType &component, bool *visible = nullptr)
+		static void drawComponent(ComponentType &component, bool* = nullptr)
 		{}
 	};
 
@@ -48,7 +48,7 @@ namespace Survive
 		static FileChooser fileChooser{};
 		static bool changed = true;
 
-		if (ImGui::CollapsingHeader("Render", visible))
+		if (ImGui::CollapsingHeader("Render3D", visible))
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
@@ -132,7 +132,7 @@ namespace Survive
 		static bool changed = true;
 		static Loader loader;
 
-		if (ImGui::CollapsingHeader("Render", visible))
+		if (ImGui::CollapsingHeader("Render2D", visible))
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 

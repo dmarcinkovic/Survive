@@ -20,7 +20,7 @@ namespace Survive
 		{
 			std::vector<const char *> components = {
 					"Animation component", "Bloom component", "Move component",
-					"Reflection component", "Refraction component", "Render2DComponent",
+					"Reflection component", "Refraction component", "Render2D Component",
 					"Render3D component", "Rigid body component", "Shadow component",
 					"Sound component", "Sprite component", "Sprite sheet component",
 					"Textured component", "Transform3D component"
