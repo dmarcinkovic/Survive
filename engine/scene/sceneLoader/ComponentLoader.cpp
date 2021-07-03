@@ -8,7 +8,12 @@
 
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
+	std::string textureName = parseLine(reader);
+	std::string bloomStrength = parseLine(reader);
 
+	float strength = std::stof(bloomStrength);
+
+	registry.emplace<BloomComponent>(entity, Loader::loadTexture(textureName.c_str()), strength);
 }
 
 void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
