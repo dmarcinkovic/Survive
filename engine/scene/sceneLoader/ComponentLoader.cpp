@@ -56,7 +56,9 @@ void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 												   entt::entity entity, std::ifstream &reader)
 {
+	std::string loadShadow = parseLine(reader);
 
+	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
