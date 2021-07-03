@@ -5,6 +5,8 @@
 #ifndef SURVIVE_SCENELOADER_H
 #define SURVIVE_SCENELOADER_H
 
+#include <fstream>
+
 #include "entt.hpp"
 #include "Components.h"
 
@@ -14,7 +16,9 @@ public:
 	static void loadScene(entt::registry &registry, const std::string &filename);
 
 private:
-//	static void loadEntity
+	static void loadEntity(entt::registry &registry, std::ifstream &reader);
+
+	static void loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component);
 };
 
 
