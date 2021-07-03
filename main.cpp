@@ -25,9 +25,6 @@ int main()
 
 	Editor editor(renderer.getRenderedTexture());
 
-	auto dragon = registry.create();
-	registry.emplace<TagComponent>(dragon, "dragon");
-
 	auto lamp = registry.create();
 	registry.emplace<TagComponent>(lamp, "lamp");
 
@@ -40,9 +37,10 @@ int main()
 
 	renderer.addSkyboxEntity(sky);
 //	registry.emplace<ReflectionComponent>(dragon, texturedModel.getTexture(), 0.5f);
-	registry.emplace<RefractionComponent>(dragon, texturedModel.getTexture(), 2.0f, 0.5f);
+//	registry.emplace<RefractionComponent>(dragon, texturedModel.getTexture(), 2.0f, 0.5f);
 
-	SceneLoader::loadScene(registry, "file.txt");
+	SceneLoader sceneLoader;
+	sceneLoader.loadScene(registry, "file.txt");
 
 	while (display.isRunning())
 	{
