@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "SceneLoader.h"
+#include "ComponentLoader.h"
 
 //entity:entity_name:
 //	component:Transform3DComponent:
@@ -52,32 +53,32 @@ void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &r
 
 void Survive::SceneLoader::loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component)
 {
-	std::string componentType = component.substr(11);
-	std::cout << "Component type: " << componentType << '\n';
+	constexpr int componentLength = 11;
+	std::string componentType = component.substr(componentLength);
 
 	if (componentType == "BloomComponent")
 	{
-
+		ComponentLoader::loadBloomComponent(registry, reader);
 	} else if (componentType == "ReflectionComponent")
 	{
-
+		ComponentLoader::loadReflectionComponent(registry, reader);
 	} else if (componentType == "RefractionComponent")
 	{
-
+		ComponentLoader::loadRefractionComponent(registry, reader);
 	} else if (componentType == "Render2DComponent")
 	{
-
+		ComponentLoader::loadRender2DComponent(registry, reader);
 	} else if (componentType == "Render3DComponent")
 	{
-
+		ComponentLoader::loadRender3DComponent(registry, reader);
 	} else if (componentType == "RigidBodyComponent")
 	{
-
+		ComponentLoader::loadRigidBodyComponent(registry, reader);
 	} else if (componentType == "ShadowComponent")
 	{
-
+		ComponentLoader::loadShadowComponent(registry, reader);
 	} else if (componentType == "Transform3DComponent")
 	{
-
+		ComponentLoader::loadTransformComponent(registry, reader);
 	}
 }
