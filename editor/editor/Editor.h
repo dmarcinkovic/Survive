@@ -10,6 +10,7 @@
 
 #include "FileChooser.h"
 #include "Log.h"
+#include "SceneLoader.h"
 #include "EntityManager.h"
 
 namespace Survive
@@ -24,6 +25,8 @@ namespace Survive
 		FileChooser m_FileChooser;
 		EntityManager m_Manager{};
 		bool m_OpenDialog = false;
+
+		SceneLoader m_SceneLoader;
 
 		bool m_IsSceneWindowFocused = true;
 
@@ -45,7 +48,7 @@ namespace Survive
 
 		void renderMenu();
 
-		void renderOpenDialog();
+		void renderOpenDialog(entt::registry &registry);
 
 		static void setColorStyle();
 	};

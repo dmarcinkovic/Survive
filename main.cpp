@@ -5,7 +5,6 @@
 #include "Renderer.h"
 #include "Display.h"
 #include "entt.hpp"
-#include "SceneLoader.h"
 
 int main()
 {
@@ -35,9 +34,6 @@ int main()
 	renderer.addSkyboxEntity(sky);
 //	registry.emplace<ReflectionComponent>(dragon, texturedModel.getTexture(), 0.5f);
 //	registry.emplace<RefractionComponent>(dragon, texturedModel.getTexture(), 2.0f, 0.5f);
-
-	SceneLoader sceneLoader;
-	sceneLoader.loadScene(registry, "file.txt");
 
 	while (display.isRunning())
 	{

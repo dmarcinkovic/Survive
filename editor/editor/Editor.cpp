@@ -24,7 +24,7 @@ void Survive::Editor::render(entt::registry &registry)
 	renderPropertyWindow(registry);
 	renderSceneWindow();
 	renderMenu();
-	renderOpenDialog();
+	renderOpenDialog(registry);
 	Log::drawLogWindow();
 
 	ImGui::Render();
@@ -106,11 +106,20 @@ void Survive::Editor::renderMenu()
 	}
 }
 
-void Survive::Editor::renderOpenDialog()
+void Survive::Editor::renderOpenDialog(entt::registry &registry)
 {
 	if (m_OpenDialog)
 	{
 		m_FileChooser.open(600.0f, 400.0f, &m_OpenDialog);
+
+		if (!m_OpenDialog)
+		{
+			std::string file = m_FileChooser.getSelectedFile();
+			if (!file.empty())
+			{
+				m_SceneLoader.loadScene(registry, file);
+			}
+		}
 	}
 }
 
