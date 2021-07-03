@@ -25,9 +25,6 @@ int main()
 
 	Editor editor(renderer.getRenderedTexture());
 
-	auto lamp = registry.create();
-	registry.emplace<TagComponent>(lamp, "lamp");
-
 	auto sky = registry.create();
 	registry.emplace<TagComponent>(sky, "sky");
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
