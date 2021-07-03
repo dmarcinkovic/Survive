@@ -10,16 +10,18 @@
 #include "entt.hpp"
 #include "Components.h"
 
-class SceneLoader
+namespace Survive
 {
-public:
-	static void loadScene(entt::registry &registry, const std::string &filename);
+	class SceneLoader
+	{
+	public:
+		static void loadScene(entt::registry &registry, const std::string &filename);
 
-private:
-	static void loadEntity(entt::registry &registry, std::ifstream &reader);
+	private:
+		static void loadEntity(entt::registry &registry, std::ifstream &reader);
 
-	static void loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component);
-};
-
+		static void loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component);
+	};
+}
 
 #endif //SURVIVE_SCENELOADER_H

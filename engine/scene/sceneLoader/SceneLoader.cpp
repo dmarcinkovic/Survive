@@ -21,7 +21,7 @@
 //		isTransparent: false
 //  end
 
-void SceneLoader::loadScene(entt::registry &registry, const std::string &filename)
+void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string &filename)
 {
 	std::ifstream reader(filename);
 
@@ -35,7 +35,7 @@ void SceneLoader::loadScene(entt::registry &registry, const std::string &filenam
 	}
 }
 
-void SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader)
+void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader)
 {
 	std::string line;
 	while (std::getline(reader, line))
@@ -50,7 +50,7 @@ void SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader)
 	}
 }
 
-void SceneLoader::loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component)
+void Survive::SceneLoader::loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component)
 {
 	std::string componentType = component.substr(11);
 	std::cout << "Component type: " << componentType << '\n';
