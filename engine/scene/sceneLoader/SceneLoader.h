@@ -18,9 +18,11 @@ namespace Survive
 		static void loadScene(entt::registry &registry, const std::string &filename);
 
 	private:
-		static void loadEntity(entt::registry &registry, std::ifstream &reader);
+		static void loadEntity(entt::registry &registry, std::ifstream &reader, const std::string &tag);
 
 		static void loadComponent(entt::registry &registry, std::ifstream &reader, const std::string &component);
+
+		static entt::entity createEntity(entt::registry &registry, const std::string &tag);
 	};
 }
 

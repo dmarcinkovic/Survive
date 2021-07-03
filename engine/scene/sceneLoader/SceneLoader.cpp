@@ -2,8 +2,6 @@
 // Created by david on 23. 06. 2021..
 //
 
-#include <iostream>
-
 #include "SceneLoader.h"
 #include "ComponentLoader.h"
 
@@ -16,13 +14,25 @@ void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string
 	{
 		if (line.starts_with("entity:"))
 		{
-			loadEntity(registry, reader);
+			loadEntity(registry, reader, line);
 		}
 	}
 }
 
-void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader)
+entt::entity Survive::SceneLoader::createEntity(entt::registry &registry, const std::string &tag)
 {
+	constexpr int entityLength = 7;
+
+	auto entity = registry.create();
+	registry.emplace<TagComponent>(entity, tag.substr(entityLength));
+
+	return entity;
+}
+
+void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader, const std::string &tag)
+{
+	entt::entity entity = createEntity(registry, tag);
+
 	std::string line;
 	while (std::getline(reader, line))
 	{
