@@ -44,7 +44,9 @@ namespace Survive
 
 		void renderBloom(const entt::registry &registry, entt::entity entity) const;
 
-		void renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const;
+		void renderReflection(const entt::registry &registry, entt::entity entity) const;
+
+		void renderRefraction(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

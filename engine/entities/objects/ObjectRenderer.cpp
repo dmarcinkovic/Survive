@@ -97,7 +97,8 @@ void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry,
 		m_Shader.loadAddShadow(false);
 	}
 
-	renderReflectionAndRefraction(registry, entity);
+	renderReflection(registry, entity);
+	renderRefraction(registry, entity);
 	renderBloom(registry, entity);
 }
 
@@ -153,7 +154,7 @@ void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::
 	}
 }
 
-void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderReflection(const entt::registry &registry, entt::entity entity) const
 {
 	if (registry.has<ReflectionComponent>(entity))
 	{
@@ -166,7 +167,10 @@ void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry
 		Texture::unbindCubeTexture();
 		m_Shader.loadReflectiveFactor(0.0f);
 	}
+}
 
+void Survive::ObjectRenderer::renderRefraction(const entt::registry &registry, entt::entity entity) const
+{
 	if (registry.has<RefractionComponent>(entity))
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
