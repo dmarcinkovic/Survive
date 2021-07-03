@@ -155,15 +155,16 @@ void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::
 
 void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
 {
-	static Texture defaultReflection(0);
-	defaultReflection.bindTexture(2);
-
 	if (registry.has<ReflectionComponent>(entity))
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
 
 		reflection.reflectionTexture.bindCubeTexture(2);
 		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
+	} else
+	{
+		Texture::unbindCubeTexture();
+		m_Shader.loadReflectiveFactor(0.0f);
 	}
 
 	if (registry.has<RefractionComponent>(entity))
@@ -172,5 +173,9 @@ void Survive::ObjectRenderer::renderReflectionAndRefraction(const entt::registry
 
 		refraction.refractionTexture.bindCubeTexture(2);
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
+	} else
+	{
+		Texture::unbindCubeTexture();
+		m_Shader.loadRefractionData(0.0f, 0.0f);
 	}
 }
