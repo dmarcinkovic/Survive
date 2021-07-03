@@ -2,6 +2,7 @@
 // Created by david on 03. 07. 2021..
 //
 
+#include <iostream>
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
@@ -53,7 +54,12 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
 {
+	std::string isTransparent;
 
+	std::getline(reader, isTransparent);
+	isTransparent = isTransparent.substr(isTransparent.find(':') + 1);
+
+	registry.emplace<RigidBodyComponent>(entity, std::stoi(isTransparent));
 }
 
 void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
