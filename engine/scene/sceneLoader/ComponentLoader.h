@@ -5,11 +5,13 @@
 #ifndef SURVIVE_COMPONENTLOADER_H
 #define SURVIVE_COMPONENTLOADER_H
 
-class ComponentLoader
+namespace Survive
 {
-public:
+	class ComponentLoader
+	{
+	public:
 
-};
+	};
 
 
 #endif //SURVIVE_COMPONENTLOADER_H
