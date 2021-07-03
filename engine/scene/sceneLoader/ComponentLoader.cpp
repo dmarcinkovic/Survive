@@ -32,8 +32,8 @@ void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, entt::entity entity,
 													 std::ifstream &reader, Loader &loader)
 {
-	std::string modelName = getName(reader);
-	std::string textureName = getName(reader);
+	std::string modelName = parseLine(reader);
+	std::string textureName = parseLine(reader);
 
 	Render3DComponent render3DComponent(
 			TexturedModel(ObjParser::loadObj(modelName.c_str(), loader),
@@ -48,7 +48,7 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
 {
-	std::string isTransparent = getName(reader);
+	std::string isTransparent = parseLine(reader);
 
 	registry.emplace<RigidBodyComponent>(entity, std::stoi(isTransparent));
 }
@@ -62,16 +62,16 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
 {
-	std::string position = getName(reader);
-	std::string scale = getName(reader);
-	std::string rotation = getName(reader);
+	std::string position = parseLine(reader);
+	std::string scale = parseLine(reader);
+	std::string rotation = parseLine(reader);
 
 	parseVec3(position);
 
 	registry.emplace<Transform3DComponent>(entity, parseVec3(position), parseVec3(scale), parseVec3(rotation));
 }
 
-std::string Survive::ComponentLoader::getName(std::ifstream &reader)
+std::string Survive::ComponentLoader::parseLine(std::ifstream &reader)
 {
 	std::string line;
 	std::getline(reader, line);

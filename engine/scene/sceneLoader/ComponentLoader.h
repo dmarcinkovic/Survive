@@ -32,7 +32,7 @@ namespace Survive
 		static void loadTransformComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 	private:
-		static std::string getName(std::ifstream &reader);
+		static std::string parseLine(std::ifstream &reader);
 
 		static glm::vec3 parseVec3(const std::string &vec3);
 	};
