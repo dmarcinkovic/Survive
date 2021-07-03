@@ -63,7 +63,7 @@ void Survive::SceneLoader::loadComponent(entt::registry &registry, entt::entity 
 		ComponentLoader::loadRefractionComponent(registry, entity, reader);
 	} else if (componentType == "Render2DComponent")
 	{
-		ComponentLoader::loadRender2DComponent(registry, entity, reader);
+		ComponentLoader::loadRender2DComponent(registry, entity, reader, m_Loader);
 	} else if (componentType == "Render3DComponent")
 	{
 		ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);

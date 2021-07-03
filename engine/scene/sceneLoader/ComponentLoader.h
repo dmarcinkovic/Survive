@@ -20,7 +20,8 @@ namespace Survive
 
 		static void loadRefractionComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void loadRender2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+		static void loadRender2DComponent(entt::registry &registry, entt::entity entity,
+							  std::ifstream &reader, Loader &loader);
 
 		static void loadRender3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 										  Loader &loader);
