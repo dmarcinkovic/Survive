@@ -7,21 +7,6 @@
 #include "SceneLoader.h"
 #include "ComponentLoader.h"
 
-//entity:entity_name:
-//	component:Transform3DComponent:
-//		position: 0.5f, 0.123f, 0.1f
-//		scale: 13513
-//		rotation: 124
-//	end
-//end
-//	component:Render3DComponent:
-//		modelName: "res/nesto"
-//		textureName: "res/opet_nesto"
-// 	end
-//	component:RigidBody:
-//		isTransparent: false
-//  end
-
 void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string &filename)
 {
 	std::ifstream reader(filename);
