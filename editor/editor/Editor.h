@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "FileChooser.h"
+#include "EventHandler.h"
 #include "Log.h"
 #include "SceneLoader.h"
 #include "EntityManager.h"
@@ -33,7 +34,7 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render(entt::registry &registry);
+		void render(entt::registry &registry, const EventHandler &eventHandler);
 
 		static void dock();
 
@@ -48,7 +49,7 @@ namespace Survive
 
 		void renderMenu();
 
-		void renderOpenDialog(entt::registry &registry);
+		void renderOpenDialog(entt::registry &registry, const EventHandler &eventHandler);
 
 		static void setColorStyle();
 	};

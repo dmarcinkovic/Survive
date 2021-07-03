@@ -19,12 +19,12 @@ Survive::Editor::Editor(GLuint scene)
 	setColorStyle();
 }
 
-void Survive::Editor::render(entt::registry &registry)
+void Survive::Editor::render(entt::registry &registry, const EventHandler &eventHandler)
 {
 	renderPropertyWindow(registry);
 	renderSceneWindow();
 	renderMenu();
-	renderOpenDialog(registry);
+	renderOpenDialog(registry, eventHandler);
 	Log::drawLogWindow();
 
 	ImGui::Render();
@@ -106,7 +106,7 @@ void Survive::Editor::renderMenu()
 	}
 }
 
-void Survive::Editor::renderOpenDialog(entt::registry &registry)
+void Survive::Editor::renderOpenDialog(entt::registry &registry, const EventHandler &eventHandler)
 {
 	if (m_OpenDialog)
 	{
@@ -120,6 +120,12 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 				m_SceneLoader.loadScene(registry, file);
 			}
 		}
+	}
+
+	// TODO do not hardcode this value
+	if (Survive::EventHandler::isKeyControlPressed() && eventHandler.getKeyPressed() == 79)
+	{
+		m_OpenDialog = true;
 	}
 }
 

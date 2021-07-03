@@ -1,3 +1,4 @@
+#include "EventHandler.h"
 #include "Editor.h"
 #include "Loader.h"
 #include "Camera.h"
@@ -35,13 +36,15 @@ int main()
 //	registry.emplace<ReflectionComponent>(dragon, texturedModel.getTexture(), 0.5f);
 //	registry.emplace<RefractionComponent>(dragon, texturedModel.getTexture(), 2.0f, 0.5f);
 
+	EventHandler eventHandler;
+
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
 		Editor::newFrame();
 		Editor::dock();
-		editor.render(registry);
+		editor.render(registry, eventHandler);
 
 		renderer.renderToFbo(registry, camera);
 
