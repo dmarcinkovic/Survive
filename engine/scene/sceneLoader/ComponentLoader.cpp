@@ -13,7 +13,10 @@ void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt
 
 	float strength = std::stof(bloomStrength);
 
-	registry.emplace<BloomComponent>(entity, Loader::loadTexture(textureName.c_str()), strength);
+	BloomComponent bloom(Loader::loadTexture(textureName.c_str()), strength);
+	bloom.textureName = textureName;
+
+	registry.emplace<BloomComponent>(entity, bloom);
 }
 
 void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
