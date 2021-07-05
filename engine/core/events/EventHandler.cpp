@@ -2,6 +2,8 @@
 // Created by david on 08. 01. 2021..
 //
 
+#include <imgui.h>
+
 #include "EventHandler.h"
 #include "Display.h"
 
@@ -15,22 +17,22 @@ void Survive::EventHandler::addKeyboardListener()
 	auto keyboardListener = [this](int key, int action) {
 		if (action == GLFW_PRESS)
 		{
-			m_Key = key;
+			m_Keys[key] = true;
 		} else if (action == GLFW_RELEASE)
 		{
-			m_Key = -1;
+			m_Keys[key] = false;
 		}
 	};
 
 	Display::addKeyListener(keyboardListener);
 }
 
-int Survive::EventHandler::getKeyPressed() const
+bool Survive::EventHandler::isKeyControlPressed() const
 {
-	return m_Key;
+	return m_Keys[Key::RIGHT_CONTROL] || m_Keys[Key::LEFT_CONTROL];
 }
 
-bool Survive::EventHandler::isKeyControlPressed()
+bool Survive::EventHandler::isKeyPressed(Key key) const
 {
-	return GLFW_MOD_CONTROL;
+	return m_Keys[key];
 }

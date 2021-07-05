@@ -5,19 +5,25 @@
 #ifndef SURVIVE_EVENTHANDLER_H
 #define SURVIVE_EVENTHANDLER_H
 
+#include <array>
+
+#include "Key.h"
+
 namespace Survive
 {
 	class EventHandler
 	{
 	private:
-		int m_Key{};
+		static constexpr int NUMBER_OF_KEYS = 350;
+
+		std::array<bool, NUMBER_OF_KEYS> m_Keys{};
 
 	public:
 		EventHandler();
 
-		[[nodiscard]] int getKeyPressed() const;
+		[[nodiscard]] bool isKeyPressed(Key key) const;
 
-		static bool isKeyControlPressed() ;
+		[[nodiscard]] bool isKeyControlPressed() const;
 
 	private:
 		void addKeyboardListener();

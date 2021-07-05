@@ -6,6 +6,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
+#include "Key.h"
 #include "Editor.h"
 
 Survive::Editor::Editor(GLuint scene)
@@ -122,8 +123,7 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry, const EventHand
 		}
 	}
 
-	// TODO do not hardcode this value
-	if (Survive::EventHandler::isKeyControlPressed() && eventHandler.getKeyPressed() == 79)
+	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
 		m_OpenDialog = true;
 	}
