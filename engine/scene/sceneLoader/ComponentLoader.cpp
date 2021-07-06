@@ -8,8 +8,8 @@
 
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
-	std::string textureName = parseLine(reader);
-	std::string bloomStrength = parseLine(reader);
+	std::string textureName = parseLine(reader, "textureName");
+	std::string bloomStrength = parseLine(reader, "bloomStrength");
 
 	float strength = std::stof(bloomStrength);
 
@@ -34,7 +34,7 @@ void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
 													 entt::entity entity, std::ifstream &reader, Loader &loader)
 {
-	std::string textureName = parseLine(reader);
+	std::string textureName = parseLine(reader, "textureName");
 
 	Render2DComponent render2DComponent(TexturedModel(loader.renderQuad(),
 													  Loader::loadTexture(textureName.c_str())));
@@ -46,8 +46,8 @@ void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, entt::entity entity,
 													 std::ifstream &reader, Loader &loader)
 {
-	std::string modelName = parseLine(reader);
-	std::string textureName = parseLine(reader);
+	std::string modelName = parseLine(reader, "modelName");
+	std::string textureName = parseLine(reader, "textureName");
 
 	Render3DComponent render3DComponent(
 			TexturedModel(ObjParser::loadObj(modelName.c_str(), loader),
@@ -62,7 +62,7 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
 {
-	std::string isTransparent = parseLine(reader);
+	std::string isTransparent = parseLine(reader, "isTransparent");
 
 	registry.emplace<RigidBodyComponent>(entity, std::stoi(isTransparent));
 }
@@ -70,7 +70,7 @@ void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 												   entt::entity entity, std::ifstream &reader)
 {
-	std::string loadShadow = parseLine(reader);
+	std::string loadShadow = parseLine(reader, "loadShadow");
 
 	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
 }
@@ -78,19 +78,24 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
 {
-	std::string position = parseLine(reader);
-	std::string scale = parseLine(reader);
-	std::string rotation = parseLine(reader);
+	std::string position = parseLine(reader, "position");
+	std::string scale = parseLine(reader, "scale");
+	std::string rotation = parseLine(reader, "rotation");
 
 	parseVec3(position);
 
 	registry.emplace<Transform3DComponent>(entity, parseVec3(position), parseVec3(scale), parseVec3(rotation));
 }
 
-std::string Survive::ComponentLoader::parseLine(std::ifstream &reader)
+std::string Survive::ComponentLoader::parseLine(std::ifstream &reader, const char *text)
 {
 	std::string line;
 	std::getline(reader, line);
+
+	if (line.find(text) == std::string::npos)
+	{
+		throw std::runtime_error("Did not find required string in text");
+	}
 
 	std::string name = line.substr(line.find(':') + 1);
 	return name;
