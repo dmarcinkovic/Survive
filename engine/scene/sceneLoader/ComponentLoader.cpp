@@ -56,14 +56,17 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	std::string modelName = parseLine(reader, "modelName");
 	std::string textureName = parseLine(reader, "textureName");
 
-	Render3DComponent render3DComponent(
-			TexturedModel(ObjParser::loadObj(modelName.c_str(), loader),
-						  Loader::loadTexture(textureName.c_str())));
+	Model model = ObjParser::loadObj(modelName.c_str(), loader);
+	Texture texture = Loader::loadTexture(textureName.c_str());
 
-	render3DComponent.textureName = textureName;
-	render3DComponent.modelName = modelName;
+	if (model.isValidModel() && texture.isValidTexture())
+	{
+		Render3DComponent render3DComponent(TexturedModel(model, texture));
 
-	registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
+		render3DComponent.textureName = textureName;
+		render3DComponent.modelName = modelName;
+		registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
+	}
 }
 
 void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
