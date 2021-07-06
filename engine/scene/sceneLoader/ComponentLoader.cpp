@@ -39,12 +39,15 @@ void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
 													 entt::entity entity, std::ifstream &reader, Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
+	Texture image = Loader::loadTexture(textureName.c_str());
 
-	Render2DComponent render2DComponent(TexturedModel(loader.renderQuad(),
-													  Loader::loadTexture(textureName.c_str())));
+	if (image.isValidTexture())
+	{
+		Render2DComponent render2DComponent(TexturedModel(loader.renderQuad(), image));
 
-	render2DComponent.textureName = textureName;
-	registry.emplace<Render2DComponent>(entity, std::move(render2DComponent));
+		render2DComponent.textureName = textureName;
+		registry.emplace<Render2DComponent>(entity, std::move(render2DComponent));
+	}
 }
 
 void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, entt::entity entity,
