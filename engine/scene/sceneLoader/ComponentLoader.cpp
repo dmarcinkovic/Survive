@@ -12,11 +12,15 @@ void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt
 	std::string bloomStrength = parseLine(reader, "bloomStrength");
 
 	float strength = std::stof(bloomStrength);
+	Texture bloomTexture = Loader::loadTexture(textureName.c_str());
 
-	BloomComponent bloom(Loader::loadTexture(textureName.c_str()), strength);
-	bloom.textureName = textureName;
+	if (bloomTexture.isValidTexture())
+	{
+		BloomComponent bloom(bloomTexture, strength);
+		bloom.textureName = textureName;
 
-	registry.emplace<BloomComponent>(entity, bloom);
+		registry.emplace<BloomComponent>(entity, bloom);
+	}
 }
 
 void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
