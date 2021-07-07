@@ -31,8 +31,9 @@ namespace Survive
 		bool m_SaveAsDialog = false;
 
 		SceneLoader m_SceneLoader;
-
 		bool m_IsSceneWindowFocused = true;
+
+		std::string m_SavedFile;
 
 	public:
 		explicit Editor(GLuint scene);
@@ -48,7 +49,6 @@ namespace Survive
 		bool &isSceneWindowFocused();
 
 	private:
-
 		void renderSceneWindow();
 
 		void renderPropertyWindow(entt::registry &registry);

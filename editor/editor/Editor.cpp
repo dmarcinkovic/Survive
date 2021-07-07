@@ -25,7 +25,11 @@ void Survive::Editor::render(entt::registry &registry)
 	renderPropertyWindow(registry);
 	renderSceneWindow();
 	renderMenu();
+
 	renderOpenDialog(registry);
+	renderSaveAsDialog(registry);
+	renderSaveDialog(registry);
+
 	Log::drawLogWindow();
 
 	ImGui::Render();
@@ -133,12 +137,34 @@ bool &Survive::Editor::isSceneWindowFocused()
 
 void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 {
+	if (m_SaveAsDialog)
+	{
+		m_FileChooser.save(600.0f, 400.0f, &m_SaveAsDialog);
 
+		if (!m_SaveAsDialog)
+		{
+			m_SavedFile = m_FileChooser.getSelectedFile();
+			if (!m_SavedFile.empty())
+			{
+				// TODO call SceneLoader.save(registry, m_SavedFile);
+			}
+		}
+	}
 }
 
 void Survive::Editor::renderSaveDialog(entt::registry &registry)
 {
-
+	if (m_SaveDialog)
+	{
+		if (m_SavedFile.empty())
+		{
+			m_SaveAsDialog = true;
+			m_SaveDialog = false;
+		} else
+		{
+			// TODO call SceneLoader.save(registry, m_SavedFile);
+		}
+	}
 }
 
 void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
