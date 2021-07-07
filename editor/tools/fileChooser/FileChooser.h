@@ -50,6 +50,8 @@ namespace Survive
 
 		void open(float windowWidth, float windowHeight, bool *open);
 
+		void save(float windowWidth, float windowHeight, bool *open);
+
 		[[nodiscard]] std::string getSelectedFile() const;
 
 		[[nodiscard]] std::string getSelectedFilename() const;

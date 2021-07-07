@@ -42,9 +42,11 @@ int main()
 	{
 		Display::clearWindow();
 
+		editor.handleKeyEvents(eventHandler);
+
 		Editor::newFrame();
 		Editor::dock();
-		editor.render(registry, eventHandler);
+		editor.render(registry);
 
 		renderer.renderToFbo(registry, camera);
 

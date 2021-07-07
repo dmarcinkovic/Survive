@@ -37,26 +37,29 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render(entt::registry &registry, const EventHandler &eventHandler);
+		void render(entt::registry &registry);
 
 		static void dock();
 
 		static void newFrame();
 
+		void handleKeyEvents(const EventHandler &eventHandler);
+
 		bool &isSceneWindowFocused();
 
 	private:
+
 		void renderSceneWindow();
 
 		void renderPropertyWindow(entt::registry &registry);
 
 		void renderMenu();
 
-		void renderOpenDialog(entt::registry &registry, const EventHandler &eventHandler);
+		void renderOpenDialog(entt::registry &registry);
 
-		void renderSaveAsDialog(entt::registry &registry, const EventHandler &eventHandler);
+		void renderSaveAsDialog(entt::registry &registry);
 
-		void renderSaveDialog(entt::registry &registry, const EventHandler &eventHandler);
+		void renderSaveDialog(entt::registry &registry);
 
 		static void setColorStyle();
 	};

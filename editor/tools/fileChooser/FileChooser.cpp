@@ -17,6 +17,34 @@ Survive::FileChooser::FileChooser()
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
 }
 
+void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
+{
+	setupDarkStyleColors();
+
+	auto[width, height] = Display::getWindowSize<float>();
+
+	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
+	m_OpenedFile = false;
+
+	ImGui::OpenPopup("Save");
+	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
+	{
+		drawNavigationArrows();
+		ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
+		ImGui::SameLine();
+
+		drawCheckbox();
+		helpMarker("Show hidden files");
+
+		drawTable(windowHeight, open);
+
+		ImGui::EndPopup();
+	}
+
+	ImGui::PopStyleColor(7);
+}
+
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
 	setupDarkStyleColors();

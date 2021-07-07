@@ -20,12 +20,12 @@ Survive::Editor::Editor(GLuint scene)
 	setColorStyle();
 }
 
-void Survive::Editor::render(entt::registry &registry, const EventHandler &eventHandler)
+void Survive::Editor::render(entt::registry &registry)
 {
 	renderPropertyWindow(registry);
 	renderSceneWindow();
 	renderMenu();
-	renderOpenDialog(registry, eventHandler);
+	renderOpenDialog(registry);
 	Log::drawLogWindow();
 
 	ImGui::Render();
@@ -109,7 +109,7 @@ void Survive::Editor::renderMenu()
 	}
 }
 
-void Survive::Editor::renderOpenDialog(entt::registry &registry, const EventHandler &eventHandler)
+void Survive::Editor::renderOpenDialog(entt::registry &registry)
 {
 	if (m_OpenDialog)
 	{
@@ -124,11 +124,6 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry, const EventHand
 			}
 		}
 	}
-
-	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
-	{
-		m_OpenDialog = true;
-	}
 }
 
 bool &Survive::Editor::isSceneWindowFocused()
@@ -136,12 +131,27 @@ bool &Survive::Editor::isSceneWindowFocused()
 	return m_IsSceneWindowFocused;
 }
 
-void Survive::Editor::renderSaveAsDialog(entt::registry &registry, const Survive::EventHandler &eventHandler)
+void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 {
 
 }
 
-void Survive::Editor::renderSaveDialog(entt::registry &registry, const Survive::EventHandler &eventHandler)
+void Survive::Editor::renderSaveDialog(entt::registry &registry)
 {
 
+}
+
+void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
+{
+	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
+	{
+		m_OpenDialog = true;
+	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveDialog = true;
+	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
+			   eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveAsDialog = true;
+	}
 }
