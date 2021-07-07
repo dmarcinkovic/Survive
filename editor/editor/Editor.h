@@ -54,6 +54,10 @@ namespace Survive
 
 		void renderOpenDialog(entt::registry &registry, const EventHandler &eventHandler);
 
+		void renderSaveAsDialog(entt::registry &registry, const EventHandler &eventHandler);
+
+		void renderSaveDialog(entt::registry &registry, const EventHandler &eventHandler);
+
 		static void setColorStyle();
 	};
 }

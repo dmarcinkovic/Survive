@@ -135,3 +135,13 @@ bool &Survive::Editor::isSceneWindowFocused()
 {
 	return m_IsSceneWindowFocused;
 }
+
+void Survive::Editor::renderSaveAsDialog(entt::registry &registry, const Survive::EventHandler &eventHandler)
+{
+
+}
+
+void Survive::Editor::renderSaveDialog(entt::registry &registry, const Survive::EventHandler &eventHandler)
+{
+
+}
