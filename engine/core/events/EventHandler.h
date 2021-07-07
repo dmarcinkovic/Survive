@@ -25,6 +25,8 @@ namespace Survive
 
 		[[nodiscard]] bool isKeyControlPressed() const;
 
+		[[nodiscard]] bool isShiftKeyPressed() const;
+
 	private:
 		void addKeyboardListener();
 	};

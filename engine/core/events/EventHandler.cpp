@@ -36,3 +36,8 @@ bool Survive::EventHandler::isKeyPressed(Key key) const
 {
 	return m_Keys[key];
 }
+
+bool Survive::EventHandler::isShiftKeyPressed() const
+{
+	return m_Keys[Key::RIGHT_SHIFT] || m_Keys[Key::LEFT_SHIFT];
+}
