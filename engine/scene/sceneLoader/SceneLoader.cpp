@@ -52,29 +52,33 @@ void Survive::SceneLoader::loadComponent(entt::registry &registry, entt::entity 
 	constexpr int componentLength = 11;
 	std::string componentType = component.substr(componentLength);
 
-	if (componentType == "BloomComponent")
+	try
 	{
-		ComponentLoader::loadBloomComponent(registry, entity, reader);
-	} else if (componentType == "ReflectionComponent")
-	{
-		ComponentLoader::loadReflectionComponent(registry, entity, reader);
-	} else if (componentType == "RefractionComponent")
-	{
-		ComponentLoader::loadRefractionComponent(registry, entity, reader);
-	} else if (componentType == "Render2DComponent")
-	{
-		ComponentLoader::loadRender2DComponent(registry, entity, reader, m_Loader);
-	} else if (componentType == "Render3DComponent")
-	{
-		ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);
-	} else if (componentType == "RigidBodyComponent")
-	{
-		ComponentLoader::loadRigidBodyComponent(registry, entity, reader);
-	} else if (componentType == "ShadowComponent")
-	{
-		ComponentLoader::loadShadowComponent(registry, entity, reader);
-	} else if (componentType == "Transform3DComponent")
-	{
-		ComponentLoader::loadTransformComponent(registry, entity, reader);
-	}
+		if (componentType == "BloomComponent")
+		{
+			ComponentLoader::loadBloomComponent(registry, entity, reader);
+		} else if (componentType == "ReflectionComponent")
+		{
+			ComponentLoader::loadReflectionComponent(registry, entity, reader);
+		} else if (componentType == "RefractionComponent")
+		{
+			ComponentLoader::loadRefractionComponent(registry, entity, reader);
+		} else if (componentType == "Render2DComponent")
+		{
+			ComponentLoader::loadRender2DComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "Render3DComponent")
+		{
+			ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "RigidBodyComponent")
+		{
+			ComponentLoader::loadRigidBodyComponent(registry, entity, reader);
+		} else if (componentType == "ShadowComponent")
+		{
+			ComponentLoader::loadShadowComponent(registry, entity, reader);
+		} else if (componentType == "Transform3DComponent")
+		{
+			ComponentLoader::loadTransformComponent(registry, entity, reader);
+		}
+	} catch (const std::exception &ignorable)
+	{}
 }
