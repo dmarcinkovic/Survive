@@ -25,7 +25,10 @@ namespace Survive
 
 		FileChooser m_FileChooser;
 		EntityManager m_Manager{};
+
 		bool m_OpenDialog = false;
+		bool m_SaveDialog = false;
+		bool m_SaveAsDialog = false;
 
 		SceneLoader m_SceneLoader;
 

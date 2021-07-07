@@ -101,6 +101,8 @@ void Survive::Editor::renderMenu()
 		if (ImGui::BeginMenu("File"))
 		{
 			ImGui::MenuItem("Open", "Ctrl+O", &m_OpenDialog);
+			ImGui::MenuItem("Save", "Ctrl+S", &m_SaveDialog);
+			ImGui::MenuItem("Save As", "Ctrl+Shift+S", &m_SaveAsDialog);
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
