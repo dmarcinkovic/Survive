@@ -69,13 +69,13 @@ namespace Survive
 
 		void drawCheckbox();
 
-		void drawFilenameTextbox(bool *open);
+		void drawFilenameTextbox(const char* label, bool *open, bool isReadOnly = true);
 
 		void drawTable(float windowHeight, bool *open);
 
 		void drawHeader();
 
-		void drawOpenButton(bool *open);
+		void drawLabeledButton(const char* label, bool *open);
 
 		static void drawCancelButton(bool *open);
 

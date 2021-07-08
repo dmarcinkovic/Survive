@@ -38,6 +38,7 @@ void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *ope
 		helpMarker("Show hidden files");
 
 		drawTable(windowHeight, open);
+		drawFilenameTextbox("Save", open, false);
 
 		ImGui::EndPopup();
 	}
@@ -69,7 +70,7 @@ void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *ope
 		helpMarker("Show hidden files");
 
 		drawTable(windowHeight, open);
-		drawFilenameTextbox(open);
+		drawFilenameTextbox("Open", open);
 
 		ImGui::EndPopup();
 	}
@@ -291,17 +292,18 @@ void Survive::FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::drawFilenameTextbox(bool *open)
+void Survive::FileChooser::drawFilenameTextbox(const char* label, bool *open, bool isReadOnly)
 {
 	if (ImGui::BeginChild("text box"))
 	{
-		ImGui::InputText("", m_SelectedFileName.data(), 255, ImGuiInputTextFlags_ReadOnly);
+		auto flags = isReadOnly ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_None;
+		ImGui::InputText("", m_SelectedFileName.data(), 255, flags);
 
 		ImGui::SameLine();
 		drawCancelButton(open);
 
 		ImGui::SameLine();
-		drawOpenButton(open);
+		drawLabeledButton(label, open);
 
 		ImGui::EndChild();
 	}
@@ -352,9 +354,9 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 	ImGui::PopStyleColor();
 }
 
-void Survive::FileChooser::drawOpenButton(bool *open)
+void Survive::FileChooser::drawLabeledButton(const char* label, bool *open)
 {
-	if (ImGui::Button("Open"))
+	if (ImGui::Button(label))
 	{
 		openPressed(open);
 	}
