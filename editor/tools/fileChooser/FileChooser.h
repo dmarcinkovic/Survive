@@ -71,11 +71,9 @@ namespace Survive
 
 		void drawFilenameTextbox(const char* label, bool *open, bool isReadOnly = true);
 
-		void drawTable(float windowHeight, bool *open);
+		void drawTable(float windowHeight, bool *open, bool openAction);
 
 		void drawHeader();
-
-		void drawLabeledButton(const char* label, bool *open);
 
 		static void drawCancelButton(bool *open);
 
@@ -95,9 +93,11 @@ namespace Survive
 
 		void drawIcon();
 
-		void fillTableRow(const File &file, int index, bool *open);
+		void fillTableRow(const File &file, int index, bool *open, bool openAction);
 
 		void openPressed(bool *open);
+
+		void savePressed(bool *open);
 
 		static bool sortByFilename(const File &file1, const File &file2);
 
@@ -107,7 +107,7 @@ namespace Survive
 
 		void drawDialogHeader(float windowWidth, float windowHeight);
 
-		void drawDialogBody(bool *open, float windowHeight);
+		void drawDialogBody(bool *open, float windowHeight, bool openAction);
 	};
 }
 

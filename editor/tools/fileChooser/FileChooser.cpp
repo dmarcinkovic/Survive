@@ -19,12 +19,14 @@ Survive::FileChooser::FileChooser()
 
 void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
 {
+	constexpr bool openAction = false;
+
 	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Save");
 	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
 	{
-		drawDialogBody(open, windowHeight);
+		drawDialogBody(open, windowHeight, openAction);
 		drawFilenameTextbox("Save", open, false);
 
 		ImGui::EndPopup();
@@ -35,12 +37,14 @@ void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *ope
 
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
+	constexpr bool openAction = true;
+
 	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Open");
 	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
 	{
-		drawDialogBody(open, windowHeight);
+		drawDialogBody(open, windowHeight, openAction);
 		drawFilenameTextbox("Open", open);
 
 		ImGui::EndPopup();
@@ -263,7 +267,7 @@ void Survive::FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::drawFilenameTextbox(const char* label, bool *open, bool isReadOnly)
+void Survive::FileChooser::drawFilenameTextbox(const char *label, bool *open, bool isReadOnly)
 {
 	if (ImGui::BeginChild("text box"))
 	{
@@ -272,15 +276,24 @@ void Survive::FileChooser::drawFilenameTextbox(const char* label, bool *open, bo
 
 		ImGui::SameLine();
 		drawCancelButton(open);
-
 		ImGui::SameLine();
-		drawLabeledButton(label, open);
+
+		if (ImGui::Button(label))
+		{
+			if (strcmp(label, "Open") == 0)
+			{
+				openPressed(open);
+			} else
+			{
+				savePressed(open);
+			}
+		}
 
 		ImGui::EndChild();
 	}
 }
 
-void Survive::FileChooser::drawTable(float windowHeight, bool *open)
+void Survive::FileChooser::drawTable(float windowHeight, bool *open, bool openAction)
 {
 	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 	{
@@ -293,7 +306,7 @@ void Survive::FileChooser::drawTable(float windowHeight, bool *open)
 				File file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
-				fillTableRow(file, i, open);
+				fillTableRow(file, i, open, openAction);
 			}
 			ImGui::EndTable();
 		}
@@ -323,14 +336,6 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 	}
 
 	ImGui::PopStyleColor();
-}
-
-void Survive::FileChooser::drawLabeledButton(const char* label, bool *open)
-{
-	if (ImGui::Button(label))
-	{
-		openPressed(open);
-	}
 }
 
 std::string Survive::FileChooser::getSelectedFile() const
@@ -366,7 +371,7 @@ void Survive::FileChooser::drawIcon()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open)
+void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open, bool openAction)
 {
 	ImGui::TableNextColumn();
 	drawIcon();
@@ -379,7 +384,13 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open)
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 	{
-		openPressed(open);
+		if (openAction)
+		{
+			openPressed(open);
+		} else
+		{
+			savePressed(open);
+		}
 	}
 
 	ImGui::TableNextColumn();
@@ -463,7 +474,7 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 	m_OpenedFile = false;
 }
 
-void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
+void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool openAction)
 {
 	drawNavigationArrows();
 	ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
@@ -472,5 +483,10 @@ void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
 	drawCheckbox();
 	helpMarker("Show hidden files");
 
-	drawTable(windowHeight, open);
+	drawTable(windowHeight, open, openAction);
+}
+
+void Survive::FileChooser::savePressed(bool *open)
+{
+
 }
