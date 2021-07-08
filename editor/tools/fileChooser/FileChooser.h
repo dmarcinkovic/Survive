@@ -104,6 +104,10 @@ namespace Survive
 		static bool sortBySize(const File &file1, const File &file2);
 
 		void sortDirectoryContent();
+
+		void drawDialogHeader(float windowWidth, float windowHeight);
+
+		void drawDialogBody(bool *open, float windowHeight);
 	};
 }
 

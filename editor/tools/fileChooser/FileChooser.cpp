@@ -19,25 +19,12 @@ Survive::FileChooser::FileChooser()
 
 void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
 {
-	setupDarkStyleColors();
-
-	auto[width, height] = Display::getWindowSize<float>();
-
-	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
-	m_OpenedFile = false;
+	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Save");
 	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
 	{
-		drawNavigationArrows();
-		ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
-		ImGui::SameLine();
-
-		drawCheckbox();
-		helpMarker("Show hidden files");
-
-		drawTable(windowHeight, open);
+		drawDialogBody(open, windowHeight);
 		drawFilenameTextbox("Save", open, false);
 
 		ImGui::EndPopup();
@@ -48,28 +35,12 @@ void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *ope
 
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
-	setupDarkStyleColors();
-
-	auto[width, height] = Display::getWindowSize<float>();
-
-	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
-	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
-	m_OpenedFile = false;
+	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Open");
 	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
 	{
-		drawNavigationArrows();
-
-		ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
-
-		ImGui::SameLine();
-
-		drawCheckbox();
-
-		helpMarker("Show hidden files");
-
-		drawTable(windowHeight, open);
+		drawDialogBody(open, windowHeight);
 		drawFilenameTextbox("Open", open);
 
 		ImGui::EndPopup();
@@ -479,4 +450,27 @@ void Survive::FileChooser::sortDirectoryContent()
 std::string Survive::FileChooser::getSelectedFilename() const
 {
 	return m_OpenedFile ? m_SelectedFileName : "";
+}
+
+void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeight)
+{
+	setupDarkStyleColors();
+
+	auto[width, height] = Display::getWindowSize<float>();
+
+	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
+	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);
+	m_OpenedFile = false;
+}
+
+void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
+{
+	drawNavigationArrows();
+	ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
+	ImGui::SameLine();
+
+	drawCheckbox();
+	helpMarker("Show hidden files");
+
+	drawTable(windowHeight, open);
 }
