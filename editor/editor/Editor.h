@@ -23,7 +23,8 @@ namespace Survive
 		GLuint m_Scene;
 		ImVec2 m_SceneSize;
 
-		FileChooser m_FileChooser;
+		FileChooser m_OpenWindow;
+		FileChooser m_SaveWindow;
 		EntityManager m_Manager{};
 
 		bool m_OpenDialog = false;

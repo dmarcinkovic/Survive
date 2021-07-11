@@ -117,11 +117,11 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 {
 	if (m_OpenDialog)
 	{
-		m_FileChooser.open(600.0f, 400.0f, &m_OpenDialog);
+		m_OpenWindow.open(600.0f, 400.0f, &m_OpenDialog);
 
 		if (!m_OpenDialog)
 		{
-			std::string file = m_FileChooser.getSelectedFile();
+			std::string file = m_OpenWindow.getSelectedFile();
 			if (!file.empty())
 			{
 				m_SceneLoader.loadScene(registry, file);
@@ -139,11 +139,11 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 {
 	if (m_SaveAsDialog)
 	{
-		m_FileChooser.save(600.0f, 400.0f, &m_SaveAsDialog);
+		m_SaveWindow.save(600.0f, 400.0f, &m_SaveAsDialog);
 
 		if (!m_SaveAsDialog)
 		{
-			m_SavedFile = m_FileChooser.getSelectedFile();
+			m_SavedFile = m_SaveWindow.getSelectedFile();
 			if (!m_SavedFile.empty())
 			{
 				// TODO call SceneLoader.save(registry, m_SavedFile);
