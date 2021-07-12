@@ -6,10 +6,12 @@
 
 bool ConfirmWindow::draw(float width, float height, float parentWidth, float parentHeight)
 {
-	if (m_Confirm)
+	if (!m_Confirm)
 	{
-		ImGui::OpenPopup("Confirm");
+		return false;
 	}
+
+	ImGui::OpenPopup("Confirm");
 
 	setWindowProperties(width, height, parentWidth, parentHeight);
 	setColorStyle();
