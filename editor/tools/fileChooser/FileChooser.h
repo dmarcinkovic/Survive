@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include "ConfirmWindow.h"
 
 namespace Survive
 {
@@ -29,6 +30,9 @@ namespace Survive
 				ImGuiTableFlags_RowBg | ImGuiTableFlags_NoBordersInBody | ImGuiTableFlags_Reorderable |
 				ImGuiTableFlags_ScrollY;
 
+		static constexpr float CONFIRM_WIDTH = 400.0f;
+		static constexpr float CONFIRM_HEIGHT = 80.0f;
+
 		std::string m_CurrentDirectory;
 		const std::filesystem::path m_Root;
 
@@ -44,6 +48,7 @@ namespace Survive
 		std::stack<std::string> m_Redo;
 
 		bool m_OpenedFile{};
+		ConfirmWindow m_ConfirmWindow;
 
 	public:
 		FileChooser();
@@ -108,6 +113,12 @@ namespace Survive
 		void drawDialogHeader(float windowWidth, float windowHeight);
 
 		void drawDialogBody(bool *open, float windowHeight, bool openAction);
+
+		void buttonDoublePress();
+
+		[[nodiscard]] bool directoryChosen() const;
+
+		void checkFileSaving(bool *open);
 	};
 }
 

@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <iostream>
 
 #include "FileChooser.h"
 #include "Display.h"
@@ -20,7 +19,6 @@ Survive::FileChooser::FileChooser()
 void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
 {
 	constexpr bool openAction = false;
-
 	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Save");
@@ -28,6 +26,12 @@ void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *ope
 	{
 		drawDialogBody(open, windowHeight, openAction);
 		drawFilenameTextbox("Save", open, false);
+
+		if (m_ConfirmWindow.draw(CONFIRM_WIDTH, CONFIRM_HEIGHT, windowWidth, windowHeight))
+		{
+			*open = false;
+			m_OpenedFile = true;
+		}
 
 		ImGui::EndPopup();
 	}
@@ -410,15 +414,9 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open,
 
 void Survive::FileChooser::openPressed(bool *open)
 {
-	if (m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory)
+	if (directoryChosen())
 	{
-		std::filesystem::path path(m_CurrentDirectory);
-
-		m_Undo.push(m_CurrentDirectory);
-		m_CurrentDirectory = path.append(m_SelectedFileName);
-		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
-
-		resetSelectedFile();
+		buttonDoublePress();
 	} else
 	{
 		*open = false;
@@ -488,5 +486,42 @@ void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool o
 
 void Survive::FileChooser::savePressed(bool *open)
 {
+	if (directoryChosen())
+	{
+		buttonDoublePress();
+	} else
+	{
+		checkFileSaving(open);
+	}
+}
 
+void Survive::FileChooser::buttonDoublePress()
+{
+	std::filesystem::path path(m_CurrentDirectory);
+
+	m_Undo.push(m_CurrentDirectory);
+	m_CurrentDirectory = path.append(m_SelectedFileName);
+	m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+
+	resetSelectedFile();
+}
+
+bool Survive::FileChooser::directoryChosen() const
+{
+	return m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory;
+}
+
+void Survive::FileChooser::checkFileSaving(bool *open)
+{
+	std::filesystem::path path(m_CurrentDirectory);
+	std::string file = path.append(m_SelectedFileName);
+
+	if (std::filesystem::exists(file))
+	{
+		m_ConfirmWindow.openConfirmWindow();
+	} else
+	{
+		*open = false;
+		m_OpenedFile = true;
+	}
 }
