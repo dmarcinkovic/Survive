@@ -143,7 +143,12 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 		if (!m_SaveAsDialog)
 		{
-			m_SavedFile = m_SaveWindow.getSelectedFile();
+			std::string selectedFile = m_SaveWindow.getSelectedFile();
+			if (!selectedFile.empty())
+			{
+				m_SavedFile = std::move(selectedFile);
+			}
+
 			if (!m_SavedFile.empty())
 			{
 				// TODO call SceneLoader.save(registry, m_SavedFile);
@@ -159,11 +164,12 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 		if (m_SavedFile.empty())
 		{
 			m_SaveAsDialog = true;
-			m_SaveDialog = false;
 		} else
 		{
 			// TODO call SceneLoader.save(registry, m_SavedFile);
 		}
+
+		m_SaveDialog = false;
 	}
 }
 
