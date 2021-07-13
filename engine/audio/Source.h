@@ -33,6 +33,10 @@ namespace Survive
 		void setOnLoop(bool loop) const;
 
 		void setPosition(const glm::vec3 &pos) const;
+
+		void setGain(float gain) const;
+
+		void setPitch(float pitch) const;
 	};
 }
 

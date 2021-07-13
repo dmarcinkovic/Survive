@@ -57,3 +57,13 @@ void Survive::Source::setPosition(const glm::vec3 &pos) const
 {
 	alSource3f(m_Source, AL_POSITION, pos.x, pos.y, pos.z);
 }
+
+void Survive::Source::setGain(float gain) const
+{
+	alSourcef(m_Source, AL_GAIN, gain);
+}
+
+void Survive::Source::setPitch(float pitch) const
+{
+	alSourcef(m_Source, AL_PITCH, pitch);
+}
