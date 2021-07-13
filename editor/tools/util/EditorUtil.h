@@ -40,6 +40,8 @@ namespace Survive
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
+		static void toggleButton(const char *stringId, bool *v);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
