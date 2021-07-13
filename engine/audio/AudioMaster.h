@@ -21,6 +21,8 @@ namespace Survive
 		std::vector<ALuint> m_Buffers;
 
 	public:
+		AudioMaster();
+
 		ALuint loadSound(const char *filename);
 
 		~AudioMaster();

@@ -10,12 +10,23 @@
 
 #include "AudioMaster.h"
 
-ALuint Survive::AudioMaster::loadSound(const char *filename)
+Survive::AudioMaster::AudioMaster()
 {
 	m_Device = alcOpenDevice(nullptr);
 	m_Context = alcCreateContext(m_Device, nullptr);
 	alcMakeContextCurrent(m_Context);
+}
 
+Survive::AudioMaster::~AudioMaster()
+{
+	alDeleteBuffers(static_cast<ALsizei>(m_Buffers.size()), m_Buffers.data());
+	alcMakeContextCurrent(nullptr);
+	alcDestroyContext(m_Context);
+	alcCloseDevice(m_Device);
+}
+
+ALuint Survive::AudioMaster::loadSound(const char *filename)
+{
 	ALuint buffer;
 	alGenBuffers(1, &buffer);
 
@@ -34,14 +45,6 @@ ALuint Survive::AudioMaster::loadSound(const char *filename)
 	delete[] wavFile;
 
 	return buffer;
-}
-
-Survive::AudioMaster::~AudioMaster()
-{
-	alDeleteBuffers(static_cast<ALsizei>(m_Buffers.size()), m_Buffers.data());
-	alcMakeContextCurrent(nullptr);
-	alcDestroyContext(m_Context);
-	alcCloseDevice(m_Device);
 }
 
 char *Survive::AudioMaster::loadWav(const char *filename, uint8_t &channels,
