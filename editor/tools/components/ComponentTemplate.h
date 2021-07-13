@@ -143,6 +143,26 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	void ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
+	{
+		static bool open = true;
+		if (ImGui::CollapsingHeader("Sound", visible))
+		{
+			if (EditorUtil::drawSlider("##Pitch", "Pitch", component.pitch, 0.0f, 5.0f))
+			{
+				component.audioSource.setPitch(component.pitch);
+			}
+
+			if (EditorUtil::drawSlider("##Gain", "Gain", component.gain, 0.0f, 5.0f))
+			{
+				component.audioSource.setGain(component.gain);
+			}
+
+			EditorUtil::toggleButton("Toggle button", &component.playOnLoop);
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
