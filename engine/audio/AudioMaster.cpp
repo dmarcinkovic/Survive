@@ -25,7 +25,7 @@ Survive::AudioMaster::~AudioMaster()
 	alcCloseDevice(m_Device);
 }
 
-ALuint Survive::AudioMaster::loadSound(const char *filename)
+ALint Survive::AudioMaster::loadSound(const char *filename)
 {
 	ALuint buffer;
 	alGenBuffers(1, &buffer);
@@ -44,7 +44,7 @@ ALuint Survive::AudioMaster::loadSound(const char *filename)
 
 	delete[] wavFile;
 
-	return buffer;
+	return static_cast<ALint>(buffer);
 }
 
 char *Survive::AudioMaster::loadWav(const char *filename, uint8_t &channels,

@@ -23,7 +23,7 @@ namespace Survive
 	public:
 		AudioMaster();
 
-		ALuint loadSound(const char *filename);
+		ALint loadSound(const char *filename);
 
 		~AudioMaster();
 
