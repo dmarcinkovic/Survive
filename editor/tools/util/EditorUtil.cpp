@@ -176,7 +176,7 @@ void Survive::EditorUtil::drawTransform2DHeader()
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawSlider(const char *label, const std::string &text, float &value, float start, float end)
+bool Survive::EditorUtil::drawSlider(const char *label, const std::string &text, float &value, float start, float end)
 {
 	ImGui::NewLine();
 	centerText(text);
@@ -189,11 +189,13 @@ void Survive::EditorUtil::drawSlider(const char *label, const std::string &text,
 	ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 4);
 
 	ImGui::PushItemWidth(-1);
-	ImGui::SliderFloat(label, &value, start, end);
+	bool sliderChanged = ImGui::SliderFloat(label, &value, start, end);
 	ImGui::PopItemWidth();
 
 	ImGui::PopStyleColor(3);
 	ImGui::PopStyleVar(2);
+
+	return sliderChanged;
 }
 
 void Survive::EditorUtil::centerText(const std::string &text)

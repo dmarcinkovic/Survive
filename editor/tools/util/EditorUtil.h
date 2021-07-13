@@ -35,7 +35,7 @@ namespace Survive
 
 		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);
 
-		static void drawSlider(const char *label, const std::string &text,
+		static bool drawSlider(const char *label, const std::string &text,
 							   float &value, float start = 0.0f, float end = 1.0f);
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
