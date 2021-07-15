@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <iostream>
 
 #include "Log.h"
 #include "Loader.h"
@@ -260,7 +259,6 @@ void Survive::EditorUtil::loadSound(Survive::FileChooser &fileChooser, Survive::
 			try
 			{
 				sound = audioMaster.loadSound(selectedFile.c_str());
-				std::cout << "loaded sound: " << sound << '\n';
 				soundFile = fileChooser.getSelectedFilename();
 				changed = true;
 			} catch (const std::exception &ignorable)
