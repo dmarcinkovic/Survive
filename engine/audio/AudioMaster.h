@@ -22,9 +22,9 @@ namespace Survive
 
 		std::vector<ALuint> m_Buffers;
 
-		AudioMaster();
-
 	public:
+		AudioMaster(const AudioMaster &audioMaster) = delete;
+
 		ALint loadSound(const char *filename);
 
 		~AudioMaster();
@@ -34,6 +34,8 @@ namespace Survive
 		static AudioMaster &getInstance();
 
 	private:
+		AudioMaster();
+
 		static char *loadWav(const char *filename, std::uint8_t &channels,
 							 std::int32_t &sampleRate, std::uint8_t &bitsPerSample, ALsizei &size);
 
