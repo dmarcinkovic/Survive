@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <iostream>
 
 #include "Log.h"
 #include "Loader.h"
@@ -71,7 +72,7 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 	static bool load{};
 	static Loader loader;
 
-	showRenderComponent("Model: %s", modelName, "Load model", load);
+	showLoadedFile("Model: %s", modelName, "Load model", load);
 
 	if (load)
 	{
@@ -109,7 +110,7 @@ void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture
 {
 	static bool load{};
 
-	showRenderComponent("Texture: %s", textureName, "Load texture", load);
+	showLoadedFile("Texture: %s", textureName, "Load texture", load);
 
 	if (load)
 	{
@@ -141,8 +142,8 @@ std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Surv
 	return {};
 }
 
-void Survive::EditorUtil::showRenderComponent(const char *format,
-											  const std::string &name, const char *label, bool &load)
+void Survive::EditorUtil::showLoadedFile(const char *format,
+										 const std::string &name, const char *label, bool &load)
 {
 	ImGui::Text(format, name.c_str());
 	ImGui::NextColumn();
@@ -240,4 +241,30 @@ void Survive::EditorUtil::toggleButton(const char *stringId, bool *v)
 	drawList->AddCircleFilled(ImVec2(*v ? (p.x + width - radius) : (p.x + radius), p.y + radius), radius - 1.5f,
 							  IM_COL32(255, 255, 255, 255));
 
+}
+
+void Survive::EditorUtil::loadSound(Survive::FileChooser &fileChooser, Survive::AudioMaster &audioMaster, ALint &sound,
+									std::string &soundFile, bool &changed)
+{
+	static bool load{};
+
+	showLoadedFile("Sound: %s", soundFile, "Load sound", load);
+
+	if (load)
+	{
+		fileChooser.open(600.0f, 400.0f, &load);
+		if (!load && !fileChooser.getSelectedFilename().empty())
+		{
+			std::string selectedFile = fileChooser.getSelectedFile();
+
+			try
+			{
+				sound = audioMaster.loadSound(selectedFile.c_str());
+				std::cout << "loaded sound: " << sound << '\n';
+				soundFile = fileChooser.getSelectedFilename();
+				changed = true;
+			} catch (const std::exception &ignorable)
+			{}
+		}
+	}
 }

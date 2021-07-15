@@ -7,7 +7,9 @@
 
 #include <string>
 #include <glm/vec3.hpp>
+#include <AL/al.h>
 
+#include "AudioMaster.h"
 #include "TexturedModel.h"
 #include "FileChooser.h"
 #include "Loader.h"
@@ -39,6 +41,9 @@ namespace Survive
 
 		static void toggleButton(const char *stringId, bool *v);
 
+		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+							  std::string &soundFile, bool &changed);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
@@ -49,8 +54,7 @@ namespace Survive
 
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 
-		static void showRenderComponent(const char *format,
-										const std::string &name, const char *label, bool &load);
+		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 
 		static void centerText(const std::string &text);
 	};
