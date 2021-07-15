@@ -148,7 +148,6 @@ namespace Survive
 	template<>
 	void ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
 	{
-		static AudioMaster audioMaster;
 		static FileChooser fileChooser;
 		static bool changed = true;
 
@@ -167,7 +166,7 @@ namespace Survive
 			EditorUtil::toggleButton("Toggle button", &component.playOnLoop);
 
 			ImGui::Columns(2);
-			EditorUtil::loadSound(fileChooser, audioMaster, component.sound, component.soundFile, changed);
+			EditorUtil::loadSound(fileChooser, AudioMaster::getInstance(), component.sound, component.soundFile, changed);
 			ImGui::Columns();
 		}
 	}
