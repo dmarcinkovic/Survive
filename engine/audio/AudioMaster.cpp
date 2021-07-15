@@ -10,6 +10,8 @@
 
 #include "AudioMaster.h"
 
+Survive::AudioMaster Survive::AudioMaster::m_AudioMaster;
+
 Survive::AudioMaster::AudioMaster()
 {
 	m_Device = alcOpenDevice(nullptr);
@@ -143,4 +145,9 @@ void Survive::AudioMaster::setListenerData(const glm::vec3 listenerPosition)
 {
 	alListener3f(AL_POSITION, listenerPosition.x, listenerPosition.y, listenerPosition.z);
 	alListener3f(AL_VELOCITY, 0, 0, 0);
+}
+
+Survive::AudioMaster &Survive::AudioMaster::getInstance()
+{
+	return m_AudioMaster;
 }

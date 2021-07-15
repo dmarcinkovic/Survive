@@ -15,19 +15,23 @@ namespace Survive
 	class AudioMaster
 	{
 	private:
+		static AudioMaster m_AudioMaster;
+
 		ALCdevice *m_Device;
 		ALCcontext *m_Context;
 
 		std::vector<ALuint> m_Buffers;
 
-	public:
 		AudioMaster();
 
+	public:
 		ALint loadSound(const char *filename);
 
 		~AudioMaster();
 
 		static void setListenerData(glm::vec3 listenerPosition = glm::vec3{});
+
+		static AudioMaster &getInstance();
 
 	private:
 		static char *loadWav(const char *filename, std::uint8_t &channels,
