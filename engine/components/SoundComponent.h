@@ -17,6 +17,7 @@ namespace Survive
 		float pitch = 1.0f, gain = 1.0f;
 		bool playOnLoop{};
 
+		std::string soundFile{};
 		Source audioSource;
 
 		SoundComponent() = default;
