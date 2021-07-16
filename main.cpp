@@ -1,9 +1,9 @@
-#include "EventHandler.h"
 #include "Editor.h"
+#include "EventHandler.h"
+#include  "Renderer.h"
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
-#include "Renderer.h"
 #include "Display.h"
 #include "entt.hpp"
 

@@ -88,3 +88,4 @@ bool Survive::TexturedModel::isValidModel() const
 {
 	return m_Model.isValidModel();
 }
+

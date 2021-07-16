@@ -143,7 +143,9 @@ Survive::TerrainGenerator::preprocessHeight(const std::uint8_t *image, int width
 		for (int x = 0; x < width; ++x)
 		{
 			result[y][x] = getHTerrainHeight(x, y, image, width);
+//			std::cout << result[y][x] << ' ';
 		}
+//		std::cout << '\n';
 	}
 
 	return result;

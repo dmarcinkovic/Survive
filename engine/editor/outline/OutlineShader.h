@@ -5,7 +5,6 @@
 #ifndef SURVIVE_OUTLINESHADER_H
 #define SURVIVE_OUTLINESHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive

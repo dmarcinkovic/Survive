@@ -5,8 +5,8 @@
 #include <glm/glm.hpp>
 
 #include "ShadowComponent.h"
-#include "ShadowRenderer.h"
 #include "Render3DComponent.h"
+#include "ShadowRenderer.h"
 #include "Transform3DComponent.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"

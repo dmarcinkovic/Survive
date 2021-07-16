@@ -5,7 +5,6 @@
 #ifndef SURVIVE_SHADOWSHADER_H
 #define SURVIVE_SHADOWSHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive

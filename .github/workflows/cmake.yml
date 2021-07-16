@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - master
+      - conan
 
 env:
   BUILD_TYPE: Release
 
 jobs:
   Linux:
-    name: Survive
+    name: Linux
     runs-on: ubuntu-20.04
 
     steps:
@@ -27,17 +28,56 @@ jobs:
         run : |
           sudo apt-get update
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev
+      - name: Install conan
+        run : |
+          sudo pip install conan
+
+      - name : Set conan profile
+        run : |
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name : Install libgl
+        run : |
+          sudo apt-get install libgl-dev libgl1-mesa-dev libglu1-mesa-dev
 
       - name: Build executable
         run: |
           cd ${{github.workspace}}
           mkdir build
           cd build
-          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
+          conan install .. --settings compiler="gcc"
+          cmake -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON
           make
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Artifact
+          path: ${{github.workspace}}/build
+
+  Windows:
+    name: Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Install conan
+        run: |
+          pip install conan
+
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          conan install ..
+          cmake .. -G "Visual Studio 16" -D CONAN_DISABLE_CHECK_COMPILER=ON
+          cmake --build . --config Release
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2

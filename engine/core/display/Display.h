@@ -36,7 +36,7 @@ namespace Survive
 	public:
 		Display(int width, int height, const char *title);
 
-		explicit Display(const char* title);
+		explicit Display(const char *title);
 
 		~Display();
 

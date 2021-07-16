@@ -5,6 +5,8 @@
 #ifndef SURVIVE_RENDER3DCOMPONENT_H
 #define SURVIVE_RENDER3DCOMPONENT_H
 
+#include <string>
+
 #include "TexturedModel.h"
 
 namespace Survive
