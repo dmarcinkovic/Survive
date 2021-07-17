@@ -30,6 +30,7 @@ namespace Survive
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;
 		bool m_SaveAsDialog = false;
+		bool m_SkyboxWindow = false;
 
 		SceneLoader m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
