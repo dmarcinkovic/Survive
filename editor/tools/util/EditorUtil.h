@@ -45,6 +45,8 @@ namespace Survive
 		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 							  std::string &soundFile, bool &changed);
 
+		static void centerText(const std::string &text);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
@@ -56,8 +58,6 @@ namespace Survive
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
-
-		static void centerText(const std::string &text);
 	};
 }
 
