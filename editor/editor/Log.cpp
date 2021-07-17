@@ -45,7 +45,7 @@ void Survive::Log::drawLogWindow()
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.0f);
 		auto[width, height] = Display::getWindowSize<float>();
-		ImGui::Begin("", &m_LogInfo.open, flags);
+		ImGui::Begin("##Log window", &m_LogInfo.open, flags);
 
 		drawIcon(warnIcon, errorIcon, infoIcon);
 		ImGui::SameLine();
