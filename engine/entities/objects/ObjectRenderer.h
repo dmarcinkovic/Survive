@@ -22,6 +22,8 @@ namespace Survive
 		ObjectShader m_Shader;
 		const Light &m_Light;
 
+		Texture m_DefaultTexture{};
+
 	public:
 		explicit ObjectRenderer(const Light &light);
 

@@ -57,6 +57,7 @@ Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 		Texture::unbindTexture();
+		Texture::unbindCubeTexture();
 	}
 }
 
@@ -156,6 +157,8 @@ void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::
 
 void Survive::ObjectRenderer::renderReflection(const entt::registry &registry, entt::entity entity) const
 {
+	m_DefaultTexture.bindTexture(2);
+
 	if (registry.has<ReflectionComponent>(entity))
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
@@ -164,13 +167,14 @@ void Survive::ObjectRenderer::renderReflection(const entt::registry &registry, e
 		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
 	} else
 	{
-		Texture::unbindCubeTexture();
 		m_Shader.loadReflectiveFactor(0.0f);
 	}
 }
 
 void Survive::ObjectRenderer::renderRefraction(const entt::registry &registry, entt::entity entity) const
 {
+	m_DefaultTexture.bindTexture(2);
+
 	if (registry.has<RefractionComponent>(entity))
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
@@ -179,7 +183,6 @@ void Survive::ObjectRenderer::renderRefraction(const entt::registry &registry, e
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	} else
 	{
-		Texture::unbindCubeTexture();
 		m_Shader.loadRefractionData(0.0f, 0.0f);
 	}
 }
