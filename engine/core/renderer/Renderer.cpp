@@ -140,3 +140,8 @@ void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &
 	WaterFbo::unbindFrameBuffer();
 }
 
+void Survive::Renderer::removeSkyboxEntity()
+{
+	m_SkyRenderer.removeSkyEntity();
+}
+

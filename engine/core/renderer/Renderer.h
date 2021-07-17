@@ -53,9 +53,11 @@ namespace Survive
 
 		void addSkyboxEntity(entt::entity sky);
 
+		void removeSkyboxEntity();
+
 		void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-		GLuint getRenderedTexture() const;
+		[[nodiscard]] GLuint getRenderedTexture() const;
 
 		void removeOutlineToObject(entt::registry &registry);
 
