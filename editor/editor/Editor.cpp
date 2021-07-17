@@ -109,6 +109,13 @@ void Survive::Editor::renderMenu()
 			ImGui::MenuItem("Save As", "Ctrl+Shift+S", &m_SaveAsDialog);
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Window"))
+		{
+			ImGui::MenuItem("Skybox", "", &m_SkyboxWindow);
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 }
