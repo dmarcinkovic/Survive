@@ -1,5 +1,4 @@
 #include <ObjParser.h>
-#include <iostream>
 #include "EventHandler.h"
 #include "Editor.h"
 #include "Loader.h"

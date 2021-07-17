@@ -29,7 +29,7 @@ void Survive::Editor::render(entt::registry &registry)
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
-	m_SkyWindow.draw(m_SkyboxDialog, ImVec2(400, 400));
+	m_SkyWindow.draw(m_SkyboxDialog);
 
 	Log::drawLogWindow();
 

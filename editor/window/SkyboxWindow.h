@@ -14,13 +14,16 @@ namespace Survive
 	{
 	private:
 		FileChooser m_FileChooser;
-		Texture m_Left;
-		std::string m_LeftTextureName;
+		std::vector<Texture> m_Textures;
+		std::vector<const char*> m_TextureNames;
 
-		bool m_Changed = true;
+		bool m_DialogOpen{};
+		uint8_t m_CurrentImage{};
 
 	public:
-		void draw(bool &open, const ImVec2 &windowSize);
+		SkyboxWindow();
+
+		void draw(bool &open);
 	};
 }
 

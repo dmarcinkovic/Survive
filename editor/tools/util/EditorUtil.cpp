@@ -194,7 +194,7 @@ void Survive::EditorUtil::centerText(const std::string &text)
 {
 	auto size = static_cast<float>(text.size());
 	float fontSize = ImGui::GetFontSize() * size / 2.0f;
-	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - fontSize + (fontSize / 2));
+	ImGui::SameLine(ImGui::GetWindowWidth() / 2 - fontSize + (fontSize / 2));
 	ImGui::Text("%s", text.c_str());
 }
 
