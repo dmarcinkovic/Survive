@@ -54,11 +54,14 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 
 	int index = 0;
 	registry.each([&](const entt::entity entity) {
-		const TagComponent &tag = registry.get<TagComponent>(entity);
+		if (registry.has<TagComponent>(entity))
+		{
+			const TagComponent &tag = registry.get<TagComponent>(entity);
 
-		drawSelectable(tag, entity, index);
-		drawPopupContext(registry, index);
-		++index;
+			drawSelectable(tag, entity, index);
+			drawPopupContext(registry, index);
+			++index;
+		}
 	});
 
 	ImGui::PopStyleColor(3);
