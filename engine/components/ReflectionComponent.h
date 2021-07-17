@@ -11,11 +11,10 @@ namespace Survive
 {
 	struct ReflectionComponent
 	{
-		Texture reflectionTexture{};
 		float reflectionFactor{};
 
-		ReflectionComponent(const Texture &reflectionTexture, float reflectionFactor)
-				: reflectionTexture(reflectionTexture), reflectionFactor(reflectionFactor)
+		explicit ReflectionComponent(float reflectionFactor)
+				: reflectionFactor(reflectionFactor)
 		{}
 
 		ReflectionComponent() = default;
