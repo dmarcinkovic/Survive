@@ -63,6 +63,7 @@ void Survive::Display::init(int width, int height, const char *title)
 
 Survive::Display::~Display()
 {
+	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
