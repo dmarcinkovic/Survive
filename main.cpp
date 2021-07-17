@@ -38,7 +38,6 @@ int main()
 	registry.emplace<TagComponent>(sky, "sky");
 	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
 			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
-	std::cout << "Texture : " << texturedModel.getTexture().textureId() << '\n';
 	registry.emplace<Render3DComponent>(sky, texturedModel);
 	registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500});
 

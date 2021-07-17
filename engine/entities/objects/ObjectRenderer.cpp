@@ -2,7 +2,6 @@
 // Created by david on 17. 05. 2020..
 //
 
-#include <iostream>
 #include "ObjectRenderer.h"
 #include "Components.h"
 #include "ShadowComponent.h"
@@ -162,12 +161,10 @@ void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::e
 
 	if (registry.has<ReflectionComponent>(entity) && m_SkyBox != entt::null)
 	{
-		std::cout << "Render reflection\n";
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
 
 		skybox.texturedModel.getTexture().bindCubeTexture(2);
-		std::cout << skybox.texturedModel.getTexture().textureId() << '\n';
 		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
 	} else
 	{
