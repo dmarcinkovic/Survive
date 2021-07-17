@@ -20,7 +20,7 @@ namespace Survive
 	{
 	public:
 		template<typename ComponentType>
-		static void drawComponent(ComponentType &component, bool* = nullptr)
+		static void drawComponent(ComponentType &component, bool * = nullptr)
 		{}
 	};
 
@@ -56,7 +56,8 @@ namespace Survive
 			ImGui::Columns(2);
 			EditorUtil::loadModel(fileChooser, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
-			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
+			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
+									"Texture: %s", "Load texture", changed);
 
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
@@ -100,7 +101,8 @@ namespace Survive
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
 			ImGui::Columns(2);
-			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName, changed);
+			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName,
+									"Texture: %s", "Load texture", changed);
 			ImGui::Columns();
 
 			EditorUtil::drawSlider("##Bloom strength", "Bloom strength", component.bloomStrength, 0.0f, 5.0f);
@@ -138,7 +140,8 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName, changed);
+			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
+									"Texture: %s", "Load texture", changed);
 			EditorUtil::loadQuadModel(changed, texturedModel, loader);
 
 			ImGui::Columns();
@@ -166,7 +169,8 @@ namespace Survive
 			EditorUtil::toggleButton("Toggle button", &component.playOnLoop);
 
 			ImGui::Columns(2);
-			EditorUtil::loadSound(fileChooser, AudioMaster::getInstance(), component.sound, component.soundFile, changed);
+			EditorUtil::loadSound(fileChooser, AudioMaster::getInstance(), component.sound, component.soundFile,
+								  changed);
 			ImGui::Columns();
 		}
 	}

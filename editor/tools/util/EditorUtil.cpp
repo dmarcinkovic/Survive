@@ -105,11 +105,11 @@ try
 }
 
 void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, std::string &textureName,
-									  bool &changed)
+									  const char *format, const char *label, bool &changed)
 {
 	static bool load{};
 
-	showLoadedFile("Texture: %s", textureName, "Load texture", load);
+	showLoadedFile(format, textureName, label, load);
 
 	if (load)
 	{
