@@ -42,8 +42,8 @@ int main()
 	registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500});
 
 	renderer.addSkyboxEntity(sky);
-	registry.emplace<ReflectionComponent>(dragon, 0.5f);
-//	registry.emplace<RefractionComponent>(dragon, texturedModel.getTexture(), 2.0f, 0.5f);
+//	registry.emplace<ReflectionComponent>(dragon, 0.5f);
+	registry.emplace<RefractionComponent>(dragon, 2.0f, 0.5f);
 
 	EventHandler eventHandler;
 
