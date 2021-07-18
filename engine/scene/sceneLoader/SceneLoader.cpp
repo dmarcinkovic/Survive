@@ -23,7 +23,16 @@ void Survive::SceneLoader::saveScene(entt::registry &registry, const std::string
 {
 	std::ofstream writer(filename);
 
+	registry.each([&](const entt::entity &entity) {
+		if (registry.has<TagComponent>(entity))
+		{
+			const TagComponent &tag = registry.get<TagComponent>(entity);
+			writer << "entity:" << tag.tag << '\n';
 
+			saveComponents(registry, entity, writer);
+			writer << "end\n";
+		}
+	});
 }
 
 entt::entity Survive::SceneLoader::createEntity(entt::registry &registry, const std::string &tag)
@@ -88,4 +97,9 @@ void Survive::SceneLoader::loadComponent(entt::registry &registry, entt::entity 
 		}
 	} catch (const std::exception &ignorable)
 	{}
+}
+
+void Survive::SceneLoader::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+{
+
 }

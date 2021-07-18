@@ -29,6 +29,8 @@ namespace Survive
 								  const std::string &component);
 
 		static entt::entity createEntity(entt::registry &registry, const std::string &tag);
+
+		void saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 	};
 }
 
