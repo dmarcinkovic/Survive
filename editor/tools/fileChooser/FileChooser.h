@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+
 #include "ConfirmWindow.h"
 
 namespace Survive

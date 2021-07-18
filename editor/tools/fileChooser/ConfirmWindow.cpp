@@ -74,8 +74,17 @@ void ConfirmWindow::drawButtons(float width, float height)
 
 	ImGui::SameLine();
 
+	setButtonRedColor();
 	if (ImGui::Button("Cancel", ImVec2(width / 2.0f, height / 3.5f)))
 	{
 		m_Confirm = false;
 	}
+	ImGui::PopStyleColor(3);
+}
+
+void ConfirmWindow::setButtonRedColor()
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 0.0f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.7f, 0.0f, 0.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
 }

@@ -28,6 +28,8 @@ private:
 	static void drawScaledText();
 
 	void drawButtons(float width, float height);
+
+	static void setButtonRedColor();
 };
 
 
