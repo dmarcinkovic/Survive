@@ -16,78 +16,103 @@ Survive::SkyboxWindow::SkyboxWindow()
 
 void Survive::SkyboxWindow::draw(entt::registry &registry, Renderer &renderer, bool &open)
 {
+	setColorStyle();
+
 	if (open)
 	{
 		ImGui::OpenPopup("Skybox");
 	}
 
-	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
-	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0, 0, 0, 1.0f));
-
 	if (ImGui::BeginPopupModal("Skybox", &open, ImGuiWindowFlags_NoDocking))
 	{
-		ImGui::Columns(2);
-		for (int i = 0; i < m_Textures.size(); ++i)
-		{
-			auto textureId = reinterpret_cast<ImTextureID>(m_Textures[i].textureId());
-
-			ImVec2 imageSize(100, 100);
-			ImGui::Image(textureId, imageSize, ImVec2(0, 1), ImVec2(1, 0));
-
-			ImVec2 buttonSize(ImGui::GetColumnWidth() - 10.0f, 0.0f);
-			if (ImGui::Button(m_Labels[i], buttonSize))
-			{
-				m_DialogOpen = true;
-				m_CurrentImage = i;
-			}
-
-			ImGui::NextColumn();
-		}
-
-		ImGui::Columns();
-
-		if (m_DialogOpen)
-		{
-			m_FileChooser.open(600, 400, &m_DialogOpen);
-
-			if (!m_DialogOpen)
-			{
-				std::string filename = m_FileChooser.getSelectedFile();
-
-				if (!filename.empty())
-				{
-					Texture image = Loader::loadTexture(filename.c_str());
-					if (image.isValidTexture())
-					{
-						m_Textures[m_CurrentImage] = image;
-						m_TextureNames[m_CurrentImage] = filename;
-					}
-				}
-			}
-		}
+		drawThumbnails();
+		drawOpenDialog();
 
 		ImGui::NewLine();
-		ImVec2 size(ImGui::GetWindowWidth(), 20);
-		if (ImGui::Button("Add skybox", size))
-		{
-			if (m_Loaded)
-			{
-				registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
-			} else
-			{
-				m_Sky = registry.create();
 
-				registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
-				registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
-				renderer.addSkyboxEntity(m_Sky);
-			}
-
-			open = false;
-			m_Loaded = true;
-		}
+		drawAddSkyboxButton(registry, renderer, open);
 
 		ImGui::EndPopup();
 	}
 
+	resetColorStyle();
+}
+
+void Survive::SkyboxWindow::setColorStyle()
+{
+	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0, 0, 0, 1.0f));
+}
+
+void Survive::SkyboxWindow::resetColorStyle()
+{
 	ImGui::PopStyleColor(2);
+}
+
+void Survive::SkyboxWindow::drawThumbnails()
+{
+	ImGui::Columns(2);
+	for (int i = 0; i < m_Textures.size(); ++i)
+	{
+		auto textureId = reinterpret_cast<ImTextureID>(m_Textures[i].textureId());
+
+		ImVec2 imageSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+		ImGui::Image(textureId, imageSize, ImVec2(0, 1), ImVec2(1, 0));
+
+		ImVec2 buttonSize(ImGui::GetColumnWidth() - 10.0f, 0.0f);
+		if (ImGui::Button(m_Labels[i], buttonSize))
+		{
+			m_DialogOpen = true;
+			m_CurrentImage = i;
+		}
+
+		ImGui::NextColumn();
+	}
+
+	ImGui::Columns();
+}
+
+void Survive::SkyboxWindow::drawOpenDialog()
+{
+	if (m_DialogOpen)
+	{
+		m_FileChooser.open(600, 400, &m_DialogOpen);
+
+		if (!m_DialogOpen)
+		{
+			std::string filename = m_FileChooser.getSelectedFile();
+
+			if (!filename.empty())
+			{
+				Texture image = Loader::loadTexture(filename.c_str());
+				if (image.isValidTexture())
+				{
+					m_Textures[m_CurrentImage] = image;
+					m_TextureNames[m_CurrentImage] = filename;
+				}
+			}
+		}
+	}
+}
+
+void Survive::SkyboxWindow::drawAddSkyboxButton(entt::registry &registry, Renderer &renderer, bool &open)
+{
+	ImVec2 size(ImGui::GetWindowWidth(), 0);
+	if (ImGui::Button("Add skybox", size))
+	{
+		if (m_Loaded)
+		{
+			registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+		} else
+		{
+			m_Sky = registry.create();
+
+			registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
+			registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+			renderer.addSkyboxEntity(m_Sky);
+		}
+
+		open = false;
+		m_Loaded = true;
+	}
 }

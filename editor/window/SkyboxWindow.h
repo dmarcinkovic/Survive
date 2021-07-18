@@ -16,10 +16,12 @@ namespace Survive
 	{
 	private:
 		static constexpr int N = 6;
+		static constexpr int THUMBNAIL_WIDTH = 100;
+		static constexpr int THUMBNAIL_HEIGHT = 100;
 
 		FileChooser m_FileChooser;
 		std::vector<Texture> m_Textures;
-		std::vector<const char*> m_Labels;
+		std::vector<const char *> m_Labels;
 		std::vector<std::string> m_TextureNames;
 
 		bool m_DialogOpen{};
@@ -35,6 +37,17 @@ namespace Survive
 		SkyboxWindow();
 
 		void draw(entt::registry &registry, Renderer &renderer, bool &open);
+
+	private:
+		static void setColorStyle();
+
+		static void resetColorStyle();
+
+		void drawThumbnails();
+
+		void drawOpenDialog();
+
+		void drawAddSkyboxButton(entt::registry &registry, Renderer &renderer, bool &open);
 	};
 }
 
