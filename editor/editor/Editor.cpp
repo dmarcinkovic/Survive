@@ -5,7 +5,6 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
-#include <iostream>
 
 #include "Key.h"
 #include "Editor.h"
@@ -156,12 +155,11 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 			if (!selectedFile.empty())
 			{
 				m_SavedFile = std::move(selectedFile);
-				std::cout << "Saved file: " << m_SavedFile << '\n';
 			}
 
 			if (!m_SavedFile.empty())
 			{
-				// TODO call SceneLoader.save(registry, m_SavedFile);
+				m_SceneLoader.saveScene(registry, m_SavedFile);
 			}
 		}
 	}
@@ -176,7 +174,7 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 			m_SaveAsDialog = true;
 		} else
 		{
-			// TODO call SceneLoader.save(registry, m_SavedFile);
+			m_SceneLoader.saveScene(registry, m_SavedFile);
 		}
 
 		m_SaveDialog = false;

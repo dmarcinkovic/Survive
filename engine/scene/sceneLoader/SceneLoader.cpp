@@ -19,6 +19,13 @@ void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string
 	}
 }
 
+void Survive::SceneLoader::saveScene(entt::registry &registry, const std::string &filename)
+{
+	std::ofstream writer(filename);
+
+
+}
+
 entt::entity Survive::SceneLoader::createEntity(entt::registry &registry, const std::string &tag)
 {
 	constexpr int entityLength = 7;
