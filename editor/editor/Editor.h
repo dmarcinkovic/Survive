@@ -12,7 +12,7 @@
 #include "FileChooser.h"
 #include "EventHandler.h"
 #include "Log.h"
-#include "SceneLoader.h"
+#include "SceneSerializer.h"
 #include "EntityManager.h"
 
 namespace Survive
@@ -35,7 +35,7 @@ namespace Survive
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
 
-		SceneLoader m_SceneLoader;
+		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
 
 		std::string m_SavedFile;

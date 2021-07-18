@@ -2,8 +2,8 @@
 // Created by david on 23. 06. 2021..
 //
 
-#ifndef SURVIVE_SCENELOADER_H
-#define SURVIVE_SCENELOADER_H
+#ifndef SURVIVE_SCENESERIALIZER_H
+#define SURVIVE_SCENESERIALIZER_H
 
 #include <fstream>
 
@@ -12,7 +12,7 @@
 
 namespace Survive
 {
-	class SceneLoader
+	class SceneSerializer
 	{
 	private:
 		Loader m_Loader;
@@ -34,4 +34,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_SCENELOADER_H
+#endif //SURVIVE_SCENESERIALIZER_H

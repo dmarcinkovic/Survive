@@ -2,10 +2,10 @@
 // Created by david on 23. 06. 2021..
 //
 
-#include "SceneLoader.h"
+#include "SceneSerializer.h"
 #include "ComponentLoader.h"
 
-void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string &filename)
+void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::string &filename)
 {
 	std::ifstream reader(filename);
 
@@ -19,7 +19,7 @@ void Survive::SceneLoader::loadScene(entt::registry &registry, const std::string
 	}
 }
 
-void Survive::SceneLoader::saveScene(entt::registry &registry, const std::string &filename)
+void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::string &filename)
 {
 	std::ofstream writer(filename);
 
@@ -35,7 +35,7 @@ void Survive::SceneLoader::saveScene(entt::registry &registry, const std::string
 	});
 }
 
-entt::entity Survive::SceneLoader::createEntity(entt::registry &registry, const std::string &tag)
+entt::entity Survive::SceneSerializer::createEntity(entt::registry &registry, const std::string &tag)
 {
 	constexpr int entityLength = 7;
 
@@ -45,7 +45,7 @@ entt::entity Survive::SceneLoader::createEntity(entt::registry &registry, const 
 	return entity;
 }
 
-void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &reader, const std::string &tag)
+void Survive::SceneSerializer::loadEntity(entt::registry &registry, std::ifstream &reader, const std::string &tag)
 {
 	entt::entity entity = createEntity(registry, tag);
 
@@ -62,7 +62,7 @@ void Survive::SceneLoader::loadEntity(entt::registry &registry, std::ifstream &r
 	}
 }
 
-void Survive::SceneLoader::loadComponent(entt::registry &registry, entt::entity entity,
+void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::entity entity,
 										 std::ifstream &reader, const std::string &component)
 {
 	constexpr int componentLength = 11;
@@ -99,7 +99,7 @@ void Survive::SceneLoader::loadComponent(entt::registry &registry, entt::entity 
 	{}
 }
 
-void Survive::SceneLoader::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
 
 }
