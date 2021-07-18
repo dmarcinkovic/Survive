@@ -33,17 +33,6 @@ int main()
 	registry.emplace<RigidBodyComponent>(dragon, false);
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -20});
 
-	auto sky = registry.create();
-	registry.emplace<TagComponent>(sky, "sky");
-	TexturedModel texturedModel(loader.renderCube(), Loader::loadCubeMap(
-			{"res/right.png", "res/left.png", "res/top.png", "res/bottom.png", "res/front.png", "res/back.png"}));
-	registry.emplace<Render3DComponent>(sky, texturedModel);
-	registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500});
-
-	renderer.addSkyboxEntity(sky);
-//	registry.emplace<ReflectionComponent>(dragon, 0.5f);
-	registry.emplace<RefractionComponent>(dragon, 2.0f, 0.5f);
-
 	EventHandler eventHandler;
 
 	while (display.isRunning())
@@ -54,7 +43,7 @@ int main()
 
 		Editor::newFrame();
 		Editor::dock();
-		editor.render(registry);
+		editor.render(registry, renderer);
 
 		renderer.renderToFbo(registry, camera);
 

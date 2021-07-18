@@ -43,7 +43,7 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render(entt::registry &registry);
+		void render(entt::registry &registry, Renderer &renderer);
 
 		static void dock();
 

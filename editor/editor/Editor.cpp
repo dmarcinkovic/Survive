@@ -20,7 +20,7 @@ Survive::Editor::Editor(GLuint scene)
 	setColorStyle();
 }
 
-void Survive::Editor::render(entt::registry &registry)
+void Survive::Editor::render(entt::registry &registry, Renderer &renderer)
 {
 	renderPropertyWindow(registry);
 	renderSceneWindow();
@@ -29,7 +29,7 @@ void Survive::Editor::render(entt::registry &registry)
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
-	m_SkyWindow.draw(m_SkyboxDialog);
+	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 
 	Log::drawLogWindow();
 

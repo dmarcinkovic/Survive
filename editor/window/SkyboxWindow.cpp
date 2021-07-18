@@ -9,11 +9,12 @@
 #include "SkyboxWindow.h"
 
 Survive::SkyboxWindow::SkyboxWindow()
-		: m_Textures(6), m_TextureNames{"Right", "Left", "Top", "Bottom", "Front", "Back"}
+		: m_Textures(N), m_Labels{"Right", "Left", "Top", "Bottom", "Front", "Back"}, m_TextureNames(N)
 {
+	m_Model = m_Loader.renderCube();
 }
 
-void Survive::SkyboxWindow::draw(bool &open)
+void Survive::SkyboxWindow::draw(entt::registry &registry, Renderer &renderer, bool &open)
 {
 	if (open)
 	{
@@ -32,9 +33,9 @@ void Survive::SkyboxWindow::draw(bool &open)
 
 			ImVec2 imageSize(100, 100);
 			ImGui::Image(textureId, imageSize, ImVec2(0, 1), ImVec2(1, 0));
-			
+
 			ImVec2 buttonSize(ImGui::GetColumnWidth() - 10.0f, 0.0f);
-			if (ImGui::Button(m_TextureNames[i], buttonSize))
+			if (ImGui::Button(m_Labels[i], buttonSize))
 			{
 				m_DialogOpen = true;
 				m_CurrentImage = i;
@@ -59,6 +60,7 @@ void Survive::SkyboxWindow::draw(bool &open)
 					if (image.isValidTexture())
 					{
 						m_Textures[m_CurrentImage] = image;
+						m_TextureNames[m_CurrentImage] = filename;
 					}
 				}
 			}
@@ -68,7 +70,11 @@ void Survive::SkyboxWindow::draw(bool &open)
 		ImVec2 size(ImGui::GetWindowWidth(), 20);
 		if (ImGui::Button("Add skybox", size))
 		{
+			auto sky = registry.create();
+			registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500.0f});
 
+			registry.emplace<Render3DComponent>(sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+			renderer.addSkyboxEntity(sky);
 		}
 
 		ImGui::EndPopup();
