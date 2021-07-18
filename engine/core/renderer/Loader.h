@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
 #include <unordered_map>
 #include <GL/glew.h>
 
@@ -65,6 +66,8 @@ namespace Survive
 		static std::vector<Texture> loadAllTextures(const std::vector<const char *> &textures);
 
 		static Texture loadCubeMap(const std::vector<const char *> &faces) noexcept;
+
+		static Texture loadCubeMap(const std::vector<std::string> &faces);
 
 		Model renderQuad();
 

@@ -350,6 +350,17 @@ Survive::Texture Survive::Loader::loadCubeMap(const std::vector<const char *> &f
 	return Texture(cubeMap);
 }
 
+Survive::Texture Survive::Loader::loadCubeMap(const std::vector<std::string> &faces)
+{
+	std::vector<const char*> newFaces(faces.size());
+	for (int i = 0; i < faces.size(); ++i)
+	{
+		newFaces[i] = faces[i].c_str();
+	}
+
+	return loadCubeMap(newFaces);
+}
+
 void Survive::Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
 {
 	stbi_set_flip_vertically_on_load(0);
