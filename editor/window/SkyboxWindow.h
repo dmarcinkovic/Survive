@@ -25,6 +25,9 @@ namespace Survive
 		bool m_DialogOpen{};
 		uint8_t m_CurrentImage{};
 
+		bool m_Loaded{};
+		entt::entity m_Sky = entt::null;
+
 		Loader m_Loader;
 		Model m_Model;
 

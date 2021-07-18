@@ -70,11 +70,20 @@ void Survive::SkyboxWindow::draw(entt::registry &registry, Renderer &renderer, b
 		ImVec2 size(ImGui::GetWindowWidth(), 20);
 		if (ImGui::Button("Add skybox", size))
 		{
-			auto sky = registry.create();
-			registry.emplace<Transform3DComponent>(sky, glm::vec3{}, glm::vec3{500.0f});
+			if (m_Loaded)
+			{
+				registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+			} else
+			{
+				m_Sky = registry.create();
 
-			registry.emplace<Render3DComponent>(sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
-			renderer.addSkyboxEntity(sky);
+				registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
+				registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+				renderer.addSkyboxEntity(m_Sky);
+			}
+
+			open = false;
+			m_Loaded = true;
 		}
 
 		ImGui::EndPopup();
