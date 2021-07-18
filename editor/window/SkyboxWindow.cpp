@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <iostream>
 
 #include "EditorUtil.h"
 #include "SkyboxWindow.h"
@@ -40,7 +39,7 @@ void Survive::SkyboxWindow::draw(entt::registry &registry, Renderer &renderer, b
 
 void Survive::SkyboxWindow::setColorStyle()
 {
-	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
+	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.05f));
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.38f, 0.38f, 0.38f, 1.0f));
