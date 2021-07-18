@@ -48,6 +48,8 @@ namespace Survive
 		void drawOpenDialog();
 
 		void drawAddSkyboxButton(entt::registry &registry, Renderer &renderer, bool &open);
+
+		void createSkybox(entt::registry &registry, Renderer &renderer);
 	};
 }
 

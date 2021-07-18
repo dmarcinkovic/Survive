@@ -41,12 +41,16 @@ void Survive::SkyboxWindow::draw(entt::registry &registry, Renderer &renderer, b
 void Survive::SkyboxWindow::setColorStyle()
 {
 	ImGui::PushStyleColor(ImGuiCol_ModalWindowDimBg, ImVec4(1.0f, 1.0f, 1.0f, 0.1f));
-	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0, 0, 0, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.38f, 0.38f, 0.38f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.45f, 0.45f, 0.45f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
 }
 
 void Survive::SkyboxWindow::resetColorStyle()
 {
-	ImGui::PopStyleColor(2);
+	ImGui::PopStyleColor(5);
 }
 
 void Survive::SkyboxWindow::drawThumbnails()
@@ -105,14 +109,19 @@ void Survive::SkyboxWindow::drawAddSkyboxButton(entt::registry &registry, Render
 			registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
 		} else
 		{
-			m_Sky = registry.create();
-
-			registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
-			registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
-			renderer.addSkyboxEntity(m_Sky);
+			createSkybox(registry, renderer);
 		}
 
 		open = false;
 		m_Loaded = true;
 	}
+}
+
+void Survive::SkyboxWindow::createSkybox(entt::registry &registry, Survive::Renderer &renderer)
+{
+	m_Sky = registry.create();
+
+	registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
+	registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+	renderer.addSkyboxEntity(m_Sky);
 }
