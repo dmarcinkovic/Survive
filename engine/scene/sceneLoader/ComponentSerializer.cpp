@@ -32,7 +32,10 @@ void Survive::ComponentSerializer::saveReflectionComponent(entt::registry &regis
 {
 	if (registry.has<ReflectionComponent>(entity))
 	{
+		const ReflectionComponent &reflectionComponent = registry.get<ReflectionComponent>(entity);
+
 		writer << "\tcomponent:ReflectionComponent\n";
+		writer << "\t\treflectionFactor:" << reflectionComponent.reflectionFactor << '\n';
 	}
 }
 
@@ -41,7 +44,11 @@ void Survive::ComponentSerializer::saveRefractionComponent(entt::registry &regis
 {
 	if (registry.has<RefractionComponent>(entity))
 	{
+		const RefractionComponent &refractionComponent = registry.get<RefractionComponent>(entity);
+
 		writer << "\tcomponent:RefractionComponent\n";
+		writer << "\t\trefractiveIndex:" << refractionComponent.refractiveIndex << '\n';
+		writer << "\t\trefractiveFactor:" << refractionComponent.refractiveFactor << '\n';
 	}
 }
 
