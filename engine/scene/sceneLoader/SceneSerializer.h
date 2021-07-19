@@ -17,6 +17,7 @@ namespace Survive
 	private:
 		Loader m_Loader;
 
+
 	public:
 		void loadScene(entt::registry &registry, const std::string &filename);
 

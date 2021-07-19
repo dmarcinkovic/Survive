@@ -14,29 +14,32 @@ namespace Survive
 	class ComponentSerializer
 	{
 	public:
-		void saveAnimationComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveAnimationComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveReflectionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveReflectionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveRefractionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveRefractionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveRender2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveRender2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveRender3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveRender3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveShadowComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveShadowComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveSoundComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveSoundComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveSpriteComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveSpriteComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		void saveTransform3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveTransform3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+	private:
+		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);
 	};
 }
 
