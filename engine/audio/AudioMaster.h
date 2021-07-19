@@ -8,6 +8,7 @@
 #include <AL/alc.h>
 #include <AL/al.h>
 #include <vector>
+#include <fstream>
 #include <glm/vec3.hpp>
 
 namespace Survive
@@ -15,15 +16,13 @@ namespace Survive
 	class AudioMaster
 	{
 	private:
-		static AudioMaster m_AudioMaster;
-
 		ALCdevice *m_Device;
 		ALCcontext *m_Context;
 
 		std::vector<ALuint> m_Buffers;
 
 	public:
-		AudioMaster(const AudioMaster &audioMaster) = delete;
+		AudioMaster();
 
 		ALint loadSound(const char *filename);
 
@@ -31,11 +30,7 @@ namespace Survive
 
 		static void setListenerData(glm::vec3 listenerPosition = glm::vec3{});
 
-		static AudioMaster &getInstance();
-
 	private:
-		AudioMaster();
-
 		static char *loadWav(const char *filename, std::uint8_t &channels,
 							 std::int32_t &sampleRate, std::uint8_t &bitsPerSample, ALsizei &size);
 
