@@ -32,7 +32,10 @@ void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt
 void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
 													   entt::entity entity, std::ifstream &reader)
 {
+	std::string reflectionFactor = parseLine(reader, "reflectionFactor");
+	float factor = std::stof(reflectionFactor);
 
+	registry.emplace<ReflectionComponent>(entity, factor);
 }
 
 void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
