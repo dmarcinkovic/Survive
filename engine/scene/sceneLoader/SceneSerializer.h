@@ -17,11 +17,10 @@ namespace Survive
 	private:
 		Loader m_Loader;
 
-
 	public:
 		void loadScene(entt::registry &registry, const std::string &filename);
 
-		void saveScene(entt::registry &registry, const std::string &filename);
+		static void saveScene(entt::registry &registry, const std::string &filename);
 
 	private:
 		void loadEntity(entt::registry &registry, std::ifstream &reader, const std::string &tag);
@@ -31,7 +30,7 @@ namespace Survive
 
 		static entt::entity createEntity(entt::registry &registry, const std::string &tag);
 
-		void saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 	};
 }
 

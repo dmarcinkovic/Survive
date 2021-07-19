@@ -4,6 +4,7 @@
 
 #include "SceneSerializer.h"
 #include "ComponentLoader.h"
+#include "ComponentSerializer.h"
 
 void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::string &filename)
 {
@@ -63,7 +64,7 @@ void Survive::SceneSerializer::loadEntity(entt::registry &registry, std::ifstrea
 }
 
 void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::entity entity,
-										 std::ifstream &reader, const std::string &component)
+											 std::ifstream &reader, const std::string &component)
 {
 	constexpr int componentLength = 11;
 	std::string componentType = component.substr(componentLength);
@@ -101,5 +102,16 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-
+	ComponentSerializer::saveAnimationComponent(registry, entity, writer);
+	ComponentSerializer::saveBloomComponent(registry, entity, writer);
+	ComponentSerializer::saveReflectionComponent(registry, entity, writer);
+	ComponentSerializer::saveRefractionComponent(registry, entity, writer);
+	ComponentSerializer::saveRender2DComponent(registry, entity, writer);
+	ComponentSerializer::saveRender3DComponent(registry, entity, writer);
+	ComponentSerializer::saveRigidBodyComponent(registry, entity, writer);
+	ComponentSerializer::saveShadowComponent(registry, entity, writer);
+	ComponentSerializer::saveSoundComponent(registry, entity, writer);
+	ComponentSerializer::saveSpriteComponent(registry, entity, writer);
+	ComponentSerializer::saveSpriteSheetComponent(registry, entity, writer);
+	ComponentSerializer::saveTransform3DComponent(registry, entity, writer);
 }
