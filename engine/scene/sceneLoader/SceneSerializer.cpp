@@ -71,7 +71,10 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 	try
 	{
-		if (componentType == "BloomComponent")
+		if (componentType == "AnimationComponent")
+		{
+
+		} else if (componentType == "BloomComponent")
 		{
 			ComponentLoader::loadBloomComponent(registry, entity, reader);
 		} else if (componentType == "ReflectionComponent")
@@ -92,6 +95,15 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "ShadowComponent")
 		{
 			ComponentLoader::loadShadowComponent(registry, entity, reader);
+		} else if (componentType == "SoundComponent")
+		{
+			ComponentLoader::loadSoundComponent(registry, entity, reader);
+		} else if (componentType == "SpriteComponent")
+		{
+			ComponentLoader::loadSpriteComponent(registry, entity, reader);
+		} else if (componentType == "SpriteSheetComponent")
+		{
+			ComponentLoader::loadSpriteSheetComponent(registry, entity, reader);
 		} else if (componentType == "Transform3DComponent")
 		{
 			ComponentLoader::loadTransformComponent(registry, entity, reader);

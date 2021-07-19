@@ -14,6 +14,8 @@ namespace Survive
 	class ComponentLoader
 	{
 	public:
+		static void loadAnimationComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 		static void loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 		static void loadReflectionComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
@@ -29,6 +31,12 @@ namespace Survive
 		static void loadRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 		static void loadShadowComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 		static void loadTransformComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 

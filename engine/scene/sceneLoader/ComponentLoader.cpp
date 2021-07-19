@@ -6,6 +6,12 @@
 #include "ComponentLoader.h"
 #include "Components.h"
 
+void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
+													  entt::entity entity, std::ifstream &reader)
+{
+
+}
+
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
 	std::string textureName = parseLine(reader, "textureName");
@@ -83,6 +89,22 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 	std::string loadShadow = parseLine(reader, "loadShadow");
 
 	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
+}
+
+void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
+}
+
+void
+Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
