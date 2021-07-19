@@ -138,5 +138,5 @@ void Survive::ComponentSerializer::saveTransform3DComponent(entt::registry &regi
 
 void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
 {
-	writer << "\t\t" << label << vec3.x << ',' << vec3.y << vec3.z << '\n';
+	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
 }
