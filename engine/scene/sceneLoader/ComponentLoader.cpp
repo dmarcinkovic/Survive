@@ -41,7 +41,13 @@ void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
 void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 													   entt::entity entity, std::ifstream &reader)
 {
+	std::string refractiveIndex = parseLine(reader, "refractiveIndex");
+	std::string refractiveFactor = parseLine(reader, "refractiveFactor");
 
+	float index = std::stof(refractiveIndex);
+	float factor = std::stof(refractiveFactor);
+	
+	registry.emplace<RefractionComponent>(entity, index, factor);
 }
 
 void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
