@@ -15,6 +15,9 @@ namespace Survive
 {
 	class ComponentUtil
 	{
+	private:
+		ComponentTemplate m_ComponentTemplate;
+
 	public:
 		static std::vector<const char *> getListOfComponents()
 		{
@@ -29,7 +32,7 @@ namespace Survive
 			return components;
 		}
 
-		static void drawAllComponents(entt::registry &registry, entt::entity entity)
+		void drawAllComponents(entt::registry &registry, entt::entity entity)
 		{
 			drawComponent<AnimationComponent>(registry, entity);
 			drawComponent<BloomComponent>(registry, entity);
@@ -47,7 +50,7 @@ namespace Survive
 			drawComponent<Transform3DComponent>(registry, entity);
 		}
 
-		static bool addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
+		bool addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
 		{
 			switch (selectedItem)
 			{
@@ -86,16 +89,16 @@ namespace Survive
 
 	private:
 		template<typename Component>
-		static bool addComponent(entt::registry &registry, entt::entity entity)
+		bool addComponent(entt::registry &registry, entt::entity entity)
 		{
 			static Component component;
 
 			if (registry.has<Component>(entity))
 			{
-				ComponentTemplate::drawComponent(registry.get<Component>(entity));
+				m_ComponentTemplate.drawComponent(registry.get<Component>(entity));
 			} else
 			{
-				ComponentTemplate::drawComponent(component);
+				m_ComponentTemplate.drawComponent(component);
 			}
 
 			if (drawAddButton(registry, entity, component))
@@ -127,12 +130,12 @@ namespace Survive
 		}
 
 		template<typename Component>
-		static void drawComponent(entt::registry &registry, entt::entity entity)
+		void drawComponent(entt::registry &registry, entt::entity entity)
 		{
 			if (registry.has<Component>(entity))
 			{
 				bool visible = true;
-				ComponentTemplate::drawComponent(registry.get<Component>(entity), &visible);
+				m_ComponentTemplate.drawComponent(registry.get<Component>(entity), &visible);
 
 				if (!visible)
 				{

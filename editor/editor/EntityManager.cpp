@@ -85,7 +85,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
 	EditorUtil::setStyleColors();
-	ComponentUtil::drawAllComponents(registry, m_SelectedEntity);
+	m_Util.drawAllComponents(registry, m_SelectedEntity);
 	EditorUtil::resetStyleColors();
 }
 
@@ -99,7 +99,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 	if (m_CurrentItem >= 0)
 	{
-		bool componentAdded = ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
+		bool componentAdded = m_Util.addComponent(registry, m_SelectedEntity, m_CurrentItem);
 		if (componentAdded)
 		{
 			m_CurrentItem = -1;
