@@ -475,7 +475,13 @@ void Survive::FileChooser::sortDirectoryContent()
 
 std::string Survive::FileChooser::getSelectedFilename() const
 {
-	return m_OpenedFile ? m_SelectedFileName : "";
+	if (m_OpenedFile)
+	{
+		std::filesystem::path selectedFile(getSelectedFile());
+		return std::filesystem::relative(selectedFile);
+	}
+
+	return "";
 }
 
 void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeight)
