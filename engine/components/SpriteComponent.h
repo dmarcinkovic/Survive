@@ -11,9 +11,9 @@ namespace Survive
 {
 	struct SpriteComponent
 	{
-		glm::vec3 color;
+		glm::vec4 color;
 
-		explicit SpriteComponent(const glm::vec3 &color)
+		explicit SpriteComponent(const glm::vec4 &color)
 				: color(color)
 		{}
 
