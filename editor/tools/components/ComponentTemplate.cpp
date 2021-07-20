@@ -2,6 +2,8 @@
 // Created by david on 19. 07. 2021..
 //
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "ComponentTemplate.h"
 
 template<>
@@ -152,5 +154,14 @@ void Survive::ComponentTemplate::drawComponent(SoundComponent &component, bool *
 		EditorUtil::loadSound(fileChooser, m_AudioMaster, component.sound, component.soundFile,
 							  changed);
 		ImGui::Columns();
+	}
+}
+
+template<>
+void Survive::ComponentTemplate::drawComponent(SpriteComponent &component, bool *visible)
+{
+	if (ImGui::CollapsingHeader("Sprite", visible))
+	{
+		ImGui::ColorEdit4("Color", glm::value_ptr(component.color));
 	}
 }
