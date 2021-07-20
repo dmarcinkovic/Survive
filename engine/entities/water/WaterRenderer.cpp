@@ -10,11 +10,7 @@
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
-	auto waterTiles = registry.group<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
-	if (waterTiles.empty())
-	{
-		return;
-	}
+	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 
 	prepareRendering(camera);
 	waterTiles.each(
@@ -28,8 +24,10 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 				loadUniforms(camera, transform, moveComponent, light);
 				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-				Renderer3DUtil::finishRenderingEntity();
-			});
+		Renderer3DUtil::finishRenderingEntity();
+	});
+
+	finishRendering();
 }
 
 void Survive::WaterRenderer::prepareRendering(const Camera &camera) const

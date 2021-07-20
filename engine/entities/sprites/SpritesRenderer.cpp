@@ -41,7 +41,7 @@ Survive::SpritesRenderer::loadUniforms(const Transform3DComponent &transform, co
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	auto group = registry.group<Render2DComponent, Transform3DComponent, SpriteSheetComponent>();
+	auto group = registry.view<Render2DComponent, Transform3DComponent, SpriteSheetComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : group)

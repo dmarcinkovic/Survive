@@ -54,11 +54,14 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 
 	int index = 0;
 	registry.each([&](const entt::entity entity) {
-		const TagComponent &tag = registry.get<TagComponent>(entity);
+		if (registry.has<TagComponent>(entity))
+		{
+			const TagComponent &tag = registry.get<TagComponent>(entity);
 
-		drawSelectable(tag, entity, index);
-		drawPopupContext(registry, index);
-		++index;
+			drawSelectable(tag, entity, index);
+			drawPopupContext(registry, index);
+			++index;
+		}
 	});
 
 	ImGui::PopStyleColor(3);
@@ -82,7 +85,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
 	EditorUtil::setStyleColors();
-	ComponentUtil::drawAllComponents(registry, m_SelectedEntity);
+	m_Util.drawAllComponents(registry, m_SelectedEntity);
 	EditorUtil::resetStyleColors();
 }
 
@@ -96,7 +99,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 	if (m_CurrentItem >= 0)
 	{
-		bool componentAdded = ComponentUtil::addComponent(registry, m_SelectedEntity, m_CurrentItem);
+		bool componentAdded = m_Util.addComponent(registry, m_SelectedEntity, m_CurrentItem);
 		if (componentAdded)
 		{
 			m_CurrentItem = -1;

@@ -25,7 +25,7 @@ void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *ope
 	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
 	{
 		drawDialogBody(open, windowHeight, openAction);
-		drawFilenameTextbox("Save", open, false);
+		drawSaveFilenameTextbox(open);
 
 		if (m_ConfirmWindow.draw(CONFIRM_WIDTH, CONFIRM_HEIGHT, windowWidth, windowHeight))
 		{
@@ -49,7 +49,7 @@ void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *ope
 	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
 	{
 		drawDialogBody(open, windowHeight, openAction);
-		drawFilenameTextbox("Open", open);
+		drawOpenFilenameTextbox(open);
 
 		ImGui::EndPopup();
 	}
@@ -271,26 +271,41 @@ void Survive::FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::drawFilenameTextbox(const char *label, bool *open, bool isReadOnly)
+void Survive::FileChooser::drawSaveFilenameTextbox(bool *open)
 {
-	if (ImGui::BeginChild("text box"))
+	if (ImGui::BeginChild("save text box"))
 	{
-		auto flags = isReadOnly ? ImGuiInputTextFlags_ReadOnly : ImGuiInputTextFlags_None;
-		ImGui::InputText("", m_SelectedFileName.data(), 255, flags);
+		char buffer[BUFFER_SIZE]{};
 
-		ImGui::SameLine();
-		drawCancelButton(open);
-		ImGui::SameLine();
-
-		if (ImGui::Button(label))
+		m_SelectedFile = -1;
+		if (!m_SelectedFileName.empty())
 		{
-			if (strcmp(label, "Open") == 0)
-			{
-				openPressed(open);
-			} else
-			{
-				savePressed(open);
-			}
+			strcpy(buffer, m_SelectedFileName.c_str());
+		}
+
+		ImGui::InputText("", buffer, BUFFER_SIZE);
+		m_SelectedFileName = std::string(buffer);
+
+		drawCancelButton(open);
+		if (ImGui::Button("Save"))
+		{
+			savePressed(open);
+		}
+
+		ImGui::EndChild();
+	}
+}
+
+void Survive::FileChooser::drawOpenFilenameTextbox(bool *open)
+{
+	if (ImGui::BeginChild("open text box"))
+	{
+		ImGui::InputText("", m_SelectedFileName.data(), BUFFER_SIZE, ImGuiInputTextFlags_ReadOnly);
+
+		drawCancelButton(open);
+		if (ImGui::Button("Open"))
+		{
+			openPressed(open);
 		}
 
 		ImGui::EndChild();
@@ -334,10 +349,12 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.345f, 0.345f, 0.345f, 1.0f));
 
+	ImGui::SameLine();
 	if (ImGui::Button("Cancel"))
 	{
 		*open = false;
 	}
+	ImGui::SameLine();
 
 	ImGui::PopStyleColor();
 }
@@ -458,7 +475,13 @@ void Survive::FileChooser::sortDirectoryContent()
 
 std::string Survive::FileChooser::getSelectedFilename() const
 {
-	return m_OpenedFile ? m_SelectedFileName : "";
+	if (m_OpenedFile)
+	{
+		std::filesystem::path selectedFile(getSelectedFile());
+		return std::filesystem::relative(selectedFile);
+	}
+
+	return "";
 }
 
 void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeight)
@@ -489,9 +512,19 @@ void Survive::FileChooser::savePressed(bool *open)
 	if (directoryChosen())
 	{
 		buttonDoublePress();
+		return;
+	}
+
+	std::filesystem::path path(m_CurrentDirectory);
+	std::string file = path.append(m_SelectedFileName);
+
+	if (std::filesystem::exists(file))
+	{
+		m_ConfirmWindow.openConfirmWindow();
 	} else
 	{
-		checkFileSaving(open);
+		*open = false;
+		m_OpenedFile = true;
 	}
 }
 
@@ -509,19 +542,4 @@ void Survive::FileChooser::buttonDoublePress()
 bool Survive::FileChooser::directoryChosen() const
 {
 	return m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory;
-}
-
-void Survive::FileChooser::checkFileSaving(bool *open)
-{
-	std::filesystem::path path(m_CurrentDirectory);
-	std::string file = path.append(m_SelectedFileName);
-
-	if (std::filesystem::exists(file))
-	{
-		m_ConfirmWindow.openConfirmWindow();
-	} else
-	{
-		*open = false;
-		m_OpenedFile = true;
-	}
 }

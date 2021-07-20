@@ -32,7 +32,8 @@ namespace Survive
 
 		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
-		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName, bool &changed);
+		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+								const char *format, const char *label, bool &changed);
 
 		static bool drawSlider(const char *label, const std::string &text,
 							   float &value, float start = 0.0f, float end = 1.0f);
@@ -43,6 +44,8 @@ namespace Survive
 
 		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 							  std::string &soundFile, bool &changed);
+
+		static void centerText(const std::string &text);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
@@ -55,8 +58,6 @@ namespace Survive
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
-
-		static void centerText(const std::string &text);
 	};
 }
 

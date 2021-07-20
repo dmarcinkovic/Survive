@@ -52,6 +52,7 @@ void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
 void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 {
 	m_SkyRenderer.addSkyEntity(sky);
+	m_ObjectRenderer.addSkybox(sky);
 }
 
 void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
@@ -138,5 +139,11 @@ void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &
 	Display::clearWindow();
 	render3DScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
+}
+
+void Survive::Renderer::removeSkyboxEntity()
+{
+	m_SkyRenderer.removeSkyEntity();
+	m_ObjectRenderer.addSkybox(entt::null);
 }
 

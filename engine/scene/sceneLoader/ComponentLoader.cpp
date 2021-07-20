@@ -6,6 +6,12 @@
 #include "ComponentLoader.h"
 #include "Components.h"
 
+void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
+													  entt::entity entity, std::ifstream &reader)
+{
+
+}
+
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
 	std::string textureName = parseLine(reader, "textureName");
@@ -26,13 +32,22 @@ void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt
 void Survive::ComponentLoader::loadReflectionComponent(entt::registry &registry,
 													   entt::entity entity, std::ifstream &reader)
 {
+	std::string reflectionFactor = parseLine(reader, "reflectionFactor");
+	float factor = std::stof(reflectionFactor);
 
+	registry.emplace<ReflectionComponent>(entity, factor);
 }
 
 void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 													   entt::entity entity, std::ifstream &reader)
 {
+	std::string refractiveIndex = parseLine(reader, "refractiveIndex");
+	std::string refractiveFactor = parseLine(reader, "refractiveFactor");
 
+	float index = std::stof(refractiveIndex);
+	float factor = std::stof(refractiveFactor);
+	
+	registry.emplace<RefractionComponent>(entity, index, factor);
 }
 
 void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
@@ -83,6 +98,22 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 	std::string loadShadow = parseLine(reader, "loadShadow");
 
 	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
+}
+
+void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
+}
+
+void
+Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,

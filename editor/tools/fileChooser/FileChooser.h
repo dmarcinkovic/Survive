@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <functional>
+
 #include "ConfirmWindow.h"
 
 namespace Survive
@@ -32,6 +34,7 @@ namespace Survive
 
 		static constexpr float CONFIRM_WIDTH = 400.0f;
 		static constexpr float CONFIRM_HEIGHT = 80.0f;
+		static constexpr int BUFFER_SIZE = 255;
 
 		std::string m_CurrentDirectory;
 		const std::filesystem::path m_Root;
@@ -74,7 +77,9 @@ namespace Survive
 
 		void drawCheckbox();
 
-		void drawFilenameTextbox(const char* label, bool *open, bool isReadOnly = true);
+		void drawSaveFilenameTextbox(bool *open);
+
+		void drawOpenFilenameTextbox(bool *open);
 
 		void drawTable(float windowHeight, bool *open, bool openAction);
 
@@ -117,8 +122,6 @@ namespace Survive
 		void buttonDoublePress();
 
 		[[nodiscard]] bool directoryChosen() const;
-
-		void checkFileSaving(bool *open);
 	};
 }
 

@@ -76,13 +76,15 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 	if (load)
 	{
 		fileChooser.open(600.0f, 400.0f, &load);
-		if (!load && !fileChooser.getSelectedFilename().empty())
+
+		std::string selectedFilename = fileChooser.getSelectedFilename();
+		if (!load && !selectedFilename.empty())
 		{
 			std::optional<Model> loadedModel = getLoadedModel(fileChooser, loader);
 
 			if (loadedModel.has_value())
 			{
-				modelName = fileChooser.getSelectedFilename();
+				modelName = selectedFilename;
 				model = loadedModel.value();
 				changed = true;
 			}
@@ -105,22 +107,24 @@ try
 }
 
 void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, std::string &textureName,
-									  bool &changed)
+									  const char *format, const char *label, bool &changed)
 {
 	static bool load{};
 
-	showLoadedFile("Texture: %s", textureName, "Load texture", load);
+	showLoadedFile(format, textureName, label, load);
 
 	if (load)
 	{
 		fileChooser.open(600.0f, 400.0f, &load);
-		if (!load && !fileChooser.getSelectedFilename().empty())
+
+		std::string selectedFilename = fileChooser.getSelectedFilename();
+		if (!load && !selectedFilename.empty())
 		{
 			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser);
 
 			if (loadedTexture.has_value())
 			{
-				textureName = fileChooser.getSelectedFilename();
+				textureName = selectedFilename;
 				texture = loadedTexture.value();
 				changed = true;
 			}
@@ -194,7 +198,7 @@ void Survive::EditorUtil::centerText(const std::string &text)
 {
 	auto size = static_cast<float>(text.size());
 	float fontSize = ImGui::GetFontSize() * size / 2.0f;
-	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - fontSize + (fontSize / 2));
+	ImGui::SameLine(ImGui::GetWindowWidth() / 2 - fontSize + (fontSize / 2));
 	ImGui::Text("%s", text.c_str());
 }
 
@@ -252,14 +256,14 @@ void Survive::EditorUtil::loadSound(Survive::FileChooser &fileChooser, Survive::
 	if (load)
 	{
 		fileChooser.open(600.0f, 400.0f, &load);
-		if (!load && !fileChooser.getSelectedFilename().empty())
-		{
-			std::string selectedFile = fileChooser.getSelectedFile();
 
+		std::string selectedFilename = fileChooser.getSelectedFilename();
+		if (!load && !selectedFilename.empty())
+		{
 			try
 			{
-				sound = audioMaster.loadSound(selectedFile.c_str());
-				soundFile = fileChooser.getSelectedFilename();
+				sound = audioMaster.loadSound(selectedFilename.c_str());
+				soundFile = selectedFilename;
 				changed = true;
 			} catch (const std::exception &ignorable)
 			{}

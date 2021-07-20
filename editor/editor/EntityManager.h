@@ -7,6 +7,7 @@
 
 #include "entt.hpp"
 #include "Components.h"
+#include "ComponentUtil.h"
 
 namespace Survive
 {
@@ -21,6 +22,8 @@ namespace Survive
 		entt::entity m_SelectedEntity{};
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
+
+		ComponentUtil m_Util{};
 
 	public:
 		void addEntity(entt::registry &registry);

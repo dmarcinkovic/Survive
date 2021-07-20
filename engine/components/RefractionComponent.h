@@ -10,13 +10,11 @@ namespace Survive
 {
 	struct RefractionComponent
 	{
-		Texture refractionTexture{};
 		float refractiveIndex{};
 		float refractiveFactor{};
 
-		RefractionComponent(const Texture &refractionTexture, float refractiveIndex, float refractiveFactor)
-				: refractionTexture(refractionTexture), refractiveIndex(refractiveIndex),
-				  refractiveFactor(refractiveFactor)
+		RefractionComponent(float refractiveIndex, float refractiveFactor)
+				: refractiveIndex(refractiveIndex), refractiveFactor(refractiveFactor)
 		{}
 
 		RefractionComponent() = default;

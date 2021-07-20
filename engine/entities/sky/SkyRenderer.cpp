@@ -76,3 +76,9 @@ void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Tr
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 	m_Shader.loadPlane(plane);
 }
+
+void Survive::SkyRenderer::removeSkyEntity()
+{
+	m_Sky = entt::null;
+	m_ShouldRender = false;
+}

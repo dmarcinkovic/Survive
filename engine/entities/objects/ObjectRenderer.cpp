@@ -41,7 +41,7 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 }
 
 void
-Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 									 const Camera &camera) const
 {
 	for (auto const &object : objects)
@@ -57,6 +57,7 @@ Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 		Texture::unbindTexture();
+		Texture::unbindCubeTexture();
 	}
 }
 
@@ -78,7 +79,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 	m_Shader.loadCameraPosition(camera.position);
 }
 
-void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,
 												 const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
@@ -154,32 +155,41 @@ void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::
 	}
 }
 
-void Survive::ObjectRenderer::renderReflection(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::entity entity) const
 {
-	if (registry.has<ReflectionComponent>(entity))
+	m_DefaultTexture.bindTexture(2);
+
+	if (registry.has<ReflectionComponent>(entity) && m_SkyBox != entt::null)
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
+		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
 
-		reflection.reflectionTexture.bindCubeTexture(2);
+		skybox.texturedModel.getTexture().bindCubeTexture(2);
 		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
 	} else
 	{
-		Texture::unbindCubeTexture();
 		m_Shader.loadReflectiveFactor(0.0f);
 	}
 }
 
-void Survive::ObjectRenderer::renderRefraction(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::entity entity) const
 {
-	if (registry.has<RefractionComponent>(entity))
+	m_DefaultTexture.bindTexture(2);
+
+	if (registry.has<RefractionComponent>(entity) && m_SkyBox != entt::null)
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
+		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
 
-		refraction.refractionTexture.bindCubeTexture(2);
+		skybox.texturedModel.getTexture().bindCubeTexture(2);
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	} else
 	{
-		Texture::unbindCubeTexture();
 		m_Shader.loadRefractionData(0.0f, 0.0f);
 	}
+}
+
+void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
+{
+	m_SkyBox = skybox;
 }

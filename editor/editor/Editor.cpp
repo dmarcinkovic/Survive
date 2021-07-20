@@ -20,7 +20,7 @@ Survive::Editor::Editor(GLuint scene)
 	setColorStyle();
 }
 
-void Survive::Editor::render(entt::registry &registry)
+void Survive::Editor::render(entt::registry &registry, Renderer &renderer)
 {
 	renderPropertyWindow(registry);
 	renderSceneWindow();
@@ -29,6 +29,7 @@ void Survive::Editor::render(entt::registry &registry)
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
+	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 
 	Log::drawLogWindow();
 
@@ -109,6 +110,13 @@ void Survive::Editor::renderMenu()
 			ImGui::MenuItem("Save As", "Ctrl+Shift+S", &m_SaveAsDialog);
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Window"))
+		{
+			ImGui::MenuItem("Skybox", "", &m_SkyboxDialog);
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -151,7 +159,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 			if (!m_SavedFile.empty())
 			{
-				// TODO call SceneLoader.save(registry, m_SavedFile);
+				m_SceneLoader.saveScene(registry, m_SavedFile);
 			}
 		}
 	}
@@ -166,7 +174,7 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 			m_SaveAsDialog = true;
 		} else
 		{
-			// TODO call SceneLoader.save(registry, m_SavedFile);
+			m_SceneLoader.saveScene(registry, m_SavedFile);
 		}
 
 		m_SaveDialog = false;

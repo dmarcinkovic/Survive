@@ -8,10 +8,11 @@
 #include <imgui.h>
 #include <utility>
 
+#include "SkyboxWindow.h"
 #include "FileChooser.h"
 #include "EventHandler.h"
 #include "Log.h"
-#include "SceneLoader.h"
+#include "SceneSerializer.h"
 #include "EntityManager.h"
 
 namespace Survive
@@ -31,7 +32,10 @@ namespace Survive
 		bool m_SaveDialog = false;
 		bool m_SaveAsDialog = false;
 
-		SceneLoader m_SceneLoader;
+		SkyboxWindow m_SkyWindow;
+		bool m_SkyboxDialog = false;
+
+		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
 
 		std::string m_SavedFile;
@@ -39,7 +43,7 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render(entt::registry &registry);
+		void render(entt::registry &registry, Renderer &renderer);
 
 		static void dock();
 
