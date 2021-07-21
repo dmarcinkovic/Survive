@@ -6,7 +6,6 @@
 
 #include "Maths.h"
 #include "Constants.h"
-#include "Display.h"
 
 glm::mat4 Survive::Maths::lightProjectionMatrix;
 glm::mat4 Survive::Maths::orthographicProjectionMatrix;
@@ -27,9 +26,8 @@ glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translatio
 	return matrix;
 }
 
-glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView)
+glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView, float width, float height)
 {
-	auto[width, height] = Display::getWindowSize<float>();
 	float aspectRatio = width / height;
 
 	return glm::perspective(fieldOfView, aspectRatio, Constants::NEAR, Constants::FAR);

@@ -24,7 +24,7 @@ namespace Survive
 		createTransformationMatrix(const glm::vec3 &translation, const glm::vec3 &scale = glm::vec3{1.0f, 1.0f, 1.0f},
 								   const glm::vec3 &rotation = glm::vec3{});
 
-		static glm::mat4 createProjectionMatrix(float fieldOfView);
+		static glm::mat4 createProjectionMatrix(float fieldOfView, float width, float height);
 
 		static glm::mat4 createViewMatrix(float pitch, float yaw, const glm::vec3 &position);
 
