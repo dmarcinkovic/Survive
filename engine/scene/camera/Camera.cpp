@@ -36,3 +36,8 @@ glm::mat4 Survive::Camera::getProjectionMatrix() const
 {
 	return m_ProjectionMatrix;
 }
+
+glm::mat4 Survive::Camera::getViewMatrix() const
+{
+	return Maths::createViewMatrix(pitch, yaw, position);
+}

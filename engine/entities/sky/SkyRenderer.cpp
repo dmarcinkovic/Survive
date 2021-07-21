@@ -54,7 +54,7 @@ void Survive::SkyRenderer::finishRendering()
 void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform,
 										const Camera &camera, const glm::vec4 &plane) const
 {
-	auto viewMatrix = Maths::createViewMatrix(camera);
+	glm::mat4 viewMatrix = camera.getViewMatrix();
 	viewMatrix[3][0] = 0;
 	viewMatrix[3][1] = 0;
 	viewMatrix[3][2] = 0;

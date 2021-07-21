@@ -26,7 +26,7 @@ namespace Survive
 
 		static glm::mat4 createProjectionMatrix(float fieldOfView);
 
-		static glm::mat4 createViewMatrix(const Camera &camera);
+		static glm::mat4 createViewMatrix(float pitch, float yaw, const glm::vec3 &position);
 
 		static glm::mat4 createLightViewMatrix(const Light &light);
 

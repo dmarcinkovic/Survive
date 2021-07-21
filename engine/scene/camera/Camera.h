@@ -29,6 +29,8 @@ namespace Survive
 
 		[[nodiscard]] glm::mat4 getProjectionMatrix() const;
 
+		[[nodiscard]] glm::mat4 getViewMatrix() const;
+
 	private:
 		void addWindowResizeHandler();
 

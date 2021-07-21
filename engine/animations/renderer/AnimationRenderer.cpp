@@ -75,9 +75,7 @@ Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 
 void Survive::AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
 {
-	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-
-	m_Shader.loadViewMatrix(viewMatrix);
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadPlane(plane);
 

@@ -18,7 +18,7 @@ Survive::ParticleRenderer::ParticleRenderer()
 void Survive::ParticleRenderer::render(const Camera &camera) const
 {
 	prepare(camera);
-	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	glm::mat4 viewMatrix = camera.getViewMatrix();
 
 	for (auto const&[particleModel, particles] : m_Particles)
 	{

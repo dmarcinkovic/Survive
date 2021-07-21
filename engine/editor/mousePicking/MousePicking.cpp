@@ -52,7 +52,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	Renderer3DUtil::prepareRendering(m_Shader);
 
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
 
 	for (auto const&[texturedModel, objects] : entities)
 	{

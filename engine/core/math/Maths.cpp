@@ -35,13 +35,13 @@ glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView)
 	return glm::perspective(fieldOfView, aspectRatio, Constants::NEAR, Constants::FAR);
 }
 
-glm::mat4 Survive::Maths::createViewMatrix(const Camera &camera)
+glm::mat4 Survive::Maths::createViewMatrix(float pitch, float yaw, const glm::vec3 &position)
 {
 	glm::mat4 viewMatrix{1.0};
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(camera.pitch), glm::vec3{1, 0, 0});
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(camera.yaw), glm::vec3{0, 1, 0});
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(pitch), glm::vec3{1, 0, 0});
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(yaw), glm::vec3{0, 1, 0});
 
-	viewMatrix = glm::translate(viewMatrix, -camera.position);
+	viewMatrix = glm::translate(viewMatrix, -position);
 	return viewMatrix;
 }
 
