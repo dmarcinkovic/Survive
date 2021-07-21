@@ -20,9 +20,11 @@ namespace Survive
 	class Editor
 	{
 	private:
+		static float m_SceneWidth;
+		static float m_SceneHeight;
+
 		ImGuiIO &m_Io;
 		GLuint m_Scene;
-		ImVec2 m_SceneSize;
 
 		FileChooser m_OpenWindow;
 		FileChooser m_SaveWindow;
@@ -52,6 +54,10 @@ namespace Survive
 		void handleKeyEvents(const EventHandler &eventHandler);
 
 		bool &isSceneWindowFocused();
+
+		static float getSceneWidth();
+
+		static float getSceneHeight();
 
 	private:
 		void renderSceneWindow();

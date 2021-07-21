@@ -9,6 +9,9 @@
 #include "Key.h"
 #include "Editor.h"
 
+float Survive::Editor::m_SceneWidth{};
+float Survive::Editor::m_SceneHeight{};
+
 Survive::Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene)
 {
@@ -59,10 +62,11 @@ void Survive::Editor::renderSceneWindow()
 
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
-	m_SceneSize = ImGui::GetWindowSize();
+	m_SceneWidth = ImGui::GetWindowWidth();
+	m_SceneHeight = ImGui::GetWindowHeight();
 
 	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-										 ImVec2(pos.x + m_SceneSize.x, pos.y + m_SceneSize.y), ImVec2(0, 1),
+										 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
 										 ImVec2(1, 0));
 
 	ImGui::End();
@@ -159,7 +163,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 			if (!m_SavedFile.empty())
 			{
-				m_SceneLoader.saveScene(registry, m_SavedFile);
+				Survive::SceneSerializer::saveScene(registry, m_SavedFile);
 			}
 		}
 	}
@@ -174,7 +178,7 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 			m_SaveAsDialog = true;
 		} else
 		{
-			m_SceneLoader.saveScene(registry, m_SavedFile);
+			Survive::SceneSerializer::saveScene(registry, m_SavedFile);
 		}
 
 		m_SaveDialog = false;
@@ -194,4 +198,14 @@ void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
 	{
 		m_SaveAsDialog = true;
 	}
+}
+
+float Survive::Editor::getSceneWidth()
+{
+	return m_SceneWidth;
+}
+
+float Survive::Editor::getSceneHeight()
+{
+	return m_SceneHeight;
 }
