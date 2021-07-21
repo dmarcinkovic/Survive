@@ -8,9 +8,9 @@
 #include "Constants.h"
 
 Survive::Camera::Camera()
-		: m_ProjectionMatrix(Maths::createProjectionMatrix(Constants::FOV))
 {
-	addWindowResizeHandler();
+	auto[width, height] = Display::getWindowSize<float>();
+	m_ProjectionMatrix = Maths::createProjectionMatrix(Constants::FOV, width, height);
 }
 
 void Survive::Camera::invertPitch()
@@ -23,15 +23,6 @@ void Survive::Camera::moveCameraInYDirection(float yDistance)
 	position.y += yDistance;
 }
 
-void Survive::Camera::addWindowResizeHandler()
-{
-	auto windowResizeListener = [this](int, int) {
-		m_ProjectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
-	};
-
-	Display::addWindowResizeListener(windowResizeListener);
-}
-
 glm::mat4 Survive::Camera::getProjectionMatrix() const
 {
 	return m_ProjectionMatrix;
@@ -40,4 +31,9 @@ glm::mat4 Survive::Camera::getProjectionMatrix() const
 glm::mat4 Survive::Camera::getViewMatrix() const
 {
 	return Maths::createViewMatrix(pitch, yaw, position);
+}
+
+void Survive::Camera::recalculateProjectionMatrix(float width, float height)
+{
+	m_ProjectionMatrix = Maths::createProjectionMatrix(Constants::FOV, width, height);
 }

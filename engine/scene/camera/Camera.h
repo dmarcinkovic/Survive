@@ -12,7 +12,7 @@ namespace Survive
 	class Camera
 	{
 	private:
-		glm::mat4 m_ProjectionMatrix;
+		glm::mat4 m_ProjectionMatrix{};
 
 	public:
 		glm::vec3 position{};
@@ -31,9 +31,7 @@ namespace Survive
 
 		[[nodiscard]] glm::mat4 getViewMatrix() const;
 
-	private:
-		void addWindowResizeHandler();
-
+		void recalculateProjectionMatrix(float width, float height);
 	};
 }
 
