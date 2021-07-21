@@ -9,7 +9,7 @@ namespace Survive
 {
 	enum Key
 	{
-		GLFW_KEY_SPACE = 32,
+		SPACE = 32,
 		APOSTROPHE = 39,
 		COMMA = 44, MINUS, PERIOD, SLASH,
 		KEY_0 = 48, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9,
