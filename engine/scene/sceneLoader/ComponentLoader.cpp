@@ -5,6 +5,7 @@
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
+#include "Util.h"
 
 void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
@@ -46,7 +47,7 @@ void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 
 	float index = std::stof(refractiveIndex);
 	float factor = std::stof(refractiveFactor);
-	
+
 	registry.emplace<RefractionComponent>(entity, index, factor);
 }
 
@@ -107,13 +108,15 @@ void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt
 
 void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
+	std::string colorString = parseLine(reader, "color");
+	glm::vec4 color = parseVec4(colorString);
 
+	registry.emplace<SpriteComponent>(entity, color);
 }
 
-void
-Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry,
+														entt::entity entity, std::ifstream &reader)
 {
-
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
@@ -152,4 +155,16 @@ glm::vec3 Survive::ComponentLoader::parseVec3(const std::string &vec3)
 	float z = std::stof(vec3.substr(end + 1));
 
 	return glm::vec3(x, y, z);
+}
+
+glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
+{
+	std::vector<std::string> numbers = Util::split(vec4, ',');
+
+	float x = std::stof(numbers[0]);
+	float y = std::stof(numbers[1]);
+	float z = std::stof(numbers[2]);
+	float w = std::stof(numbers[3]);
+
+	return glm::vec4{x, y, z, w};
 }

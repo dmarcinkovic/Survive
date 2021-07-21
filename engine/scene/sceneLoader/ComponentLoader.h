@@ -44,6 +44,8 @@ namespace Survive
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
 		static glm::vec3 parseVec3(const std::string &vec3);
+
+		static glm::vec4 parseVec4(const std::string &vec4);
 	};
 }
 
