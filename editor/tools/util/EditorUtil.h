@@ -40,7 +40,7 @@ namespace Survive
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
-		static void toggleButton(const char *stringId, bool *v);
+		static void toggleButton(const char *stringId, bool &v);
 
 		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 							  std::string &soundFile, bool &changed);

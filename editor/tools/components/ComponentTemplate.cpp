@@ -148,7 +148,7 @@ void Survive::ComponentTemplate::drawComponent(SoundComponent &component, bool *
 			component.audioSource.setGain(component.gain);
 		}
 
-		EditorUtil::toggleButton("Toggle button", &component.playOnLoop);
+		EditorUtil::toggleButton("Toggle button", component.playOnLoop);
 
 		ImGui::Columns(2);
 		EditorUtil::loadSound(fileChooser, m_AudioMaster, component.sound, component.soundFile,

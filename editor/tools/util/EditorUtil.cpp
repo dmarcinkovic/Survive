@@ -215,34 +215,32 @@ void Survive::EditorUtil::loadQuadModel(bool &changed, Survive::TexturedModel &t
 	}
 }
 
-void Survive::EditorUtil::toggleButton(const char *stringId, bool *v)
+void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
 {
-	ImVec2 p = ImGui::GetCursorScreenPos();
+	ImVec2 pos = ImGui::GetCursorScreenPos();
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
-	float height = ImGui::GetFrameHeight();
+	float height = ImGui::GetFrameHeight() * 1.2f;
 	float width = height * 1.55f;
 	float radius = height * 0.50f;
 
 	if (ImGui::InvisibleButton(stringId, ImVec2(width, height)))
 	{
-		*v = !*v;
+		v = !v;
 	}
 
 	ImU32 backgroundColor;
 	if (ImGui::IsItemHovered())
 	{
-		backgroundColor = *v ? IM_COL32(145 + 20, 211, 68 + 20, 255) :
-						  IM_COL32(218 - 20, 218 - 20, 218 - 20, 255);
+		backgroundColor = v ? IM_COL32(15, 120, 40, 255) : IM_COL32(150, 150, 150, 255);
 	} else
 	{
-		backgroundColor = *v ? IM_COL32(145, 211, 68, 255) :
-						  IM_COL32(218, 218, 218, 255);
+		backgroundColor = v ? IM_COL32(51, 244, 92, 255) : IM_COL32(180, 180, 180, 255);
 	}
 
-	drawList->AddRectFilled(p, ImVec2(p.x + width, p.y + height), backgroundColor, height * 0.5f);
-	drawList->AddCircleFilled(ImVec2(*v ? (p.x + width - radius) : (p.x + radius), p.y + radius), radius - 1.5f,
-							  IM_COL32(255, 255, 255, 255));
+	drawList->AddRectFilled(pos, ImVec2(pos.x + width, pos.y + height), backgroundColor, height * 0.5f);
+	drawList->AddCircleFilled(ImVec2(v ? (pos.x + width - radius) : (pos.x + radius), pos.y + radius),
+							  radius - 1.5f, IM_COL32(255, 255, 255, 255));
 
 }
 
