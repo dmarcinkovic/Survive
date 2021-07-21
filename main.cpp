@@ -1,4 +1,4 @@
-#include <AudioMaster.h>
+#include "AudioSystem.h"
 #include "ObjParser.h"
 #include "EventHandler.h"
 #include "Editor.h"
@@ -35,8 +35,6 @@ int main()
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -20});
 
 	EventHandler eventHandler;
-
-	AudioMaster audioMaster;
 
 	while (display.isRunning())
 	{
