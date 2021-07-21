@@ -69,7 +69,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadLightViewMatrix(lightViewMatrix);
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
 	m_Shader.loadPlane(plane);
 

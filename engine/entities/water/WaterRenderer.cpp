@@ -34,7 +34,7 @@ void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
 	Renderer3DUtil::prepareRendering(m_Shader);
 	Renderer3DUtil::addTransparency(false, true);
 
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
 }
 

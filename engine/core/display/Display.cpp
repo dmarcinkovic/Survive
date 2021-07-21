@@ -206,7 +206,6 @@ void Survive::Display::addScrollListener(const ScrollListener &listener)
 
 void Survive::Display::setProjectionMatrices(int width, int height)
 {
-	Maths::projectionMatrix = Maths::createProjectionMatrix(Constants::FOV);
 	Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 
 	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);

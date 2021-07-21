@@ -78,7 +78,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, const glm::v
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
 
 	m_Shader.loadViewMatrix(viewMatrix);
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadPlane(plane);
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color());

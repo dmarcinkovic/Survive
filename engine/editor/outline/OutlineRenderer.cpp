@@ -70,7 +70,7 @@ void Survive::OutlineRenderer::resetStencilFunctions()
 void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera) const
 {
 	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 
 	glm::vec3 rotation = transform.rotation + camera.rotation;
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale * SCALE, rotation);

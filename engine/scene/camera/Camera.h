@@ -9,17 +9,29 @@
 
 namespace Survive
 {
-	struct Camera
+	class Camera
 	{
+	private:
+		glm::mat4 m_ProjectionMatrix;
+
+	public:
 		glm::vec3 position{};
 		float pitch{};
 		float yaw{};
 
 		glm::vec3 rotation{};
 
+		Camera();
+
 		void invertPitch();
 
 		void moveCameraInYDirection(float yDistance);
+
+		[[nodiscard]] glm::mat4 getProjectionMatrix() const;
+
+	private:
+		void addWindowResizeHandler();
+
 	};
 }
 

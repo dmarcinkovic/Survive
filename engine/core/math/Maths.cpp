@@ -8,7 +8,6 @@
 #include "Constants.h"
 #include "Display.h"
 
-glm::mat4 Survive::Maths::projectionMatrix;
 glm::mat4 Survive::Maths::lightProjectionMatrix;
 glm::mat4 Survive::Maths::orthographicProjectionMatrix;
 
