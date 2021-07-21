@@ -20,6 +20,8 @@ namespace Survive
 	{
 	private:
 		AudioMaster m_AudioMaster;
+		FileChooser m_FileChooser;
+		Loader m_Loader;
 
 	public:
 		template<typename ComponentType>

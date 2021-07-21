@@ -28,7 +28,6 @@ void Survive::ComponentTemplate::drawComponent(Transform3DComponent &component, 
 template<>
 void Survive::ComponentTemplate::drawComponent(Render3DComponent &component, bool *visible)
 {
-	static FileChooser fileChooser{};
 	static bool changed = true;
 
 	if (ImGui::CollapsingHeader("Render3D", visible))
@@ -36,9 +35,9 @@ void Survive::ComponentTemplate::drawComponent(Render3DComponent &component, boo
 		TexturedModel &texturedModel = component.texturedModel;
 
 		ImGui::Columns(2);
-		EditorUtil::loadModel(fileChooser, texturedModel.getModel(), component.modelName, changed);
+		EditorUtil::loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
 		ImGui::NextColumn();
-		EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
+		EditorUtil::loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
 								"Texture: %s", "Load texture", changed);
 
 		if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
@@ -77,13 +76,12 @@ void Survive::ComponentTemplate::drawComponent(ShadowComponent &component, bool 
 template<>
 void Survive::ComponentTemplate::drawComponent(BloomComponent &component, bool *visible)
 {
-	static FileChooser fileChooser;
 	static bool changed = true;
 
 	if (ImGui::CollapsingHeader("Bloom", visible))
 	{
 		ImGui::Columns(2);
-		EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName,
+		EditorUtil::loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
 								"Texture: %s", "Load texture", changed);
 		ImGui::Columns();
 
@@ -113,18 +111,16 @@ void Survive::ComponentTemplate::drawComponent(RefractionComponent &component, b
 template<>
 void Survive::ComponentTemplate::drawComponent(Render2DComponent &component, bool *visible)
 {
-	static FileChooser fileChooser{};
 	static bool changed = true;
-	static Loader loader;
 
 	if (ImGui::CollapsingHeader("Render2D", visible))
 	{
 		TexturedModel &texturedModel = component.texturedModel;
 
 		ImGui::Columns(2);
-		EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
+		EditorUtil::loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
 								"Texture: %s", "Load texture", changed);
-		EditorUtil::loadQuadModel(changed, texturedModel, loader);
+		EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 		ImGui::Columns();
 	}
@@ -133,7 +129,6 @@ void Survive::ComponentTemplate::drawComponent(Render2DComponent &component, boo
 template<>
 void Survive::ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
 {
-	static FileChooser fileChooser;
 	static bool changed = true;
 
 	if (ImGui::CollapsingHeader("Sound", visible))
@@ -151,8 +146,7 @@ void Survive::ComponentTemplate::drawComponent(SoundComponent &component, bool *
 		EditorUtil::toggleButton("Toggle button", component.playOnLoop);
 
 		ImGui::Columns(2);
-		EditorUtil::loadSound(fileChooser, m_AudioMaster, component.sound, component.soundFile,
-							  changed);
+		EditorUtil::loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 		ImGui::Columns();
 	}
 }
