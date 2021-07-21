@@ -40,6 +40,8 @@ namespace Survive
 
 	private:
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);
+
+		static void printVec4(std::ofstream &writer, const char *label, const glm::vec4 &vec4);
 	};
 }
 

@@ -115,7 +115,10 @@ Survive::ComponentSerializer::saveSpriteComponent(entt::registry &registry, entt
 {
 	if (registry.has<SpriteComponent>(entity))
 	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+
 		writer << "\tcomponent:SpriteComponent\n";
+		printVec4(writer, "color", spriteComponent.color);
 	}
 }
 
@@ -146,4 +149,9 @@ void Survive::ComponentSerializer::saveTransform3DComponent(entt::registry &regi
 void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
 {
 	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
+}
+
+void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *label, const glm::vec4 &vec4)
+{
+	writer << "\t\t" << label << ':' << vec4.x << ',' << vec4.y << ',' << vec4.z << ',' << vec4.w << '\n';
 }
