@@ -87,7 +87,7 @@ namespace Survive
 
 		static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 
-		static void setProjectionMatrices(int width, int height);
+		static void setProjectionMatrices();
 
 		static void setViewport(int width, int height);
 
