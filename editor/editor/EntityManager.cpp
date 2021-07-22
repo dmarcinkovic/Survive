@@ -25,6 +25,7 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 	ImGui::Separator();
 
 	listEntities(registry);
+	renameEntity(registry);
 
 	ImGui::PopStyleColor();
 }
@@ -137,6 +138,11 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 			removeEntity(registry);
 		}
 
+		if (ImGui::Selectable("Rename entity"))
+		{
+			m_RenameEntity = true;
+		}
+
 		ImGui::EndPopup();
 	}
 }
@@ -147,4 +153,25 @@ void Survive::EntityManager::removeEntity(entt::registry &registry)
 	m_SelectedEntity = entt::entity{};
 
 	m_Selected = m_CurrentItem = -1;
+}
+
+void Survive::EntityManager::renameEntity(entt::registry &registry)
+{
+	if (m_RenameEntity)
+	{
+		ImGui::OpenPopup("rename entity");
+		m_RenameEntity = false;
+	}
+
+	if (ImGui::BeginPopup("rename entity"))
+	{
+		if (ImGui::InputText("Entity name", m_Buffer, BUFFER_SIZE,
+							 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			registry.replace<TagComponent>(m_SelectedEntity, m_Buffer);
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
 }

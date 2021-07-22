@@ -22,6 +22,7 @@ namespace Survive
 		entt::entity m_SelectedEntity{};
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
+		bool m_RenameEntity{};
 
 		ComponentUtil m_Util{};
 
@@ -44,6 +45,8 @@ namespace Survive
 		inline void drawPopupContext(entt::registry &registry, int i);
 
 		void removeEntity(entt::registry &registry);
+
+		void renameEntity(entt::registry &registry);
 	};
 }
 
