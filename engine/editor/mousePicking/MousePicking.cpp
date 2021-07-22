@@ -7,9 +7,9 @@
 #include "MousePicking.h"
 #include "Constants.h"
 #include "Components.h"
-#include "Display.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
+#include "Display.h"
 
 bool Survive::MousePicking::mousePressed = false;
 
@@ -20,7 +20,7 @@ Survive::MousePicking::MousePicking()
 
 void Survive::MousePicking::mousePressedHandler()
 {
-	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
+	EventHandler::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			mousePressed = true;

@@ -10,12 +10,6 @@
 #include "Constants.h"
 #include "Maths.h"
 
-std::vector<Survive::KeyListener> Survive::Display::m_KeyEventListeners;
-std::vector<Survive::MouseListener> Survive::Display::m_MouseEventListeners;
-std::vector<Survive::MouseMovedListener> Survive::Display::m_MouseMoveListeners;
-std::vector<Survive::WindowListener> Survive::Display::m_WindowListeners;
-std::vector<Survive::ScrollListener> Survive::Display::m_ScrollListeners;
-
 double Survive::Display::m_LastFrameTime{};
 double Survive::Display::m_DeltaTime{};
 
@@ -49,6 +43,7 @@ void Survive::Display::init(int width, int height, const char *title)
 
 	glewInit();
 	addCallbacks();
+	addListener();
 	initializeImGui();
 
 	m_LastFrameTime = glfwGetTime();
@@ -71,11 +66,11 @@ Survive::Display::~Display()
 
 void Survive::Display::addCallbacks() const
 {
-	glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
-	glfwSetMouseButtonCallback(m_Window, mouseEventCallback);
-	glfwSetKeyCallback(m_Window, keyEventCallback);
-	glfwSetCursorPosCallback(m_Window, mousePositionCallback);
-	glfwSetScrollCallback(m_Window, scrollCallback);
+	glfwSetWindowSizeCallback(m_Window, EventHandler::windowResizeCallback);
+	glfwSetMouseButtonCallback(m_Window, EventHandler::mouseEventCallback);
+	glfwSetKeyCallback(m_Window, EventHandler::keyEventCallback);
+	glfwSetCursorPosCallback(m_Window, EventHandler::mousePositionCallback);
+	glfwSetScrollCallback(m_Window, EventHandler::scrollCallback);
 }
 
 void Survive::Display::update() const
@@ -111,19 +106,6 @@ void Survive::Display::setWindowHints()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
-void Survive::Display::windowResizeCallback(GLFWwindow *, int width, int height)
-{
-	setViewport(width, height);
-
-	m_Width = width;
-	m_Height = height;
-
-	for (auto const &listener : m_WindowListeners)
-	{
-		listener(width, height);
-	}
-}
-
 void Survive::Display::setViewport(int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -135,69 +117,9 @@ void Survive::Display::setViewport(int width, int height)
 	glLoadIdentity();
 }
 
-void Survive::Display::keyEventCallback(GLFWwindow *, int key, int, int action, int)
-{
-	for (auto const &listener : m_KeyEventListeners)
-	{
-		listener(key, action);
-	}
-}
-
-void Survive::Display::mouseEventCallback(GLFWwindow *window, int button, int action, int)
-{
-	double mouseX, mouseY;
-	glfwGetCursorPos(window, &mouseX, &mouseY);
-
-	for (auto const &listener : m_MouseEventListeners)
-	{
-		listener(button, action, mouseX, mouseY);
-	}
-}
-
-void Survive::Display::addKeyListener(const KeyListener &listener)
-{
-	m_KeyEventListeners.emplace_back(listener);
-}
-
-void Survive::Display::addMouseListener(const MouseListener &listener)
-{
-	m_MouseEventListeners.emplace_back(listener);
-}
-
 double Survive::Display::getFrameTime()
 {
 	return m_DeltaTime;
-}
-
-void Survive::Display::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
-{
-	for (auto const &listener : m_MouseMoveListeners)
-	{
-		listener(mouseX, mouseY);
-	}
-}
-
-void Survive::Display::addMouseMovedListener(const MouseMovedListener &listener)
-{
-	m_MouseMoveListeners.emplace_back(listener);
-}
-
-void Survive::Display::addWindowResizeListener(const WindowListener &listener)
-{
-	m_WindowListeners.emplace_back(listener);
-}
-
-void Survive::Display::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
-{
-	for (auto const &listener : m_ScrollListeners)
-	{
-		listener(xOffset, yOffset);
-	}
-}
-
-void Survive::Display::addScrollListener(const ScrollListener &listener)
-{
-	m_ScrollListeners.emplace_back(listener);
 }
 
 void Survive::Display::setStencilProperties()
@@ -230,4 +152,16 @@ std::pair<int, int> Survive::Display::getMaxViewportSize()
 	static const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
 	return {mode->width, mode->height};
+}
+
+void Survive::Display::addListener()
+{
+	auto listener = [](int width, int height) {
+		setViewport(width, height);
+
+		m_Width = width;
+		m_Height = height;
+	};
+
+	EventHandler::addWindowResizeListener(listener);
 }

@@ -2,6 +2,7 @@
 // Created by david on 05. 05. 2020..
 //
 
+#include "Display.h"
 #include "Button.h"
 
 Survive::Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
@@ -57,7 +58,7 @@ void Survive::Button::addMouseMoveListener()
 		}
 	};
 
-	Display::addMouseMovedListener(mouseListener);
+	EventHandler::addMouseMovedListener(mouseListener);
 }
 
 void Survive::Button::addWindowResizeListener()
@@ -66,7 +67,7 @@ void Survive::Button::addWindowResizeListener()
 		convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
 	};
 
-	Display::addWindowResizeListener(windowResizeListener);
+	EventHandler::addWindowResizeListener(windowResizeListener);
 }
 
 Survive::Text &Survive::Button::getText()

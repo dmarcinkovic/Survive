@@ -48,7 +48,7 @@ namespace Survive
 				}
 			};
 
-			Display::addMouseListener(mousePressedListener);
+			EventHandler::addMouseListener(mousePressedListener);
 		}
 
 	private:
