@@ -5,8 +5,6 @@
 #include "Maths.h"
 #include "Constants.h"
 
-glm::mat4 Survive::Maths::lightProjectionMatrix;
-
 glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translation, const glm::vec3 &scale,
 											const glm::vec3 &rotation)
 {
@@ -40,9 +38,9 @@ glm::mat4 Survive::Maths::createViewMatrix(float pitch, float yaw, const glm::ve
 	return viewMatrix;
 }
 
-glm::mat4 Survive::Maths::createLightViewMatrix(const Light &light)
+glm::mat4 Survive::Maths::createLightViewMatrix(const glm::vec3 &lightPosition)
 {
-	return glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
+	return glm::lookAt(lightPosition, glm::vec3{0.0f}, glm::vec3{0, 1, 0});
 }
 
 glm::mat4 Survive::Maths::createLightProjectionMatrix()

@@ -22,9 +22,8 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
 
-	glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
-	m_ShadowShader.loadViewMatrix(viewMatrix);
-	m_ShadowShader.loadProjectionMatrix(Maths::lightProjectionMatrix);
+	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
+	m_ShadowShader.loadProjectionMatrix(light.getProjectionMatrix());
 
 	for (auto const&[texture, objects] : entities)
 	{

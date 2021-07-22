@@ -2,10 +2,9 @@
 // Created by david on 08. 03. 2020..
 //
 
-#include <iostream>
 #include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include "Display.h"
 #include "Constants.h"
@@ -57,7 +56,6 @@ void Survive::Display::init(int width, int height, const char *title)
 	m_Width = width;
 	m_Height = height;
 
-	setProjectionMatrices();
 	setStencilProperties();
 }
 
@@ -124,8 +122,6 @@ void Survive::Display::windowResizeCallback(GLFWwindow *, int width, int height)
 	{
 		listener(width, height);
 	}
-
-	setProjectionMatrices();
 }
 
 void Survive::Display::setViewport(int width, int height)
@@ -202,11 +198,6 @@ void Survive::Display::scrollCallback(GLFWwindow *, double xOffset, double yOffs
 void Survive::Display::addScrollListener(const ScrollListener &listener)
 {
 	m_ScrollListeners.emplace_back(listener);
-}
-
-void Survive::Display::setProjectionMatrices()
-{
-	Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
 }
 
 void Survive::Display::setStencilProperties()

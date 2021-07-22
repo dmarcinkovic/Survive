@@ -63,13 +63,12 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 
 void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
-	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
-	m_Shader.loadLightViewMatrix(lightViewMatrix);
+	m_Shader.loadLightViewMatrix(m_Light.getViewMatrix());
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
+	m_Shader.loadLightProjection(m_Light.getProjectionMatrix());
 	m_Shader.loadPlane(plane);
 
 	Texture texture(shadowMap);
