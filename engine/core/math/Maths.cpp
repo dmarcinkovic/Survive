@@ -6,7 +6,6 @@
 #include "Constants.h"
 
 glm::mat4 Survive::Maths::lightProjectionMatrix;
-glm::mat4 Survive::Maths::orthographicProjectionMatrix;
 
 glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translation, const glm::vec3 &scale,
 											const glm::vec3 &rotation)

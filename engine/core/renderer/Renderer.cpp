@@ -17,7 +17,7 @@ Survive::Renderer::Renderer(const Light &light)
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Survive::Renderer::render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
+void Survive::Renderer::render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
@@ -26,9 +26,9 @@ void Survive::Renderer::render3DScene(entt::registry &registry, Camera &camera, 
 	m_SkyRenderer.render(registry, camera, plane);
 }
 
-void Survive::Renderer::render2DScene(entt::registry &registry) const
+void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &camera) const
 {
-	m_GuiRenderer.render(registry);
+	m_GuiRenderer.render(registry, camera);
 	m_SpriteRenderer.render(registry);
 }
 
@@ -46,7 +46,7 @@ void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
 	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
 
-	render2DScene(registry);
+	render2DScene(registry, camera);
 }
 
 void Survive::Renderer::addSkyboxEntity(entt::entity sky)
@@ -82,7 +82,7 @@ void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) co
 	m_WaterRenderer.render(registry, camera, m_Light);
 
 	m_OutlineRenderer.render(registry, camera);
-	render2DScene(registry);
+	render2DScene(registry, camera);
 	FrameBuffer::unbindFrameBuffer();
 
 	m_BloomRenderer.render(registry);
@@ -103,7 +103,6 @@ void Survive::Renderer::resetViewport()
 
 void Survive::Renderer::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
-
 	if (WaterRenderer::shouldRender(registry))
 	{
 		glEnable(GL_CLIP_DISTANCE0);
@@ -133,9 +132,10 @@ void Survive::Renderer::renderWaterReflection(entt::registry &registry, Camera &
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderWaterRefraction(entt::registry &registry, const Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
+
 	Display::clearWindow();
 	render3DScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();

@@ -207,9 +207,6 @@ void Survive::Display::addScrollListener(const ScrollListener &listener)
 void Survive::Display::setProjectionMatrices(int width, int height)
 {
 	Maths::lightProjectionMatrix = Maths::createLightProjectionMatrix();
-
-	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-	Maths::orthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(aspectRatio, 1.0f);
 }
 
 void Survive::Display::setStencilProperties()

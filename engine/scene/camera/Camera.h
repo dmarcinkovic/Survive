@@ -13,6 +13,7 @@ namespace Survive
 	{
 	private:
 		glm::mat4 m_ProjectionMatrix{};
+		glm::mat4 m_OrthographicProjectionMatrix{};
 
 	public:
 		glm::vec3 position{};
@@ -28,6 +29,8 @@ namespace Survive
 		void moveCameraInYDirection(float yDistance);
 
 		[[nodiscard]] glm::mat4 getProjectionMatrix() const;
+
+		[[nodiscard]] glm::mat4 getOrthographicProjectionMatrix() const;
 
 		[[nodiscard]] glm::mat4 getViewMatrix() const;
 

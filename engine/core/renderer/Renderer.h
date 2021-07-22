@@ -61,9 +61,9 @@ namespace Survive
 
 		void removeOutlineToObject(entt::registry &registry);
 
-		void render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-		void render2DScene(entt::registry &registry) const;
+		void render2DScene(entt::registry &registry, const Camera &camera) const;
 
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
@@ -72,7 +72,7 @@ namespace Survive
 
 		void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-		void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
+		void renderWaterRefraction(entt::registry &registry, const Camera &camera) const;
 	};
 }
 
