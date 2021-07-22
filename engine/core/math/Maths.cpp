@@ -2,8 +2,6 @@
 // Created by david on 28. 03. 2020..
 //
 
-#include <random>
-
 #include "Maths.h"
 #include "Constants.h"
 
@@ -59,11 +57,3 @@ glm::mat4 Survive::Maths::createOrthographicProjectionMatrix(float width, float 
 	return glm::ortho(-width, width, -height, height);
 }
 
-float Survive::Maths::getRandom(float first, float second)
-{
-	static std::random_device device;
-	static std::mt19937_64 mt(device());
-	static std::uniform_real_distribution<float> distribution(first, second);
-
-	return distribution(mt);
-}

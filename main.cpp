@@ -47,6 +47,7 @@ int main()
 		editor.render(registry, renderer);
 
 		renderer.renderToFbo(registry, camera);
+		camera.recalculateProjectionMatrix(Survive::Editor::getSceneWidth(), Survive::Editor::getSceneHeight());
 
 		display.update();
 	}

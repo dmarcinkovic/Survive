@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <random>
 #include <glm/glm.hpp>
 
 #include "Util.h"
@@ -116,6 +117,15 @@ void Survive::Util::processVertex(const std::vector<glm::vec3> &vertices, const 
 	resultNormals.emplace_back(normal.x);
 	resultNormals.emplace_back(normal.y);
 	resultNormals.emplace_back(normal.z);
+}
+
+float Survive::Util::getRandom(float first, float second)
+{
+	static std::random_device device;
+	static std::mt19937_64 mt(device());
+	static std::uniform_real_distribution<float> distribution(first, second);
+
+	return distribution(mt);
 }
 
 
