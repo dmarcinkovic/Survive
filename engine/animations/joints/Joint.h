@@ -13,7 +13,7 @@ class Joint
 {
 private:
     std::vector<Joint> m_Children;
-    int m_Index{};
+    size_t m_Index{};
     std::string m_Name;
 
     glm::mat4 m_AnimatedTransform{1};
@@ -24,7 +24,7 @@ private:
 public:
     Joint() = default;
 
-    Joint(std::string name, int index, const glm::mat4 &bindLocalTransform);
+    Joint(std::string name, size_t index, const glm::mat4 &bindLocalTransform);
 
     void addChild(const Joint &childJoint);
 

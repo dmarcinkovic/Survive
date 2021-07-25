@@ -35,7 +35,7 @@ struct AnimationData
 struct JointData
 {
     Joint rootJoint;
-    int numberOfJoints{};
+    size_t numberOfJoints{};
 };
 
 class DaeParser

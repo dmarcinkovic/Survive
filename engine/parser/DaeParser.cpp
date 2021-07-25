@@ -84,7 +84,7 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 			break;
 		} else if (line.find("input semantic") != -1)
 		{
-			int index = line.find("offset");
+			size_t index = line.find("offset");
 			if (index != -1)
 			{
 				char c = line[index + 8];
@@ -96,7 +96,7 @@ void DaeParser::loadGeometry(std::ifstream &reader)
 
 void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices)
 {
-	int index = line.find('>');
+	size_t index = line.find('>');
 	auto numbers = Util::split(line.substr(index + 1), ' ');
 
 	for (int i = 0; i < numbers.size(); i += 3)
@@ -110,7 +110,7 @@ void DaeParser::parsePointsLine(std::string &line, std::vector<glm::vec3> &verti
 
 void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &textures)
 {
-	int index = line.find('>');
+	size_t index = line.find('>');
 	auto numbers = Util::split(line.substr(index + 1), ' ');
 
 	for (int i = 0; i < numbers.size(); i += 2)
@@ -123,7 +123,7 @@ void DaeParser::parseTexturesLine(std::string &line, std::vector<glm::vec2> &tex
 
 Model DaeParser::parseIndices(Loader &loader)
 {
-	int index = m_VertexData.indicesLine.find('>');
+	size_t index = m_VertexData.indicesLine.find('>');
 	auto numbers = Util::split(m_VertexData.indicesLine.substr(index + 1), ' ');
 
 	std::vector<float> resultPoints;
@@ -194,7 +194,7 @@ void DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> 
 				{
 					int j = i / 2;
 					jointId[j] = std::stoi(numbers[index++]);
-					jointWeight[j] = weights[std::stof(numbers[index++])];
+					jointWeight[j] = weights[std::stoi(numbers[index++])];
 				}
 
 				jointIds.emplace_back(jointId);
@@ -232,8 +232,8 @@ void DaeParser::normalizeWeights()
 
 std::vector<std::string> DaeParser::getData(std::string &line)
 {
-	int start = line.find('>');
-	int end = line.find_last_of('<');
+	size_t start = line.find('>');
+	size_t end = line.find_last_of('<');
 
 	if (end == -1)
 	{
@@ -295,12 +295,12 @@ Joint DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::v
 {
 	static const int OFFSET = 4;
 
-	const int startIndex = line.find("id=");
+	const size_t startIndex = line.find("id=");
 	std::string restOfLine = line.substr(startIndex + OFFSET);
-	const int length = restOfLine.find('\"');
+	const size_t length = restOfLine.find('\"');
 
 	std::string name = restOfLine.substr(0, length);
-	int index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
+	size_t index = std::find(jointNames.begin(), jointNames.end(), name) - jointNames.begin();
 
 	std::getline(reader, line);
 
@@ -424,7 +424,8 @@ DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData, const s
 		keyFrames.emplace_back(timeStamps[i], pose);
 	}
 
-	m_LengthInSeconds = timeStamps.back();
+	float timestamp = timeStamps.back();
+	m_LengthInSeconds = timestamp;
 
 	return keyFrames;
 }
