@@ -52,7 +52,7 @@ void Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(int) * data.size(), data.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(attributeNumber, size, GL_INT, GL_FALSE, 0, nullptr);
+	glVertexAttribIPointer(attributeNumber, size, GL_INT, 0, nullptr);
     m_Vbos.emplace_back(vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
