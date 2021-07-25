@@ -46,7 +46,7 @@ void Joint::setAnimatedTransform(const glm::mat4 &animatedTransform)
 	m_AnimatedTransform = animatedTransform;
 }
 
-int Joint::index() const
+size_t Joint::index() const
 {
 	return m_Index;
 }
@@ -59,9 +59,4 @@ const glm::mat4 &Joint::getAnimatedTransform() const
 const std::vector<Joint> &Joint::children() const
 {
 	return m_Children;
-}
-
-void Joint::applyCorrection(const glm::mat4 &correction)
-{
-	m_LocalBindTransform = correction * m_LocalBindTransform;
 }
