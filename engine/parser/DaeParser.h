@@ -83,8 +83,6 @@ private:
 
     std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData, const std::string &rootJoint);
 
-    static std::vector<glm::vec3> applyCorrectionToVertices(const std::vector<glm::vec3> &vertices, const glm::mat4 &correction);
-
     void normalizeWeights();
 };
 
