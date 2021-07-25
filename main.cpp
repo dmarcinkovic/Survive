@@ -24,7 +24,7 @@ int main()
 								Loader::loadTexture("res/character.png"));
 
 	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30});
+	AnimatedObject object(rootJoint, numberOfJoints, texturedModel, glm::vec3{0, -10, -30}, glm::vec3{-90, 0, 0});
 
 	Animator animator(daeParser.getAnimation(), object);
 
