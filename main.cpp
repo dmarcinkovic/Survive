@@ -30,11 +30,11 @@ int main()
 								Loader::loadTexture("res/character.png"));
 	registry.emplace<RenderComponent>(character, texturedModel);
 	registry.emplace<Transform3DComponent>(character, glm::vec3{0, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
-	registry.emplace<RigidBodyComponent>(character, true);
+	registry.emplace<RigidBodyComponent>(character, false);
 
 	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
 	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
-	Animator animator(daeParser.getAnimation(), character);
+	Animator animator(daeParser.getAnimation());
 
 	while (display.isRunning())
 	{

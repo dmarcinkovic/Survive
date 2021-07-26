@@ -19,10 +19,8 @@ namespace Survive
 		Animation m_Animation;
 		float m_AnimationTime{};
 
-		entt::entity m_Model;
-
 	public:
-		Animator(Animation animation, entt::entity animatedObject);
+		explicit Animator(Animation animation);
 
 		void update(entt::registry &registry);
 

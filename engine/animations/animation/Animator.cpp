@@ -6,8 +6,8 @@
 #include "AnimationComponent.h"
 #include "Display.h"
 
-Survive::Animator::Animator(Animation animation, entt::entity animatedObject)
-		: m_Animation(std::move(animation)), m_Model(animatedObject)
+Survive::Animator::Animator(Animation animation)
+		: m_Animation(std::move(animation))
 {
 
 }
@@ -37,11 +37,16 @@ void Survive::Animator::applyPoseToJoints(const std::unordered_map<std::string, 
 
 void Survive::Animator::update(entt::registry &registry)
 {
-	AnimationComponent &animationComponent = registry.get<AnimationComponent>(m_Model);
-
 	increaseAnimationTime();
-	std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-	applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{1});
+
+	auto view = registry.view<AnimationComponent>();
+	for (auto const &entity : view)
+	{
+		AnimationComponent &animationComponent = view.get<AnimationComponent>(entity);
+
+		std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
+		applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{1});
+	}
 }
 
 void Survive::Animator::increaseAnimationTime()
