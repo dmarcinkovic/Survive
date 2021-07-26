@@ -33,7 +33,6 @@ int main()
 	registry.emplace<RigidBodyComponent>(character, true);
 
 	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	rootJoint.calculateInverseBindTransform(glm::mat4{1.0f});
 	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
 	Animator animator(daeParser.getAnimation(), character);
 

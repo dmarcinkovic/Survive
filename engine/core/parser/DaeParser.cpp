@@ -33,6 +33,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 		} else if (line.find("<library_visual_scenes>") != -1)
 		{
 			m_JointData.rootJoint = loadVisualScene(reader, jointNames);
+			m_JointData.rootJoint.calculateInverseBindTransform(glm::mat4{1.0f});
 			m_KeyFrames = getKeyFrames(animationData, m_JointData.rootJoint.name());
 		} else if (line.find("<library_animations>") != -1)
 		{
