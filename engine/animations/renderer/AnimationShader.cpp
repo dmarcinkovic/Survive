@@ -51,25 +51,16 @@ void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const g
 	loadVector3(m_LocationLightColor, lightColor);
 }
 
-//void Survive::AnimationShader::loadJointTransforms(const std::vector<JointTransform> &jointTransforms) const
-//{
-//	for (int i = 0; i < jointTransforms.size(); ++i)
-//	{
-//		loadMatrix(m_LocationJointTransforms[i], jointTransforms[i].getLocalTransform());
-//	}
-//
-//	for (size_t i = jointTransforms.size(); i < MAX_JOINTS; ++i)
-//	{
-//		glm::mat4 emptyMatrix{};
-//		loadMatrix(m_LocationJointTransforms[i], emptyMatrix);
-//	}
-//}
-
 void Survive::AnimationShader::loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const
 {
 	for (int i = 0; i < jointTransforms.size(); ++i)
 	{
 		loadMatrix(m_LocationJointTransforms[i], jointTransforms[i]);
+	}
+	
+	for (auto i = jointTransforms.size(); i < MAX_JOINTS; ++i)
+	{
+		loadMatrix(m_LocationJointTransforms[i], glm::mat4{});
 	}
 }
 
