@@ -3,7 +3,6 @@
 //
 
 #include <utility>
-#include <iostream>
 
 #include "KeyFrame.h"
 

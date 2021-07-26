@@ -2,8 +2,6 @@
 // Created by david on 10. 06. 2020..
 //
 
-#include <iostream>
-
 #include "Joint.h"
 
 Survive::Joint::Joint(std::string name, size_t index, const glm::mat4 &bindLocalTransform)

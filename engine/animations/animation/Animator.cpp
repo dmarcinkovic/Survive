@@ -2,7 +2,6 @@
 // Created by david on 01. 10. 2020..
 //
 
-#include <iostream>
 #include "Animator.h"
 #include "AnimationComponent.h"
 #include "Display.h"
