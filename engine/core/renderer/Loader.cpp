@@ -48,16 +48,15 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 }
 
 void
-Survive::Loader::storeDataInAttributeList(const std::vector<unsigned int> &data)
+Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<int> &data, size_t size)
 {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	glEnableVertexAttribArray(4);
+	glEnableVertexAttribArray(attributeNumber);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	auto bufferSize = static_cast<GLsizeiptr>(sizeof(unsigned) * data.size());
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, data.data(), GL_STATIC_DRAW);
-	glVertexAttribPointer(4, 3, GL_UNSIGNED_INT, GL_FALSE, 0, nullptr);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(int) * data.size(), data.data(), GL_STATIC_DRAW);
+	glVertexAttribIPointer(attributeNumber, size, GL_INT, 0, nullptr);
 	m_Vbos.emplace_back(vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -134,7 +133,7 @@ Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector
 
 Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 										  const std::vector<float> &normals, const std::vector<float> &jointWeights,
-										  const std::vector<unsigned int> &jointIds)
+										  const std::vector<int> &jointIds)
 {
 	GLuint vao = createVao();
 
@@ -142,7 +141,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(1, textures, 2);
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
-	storeDataInAttributeList(jointIds);
+	storeDataInAttributeList(4, jointIds, 3);
 
 	return Model(vao, static_cast<GLsizei>(vertices.size()) / 3);
 }

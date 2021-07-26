@@ -1,8 +1,9 @@
 //
 // Created by david on 17. 05. 2020..
 //
+
+
 #include "AnimationRenderer.h"
-#include "Components.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
 
@@ -46,6 +47,9 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 		m_Shader.loadTransformationMatrix(modelMatrix);
 
+		const AnimationComponent &animationComponent = registry.get<AnimationComponent>(object);
+		m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
+
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
@@ -82,4 +86,20 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, const glm::v
 	m_Shader.loadPlane(plane);
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color());
+}
+
+std::vector<glm::mat4> Survive::AnimationRenderer::getJointTransforms(const AnimationComponent &animationComponent) const
+{
+	std::vector<glm::mat4> jointMatrices(animationComponent.numberOfJoints);
+	addJointsToArray(animationComponent.rootJoint, jointMatrices);
+	return jointMatrices;
+}
+
+void Survive::AnimationRenderer::addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const
+{
+	jointMatrices[headJoint.index()] = headJoint.getAnimatedTransform();
+	for (auto const &childJoint : headJoint.children())
+	{
+		addJointsToArray(childJoint, jointMatrices);
+	}
 }

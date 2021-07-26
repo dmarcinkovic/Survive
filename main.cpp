@@ -1,10 +1,12 @@
+#include "DaeParser.h"
+#include "Animator.h"
 #include "Loader.h"
-#include "ObjParser.h"
 #include "Camera.h"
 #include "Light.h"
 #include "Renderer3D.h"
 #include "Display.h"
 #include "entt.hpp"
+#include "Components.h"
 
 int main()
 {
@@ -22,23 +24,29 @@ int main()
 
 	entt::registry registry;
 
-	auto lamp = registry.create();
-	registry.emplace<RenderComponent>(lamp, TexturedModel(ObjParser::loadObj("res/lamp_bloom.obj", loader),
-														  Loader::loadTexture("res/lamp_bloom.png")));
-	registry.emplace<Transform3DComponent>(lamp, glm::vec3{0, -6, -15}, glm::vec3{0.05f}, glm::vec3{0, -90, 0,});
-	registry.emplace<RigidBodyComponent>(lamp, false);
-	registry.emplace<IdComponent>(lamp, 2);
-	registry.emplace<BloomComponent>(lamp, Loader::loadTexture("res/lamp_bloom_emissive.png"), 3.0f);
-	renderer.addShadow(registry, lamp);
+	auto character = registry.create();
+	DaeParser daeParser;
+	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
+								Loader::loadTexture("res/character.png"));
+	registry.emplace<RenderComponent>(character, texturedModel);
+	registry.emplace<Transform3DComponent>(character, glm::vec3{0, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
+	registry.emplace<RigidBodyComponent>(character, true);
+
+	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+	rootJoint.calculateInverseBindTransform(glm::mat4{1.0f});
+	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
+	Animator animator(daeParser.getAnimation(), character);
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
+		animator.update(registry);
 		renderer.render(registry, camera);
 
 		display.update();
 	}
+
 
 	return 0;
 }

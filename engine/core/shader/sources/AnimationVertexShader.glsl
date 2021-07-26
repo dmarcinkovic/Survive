@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 textures;
 layout (location = 2) in vec3 normal;
-layout (location = 3) in vec3 jointWeigth;
+layout (location = 3) in vec3 jointWeight;
 layout (location = 4) in ivec3 jointID;
 
 const int MAX_JOINTS = 50;
@@ -38,13 +38,17 @@ void main()
 
         mat4 jointTransform = jointTransforms[jointID[i]];
         vec4 pose = jointTransform * vec4(position, 1.0);
-        totalLocalPos += pose * jointWeigth[i];
+        totalLocalPos += pose * jointWeight[i];
+
+        vec4 worldNormal = jointTransform * vec4(normal, 0.0);
+        totalNormal += worldNormal * jointWeight[i];
     }
 
-    gl_Position = projectionMatrix * viewMatrix * worldPos;
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * totalLocalPos;
 
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
     surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
+//    surfaceNormal = totalNormal.xyz;
     surfaceNormal = normalize(surfaceNormal);
 }

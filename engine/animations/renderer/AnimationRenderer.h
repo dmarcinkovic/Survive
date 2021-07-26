@@ -9,8 +9,10 @@
 #include <functional>
 
 #include "entt.hpp"
+#include "Joint.h"
 #include "AnimationShader.h"
 #include "TexturedModel.h"
+#include "Components.h"
 #include "Camera.h"
 #include "Light.h"
 
@@ -35,6 +37,10 @@ namespace Survive
 		prepareEntities(entt::registry &registry);
 
 		void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
+
+		[[nodiscard]] std::vector<glm::mat4> getJointTransforms(const AnimationComponent &animationComponent) const;
+
+		void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
 	};
 }
 

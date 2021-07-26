@@ -2,6 +2,7 @@
 // Created by david on 01. 10. 2020..
 //
 
+#include <iostream>
 #include "Animator.h"
 #include "AnimationComponent.h"
 #include "Display.h"
@@ -41,7 +42,7 @@ void Survive::Animator::update(entt::registry &registry)
 
 	increaseAnimationTime();
 	std::unordered_map<std::string, glm::mat4> currentPose = calculatePose();
-	applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{});
+	applyPoseToJoints(currentPose, animationComponent.rootJoint, glm::mat4{1});
 }
 
 void Survive::Animator::increaseAnimationTime()
@@ -88,6 +89,7 @@ Survive::Animator::interpolatePoses(const KeyFrame &prev, const KeyFrame &next, 
 		auto const &nextTransform = next.getPose().at(jointName);
 		const JointTransform &currentTransform = JointTransform::interpolate(previousTransform, nextTransform,
 																			 progression);
+
 		currentPose[jointName] = currentTransform.getLocalTransform();
 	}
 	return currentPose;

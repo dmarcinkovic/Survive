@@ -2,12 +2,13 @@
 // Created by david on 10. 06. 2020..
 //
 
+#include <iostream>
+
 #include "Joint.h"
 
-Survive::Joint::Joint(std::string name, int index, const glm::mat4 &bindLocalTransform)
-		: m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(bindLocalTransform)
+Survive::Joint::Joint(std::string name, size_t index, const glm::mat4 &bindLocalTransform)
+		: m_Name(std::move(name)), m_Index(index), m_LocalBindTransform(glm::transpose(bindLocalTransform))
 {
-
 }
 
 void Survive::Joint::addChild(const Joint &childJoint)
@@ -20,7 +21,7 @@ void Survive::Joint::calculateInverseBindTransform(const glm::mat4 &parentBindTr
 	auto bindTransform = parentBindTransform * m_LocalBindTransform;
 	m_InverseBindTransformation = glm::inverse(bindTransform);
 
-	for (auto &child :m_Children)
+	for (auto &child : m_Children)
 	{
 		child.calculateInverseBindTransform(bindTransform);
 	}
@@ -46,7 +47,7 @@ void Survive::Joint::setAnimatedTransform(const glm::mat4 &animatedTransform)
 	m_AnimatedTransform = animatedTransform;
 }
 
-int Survive::Joint::index() const
+size_t Survive::Joint::index() const
 {
 	return m_Index;
 }
