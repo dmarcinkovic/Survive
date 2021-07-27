@@ -1,4 +1,3 @@
-#include "ObjParser.h"
 #include "DaeParser.h"
 #include "Animator.h"
 #include "Loader.h"
@@ -25,29 +24,23 @@ int main()
 
 	entt::registry registry;
 
-	auto dragon = registry.create();
-	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															Texture()));
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -20});
-	registry.emplace<RigidBodyComponent>(dragon, false);
+	auto character = registry.create();
+	DaeParser daeParser;
+	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
+								Loader::loadTexture("res/character.png"));
+	registry.emplace<RenderComponent>(character, texturedModel);
+	registry.emplace<Transform3DComponent>(character, glm::vec3{0, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
+	registry.emplace<RigidBodyComponent>(character, false);
 
-//	auto character = registry.create();
-//	DaeParser daeParser;
-//	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
-//								Loader::loadTexture("res/character.png"));
-//	registry.emplace<RenderComponent>(character, texturedModel);
-//	registry.emplace<Transform3DComponent>(character, glm::vec3{0, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
-//	registry.emplace<RigidBodyComponent>(character, false);
-//
-//	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-//	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
-//	Animator animator(daeParser.getAnimation());
+	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
+	Animator animator(daeParser.getAnimation());
 
 	while (display.isRunning())
 	{
 		Display::clearWindow();
 
-//		animator.update(registry);
+		animator.update(registry);
 		renderer.render(registry, camera);
 
 		display.update();
