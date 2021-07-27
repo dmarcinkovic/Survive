@@ -88,8 +88,14 @@ void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry,
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 
-	ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
-	m_Shader.loadAddShadow(shadowComponent.loadShadow);
+	if (registry.has<ShadowComponent>(entity))
+	{
+		ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
+		m_Shader.loadAddShadow(shadowComponent.loadShadow);
+	} else
+	{
+		m_Shader.loadAddShadow(false);
+	}
 
 	renderReflectionAndRefraction(registry, entity);
 	renderBloom(registry, entity);
