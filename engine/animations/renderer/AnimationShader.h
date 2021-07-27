@@ -64,6 +64,26 @@ namespace Survive
 
 		void loadPlane(const glm::vec4 &plane) const;
 
+		void loadColor(const glm::vec4 &color) const;
+
+		void loadBloom(bool loadBloom) const;
+
+		void loadBloomTexture(float bloomStrength) const;
+
+		void loadAddShadow(bool addShadow) const;
+
+		void loadRefractionData(float refractionIndex, float refractionFactor) const;
+
+		void loadReflectionFactor(float reflectionFactor) const;
+
+		void loadTextures() const;
+
+		void loadLightViewMatrix(const glm::mat4 &lightViewMatrix) const;
+
+		void loadLightProjectionMatrix(const glm::mat4 &lightProjectionMatrix) const;
+
+		void loadCameraPosition(const glm::vec3 &cameraPosition) const;
+
 	private:
 		void loadUniformLocations();
 	};

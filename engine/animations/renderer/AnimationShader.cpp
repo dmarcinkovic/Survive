@@ -88,3 +88,58 @@ void Survive::AnimationShader::loadPlane(const glm::vec4 &plane) const
 {
 	loadVector4(m_LocationPlane, plane);
 }
+
+void Survive::AnimationShader::loadColor(const glm::vec4 &color) const
+{
+	loadInteger(m_LocationRenderColor, 1);
+	loadVector4(m_LocationColor, color);
+}
+
+void Survive::AnimationShader::loadBloom(bool loadBloom) const
+{
+	loadInteger(m_LocationAddBloom, loadBloom);
+}
+
+void Survive::AnimationShader::loadBloomTexture(float bloomStrength) const
+{
+	loadInteger(m_LocationBloomTexture, 3);
+	loadFloat(m_LocationBloomStrength, bloomStrength);
+}
+
+void Survive::AnimationShader::loadAddShadow(bool addShadow) const
+{
+	loadInteger(m_LocationAddShadow, addShadow);
+}
+
+void Survive::AnimationShader::loadRefractionData(float refractionIndex, float refractionFactor) const
+{
+	loadFloat(m_LocationRefractionIndex, refractionIndex);
+	loadFloat(m_LocationRefractionFactor, refractionFactor);
+}
+
+void Survive::AnimationShader::loadReflectionFactor(float reflectionFactor) const
+{
+	loadFloat(m_LocationReflectiveFactor, reflectionFactor);
+}
+
+void Survive::AnimationShader::loadTextures() const
+{
+	loadInteger(m_LocationObjectTexture, 0);
+	loadInteger(m_LocationShadowMap, 1);
+	loadInteger(m_LocationSkybox, 2);
+}
+
+void Survive::AnimationShader::loadLightViewMatrix(const glm::mat4 &lightViewMatrix) const
+{
+	loadMatrix(m_LocationLightViewMatrix, lightViewMatrix);
+}
+
+void Survive::AnimationShader::loadLightProjectionMatrix(const glm::mat4 &lightProjectionMatrix) const
+{
+	loadMatrix(m_LocationLightProjectionMatrix, lightProjectionMatrix);
+}
+
+void Survive::AnimationShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
+{
+	loadVector3(m_LocationCameraPosition, cameraPosition);
+}
