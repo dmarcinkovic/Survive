@@ -27,7 +27,8 @@ namespace Survive
 	public:
 		explicit AnimationRenderer(const Light &light);
 
-		void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+					const glm::vec4 &plane = glm::vec4{}) const;
 
 	private:
 		void renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
@@ -36,7 +37,7 @@ namespace Survive
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
 
-		void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
+		void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
 		[[nodiscard]] std::vector<glm::mat4> getJointTransforms(const AnimationComponent &animationComponent) const;
 

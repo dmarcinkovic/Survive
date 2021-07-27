@@ -12,7 +12,8 @@ Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 {
 }
 
-void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &camera,
+										GLuint shadowMap, const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -22,7 +23,7 @@ void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
-	loadUniforms(camera, plane);
+	loadUniforms(camera, shadowMap, plane);
 
 	for (auto const&[texture, objects] : entities)
 	{
@@ -77,18 +78,27 @@ Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void Survive::AnimationRenderer::loadUniforms(const Camera &camera, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
 	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 
 	m_Shader.loadViewMatrix(viewMatrix);
 	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
 	m_Shader.loadPlane(plane);
+	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
+	m_Shader.loadLightViewMatrix(lightViewMatrix);
 
-	m_Shader.loadLight(m_Light.position(), m_Light.color());
+	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7f, 3);
+
+	Texture texture(shadowMap);
+	texture.bindTexture(1);
+
+	m_Shader.loadCameraPosition(camera.m_Position);
 }
 
-std::vector<glm::mat4> Survive::AnimationRenderer::getJointTransforms(const AnimationComponent &animationComponent) const
+std::vector<glm::mat4>
+Survive::AnimationRenderer::getJointTransforms(const AnimationComponent &animationComponent) const
 {
 	std::vector<glm::mat4> jointMatrices(animationComponent.numberOfJoints);
 	addJointsToArray(animationComponent.rootJoint, jointMatrices);
