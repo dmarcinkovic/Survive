@@ -36,3 +36,9 @@ void Survive::Texture::unbindCubeTexture()
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
+
+bool Survive::Texture::isValidTexture() const
+{
+	return m_TextureId != 0;
+}
+

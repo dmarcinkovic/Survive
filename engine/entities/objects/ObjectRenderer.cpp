@@ -47,7 +47,7 @@ Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::
 	for (auto const &object : objects)
 	{
 		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
-		
+
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
@@ -96,6 +96,12 @@ void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry,
 	} else
 	{
 		m_Shader.loadAddShadow(false);
+	}
+
+	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
 	}
 
 	renderReflectionAndRefraction(registry, entity);
