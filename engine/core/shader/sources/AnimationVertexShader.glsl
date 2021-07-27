@@ -20,9 +20,15 @@ out vec3 surfaceNormal;
 out vec2 texCoordinates;
 out vec3 worldPosition;
 
+uniform mat4 lightProjectionMatrix;
+uniform mat4 lightViewMatrix;
+
+out vec4 fragmentPositionInLightSpace;
+
 void main()
 {
     vec4 worldPos = transformationMatrix * vec4(position, 1.0);
+    fragmentPositionInLightSpace = lightProjectionMatrix * lightViewMatrix * worldPos;
 
     gl_ClipDistance[0] = dot(worldPos, plane);
 
