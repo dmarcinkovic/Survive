@@ -3,6 +3,7 @@
 //
 
 
+#include "ShadowComponent.h"
 #include "AnimationRenderer.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
@@ -51,10 +52,26 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 		const AnimationComponent &animationComponent = registry.get<AnimationComponent>(object);
 		m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
 
+		if (registry.has<ShadowComponent>(object))
+		{
+			ShadowComponent shadowComponent = registry.get<ShadowComponent>(object);
+			m_Shader.loadAddShadow(shadowComponent.loadShadow);
+		} else
+		{
+			m_Shader.loadAddShadow(false);
+		}
+
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		if (!renderComponent.texturedModel.getTexture().isValidTexture() && registry.has<SpriteComponent>(object))
+		{
+			const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(object);
+			m_Shader.loadColor(spriteComponent.color);
+		}
+
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);

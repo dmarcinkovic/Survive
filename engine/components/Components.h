@@ -14,6 +14,7 @@
 #include "RefractionComponent.h"
 #include "RenderComponent.h"
 #include "RigidBodyComponent.h"
+#include "ShadowComponent.h"
 #include "SoundComponent.h"
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"

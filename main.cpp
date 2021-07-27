@@ -32,6 +32,7 @@ int main()
 	registry.emplace<RenderComponent>(character, texturedModel);
 	registry.emplace<Transform3DComponent>(character, glm::vec3{0, -10, -40}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
 	registry.emplace<RigidBodyComponent>(character, false);
+	registry.emplace<ShadowComponent>(character, true);
 
 	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
 	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
@@ -45,6 +46,8 @@ int main()
 	registry.emplace<Transform3DComponent>(terrain, glm::vec3{-200, -10, -200}, glm::vec3{1, 1, 1});
 	registry.emplace<TexturedComponent>(terrain, Loader::loadAllTextures(
 			{"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"}));
+
+	
 
 	while (display.isRunning())
 	{
