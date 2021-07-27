@@ -48,6 +48,8 @@ namespace Survive
 
 		GLint m_LocationColor{};
 		GLint m_LocationRenderColor{};
+		GLint m_LocationShineDamper{};
+		GLint m_LocationMaterial{};
 
 	public:
 		AnimationShader();
@@ -58,7 +60,8 @@ namespace Survive
 
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-		void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const;
+		void loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor,
+					   float shineDamper, int material) const;
 
 		void loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const;
 

@@ -63,12 +63,19 @@ void Survive::AnimationShader::loadUniformLocations()
 
 	m_LocationColor = glGetUniformLocation(m_Program, "color");
 	m_LocationRenderColor = glGetUniformLocation(m_Program, "renderColor");
+
+	m_LocationShineDamper = glGetUniformLocation(m_Program, "shineDamper");
+	m_LocationMaterial = glGetUniformLocation(m_Program, "material");
 }
 
-void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
+void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor,
+										 float shineDamper, int material) const
 {
 	loadVector3(m_LocationLightPosition, lightPosition);
 	loadVector3(m_LocationLightColor, lightColor);
+
+	loadFloat(m_LocationShineDamper, shineDamper);
+	loadInteger(m_LocationMaterial, material);
 }
 
 void Survive::AnimationShader::loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const
