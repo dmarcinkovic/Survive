@@ -25,9 +25,29 @@ namespace Survive
 
 		GLint m_LocationLightPosition{};
 		GLint m_LocationLightColor{};
+		GLint m_LocationCameraPosition{};
 
 		GLint m_LocationJointTransforms[MAX_JOINTS]{};
 		GLint m_LocationPlane{};
+
+		GLint m_LocationLightProjectionMatrix{};
+		GLint m_LocationLightViewMatrix{};
+
+		GLint m_LocationObjectTexture{};
+		GLint m_LocationSkybox{};
+		GLint m_LocationBloomTexture{};
+		GLint m_LocationShadowMap{};
+
+		GLint m_LocationReflectiveFactor{};
+		GLint m_LocationRefractionFactor{};
+		GLint m_LocationRefractionIndex{};
+
+		GLint m_LocationAddShadow{};
+		GLint m_LocationAddBloom{};
+		GLint m_LocationBloomStrength{};
+
+		GLint m_LocationColor{};
+		GLint m_LocationRenderColor{};
 
 	public:
 		AnimationShader();

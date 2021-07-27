@@ -43,6 +43,26 @@ void Survive::AnimationShader::loadUniformLocations()
 	}
 
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
+	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
+
+	m_LocationLightProjectionMatrix = glGetUniformLocation(m_Program, "lightProjectionMatrix");
+	m_LocationLightViewMatrix = glGetUniformLocation(m_Program, "lightViewMatrix");
+
+	m_LocationObjectTexture = glGetUniformLocation(m_Program, "objectTexture");
+	m_LocationSkybox = glGetUniformLocation(m_Program, "skybox");
+	m_LocationBloomTexture = glGetUniformLocation(m_Program, "bloomTexture");
+	m_LocationShadowMap = glGetUniformLocation(m_Program, "shadowMap");
+
+	m_LocationReflectiveFactor = glGetUniformLocation(m_Program, "reflectiveFactor");
+	m_LocationRefractionFactor = glGetUniformLocation(m_Program, "refractionFactor");
+	m_LocationRefractionIndex = glGetUniformLocation(m_Program, "refractionIndex");
+
+	m_LocationAddShadow = glGetUniformLocation(m_Program, "addShadow");
+	m_LocationAddBloom = glGetUniformLocation(m_Program, "addBloom");
+	m_LocationBloomStrength = glGetUniformLocation(m_Program, "bloomStrength");
+
+	m_LocationColor = glGetUniformLocation(m_Program, "color");
+	m_LocationRenderColor = glGetUniformLocation(m_Program, "renderColor");
 }
 
 void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor) const
