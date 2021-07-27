@@ -46,13 +46,14 @@ Survive::ObjectRenderer::renderScene(const entt::registry &registry, const std::
 {
 	for (auto const &object : objects)
 	{
-		loadObjectUniforms(registry, object, camera);
+		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		
+		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
@@ -79,7 +80,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 }
 
 void Survive::ObjectRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
-												 const Camera &camera) const
+												 const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.m_Rotation + transform.rotation;
