@@ -20,7 +20,7 @@ void Survive::Renderer3D::renderScene(entt::registry &registry, Camera &camera, 
 {
 	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
-	m_AnimationRenderer.render(registry, camera, plane);
+	m_AnimationRenderer.render(registry, camera, m_ShadowMap, plane);
 
 	m_SkyRenderer.render(registry, camera, plane);
 }
