@@ -46,15 +46,8 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 
-		if (!renderComponent.texturedModel.getTexture().isValidTexture() && registry.has<SpriteComponent>(object))
-		{
-			const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(object);
-			m_Shader.loadColor(spriteComponent.color);
-		}
-
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
-
 
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
@@ -135,5 +128,11 @@ void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &regist
 
 	const AnimationComponent &animationComponent = registry.get<AnimationComponent>(entity);
 	m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
+
+	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
+	}
 
 }
