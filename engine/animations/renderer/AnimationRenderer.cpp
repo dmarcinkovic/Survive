@@ -43,25 +43,9 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 {
 	for (auto const &object : objects)
 	{
-		const Transform3DComponent &transform = registry.get<Transform3DComponent>(object);
-		auto rotation = camera.m_Rotation + transform.rotation;
-
-		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
-		m_Shader.loadTransformationMatrix(modelMatrix);
-
-		const AnimationComponent &animationComponent = registry.get<AnimationComponent>(object);
-		m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
-
-		if (registry.has<ShadowComponent>(object))
-		{
-			ShadowComponent shadowComponent = registry.get<ShadowComponent>(object);
-			m_Shader.loadAddShadow(shadowComponent.loadShadow);
-		} else
-		{
-			m_Shader.loadAddShadow(false);
-		}
-
 		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
+		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
+
 		if (!renderComponent.texturedModel.getTexture().isValidTexture() && registry.has<SpriteComponent>(object))
 		{
 			const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(object);
@@ -129,4 +113,27 @@ void Survive::AnimationRenderer::addJointsToArray(const Joint &headJoint, std::v
 	{
 		addJointsToArray(childJoint, jointMatrices);
 	}
+}
+
+void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+													const Survive::Texture &texture, const Survive::Camera &camera) const
+{
+	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
+	auto rotation = camera.m_Rotation + transform.rotation;
+
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+	m_Shader.loadTransformationMatrix(modelMatrix);
+
+	if (registry.has<ShadowComponent>(entity))
+	{
+		ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
+		m_Shader.loadAddShadow(shadowComponent.loadShadow);
+	} else
+	{
+		m_Shader.loadAddShadow(false);
+	}
+
+	const AnimationComponent &animationComponent = registry.get<AnimationComponent>(entity);
+	m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
+
 }

@@ -39,6 +39,9 @@ namespace Survive
 
 		void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
+		void loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+								const Texture &texture, const Camera &camera) const;
+
 		[[nodiscard]] std::vector<glm::mat4> getJointTransforms(const AnimationComponent &animationComponent) const;
 
 		void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
