@@ -24,6 +24,7 @@ void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &
 	}
 
 	Renderer3DUtil::prepareRendering(m_Shader);
+	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
 	for (auto const&[texture, objects] : entities)
@@ -35,6 +36,7 @@ void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &
 	}
 
 	Renderer3DUtil::finishRendering();
+	glDisable(GL_STENCIL_TEST);
 }
 
 void
@@ -45,6 +47,7 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 	{
 		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
+		drawOutline(registry, object);
 
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
@@ -52,6 +55,7 @@ Survive::AnimationRenderer::renderScene(const entt::registry &registry, const st
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
+		Texture::unbindTexture();
 	}
 }
 
@@ -109,7 +113,8 @@ void Survive::AnimationRenderer::addJointsToArray(const Joint &headJoint, std::v
 }
 
 void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
-													const Survive::Texture &texture, const Survive::Camera &camera) const
+													const Survive::Texture &texture,
+													const Survive::Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	auto rotation = camera.m_Rotation + transform.rotation;
@@ -136,4 +141,63 @@ void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &regist
 		m_Shader.loadColor(spriteComponent.color);
 	}
 
+	renderBloom(registry, entity);
+	renderReflectionAndRefraction(registry, entity);
+}
+
+void Survive::AnimationRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
+{
+	if (registry.has<BloomComponent>(entity))
+	{
+		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
+
+		bloomComponent.bloomTexture.bindTexture(3);
+		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
+		m_Shader.loadBloom(true);
+	} else
+	{
+		m_Shader.loadBloom(false);
+
+		static Texture bloomDefaultTexture(0);
+		bloomDefaultTexture.bindTexture(3);
+	}
+}
+
+void
+Survive::AnimationRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+{
+	static Texture defaultReflection(0);
+	defaultReflection.bindTexture(2);
+
+	if (registry.has<ReflectionComponent>(entity))
+	{
+		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
+
+		reflection.reflectionTexture.bindCubeTexture(2);
+		m_Shader.loadReflectionFactor(reflection.reflectionFactor);
+	}
+
+	if (registry.has<RefractionComponent>(entity))
+	{
+		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
+
+		refraction.refractionTexture.bindCubeTexture(2);
+		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
+	}
+}
+
+void Survive::AnimationRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
+{
+	if (registry.has<OutlineComponent>(entity))
+	{
+		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		if (outline.drawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+	} else
+	{
+		glStencilMask(0x00);
+	}
 }
