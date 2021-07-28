@@ -134,6 +134,8 @@ void Survive::AnimationShader::loadTextures() const
 	loadInteger(m_LocationObjectTexture, 0);
 	loadInteger(m_LocationShadowMap, 1);
 	loadInteger(m_LocationSkybox, 2);
+
+	loadInteger(m_LocationRenderColor, 0);
 }
 
 void Survive::AnimationShader::loadLightViewMatrix(const glm::mat4 &lightViewMatrix) const

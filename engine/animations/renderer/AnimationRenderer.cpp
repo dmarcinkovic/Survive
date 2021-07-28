@@ -116,6 +116,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &regist
 
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
+	m_Shader.loadTextures();
 
 	if (registry.has<ShadowComponent>(entity))
 	{

@@ -91,6 +91,8 @@ void Survive::ObjectShader::loadTextures() const
 	loadInteger(m_LocationObjectTexture, 0);
 	loadInteger(m_LocationShadowMap, 1);
 	loadInteger(m_LocationSkybox, 2);
+
+	loadInteger(m_LocationRenderColor, 0);
 }
 
 void Survive::ObjectShader::loadReflectiveFactor(float reflectiveFactor) const
