@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <glm/ext/matrix_transform.hpp>
 
 #include "Log.h"
 #include "DaeParser.h"
@@ -13,6 +14,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
 	std::ifstream reader(daeFile);
 	std::vector<std::string> jointNames;
+	std::vector<AnimationData> animationData;
 
 	if (!reader)
 	{
@@ -36,9 +38,11 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 		} else if (line.find("<library_visual_scenes>") != -1)
 		{
 			m_JointData.rootJoint = loadVisualScene(reader, jointNames);
+			m_JointData.rootJoint.calculateInverseBindTransform(glm::mat4{1.0f});
+			m_KeyFrames = getKeyFrames(animationData, m_JointData.rootJoint.name());
 		} else if (line.find("<library_animations>") != -1)
 		{
-			loadAnimation(reader);
+			animationData = loadAnimation(reader);
 		}
 	}
 
@@ -132,7 +136,7 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 	std::vector<float> resultNormals;
 	std::vector<float> resultTextures;
 	std::vector<float> resultWeights;
-	std::vector<unsigned> resultIds;
+	std::vector<int> resultIds;
 
 	for (int i = 0; i < numbers.size(); i += m_VertexData.size)
 	{
@@ -196,7 +200,7 @@ void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std:
 				{
 					int j = i / 2;
 					jointId[j] = std::stoi(numbers[index++]);
-					jointWeight[j] = weights[std::stof(numbers[index++])];
+					jointWeight[j] = weights[std::stoi(numbers[index++])];
 				}
 
 				jointIds.emplace_back(jointId);
@@ -245,8 +249,8 @@ std::vector<std::string> Survive::DaeParser::getData(std::string &line)
 	return Util::split(line.substr(start + 1, end - start - 1), ' ');
 }
 
-void Survive::DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<unsigned int> &resultIds,
-										   unsigned int index)
+void Survive::DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<int> &resultIds,
+								  unsigned int index)
 {
 	const auto &weight = m_VertexData.jointWeights[index];
 	resultWeights.emplace_back(weight.x);
@@ -254,9 +258,9 @@ void Survive::DaeParser::processJointsData(std::vector<float> &resultWeights, st
 	resultWeights.emplace_back(weight.z);
 
 	const auto &id = m_VertexData.jointIds[index];
-	resultWeights.emplace_back(id.x);
-	resultWeights.emplace_back(id.y);
-	resultWeights.emplace_back(id.z);
+	resultIds.emplace_back(id.x);
+	resultIds.emplace_back(id.y);
+	resultIds.emplace_back(id.z);
 }
 
 Survive::Joint Survive::DaeParser::loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames)
@@ -289,11 +293,11 @@ Survive::Joint Survive::DaeParser::loadVisualScene(std::ifstream &reader, const 
 			}
 		}
 	}
+
 	return root;
 }
 
-Survive::Joint
-Survive::DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
+Survive::Joint Survive::DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
 {
 	static const int OFFSET = 4;
 
@@ -328,7 +332,7 @@ glm::mat4 Survive::DaeParser::getJointTransform(std::string &line)
 	return transform;
 }
 
-void Survive::DaeParser::loadAnimation(std::ifstream &reader)
+std::vector<Survive::AnimationData> Survive::DaeParser::loadAnimation(std::ifstream &reader)
 {
 	std::string line;
 	std::vector<AnimationData> animationData;
@@ -344,7 +348,7 @@ void Survive::DaeParser::loadAnimation(std::ifstream &reader)
 		}
 	}
 
-	m_KeyFrames = getKeyFrames(animationData);
+	return animationData;
 }
 
 Survive::AnimationData Survive::DaeParser::getAnimationData(std::ifstream &reader)
@@ -405,7 +409,8 @@ std::vector<glm::mat4> Survive::DaeParser::getTransforms(std::string &line)
 	return transforms;
 }
 
-std::vector<Survive::KeyFrame> Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData)
+std::vector<Survive::KeyFrame>
+Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData, const std::string &rootJoint)
 {
 	std::vector<KeyFrame> keyFrames;
 	std::vector<float> timeStamps = animationData.front().timestamps;
@@ -415,15 +420,18 @@ std::vector<Survive::KeyFrame> Survive::DaeParser::getKeyFrames(const std::vecto
 		for (auto const &j : animationData)
 		{
 			const glm::mat4 &mat = j.transforms[i];
-			glm::vec3 translation{mat[3][0], mat[3][1], mat[3][2]};
 
-			JointTransform jointTransform(translation, Quaternion::fromMatrix(mat));
+			glm::mat4 matrix = glm::transpose(mat);
+			glm::vec3 translation{matrix[3][0], matrix[3][1], matrix[3][2]};
+
+			JointTransform jointTransform(translation, Quaternion::fromMatrix(matrix));
 			pose.insert({j.jointName, jointTransform});
 		}
 		keyFrames.emplace_back(timeStamps[i], pose);
 	}
 
-	m_LengthInSeconds = timeStamps.back();
+	float timestamp = timeStamps.back();
+	m_LengthInSeconds = timestamp;
 
 	return keyFrames;
 }

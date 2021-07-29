@@ -7,12 +7,11 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-#include <stack>
 
+#include "Loader.h"
 #include "Joint.h"
 #include "KeyFrame.h"
 #include "Animation.h"
-#include "Loader.h"
 
 namespace Survive
 {
@@ -64,7 +63,7 @@ namespace Survive
 
 		static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
-		void loadAnimation(std::ifstream &reader);
+		static std::vector<AnimationData> loadAnimation(std::ifstream &reader);
 
 		static void parsePointsLine(std::string &line, std::vector<glm::vec3> &vertices);
 
@@ -74,7 +73,7 @@ namespace Survive
 
 		static std::vector<std::string> getData(std::string &line);
 
-		void processJointsData(std::vector<float> &resultWeights, std::vector<unsigned> &resultIds, unsigned index);
+		void processJointsData(std::vector<float> &resultWeights, std::vector<int> &resultIds, unsigned index);
 
 		static glm::mat4 getJointTransform(std::string &line);
 
@@ -84,7 +83,8 @@ namespace Survive
 
 		static std::vector<glm::mat4> getTransforms(std::string &line);
 
-		std::vector<KeyFrame> getKeyFrames(const std::vector<AnimationData> &animationData);
+		std::vector<KeyFrame>
+		getKeyFrames(const std::vector<AnimationData> &animationData, const std::string &rootJoint);
 
 		void normalizeWeights();
 	};

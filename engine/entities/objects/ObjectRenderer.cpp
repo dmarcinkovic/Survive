@@ -46,13 +46,14 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 {
 	for (auto const &object : objects)
 	{
-		loadObjectUniforms(registry, object, camera);
+		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
+		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
+
 		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
@@ -78,7 +79,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 }
 
 void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,
-												 const Camera &camera) const
+												 const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.rotation + transform.rotation;
@@ -94,6 +95,12 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 	} else
 	{
 		m_Shader.loadAddShadow(false);
+	}
+
+	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
 	}
 
 	renderReflection(registry, entity);

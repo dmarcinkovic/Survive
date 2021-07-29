@@ -9,7 +9,6 @@
 Survive::KeyFrame::KeyFrame(float timeStamp, std::unordered_map<std::string, JointTransform> jointKeyFrames)
 		: m_TimeStamp(timeStamp), m_Pose(std::move(jointKeyFrames))
 {
-
 }
 
 float Survive::KeyFrame::timeStamp() const

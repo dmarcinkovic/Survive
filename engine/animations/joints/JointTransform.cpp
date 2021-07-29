@@ -9,7 +9,6 @@
 Survive::JointTransform::JointTransform(const glm::vec3 &position, const Quaternion &quaternion)
 		: m_Position(position), m_Rotation(quaternion)
 {
-
 }
 
 glm::mat4 Survive::JointTransform::getLocalTransform() const
@@ -17,6 +16,7 @@ glm::mat4 Survive::JointTransform::getLocalTransform() const
 	glm::mat4 matrix{1};
 	matrix = glm::translate(matrix, m_Position);
 	matrix *= m_Rotation.toRotationMatrix();
+
 	return matrix;
 }
 
@@ -34,4 +34,9 @@ glm::vec3 Survive::JointTransform::interpolate(const glm::vec3 &start, const glm
 	float y = start.y + (end.y - start.y) * progression;
 	float z = start.z + (end.z - start.z) * progression;
 	return glm::vec3(x, y, z);
+}
+
+const glm::vec3 &Survive::JointTransform::position() const
+{
+	return m_Position;
 }
