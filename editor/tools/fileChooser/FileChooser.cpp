@@ -9,7 +9,7 @@
 #include "Loader.h"
 
 Survive::FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
+		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(listCurrentDirectory())
 {
 	Texture folder = Loader::loadTexture("res/folder.png");
@@ -65,7 +65,7 @@ std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string
 	for (auto const &path : directoryIterator)
 	{
 		File file;
-		file.name = path.path().filename();
+		file.name = path.path().filename().string();
 
 		if (!showHidden && file.name.front() == '.')
 		{
@@ -86,9 +86,9 @@ std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string
 
 std::vector<Survive::File> Survive::FileChooser::listCurrentDirectory()
 {
-	auto workingDirectory = std::filesystem::current_path();
+	auto workingDirectory = std::filesystem::current_path().string();
 
-	return listDirectory(std::filesystem::absolute(workingDirectory), false);
+	return listDirectory(std::filesystem::absolute(workingDirectory).string(), false);
 }
 
 std::string Survive::FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
@@ -180,11 +180,11 @@ void Survive::FileChooser::helpMarker(const char *description)
 	}
 }
 
-std::filesystem::path Survive::FileChooser::getParentPath(const std::string &currentDirectory)
+std::string Survive::FileChooser::getParentPath(const std::string &currentDirectory)
 {
 	std::filesystem::path path(currentDirectory.c_str());
 
-	return path.parent_path();
+	return path.parent_path().string();
 }
 
 void Survive::FileChooser::setupDarkStyleColors()
@@ -367,7 +367,7 @@ std::string Survive::FileChooser::getSelectedFile() const
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);
-	return path.append(m_SelectedFileName);
+	return path.append(m_SelectedFileName).string();
 }
 
 void Survive::FileChooser::resetSelectedFile()
@@ -478,7 +478,7 @@ std::string Survive::FileChooser::getSelectedFilename() const
 	if (m_OpenedFile)
 	{
 		std::filesystem::path selectedFile(getSelectedFile());
-		return std::filesystem::relative(selectedFile);
+		return std::filesystem::relative(selectedFile).string();
 	}
 
 	return "";
@@ -516,7 +516,7 @@ void Survive::FileChooser::savePressed(bool *open)
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);
-	std::string file = path.append(m_SelectedFileName);
+	std::string file = path.append(m_SelectedFileName).string();
 
 	if (std::filesystem::exists(file))
 	{
@@ -533,7 +533,7 @@ void Survive::FileChooser::buttonDoublePress()
 	std::filesystem::path path(m_CurrentDirectory);
 
 	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName);
+	m_CurrentDirectory = path.append(m_SelectedFileName).string();
 	m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
 
 	resetSelectedFile();
