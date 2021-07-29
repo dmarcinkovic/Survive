@@ -92,7 +92,7 @@
 
 
 *  Download [conan](https://conan.io/) C/C++ Package Manager from the official
-   website. We will be using it to take care of installing required libraries
+   website. We will be using it to take care of installing the required libraries
    as it can be very challenging to set up everything manually.
 
 ### Build and run
