@@ -35,7 +35,7 @@ void Survive::ComponentTemplate::drawComponent(Render3DComponent &component, boo
 		TexturedModel &texturedModel = component.texturedModel;
 
 		ImGui::Columns(2);
-		EditorUtil::loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
+		m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
 		ImGui::NextColumn();
 		EditorUtil::loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
 								"Texture: %s", "Load texture", changed);
@@ -157,5 +157,14 @@ void Survive::ComponentTemplate::drawComponent(SpriteComponent &component, bool 
 	if (ImGui::CollapsingHeader("Sprite", visible))
 	{
 		ImGui::ColorEdit4("Color", glm::value_ptr(component.color));
+	}
+}
+
+template<>
+void Survive::ComponentTemplate::drawComponent(AnimationComponent &component, bool *visible)
+{
+	if (ImGui::CollapsingHeader("Animation", visible))
+	{
+//		ImGui::
 	}
 }

@@ -7,6 +7,7 @@
 
 #include <imgui.h>
 
+#include "DaeParser.h"
 #include "AudioMaster.h"
 #include "ObjParser.h"
 #include "Components.h"
@@ -22,6 +23,8 @@ namespace Survive
 		AudioMaster m_AudioMaster;
 		FileChooser m_FileChooser;
 		Loader m_Loader;
+
+		EditorUtil m_EditorUtil;
 
 	public:
 		template<typename ComponentType>

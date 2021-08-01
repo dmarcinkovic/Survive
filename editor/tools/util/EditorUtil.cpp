@@ -62,14 +62,13 @@ void Survive::EditorUtil::setDragFloat(float &value, const char *label, const Im
 
 ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 {
-	return ImVec4(vec1.x + vec2.x, vec1.y + vec2.y,
-				  vec1.z + vec2.z, vec1.w + vec2.w);
+	return {vec1.x + vec2.x, vec1.y + vec2.y,
+			vec1.z + vec2.z, vec1.w + vec2.w};
 }
 
 void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed)
 {
 	static bool load{};
-	static Loader loader;
 
 	showLoadedFile("Model: %s", modelName, "Load model", load);
 
@@ -80,7 +79,7 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 		std::string selectedFilename = fileChooser.getSelectedFilename();
 		if (!load && !selectedFilename.empty())
 		{
-			std::optional<Model> loadedModel = getLoadedModel(fileChooser, loader);
+			std::optional<Model> loadedModel = getLoadedModel(fileChooser);
 
 			if (loadedModel.has_value())
 			{
@@ -93,11 +92,22 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 }
 
 std::optional<Survive::Model>
-Survive::EditorUtil::getLoadedModel(const Survive::FileChooser &fileChooser, Loader &loader)
+Survive::EditorUtil::getLoadedModel(const Survive::FileChooser &fileChooser)
 try
 {
 	std::string selectedFile = fileChooser.getSelectedFile();
-	Model model = ObjParser::loadObj(selectedFile.c_str(), loader);
+	Model model;
+
+	if (selectedFile.ends_with("obj"))
+	{
+		model = ObjParser::loadObj(selectedFile.c_str(),m_Loader);
+	} else if (selectedFile.ends_with("dae"))
+	{
+		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+	} else
+	{
+		Log::logWindow(LogType::ERROR, "Unknown file type");
+	}
 
 	return model.isValidModel() ? model : std::optional<Survive::Model>{};
 } catch (const std::exception &exception)

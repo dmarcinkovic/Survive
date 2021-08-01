@@ -9,6 +9,7 @@
 #include <glm/vec3.hpp>
 #include <AL/al.h>
 
+#include "DaeParser.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
 #include "FileChooser.h"
@@ -18,6 +19,10 @@ namespace Survive
 {
 	class EditorUtil
 	{
+	private:
+		DaeParser m_DaeParser;
+		Loader m_Loader;
+
 	public:
 		static void setStyleColors();
 
@@ -30,7 +35,7 @@ namespace Survive
 
 		static void drawTransform2DHeader();
 
-		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
+		void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
 		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
 								const char *format, const char *label, bool &changed);
@@ -53,7 +58,7 @@ namespace Survive
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
-		static std::optional<Model> getLoadedModel(const FileChooser &fileChooser, Loader &loader);
+		std::optional<Model> getLoadedModel(const FileChooser &fileChooser);
 
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 
