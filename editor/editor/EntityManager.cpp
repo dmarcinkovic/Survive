@@ -27,6 +27,12 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 	listEntities(registry);
 	renameEntity(registry);
 
+	if (m_DestroyEntity)
+	{
+		m_DestroyEntity = false;
+		removeEntity(registry);
+	}
+
 	ImGui::PopStyleColor();
 }
 
@@ -173,5 +179,13 @@ void Survive::EntityManager::renameEntity(entt::registry &registry)
 		}
 
 		ImGui::EndPopup();
+	}
+}
+
+void Survive::EntityManager::handleKeyEvents(const EventHandler &eventHandler)
+{
+	if (eventHandler.isKeyPressed(Key::DELETE) && m_Selected != -1)
+	{
+		m_DestroyEntity = true;
 	}
 }

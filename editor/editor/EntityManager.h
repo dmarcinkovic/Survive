@@ -6,6 +6,7 @@
 #define SURVIVE_ENTITYMANAGER_H
 
 #include "entt.hpp"
+#include "EventHandler.h"
 #include "Components.h"
 #include "ComponentUtil.h"
 
@@ -25,11 +26,14 @@ namespace Survive
 		bool m_RenameEntity{};
 
 		ComponentUtil m_Util{};
+		bool m_DestroyEntity{};
 
 	public:
 		void addEntity(entt::registry &registry);
 
 		void drawPropertyPanel(entt::registry &registry);
+
+		void handleKeyEvents(const EventHandler &eventHandler);
 
 	private:
 		void createEntity(entt::registry &registry);

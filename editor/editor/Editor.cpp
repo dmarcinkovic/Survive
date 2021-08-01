@@ -185,7 +185,7 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 	}
 }
 
-void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
+void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 {
 	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
@@ -198,6 +198,8 @@ void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
 	{
 		m_SaveAsDialog = true;
 	}
+
+	m_Manager.handleKeyEvents(eventHandler);
 }
 
 float Survive::Editor::getSceneWidth()
