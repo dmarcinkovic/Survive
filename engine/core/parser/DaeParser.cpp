@@ -22,7 +22,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 		Log::logWindow(LogType::ERROR, message);
 		std::cout << "Could not open: " << daeFile << '\n';
 
-		return Model();
+		return {};
 	}
 
 	std::string line;
@@ -52,7 +52,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 
 Survive::Animation Survive::DaeParser::getAnimation() const
 {
-	return Animation(m_LengthInSeconds, m_KeyFrames);
+	return {m_LengthInSeconds, m_KeyFrames};
 }
 
 std::pair<Survive::Joint, int> Survive::DaeParser::getJointData() const
@@ -250,7 +250,7 @@ std::vector<std::string> Survive::DaeParser::getData(std::string &line)
 }
 
 void Survive::DaeParser::processJointsData(std::vector<float> &resultWeights, std::vector<int> &resultIds,
-								  unsigned int index)
+										   unsigned int index)
 {
 	const auto &weight = m_VertexData.jointWeights[index];
 	resultWeights.emplace_back(weight.x);
@@ -297,7 +297,8 @@ Survive::Joint Survive::DaeParser::loadVisualScene(std::ifstream &reader, const 
 	return root;
 }
 
-Survive::Joint Survive::DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
+Survive::Joint
+Survive::DaeParser::getJoint(std::ifstream &reader, std::string &line, const std::vector<std::string> &jointNames)
 {
 	static const int OFFSET = 4;
 
@@ -310,7 +311,7 @@ Survive::Joint Survive::DaeParser::getJoint(std::ifstream &reader, std::string &
 
 	std::getline(reader, line);
 
-	return Joint(name, index, getJointTransform(line));
+	return {name, index, getJointTransform(line)};
 }
 
 glm::mat4 Survive::DaeParser::getJointTransform(std::string &line)
@@ -414,7 +415,7 @@ Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData
 {
 	std::vector<KeyFrame> keyFrames;
 	std::vector<float> timeStamps = animationData.front().timestamps;
-	for (int i = 0; i < timeStamps.size(); ++i)
+	for (auto i = 0; i < timeStamps.size(); ++i)
 	{
 		std::unordered_map<std::string, JointTransform> pose;
 		for (auto const &j : animationData)
