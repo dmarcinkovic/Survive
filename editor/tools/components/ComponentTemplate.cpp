@@ -37,7 +37,7 @@ void Survive::ComponentTemplate::drawComponent(Render3DComponent &component, boo
 		ImGui::Columns(2);
 		m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
 		ImGui::NextColumn();
-		EditorUtil::loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+		m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
 								"Texture: %s", "Load texture", changed);
 
 		if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
@@ -81,7 +81,7 @@ void Survive::ComponentTemplate::drawComponent(BloomComponent &component, bool *
 	if (ImGui::CollapsingHeader("Bloom", visible))
 	{
 		ImGui::Columns(2);
-		EditorUtil::loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
+		m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
 								"Texture: %s", "Load texture", changed);
 		ImGui::Columns();
 
@@ -118,7 +118,7 @@ void Survive::ComponentTemplate::drawComponent(Render2DComponent &component, boo
 		TexturedModel &texturedModel = component.texturedModel;
 
 		ImGui::Columns(2);
-		EditorUtil::loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+		m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
 								"Texture: %s", "Load texture", changed);
 		EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
@@ -146,7 +146,7 @@ void Survive::ComponentTemplate::drawComponent(SoundComponent &component, bool *
 		EditorUtil::toggleButton("Toggle button", component.playOnLoop);
 
 		ImGui::Columns(2);
-		EditorUtil::loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
+		m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 		ImGui::Columns();
 	}
 }

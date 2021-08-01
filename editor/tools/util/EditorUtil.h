@@ -23,6 +23,10 @@ namespace Survive
 		DaeParser m_DaeParser;
 		Loader m_Loader;
 
+		bool m_LoadModel{};
+		bool m_LoadTexture{};
+		bool m_LoadSound{};
+
 	public:
 		static void setStyleColors();
 
@@ -37,8 +41,8 @@ namespace Survive
 
 		void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
-		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
-								const char *format, const char *label, bool &changed);
+		void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+						 const char *format, const char *label, bool &changed);
 
 		static bool drawSlider(const char *label, const std::string &text,
 							   float &value, float start = 0.0f, float end = 1.0f);
@@ -47,8 +51,8 @@ namespace Survive
 
 		static void toggleButton(const char *stringId, bool &v);
 
-		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
-							  std::string &soundFile, bool &changed);
+		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+					   std::string &soundFile, bool &changed);
 
 		static void centerText(const std::string &text);
 

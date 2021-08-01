@@ -68,16 +68,14 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 
 void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed)
 {
-	static bool load{};
+	showLoadedFile("Model: %s", modelName, "Load model", m_LoadModel);
 
-	showLoadedFile("Model: %s", modelName, "Load model", load);
-
-	if (load)
+	if (m_LoadModel)
 	{
-		fileChooser.open(600.0f, 400.0f, &load);
+		fileChooser.open(600.0f, 400.0f, &m_LoadModel);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!load && !selectedFilename.empty())
+		if (!m_LoadModel && !selectedFilename.empty())
 		{
 			std::optional<Model> loadedModel = getLoadedModel(fileChooser);
 
@@ -119,16 +117,14 @@ try
 void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, std::string &textureName,
 									  const char *format, const char *label, bool &changed)
 {
-	static bool load{};
+	showLoadedFile(format, textureName, label, m_LoadTexture);
 
-	showLoadedFile(format, textureName, label, load);
-
-	if (load)
+	if (m_LoadTexture)
 	{
-		fileChooser.open(600.0f, 400.0f, &load);
+		fileChooser.open(600.0f, 400.0f, &m_LoadTexture);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!load && !selectedFilename.empty())
+		if (!m_LoadTexture && !selectedFilename.empty())
 		{
 			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser);
 
@@ -208,6 +204,7 @@ void Survive::EditorUtil::centerText(const std::string &text)
 {
 	auto size = static_cast<float>(text.size());
 	float fontSize = ImGui::GetFontSize() * size / 2.0f;
+
 	ImGui::SameLine(ImGui::GetWindowWidth() / 2 - fontSize + (fontSize / 2));
 	ImGui::Text("%s", text.c_str());
 }
@@ -257,16 +254,14 @@ void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
 void Survive::EditorUtil::loadSound(Survive::FileChooser &fileChooser, Survive::AudioMaster &audioMaster, ALint &sound,
 									std::string &soundFile, bool &changed)
 {
-	static bool load{};
+	showLoadedFile("Sound: %s", soundFile, "Load sound", m_LoadSound);
 
-	showLoadedFile("Sound: %s", soundFile, "Load sound", load);
-
-	if (load)
+	if (m_LoadSound)
 	{
-		fileChooser.open(600.0f, 400.0f, &load);
+		fileChooser.open(600.0f, 400.0f, &m_LoadSound);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!load && !selectedFilename.empty())
+		if (!m_LoadSound && !selectedFilename.empty())
 		{
 			try
 			{
