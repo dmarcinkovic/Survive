@@ -41,7 +41,7 @@ int main()
 	DaeParser daeParser;
 	auto character = registry.create();
 	registry.emplace<TagComponent>(character, "character");
-	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
+	TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
 								Loader::loadTexture("res/character.png"));
 	registry.emplace<Render3DComponent>(character, texturedModel);
 	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
