@@ -1,5 +1,15 @@
 # Survive
 
+## Table of Contents 
+- [Download repository](https://github.com/dmarcinkovic/Survive#download-repository)
+- [Required packages and libraries](https://github.com/dmarcinkovic/Survive#required-packages-and-libraries)
+- [Linux](https://github.com/dmarcinkovic/Survive#linux)
+    - [Download dependencies](https://github.com/dmarcinkovic/Survive#download-dependencies)
+    - [Build and run](https://github.com/dmarcinkovic/Survive#build-and-run)
+- [Windows](https://github.com/dmarcinkovic/Survive#windows)
+    - [Download dependencies](https://github.com/dmarcinkovic/Survive#download-dependencies-1)
+    - [Build and run](https://github.com/dmarcinkovic/Survive#build-and-run-1)
+
 ## Download repository
 
     $ git clone --recurse-submodules https://github.com/dmarcinkovic/Survive.git
