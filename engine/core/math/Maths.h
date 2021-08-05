@@ -26,6 +26,9 @@ namespace Survive
 		static glm::mat4 createLightProjectionMatrix();
 
 		static glm::mat4 createOrthographicProjectionMatrix(float width, float height);
+
+		static glm::mat4
+		recomposeMatrixFromComponents(const glm::vec3 &translation, const glm::vec3 &scale, const glm::vec3 &rotation);
 	};
 }
 

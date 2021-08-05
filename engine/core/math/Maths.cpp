@@ -2,11 +2,14 @@
 // Created by david on 28. 03. 2020..
 //
 
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Maths.h"
 #include "Constants.h"
 
 glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translation, const glm::vec3 &scale,
-											const glm::vec3 &rotation)
+													 const glm::vec3 &rotation)
 {
 	glm::mat4 matrix{1.0f};
 
@@ -52,5 +55,13 @@ glm::mat4 Survive::Maths::createLightProjectionMatrix()
 glm::mat4 Survive::Maths::createOrthographicProjectionMatrix(float width, float height)
 {
 	return glm::ortho(-width, width, -height, height);
+}
+
+glm::mat4 Survive::Maths::recomposeMatrixFromComponents(const glm::vec3 &translation, const glm::vec3 &scale,
+														const glm::vec3 &rotation)
+{
+	return glm::translate(glm::mat4(1.0f), translation) *
+		   glm::toMat4(glm::quat(glm::radians(rotation))) *
+		   glm::scale(glm::mat4(1.0f), scale);
 }
 
