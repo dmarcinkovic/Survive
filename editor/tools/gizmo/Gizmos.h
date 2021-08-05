@@ -11,6 +11,7 @@
 #include "entt.hpp"
 #include "Camera.h"
 #include "EventHandler.h"
+#include "Transform3DComponent.h"
 
 namespace Survive
 {
@@ -18,6 +19,9 @@ namespace Survive
 	{
 	private:
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
+
+		ImGuizmo::OPERATION m_Operation{};
+		bool m_DrawGizmos{};
 
 	public:
 		Gizmos();
@@ -29,6 +33,11 @@ namespace Survive
 		void setRect(float x, float y, float width, float height);
 
 		void handleKeyEvents(const EventHandler &eventHandler);
+
+	private:
+		static glm::mat4 getTransform(const Transform3DComponent &transform);
+
+		static void useGizmo(Transform3DComponent &transformComponent, glm::mat4 &transform);
 	};
 }
 
