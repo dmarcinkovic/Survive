@@ -52,6 +52,9 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 	{
 		m_Operation = ImGuizmo::OPERATION::SCALE;
 		m_DrawGizmos = true;
+	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
+	{
+		m_DrawGizmos = false;
 	}
 }
 
