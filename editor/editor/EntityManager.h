@@ -20,7 +20,7 @@ namespace Survive
 		char m_Buffer[BUFFER_SIZE]{};
 		bool m_AddNewComponent{};
 
-		entt::entity m_SelectedEntity{};
+		entt::entity m_SelectedEntity = entt::null;
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
 		bool m_RenameEntity{};
@@ -34,6 +34,8 @@ namespace Survive
 		void drawPropertyPanel(entt::registry &registry);
 
 		void handleKeyEvents(const EventHandler &eventHandler);
+
+		[[nodiscard]] entt::entity getSelectedEntity() const;
 
 	private:
 		void createEntity(entt::registry &registry);

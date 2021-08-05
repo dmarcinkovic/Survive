@@ -156,7 +156,7 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 void Survive::EntityManager::removeEntity(entt::registry &registry)
 {
 	registry.destroy(m_SelectedEntity);
-	m_SelectedEntity = entt::entity{};
+	m_SelectedEntity = entt::null;
 
 	m_Selected = m_CurrentItem = -1;
 }
@@ -188,4 +188,9 @@ void Survive::EntityManager::handleKeyEvents(const EventHandler &eventHandler)
 	{
 		m_DestroyEntity = true;
 	}
+}
+
+entt::entity Survive::EntityManager::getSelectedEntity() const
+{
+	return m_SelectedEntity;
 }
