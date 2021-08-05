@@ -5,6 +5,7 @@
 #ifndef SURVIVE_SHADOWSHADER_H
 #define SURVIVE_SHADOWSHADER_H
 
+#include <vector>
 
 #include "Shader.h"
 
@@ -15,10 +16,14 @@ namespace Survive
 	private:
 		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ShadowVertexShader.glsl";
 		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ShadowFragmentShader.glsl";
+		static constexpr int MAX_JOINTS = 50;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationViewMatrix{};
 		GLint m_LocationProjectionMatrix{};
+
+		GLint m_LocationJointTransforms[MAX_JOINTS]{};
+		GLint m_LocationLoadAnimatedModel{};
 
 	public:
 		ShadowShader();
@@ -28,6 +33,10 @@ namespace Survive
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
 		void loadViewMatrix(const glm::mat4 &viewMatrix) const;
+
+		void loadAnimatedModel(bool loadAnimatedModel) const;
+
+		void loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const;
 
 	private:
 		void getUniformLocations();
