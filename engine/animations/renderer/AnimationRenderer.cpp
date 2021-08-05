@@ -94,23 +94,6 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 	m_Shader.loadCameraPosition(camera.position);
 }
 
-std::vector<glm::mat4>
-Survive::AnimationRenderer::getJointTransforms(const AnimationComponent &animationComponent) const
-{
-	std::vector<glm::mat4> jointMatrices(animationComponent.numberOfJoints);
-	addJointsToArray(animationComponent.rootJoint, jointMatrices);
-	return jointMatrices;
-}
-
-void Survive::AnimationRenderer::addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const
-{
-	jointMatrices[headJoint.index()] = headJoint.getAnimatedTransform();
-	for (auto const &childJoint : headJoint.children())
-	{
-		addJointsToArray(childJoint, jointMatrices);
-	}
-}
-
 void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
 													const Texture &texture, const Camera &camera) const
 {
@@ -131,7 +114,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &regist
 	}
 
 	const AnimationComponent &animationComponent = registry.get<AnimationComponent>(entity);
-	m_Shader.loadJointTransforms(getJointTransforms(animationComponent));
+	m_Shader.loadJointTransforms(animationComponent.jointTransforms);
 
 	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
 	{

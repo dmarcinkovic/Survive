@@ -10,6 +10,7 @@
 #include "Display.h"
 #include "entt.hpp"
 #include "Components.h"
+#include "AnimationSystem.h"
 
 int main()
 {
@@ -68,6 +69,7 @@ int main()
 
 		editor.handleKeyEvents(eventHandler);
 		animator.update(registry);
+		AnimationSystem::update(registry);
 
 		Editor::newFrame();
 		Editor::dock();

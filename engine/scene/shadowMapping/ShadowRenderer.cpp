@@ -4,10 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include "ShadowComponent.h"
+#include "Components.h"
 #include "ShadowRenderer.h"
-#include "Render3DComponent.h"
-#include "Transform3DComponent.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
 
@@ -40,6 +38,17 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
+
+			if (registry.has<AnimationComponent>(object))
+			{
+				const AnimationComponent &animation = registry.get<AnimationComponent>(object);
+
+				m_ShadowShader.loadAnimatedModel(true);
+				m_ShadowShader.loadJointTransforms(animation.jointTransforms);
+			} else
+			{
+				m_ShadowShader.loadAnimatedModel(false);
+			}
 
 			glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
 			glDisable(GL_CULL_FACE);
