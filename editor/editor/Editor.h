@@ -16,6 +16,7 @@
 #include "SceneSerializer.h"
 #include "EntityManager.h"
 #include "Camera.h"
+#include "Gizmos.h"
 
 namespace Survive
 {
@@ -31,6 +32,7 @@ namespace Survive
 		FileChooser m_OpenWindow;
 		FileChooser m_SaveWindow;
 		EntityManager m_Manager{};
+		Gizmos m_Gizmos;
 
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;

@@ -5,8 +5,6 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/quaternion.hpp>
 
 #include "Key.h"
 #include "Editor.h"
@@ -48,7 +46,7 @@ void Survive::Editor::newFrame()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	ImGuizmo::BeginFrame();
+	Gizmos::newFrame();
 }
 
 void Survive::Editor::dock()
@@ -73,36 +71,8 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 										 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
 										 ImVec2(1, 0));
 
-	entt::entity selectedEntity = m_Manager.getSelectedEntity();
-	if (selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
-	{
-		ImGuizmo::SetOrthographic(false);
-		ImGuizmo::SetDrawlist();
-
-		ImGuizmo::SetRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
-		auto viewMatrix = camera.getViewMatrix();
-		auto projectionMatrix = camera.getProjectionMatrix();
-
-		Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(selectedEntity);
-		glm::mat4 transform = Maths::recomposeMatrixFromComponents(transformComponent.position,
-																   transformComponent.scale,
-																   transformComponent.rotation);
-
-		float *matrix = glm::value_ptr(transform);
-		ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projectionMatrix),
-							 ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, matrix);
-
-		if (ImGuizmo::IsUsing())
-		{
-			glm::vec3 translation, rotation, scale;
-			ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(transform), glm::value_ptr(translation),
-												  glm::value_ptr(rotation), glm::value_ptr(scale));
-
-			transformComponent.position = translation;
-			transformComponent.rotation = rotation;
-			transformComponent.scale = scale;
-		}
-	}
+	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
+	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 
 	ImGui::End();
 }
@@ -235,6 +205,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 	}
 
 	m_Manager.handleKeyEvents(eventHandler);
+	m_Gizmos.handleKeyEvents(eventHandler);
 }
 
 float Survive::Editor::getSceneWidth()
