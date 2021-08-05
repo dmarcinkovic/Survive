@@ -107,6 +107,8 @@
 
 ### Build and run
 
+* Checkout to `conan` branch
+
 * Create build directory with: ` mkdir build && cd build`
 
 
