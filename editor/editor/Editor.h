@@ -7,6 +7,7 @@
 
 #include <imgui.h>
 #include <utility>
+#include <ImGuizmo.h>
 
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
@@ -14,6 +15,7 @@
 #include "Log.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -45,7 +47,7 @@ namespace Survive
 	public:
 		explicit Editor(GLuint scene);
 
-		void render(entt::registry &registry, Renderer &renderer);
+		void render(entt::registry &registry, Renderer &renderer, Camera &camera);
 
 		static void dock();
 
@@ -60,7 +62,7 @@ namespace Survive
 		static float getSceneHeight();
 
 	private:
-		void renderSceneWindow();
+		void renderSceneWindow(const Camera &camera, entt::registry &registry);
 
 		void renderPropertyWindow(entt::registry &registry);
 

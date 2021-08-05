@@ -71,7 +71,7 @@ int main()
 
 		Editor::newFrame();
 		Editor::dock();
-		editor.render(registry, renderer);
+		editor.render(registry, renderer, camera);
 		renderer.renderToFbo(registry, camera);
 
 		camera.recalculateProjectionMatrix(Survive::Editor::getSceneWidth(), Survive::Editor::getSceneHeight());
