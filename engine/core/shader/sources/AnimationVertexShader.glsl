@@ -32,7 +32,7 @@ void main()
 
     gl_ClipDistance[0] = dot(worldPos, plane);
 
-    vec4 totalLocalPos = vec4(0.0);
+    vec4 totalLocalPos = vec4(position, 1.0);
     vec4 totalNormal = vec4(0.0);
 
     for (int i = 0; i < MAX_WEIGHTS; ++i)
