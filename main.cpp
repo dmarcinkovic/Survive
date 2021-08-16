@@ -1,6 +1,5 @@
 #include "Editor.h"
 #include "EventHandler.h"
-#include "TerrainGenerator.h"
 #include "DaeParser.h"
 #include "Animator.h"
 #include "Loader.h"
@@ -29,15 +28,6 @@ int main()
 	Renderer renderer(light);
 
 	Editor editor(renderer.getRenderedTexture());
-
-	auto terrain = registry.create();
-	registry.emplace<TagComponent>(terrain, "terrain");
-	registry.emplace<Render3DComponent>(terrain,
-										TexturedModel(TerrainGenerator::generateTerrain(loader, "res/heightmap.png"),
-													  Loader::loadTexture("res/blendMap.png")));
-	registry.emplace<Transform3DComponent>(terrain, glm::vec3{-200, -10, -200}, glm::vec3{1, 1, 1});
-	registry.emplace<TexturedComponent>(terrain, Loader::loadAllTextures(
-			{"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"}));
 
 	DaeParser daeParser;
 	auto character = registry.create();
