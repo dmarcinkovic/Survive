@@ -25,6 +25,7 @@ namespace Survive
 	private:
 		static float m_SceneWidth;
 		static float m_SceneHeight;
+		static float m_ScenePosX, m_ScenePosY;
 
 		ImGuiIO &m_Io;
 		GLuint m_Scene;
@@ -62,6 +63,8 @@ namespace Survive
 		static float getSceneWidth();
 
 		static float getSceneHeight();
+
+		static std::pair<float, float> getScenePosition();
 
 	private:
 		void renderSceneWindow(const Camera &camera, entt::registry &registry);

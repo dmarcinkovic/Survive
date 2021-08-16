@@ -8,10 +8,11 @@
 
 #include "Key.h"
 #include "Editor.h"
-#include "Maths.h"
 
 float Survive::Editor::m_SceneWidth{};
 float Survive::Editor::m_SceneHeight{};
+float Survive::Editor::m_ScenePosX{};
+float Survive::Editor::m_ScenePosY{};
 
 Survive::Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene)
@@ -63,6 +64,8 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
 	ImVec2 pos = ImGui::GetCursorScreenPos();
+	m_ScenePosX = pos.x;
+	m_ScenePosY = pos.y;
 
 	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
@@ -218,4 +221,9 @@ float Survive::Editor::getSceneWidth()
 float Survive::Editor::getSceneHeight()
 {
 	return m_SceneHeight;
+}
+
+std::pair<float, float> Survive::Editor::getScenePosition()
+{
+	return {m_ScenePosX, m_ScenePosY};
 }
