@@ -49,8 +49,8 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 		return;
 	}
 
-	float width = Editor::getSceneWidth();
-	float height = Editor::getSceneHeight();
+	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
+	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
 	glViewport(0, 0, width, height);
 
 	auto entities = prepareEntities(registry);
@@ -109,11 +109,18 @@ void Survive::MousePicking::getRenderedObject() const
 	int y = static_cast<int>(m_MousePosition.y);
 	glReadPixels(x, y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-	int id = getID(data);
-	std::cout << id << '\n';
+	entt::entity entity = getEntity(data);
+
+	if (entity != entt::null)
+	{
+		std::cout << static_cast<int>(entity) << '\n';
+	} else
+	{
+		std::cout << "-1" << '\n';
+	}
 }
 
-int Survive::MousePicking::getID(const std::uint8_t *data)
+entt::entity Survive::MousePicking::getEntity(const std::uint8_t *data)
 {
 	int r = data[0];
 	int g = data[1] << 8;
@@ -123,10 +130,11 @@ int Survive::MousePicking::getID(const std::uint8_t *data)
 
 	if (r == clearColor.r && g == clearColor.g << 8 && b == clearColor.b << 16)
 	{
-		return 0;
+		return entt::null;
 	}
 
-	return r + g + b;
+	int entityId = r + g + b;
+	return entt::entity(entityId);
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>

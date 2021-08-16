@@ -39,7 +39,7 @@ namespace Survive
 
 		static glm::vec4 getColor(std::uint32_t id);
 
-		static int getID(const std::uint8_t *data);
+		static entt::entity getEntity(const std::uint8_t *data);
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
