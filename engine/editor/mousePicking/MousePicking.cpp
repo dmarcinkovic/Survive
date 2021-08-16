@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "MousePicking.h"
+#include "Editor.h"
 #include "Constants.h"
 #include "Components.h"
 #include "Maths.h"
@@ -25,8 +26,9 @@ void Survive::MousePicking::mousePressedHandler()
 		{
 			mousePressed = true;
 
-			int height = Display::getHeight();
-			m_MousePosition = glm::ivec2{mouseX, height - mouseY};
+			float height = Editor::getSceneHeight();
+			auto[x, y] = Editor::getScenePosition();
+ 			m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
 		}
 	});
 }
@@ -37,15 +39,19 @@ glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 	std::uint32_t g = (id & 0x0000FF00) >> 8;
 	std::uint32_t b = (id & 0x00FF0000) >> 16;
 
-	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
+	return {r / 255.0, g / 255.0, b / 255.0, 1.0f};
 }
 
 void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!mousePressed)
+	if (!mousePressed || !isInsideWindow())
 	{
 		return;
 	}
+
+	float width = Editor::getSceneWidth();
+	float height = Editor::getSceneHeight();
+	glViewport(0, 0, width, height);
 
 	auto entities = prepareEntities(registry);
 
@@ -81,8 +87,9 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const st
 	{
 		loadTransformationMatrix(camera, registry, object);
 
-		const IdComponent &id = registry.get<IdComponent>(object);
-		glm::vec4 color = getColor(id.id);
+		int id = static_cast<int>(object);
+		glm::vec4 color = getColor(id);
+
 		m_Shader.loadPickingColor(color);
 
 		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
@@ -96,9 +103,11 @@ void Survive::MousePicking::getRenderedObject() const
 	glFinish();
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 	std::uint8_t data[4];
-	glReadPixels(m_MousePosition.x, m_MousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+	int x = static_cast<int>(m_MousePosition.x);
+	int y = static_cast<int>(m_MousePosition.y);
+	glReadPixels(x, y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	int id = getID(data);
 	std::cout << id << '\n';
@@ -155,4 +164,13 @@ void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
 
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
+}
+
+bool Survive::MousePicking::isInsideWindow() const
+{
+	float width = Editor::getSceneWidth();
+	float height = Editor::getSceneHeight();
+
+	return m_MousePosition.x >= 0 && m_MousePosition.x <= width &&
+			m_MousePosition.y >= 0 && m_MousePosition.y <= height;
 }

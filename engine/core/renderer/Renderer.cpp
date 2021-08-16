@@ -71,13 +71,13 @@ void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) co
 											Constants::SHADOW_HEIGHT);
 
 	renderToWaterFrameBuffers(registry, camera);
-	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
 	m_MousePicking.render(registry, camera);
 
+	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 	render3DScene(registry, camera);
 	m_WaterRenderer.render(registry, camera, m_Light);
 

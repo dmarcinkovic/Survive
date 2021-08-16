@@ -9,8 +9,8 @@
 #include <unordered_map>
 #include <functional>
 
-#include "MousePickingShader.h"
 #include "entt.hpp"
+#include "MousePickingShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"
 
@@ -22,7 +22,7 @@ namespace Survive
 		static bool mousePressed;
 		MousePickingShader m_Shader;
 
-		glm::ivec2 m_MousePosition{};
+		glm::vec2 m_MousePosition{};
 
 	public:
 		explicit MousePicking();
@@ -45,6 +45,8 @@ namespace Survive
 		prepareEntities(entt::registry &registry);
 
 		void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
+
+		[[nodiscard]] bool isInsideWindow() const;
 	};
 }
 
