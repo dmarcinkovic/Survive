@@ -49,16 +49,10 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 		return;
 	}
 
-	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
-	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
-	glViewport(0, 0, width, height);
-
 	auto entities = prepareEntities(registry);
 
-	Renderer3DUtil::prepareRendering(m_Shader);
-
-	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	m_Shader.loadViewMatrix(camera.getViewMatrix());
+	setViewport();
+	prepareRendering(camera);
 
 	for (auto const&[texturedModel, objects] : entities)
 	{
@@ -181,4 +175,20 @@ bool Survive::MousePicking::isInsideWindow() const
 
 	return m_MousePosition.x >= 0 && m_MousePosition.x <= width &&
 			m_MousePosition.y >= 0 && m_MousePosition.y <= height;
+}
+
+void Survive::MousePicking::prepareRendering(const Camera &camera) const
+{
+	Renderer3DUtil::prepareRendering(m_Shader);
+
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
+}
+
+void Survive::MousePicking::setViewport() const
+{
+	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
+	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
+
+	glViewport(0, 0, width, height);
 }

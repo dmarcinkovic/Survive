@@ -47,6 +47,10 @@ namespace Survive
 		void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
 
 		[[nodiscard]] bool isInsideWindow() const;
+
+		void setViewport() const;
+
+		void prepareRendering(const Camera &camera) const;
 	};
 }
 
