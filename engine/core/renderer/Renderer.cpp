@@ -76,7 +76,7 @@ void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) co
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
-//	m_MousePicking.render(camera);
+	m_MousePicking.render(registry, camera);
 
 	render3DScene(registry, camera);
 	m_WaterRenderer.render(registry, camera, m_Light);
