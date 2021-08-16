@@ -132,8 +132,8 @@ int Survive::MousePicking::getID(const std::uint8_t *data)
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
-	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
-	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
+	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent>();
+	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
