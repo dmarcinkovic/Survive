@@ -97,7 +97,7 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 		m_Shader.loadAddShadow(false);
 	}
 
-	renderMaterial(registry, entity, texture);
+	renderMaterial(registry, entity);
 
 	renderReflection(registry, entity);
 	renderRefraction(registry, entity);
@@ -195,8 +195,7 @@ void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 	m_SkyBox = skybox;
 }
 
-void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
-											 const Texture &texture) const
+void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity) const
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
 

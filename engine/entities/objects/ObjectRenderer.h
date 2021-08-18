@@ -54,7 +54,7 @@ namespace Survive
 
 		void renderRefraction(entt::registry &registry, entt::entity entity) const;
 
-		void renderMaterial(const entt::registry &registry, entt::entity entity, const Texture &texture) const;
+		void renderMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 
