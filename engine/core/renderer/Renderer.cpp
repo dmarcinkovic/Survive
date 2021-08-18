@@ -53,6 +53,7 @@ void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 {
 	m_SkyRenderer.addSkyEntity(sky);
 	m_ObjectRenderer.addSkybox(sky);
+	m_AnimationRenderer.addSkybox(sky);
 }
 
 void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
@@ -145,5 +146,6 @@ void Survive::Renderer::removeSkyboxEntity()
 {
 	m_SkyRenderer.removeSkyEntity();
 	m_ObjectRenderer.addSkybox(entt::null);
+	m_AnimationRenderer.addSkybox(entt::null);
 }
 
