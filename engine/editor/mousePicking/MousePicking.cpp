@@ -44,7 +44,7 @@ glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 
 void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!mousePressed || !isInsideWindow())
+	if (!mousePressed || !isInsideWindow() || !Editor::isSceneFocused())
 	{
 		return;
 	}

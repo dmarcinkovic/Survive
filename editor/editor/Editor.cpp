@@ -13,6 +13,7 @@ float Survive::Editor::m_SceneWidth{};
 float Survive::Editor::m_SceneHeight{};
 float Survive::Editor::m_ScenePosX{};
 float Survive::Editor::m_ScenePosY{};
+bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(GLuint scene)
 		: m_Io(ImGui::GetIO()), m_Scene(scene)
@@ -78,6 +79,8 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 
 	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
 	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
+
+	m_SceneFocused = ImGui::IsWindowFocused();
 
 	ImGui::End();
 }
@@ -226,4 +229,9 @@ float Survive::Editor::getSceneHeight()
 std::pair<float, float> Survive::Editor::getScenePosition()
 {
 	return {m_ScenePosX, m_ScenePosY};
+}
+
+bool Survive::Editor::isSceneFocused()
+{
+	return m_SceneFocused;
 }

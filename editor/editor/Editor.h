@@ -26,6 +26,7 @@ namespace Survive
 		static float m_SceneWidth;
 		static float m_SceneHeight;
 		static float m_ScenePosX, m_ScenePosY;
+		static bool m_SceneFocused;
 
 		ImGuiIO &m_Io;
 		GLuint m_Scene;
@@ -65,6 +66,8 @@ namespace Survive
 		static float getSceneHeight();
 
 		static std::pair<float, float> getScenePosition();
+
+		static bool isSceneFocused();
 
 	private:
 		void renderSceneWindow(const Camera &camera, entt::registry &registry);
