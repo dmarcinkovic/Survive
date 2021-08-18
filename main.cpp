@@ -15,8 +15,8 @@ int main()
 {
 	using namespace Survive;
 
-	constexpr int width = 1200;
-	constexpr int height = 800;
+	constexpr int width = 1400;
+	constexpr int height = 900;
 
 	Display display(width, height, "Survive");
 	Loader loader;
