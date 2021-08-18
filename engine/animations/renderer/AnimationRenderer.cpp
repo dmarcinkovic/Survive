@@ -40,7 +40,7 @@ void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &
 }
 
 void
-Survive::AnimationRenderer::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 										const Camera &camera) const
 {
 	for (auto const &object : objects)
@@ -94,7 +94,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 	m_Shader.loadCameraPosition(camera.position);
 }
 
-void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity,
+void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,
 													const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
@@ -141,29 +141,28 @@ void Survive::AnimationRenderer::renderBloom(const entt::registry &registry, ent
 }
 
 void
-Survive::AnimationRenderer::renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const
+Survive::AnimationRenderer::renderReflectionAndRefraction(entt::registry &registry, entt::entity entity) const
 {
-	static Texture defaultReflection(0);
-	defaultReflection.bindTexture(2);
+	m_DefaultTexture.bindTexture(2);
 
-	if (registry.has<ReflectionComponent>(entity))
+	if (registry.has<ReflectionComponent>(entity) && m_Skybox != entt::null)
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
-//		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
+		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
 
-//		reflection.reflectionTexture.bindCubeTexture(2);
+		skybox.texturedModel.getTexture().bindCubeTexture(2);
 		m_Shader.loadReflectionFactor(reflection.reflectionFactor);
 	} else
 	{
 		m_Shader.loadReflectionFactor(0.0f);
 	}
 
-	if (registry.has<RefractionComponent>(entity))
+	if (registry.has<RefractionComponent>(entity) && m_Skybox != entt::null)
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
-//		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
+		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
 
-//		refraction.refractionTexture.bindCubeTexture(2);
+		skybox.texturedModel.getTexture().bindCubeTexture(2);
 		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	} else
 	{
@@ -198,4 +197,9 @@ void Survive::AnimationRenderer::loadMaterial(const entt::registry &registry, en
 	{
 		m_Shader.loadColor(defaultColor);
 	}
+}
+
+void Survive::AnimationRenderer::addSkybox(entt::entity skybox)
+{
+	m_Skybox = skybox;
 }
