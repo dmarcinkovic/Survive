@@ -97,11 +97,7 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 		m_Shader.loadAddShadow(false);
 	}
 
-	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
-	{
-		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
-		m_Shader.loadColor(spriteComponent.color);
-	}
+	renderMaterial(registry, entity, texture);
 
 	renderReflection(registry, entity);
 	renderRefraction(registry, entity);
@@ -197,4 +193,19 @@ void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::e
 void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 {
 	m_SkyBox = skybox;
+}
+
+void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
+											 const Texture &texture) const
+{
+	static glm::vec4 defaultColor{0, 0, 0, 0};
+
+	if (registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
+	} else
+	{
+		m_Shader.loadColor(defaultColor);
+	}
 }

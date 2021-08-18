@@ -44,9 +44,7 @@ namespace Survive
 		GLint m_LocationBloomStrength{};
 
 		GLint m_LocationPlane{};
-
 		GLint m_LocationColor{};
-		GLint m_LocationRenderColor{};
 
 	public:
 		ObjectShader();
