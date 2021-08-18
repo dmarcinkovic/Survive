@@ -42,15 +42,13 @@ namespace Survive
 		void loadObjectUniforms(const entt::registry &registry, entt::entity entity,
 								const Texture &texture, const Camera &camera) const;
 
-		[[nodiscard]] std::vector<glm::mat4> getJointTransforms(const AnimationComponent &animationComponent) const;
-
-		void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices) const;
-
 		void renderBloom(const entt::registry &registry, entt::entity entity) const;
 
 		void renderReflectionAndRefraction(const entt::registry &registry, entt::entity entity) const;
 
 		static void drawOutline(const entt::registry &registry, entt::entity entity);
+
+		void loadMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

@@ -26,7 +26,6 @@ uniform sampler2D bloomTexture;
 uniform float bloomStrength;
 
 uniform vec4 color;
-uniform int renderColor;
 
 in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
@@ -63,7 +62,7 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
-    vec4 textureColor = renderColor == 1 ? color : texture(objectTexture, texCoordinates);
+    vec4 textureColor = color + texture(objectTexture, texCoordinates);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;

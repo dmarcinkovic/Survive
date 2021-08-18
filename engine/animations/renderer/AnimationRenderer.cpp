@@ -116,11 +116,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(const entt::registry &regist
 	const AnimationComponent &animationComponent = registry.get<AnimationComponent>(entity);
 	m_Shader.loadJointTransforms(animationComponent.jointTransforms);
 
-	if (!texture.isValidTexture() && registry.has<SpriteComponent>(entity))
-	{
-		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
-		m_Shader.loadColor(spriteComponent.color);
-	}
+	loadMaterial(registry, entity);
 
 	renderBloom(registry, entity);
 	renderReflectionAndRefraction(registry, entity);
@@ -188,5 +184,18 @@ void Survive::AnimationRenderer::drawOutline(const entt::registry &registry, ent
 	} else
 	{
 		glStencilMask(0x00);
+	}
+}
+
+void Survive::AnimationRenderer::loadMaterial(const entt::registry &registry, entt::entity entity) const
+{
+	static glm::vec4 defaultColor{0, 0, 0, 0};
+	if (registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
+	} else
+	{
+		m_Shader.loadColor(defaultColor);
 	}
 }

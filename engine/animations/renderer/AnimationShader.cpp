@@ -62,7 +62,6 @@ void Survive::AnimationShader::loadUniformLocations()
 	m_LocationBloomStrength = glGetUniformLocation(m_Program, "bloomStrength");
 
 	m_LocationColor = glGetUniformLocation(m_Program, "color");
-	m_LocationRenderColor = glGetUniformLocation(m_Program, "renderColor");
 
 	m_LocationShineDamper = glGetUniformLocation(m_Program, "shineDamper");
 	m_LocationMaterial = glGetUniformLocation(m_Program, "material");
@@ -98,7 +97,6 @@ void Survive::AnimationShader::loadPlane(const glm::vec4 &plane) const
 
 void Survive::AnimationShader::loadColor(const glm::vec4 &color) const
 {
-	loadInteger(m_LocationRenderColor, 1);
 	loadVector4(m_LocationColor, color);
 }
 
@@ -134,8 +132,6 @@ void Survive::AnimationShader::loadTextures() const
 	loadInteger(m_LocationObjectTexture, 0);
 	loadInteger(m_LocationShadowMap, 1);
 	loadInteger(m_LocationSkybox, 2);
-
-	loadInteger(m_LocationRenderColor, 0);
 }
 
 void Survive::AnimationShader::loadLightViewMatrix(const glm::mat4 &lightViewMatrix) const

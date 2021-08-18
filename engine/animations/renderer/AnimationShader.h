@@ -47,7 +47,6 @@ namespace Survive
 		GLint m_LocationBloomStrength{};
 
 		GLint m_LocationColor{};
-		GLint m_LocationRenderColor{};
 		GLint m_LocationShineDamper{};
 		GLint m_LocationMaterial{};
 
