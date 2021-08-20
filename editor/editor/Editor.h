@@ -36,7 +36,7 @@ namespace Survive
 		FileChooser m_SaveWindow;
 		EntityManager m_Manager{};
 		Gizmos m_Gizmos;
-		ContentBrowser m_ContentBrowser;
+		ContentBrowser m_ContentBrowser{};
 
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;
