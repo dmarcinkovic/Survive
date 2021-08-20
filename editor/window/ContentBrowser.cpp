@@ -11,10 +11,4 @@ void Survive::ContentBrowser::draw()
 
 		ImGui::End();
 	}
-
-	if (ImGui::Begin("Assets"))
-	{
-
-		ImGui::End();
-	}
 }
