@@ -37,6 +37,8 @@ namespace Survive
 
 		[[nodiscard]] entt::entity getSelectedEntity() const;
 
+		void setSelectedEntity(int selectedEntity);
+
 	private:
 		void createEntity(entt::registry &registry);
 

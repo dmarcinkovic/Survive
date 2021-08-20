@@ -42,6 +42,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+	m_Manager.setSelectedEntity(Renderer::getSelectedEntity());
 	camera.recalculateProjectionMatrix(m_SceneWidth, m_SceneHeight);
 }
 

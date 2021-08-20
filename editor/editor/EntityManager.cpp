@@ -59,15 +59,14 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.35f, 0.5f, 0.5f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
 
-	int index = 0;
 	registry.each([&](const entt::entity entity) {
 		if (registry.has<TagComponent>(entity))
 		{
 			const TagComponent &tag = registry.get<TagComponent>(entity);
+			auto index = static_cast<int>(entity);
 
 			drawSelectable(tag, entity, index);
 			drawPopupContext(registry, index);
-			++index;
 		}
 	});
 
@@ -193,4 +192,15 @@ void Survive::EntityManager::handleKeyEvents(const EventHandler &eventHandler)
 entt::entity Survive::EntityManager::getSelectedEntity() const
 {
 	return m_SelectedEntity;
+}
+
+void Survive::EntityManager::setSelectedEntity(int selectedEntity)
+{
+	if (selectedEntity == -2)
+	{
+		return;
+	}
+
+	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
+	m_Selected = selectedEntity;
 }

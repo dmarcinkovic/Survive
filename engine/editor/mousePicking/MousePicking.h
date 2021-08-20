@@ -20,7 +20,7 @@ namespace Survive
 	{
 	private:
 		static bool mousePressed;
-		static entt::entity selectedEntity;
+		static int selectedEntity;
 
 		MousePickingShader m_Shader;
 
@@ -31,7 +31,7 @@ namespace Survive
 
 		void render(entt::registry &registry, const Camera &camera) const;
 
-		static entt::entity getSelectedEntity();
+		static int getSelectedEntity();
 
 	private:
 		void mousePressedHandler();
@@ -43,7 +43,7 @@ namespace Survive
 
 		static glm::vec4 getColor(std::uint32_t id);
 
-		static entt::entity getEntity(const std::uint8_t *data);
+		static int getEntity(const std::uint8_t *data);
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);

@@ -65,6 +65,8 @@ namespace Survive
 
 		void render2DScene(entt::registry &registry, const Camera &camera) const;
 
+		static int getSelectedEntity();
+
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 

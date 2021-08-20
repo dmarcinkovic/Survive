@@ -149,3 +149,8 @@ void Survive::Renderer::removeSkyboxEntity()
 	m_AnimationRenderer.addSkybox(entt::null);
 }
 
+int Survive::Renderer::getSelectedEntity()
+{
+	return MousePicking::getSelectedEntity();
+}
+
