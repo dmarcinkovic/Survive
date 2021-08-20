@@ -20,6 +20,8 @@ namespace Survive
 	{
 	private:
 		static bool mousePressed;
+		static entt::entity selectedEntity;
+
 		MousePickingShader m_Shader;
 
 		glm::vec2 m_MousePosition{};
@@ -28,6 +30,8 @@ namespace Survive
 		explicit MousePicking();
 
 		void render(entt::registry &registry, const Camera &camera) const;
+
+		static entt::entity getSelectedEntity();
 
 	private:
 		void mousePressedHandler();
@@ -48,7 +52,7 @@ namespace Survive
 
 		[[nodiscard]] bool isInsideWindow() const;
 
-		void setViewport() const;
+		static void setViewport();
 
 		void prepareRendering(const Camera &camera) const;
 	};

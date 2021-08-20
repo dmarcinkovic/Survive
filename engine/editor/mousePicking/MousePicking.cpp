@@ -13,6 +13,7 @@
 #include "Display.h"
 
 bool Survive::MousePicking::mousePressed = false;
+entt::entity Survive::MousePicking::selectedEntity = entt::null;
 
 Survive::MousePicking::MousePicking()
 {
@@ -25,6 +26,7 @@ void Survive::MousePicking::mousePressedHandler()
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			mousePressed = true;
+			selectedEntity = entt::null;
 
 			float height = Editor::getSceneHeight();
 			auto[x, y] = Editor::getScenePosition();
@@ -103,11 +105,11 @@ void Survive::MousePicking::getRenderedObject() const
 	int y = static_cast<int>(m_MousePosition.y);
 	glReadPixels(x, y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-	entt::entity entity = getEntity(data);
+	selectedEntity = getEntity(data);
 
-	if (entity != entt::null)
+	if (selectedEntity != entt::null)
 	{
-		std::cout << static_cast<int>(entity) << '\n';
+		std::cout << static_cast<int>(selectedEntity) << '\n';
 	} else
 	{
 		std::cout << "-1" << '\n';
@@ -185,10 +187,15 @@ void Survive::MousePicking::prepareRendering(const Camera &camera) const
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 }
 
-void Survive::MousePicking::setViewport() const
+void Survive::MousePicking::setViewport()
 {
 	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
 	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
 
 	glViewport(0, 0, width, height);
+}
+
+entt::entity Survive::MousePicking::getSelectedEntity()
+{
+	return selectedEntity;
 }
