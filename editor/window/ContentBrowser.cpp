@@ -3,3 +3,18 @@
 //
 
 #include "ContentBrowser.h"
+
+void Survive::ContentBrowser::draw()
+{
+	if (ImGui::Begin("Content browser"))
+	{
+
+		ImGui::End();
+	}
+
+	if (ImGui::Begin("Assets"))
+	{
+
+		ImGui::End();
+	}
+}

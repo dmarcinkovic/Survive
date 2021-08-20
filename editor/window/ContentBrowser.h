@@ -5,11 +5,15 @@
 #ifndef SURVIVE_CONTENTBROWSER_H
 #define SURVIVE_CONTENTBROWSER_H
 
+#include <imgui.h>
 
-class ContentBrowser
+namespace Survive
 {
-
-};
-
+	class ContentBrowser
+	{
+	public:
+		void draw();
+	};
+}
 
 #endif //SURVIVE_CONTENTBROWSER_H

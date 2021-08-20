@@ -36,6 +36,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+	m_ContentBrowser.draw();
 
 	Log::drawLogWindow();
 
