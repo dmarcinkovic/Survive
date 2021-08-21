@@ -9,14 +9,19 @@
 #include <vector>
 
 #include "FileUtil.h"
+#include "Texture.h"
 
 namespace Survive
 {
 	class ContentBrowser
 	{
 	private:
+		static constexpr int ICON_SIZE = 70;
+
+		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent;
-		
+
+		Texture m_DirectoryIcon;
 
 	public:
 		ContentBrowser();
