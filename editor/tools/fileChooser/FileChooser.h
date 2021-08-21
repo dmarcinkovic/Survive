@@ -13,16 +13,10 @@
 #include <functional>
 
 #include "ConfirmWindow.h"
+#include "FileUtil.h"
 
 namespace Survive
 {
-	struct File
-	{
-		std::string name;
-		unsigned long size = 0;
-		std::filesystem::file_type type;
-	};
-
 	class FileChooser
 	{
 	private:
@@ -86,14 +80,6 @@ namespace Survive
 		void drawHeader();
 
 		static void drawCancelButton(bool *open);
-
-		static std::vector<File> listDirectory(const std::string &directory, bool showHidden = false);
-
-		static std::vector<File> listCurrentDirectory();
-
-		static std::string getFileSize(unsigned long fileSize, std::filesystem::file_type type);
-
-		static const char *getFileType(std::filesystem::file_type type);
 
 		static void helpMarker(const char *description);
 

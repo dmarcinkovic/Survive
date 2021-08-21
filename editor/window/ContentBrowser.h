@@ -12,6 +12,8 @@ namespace Survive
 	class ContentBrowser
 	{
 	public:
+		ContentBrowser();
+
 		void draw();
 	};
 }
