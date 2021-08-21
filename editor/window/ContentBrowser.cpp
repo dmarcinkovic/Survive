@@ -8,15 +8,16 @@
 #include "ContentBrowser.h"
 
 Survive::ContentBrowser::ContentBrowser()
+	: m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
-	auto workingDirectory = std::filesystem::current_path();
-	std::cout << workingDirectory << '\n';
 }
 
 void Survive::ContentBrowser::draw()
 {
 	if (ImGui::Begin("Content browser"))
 	{
+
+
 		ImGui::End();
 	}
 }

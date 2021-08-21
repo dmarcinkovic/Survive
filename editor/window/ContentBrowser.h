@@ -6,11 +6,18 @@
 #define SURVIVE_CONTENTBROWSER_H
 
 #include <imgui.h>
+#include <vector>
+
+#include "FileUtil.h"
 
 namespace Survive
 {
 	class ContentBrowser
 	{
+	private:
+		std::vector<File> m_DirectoryContent;
+		
+
 	public:
 		ContentBrowser();
 
