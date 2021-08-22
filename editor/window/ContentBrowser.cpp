@@ -2,7 +2,6 @@
 // Created by david on 18. 08. 2021..
 //
 
-#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -15,6 +14,8 @@ Survive::ContentBrowser::ContentBrowser()
 
 void Survive::ContentBrowser::draw() const
 {
+	setColors();
+
 	if (ImGui::Begin("Content browser"))
 	{
 		for (const File &file : m_DirectoryContent)
@@ -25,10 +26,11 @@ void Survive::ContentBrowser::draw() const
 
 			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-			ImGui::Image(image, ImVec2(ICON_SIZE, ICON_SIZE), m_Uv0, m_Uv1);
+			ImGui::ImageButton(image, ImVec2(ICON_SIZE, ICON_SIZE), m_Uv0, m_Uv1);
 
 			ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
 			ImGui::TextWrapped("%s", file.name.c_str());
+			ImGui::PopTextWrapPos();
 			ImGui::EndGroup();
 
 			if (availableRegion < 2 * ICON_SIZE + SPACING)
@@ -42,4 +44,13 @@ void Survive::ContentBrowser::draw() const
 
 		ImGui::End();
 	}
+
+	ImGui::PopStyleColor(3);
+}
+
+void Survive::ContentBrowser::setColors()
+{
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.2f, 0.2f, 1));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.086f,0.086f,0.086f,1));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.02f, 0.02f, 0.02f, 1));
 }

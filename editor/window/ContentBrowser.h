@@ -29,6 +29,9 @@ namespace Survive
 		ContentBrowser();
 
 		void draw() const;
+
+	private:
+		static void setColors();
 	};
 }
 
