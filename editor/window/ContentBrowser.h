@@ -15,7 +15,7 @@ namespace Survive
 {
 	enum Files
 	{
-		FOLDER, BINARY, TXT, CPP, README
+		FOLDER, BINARY, TXT, CPP, README, UNKNOWN
 	};
 
 	class ContentBrowser
@@ -29,11 +29,14 @@ namespace Survive
 		std::vector<File> m_DirectoryContent{};
 
 		std::vector<Texture> m_Icons;
+		std::filesystem::path m_CurrentDirectory;
 
 	public:
 		ContentBrowser();
 
-		void draw() const;
+		void draw();
+
+		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file) const;
 
 	private:
 		static void setColors();
