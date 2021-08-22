@@ -36,10 +36,14 @@ namespace Survive
 
 		void draw();
 
-		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file) const;
-
 	private:
 		static void setColors();
+
+		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file) const;
+
+		void drawIcon(ImTextureID image, const char *filename);
+
+		void alignIcons(float availableRegion);
 	};
 }
 

@@ -2,7 +2,6 @@
 // Created by david on 18. 08. 2021..
 //
 
-#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -31,20 +30,10 @@ void Survive::ContentBrowser::draw()
 
 			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-			ImGui::ImageButton(image, ImVec2(ICON_SIZE, ICON_SIZE), m_Uv0, m_Uv1);
-
-			ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
-			ImGui::TextWrapped("%s", file.name.c_str());
-			ImGui::PopTextWrapPos();
+			drawIcon(image, file.name.c_str());
 			ImGui::EndGroup();
 
-			if (availableRegion < 2 * ICON_SIZE + SPACING)
-			{
-				ImGui::NewLine();
-			} else
-			{
-				ImGui::SameLine(0, SPACING);
-			}
+			alignIcons(availableRegion);
 		}
 		ImGui::End();
 	}
@@ -85,4 +74,26 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file) 
 	}
 
 	return reinterpret_cast<ImTextureID>(m_Icons[imageIndex].textureId());
+}
+
+void Survive::ContentBrowser::drawIcon(ImTextureID image, const char *filename)
+{
+	static ImVec2 size(ICON_SIZE, ICON_SIZE);
+
+	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
+
+	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
+	ImGui::TextWrapped("%s", filename);
+	ImGui::PopTextWrapPos();
+}
+
+void Survive::ContentBrowser::alignIcons(float availableRegion)
+{
+	if (availableRegion < 2 * ICON_SIZE + SPACING)
+	{
+		ImGui::NewLine();
+	} else
+	{
+		ImGui::SameLine(0, SPACING);
+	}
 }
