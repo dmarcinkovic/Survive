@@ -2,6 +2,7 @@
 // Created by david on 18. 08. 2021..
 //
 
+#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -22,11 +23,21 @@ void Survive::ContentBrowser::draw()
 
 			ImGui::BeginGroup();
 
+			float availableRegion = ImGui::GetContentRegionAvail().x;
+
 			ImGui::Image(image, ImVec2(ICON_SIZE, ICON_SIZE), m_Uv0, m_Uv1);
-			ImGui::Text("%s", file.name.c_str());
+
+			ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
+			ImGui::TextWrapped("%s", file.name.c_str());
 			ImGui::EndGroup();
 
-			ImGui::SameLine(0.0f, 40);
+			if (availableRegion < 2 * ICON_SIZE + SPACING)
+			{
+				ImGui::NewLine();
+			} else
+			{
+				ImGui::SameLine(0, SPACING);
+			}
 		}
 
 		ImGui::End();
