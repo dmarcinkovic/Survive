@@ -28,6 +28,7 @@
 * `C++` compiler that supports c++20 standard
 * `openAL`: Cross-platform 3D audio API.
 * `glm`: C++ library for OpenGL GLSL type-base mathematics
+* `libtbb`: Parallelism library for C++ 
 
 ## Linux
 
@@ -43,6 +44,7 @@
         * ` $ apt install libclang-dev clang` or ` $ apt install g++`
         * ` $ apt install libalut-dev`
         * ` $ apt install libglm-dev`
+        * ` $ apt install libtbb-dev`
 
     - ##### Gentoo
         * ` $ emerge dev-util/pkgconfig`
@@ -54,6 +56,7 @@
         * ` $ emerge sys-devel/llvm sys-devel/clang` or ` $ emerge sys-devel/gcc`
         * ` $ emerge media-libs/freealut`
         * ` $ emerge media-libs/glm`
+        * ` $ emerge dev-cpp/tbb`
 
     - ##### Archlinux
         * ` $ pacman -S pkg-config`
@@ -65,6 +68,7 @@
         * ` $ pacman -S llvm clang` or ` $ pacman -S gcc`
         * ` $ pacman -S freealut`
         * ` $ pacman -S glm`
+        * ` $ pacman -S tbb`
 
     - ##### Fedora
         * ` $ dnf install pkgconf-pkg-config`
@@ -76,6 +80,7 @@
         * ` $ dnf install llvm clang` or ` $ dnf install gcc-c++`
         * ` $ dnf install freealut-devel`
         * ` $ dnf install glm-devel`
+        * ` $ dnf install tbb-devel`
 
 ### Build and run
 
