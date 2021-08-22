@@ -21,14 +21,14 @@ namespace Survive
 		static constexpr float TEXT_WIDTH = 80.0f;
 
 		const ImVec2 m_Uv0, m_Uv1;
-		std::vector<File> m_DirectoryContent;
+		std::vector<File> m_DirectoryContent{};
 
 		Texture m_DirectoryIcon;
 
 	public:
 		ContentBrowser();
 
-		void draw();
+		void draw() const;
 	};
 }
 

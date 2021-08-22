@@ -13,7 +13,7 @@ Survive::ContentBrowser::ContentBrowser()
 {
 }
 
-void Survive::ContentBrowser::draw()
+void Survive::ContentBrowser::draw() const
 {
 	if (ImGui::Begin("Content browser"))
 	{
