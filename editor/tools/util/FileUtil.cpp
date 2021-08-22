@@ -114,3 +114,21 @@ const char *Survive::FileUtil::getFileType(std::filesystem::file_type type)
 			return "";
 	}
 }
+
+bool Survive::FileUtil::isExecutable(const std::filesystem::path &file)
+{
+	auto permissions = std::filesystem::status(file).permissions();
+
+	if ((permissions & std::filesystem::perms::group_exec) != std::filesystem::perms::none)
+	{
+		return true;
+	} else if ((permissions & std::filesystem::perms::owner_exec) != std::filesystem::perms::none)
+	{
+		return true;
+	} else if ((permissions & std::filesystem::perms::others_exec) != std::filesystem::perms::none)
+	{
+		return true;
+	}
+
+	return false;
+}
