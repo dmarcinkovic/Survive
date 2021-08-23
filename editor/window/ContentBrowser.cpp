@@ -12,7 +12,7 @@ Survive::ContentBrowser::ContentBrowser()
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/unknown_icon.png"})),
 		  m_Uv0(0, 1), m_Uv1(1, 0),
-		  m_CurrentDirectory(std::filesystem::current_path())
+		  m_CurrentDirectory(std::filesystem::current_path()), m_ShowingDirectory(m_CurrentDirectory)
 {
 }
 
@@ -135,12 +135,13 @@ void Survive::ContentBrowser::drawDirectoryTree()
 void Survive::ContentBrowser::setDirectoryTreeColors()
 {
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.05f,0.05f,0.05f,1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.05f, 0.05f, 0.05f, 1.0f));
 }
 
 void Survive::ContentBrowser::drawTree()
 {
 	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+
 	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
 	{
 		for (const File &file : m_DirectoryContent)

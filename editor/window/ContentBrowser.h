@@ -31,6 +31,8 @@ namespace Survive
 
 		std::vector<Texture> m_Icons;
 		std::filesystem::path m_CurrentDirectory;
+		std::filesystem::path m_ShowingDirectory;
+
 		bool m_WidthSet{};
 
 	public:
