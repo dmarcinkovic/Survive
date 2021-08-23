@@ -47,6 +47,10 @@ namespace Survive
 		static void alignIcons(float availableRegion);
 
 		void drawDirectoryContent();
+
+		void drawDirectoryTree();
+
+		static void setDirectoryTreeColors();
 	};
 }
 

@@ -25,25 +25,7 @@ void Survive::ContentBrowser::draw()
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, COLUMN_WIDTH);
 
-		ImGui::BeginChild("Child1");
-
-		ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
-		if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
-		{
-			for (const File &file : m_DirectoryContent)
-			{
-				if (ImGui::TreeNode(file.name.c_str()))
-				{
-					ImGui::Button("Button");
-
-					ImGui::TreePop();
-				}
-			}
-
-			ImGui::TreePop();
-		}
-
-		ImGui::EndChild();
+		drawDirectoryTree();
 
 		ImGui::NextColumn();
 		drawDirectoryContent();
@@ -132,4 +114,34 @@ void Survive::ContentBrowser::drawDirectoryContent()
 
 		ImGui::EndChild();
 	}
+}
+
+void Survive::ContentBrowser::drawDirectoryTree()
+{
+	ImGui::BeginChild("Child1");
+
+	setDirectoryTreeColors();
+
+	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
+	{
+		for (const File &file : m_DirectoryContent)
+		{
+			if (ImGui::TreeNode(file.name.c_str()))
+			{
+				ImGui::TreePop();
+			}
+		}
+
+		ImGui::TreePop();
+	}
+
+	ImGui::PopStyleColor(2);
+	ImGui::EndChild();
+}
+
+void Survive::ContentBrowser::setDirectoryTreeColors()
+{
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.05f,0.05f,0.05f,1.0f));
 }
