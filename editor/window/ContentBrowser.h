@@ -24,6 +24,7 @@ namespace Survive
 		static constexpr float ICON_SIZE = 70.0f;
 		static constexpr float SPACING = 30.0f;
 		static constexpr float TEXT_WIDTH = 70.0f;
+		static constexpr float COLUMN_WIDTH = 250.0f;
 
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent{};
@@ -44,6 +45,8 @@ namespace Survive
 		void drawIcon(ImTextureID image, const char *filename);
 
 		static void alignIcons(float availableRegion);
+
+		void drawDirectoryContent();
 	};
 }
 

@@ -2,6 +2,7 @@
 // Created by david on 18. 08. 2021..
 //
 
+#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -21,20 +22,32 @@ void Survive::ContentBrowser::draw()
 
 	if (ImGui::Begin("Content browser"))
 	{
-		for (const File &file : m_DirectoryContent)
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, COLUMN_WIDTH);
+
+		ImGui::BeginChild("Child1");
+
+		ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+		if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
 		{
-			std::filesystem::path current{m_CurrentDirectory};
-			ImTextureID image = getIcon(current.append(file.name));
+			for (const File &file : m_DirectoryContent)
+			{
+				if (ImGui::TreeNode(file.name.c_str()))
+				{
+					ImGui::Button("Button");
 
-			ImGui::BeginGroup();
+					ImGui::TreePop();
+				}
+			}
 
-			float availableRegion = ImGui::GetContentRegionAvail().x;
-
-			drawIcon(image, file.name.c_str());
-			ImGui::EndGroup();
-
-			alignIcons(availableRegion);
+			ImGui::TreePop();
 		}
+
+		ImGui::EndChild();
+
+		ImGui::NextColumn();
+		drawDirectoryContent();
+
 		ImGui::End();
 	}
 
@@ -95,5 +108,28 @@ void Survive::ContentBrowser::alignIcons(float availableRegion)
 	} else
 	{
 		ImGui::SameLine(0, SPACING);
+	}
+}
+
+void Survive::ContentBrowser::drawDirectoryContent()
+{
+	if (ImGui::BeginChild("Child2"))
+	{
+		for (const File &file : m_DirectoryContent)
+		{
+			std::filesystem::path current{m_CurrentDirectory};
+			ImTextureID image = getIcon(current.append(file.name));
+
+			ImGui::BeginGroup();
+
+			float availableRegion = ImGui::GetContentRegionAvail().x;
+
+			drawIcon(image, file.name.c_str());
+			ImGui::EndGroup();
+
+			alignIcons(availableRegion);
+		}
+
+		ImGui::EndChild();
 	}
 }
