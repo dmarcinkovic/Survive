@@ -10,7 +10,7 @@ Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
 		  m_Icons(Loader::loadAllTextures(
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
-				   "res/readme_icon.png", "res/unknown_icon.png"})),
+				   "res/readme_icon.png", "res/image_icon.png", "res/unknown_icon.png"})),
 		  m_Uv0(0, 1), m_Uv1(1, 0),
 		  m_CurrentDirectory(std::filesystem::current_path()), m_ShowingDirectory(m_CurrentDirectory)
 {
@@ -70,6 +70,9 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file) 
 		} else if (extension == ".md")
 		{
 			imageIndex = README;
+		} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+		{
+			imageIndex = IMAGE;
 		}
 	}
 
