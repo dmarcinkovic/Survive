@@ -20,9 +20,10 @@ std::vector<Survive::File> Survive::FileUtil::listDirectory(const std::string &d
 	for (auto const &path : directoryIterator)
 	{
 		File file;
-		file.name = path.path().filename();
+		file.path = path.path();
+		std::string filename = file.path.filename().string();
 
-		if (!showHidden && file.name.front() == '.')
+		if (!showHidden && filename.front() == '.')
 		{
 			continue;
 		}

@@ -269,7 +269,7 @@ void Survive::FileChooser::resetSelectedFile()
 	} else
 	{
 		m_SelectedFile = 0;
-		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].path.filename().string();
 	}
 }
 
@@ -287,10 +287,12 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open,
 	ImGui::TableNextColumn();
 	drawIcon();
 
-	if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
+	const std::string &filename = file.path.filename().string();
+
+	if (ImGui::Selectable(filename.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
@@ -308,14 +310,14 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open,
 	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 
 	ImGui::TableNextColumn();
 	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 }
 
@@ -333,7 +335,10 @@ void Survive::FileChooser::openPressed(bool *open)
 
 bool Survive::FileChooser::sortByFilename(const File &file1, const File &file2)
 {
-	return file1.name.compare(file2.name) < 0;
+	const std::string &filename1 = file1.path.filename().string();
+	const std::string &filename2 = file2.path.filename().string();
+
+	return filename1.compare(filename2) < 0;
 }
 
 bool Survive::FileChooser::sortBySize(const File &file1, const File &file2)

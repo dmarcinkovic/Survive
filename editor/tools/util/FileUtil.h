@@ -13,7 +13,7 @@ namespace Survive
 {
 	struct File
 	{
-		std::string name;
+		std::filesystem::path path;
 		unsigned long size = 0;
 		std::filesystem::file_type type;
 	};
