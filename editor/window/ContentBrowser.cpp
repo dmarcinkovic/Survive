@@ -23,7 +23,12 @@ void Survive::ContentBrowser::draw()
 	if (ImGui::Begin("Content browser"))
 	{
 		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, COLUMN_WIDTH);
+
+		if (!m_WidthSet)
+		{
+			ImGui::SetColumnWidth(0, COLUMN_WIDTH);
+			m_WidthSet = true;
+		}
 
 		drawDirectoryTree();
 
@@ -142,7 +147,7 @@ void Survive::ContentBrowser::drawTree()
 		{
 			if (ImGui::TreeNode(file.path.filename().c_str()))
 			{
-				
+
 				ImGui::TreePop();
 			}
 		}
