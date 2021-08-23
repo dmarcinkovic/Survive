@@ -51,6 +51,8 @@ namespace Survive
 		void drawDirectoryTree();
 
 		static void setDirectoryTreeColors();
+
+		void drawTree();
 	};
 }
 

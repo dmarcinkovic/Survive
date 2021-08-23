@@ -99,14 +99,13 @@ void Survive::ContentBrowser::drawDirectoryContent()
 	{
 		for (const File &file : m_DirectoryContent)
 		{
-			std::filesystem::path current{m_CurrentDirectory};
-			ImTextureID image = getIcon(current.append(file.name));
+			ImTextureID image = getIcon(file.path);
 
 			ImGui::BeginGroup();
 
 			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-			drawIcon(image, file.name.c_str());
+			drawIcon(image, file.path.filename().c_str());
 			ImGui::EndGroup();
 
 			alignIcons(availableRegion);
@@ -122,19 +121,7 @@ void Survive::ContentBrowser::drawDirectoryTree()
 
 	setDirectoryTreeColors();
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
-	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
-	{
-		for (const File &file : m_DirectoryContent)
-		{
-			if (ImGui::TreeNode(file.name.c_str()))
-			{
-				ImGui::TreePop();
-			}
-		}
-
-		ImGui::TreePop();
-	}
+	drawTree();
 
 	ImGui::PopStyleColor(2);
 	ImGui::EndChild();
@@ -144,4 +131,22 @@ void Survive::ContentBrowser::setDirectoryTreeColors()
 {
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.05f,0.05f,0.05f,1.0f));
+}
+
+void Survive::ContentBrowser::drawTree()
+{
+	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
+	{
+		for (const File &file : m_DirectoryContent)
+		{
+			if (ImGui::TreeNode(file.path.filename().c_str()))
+			{
+				
+				ImGui::TreePop();
+			}
+		}
+
+		ImGui::TreePop();
+	}
 }
