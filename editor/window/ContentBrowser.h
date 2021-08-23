@@ -43,7 +43,7 @@ namespace Survive
 
 		void drawIcon(ImTextureID image, const char *filename);
 
-		void alignIcons(float availableRegion);
+		static void alignIcons(float availableRegion);
 	};
 }
 
