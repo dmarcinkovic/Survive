@@ -180,6 +180,11 @@ void Survive::ContentBrowser::renderImageWindow()
 		ImGui::Begin("Image view", &m_DrawImage);
 
 		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
+
+		ImVec2 windowSize = ImGui::GetWindowSize();
+		ImVec2 imagePosition((windowSize.x - imageSize.x) / 2.0f, (windowSize.y - imageSize.y) / 2.0f);
+
+		ImGui::SetCursorPos(imagePosition);
 		ImGui::Image(image, imageSize, m_Uv0, m_Uv1);
 
 		ImGui::End();
