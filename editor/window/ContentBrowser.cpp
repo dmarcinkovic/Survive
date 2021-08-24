@@ -11,7 +11,7 @@ Survive::ContentBrowser::ContentBrowser()
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png"})),
 		  m_Uv0(0, 1), m_Uv1(1, 0),
-		  m_CurrentDirectory(std::filesystem::current_path()), m_ShowingDirectory(m_CurrentDirectory)
+		  m_CurrentDirectory(std::filesystem::current_path()), m_NestedDirectories(m_DirectoryContent.size())
 {
 }
 
@@ -158,10 +158,16 @@ void Survive::ContentBrowser::drawTree()
 
 	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
 	{
-		for (const File &file : m_DirectoryContent)
+		for (int i = 0; i < m_DirectoryContent.size(); ++i)
 		{
+			const File &file = m_DirectoryContent[i];
+
 			if (ImGui::TreeNode(file.path.filename().c_str()))
 			{
+				if (file.type == std::filesystem::file_type::directory)
+				{
+					drawNestedDirectories(m_NestedDirectories[i], file);
+				}
 
 				ImGui::TreePop();
 			}
@@ -188,5 +194,21 @@ void Survive::ContentBrowser::renderImageWindow()
 		ImGui::Image(image, imageSize, m_Uv0, m_Uv1);
 
 		ImGui::End();
+	}
+}
+
+void Survive::ContentBrowser::drawNestedDirectories(std::vector<File> &content, const File &file)
+{
+	if (content.empty())
+	{
+		content = FileUtil::listDirectory(file.path.string());
+	}
+
+	for (const File &nestedFile : content)
+	{
+		if (ImGui::TreeNode(nestedFile.path.filename().c_str()))
+		{
+			ImGui::TreePop();
+		}
 	}
 }

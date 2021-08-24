@@ -28,13 +28,12 @@ namespace Survive
 
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent{};
-		std::vector<std::vector<File>> m_NestedDirectories{};
+		std::vector<std::vector<File>> m_NestedDirectories;
 
 		int m_ImageIndex{};
 
 		std::vector<Texture> m_Icons;
 		std::filesystem::path m_CurrentDirectory;
-		std::filesystem::path m_ShowingDirectory;
 
 		bool m_DrawImage{};
 		Texture m_Image{};
@@ -64,6 +63,8 @@ namespace Survive
 		void drawTree();
 
 		void renderImageWindow();
+
+		static void drawNestedDirectories(std::vector<File> &content, const File &file);
 	};
 }
 
