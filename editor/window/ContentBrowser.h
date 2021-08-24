@@ -61,6 +61,8 @@ namespace Survive
 		static void setDirectoryTreeColors();
 
 		void drawTree();
+
+		void renderImageWindow();
 	};
 }
 

@@ -19,15 +19,7 @@ void Survive::ContentBrowser::draw()
 {
 	setColors();
 
-	if (m_DrawImage)
-	{
-		ImGui::Begin("Image view", &m_DrawImage);
-
-		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
-		ImGui::Image(image, ImVec2(300, 300), m_Uv0, m_Uv1);
-
-		ImGui::End();
-	}
+	renderImageWindow();
 
 	if (ImGui::Begin("Content browser"))
 	{
@@ -176,5 +168,20 @@ void Survive::ContentBrowser::drawTree()
 		}
 
 		ImGui::TreePop();
+	}
+}
+
+void Survive::ContentBrowser::renderImageWindow()
+{
+	static const ImVec2 imageSize(300, 300);
+
+	if (m_DrawImage)
+	{
+		ImGui::Begin("Image view", &m_DrawImage);
+
+		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
+		ImGui::Image(image, imageSize, m_Uv0, m_Uv1);
+
+		ImGui::End();
 	}
 }
