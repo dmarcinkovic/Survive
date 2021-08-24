@@ -38,6 +38,12 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 	m_ContentBrowser.draw();
 
+	if (ImGui::Begin("Debug"))
+	{
+		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+
 	Log::drawLogWindow();
 
 	ImGui::Render();
