@@ -2,7 +2,6 @@
 // Created by david on 18. 08. 2021..
 //
 
-#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -23,6 +22,9 @@ void Survive::ContentBrowser::draw()
 	if (m_DrawImage)
 	{
 		ImGui::Begin("Image view", &m_DrawImage);
+
+		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
+		ImGui::Image(image, ImVec2(300, 300), m_Uv0, m_Uv1);
 
 		ImGui::End();
 	}
@@ -89,15 +91,17 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file)
 	return reinterpret_cast<ImTextureID>(m_Icons[m_ImageIndex].textureId());
 }
 
-void Survive::ContentBrowser::drawIcon(ImTextureID image, const char *filename)
+void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem::path &file)
 {
 	static ImVec2 size(ICON_SIZE, ICON_SIZE);
+	const char* filename = file.filename().c_str();
 
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0) && m_ImageIndex == IMAGE)
 	{
 		m_DrawImage = true;
+		m_Image = Loader::loadTexture(file.c_str());
 	}
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
@@ -128,7 +132,7 @@ void Survive::ContentBrowser::drawDirectoryContent()
 
 			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-			drawIcon(image, file.path.filename().c_str());
+			drawIcon(image, file.path);
 			ImGui::EndGroup();
 
 			alignIcons(availableRegion);

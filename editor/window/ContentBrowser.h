@@ -36,6 +36,8 @@ namespace Survive
 		std::filesystem::path m_ShowingDirectory;
 
 		bool m_DrawImage{};
+		Texture m_Image{};
+
 		bool m_WidthSet{};
 
 	public:
@@ -48,7 +50,7 @@ namespace Survive
 
 		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file);
 
-		void drawIcon(ImTextureID image, const char *filename);
+		void drawIcon(ImTextureID image, const std::filesystem::path &file);
 
 		static void alignIcons(float availableRegion);
 
