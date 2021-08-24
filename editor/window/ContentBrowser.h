@@ -29,10 +29,13 @@ namespace Survive
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent{};
 
+		int m_ImageIndex{};
+
 		std::vector<Texture> m_Icons;
 		std::filesystem::path m_CurrentDirectory;
 		std::filesystem::path m_ShowingDirectory;
 
+		bool m_DrawImage{};
 		bool m_WidthSet{};
 
 	public:
@@ -43,7 +46,7 @@ namespace Survive
 	private:
 		static void setColors();
 
-		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file) const;
+		[[nodiscard]] ImTextureID getIcon(const std::filesystem::path &file);
 
 		void drawIcon(ImTextureID image, const char *filename);
 

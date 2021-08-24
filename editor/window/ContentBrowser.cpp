@@ -7,7 +7,7 @@
 #include "Loader.h"
 
 Survive::ContentBrowser::ContentBrowser()
-		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
+		: m_DirectoryContent(FileUtil::listDirectory("res")),
 		  m_Icons(Loader::loadAllTextures(
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png"})),
@@ -19,6 +19,13 @@ Survive::ContentBrowser::ContentBrowser()
 void Survive::ContentBrowser::draw()
 {
 	setColors();
+
+	if (m_DrawImage)
+	{
+		ImGui::Begin("Image view", &m_DrawImage);
+
+		ImGui::End();
+	}
 
 	if (ImGui::Begin("Content browser"))
 	{
@@ -48,38 +55,38 @@ void Survive::ContentBrowser::setColors()
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.02f, 0.02f, 0.02f, 1));
 }
 
-ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file) const
+ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file)
 {
-	int imageIndex = UNKNOWN;
+	m_ImageIndex = UNKNOWN;
 	if (std::filesystem::is_directory(file))
 	{
-		imageIndex = FOLDER;
+		m_ImageIndex = FOLDER;
 	} else if (FileUtil::isExecutable(file))
 	{
-		imageIndex = BINARY;
+		m_ImageIndex = BINARY;
 	} else if (file.has_extension())
 	{
 		std::string extension = file.extension().string();
 
 		if (extension == ".txt")
 		{
-			imageIndex = TXT;
+			m_ImageIndex = TXT;
 		} else if (extension == ".cpp")
 		{
-			imageIndex = CPP;
+			m_ImageIndex = CPP;
 		} else if (extension == ".md")
 		{
-			imageIndex = README;
+			m_ImageIndex = README;
 		} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 		{
-			imageIndex = IMAGE;
+			m_ImageIndex = IMAGE;
 		} else if (extension == ".obj")
 		{
-			imageIndex = OBJ;
+			m_ImageIndex = OBJ;
 		}
 	}
 
-	return reinterpret_cast<ImTextureID>(m_Icons[imageIndex].textureId());
+	return reinterpret_cast<ImTextureID>(m_Icons[m_ImageIndex].textureId());
 }
 
 void Survive::ContentBrowser::drawIcon(ImTextureID image, const char *filename)
@@ -87,6 +94,11 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const char *filename)
 	static ImVec2 size(ICON_SIZE, ICON_SIZE);
 
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
+
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0) && m_ImageIndex == IMAGE)
+	{
+		m_DrawImage = true;
+	}
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
 	ImGui::TextWrapped("%s", filename);
