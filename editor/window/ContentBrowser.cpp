@@ -6,7 +6,7 @@
 #include "Loader.h"
 
 Survive::ContentBrowser::ContentBrowser()
-		: m_DirectoryContent(FileUtil::listDirectory("res")),
+		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
 		  m_Icons(Loader::loadAllTextures(
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png"})),
@@ -86,7 +86,7 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file)
 void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem::path &file)
 {
 	static ImVec2 size(ICON_SIZE, ICON_SIZE);
-	const char* filename = file.filename().c_str();
+	std::string filename = file.filename().string();
 
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
 
@@ -97,7 +97,7 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 	}
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
-	ImGui::TextWrapped("%s", filename);
+	ImGui::TextWrapped("%s", filename.c_str());
 	ImGui::PopTextWrapPos();
 }
 

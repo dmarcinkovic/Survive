@@ -28,6 +28,7 @@ namespace Survive
 
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent{};
+		std::vector<std::vector<File>> m_NestedDirectories{};
 
 		int m_ImageIndex{};
 
