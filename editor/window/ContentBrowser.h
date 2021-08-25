@@ -27,12 +27,17 @@ namespace Survive
 		static constexpr float TEXT_WIDTH = 70.0f;
 		static constexpr float COLUMN_WIDTH = 250.0f;
 
+		static constexpr size_t BUFFER_SIZE = 256;
+
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_CurrentDirectoryContent;
 		std::vector<File> m_DirectoryContent;
 		std::vector<std::vector<File>> m_NestedDirectories;
 
+		Texture m_Lupa;
+
 		int m_ImageIndex{};
+		char m_Buffer[BUFFER_SIZE]{};
 
 		std::vector<Texture> m_Icons;
 		std::filesystem::path m_CurrentDirectory;
@@ -72,6 +77,8 @@ namespace Survive
 		static void drawNestedDirectories(std::vector<File> &content, const File &file);
 
 		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
+
+		void drawTextDialog();
 	};
 }
 

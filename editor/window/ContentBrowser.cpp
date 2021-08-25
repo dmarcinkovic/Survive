@@ -12,7 +12,7 @@ Survive::ContentBrowser::ContentBrowser()
 		  m_Icons(Loader::loadAllTextures(
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png"})),
-		  m_Uv0(0, 1), m_Uv1(1, 0),
+		  m_Uv0(0, 1), m_Uv1(1, 0), m_Lupa(Loader::loadTexture("res/lupa.png")),
 		  m_CurrentDirectory(std::filesystem::current_path()), m_NestedDirectories(m_CurrentDirectoryContent.size())
 {
 }
@@ -124,6 +124,8 @@ void Survive::ContentBrowser::alignIcons(float availableRegion)
 
 void Survive::ContentBrowser::drawDirectoryContent()
 {
+	drawTextDialog();
+
 	if (ImGui::BeginChild("Child2"))
 	{
 		if (m_ContentChanged)
@@ -256,4 +258,19 @@ ImGuiTreeNodeFlags Survive::ContentBrowser::getTreeFlags(std::filesystem::file_t
 	}
 
 	return ImGuiTreeNodeFlags_Leaf;
+}
+
+void Survive::ContentBrowser::drawTextDialog()
+{
+	static const ImVec2 imageSize(30.0f, 30.0f);
+
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.4f, 0.4f,0.45f,1.0f));
+
+	auto lupa = reinterpret_cast<ImTextureID>(m_Lupa.textureId());
+	ImGui::Image(lupa, imageSize, m_Uv0, m_Uv1);
+
+	ImGui::SameLine();
+	ImGui::InputText("##Filter", m_Buffer, BUFFER_SIZE);
+
+	ImGui::PopStyleColor();
 }
