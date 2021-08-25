@@ -2,16 +2,18 @@
 // Created by david on 18. 08. 2021..
 //
 
+#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
 Survive::ContentBrowser::ContentBrowser()
-		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
+		: m_CurrentDirectoryContent(FileUtil::listCurrentDirectory()),
+		  m_DirectoryContent(m_CurrentDirectoryContent),
 		  m_Icons(Loader::loadAllTextures(
 				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png"})),
 		  m_Uv0(0, 1), m_Uv1(1, 0),
-		  m_CurrentDirectory(std::filesystem::current_path()), m_NestedDirectories(m_DirectoryContent.size())
+		  m_CurrentDirectory(std::filesystem::current_path()), m_NestedDirectories(m_CurrentDirectoryContent.size())
 {
 }
 
@@ -116,7 +118,7 @@ void Survive::ContentBrowser::drawDirectoryContent()
 {
 	if (ImGui::BeginChild("Child2"))
 	{
-		for (const File &file : m_DirectoryContent)
+		for (const File &file: m_DirectoryContent)
 		{
 			ImTextureID image = getIcon(file.path);
 
@@ -158,11 +160,12 @@ void Survive::ContentBrowser::drawTree()
 
 	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
 	{
-		for (int i = 0; i < m_DirectoryContent.size(); ++i)
+		for (int i = 0; i < m_CurrentDirectoryContent.size(); ++i)
 		{
-			const File &file = m_DirectoryContent[i];
+			const File &file = m_CurrentDirectoryContent[i];
+			ImGuiTreeNodeFlags flags = getTreeFlags(file.type);
 
-			if (ImGui::TreeNode(file.path.filename().c_str()))
+			if (ImGui::TreeNodeEx(file.path.filename().c_str(), flags))
 			{
 				if (file.type == std::filesystem::file_type::directory)
 				{
@@ -204,11 +207,21 @@ void Survive::ContentBrowser::drawNestedDirectories(std::vector<File> &content, 
 		content = FileUtil::listDirectory(file.path.string());
 	}
 
-	for (const File &nestedFile : content)
+	for (const File &nestedFile: content)
 	{
 		if (ImGui::TreeNode(nestedFile.path.filename().c_str()))
 		{
 			ImGui::TreePop();
 		}
 	}
+}
+
+ImGuiTreeNodeFlags Survive::ContentBrowser::getTreeFlags(std::filesystem::file_type type)
+{
+	if (type == std::filesystem::file_type::directory)
+	{
+		return ImGuiTreeNodeFlags_None;
+	}
+
+	return ImGuiTreeNodeFlags_Leaf;
 }

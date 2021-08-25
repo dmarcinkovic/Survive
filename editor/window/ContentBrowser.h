@@ -27,7 +27,8 @@ namespace Survive
 		static constexpr float COLUMN_WIDTH = 250.0f;
 
 		const ImVec2 m_Uv0, m_Uv1;
-		std::vector<File> m_DirectoryContent{};
+		std::vector<File> m_CurrentDirectoryContent;
+		std::vector<File> m_DirectoryContent;
 		std::vector<std::vector<File>> m_NestedDirectories;
 
 		int m_ImageIndex{};
@@ -65,6 +66,8 @@ namespace Survive
 		void renderImageWindow();
 
 		static void drawNestedDirectories(std::vector<File> &content, const File &file);
+
+		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
 	};
 }
 
