@@ -131,7 +131,7 @@ void Survive::ContentBrowser::drawDirectoryContent()
 			m_DirectoryContent = m_CurrentDirectoryContent;
 			m_ContentChanged = false;
 		}
-		
+
 		for (const File &file: m_DirectoryContent)
 		{
 			ImTextureID image = getIcon(file.path);
@@ -155,6 +155,24 @@ void Survive::ContentBrowser::drawDirectoryTree()
 	ImGui::BeginChild("Child1");
 
 	setDirectoryTreeColors();
+
+	// TODO temporary solution
+	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
+	{
+		m_RedoStack.push(m_CurrentDirectory);
+		m_CurrentDirectory = m_CurrentDirectory.parent_path();
+		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+	}
+
+	ImGui::SameLine();
+
+	// TODO disable button if redo stack is empty
+	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
+	{
+		m_CurrentDirectory = m_RedoStack.top();
+		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_RedoStack.pop();
+	}
 
 	drawTree();
 

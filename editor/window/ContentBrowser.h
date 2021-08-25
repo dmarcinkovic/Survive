@@ -7,6 +7,7 @@
 
 #include <imgui.h>
 #include <vector>
+#include <stack>
 
 #include "FileUtil.h"
 #include "Texture.h"
@@ -41,6 +42,8 @@ namespace Survive
 
 		bool m_WidthSet{};
 		bool m_ContentChanged{};
+
+		std::stack<std::filesystem::path> m_RedoStack;
 
 	public:
 		ContentBrowser();
