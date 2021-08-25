@@ -92,10 +92,18 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
 
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0) && m_ImageIndex == IMAGE)
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
-		m_DrawImage = true;
-		m_Image = Loader::loadTexture(file.c_str());
+		if (m_ImageIndex == IMAGE)
+		{
+			m_DrawImage = true;
+			m_Image = Loader::loadTexture(file.c_str());
+		} else if (m_ImageIndex == FOLDER)
+		{
+			m_CurrentDirectory = file;
+			m_CurrentDirectoryContent = FileUtil::listDirectory(file);
+			m_ContentChanged = true;
+		}
 	}
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
@@ -118,6 +126,12 @@ void Survive::ContentBrowser::drawDirectoryContent()
 {
 	if (ImGui::BeginChild("Child2"))
 	{
+		if (m_ContentChanged)
+		{
+			m_DirectoryContent = m_CurrentDirectoryContent;
+			m_ContentChanged = false;
+		}
+		
 		for (const File &file: m_DirectoryContent)
 		{
 			ImTextureID image = getIcon(file.path);
@@ -209,7 +223,7 @@ void Survive::ContentBrowser::drawNestedDirectories(std::vector<File> &content, 
 
 	for (const File &nestedFile: content)
 	{
-		if (ImGui::TreeNode(nestedFile.path.filename().c_str()))
+		if (ImGui::TreeNodeEx(nestedFile.path.filename().c_str(), ImGuiTreeNodeFlags_Leaf))
 		{
 			ImGui::TreePop();
 		}

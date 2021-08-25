@@ -40,6 +40,7 @@ namespace Survive
 		Texture m_Image{};
 
 		bool m_WidthSet{};
+		bool m_ContentChanged{};
 
 	public:
 		ContentBrowser();
