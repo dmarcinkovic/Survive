@@ -136,6 +136,11 @@ void Survive::ContentBrowser::drawDirectoryContent()
 
 		for (const File &file: m_DirectoryContent)
 		{
+			if (!file.path.filename().string().starts_with(m_Buffer))
+			{
+				continue;
+			}
+
 			ImTextureID image = getIcon(file.path);
 
 			ImGui::BeginGroup();
