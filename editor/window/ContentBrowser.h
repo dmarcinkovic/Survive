@@ -79,6 +79,8 @@ namespace Survive
 		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
 
 		void drawTextDialog();
+
+		void drawArrows();
 	};
 }
 

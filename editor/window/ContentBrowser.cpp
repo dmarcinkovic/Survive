@@ -163,28 +163,7 @@ void Survive::ContentBrowser::drawDirectoryTree()
 
 	setDirectoryTreeColors();
 
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1, 0.2, 0.3, 1));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0.1f, 0.2f, 1));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.25f, 0.3f, 0.45f, 1));
-
-	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
-	{
-		m_RedoStack.push(m_CurrentDirectory);
-		m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
-	{
-		m_CurrentDirectory = m_RedoStack.top();
-		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
-		m_RedoStack.pop();
-	}
-
-	ImGui::PopStyleColor(3);
-
+	drawArrows();
 	drawTree();
 
 	ImGui::PopStyleColor(2);
@@ -282,4 +261,29 @@ void Survive::ContentBrowser::drawTextDialog()
 	ImGui::InputText("##Filter", m_Buffer, BUFFER_SIZE);
 
 	ImGui::PopStyleColor();
+}
+
+void Survive::ContentBrowser::drawArrows()
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1, 0.2, 0.3, 1));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0.1f, 0.2f, 1));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.25f, 0.3f, 0.45f, 1));
+
+	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
+	{
+		m_RedoStack.push(m_CurrentDirectory);
+		m_CurrentDirectory = m_CurrentDirectory.parent_path();
+		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
+	{
+		m_CurrentDirectory = m_RedoStack.top();
+		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_RedoStack.pop();
+	}
+
+	ImGui::PopStyleColor(3);
 }
