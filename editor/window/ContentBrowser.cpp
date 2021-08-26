@@ -163,7 +163,10 @@ void Survive::ContentBrowser::drawDirectoryTree()
 
 	setDirectoryTreeColors();
 
-	// TODO temporary solution
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1, 0.2, 0.3, 1));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0.1f, 0.2f, 1));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.25f, 0.3f, 0.45f, 1));
+
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
 		m_RedoStack.push(m_CurrentDirectory);
@@ -173,13 +176,14 @@ void Survive::ContentBrowser::drawDirectoryTree()
 
 	ImGui::SameLine();
 
-	// TODO disable button if redo stack is empty
 	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
 	{
 		m_CurrentDirectory = m_RedoStack.top();
 		m_CurrentDirectoryContent = m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
 		m_RedoStack.pop();
 	}
+
+	ImGui::PopStyleColor(3);
 
 	drawTree();
 
@@ -267,9 +271,9 @@ ImGuiTreeNodeFlags Survive::ContentBrowser::getTreeFlags(std::filesystem::file_t
 
 void Survive::ContentBrowser::drawTextDialog()
 {
-	static const ImVec2 imageSize(30.0f, 30.0f);
+	static const ImVec2 imageSize(25.0f, 25.0f);
 
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.4f, 0.4f,0.45f,1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.2f, 0.2f, 0.25f, 1.0f));
 
 	auto lupa = reinterpret_cast<ImTextureID>(m_Lupa.textureId());
 	ImGui::Image(lupa, imageSize, m_Uv0, m_Uv1);
