@@ -129,35 +129,34 @@ void Survive::ContentBrowser::drawDirectoryContent()
 {
 	drawTextDialog();
 
-	if (ImGui::BeginChild("Child2"))
+	ImGui::BeginChild("Child2");
+
+	if (m_ContentChanged)
 	{
-		if (m_ContentChanged)
-		{
-			m_DirectoryContent = m_Tree.getDirectoryContent();
-			m_ContentChanged = false;
-		}
-
-		for (const File &file: m_DirectoryContent)
-		{
-			if (!file.path.filename().string().starts_with(m_Buffer))
-			{
-				continue;
-			}
-
-			ImTextureID image = getIcon(file.path);
-
-			ImGui::BeginGroup();
-
-			float availableRegion = ImGui::GetContentRegionAvail().x;
-
-			drawIcon(image, file.path);
-			ImGui::EndGroup();
-
-			alignIcons(availableRegion);
-		}
-
-		ImGui::EndChild();
+		m_DirectoryContent = m_Tree.getDirectoryContent();
+		m_ContentChanged = false;
 	}
+
+	for (const File &file: m_DirectoryContent)
+	{
+		if (!file.path.filename().string().starts_with(m_Buffer))
+		{
+			continue;
+		}
+
+		ImTextureID image = getIcon(file.path);
+
+		ImGui::BeginGroup();
+
+		float availableRegion = ImGui::GetContentRegionAvail().x;
+
+		drawIcon(image, file.path);
+		ImGui::EndGroup();
+
+		alignIcons(availableRegion);
+	}
+
+	ImGui::EndChild();
 }
 
 void Survive::ContentBrowser::renderImageWindow()
