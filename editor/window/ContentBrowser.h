@@ -48,8 +48,6 @@ namespace Survive
 		bool m_WidthSet{};
 		bool m_ContentChanged{};
 
-		std::stack<std::filesystem::path> m_RedoStack;
-
 	public:
 		ContentBrowser();
 

@@ -9,11 +9,14 @@
 #include <stack>
 #include <vector>
 #include <filesystem>
+#include <functional>
 
 #include "FileUtil.h"
 
 namespace Survive
 {
+	using Listener = std::function<void(std::filesystem::path, std::vector<File>)>;
+
 	class DirectoryTree
 	{
 	private:
@@ -22,19 +25,18 @@ namespace Survive
 
 		std::vector<File> m_DirectoryContent;
 		std::vector<std::vector<File>> m_NestedDirectories;
-
-		bool m_DirectoryChanged{};
+		std::vector<Listener> m_Listeners;
 
 	public:
 		DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent);
 
 		void drawTree();
 
+		void addListener(const Listener &listener);
+
 		[[nodiscard]] const std::filesystem::path &getCurrentDirectory() const;
 
 		[[nodiscard]] const std::vector<File> &getDirectoryContent() const;
-
-		[[nodiscard]] bool directoryChanged() const;
 
 		void setCurrentDirectory(std::filesystem::path currentDirectory);
 
@@ -52,6 +54,8 @@ namespace Survive
 		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
 
 		static void drawNestedDirectories(std::vector<File> &content, const File &file);
+
+		void informListeners() const;
 	};
 }
 

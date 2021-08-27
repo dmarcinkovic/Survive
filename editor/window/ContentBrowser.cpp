@@ -15,6 +15,10 @@ Survive::ContentBrowser::ContentBrowser()
 		  m_CurrentDirectory(std::filesystem::current_path()),
 		  m_Tree(m_CurrentDirectory, m_DirectoryContent)
 {
+	m_Tree.addListener([this](auto currentDirectory, auto directoryContent) {
+		m_CurrentDirectory = std::move(currentDirectory);
+		m_DirectoryContent = std::move(directoryContent);
+	});
 }
 
 void Survive::ContentBrowser::draw()
@@ -31,12 +35,6 @@ void Survive::ContentBrowser::draw()
 		{
 			ImGui::SetColumnWidth(0, COLUMN_WIDTH);
 			m_WidthSet = true;
-		}
-
-		if (m_Tree.directoryChanged())
-		{
-			m_CurrentDirectory = m_Tree.getCurrentDirectory();
-			m_DirectoryContent = m_Tree.getDirectoryContent();
 		}
 
 		m_Tree.drawTree();

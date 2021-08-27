@@ -51,7 +51,7 @@ void Survive::DirectoryTree::drawLeftArrow()
 		m_CurrentDirectory = m_CurrentDirectory.parent_path();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
 
-		m_DirectoryChanged = true;
+		informListeners();
 	}
 }
 
@@ -63,7 +63,7 @@ void Survive::DirectoryTree::drawRightArrow()
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
 		m_RedoStack.pop();
 
-		m_DirectoryChanged = true;
+		informListeners();
 	}
 }
 
@@ -129,13 +129,21 @@ const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() 
 	return m_DirectoryContent;
 }
 
-bool Survive::DirectoryTree::directoryChanged() const
-{
-	return m_DirectoryChanged;
-}
-
 void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDirectory)
 {
 	m_CurrentDirectory = std::move(currentDirectory);
 	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+}
+
+void Survive::DirectoryTree::addListener(const Survive::Listener &listener)
+{
+	m_Listeners.emplace_back(listener);
+}
+
+void Survive::DirectoryTree::informListeners() const
+{
+	for (const Listener &listener: m_Listeners)
+	{
+		listener(m_CurrentDirectory, m_DirectoryContent);
+	}
 }
