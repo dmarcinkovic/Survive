@@ -1,0 +1,13 @@
+entity:dragon
+	component:Render3DComponent
+		modelName:res/dragon.obj
+		textureName:res/lamp.jpg
+	component:RigidBodyComponent
+		isTransparent:0
+	component:ShadowComponent
+		loadShadow:1
+	component:Transform3DComponent
+		position:-5,-10,-40
+		scale:1,1,1
+		rotation:0,0,0
+end
