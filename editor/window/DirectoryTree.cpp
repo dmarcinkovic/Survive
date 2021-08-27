@@ -13,11 +13,12 @@ Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, st
 
 void Survive::DirectoryTree::drawTree()
 {
+	drawArrows();
+
 	ImGui::BeginChild("Child1");
 
 	setStyleColors();
 
-	drawArrows();
 	drawDirectoryTree();
 
 	ImGui::PopStyleColor(2);
