@@ -11,6 +11,7 @@
 
 #include "FileUtil.h"
 #include "Texture.h"
+#include "DirectoryTree.h"
 
 namespace Survive
 {
@@ -30,17 +31,16 @@ namespace Survive
 		static constexpr size_t BUFFER_SIZE = 256;
 
 		const ImVec2 m_Uv0, m_Uv1;
-		std::vector<File> m_CurrentDirectoryContent;
 		std::vector<File> m_DirectoryContent;
-		std::vector<std::vector<File>> m_NestedDirectories;
 
 		Texture m_Lupa;
-
 		int m_ImageIndex{};
-		char m_Buffer[BUFFER_SIZE]{};
 
+		char m_Buffer[BUFFER_SIZE]{};
 		std::vector<Texture> m_Icons;
+
 		std::filesystem::path m_CurrentDirectory;
+		DirectoryTree m_Tree;
 
 		bool m_DrawImage{};
 		Texture m_Image{};
@@ -66,21 +66,9 @@ namespace Survive
 
 		void drawDirectoryContent();
 
-		void drawDirectoryTree();
-
-		static void setDirectoryTreeColors();
-
-		void drawTree();
-
 		void renderImageWindow();
 
-		static void drawNestedDirectories(std::vector<File> &content, const File &file);
-
-		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
-
 		void drawTextDialog();
-
-		void drawArrows();
 	};
 }
 
