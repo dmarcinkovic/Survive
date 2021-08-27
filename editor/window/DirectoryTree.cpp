@@ -2,6 +2,7 @@
 // Created by david on 26. 08. 2021..
 //
 
+#include <iostream>
 #include "DirectoryTree.h"
 
 Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent)
@@ -49,8 +50,10 @@ void Survive::DirectoryTree::drawLeftArrow()
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
 		m_RedoStack.push(m_CurrentDirectory);
+
 		m_CurrentDirectory = m_CurrentDirectory.parent_path();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 
 		informListeners();
 	}
@@ -62,6 +65,8 @@ void Survive::DirectoryTree::drawRightArrow()
 	{
 		m_CurrentDirectory = m_RedoStack.top();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+
 		m_RedoStack.pop();
 
 		informListeners();
@@ -134,6 +139,8 @@ void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDi
 {
 	m_CurrentDirectory = std::move(currentDirectory);
 	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+
+	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 }
 
 void Survive::DirectoryTree::addListener(const Survive::Listener &listener)
