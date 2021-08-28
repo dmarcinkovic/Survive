@@ -5,6 +5,7 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <iostream>
 
 #include "Key.h"
 #include "Editor.h"
@@ -205,22 +206,15 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 	}
 }
 
-void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
+void Survive::Editor::handleEvents(const EventHandler &eventHandler)
 {
-	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
+	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
-		m_OpenDialog = true;
-	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveDialog = true;
-	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveAsDialog = true;
+		std::cout << "Dropped at: " << ImGui::GetMousePos().x << ' ' << ImGui::GetMousePos().y << '\n';
+		m_ContentBrowser.stopDragging();
 	}
 
-	m_Manager.handleKeyEvents(eventHandler);
-	m_Gizmos.handleKeyEvents(eventHandler);
+	handleKeyEvents(eventHandler);
 }
 
 float Survive::Editor::getSceneWidth()
@@ -241,4 +235,22 @@ std::pair<float, float> Survive::Editor::getScenePosition()
 bool Survive::Editor::isSceneFocused()
 {
 	return m_SceneFocused;
+}
+
+void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
+{
+	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
+	{
+		m_OpenDialog = true;
+	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveDialog = true;
+	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
+			   eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveAsDialog = true;
+	}
+
+	m_Manager.handleKeyEvents(eventHandler);
+	m_Gizmos.handleKeyEvents(eventHandler);
 }

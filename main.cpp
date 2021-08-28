@@ -57,7 +57,7 @@ int main()
 	{
 		Display::clearWindow();
 
-		editor.handleKeyEvents(eventHandler);
+		editor.handleEvents(eventHandler);
 		animator.update(registry);
 		AnimationSystem::update(registry);
 

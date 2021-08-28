@@ -47,11 +47,16 @@ namespace Survive
 
 		bool m_WidthSet{};
 		bool m_ContentChanged{};
+		bool m_StartedDragging{};
 
 	public:
 		ContentBrowser();
 
 		void draw();
+
+		bool startedDragging() const;
+
+		void stopDragging();
 
 	private:
 		static void setColors();

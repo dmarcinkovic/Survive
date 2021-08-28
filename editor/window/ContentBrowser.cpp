@@ -2,7 +2,6 @@
 // Created by david on 18. 08. 2021..
 //
 
-#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -109,6 +108,11 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 		}
 	}
 
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	{
+		m_StartedDragging = true;
+	}
+
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
 	ImGui::TextWrapped("%s", filename.c_str());
 	ImGui::PopTextWrapPos();
@@ -192,4 +196,14 @@ void Survive::ContentBrowser::drawTextDialog()
 	ImGui::InputText("##Filter", m_Buffer, BUFFER_SIZE);
 
 	ImGui::PopStyleColor();
+}
+
+bool Survive::ContentBrowser::startedDragging() const
+{
+	return m_StartedDragging;
+}
+
+void Survive::ContentBrowser::stopDragging()
+{
+	m_StartedDragging = false;
 }
