@@ -33,6 +33,8 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSceneWindow(camera, registry);
 	renderMenu();
 
+	handleMouseDragging(registry);
+
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
@@ -206,15 +208,22 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 	}
 }
 
-void Survive::Editor::handleEvents(const EventHandler &eventHandler)
+void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 {
-	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
+	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
-		std::cout << "Dropped at: " << ImGui::GetMousePos().x << ' ' << ImGui::GetMousePos().y << '\n';
-		m_ContentBrowser.stopDragging();
+		m_OpenDialog = true;
+	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveDialog = true;
+	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
+			   eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveAsDialog = true;
 	}
 
-	handleKeyEvents(eventHandler);
+	m_Manager.handleKeyEvents(eventHandler);
+	m_Gizmos.handleKeyEvents(eventHandler);
 }
 
 float Survive::Editor::getSceneWidth()
@@ -237,20 +246,24 @@ bool Survive::Editor::isSceneFocused()
 	return m_SceneFocused;
 }
 
-void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
+void Survive::Editor::handleMouseDragging(entt::registry &registry)
 {
-	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
+	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
-		m_OpenDialog = true;
-	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveDialog = true;
-	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveAsDialog = true;
-	}
+		float x = ImGui::GetMousePos().x;
+		float y = ImGui::GetMousePos().y;
 
-	m_Manager.handleKeyEvents(eventHandler);
-	m_Gizmos.handleKeyEvents(eventHandler);
+		if (x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
+			y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight)
+		{
+			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
+
+			if (file.has_extension() && file.extension().string() == ".survive")
+			{
+				m_SceneLoader.loadScene(registry, file.c_str());
+			}
+		}
+
+		m_ContentBrowser.stopDragging();
+	}
 }

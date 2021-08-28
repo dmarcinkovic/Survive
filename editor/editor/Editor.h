@@ -59,7 +59,7 @@ namespace Survive
 
 		static void newFrame();
 
-		void handleEvents(const EventHandler &eventHandler);
+		void handleKeyEvents(const EventHandler &eventHandler);
 
 		bool &isSceneWindowFocused();
 
@@ -86,7 +86,7 @@ namespace Survive
 
 		static void setColorStyle();
 
-		void handleKeyEvents(const EventHandler &eventHandler);
+		void handleMouseDragging(entt::registry &registry);
 	};
 }
 
