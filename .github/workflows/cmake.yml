@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - editor
 
 env:
   BUILD_TYPE: Release
