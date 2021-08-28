@@ -250,11 +250,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
-		float x = ImGui::GetMousePos().x;
-		float y = ImGui::GetMousePos().y;
-
-		if (x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
-			y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight)
+		if (isInsideScene())
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
@@ -268,21 +264,20 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry)
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
-					Model model = ObjParser::loadObj(file.c_str(), m_Loader);
-
-					if (model.isValidModel())
-					{
-						auto entity = registry.create();
-						registry.emplace<TagComponent>(entity, file.stem().string());
-
-						Render3DComponent renderComponent(TexturedModel(model, Texture()));
-						renderComponent.modelName = std::filesystem::relative(file);
-						registry.emplace<Render3DComponent>(entity, renderComponent);
-					}
+					m_EditorUtil.loadDraggedModels(registry, file);
 				}
 			}
 		}
 
 		m_ContentBrowser.stopDragging();
 	}
+}
+
+bool Survive::Editor::isInsideScene()
+{
+	float x = ImGui::GetMousePos().x;
+	float y = ImGui::GetMousePos().y;
+
+	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
+		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
 }

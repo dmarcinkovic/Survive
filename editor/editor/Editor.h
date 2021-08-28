@@ -13,6 +13,7 @@
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
 #include "EventHandler.h"
+#include "EditorUtil.h"
 #include "Log.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
@@ -48,7 +49,7 @@ namespace Survive
 
 		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
-		Loader m_Loader;
+		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
 
@@ -89,6 +90,8 @@ namespace Survive
 		static void setColorStyle();
 
 		void handleMouseDragging(entt::registry &registry);
+
+		static bool isInsideScene() ;
 	};
 }
 

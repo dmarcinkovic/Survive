@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Loader.h"
 #include "ObjParser.h"
+#include "Components.h"
 #include "EditorUtil.h"
 
 void Survive::EditorUtil::setStyleColors()
@@ -271,4 +272,23 @@ void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audio
 			{}
 		}
 	}
+}
+
+void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file)
+try
+{
+	Model model = ObjParser::loadObj(file.c_str(), m_Loader);
+
+	if (model.isValidModel())
+	{
+		auto entity = registry.create();
+		registry.emplace<TagComponent>(entity, file.stem().string());
+
+		Render3DComponent renderComponent(TexturedModel(model, Texture()));
+		renderComponent.modelName = std::filesystem::relative(file);
+		registry.emplace<Render3DComponent>(entity, renderComponent);
+	}
+} catch (const std::exception &exception)
+{
+	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
 }
