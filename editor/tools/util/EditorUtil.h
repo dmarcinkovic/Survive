@@ -10,6 +10,7 @@
 #include <AL/al.h>
 
 #include "entt.hpp"
+#include "Renderer.h"
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
@@ -58,6 +59,8 @@ namespace Survive
 		static void centerText(const std::string &text);
 
 		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);
+
+		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,

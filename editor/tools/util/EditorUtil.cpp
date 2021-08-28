@@ -292,3 +292,31 @@ try
 {
 	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
 }
+
+void Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file)
+{
+	std::string filename = file.string();
+
+	renderer.addMousePickingListener([=, &registry](int selectedEntity){
+		Renderer::removeMousePickingListener();
+
+		if (selectedEntity < 0)
+		{
+			return;
+		}
+
+		Texture texture = Loader::loadTexture(filename.c_str());
+		if (texture.isValidTexture())
+		{
+			auto entity = static_cast<entt::entity>(selectedEntity);
+
+			if (registry.has<Render3DComponent>(entity))
+			{
+				Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
+
+				renderComponent.texturedModel.setTexture(texture);
+				renderComponent.textureName = std::filesystem::relative(file).string();
+			}
+		}
+	});
+}

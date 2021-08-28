@@ -270,29 +270,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-					std::string filename = file.string();
-
-					renderer.addMousePickingListener([=, &registry](int selectedEntity){
-						Renderer::removeMousePickingListener();
-
-						if (selectedEntity < 0)
-						{
-							return;
-						}
-
-						Texture texture = Loader::loadTexture(filename.c_str());
-						if (texture.isValidTexture())
-						{
-							auto entity = static_cast<entt::entity>(selectedEntity);
-
-							if (registry.has<Render3DComponent>(entity))
-							{
-								Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
-								renderComponent.texturedModel.setTexture(texture);
-								renderComponent.textureName = std::filesystem::relative(file).string();
-							}
-						}
-					});
+					EditorUtil::registerListener(registry, renderer, file);
 				}
 			}
 		}
