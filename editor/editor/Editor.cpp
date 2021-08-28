@@ -159,6 +159,7 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 			if (!file.empty())
 			{
 				m_SceneLoader.loadScene(registry, file);
+				m_SavedFile = file;
 			}
 		}
 	}
@@ -260,6 +261,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry)
 			if (file.has_extension() && file.extension().string() == ".survive")
 			{
 				m_SceneLoader.loadScene(registry, file.c_str());
+				m_SavedFile = file.string();
 			}
 		}
 
