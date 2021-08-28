@@ -40,6 +40,7 @@ namespace Survive
 		std::vector<Texture> m_Icons;
 
 		std::filesystem::path m_CurrentDirectory;
+		std::filesystem::path m_DraggedFile;
 		DirectoryTree m_Tree;
 
 		bool m_DrawImage{};
@@ -54,9 +55,11 @@ namespace Survive
 
 		void draw();
 
-		bool startedDragging() const;
+		[[nodiscard]] bool startedDragging() const;
 
 		void stopDragging();
+
+		[[nodiscard]] const std::filesystem::path &getDraggedFile() const;
 
 	private:
 		static void setColors();
