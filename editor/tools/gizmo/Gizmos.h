@@ -18,10 +18,11 @@ namespace Survive
 	class Gizmos
 	{
 	private:
+		static bool validOperation;
+
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
 		ImGuizmo::OPERATION m_Operation{};
-		bool m_DrawGizmos{};
 
 	public:
 		Gizmos();
@@ -33,6 +34,8 @@ namespace Survive
 		void setRect(float x, float y, float width, float height);
 
 		void handleKeyEvents(const EventHandler &eventHandler);
+
+		static bool isValidOperation();
 
 	private:
 		static glm::mat4 getTransform(const Transform3DComponent &transform);

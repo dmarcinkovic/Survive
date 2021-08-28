@@ -7,6 +7,8 @@
 #include "Gizmos.h"
 #include "Maths.h"
 
+bool Survive::Gizmos::validOperation = false;
+
 Survive::Gizmos::Gizmos()
 {
 	ImGuizmo::SetOrthographic(false);
@@ -14,7 +16,7 @@ Survive::Gizmos::Gizmos()
 
 void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
 {
-	if (m_DrawGizmos && selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
+	if (validOperation && selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
 	{
 		ImGuizmo::SetDrawlist();
 		ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
@@ -43,18 +45,18 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 	if (eventHandler.isKeyPressed(Key::W))
 	{
 		m_Operation = ImGuizmo::OPERATION::TRANSLATE;
-		m_DrawGizmos = true;
+		validOperation = true;
 	} else if (eventHandler.isKeyPressed(Key::E))
 	{
 		m_Operation = ImGuizmo::OPERATION::ROTATE;
-		m_DrawGizmos = true;
+		validOperation = true;
 	} else if (eventHandler.isKeyPressed(Key::R))
 	{
 		m_Operation = ImGuizmo::OPERATION::SCALE;
-		m_DrawGizmos = true;
+		validOperation = true;
 	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
 	{
-		m_DrawGizmos = false;
+		validOperation = false;
 	}
 }
 
@@ -80,4 +82,9 @@ void Survive::Gizmos::useGizmo(Survive::Transform3DComponent &transformComponent
 											  glm::value_ptr(transformComponent.rotation),
 											  glm::value_ptr(transformComponent.scale));
 	}
+}
+
+bool Survive::Gizmos::isValidOperation()
+{
+	return validOperation;
 }
