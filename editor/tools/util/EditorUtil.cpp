@@ -90,7 +90,7 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 }
 
 std::optional<Survive::Model>
-Survive::EditorUtil::getLoadedModel(const Survive::FileChooser &fileChooser)
+Survive::EditorUtil::getLoadedModel(const FileChooser &fileChooser)
 try
 {
 	std::string selectedFile = fileChooser.getSelectedFile();
@@ -98,7 +98,7 @@ try
 
 	if (selectedFile.ends_with("obj"))
 	{
-		model = ObjParser::loadObj(selectedFile.c_str(),m_Loader);
+		model = ObjParser::loadObj(selectedFile.c_str(), m_Loader);
 	} else if (selectedFile.ends_with("dae"))
 	{
 		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
@@ -114,7 +114,7 @@ try
 	return {};
 }
 
-void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture &texture, std::string &textureName,
+void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
 									  const char *format, const char *label, bool &changed)
 {
 	showLoadedFile(format, textureName, label, m_LoadTexture);
@@ -138,7 +138,7 @@ void Survive::EditorUtil::loadTexture(Survive::FileChooser &fileChooser, Texture
 	}
 }
 
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Survive::FileChooser &fileChooser)
+std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser)
 {
 	std::string selectedFile = fileChooser.getSelectedFile();
 	Texture texture = Loader::loadTexture(selectedFile.c_str());
@@ -151,8 +151,7 @@ std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const Surv
 	return {};
 }
 
-void Survive::EditorUtil::showLoadedFile(const char *format,
-										 const std::string &name, const char *label, bool &load)
+void Survive::EditorUtil::showLoadedFile(const char *format, const std::string &name, const char *label, bool &load)
 {
 	ImGui::Text(format, name.c_str());
 	ImGui::NextColumn();
@@ -209,7 +208,7 @@ void Survive::EditorUtil::centerText(const std::string &text)
 	ImGui::Text("%s", text.c_str());
 }
 
-void Survive::EditorUtil::loadQuadModel(bool &changed, Survive::TexturedModel &texturedModel, Survive::Loader &loader)
+void Survive::EditorUtil::loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader)
 {
 	if (changed && texturedModel.isValidTexture())
 	{
@@ -251,7 +250,7 @@ void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
 
 }
 
-void Survive::EditorUtil::loadSound(Survive::FileChooser &fileChooser, Survive::AudioMaster &audioMaster, ALint &sound,
+void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 									std::string &soundFile, bool &changed)
 {
 	showLoadedFile("Sound: %s", soundFile, "Load sound", m_LoadSound);
