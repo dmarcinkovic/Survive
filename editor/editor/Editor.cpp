@@ -258,10 +258,28 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry)
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
-			if (file.has_extension() && file.extension().string() == ".survive")
+			if (file.has_extension())
 			{
-				m_SceneLoader.loadScene(registry, file.c_str());
-				m_SavedFile = file.string();
+				std::string extension = file.extension().string();
+
+				if (extension == ".survive")
+				{
+					m_SceneLoader.loadScene(registry, file.c_str());
+					m_SavedFile = file.string();
+				} else if (extension == ".obj" && file.has_stem())
+				{
+					Model model = ObjParser::loadObj(file.c_str(), m_Loader);
+
+					if (model.isValidModel())
+					{
+						auto entity = registry.create();
+						registry.emplace<TagComponent>(entity, file.stem().string());
+
+						Render3DComponent renderComponent(TexturedModel(model, Texture()));
+						renderComponent.modelName = std::filesystem::relative(file);
+						registry.emplace<Render3DComponent>(entity, renderComponent);
+					}
+				}
 			}
 		}
 

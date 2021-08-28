@@ -34,6 +34,7 @@ namespace Survive
 
 		FileChooser m_OpenWindow;
 		FileChooser m_SaveWindow;
+
 		EntityManager m_Manager{};
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
@@ -47,6 +48,7 @@ namespace Survive
 
 		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
+		Loader m_Loader;
 
 		std::string m_SavedFile;
 
