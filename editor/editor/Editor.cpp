@@ -5,6 +5,7 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <iostream>
 
 #include "Key.h"
 #include "Editor.h"
@@ -32,7 +33,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSceneWindow(camera, registry);
 	renderMenu();
 
-	handleMouseDragging(registry);
+	handleMouseDragging(registry, renderer);
 
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
@@ -247,7 +248,7 @@ bool Survive::Editor::isSceneFocused()
 	return m_SceneFocused;
 }
 
-void Survive::Editor::handleMouseDragging(entt::registry &registry)
+void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -266,6 +267,32 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry)
 				} else if (extension == ".obj" && file.has_stem())
 				{
 					m_EditorUtil.loadDraggedModels(registry, file);
+				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+				{
+					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+					std::string filename = file.string();
+
+					renderer.addMousePickingListener([=, &registry](int selectedEntity){
+						Renderer::removeMousePickingListener();
+
+						if (selectedEntity < 0)
+						{
+							return;
+						}
+
+						Texture texture = Loader::loadTexture(filename.c_str());
+						if (texture.isValidTexture())
+						{
+							auto entity = static_cast<entt::entity>(selectedEntity);
+
+							if (registry.has<Render3DComponent>(entity))
+							{
+								Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
+								renderComponent.texturedModel.setTexture(texture);
+								renderComponent.textureName = std::filesystem::relative(file).string();
+							}
+						}
+					});
 				}
 			}
 		}

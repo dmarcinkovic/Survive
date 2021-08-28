@@ -16,15 +16,19 @@
 
 namespace Survive
 {
+	using MousePickingListener = std::function<void(int)>;
+
 	class MousePicking
 	{
 	private:
 		static bool mousePressed;
 		static int selectedEntity;
+		static bool listenerActive;
 
 		MousePickingShader m_Shader;
 
 		glm::vec2 m_MousePosition{};
+		MousePickingListener m_Listener{};
 
 	public:
 		explicit MousePicking();
@@ -32,6 +36,12 @@ namespace Survive
 		void render(entt::registry &registry, const Camera &camera) const;
 
 		static int getSelectedEntity();
+
+		void setMousePosition(float mouseX, float mouseY);
+
+		void addListener(const MousePickingListener &listener);
+
+		static void removeListener();
 
 	private:
 		void mousePressedHandler();
@@ -55,6 +65,8 @@ namespace Survive
 		static void setViewport();
 
 		void prepareRendering(const Camera &camera) const;
+
+		void informListener(int entity) const;
 	};
 }
 

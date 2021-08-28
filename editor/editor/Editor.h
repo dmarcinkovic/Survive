@@ -89,9 +89,9 @@ namespace Survive
 
 		static void setColorStyle();
 
-		void handleMouseDragging(entt::registry &registry);
+		void handleMouseDragging(entt::registry &registry, Renderer &renderer);
 
-		static bool isInsideScene() ;
+		static bool isInsideScene();
 	};
 }
 

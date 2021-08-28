@@ -51,6 +51,8 @@ namespace Survive
 
 		Texture &getTexture();
 
+		void setTexture(const Texture &texture);
+
 		friend class TextureHash;
 	};
 

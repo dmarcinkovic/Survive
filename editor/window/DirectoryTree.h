@@ -15,7 +15,7 @@
 
 namespace Survive
 {
-	using Listener = std::function<void(std::filesystem::path, std::vector<File>)>;
+	using DirectoryListener = std::function<void(std::filesystem::path, std::vector<File>)>;
 
 	class DirectoryTree
 	{
@@ -25,14 +25,14 @@ namespace Survive
 
 		std::vector<File> m_DirectoryContent;
 		std::vector<std::vector<File>> m_NestedDirectories;
-		std::vector<Listener> m_Listeners;
+		std::vector<DirectoryListener> m_Listeners;
 
 	public:
 		DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent);
 
 		void drawTree();
 
-		void addListener(const Listener &listener);
+		void addListener(const DirectoryListener &listener);
 
 		[[nodiscard]] const std::filesystem::path &getCurrentDirectory() const;
 

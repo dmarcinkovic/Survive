@@ -143,14 +143,14 @@ void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDi
 	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 }
 
-void Survive::DirectoryTree::addListener(const Survive::Listener &listener)
+void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
 {
 	m_Listeners.emplace_back(listener);
 }
 
 void Survive::DirectoryTree::informListeners() const
 {
-	for (const Listener &listener: m_Listeners)
+	for (const DirectoryListener &listener: m_Listeners)
 	{
 		listener(m_CurrentDirectory, m_DirectoryContent);
 	}

@@ -88,3 +88,8 @@ bool Survive::TexturedModel::isValidModel() const
 {
 	return m_Model.isValidModel();
 }
+
+void Survive::TexturedModel::setTexture(const Texture &texture)
+{
+	m_Texture = texture;
+}

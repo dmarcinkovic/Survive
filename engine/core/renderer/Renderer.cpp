@@ -154,3 +154,18 @@ int Survive::Renderer::getSelectedEntity()
 	return MousePicking::getSelectedEntity();
 }
 
+void Survive::Renderer::setMousePickingPosition(float mouseX, float mouseY)
+{
+	m_MousePicking.setMousePosition(mouseX, mouseY);
+}
+
+void Survive::Renderer::addMousePickingListener(const MousePickingListener &listener)
+{
+	m_MousePicking.addListener(listener);
+}
+
+void Survive::Renderer::removeMousePickingListener()
+{
+	MousePicking::removeListener();
+}
+

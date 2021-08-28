@@ -67,6 +67,12 @@ namespace Survive
 
 		static int getSelectedEntity();
 
+		void setMousePickingPosition(float mouseX, float mouseY);
+
+		void addMousePickingListener(const MousePickingListener &listener);
+
+		static void removeMousePickingListener();
+
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
 

@@ -14,6 +14,7 @@
 
 bool Survive::MousePicking::mousePressed = false;
 int Survive::MousePicking::selectedEntity = -2;
+bool Survive::MousePicking::listenerActive = false;
 
 Survive::MousePicking::MousePicking()
 {
@@ -30,12 +31,7 @@ void Survive::MousePicking::mousePressedHandler()
 				return;
 			}
 
-			mousePressed = true;
-			selectedEntity = -2;
-
-			float height = Editor::getSceneHeight();
-			auto[x, y] = Editor::getScenePosition();
- 			m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
+			setMousePosition(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		}
 	});
 }
@@ -51,7 +47,7 @@ glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 
 void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!mousePressed || !isInsideWindow() || !Editor::isSceneFocused())
+	if (!mousePressed || !isInsideWindow())
 	{
 		return;
 	}
@@ -77,8 +73,9 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	Renderer3DUtil::finishRendering();
 
 	Display::clearWindow();
-
 	mousePressed = false;
+
+	informListener(selectedEntity);
 }
 
 void Survive::MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
@@ -197,4 +194,33 @@ void Survive::MousePicking::setViewport()
 int Survive::MousePicking::getSelectedEntity()
 {
 	return selectedEntity;
+}
+
+void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
+{
+	mousePressed = true;
+	selectedEntity = -2;
+
+	float height = Editor::getSceneHeight();
+	auto[x, y] = Editor::getScenePosition();
+	m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
+}
+
+void Survive::MousePicking::addListener(const MousePickingListener &listener)
+{
+	m_Listener = listener;
+	listenerActive = true;
+}
+
+void Survive::MousePicking::informListener(int entity) const
+{
+	if (listenerActive)
+	{
+		m_Listener(entity);
+	}
+}
+
+void Survive::MousePicking::removeListener()
+{
+	listenerActive = false;
 }
