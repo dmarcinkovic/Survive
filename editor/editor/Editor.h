@@ -9,9 +9,11 @@
 #include <utility>
 #include <ImGuizmo.h>
 
+#include "ContentBrowser.h"
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
 #include "EventHandler.h"
+#include "EditorUtil.h"
 #include "Log.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
@@ -33,8 +35,10 @@ namespace Survive
 
 		FileChooser m_OpenWindow;
 		FileChooser m_SaveWindow;
+
 		EntityManager m_Manager{};
 		Gizmos m_Gizmos;
+		ContentBrowser m_ContentBrowser{};
 
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;
@@ -45,6 +49,7 @@ namespace Survive
 
 		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
+		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
 
@@ -83,6 +88,10 @@ namespace Survive
 		void renderSaveDialog(entt::registry &registry);
 
 		static void setColorStyle();
+
+		void handleMouseDragging(entt::registry &registry);
+
+		static bool isInsideScene() ;
 	};
 }
 

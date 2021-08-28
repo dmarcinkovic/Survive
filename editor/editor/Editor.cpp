@@ -32,10 +32,19 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSceneWindow(camera, registry);
 	renderMenu();
 
+	handleMouseDragging(registry);
+
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+	m_ContentBrowser.draw();
+
+	if (ImGui::Begin("Debug"))
+	{
+		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
 
 	Log::drawLogWindow();
 
@@ -151,6 +160,7 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 			if (!file.empty())
 			{
 				m_SceneLoader.loadScene(registry, file);
+				m_SavedFile = file;
 			}
 		}
 	}
@@ -235,4 +245,40 @@ std::pair<float, float> Survive::Editor::getScenePosition()
 bool Survive::Editor::isSceneFocused()
 {
 	return m_SceneFocused;
+}
+
+void Survive::Editor::handleMouseDragging(entt::registry &registry)
+{
+	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
+	{
+		if (isInsideScene())
+		{
+			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
+
+			if (file.has_extension())
+			{
+				std::string extension = file.extension().string();
+
+				if (extension == ".survive")
+				{
+					m_SceneLoader.loadScene(registry, file.c_str());
+					m_SavedFile = file.string();
+				} else if (extension == ".obj" && file.has_stem())
+				{
+					m_EditorUtil.loadDraggedModels(registry, file);
+				}
+			}
+		}
+
+		m_ContentBrowser.stopDragging();
+	}
+}
+
+bool Survive::Editor::isInsideScene()
+{
+	float x = ImGui::GetMousePos().x;
+	float y = ImGui::GetMousePos().y;
+
+	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
+		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
 }

@@ -9,6 +9,7 @@
 #include <glm/vec3.hpp>
 #include <AL/al.h>
 
+#include "entt.hpp"
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
@@ -55,6 +56,8 @@ namespace Survive
 					   std::string &soundFile, bool &changed);
 
 		static void centerText(const std::string &text);
+
+		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
