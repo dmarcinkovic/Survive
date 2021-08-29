@@ -50,6 +50,8 @@ namespace Survive
 		bool m_ContentChanged{};
 		bool m_StartedDragging{};
 
+		bool m_Focused{};
+
 	public:
 		ContentBrowser();
 
@@ -60,6 +62,8 @@ namespace Survive
 		void stopDragging();
 
 		[[nodiscard]] const std::filesystem::path &getDraggedFile() const;
+
+		[[nodiscard]] bool isFocused() const;
 
 	private:
 		static void setColors();

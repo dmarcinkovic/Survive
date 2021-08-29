@@ -197,7 +197,7 @@ void Survive::ContentBrowser::drawTextDialog()
 	ImGui::Image(lupa, imageSize, m_Uv0, m_Uv1);
 
 	ImGui::SameLine();
-	ImGui::InputText("##Filter", m_Buffer, BUFFER_SIZE);
+	m_Focused = ImGui::InputText("##Filter", m_Buffer, BUFFER_SIZE);
 
 	ImGui::PopStyleColor();
 }
@@ -215,4 +215,9 @@ void Survive::ContentBrowser::stopDragging()
 const std::filesystem::path &Survive::ContentBrowser::getDraggedFile() const
 {
 	return m_DraggedFile;
+}
+
+bool Survive::ContentBrowser::isFocused() const
+{
+	return m_Focused;
 }
