@@ -91,7 +91,7 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
 	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 
-	m_SceneFocused = !m_SaveAsDialog && !m_OpenDialog && !m_SaveDialog && !m_Manager.isFocused();
+	m_SceneFocused = ImGui::IsWindowFocused();
 
 	ImGui::End();
 }
@@ -224,7 +224,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 		m_SaveAsDialog = true;
 	}
 
-	if (m_SceneFocused && !m_ContentBrowser.isUsingKeyEvents())
+	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
 	{
 		m_Manager.handleKeyEvents(eventHandler);
 		m_Gizmos.handleKeyEvents(eventHandler);
