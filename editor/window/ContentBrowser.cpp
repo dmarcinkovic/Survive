@@ -108,10 +108,11 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 		}
 	}
 
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+	if (ImGui::BeginDragDropSource())
 	{
 		m_StartedDragging = true;
 		m_DraggedFile = file;
+		ImGui::EndDragDropSource();
 	}
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
