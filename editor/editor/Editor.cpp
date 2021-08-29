@@ -224,8 +224,11 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 		m_SaveAsDialog = true;
 	}
 
-	m_Manager.handleKeyEvents(eventHandler);
-	m_Gizmos.handleKeyEvents(eventHandler);
+	if (m_SceneFocused)
+	{
+		m_Manager.handleKeyEvents(eventHandler);
+		m_Gizmos.handleKeyEvents(eventHandler);
+	}
 }
 
 float Survive::Editor::getSceneWidth()
