@@ -26,7 +26,7 @@ void Survive::MousePicking::mousePressedHandler()
 	EventHandler::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			if (Gizmos::isValidOperation() && ImGuizmo::IsOver())
+			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || !Editor::isSceneFocused())
 			{
 				return;
 			}
