@@ -5,7 +5,6 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
-#include <iostream>
 
 #include "Key.h"
 #include "Editor.h"
@@ -91,7 +90,7 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
 	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 
-	m_SceneFocused = ImGui::IsWindowFocused();
+	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 
 	ImGui::End();
 }
