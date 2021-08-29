@@ -28,6 +28,9 @@ namespace Survive
 		ComponentUtil m_Util{};
 		bool m_DestroyEntity{};
 
+		bool m_RenameOpen{};
+		bool m_CreateOpen{};
+
 	public:
 		void addEntity(entt::registry &registry);
 
@@ -38,6 +41,8 @@ namespace Survive
 		[[nodiscard]] entt::entity getSelectedEntity() const;
 
 		void setSelectedEntity(int selectedEntity);
+
+		[[nodiscard]] bool isFocused() const;
 
 	private:
 		void createEntity(entt::registry &registry);

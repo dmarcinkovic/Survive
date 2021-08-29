@@ -16,7 +16,7 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 		ImGui::OpenPopup("Create entity");
 	}
 
-	if (ImGui::BeginPopup("Create entity"))
+	if ((m_CreateOpen = ImGui::BeginPopup("Create entity")))
 	{
 		createEntity(registry);
 		ImGui::EndPopup();
@@ -168,7 +168,7 @@ void Survive::EntityManager::renameEntity(entt::registry &registry)
 		m_RenameEntity = false;
 	}
 
-	if (ImGui::BeginPopup("rename entity"))
+	if ((m_RenameOpen = ImGui::BeginPopup("rename entity")))
 	{
 		if (ImGui::InputText("Entity name", m_Buffer, BUFFER_SIZE,
 							 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
@@ -203,4 +203,9 @@ void Survive::EntityManager::setSelectedEntity(int selectedEntity)
 
 	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
 	m_Selected = selectedEntity;
+}
+
+bool Survive::EntityManager::isFocused() const
+{
+	return m_CreateOpen || m_RenameOpen;
 }
