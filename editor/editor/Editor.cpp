@@ -91,7 +91,7 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
 	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 
-	m_SceneFocused = ImGui::IsWindowFocused();
+	m_SceneFocused = !m_SaveAsDialog && !m_OpenDialog && !m_SaveDialog && !m_Manager.isFocused();
 
 	ImGui::End();
 }
