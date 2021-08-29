@@ -93,7 +93,9 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 	static ImVec2 size(ICON_SIZE, ICON_SIZE);
 	std::string filename = file.filename().string();
 
+	ImGui::PushID(file.c_str());
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
+	ImGui::PopID();
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 	{
