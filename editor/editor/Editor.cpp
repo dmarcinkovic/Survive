@@ -224,7 +224,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 		m_SaveAsDialog = true;
 	}
 
-	if (m_SceneFocused)
+	if (m_SceneFocused && !m_ContentBrowser.isUsingKeyEvents())
 	{
 		m_Manager.handleKeyEvents(eventHandler);
 		m_Gizmos.handleKeyEvents(eventHandler);
