@@ -10,6 +10,10 @@ void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::st
 {
 	std::ifstream reader(filename);
 
+	registry.each([&](const entt::entity entity) {
+		registry.destroy(entity);
+	});
+
 	std::string line;
 	while (std::getline(reader, line))
 	{
