@@ -6,7 +6,6 @@
 #include "Renderer2DUtil.h"
 #include "Maths.h"
 
-
 void Survive::SpritesRenderer::render(entt::registry &registry) const
 {
 	auto entities = prepareEntities(registry);

@@ -24,8 +24,6 @@ namespace Survive
 		static Quaternion fromMatrix(const glm::mat4 &matrix);
 
 		static Quaternion interpolate(const Quaternion &a, const Quaternion &b, float blend);
-
-		glm::vec4 getQuaternion() const;
 	};
 }
 

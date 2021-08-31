@@ -85,7 +85,7 @@ Survive::Quaternion Survive::Quaternion::fromMatrix(const glm::mat4 &matrix)
         y = (matrix[1][2] + matrix[2][1]) / z4;
         z = z4 / 4.0f;
     }
-    return Quaternion(x, y, z, w);
+    return {x, y, z, w};
 }
 
 Survive::Quaternion Survive::Quaternion::interpolate(const Quaternion &a, const Quaternion &b, float blend)
@@ -110,7 +110,3 @@ Survive::Quaternion Survive::Quaternion::interpolate(const Quaternion &a, const 
     return result;
 }
 
-glm::vec4 Survive::Quaternion::getQuaternion() const
-{
-	return glm::vec4{m_X, m_Y, m_Z, m_W};
-}

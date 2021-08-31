@@ -34,8 +34,6 @@ namespace Survive
 
 		void addListener(const DirectoryListener &listener);
 
-		[[nodiscard]] const std::filesystem::path &getCurrentDirectory() const;
-
 		[[nodiscard]] const std::vector<File> &getDirectoryContent() const;
 
 		void setCurrentDirectory(std::filesystem::path currentDirectory);

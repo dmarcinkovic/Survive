@@ -21,22 +21,6 @@ namespace Survive
 		AnimationComponent(Joint rootJoint, int numberOfJoints)
 				: rootJoint(std::move(rootJoint)), numberOfJoints(numberOfJoints)
 		{}
-
-	private:
-		void calculateJointTransforms()
-		{
-			jointTransforms = std::vector<glm::mat4>(numberOfJoints);
-			addJointsToArray(rootJoint, jointTransforms);
-		}
-
-		void addJointsToArray(const Joint &headJoint, std::vector<glm::mat4> &jointMatrices)
-		{
-			jointMatrices[headJoint.index()] = headJoint.getAnimatedTransform();
-			for (auto const &childJoint : headJoint.children())
-			{
-				addJointsToArray(childJoint, jointMatrices);
-			}
-		}
 	};
 }
 

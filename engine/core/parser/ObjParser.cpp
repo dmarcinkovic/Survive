@@ -20,7 +20,7 @@ Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 		Log::logWindow(LogType::ERROR, message);
 		std::cout << message << '\n';
 
-		return Model();
+		return {};
 	}
 
 	std::vector<glm::vec3> vertices;

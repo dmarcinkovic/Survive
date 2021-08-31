@@ -154,7 +154,7 @@ glm::vec3 Survive::ComponentLoader::parseVec3(const std::string &vec3)
 	float y = std::stof(vec3.substr(start + 1, end - start - 1));
 	float z = std::stof(vec3.substr(end + 1));
 
-	return glm::vec3(x, y, z);
+	return {x, y, z};
 }
 
 glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
@@ -166,5 +166,5 @@ glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
 	float z = std::stof(numbers[2]);
 	float w = std::stof(numbers[3]);
 
-	return glm::vec4{x, y, z, w};
+	return {x, y, z, w};
 }

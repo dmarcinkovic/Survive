@@ -125,11 +125,6 @@ void Survive::DirectoryTree::drawDirectoryTree()
 	}
 }
 
-const std::filesystem::path &Survive::DirectoryTree::getCurrentDirectory() const
-{
-	return m_CurrentDirectory;
-}
-
 const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() const
 {
 	return m_DirectoryContent;

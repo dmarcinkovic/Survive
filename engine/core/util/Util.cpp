@@ -37,7 +37,7 @@ Survive::Character Survive::Util::getCharacterFromFntFile(const std::vector<std:
 	float yOffset = -getNumber(line[7]);
 	float advance = getNumber(line[8]);
 
-	return Character(id, x, y, width, height, xOffset, yOffset, advance, w, h);
+	return {id, x, y, width, height, xOffset, yOffset, advance, w, h};
 }
 
 std::optional<Survive::Character>
@@ -68,7 +68,7 @@ Survive::Character Survive::Util::getCharacterFromJsonFile(const std::smatch &re
 	float yOffset = std::stof(result[7].str());
 	float advance = std::stof(result[8].str());
 
-	return Character(id, x, y, width, height, xOffset, yOffset, advance, scaleW, scaleH);
+	return {id, x, y, width, height, xOffset, yOffset, advance, scaleW, scaleH};
 }
 
 std::vector<std::string> Survive::Util::split(std::string string, char delimiter)

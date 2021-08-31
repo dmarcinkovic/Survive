@@ -42,7 +42,7 @@ void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const Partic
 	glm::vec3 velocity{dirX, 1.0f, dirZ};
 	velocity = glm::normalize(velocity) * m_Speed;
 
-	particles.emplace_back(Particle(particleModel, center, velocity, m_Gravity, m_LifeLength));
+	particles.emplace_back(particleModel, center, velocity, m_Gravity, m_LifeLength);
 }
 
 void Survive::ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
@@ -95,7 +95,7 @@ glm::vec3 Survive::ParticleSystem::generateRandomUnitVectorWithinCone(const glm:
 		direction.z *= -1;
 	}
 
-	return glm::vec3(direction);
+	return {direction};
 }
 
 glm::vec3 Survive::ParticleSystem::generateRandomUnitVector()
