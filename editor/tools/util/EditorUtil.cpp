@@ -297,11 +297,10 @@ void Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &r
 {
 	std::string filename = file.string();
 
-	renderer.addMousePickingListener([=, &registry](int selectedEntity){
-		Renderer::removeMousePickingListener();
-
+	renderer.addMousePickingListener([=, &registry, &renderer](int selectedEntity){
 		if (selectedEntity < 0)
 		{
+			renderer.popMousePickingListener();
 			return;
 		}
 
@@ -318,5 +317,7 @@ void Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &r
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
 		}
+
+		renderer.popMousePickingListener();
 	});
 }

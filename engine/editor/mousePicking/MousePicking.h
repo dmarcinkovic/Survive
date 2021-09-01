@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <functional>
+#include <vector>
 
 #include "entt.hpp"
 #include "MousePickingShader.h"
@@ -23,13 +24,12 @@ namespace Survive
 	private:
 		static bool mousePressed;
 		static int selectedEntity;
-		static bool listenerActive;
 
 		MousePickingShader m_Shader;
 
 		glm::vec2 m_MousePosition{};
-		MousePickingListener m_Listener{};
-		MousePickingListener m_ManagerListener{};
+
+		std::vector<MousePickingListener> m_Listeners;
 
 	public:
 		explicit MousePicking();
@@ -40,9 +40,7 @@ namespace Survive
 
 		void addListener(const MousePickingListener &listener);
 
-		void addManagerListener(const MousePickingListener &listener);
-
-		static void removeListener();
+		void popListener();
 
 	private:
 		void mousePressedHandler();
@@ -67,7 +65,7 @@ namespace Survive
 
 		void prepareRendering(const Camera &camera) const;
 
-		void informListener(int entity) const;
+		void informListeners(int entity) const;
 	};
 }
 

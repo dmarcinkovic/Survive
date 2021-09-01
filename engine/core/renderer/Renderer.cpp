@@ -159,13 +159,8 @@ void Survive::Renderer::addMousePickingListener(const MousePickingListener &list
 	m_MousePicking.addListener(listener);
 }
 
-void Survive::Renderer::removeMousePickingListener()
+void Survive::Renderer::popMousePickingListener()
 {
-	MousePicking::removeListener();
-}
-
-void Survive::Renderer::addManagerMouseListener(const Survive::MousePickingListener &listener)
-{
-	m_MousePicking.addManagerListener(listener);
+	m_MousePicking.popListener();
 }
 

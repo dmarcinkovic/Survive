@@ -23,7 +23,7 @@ Survive::Editor::Editor(Renderer &renderer)
 					   ImGuiWindowFlags_UnsavedDocument;
 
 	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
-	renderer.addManagerMouseListener([this](int selectedEntity){
+	renderer.addMousePickingListener([this](int selectedEntity){
 		m_Manager.setSelectedEntity(selectedEntity);
 	});
 

@@ -69,9 +69,7 @@ namespace Survive
 
 		void addMousePickingListener(const MousePickingListener &listener);
 
-		void addManagerMouseListener(const MousePickingListener &listener);
-
-		static void removeMousePickingListener();
+		void popMousePickingListener();
 
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;

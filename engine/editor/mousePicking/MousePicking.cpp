@@ -14,7 +14,6 @@
 
 bool Survive::MousePicking::mousePressed = false;
 int Survive::MousePicking::selectedEntity = -2;
-bool Survive::MousePicking::listenerActive = false;
 
 Survive::MousePicking::MousePicking()
 {
@@ -75,7 +74,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	Display::clearWindow();
 	mousePressed = false;
 
-	informListener(selectedEntity);
+	informListeners(selectedEntity);
 }
 
 void Survive::MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
@@ -203,26 +202,18 @@ void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
 
 void Survive::MousePicking::addListener(const MousePickingListener &listener)
 {
-	m_Listener = listener;
-	listenerActive = true;
+	m_Listeners.emplace_back(listener);
 }
 
-void Survive::MousePicking::informListener(int entity) const
+void Survive::MousePicking::informListeners(int entity) const
 {
-	if (listenerActive)
+	for (const MousePickingListener &listener : m_Listeners)
 	{
-		m_Listener(entity);
+		listener(entity);
 	}
-
-	m_ManagerListener(entity);
 }
 
-void Survive::MousePicking::removeListener()
+void Survive::MousePicking::popListener()
 {
-	listenerActive = false;
-}
-
-void Survive::MousePicking::addManagerListener(const Survive::MousePickingListener &listener)
-{
-	m_ManagerListener = listener;
+	m_Listeners.pop_back();
 }
