@@ -191,11 +191,6 @@ void Survive::MousePicking::setViewport()
 	glViewport(0, 0, width, height);
 }
 
-int Survive::MousePicking::getSelectedEntity()
-{
-	return selectedEntity;
-}
-
 void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
 {
 	mousePressed = true;
@@ -218,9 +213,16 @@ void Survive::MousePicking::informListener(int entity) const
 	{
 		m_Listener(entity);
 	}
+
+	m_ManagerListener(entity);
 }
 
 void Survive::MousePicking::removeListener()
 {
 	listenerActive = false;
+}
+
+void Survive::MousePicking::addManagerListener(const Survive::MousePickingListener &listener)
+{
+	m_ManagerListener = listener;
 }

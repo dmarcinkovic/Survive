@@ -65,11 +65,11 @@ namespace Survive
 
 		void render2DScene(entt::registry &registry, const Camera &camera) const;
 
-		static int getSelectedEntity();
-
 		void setMousePickingPosition(float mouseX, float mouseY);
 
 		void addMousePickingListener(const MousePickingListener &listener);
+
+		void addManagerMouseListener(const MousePickingListener &listener);
 
 		static void removeMousePickingListener();
 

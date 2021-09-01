@@ -149,11 +149,6 @@ void Survive::Renderer::removeSkyboxEntity()
 	m_AnimationRenderer.addSkybox(entt::null);
 }
 
-int Survive::Renderer::getSelectedEntity()
-{
-	return MousePicking::getSelectedEntity();
-}
-
 void Survive::Renderer::setMousePickingPosition(float mouseX, float mouseY)
 {
 	m_MousePicking.setMousePosition(mouseX, mouseY);
@@ -167,5 +162,10 @@ void Survive::Renderer::addMousePickingListener(const MousePickingListener &list
 void Survive::Renderer::removeMousePickingListener()
 {
 	MousePicking::removeListener();
+}
+
+void Survive::Renderer::addManagerMouseListener(const Survive::MousePickingListener &listener)
+{
+	m_MousePicking.addManagerListener(listener);
 }
 

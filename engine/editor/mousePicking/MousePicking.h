@@ -29,17 +29,18 @@ namespace Survive
 
 		glm::vec2 m_MousePosition{};
 		MousePickingListener m_Listener{};
+		MousePickingListener m_ManagerListener{};
 
 	public:
 		explicit MousePicking();
 
 		void render(entt::registry &registry, const Camera &camera) const;
 
-		static int getSelectedEntity();
-
 		void setMousePosition(float mouseX, float mouseY);
 
 		void addListener(const MousePickingListener &listener);
+
+		void addManagerListener(const MousePickingListener &listener);
 
 		static void removeListener();
 

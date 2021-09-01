@@ -27,7 +27,7 @@ int main()
 	entt::registry registry;
 	Renderer renderer(light);
 
-	Editor editor(renderer.getRenderedTexture());
+	Editor editor(renderer);
 
 	DaeParser daeParser;
 	auto character = registry.create();

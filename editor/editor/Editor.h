@@ -54,7 +54,7 @@ namespace Survive
 		std::string m_SavedFile;
 
 	public:
-		explicit Editor(GLuint scene);
+		explicit Editor(Renderer &renderer);
 
 		void render(entt::registry &registry, Renderer &renderer, Camera &camera);
 

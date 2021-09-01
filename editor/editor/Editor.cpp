@@ -13,15 +13,19 @@ float Survive::Editor::m_SceneWidth{};
 float Survive::Editor::m_SceneHeight{};
 float Survive::Editor::m_ScenePosX{};
 float Survive::Editor::m_ScenePosY{};
+
 bool Survive::Editor::m_SceneFocused{};
 
-Survive::Editor::Editor(GLuint scene)
-		: m_Io(ImGui::GetIO()), m_Scene(scene)
+Survive::Editor::Editor(Renderer &renderer)
+		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture())
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
 
 	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
+	renderer.addManagerMouseListener([this](int selectedEntity){
+		m_Manager.setSelectedEntity(selectedEntity);
+	});
 
 	setColorStyle();
 }
@@ -51,7 +55,6 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	m_Manager.setSelectedEntity(Renderer::getSelectedEntity());
 	camera.recalculateProjectionMatrix(m_SceneWidth, m_SceneHeight);
 }
 
