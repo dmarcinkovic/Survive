@@ -217,13 +217,13 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
 		m_OpenDialog = true;
-	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveDialog = true;
-	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
+	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
 	{
 		m_SaveAsDialog = true;
+	} else if (eventHandler.isKeyControlPressed() &&
+			   eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveDialog = true;
 	}
 
 	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
