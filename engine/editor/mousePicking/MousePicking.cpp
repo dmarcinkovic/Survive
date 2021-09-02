@@ -46,7 +46,7 @@ glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 
 void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!mousePressed || !isInsideWindow())
+	if (!mousePressed)
 	{
 		return;
 	}
@@ -170,8 +170,11 @@ bool Survive::MousePicking::isInsideWindow() const
 	float width = Editor::getSceneWidth();
 	float height = Editor::getSceneHeight();
 
-	return m_MousePosition.x >= 0 && m_MousePosition.x <= width &&
-			m_MousePosition.y >= 0 && m_MousePosition.y <= height;
+	std::cout << "Width: " << width << '\n';
+	std::cout << "Height: " << height << '\n';
+
+	return m_MousePosition.x > 0 && m_MousePosition.x < width - 50  &&
+			m_MousePosition.y > 0 && m_MousePosition.y < height - 50;
 }
 
 void Survive::MousePicking::prepareRendering(const Camera &camera) const
@@ -192,12 +195,15 @@ void Survive::MousePicking::setViewport()
 
 void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
 {
-	mousePressed = true;
-	selectedEntity = -2;
-
 	float height = Editor::getSceneHeight();
 	auto[x, y] = Editor::getScenePosition();
 	m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
+
+	if (isInsideWindow())
+	{
+		mousePressed = true;
+		selectedEntity = -2;
+	}
 }
 
 void Survive::MousePicking::addListener(const MousePickingListener &listener)
