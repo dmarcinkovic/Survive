@@ -170,9 +170,6 @@ bool Survive::MousePicking::isInsideWindow() const
 	float width = Editor::getSceneWidth();
 	float height = Editor::getSceneHeight();
 
-	std::cout << "Width: " << width << '\n';
-	std::cout << "Height: " << height << '\n';
-
 	return m_MousePosition.x > 0 && m_MousePosition.x < width - 50  &&
 			m_MousePosition.y > 0 && m_MousePosition.y < height - 50;
 }
