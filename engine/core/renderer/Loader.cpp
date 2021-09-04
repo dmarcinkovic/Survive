@@ -133,15 +133,17 @@ Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector
 
 Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 										  const std::vector<float> &normals, const std::vector<float> &jointWeights,
-										  const std::vector<int> &jointIds)
+										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices)
 {
 	GLuint vao = createVao();
 
+	createIndexBuffer(indices);
 	storeDataInAttributeList(0, vertices, 3);
 	storeDataInAttributeList(1, textures, 2);
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(4, jointIds, 3);
+	unbindVao();
 
 	return Model(vao, static_cast<GLsizei>(vertices.size()) / 3);
 }
