@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <numeric>
 
 #include "ObjParser.h"
 #include "Util.h"
@@ -53,8 +54,11 @@ Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
 		}
 	}
 
+	std::vector<unsigned> indices(resultPoints.size() / 3);
+	std::iota(indices.begin(), indices.end(), 0);
+
 	reader.close();
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals);
+	return loader.loadToVao(resultPoints, resultTextures, resultNormals, indices);
 }
 
 void Survive::ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
