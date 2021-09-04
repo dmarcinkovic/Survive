@@ -86,7 +86,7 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const st
 		m_Shader.loadPickingColor(color);
 
 		const RenderComponent &renderComponent = registry.get<RenderComponent>(object);
-		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
 

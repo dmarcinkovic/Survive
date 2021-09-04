@@ -24,7 +24,7 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 	prepareObject(renderComponent);
 	loadUniforms(transform, camera);
 
-	glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+	glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 	finishRenderingObject();
 

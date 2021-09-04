@@ -33,7 +33,7 @@ void Survive::ShadowRenderer::render(const entt::registry &registry, const Light
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
-			glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 			glDisable(GL_CULL_FACE);
 		}
 
