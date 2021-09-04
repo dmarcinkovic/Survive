@@ -50,7 +50,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 				m_ShadowShader.loadAnimatedModel(false);
 			}
 
-			glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 			glDisable(GL_CULL_FACE);
 		}
 

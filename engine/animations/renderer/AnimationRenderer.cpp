@@ -52,7 +52,7 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 		Texture::unbindTexture();

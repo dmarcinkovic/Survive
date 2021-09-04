@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
+#include <numeric>
 
 #include "Log.h"
 #include "DaeParser.h"
@@ -151,7 +152,10 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 		processJointsData(resultWeights, resultIds, vertexIndex);
 	}
 
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds);
+	std::vector<unsigned> indices(resultPoints.size() / 3);
+	std::iota(indices.begin(), indices.end(), 0);
+
+	return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds, indices);
 }
 
 void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames)
