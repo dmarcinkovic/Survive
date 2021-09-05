@@ -110,7 +110,7 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 		}
 	}
 
-	if (ImGui::BeginDragDropSource())
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 	{
 		m_StartedDragging = true;
 		m_DraggedFile = file;
