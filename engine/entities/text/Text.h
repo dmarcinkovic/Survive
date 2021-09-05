@@ -57,8 +57,6 @@ namespace Survive
 
 		void scaleFor(float scaleFactor);
 
-		const TexturedModel &getTexturedModel() const;
-
 	private:
 		void calculateTextureVertices();
 

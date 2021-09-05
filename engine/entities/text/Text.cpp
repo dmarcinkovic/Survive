@@ -5,7 +5,6 @@
 #include "Text.h"
 
 #include <utility>
-#include <iostream>
 
 Survive::Text::Text(std::string text, Font font, const glm::vec3 &position,
 					const glm::vec3 &color, float scale)
@@ -16,8 +15,8 @@ Survive::Text::Text(std::string text, Font font, const glm::vec3 &position,
 	m_Scale.x = m_Scale.y = scale;
 }
 
-Survive::Text::Text(std::string text, Survive::Font font)
-	: Entity(), m_Text(std::move(text)), m_Font(std::move(font))
+Survive::Text::Text(std::string text, Font font)
+	: Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_TextTexture(font.getTexture())
 {
 
 }
@@ -159,7 +158,3 @@ void Survive::Text::scaleFor(float scaleFactor)
 	m_Scale.x = m_Scale.y * scaleFactor;
 }
 
-const Survive::TexturedModel &Survive::Text::getTexturedModel() const
-{
-	return m_Texture;
-}

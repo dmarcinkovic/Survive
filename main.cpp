@@ -64,7 +64,7 @@ int main()
 	registry.emplace<TextComponent>(textEntity, "Text", font);
 	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
-	registry.emplace<Render3DComponent>(textEntity, text.getTexturedModel());
+	registry.emplace<Render2DComponent>(textEntity, text.m_Texture);
 
 	Renderer2D renderer2D(loader);
 
