@@ -163,6 +163,7 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 			std::string file = m_OpenWindow.getSelectedFile();
 			if (!file.empty())
 			{
+				m_Manager.setSelectedEntity(-1);
 				m_SceneLoader.loadScene(registry, file);
 				m_SavedFile = file;
 			}
@@ -268,6 +269,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 
 				if (extension == ".survive")
 				{
+					m_Manager.setSelectedEntity(-1);
 					m_SceneLoader.loadScene(registry, file.c_str());
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
