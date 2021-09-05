@@ -33,13 +33,6 @@ void Survive::TextRenderer::renderText(entt::registry &registry) const
 	Renderer2DUtil::finishRendering();
 }
 
-void Survive::TextRenderer::addText(Text &text, Loader &loader)
-{
-	text.loadTexture(loader);
-	auto &texts = m_Texts[text.m_Texture];
-	texts.emplace_back(text);
-}
-
 void Survive::TextRenderer::loadUniforms(entt::registry &registry, entt::entity entity) const
 {
 	const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);

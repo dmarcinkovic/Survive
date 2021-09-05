@@ -5,6 +5,7 @@
 #ifndef SURVIVE_RENDERER_H
 #define SURVIVE_RENDERER_H
 
+#include "TextRenderer.h"
 #include "GuiRenderer.h"
 #include "SpritesRenderer.h"
 #include "AnimationRenderer.h"
@@ -32,6 +33,7 @@ namespace Survive
 		BloomRenderer m_BloomRenderer;
 		SpritesRenderer m_SpriteRenderer{};
 		GuiRenderer m_GuiRenderer{};
+		TextRenderer m_TextRenderer{};
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;

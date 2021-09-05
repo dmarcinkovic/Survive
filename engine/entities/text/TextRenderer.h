@@ -18,12 +18,9 @@ namespace Survive
 	{
 	private:
 		TextShader m_Shader{};
-		std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
 
 	public:
 		void renderText(entt::registry &registry) const;
-
-		void addText(Text &text, Loader &loader);
 
 	private:
 		void loadUniforms(entt::registry &registry, entt::entity entity) const;

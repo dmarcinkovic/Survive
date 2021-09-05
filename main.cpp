@@ -1,3 +1,6 @@
+#include "Font.h"
+#include "Text.h"
+#include "Renderer2D.h"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "DaeParser.h"
@@ -50,6 +53,17 @@ int main()
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -10, -40});
 	registry.emplace<ShadowComponent>(dragon, true);
 
+	Font font("res/arial.png", loader);
+	font.loadFontFromFntFile("res/arial.fnt");
+
+	Text text("Text", font, glm::vec3{-0.5, -0.5, 0}, glm::vec3{1,0,0});
+	text.loadTexture(loader);
+	text.addBorder(0.9f, glm::vec3{0,1,0});
+	text.centerText();
+
+	Renderer2D renderer2D(loader);
+	renderer2D.addText(text);
+
 	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;
 
@@ -65,6 +79,7 @@ int main()
 		Editor::dock();
 		editor.render(registry, renderer, camera);
 		renderer.renderToFbo(registry, camera);
+		renderer2D.render(registry);
 
 		display.update();
 	}
