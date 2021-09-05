@@ -17,7 +17,7 @@ int main()
 {
 	using namespace Survive;
 
-	constexpr int width = 1400;
+	constexpr int width = 1500;
 	constexpr int height = 900;
 
 	Display display(width, height, "Survive");

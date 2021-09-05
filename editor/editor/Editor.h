@@ -9,6 +9,7 @@
 #include <utility>
 #include <ImGuizmo.h>
 
+#include "Inspector.h"
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
@@ -39,6 +40,7 @@ namespace Survive
 		EntityManager m_Manager{};
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
+		Inspector m_Inspector{};
 
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;

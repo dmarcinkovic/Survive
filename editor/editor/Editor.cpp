@@ -43,6 +43,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 	m_ContentBrowser.draw();
+	m_Inspector.draw();
 
 	if (ImGui::Begin("Debug"))
 	{

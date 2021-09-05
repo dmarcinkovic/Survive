@@ -5,11 +5,14 @@
 #ifndef SURVIVE_INSPECTOR_H
 #define SURVIVE_INSPECTOR_H
 
+#include <imgui.h>
+
 namespace Survive
 {
 	class Inspector
 	{
-
+	public:
+		void draw();
 	};
 }
 

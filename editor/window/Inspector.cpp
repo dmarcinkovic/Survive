@@ -3,3 +3,10 @@
 //
 
 #include "Inspector.h"
+
+void Survive::Inspector::draw()
+{
+	ImGui::Begin("Inspector");
+
+	ImGui::End();
+}
