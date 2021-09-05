@@ -11,6 +11,7 @@
 #include "Display.h"
 #include "Font.h"
 #include "Text.h"
+#include "Entity.h"
 
 namespace Survive
 {

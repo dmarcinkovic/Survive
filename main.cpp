@@ -57,6 +57,7 @@ int main()
 	font.loadFontFromFntFile("res/arial.fnt");
 
 	auto textEntity = registry.create();
+
 	Text text("Text", font);
 	text.loadTexture(loader);
 	text.centerText();
@@ -64,7 +65,7 @@ int main()
 	registry.emplace<TextComponent>(textEntity, "Text", font);
 	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
-	registry.emplace<Render2DComponent>(textEntity, text.m_Texture);
+	registry.emplace<Render2DComponent>(textEntity, text.getModel());
 
 	Renderer2D renderer2D(loader);
 

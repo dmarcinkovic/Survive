@@ -7,13 +7,14 @@
 
 #include <string>
 #include <vector>
+#include <glm/glm.hpp>
 
 #include "Font.h"
-#include "Entity.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {
-	class Text : public Entity
+	class Text
 	{
 	private:
 		constexpr static float PADDING = -15.0f;
@@ -21,20 +22,18 @@ namespace Survive
 		std::string m_Text;
 		Font m_Font;
 		bool m_Centered{};
-		glm::vec3 m_Color{};
 
 		Texture m_TextTexture{};
 
 		glm::vec3 m_BorderColor{};
 		float m_BorderWidth{};
 
+		TexturedModel m_Model;
+
 		std::vector<float> m_Vertices;
 		std::vector<float> m_TextureCoordinates;
 
 	public:
-		Text(std::string text, Font font, const glm::vec3 &position,
-			 const glm::vec3 &color = glm::vec3{1, 1, 1}, float scale = 1.0);
-
 		Text(std::string text, Font font);
 
 		Text() = default;
@@ -42,8 +41,6 @@ namespace Survive
 		void loadTexture(Loader &loader);
 
 		void centerText();
-
-		const glm::vec3 &color() const;
 
 		const glm::vec3 &getBorderColor() const;
 
@@ -53,9 +50,7 @@ namespace Survive
 
 		void setText(std::string newText, Loader &loader);
 
-		float getScale() const;
-
-		void scaleFor(float scaleFactor);
+		const TexturedModel &getModel() const;
 
 	private:
 		void calculateTextureVertices();

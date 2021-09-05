@@ -49,12 +49,12 @@ void Survive::Button::addMouseMoveListener()
 		{
 			m_Scale.x = m_OriginalScaleX * 1.02f;
 			m_Scale.y = m_OriginalScaleY * 1.02f;
-			m_Text.scaleFor(1.02f);
+//			m_Text.scaleFor(1.02f);
 		} else
 		{
 			m_Scale.x = m_OriginalScaleX;
 			m_Scale.y = m_OriginalScaleY;
-			m_Text.scaleFor(1);
+//			m_Text.scaleFor(1);
 		}
 	};
 
@@ -77,6 +77,6 @@ Survive::Text &Survive::Button::getText()
 
 void Survive::Button::setText(const std::string &text, const Font &font, const glm::vec3 &textColor)
 {
-	m_Text = Text(text, font, m_Position, textColor);
+//	m_Text = Text(text, font, m_Position, textColor);
 	m_Text.centerText();
 }

@@ -6,22 +6,14 @@
 
 #include <utility>
 
-Survive::Text::Text(std::string text, Font font, const glm::vec3 &position,
-					const glm::vec3 &color, float scale)
-		: Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_Color(color),
-		  m_BorderColor(color), m_TextTexture(font.getTexture())
-{
-	m_Position = position;
-	m_Scale.x = m_Scale.y = scale;
-}
-
 Survive::Text::Text(std::string text, Font font)
-	: Entity(), m_Text(std::move(text)), m_Font(std::move(font)), m_TextTexture(font.getTexture())
+		: m_Text(std::move(text)), m_Font(std::move(font)), m_TextTexture(font.getTexture())
 {
 
 }
 
-Survive::Model Survive::Text::calculateVertices(Loader &loader)
+Survive::Model
+Survive::Text::calculateVertices(Loader &loader)
 {
 	m_Vertices.clear();
 	m_TextureCoordinates.clear();
@@ -33,10 +25,10 @@ Survive::Model Survive::Text::calculateVertices(Loader &loader)
 
 void Survive::Text::calculateTextureVertices()
 {
-	float cursorX = m_Position.x;
-	float cursorY = m_Position.y;
+	float cursorX = 0;
+	float cursorY = 0;
 
-	for (char c : m_Text)
+	for (char c: m_Text)
 	{
 		const Character &character = m_Font.getCharacter(c);
 
@@ -49,7 +41,10 @@ void Survive::Text::calculateTextureVertices()
 		cursorX += character.m_Advance / character.m_ScaleW + PADDING / character.m_ScaleW;
 	}
 
-	if (m_Centered) alignText();
+	if (m_Centered)
+	{
+		alignText();
+	}
 }
 
 void Survive::Text::addVertices(const Character &character, float cursorX, float cursorY)
@@ -75,7 +70,7 @@ void Survive::Text::addVertices(const Character &character, float cursorX, float
 
 void Survive::Text::loadTexture(Loader &loader)
 {
-	m_Texture = TexturedModel(calculateVertices(loader), m_TextTexture);
+	m_Model = TexturedModel(calculateVertices(loader), m_TextTexture);
 }
 
 void Survive::Text::centerText()
@@ -92,13 +87,8 @@ void Survive::Text::setText(std::string newText, Loader &loader)
 
 	calculateTextureVertices();
 
-	loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Texture.vaoID());
-	m_Texture.setVertexCount(static_cast<int>(m_Vertices.size()) / 2);
-}
-
-const glm::vec3 &Survive::Text::color() const
-{
-	return m_Color;
+	loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Model.vaoID());
+	m_Model.setVertexCount(static_cast<int>(m_Vertices.size()) / 2);
 }
 
 void Survive::Text::alignText()
@@ -148,13 +138,7 @@ float Survive::Text::getBorderWidth() const
 	return m_BorderWidth;
 }
 
-float Survive::Text::getScale() const
+const Survive::TexturedModel &Survive::Text::getModel() const
 {
-	return m_Scale.x;
+	return m_Model;
 }
-
-void Survive::Text::scaleFor(float scaleFactor)
-{
-	m_Scale.x = m_Scale.y * scaleFactor;
-}
-
