@@ -56,13 +56,17 @@ int main()
 	Font font("res/arial.png", loader);
 	font.loadFontFromFntFile("res/arial.fnt");
 
-	Text text("Text", font, glm::vec3{-0.5, -0.5, 0}, glm::vec3{1,0,0});
+	auto textEntity = registry.create();
+	Text text("Text", font);
 	text.loadTexture(loader);
-	text.addBorder(0.9f, glm::vec3{0,1,0});
 	text.centerText();
 
+	registry.emplace<TextComponent>(textEntity, "Text", font);
+	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
+	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
+	registry.emplace<Render3DComponent>(textEntity, text.getTexturedModel());
+
 	Renderer2D renderer2D(loader);
-	renderer2D.addText(text);
 
 	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;

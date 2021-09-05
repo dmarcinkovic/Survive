@@ -139,12 +139,12 @@ void Survive::Text::addBorder(float borderWidth, const glm::vec3 &borderColor)
 	m_BorderColor = borderColor;
 }
 
-const glm::vec3 &Survive::Text::getMBorderColor() const
+const glm::vec3 &Survive::Text::getBorderColor() const
 {
 	return m_BorderColor;
 }
 
-float Survive::Text::getMBorderWidth() const
+float Survive::Text::getBorderWidth() const
 {
 	return m_BorderWidth;
 }
@@ -157,4 +157,9 @@ float Survive::Text::getScale() const
 void Survive::Text::scaleFor(float scaleFactor)
 {
 	m_Scale.x = m_Scale.y * scaleFactor;
+}
+
+const Survive::TexturedModel &Survive::Text::getTexturedModel() const
+{
+	return m_Texture;
 }

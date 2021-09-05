@@ -27,8 +27,6 @@ namespace Survive
 
 		void render(entt::registry &registry) const;
 
-		void addText(Text &text) noexcept;
-
 		void addButton(Button &button) noexcept;
 	};
 }

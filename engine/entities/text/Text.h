@@ -45,9 +45,9 @@ namespace Survive
 
 		const glm::vec3 &color() const;
 
-		const glm::vec3 &getMBorderColor() const;
+		const glm::vec3 &getBorderColor() const;
 
-		float getMBorderWidth() const;
+		float getBorderWidth() const;
 
 		void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
@@ -56,6 +56,8 @@ namespace Survive
 		float getScale() const;
 
 		void scaleFor(float scaleFactor);
+
+		const TexturedModel &getTexturedModel() const;
 
 	private:
 		void calculateTextureVertices();
