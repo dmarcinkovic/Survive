@@ -5,6 +5,8 @@
 #ifndef SURVIVE_TEXTCOMPONENT_H
 #define SURVIVE_TEXTCOMPONENT_H
 
+#include <utility>
+
 #include "Text.h"
 
 namespace Survive
@@ -17,6 +19,10 @@ namespace Survive
 
 		TextComponent(const std::string& string, const Font& font)
 			: text(string, font)
+		{}
+
+		explicit TextComponent(Text text)
+			: text(std::move(text))
 		{}
 	};
 }
