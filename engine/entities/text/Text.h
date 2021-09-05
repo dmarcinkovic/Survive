@@ -35,6 +35,8 @@ namespace Survive
 		Text(std::string text, Font font, const glm::vec3 &position,
 			 const glm::vec3 &color = glm::vec3{1, 1, 1}, float scale = 1.0);
 
+		Text(std::string text, Font font);
+
 		Text() = default;
 
 		void loadTexture(Loader &loader);

@@ -16,6 +16,12 @@ Survive::Text::Text(std::string text, Font font, const glm::vec3 &position,
 	m_Scale.x = m_Scale.y = scale;
 }
 
+Survive::Text::Text(std::string text, Survive::Font font)
+	: Entity(), m_Text(std::move(text)), m_Font(std::move(font))
+{
+
+}
+
 Survive::Model Survive::Text::calculateVertices(Loader &loader)
 {
 	m_Vertices.clear();

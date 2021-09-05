@@ -19,6 +19,7 @@
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"
 #include "TagComponent.h"
+#include "TextComponent.h"
 #include "TexturedComponent.h"
 #include "Transform3DComponent.h"
 
