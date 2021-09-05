@@ -11,6 +11,7 @@
 #include "entt.hpp"
 #include "TextShader.h"
 #include "Text.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -20,7 +21,7 @@ namespace Survive
 		TextShader m_Shader{};
 
 	public:
-		void renderText(entt::registry &registry) const;
+		void renderText(entt::registry &registry, const Camera &camera) const;
 
 	private:
 		void loadUniforms(entt::registry &registry, entt::entity entity) const;

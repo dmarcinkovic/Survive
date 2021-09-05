@@ -7,7 +7,7 @@
 #include "Maths.h"
 #include "Renderer2DUtil.h"
 
-void Survive::TextRenderer::renderText(entt::registry &registry) const
+void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &camera) const
 {
 	auto texts = registry.view<Transform3DComponent, Render2DComponent, TextComponent, SpriteComponent>();
 
@@ -17,6 +17,7 @@ void Survive::TextRenderer::renderText(entt::registry &registry) const
 	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
+	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const &text: texts)
 	{

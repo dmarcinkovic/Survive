@@ -16,6 +16,7 @@ void Survive::TextShader::getUniformLocations()
 	m_LocationBorderColor = glGetUniformLocation(m_Program, "borderColor");
 	m_LocationBorderWidth = glGetUniformLocation(m_Program, "borderWidth");
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
+	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
 }
 
 void Survive::TextShader::loadColor(const glm::vec3 &color) const
@@ -32,4 +33,9 @@ void Survive::TextShader::loadBorder(const glm::vec3 &borderColor, float borderW
 void Survive::TextShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
+}
+
+void Survive::TextShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
+{
+	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
