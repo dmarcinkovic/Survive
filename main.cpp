@@ -1,6 +1,5 @@
 #include "Font.h"
 #include "Text.h"
-#include "Renderer2D.h"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "DaeParser.h"
@@ -67,8 +66,6 @@ int main()
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
 	registry.emplace<Render2DComponent>(textEntity, text.getModel());
 
-	Renderer2D renderer2D(loader);
-
 	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;
 
@@ -77,14 +74,15 @@ int main()
 		Display::clearWindow();
 
 		editor.handleKeyEvents(eventHandler);
+
 		animator.update(registry);
 		AnimationSystem::update(registry);
 
 		Editor::newFrame();
 		Editor::dock();
 		editor.render(registry, renderer, camera);
+
 		renderer.renderToFbo(registry, camera);
-		renderer2D.render(registry);
 
 		display.update();
 	}

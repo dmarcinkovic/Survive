@@ -8,8 +8,6 @@
 #include <vector>
 
 #include "entt.hpp"
-#include "Text.h"
-#include "TextRenderer.h"
 #include "button/ButtonRenderer.h"
 
 namespace Survive
@@ -19,7 +17,6 @@ namespace Survive
 	private:
 		Loader &m_Loader;
 
-		TextRenderer m_TextRenderer;
 		ButtonRenderer m_ButtonRenderer{};
 
 	public:

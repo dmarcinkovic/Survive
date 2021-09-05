@@ -20,7 +20,6 @@ void Survive::Renderer2D::render(entt::registry &registry) const
 		return;
 	}
 
-	m_TextRenderer.renderText(registry);
 	m_ButtonRenderer.render();
 }
 
