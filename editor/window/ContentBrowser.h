@@ -43,6 +43,8 @@ namespace Survive
 		std::filesystem::path m_DraggedFile;
 		DirectoryTree m_Tree;
 
+		std::string m_ImageFilename;
+
 		bool m_DrawImage{};
 		Texture m_Image{};
 

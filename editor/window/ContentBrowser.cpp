@@ -2,6 +2,7 @@
 // Created by david on 18. 08. 2021..
 //
 
+#include <iostream>
 #include "ContentBrowser.h"
 #include "Loader.h"
 
@@ -103,6 +104,7 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 		{
 			m_DrawImage = true;
 			m_Image = Loader::loadTexture(file.c_str());
+			m_ImageFilename = filename;
 		} else if (m_ImageIndex == FOLDER)
 		{
 			m_Tree.setCurrentDirectory(file);
@@ -173,7 +175,8 @@ void Survive::ContentBrowser::renderImageWindow()
 
 	if (m_DrawImage)
 	{
-		ImGui::Begin("Image view", &m_DrawImage);
+		std::string windowTitle = m_ImageFilename + "###Image view";
+		ImGui::Begin(windowTitle.c_str(), &m_DrawImage);
 
 		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
 
