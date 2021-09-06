@@ -43,7 +43,6 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 	m_ContentBrowser.draw();
-	m_Inspector.draw(m_TextDialog);
 
 	if (ImGui::Begin("Debug"))
 	{
@@ -145,7 +144,6 @@ void Survive::Editor::renderMenu()
 		if (ImGui::BeginMenu("Window"))
 		{
 			ImGui::MenuItem("Skybox", "", &m_SkyboxDialog);
-			ImGui::MenuItem("Text", "", &m_TextDialog);
 			ImGui::EndMenu();
 		}
 

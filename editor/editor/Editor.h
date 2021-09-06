@@ -9,7 +9,6 @@
 #include <utility>
 #include <ImGuizmo.h>
 
-#include "Inspector.h"
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
@@ -40,7 +39,6 @@ namespace Survive
 		EntityManager m_Manager{};
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
-		Inspector m_Inspector{};
 
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;
@@ -48,7 +46,6 @@ namespace Survive
 
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
-		bool m_TextDialog = false;
 
 		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
