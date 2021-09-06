@@ -12,7 +12,9 @@ namespace Survive
 	class Inspector
 	{
 	public:
-		void draw();
+		Inspector();
+
+		void draw(bool &open);
 	};
 }
 

@@ -48,6 +48,7 @@ namespace Survive
 
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
+		bool m_TextDialog = false;
 
 		SceneSerializer m_SceneLoader;
 		bool m_IsSceneWindowFocused = true;
