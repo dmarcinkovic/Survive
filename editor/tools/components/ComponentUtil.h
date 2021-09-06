@@ -25,7 +25,7 @@ namespace Survive
 					"Animation component", "Bloom component", "Reflection component",
 					"Refraction component", "Render2D Component", "Render3D component",
 					"Rigid body component", "Shadow component", "Sound component",
-					"Sprite component", "Sprite sheet component", "Transform3D component"
+					"Sprite component", "Sprite sheet component", "Text Component", "Transform3D component"
 			};
 
 			return components;
@@ -44,6 +44,7 @@ namespace Survive
 			drawComponent<SoundComponent>(registry, entity);
 			drawComponent<SpriteComponent>(registry, entity);
 			drawComponent<SpriteSheetComponent>(registry, entity);
+			drawComponent<TextComponent>(registry, entity);
 			drawComponent<Transform3DComponent>(registry, entity);
 		}
 
@@ -74,6 +75,8 @@ namespace Survive
 				case 10:
 					return addComponent<SpriteSheetComponent>(registry, entity);
 				case 11:
+					return addComponent<TextComponent>(registry, entity);
+				case 12:
 					return addComponent<Transform3DComponent>(registry, entity);
 				default:
 					throw std::runtime_error("Selected item not implemented");

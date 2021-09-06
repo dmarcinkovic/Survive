@@ -187,6 +187,15 @@ namespace Survive
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.color));
 		}
 	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(TextComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Text", visible))
+		{
+			ImGui::Text("Text component");
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
