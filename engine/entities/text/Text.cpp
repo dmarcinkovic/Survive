@@ -2,14 +2,19 @@
 // Created by david on 29. 03. 2020..
 //
 
-#include "Text.h"
-
 #include <utility>
+
+#include "Text.h"
 
 Survive::Text::Text(std::string text, Font font)
 		: m_Text(std::move(text)), m_Font(std::move(font)), m_TextTexture(font.getTexture())
 {
+	m_Text.reserve(512);
+}
 
+Survive::Text::Text()
+{
+	m_Text.reserve(512);
 }
 
 Survive::Model
@@ -141,4 +146,14 @@ float Survive::Text::getBorderWidth() const
 const Survive::TexturedModel &Survive::Text::getModel() const
 {
 	return m_Model;
+}
+
+const std::string &Survive::Text::getText() const
+{
+	return m_Text;
+}
+
+std::string &Survive::Text::getText()
+{
+	return m_Text;
 }

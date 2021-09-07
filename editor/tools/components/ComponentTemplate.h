@@ -33,7 +33,6 @@ namespace Survive
 		{}
 	};
 
-
 	template<>
 	inline void ComponentTemplate::drawComponent(Transform3DComponent &component, bool *visible)
 	{
@@ -193,7 +192,19 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Text", visible))
 		{
-			ImGui::Text("Text component");
+			ImGui::Text("Text");
+
+			std::string &text = component.text.getText();
+			char *buf = text.data();
+
+			float height = ImGui::GetTextLineHeight();
+			ImVec2 size(-1, 3 * height);
+
+			if (ImGui::InputTextMultiline("##Text multiline", buf, text.capacity(), size))
+			{
+				component.text.setText(buf, m_Loader);
+				component.text.loadTexture(m_Loader);
+			}
 		}
 	}
 }

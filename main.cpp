@@ -61,10 +61,10 @@ int main()
 	text.loadTexture(loader);
 	text.centerText();
 
-	registry.emplace<TextComponent>(textEntity, "Text", font);
+	registry.emplace<TagComponent>(textEntity, "text");
+	registry.emplace<TextComponent>(textEntity, text);
 	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
-	registry.emplace<Render2DComponent>(textEntity, text.getModel());
 
 	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;

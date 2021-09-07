@@ -36,7 +36,7 @@ namespace Survive
 	public:
 		Text(std::string text, Font font);
 
-		Text() = default;
+		Text();
 
 		void loadTexture(Loader &loader);
 
@@ -51,6 +51,10 @@ namespace Survive
 		void setText(std::string newText, Loader &loader);
 
 		const TexturedModel &getModel() const;
+
+		const std::string &getText() const;
+
+		std::string &getText();
 
 	private:
 		void calculateTextureVertices();

@@ -9,7 +9,7 @@
 
 void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &camera) const
 {
-	auto texts = registry.view<Transform3DComponent, Render2DComponent, TextComponent, SpriteComponent>();
+	auto texts = registry.view<Transform3DComponent, TextComponent, SpriteComponent>();
 
 	if (texts.begin() == texts.end())
 	{
@@ -21,12 +21,12 @@ void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &c
 
 	for (auto const &text: texts)
 	{
-		const Render2DComponent &renderComponent = texts.get<Render2DComponent>(text);
-		Renderer2DUtil::prepareEntity(renderComponent.texturedModel);
+		const TexturedModel &model = texts.get<TextComponent>(text).text.getModel();
+		Renderer2DUtil::prepareEntity(model);
 
 		loadUniforms(registry, text);
 
-		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+		glDrawArrays(GL_TRIANGLES, 0, model.vertexCount());
 
 		Renderer2DUtil::finishRenderingEntity();
 	}
