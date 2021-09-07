@@ -203,7 +203,6 @@ namespace Survive
 			if (ImGui::InputTextMultiline("##Text multiline", buf, text.capacity(), size))
 			{
 				component.text.setText(buf, m_Loader);
-				component.text.loadTexture(m_Loader);
 			}
 		}
 	}
