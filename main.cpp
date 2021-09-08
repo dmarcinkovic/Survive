@@ -58,8 +58,8 @@ int main()
 	auto textEntity = registry.create();
 
 	Text text("Text", font);
-	text.loadTexture(loader);
 	text.centerText();
+	text.loadTexture(loader);
 
 	registry.emplace<TagComponent>(textEntity, "text");
 	registry.emplace<TextComponent>(textEntity, text);
