@@ -7,6 +7,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
+#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
@@ -27,7 +28,23 @@ namespace Survive
 
 		EditorUtil m_EditorUtil;
 
+		int m_SelectedItem = -1;
+		Texture m_FontIcon;
+		std::vector<Font> m_Fonts;
+
 	public:
+		ComponentTemplate()
+				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg"))
+		{
+			Font arial("res/font.png", m_Loader);
+			arial.loadFontFromJsonFile("res/font.json");
+			m_Fonts.emplace_back(arial);
+
+			Font candara("res/candara.png", m_Loader);
+			arial.loadFontFromFntFile("res/candara.fnt");
+			m_Fonts.emplace_back(candara);
+		}
+
 		template<typename ComponentType>
 		void drawComponent(ComponentType &component, bool * = nullptr)
 		{}
@@ -204,6 +221,44 @@ namespace Survive
 			{
 				component.text.setText(buf, m_Loader);
 			}
+
+			std::vector<const char *> items{"Arial", "Candara"};
+			ImGui::Separator();
+			ImGui::Text("Character");
+			ImGui::Indent();
+			ImGui::Columns(2, nullptr, false);
+
+			ImGui::Text("Font");
+			ImGui::NextColumn();
+			ImGui::BeginGroup();
+			ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2);
+			ImGui::SameLine();
+
+			auto textureId = reinterpret_cast<ImTextureID>(m_FontIcon.textureId());
+
+			static bool open = false;
+			if (ImGui::ImageButton(textureId, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
+			{
+				open = true;
+			}
+
+			if (open)
+			{
+				m_FileChooser.open(600.0f, 400.0f, &open);
+			}
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::TextUnformatted("Load font");
+				ImGui::EndTooltip();
+			}
+
+			ImGui::EndGroup();
+
+			ImGui::Columns();
+
+			ImGui::Unindent();
 		}
 	}
 }
