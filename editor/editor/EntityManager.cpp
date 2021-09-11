@@ -66,7 +66,7 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 			auto index = static_cast<int>(entity);
 
 			drawSelectable(tag, entity, index);
-			drawPopupContext(registry, index);
+			drawPopupContext(registry, entity, index);
 		}
 	});
 
@@ -126,7 +126,7 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 	}
 }
 
-void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
+void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::entity selectedEntity, int i)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
@@ -136,6 +136,7 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 		{
 			m_CurrentItem = -1;
 			m_Selected = i;
+			m_SelectedEntity = selectedEntity;
 		}
 
 		if (ImGui::Selectable("Remove entity"))
