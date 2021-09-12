@@ -226,6 +226,7 @@ namespace Survive
 
 			std::vector<const char *> items{"Arial", "Candara"};
 			ImGui::Separator();
+			ImGui::Bullet();
 			ImGui::Text("Character");
 
 			ImGui::Text("Font");
@@ -276,6 +277,56 @@ namespace Survive
 			}
 
 			ImGui::EndGroup();
+
+			ImGui::Columns(2, nullptr, false);
+			ImGui::Text("Line Spacing");
+			ImGui::NextColumn();
+
+			float v = 0;
+			ImGui::SetNextItemWidth(-1);
+			ImGui::InputFloat("##Line spacing", &v);
+
+			ImGui::Columns();
+
+			ImGui::Separator();
+			ImGui::Columns(2, nullptr, false);
+			ImGui::Text("Alignment");
+
+			ImGui::NextColumn();
+
+			bool a{};
+			ImGui::Checkbox("Center text", &a);
+
+			ImGui::Columns();
+
+			ImGui::Separator();
+			ImGui::Text("Border");
+			ImGui::Indent();
+
+			ImGui::Columns(2, nullptr, false);
+			ImGui::Text("Add border");
+			ImGui::NextColumn();
+
+			bool addBorder{};
+			ImGui::Checkbox("##Add text border", &addBorder);
+			ImGui::NextColumn();
+			ImGui::Text("Border width");
+			ImGui::NextColumn();
+			float borderWidth{};
+			ImGui::SetNextItemWidth(-1);
+			ImGui::InputFloat("##Text Border width", &borderWidth);
+			ImGui::NextColumn();
+			ImGui::Text("Border color");
+			ImGui::NextColumn();
+
+			glm::vec3 borderColor{};
+			ImGui::SetNextItemWidth(-1);
+			ImGui::ColorEdit3("##Border color", glm::value_ptr(borderColor));
+			ImGui::Columns();
+
+			ImGui::Unindent();
+
+			ImGui::NewLine();
 		}
 	}
 }
