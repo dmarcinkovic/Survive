@@ -7,7 +7,6 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
@@ -30,11 +29,13 @@ namespace Survive
 
 		int m_SelectedItem = -1;
 		Texture m_FontIcon;
+		Texture m_TextureIcon;
 		std::vector<Font> m_Fonts;
 
 	public:
 		ComponentTemplate()
-				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg"))
+				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
+				m_TextureIcon(Loader::loadTexture("res/texture.png"))
 		{
 			Font arial("res/font.png", m_Loader);
 			arial.loadFontFromJsonFile("res/font.json");
@@ -225,11 +226,9 @@ namespace Survive
 			std::vector<const char *> items{"Arial", "Candara"};
 			ImGui::Separator();
 			ImGui::Text("Character");
-			ImGui::Indent();
-			ImGui::Columns(2, nullptr, false);
 
 			ImGui::Text("Font");
-			ImGui::NextColumn();
+			ImGui::SameLine();
 			ImGui::BeginGroup();
 
 			if (ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2))
@@ -239,15 +238,15 @@ namespace Survive
 
 			ImGui::SameLine();
 
-			auto textureId = reinterpret_cast<ImTextureID>(m_FontIcon.textureId());
+			auto fontIcon = reinterpret_cast<ImTextureID>(m_FontIcon.textureId());
 
-			static bool open = false;
-			if (ImGui::ImageButton(textureId, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
+			static bool openFont = false;
+			if (ImGui::ImageButton(fontIcon, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
 			{
-				open = true;
+				openFont = true;
 			}
 
-			EditorUtil::loadFont(m_FileChooser, component.text.getFont(), open);
+			EditorUtil::loadFont(m_FileChooser, component.text.getFont(), openFont);
 
 			if (ImGui::IsItemHovered())
 			{
@@ -256,11 +255,25 @@ namespace Survive
 				ImGui::EndTooltip();
 			}
 
+			ImGui::SameLine();
+
+			auto textureIcon = reinterpret_cast<ImTextureID>(m_TextureIcon.textureId());
+			static bool openTextureAtlas = false;
+			if (ImGui::ImageButton(textureIcon, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
+			{
+				openTextureAtlas = true;
+			}
+
+			EditorUtil::loadFontTextureAtlas(m_FileChooser, component.text.getFont(), openTextureAtlas);
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::TextUnformatted("Load font texture atlas");
+				ImGui::EndTooltip();
+			}
+
 			ImGui::EndGroup();
-
-			ImGui::Columns();
-
-			ImGui::Unindent();
 		}
 	}
 }

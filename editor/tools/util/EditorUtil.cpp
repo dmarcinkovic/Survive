@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <iostream>
 
 #include "Log.h"
 #include "Loader.h"
@@ -349,6 +348,27 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 			} catch (const std::exception &ignorable)
 			{
 				Log::logWindow(LogType::ERROR, "Cannot load file: " + selectedFile.string());
+			}
+		}
+	}
+}
+
+void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Font &font, bool &open)
+{
+	if (open)
+	{
+		fileChooser.open(600.0f, 400.0f, &open);
+
+		std::filesystem::path selectedFile = fileChooser.getSelectedFile();
+		if (!open && !selectedFile.string().empty())
+		{
+			try
+			{
+				Texture textureAtlas = Loader::loadTexture(selectedFile.c_str());
+				font.setTexture(textureAtlas);
+			} catch (const std::exception &ignorable)
+			{
+				Log::logWindow(LogType::ERROR, "Cannot load " + selectedFile.filename().string());
 			}
 		}
 	}

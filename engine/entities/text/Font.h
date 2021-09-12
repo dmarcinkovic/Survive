@@ -31,6 +31,8 @@ namespace Survive
 		const Character &getCharacter(int ascii) const;
 
 		const Texture &getTexture() const;
+
+		void setTexture(const Texture &fontTexture);
 	};
 }
 

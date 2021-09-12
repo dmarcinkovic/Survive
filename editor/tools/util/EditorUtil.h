@@ -58,6 +58,8 @@ namespace Survive
 
 		static void loadFont(FileChooser &fileChooser, Font &font, bool &open);
 
+		static void loadFontTextureAtlas(FileChooser &fileChooser, Font &font, bool &open);
+
 		static void centerText(const std::string &text);
 
 		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);

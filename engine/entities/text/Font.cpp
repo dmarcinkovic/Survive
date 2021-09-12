@@ -70,3 +70,8 @@ const Survive::Texture &Survive::Font::getTexture() const
 {
 	return m_FontTexture;
 }
+
+void Survive::Font::setTexture(const Texture &fontTexture)
+{
+	m_FontTexture = fontTexture;
+}
