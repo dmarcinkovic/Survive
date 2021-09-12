@@ -242,10 +242,7 @@ namespace Survive
 				open = true;
 			}
 
-			if (open)
-			{
-				m_FileChooser.open(600.0f, 400.0f, &open);
-			}
+			EditorUtil::loadFont(m_FileChooser, component.text.getFont(), open);
 
 			if (ImGui::IsItemHovered())
 			{

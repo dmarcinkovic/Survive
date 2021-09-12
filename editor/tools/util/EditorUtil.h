@@ -56,6 +56,8 @@ namespace Survive
 		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 					   std::string &soundFile, bool &changed);
 
+		static void loadFont(FileChooser &fileChooser, Font &font, bool &open);
+
 		static void centerText(const std::string &text);
 
 		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);

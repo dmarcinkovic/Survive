@@ -54,7 +54,7 @@ namespace Survive
 
 		void save(float windowWidth, float windowHeight, bool *open);
 
-		[[nodiscard]] std::string getSelectedFile() const;
+		[[nodiscard]] std::filesystem::path getSelectedFile() const;
 
 		[[nodiscard]] std::string getSelectedFilename() const;
 

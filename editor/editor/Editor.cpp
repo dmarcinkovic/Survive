@@ -158,7 +158,7 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 
 		if (!m_OpenDialog)
 		{
-			std::string file = m_OpenWindow.getSelectedFile();
+			std::string file = m_OpenWindow.getSelectedFile().string();
 			if (!file.empty())
 			{
 				m_Manager.setSelectedEntity(-1);
@@ -182,7 +182,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 		if (!m_SaveAsDialog)
 		{
-			std::string selectedFile = m_SaveWindow.getSelectedFile();
+			std::string selectedFile = m_SaveWindow.getSelectedFile().string();
 			if (!selectedFile.empty())
 			{
 				m_SavedFile = std::move(selectedFile);

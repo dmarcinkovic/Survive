@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <iostream>
 
 #include "Log.h"
 #include "Loader.h"
@@ -94,7 +95,7 @@ std::optional<Survive::Model>
 Survive::EditorUtil::getLoadedModel(const FileChooser &fileChooser)
 try
 {
-	std::string selectedFile = fileChooser.getSelectedFile();
+	std::string selectedFile = fileChooser.getSelectedFile().string();
 	Model model;
 
 	if (selectedFile.ends_with("obj"))
@@ -141,7 +142,7 @@ void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture
 
 std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser)
 {
-	std::string selectedFile = fileChooser.getSelectedFile();
+	std::string selectedFile = fileChooser.getSelectedFile().string();
 	Texture texture = Loader::loadTexture(selectedFile.c_str());
 
 	if (texture.isValidTexture())
@@ -293,11 +294,12 @@ try
 	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
 }
 
-void Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file)
+void
+Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file)
 {
 	std::string filename = file.string();
 
-	renderer.addMousePickingListener([=, &registry, &renderer](int selectedEntity){
+	renderer.addMousePickingListener([=, &registry, &renderer](int selectedEntity) {
 		if (selectedEntity < 0)
 		{
 			renderer.popMousePickingListener();
@@ -320,4 +322,34 @@ void Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &r
 
 		renderer.popMousePickingListener();
 	});
+}
+
+void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &open)
+{
+	if (open)
+	{
+		fileChooser.open(600.0f, 400.0f, &open);
+
+		std::filesystem::path selectedFile = fileChooser.getSelectedFile();
+		if (!open && !selectedFile.string().empty() && selectedFile.has_extension())
+		{
+			try
+			{
+				if (selectedFile.extension() == ".fnt")
+				{
+					font.loadFontFromFntFile(selectedFile.c_str());
+				} else if (selectedFile.extension() == ".json")
+				{
+					font.loadFontFromJsonFile(selectedFile.c_str());
+				} else
+				{
+					std::string message = "Cannot load file with extension: " + selectedFile.extension().string();
+					Log::logWindow(LogType::ERROR, message);
+				}
+			} catch (const std::exception &ignorable)
+			{
+				Log::logWindow(LogType::ERROR, "Cannot load file: " + selectedFile.string());
+			}
+		}
+	}
 }

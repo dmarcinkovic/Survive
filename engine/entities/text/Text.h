@@ -56,6 +56,8 @@ namespace Survive
 
 		std::string &getText();
 
+		Font &getFont();
+
 	private:
 		void calculateTextureVertices();
 

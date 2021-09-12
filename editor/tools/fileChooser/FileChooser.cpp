@@ -249,11 +249,11 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 	ImGui::PopStyleColor();
 }
 
-std::string Survive::FileChooser::getSelectedFile() const
+std::filesystem::path Survive::FileChooser::getSelectedFile() const
 {
 	if (!m_OpenedFile)
 	{
-		return "";
+		return std::filesystem::path{};
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);

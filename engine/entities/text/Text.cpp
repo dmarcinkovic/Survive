@@ -157,3 +157,8 @@ std::string &Survive::Text::getText()
 {
 	return m_Text;
 }
+
+Survive::Font &Survive::Text::getFont()
+{
+	return m_Font;
+}
