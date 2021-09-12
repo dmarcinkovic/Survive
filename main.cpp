@@ -62,7 +62,7 @@ int main()
 	text.loadTexture(loader);
 
 	registry.emplace<TagComponent>(textEntity, "text");
-	registry.emplace<TextComponent>(textEntity, text);
+//	registry.emplace<TextComponent>(textEntity, text);
 	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
 

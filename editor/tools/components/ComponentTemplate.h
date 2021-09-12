@@ -7,6 +7,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
+#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
@@ -37,12 +38,12 @@ namespace Survive
 				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
 				m_TextureIcon(Loader::loadTexture("res/texture.png"))
 		{
-			Font arial("res/font.png", m_Loader);
-			arial.loadFontFromJsonFile("res/font.json");
+			Font arial("res/arial.png", m_Loader);
+			arial.loadFontFromFntFile("res/arial.fnt");
 			m_Fonts.emplace_back(arial);
 
 			Font candara("res/candara.png", m_Loader);
-			arial.loadFontFromFntFile("res/candara.fnt");
+			candara.loadFontFromFntFile("res/candara.fnt");
 			m_Fonts.emplace_back(candara);
 		}
 
@@ -213,14 +214,15 @@ namespace Survive
 			ImGui::Text("Text");
 
 			std::string &text = component.text.getText();
-			char *buf = text.data();
+			char buffer[text.capacity()];
+			strcpy(buffer, text.data());
 
 			float height = ImGui::GetTextLineHeight();
 			ImVec2 size(-1, 3 * height);
 
-			if (ImGui::InputTextMultiline("##Text multiline", buf, text.capacity(), size))
+			if (ImGui::InputTextMultiline("##Text multiline", buffer, text.capacity(), size))
 			{
-				component.text.setText(buf, m_Loader);
+				component.text.setText(buffer, m_Loader);
 			}
 
 			std::vector<const char *> items{"Arial", "Candara"};
@@ -233,7 +235,8 @@ namespace Survive
 
 			if (ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2))
 			{
-				component.text.getFont() = m_Fonts[m_SelectedItem];
+				component.text.setFont(m_Fonts[m_SelectedItem]);
+				component.text.loadTexture(m_Loader);
 			}
 
 			ImGui::SameLine();

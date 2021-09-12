@@ -17,8 +17,7 @@ Survive::Text::Text()
 	m_Text.reserve(512);
 }
 
-Survive::Model
-Survive::Text::calculateVertices(Loader &loader)
+Survive::Model Survive::Text::calculateVertices(Loader &loader)
 {
 	m_Vertices.clear();
 	m_TextureCoordinates.clear();
@@ -87,12 +86,24 @@ void Survive::Text::setText(std::string newText, Loader &loader)
 {
 	m_Text = std::move(newText);
 
+	if (!m_Font.isFontLoaded())
+	{
+		return;
+	}
+
 	m_TextureCoordinates.clear();
 	m_Vertices.clear();
 
 	calculateTextureVertices();
 
-	loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Model.vaoID());
+	if (!m_Model.isValidTexture())
+	{
+		m_Model = TexturedModel(calculateVertices(loader), m_TextTexture);
+	} else
+	{
+		loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Model.vaoID());
+	}
+
 	m_Model.setVertexCount(static_cast<int>(m_Vertices.size()) / 2);
 }
 
@@ -161,4 +172,10 @@ std::string &Survive::Text::getText()
 Survive::Font &Survive::Text::getFont()
 {
 	return m_Font;
+}
+
+void Survive::Text::setFont(const Font &font)
+{
+	m_Font = font;
+	m_TextTexture = font.getTexture();
 }

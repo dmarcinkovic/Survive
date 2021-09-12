@@ -19,6 +19,8 @@ namespace Survive
 		std::unordered_map<int, Character> m_Characters;
 		Texture m_FontTexture{};
 
+		bool m_Loaded{};
+
 	public:
 		Font(const char *textureAtlas, Loader &loader);
 
@@ -33,6 +35,8 @@ namespace Survive
 		const Texture &getTexture() const;
 
 		void setTexture(const Texture &fontTexture);
+
+		[[nodiscard]] bool isFontLoaded() const;
 	};
 }
 

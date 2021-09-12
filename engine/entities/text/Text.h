@@ -58,6 +58,8 @@ namespace Survive
 
 		Font &getFont();
 
+		void setFont(const Font &font);
+
 	private:
 		void calculateTextureVertices();
 

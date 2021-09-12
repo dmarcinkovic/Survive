@@ -364,8 +364,7 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Font &f
 		{
 			try
 			{
-				Texture textureAtlas = Loader::loadTexture(selectedFile.c_str());
-				font.setTexture(textureAtlas);
+				font.setTexture(Loader::loadTexture(selectedFile.c_str()));
 			} catch (const std::exception &ignorable)
 			{
 				Log::logWindow(LogType::ERROR, "Cannot load " + selectedFile.filename().string());

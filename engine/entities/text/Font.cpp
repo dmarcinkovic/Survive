@@ -33,6 +33,7 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 		}
 	}
 
+	m_Loaded = true;
 	reader.close();
 }
 
@@ -58,6 +59,7 @@ void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 		}
 	}
 
+	m_Loaded = true;
 	reader.close();
 }
 
@@ -74,4 +76,9 @@ const Survive::Texture &Survive::Font::getTexture() const
 void Survive::Font::setTexture(const Texture &fontTexture)
 {
 	m_FontTexture = fontTexture;
+}
+
+bool Survive::Font::isFontLoaded() const
+{
+	return m_Loaded;
 }
