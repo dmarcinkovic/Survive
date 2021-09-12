@@ -231,7 +231,12 @@ namespace Survive
 			ImGui::Text("Font");
 			ImGui::NextColumn();
 			ImGui::BeginGroup();
-			ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2);
+
+			if (ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2))
+			{
+				component.text.getFont() = m_Fonts[m_SelectedItem];
+			}
+
 			ImGui::SameLine();
 
 			auto textureId = reinterpret_cast<ImTextureID>(m_FontIcon.textureId());
