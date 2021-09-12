@@ -21,8 +21,11 @@ namespace Survive
 
 		bool m_Loaded{};
 
+		float m_Height{};
+		float m_ScaleHeight{};
+
 	public:
-		Font(const char *textureAtlas);
+		explicit Font(const char *textureAtlas);
 
 		Font() = default;
 
@@ -37,6 +40,10 @@ namespace Survive
 		void setTexture(const Texture &fontTexture);
 
 		[[nodiscard]] bool isFontLoaded() const;
+
+		float getHeight() const;
+
+		float getScaleHeight() const;
 	};
 }
 

@@ -16,7 +16,7 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 {
 	std::ifstream reader(fntFile);
 
-	float w = 0, h = 0;
+	float w = 0;
 
 	std::string line;
 	while (std::getline(reader, line))
@@ -24,12 +24,14 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 		auto result = Util::splitByRegex(line);
 		if (!result.empty() && result[0] == "char")
 		{
-			Character c = Util::getCharacterFromFntFile(result, w, h);
+			Character c = Util::getCharacterFromFntFile(result, w, m_ScaleHeight);
 			m_Characters.insert({c.m_Id, c});
 		} else if (!result.empty() && result[0] == "common")
 		{
 			w = Util::getNumber(result[3]);
-			h = Util::getNumber(result[4]);
+
+			m_ScaleHeight = Util::getNumber(result[4]);
+			m_Height = Util::getNumber(result[1]);
 		}
 	}
 
@@ -41,12 +43,12 @@ void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 {
 	std::ifstream reader(jsonFile);
 
-	float scaleW = 0, scaleH = 0;
+	float scaleW = 0;
 
 	std::string line;
 	while (std::getline(reader, line))
 	{
-		auto c = Util::getCharacterFromJsonFile(line, scaleW, scaleH);
+		auto c = Util::getCharacterFromJsonFile(line, scaleW, m_ScaleHeight);
 		if (c)
 		{
 			m_Characters.insert({c.value().m_Id, c.value()});
@@ -55,7 +57,10 @@ void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 			scaleW = Util::getNumber(line, ':');
 		} else if (line.find("height") != -1)
 		{
-			scaleH = Util::getNumber(line, ':');
+			m_ScaleHeight = Util::getNumber(line, ':');
+		} else if (line.find("size") != -1)
+		{
+			m_Height = Util::getNumber(line, ':');
 		}
 	}
 
@@ -81,4 +86,14 @@ void Survive::Font::setTexture(const Texture &fontTexture)
 bool Survive::Font::isFontLoaded() const
 {
 	return m_Loaded;
+}
+
+float Survive::Font::getHeight() const
+{
+	return m_Height;
+}
+
+float Survive::Font::getScaleHeight() const
+{
+	return m_ScaleHeight;
 }

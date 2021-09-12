@@ -34,6 +34,13 @@ void Survive::Text::calculateTextureVertices()
 
 	for (char c: m_Text)
 	{
+		if (c == '\n')
+		{
+			cursorY -= m_Font.getHeight() / m_Font.getScaleHeight();
+			cursorX = 0;
+			continue;
+		}
+
 		const Character &character = m_Font.getCharacter(c);
 
 		addVertices(character, cursorX, cursorY);
