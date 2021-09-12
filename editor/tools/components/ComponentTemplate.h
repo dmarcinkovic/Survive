@@ -214,8 +214,7 @@ namespace Survive
 			ImGui::Text("Text");
 
 			std::string &text = component.text.getText();
-			char buffer[text.capacity()];
-			strcpy(buffer, text.data());
+			char *buffer = text.data();
 
 			float height = ImGui::GetTextLineHeight();
 			ImVec2 size(-1, 3 * height);
@@ -267,7 +266,7 @@ namespace Survive
 				openTextureAtlas = true;
 			}
 
-			EditorUtil::loadFontTextureAtlas(m_FileChooser, component.text.getFont(), openTextureAtlas);
+			EditorUtil::loadFontTextureAtlas(m_FileChooser, component.text, m_Loader, openTextureAtlas);
 
 			if (ImGui::IsItemHovered())
 			{
