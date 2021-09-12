@@ -22,7 +22,7 @@ namespace Survive
 		bool m_Loaded{};
 
 	public:
-		Font(const char *textureAtlas, Loader &loader);
+		Font(const char *textureAtlas);
 
 		Font() = default;
 

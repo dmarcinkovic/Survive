@@ -7,7 +7,7 @@
 #include "Font.h"
 #include "Util.h"
 
-Survive::Font::Font(const char *textureAtlas, Loader &loader)
+Survive::Font::Font(const char *textureAtlas)
 		: m_FontTexture(Loader::loadTexture(textureAtlas))
 {
 }

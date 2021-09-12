@@ -38,11 +38,11 @@ namespace Survive
 				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
 				m_TextureIcon(Loader::loadTexture("res/texture.png"))
 		{
-			Font arial("res/arial.png", m_Loader);
+			Font arial("res/arial.png");
 			arial.loadFontFromFntFile("res/arial.fnt");
 			m_Fonts.emplace_back(arial);
 
-			Font candara("res/candara.png", m_Loader);
+			Font candara("res/candara.png");
 			candara.loadFontFromFntFile("res/candara.fnt");
 			m_Fonts.emplace_back(candara);
 		}

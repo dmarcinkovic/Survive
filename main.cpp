@@ -1,5 +1,3 @@
-#include "Font.h"
-#include "Text.h"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "DaeParser.h"
@@ -52,17 +50,9 @@ int main()
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -10, -40});
 	registry.emplace<ShadowComponent>(dragon, true);
 
-	Font font("res/arial.png", loader);
-	font.loadFontFromFntFile("res/arial.fnt");
-
 	auto textEntity = registry.create();
 
-	Text text("Text", font);
-	text.centerText();
-	text.loadTexture(loader);
-
 	registry.emplace<TagComponent>(textEntity, "text");
-//	registry.emplace<TextComponent>(textEntity, text);
 	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
 	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
 

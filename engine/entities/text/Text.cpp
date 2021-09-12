@@ -7,7 +7,7 @@
 #include "Text.h"
 
 Survive::Text::Text(std::string text, Font font)
-		: m_Text(std::move(text)), m_Font(std::move(font)), m_TextTexture(font.getTexture())
+		: m_Text(std::move(text)), m_Font(std::move(font))
 {
 	m_Text.reserve(512);
 }
@@ -74,7 +74,7 @@ void Survive::Text::addVertices(const Character &character, float cursorX, float
 
 void Survive::Text::loadTexture(Loader &loader)
 {
-	m_Model = TexturedModel(calculateVertices(loader), m_TextTexture);
+	m_Model = TexturedModel(calculateVertices(loader), m_Font.getTexture());
 }
 
 void Survive::Text::centerText()
@@ -98,7 +98,7 @@ void Survive::Text::setText(std::string newText, Loader &loader)
 
 	if (!m_Model.isValidTexture())
 	{
-		m_Model = TexturedModel(calculateVertices(loader), m_TextTexture);
+		m_Model = TexturedModel(calculateVertices(loader), m_Font.getTexture());
 	} else
 	{
 		loader.updateFloatData(m_Vertices, m_TextureCoordinates, m_Model.vaoID());
@@ -177,5 +177,4 @@ Survive::Font &Survive::Text::getFont()
 void Survive::Text::setFont(const Font &font)
 {
 	m_Font = font;
-	m_TextTexture = font.getTexture();
 }

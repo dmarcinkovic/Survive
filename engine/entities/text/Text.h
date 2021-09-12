@@ -23,8 +23,6 @@ namespace Survive
 		Font m_Font;
 		bool m_Centered{};
 
-		Texture m_TextTexture{};
-
 		glm::vec3 m_BorderColor{};
 		float m_BorderWidth{};
 
