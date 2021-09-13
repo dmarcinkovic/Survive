@@ -353,7 +353,7 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Loader &loader, bool &open)
+void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open)
 {
 	if (open)
 	{
@@ -364,7 +364,7 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 		{
 			try
 			{
-				text.getFont().setTexture(Loader::loadTexture(selectedFile.c_str()));
+				font.setTexture(Loader::loadTexture(selectedFile.c_str()));
 				text.loadTexture(loader);
 			} catch (const std::exception &ignorable)
 			{

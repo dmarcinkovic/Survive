@@ -25,13 +25,18 @@ namespace Survive
 
 		glm::vec3 m_BorderColor{};
 		float m_BorderWidth{};
+		bool m_AddBorder{};
 
 		TexturedModel m_Model;
 
 		std::vector<float> m_Vertices;
 		std::vector<float> m_TextureCoordinates;
 
+		float m_LineSpacing = 1.0f;
+
 	public:
+		friend class ComponentTemplate;
+
 		Text(std::string text, Font font);
 
 		Text();
@@ -49,12 +54,6 @@ namespace Survive
 		void setText(std::string newText, Loader &loader);
 
 		const TexturedModel &getModel() const;
-
-		const std::string &getText() const;
-
-		std::string &getText();
-
-		Font &getFont();
 
 		void setFont(const Font &font);
 

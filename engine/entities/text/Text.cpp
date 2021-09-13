@@ -36,7 +36,7 @@ void Survive::Text::calculateTextureVertices()
 	{
 		if (c == '\n')
 		{
-			cursorY -= m_Font.getHeight() / m_Font.getScaleHeight();
+			cursorY -= m_LineSpacing * (m_Font.getHeight() / m_Font.getScaleHeight());
 			cursorX = 0;
 			continue;
 		}
@@ -158,27 +158,12 @@ const glm::vec3 &Survive::Text::getBorderColor() const
 
 float Survive::Text::getBorderWidth() const
 {
-	return m_BorderWidth;
+	return m_AddBorder ? m_BorderWidth : 0;
 }
 
 const Survive::TexturedModel &Survive::Text::getModel() const
 {
 	return m_Model;
-}
-
-const std::string &Survive::Text::getText() const
-{
-	return m_Text;
-}
-
-std::string &Survive::Text::getText()
-{
-	return m_Text;
-}
-
-Survive::Font &Survive::Text::getFont()
-{
-	return m_Font;
 }
 
 void Survive::Text::setFont(const Font &font)

@@ -36,7 +36,7 @@ namespace Survive
 	public:
 		ComponentTemplate()
 				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
-				m_TextureIcon(Loader::loadTexture("res/texture.png"))
+				  m_TextureIcon(Loader::loadTexture("res/texture.png"))
 		{
 			Font arial("res/arial.png");
 			arial.loadFontFromFntFile("res/arial.fnt");
@@ -212,16 +212,17 @@ namespace Survive
 		if (ImGui::CollapsingHeader("Text", visible))
 		{
 			ImGui::Text("Text");
+			Text &text = component.text;
 
-			std::string &text = component.text.getText();
-			char *buffer = text.data();
+			std::string &string = text.m_Text;
+			char *buffer = string.data();
 
 			float height = ImGui::GetTextLineHeight();
 			ImVec2 size(-1, 3 * height);
 
-			if (ImGui::InputTextMultiline("##Text multiline", buffer, text.capacity(), size))
+			if (ImGui::InputTextMultiline("##Text multiline", buffer, string.capacity(), size))
 			{
-				component.text.setText(buffer, m_Loader);
+				text.setText(buffer, m_Loader);
 			}
 
 			std::vector<const char *> items{"Arial", "Candara"};
@@ -235,8 +236,8 @@ namespace Survive
 
 			if (ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2))
 			{
-				component.text.setFont(m_Fonts[m_SelectedItem]);
-				component.text.loadTexture(m_Loader);
+				text.setFont(m_Fonts[m_SelectedItem]);
+				text.loadTexture(m_Loader);
 			}
 
 			ImGui::SameLine();
@@ -249,7 +250,7 @@ namespace Survive
 				openFont = true;
 			}
 
-			EditorUtil::loadFont(m_FileChooser, component.text.getFont(), openFont);
+			EditorUtil::loadFont(m_FileChooser, text.m_Font, openFont);
 
 			if (ImGui::IsItemHovered())
 			{
@@ -267,7 +268,7 @@ namespace Survive
 				openTextureAtlas = true;
 			}
 
-			EditorUtil::loadFontTextureAtlas(m_FileChooser, component.text, m_Loader, openTextureAtlas);
+			EditorUtil::loadFontTextureAtlas(m_FileChooser, text, text.m_Font, m_Loader, openTextureAtlas);
 
 			if (ImGui::IsItemHovered())
 			{
@@ -282,9 +283,8 @@ namespace Survive
 			ImGui::Text("Line Spacing");
 			ImGui::NextColumn();
 
-			float v = 0;
 			ImGui::SetNextItemWidth(-1);
-			ImGui::InputFloat("##Line spacing", &v);
+			ImGui::InputFloat("##Line spacing", &text.m_LineSpacing);
 
 			ImGui::Columns();
 
@@ -294,8 +294,11 @@ namespace Survive
 
 			ImGui::NextColumn();
 
-			bool a{};
-			ImGui::Checkbox("Center text", &a);
+			if (ImGui::Checkbox("Center string", &text.m_Centered) &&
+				!text.m_Text.empty() && text.m_Font.isFontLoaded())
+			{
+				text.loadTexture(m_Loader);
+			}
 
 			ImGui::Columns();
 
@@ -307,21 +310,18 @@ namespace Survive
 			ImGui::Text("Add border");
 			ImGui::NextColumn();
 
-			bool addBorder{};
-			ImGui::Checkbox("##Add text border", &addBorder);
+			ImGui::Checkbox("##Add string border", &text.m_AddBorder);
 			ImGui::NextColumn();
 			ImGui::Text("Border width");
 			ImGui::NextColumn();
-			float borderWidth{};
 			ImGui::SetNextItemWidth(-1);
-			ImGui::InputFloat("##Text Border width", &borderWidth);
+			ImGui::InputFloat("##Text Border width", &text.m_BorderWidth);
 			ImGui::NextColumn();
 			ImGui::Text("Border color");
 			ImGui::NextColumn();
 
-			glm::vec3 borderColor{};
 			ImGui::SetNextItemWidth(-1);
-			ImGui::ColorEdit3("##Border color", glm::value_ptr(borderColor));
+			ImGui::ColorEdit3("##Border color", glm::value_ptr(text.m_BorderColor));
 			ImGui::Columns();
 
 			ImGui::Unindent();

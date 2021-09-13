@@ -58,7 +58,7 @@ namespace Survive
 
 		static void loadFont(FileChooser &fileChooser, Font &font, bool &open);
 
-		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Loader &loader, bool &open);
+		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open);
 
 		static void centerText(const std::string &text);
 
