@@ -13,7 +13,8 @@
 
 Survive::EditorUtil::EditorUtil()
 		: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
-		  m_TextureIcon(Loader::loadTexture("res/texture.png"))
+		  m_TextureIcon(Loader::loadTexture("res/texture.png")),
+		  m_Items{"Arial", "Candara"}
 {
 	Font arial("res/arial.png");
 	arial.loadFontFromFntFile("res/arial.fnt");
@@ -466,7 +467,8 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font 
 	ImGui::SameLine();
 	ImGui::BeginGroup();
 
-	if (ImGui::Combo("##Text Font", &m_SelectedItem, m_Items.data(), 2))
+	auto itemsCount = static_cast<int>(m_Items.size());
+	if (ImGui::Combo("##Text Font", &m_SelectedItem, m_Items.data(), itemsCount))
 	{
 		text.setFont(m_Fonts[m_SelectedItem]);
 		text.loadTexture(m_Loader);
