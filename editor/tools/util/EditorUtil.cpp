@@ -2,6 +2,7 @@
 // Created by david on 09. 05. 2021..
 //
 
+#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
 #include "Log.h"
@@ -9,6 +10,19 @@
 #include "ObjParser.h"
 #include "Components.h"
 #include "EditorUtil.h"
+
+Survive::EditorUtil::EditorUtil()
+		: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
+		  m_TextureIcon(Loader::loadTexture("res/texture.png"))
+{
+	Font arial("res/arial.png");
+	arial.loadFontFromFntFile("res/arial.fnt");
+	m_Fonts.emplace_back(arial);
+
+	Font candara("res/candara.png");
+	candara.loadFontFromFntFile("res/candara.fnt");
+	m_Fonts.emplace_back(candara);
+}
 
 void Survive::EditorUtil::setStyleColors()
 {
@@ -353,7 +367,8 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open)
+void
+Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open)
 {
 	if (open)
 	{
@@ -372,4 +387,101 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 			}
 		}
 	}
+}
+
+void Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader &loader)
+{
+	char *buffer = string.data();
+	float height = ImGui::GetTextLineHeight();
+
+	ImVec2 size(-1, 3 * height);
+
+	if (ImGui::InputTextMultiline("##Text multiline", buffer, string.capacity(), size))
+	{
+		text.setText(buffer, loader);
+	}
+
+	ImGui::Separator();
+}
+
+void Survive::EditorUtil::loadFontButton(const Texture &icon, const char *text, bool &open)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+
+	auto image = reinterpret_cast<ImTextureID>(icon.textureId());
+
+	float height = ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(image, ImVec2(1.5f * height, 1.5f * height), uv0, uv1))
+	{
+		open = true;
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted(text);
+		ImGui::EndTooltip();
+	}
+}
+
+void Survive::EditorUtil::loadFontBorder(bool &addBorder, float &borderWidth, glm::vec3 &borderColor)
+{
+	ImGui::Separator();
+	ImGui::Text("Border");
+	ImGui::Indent();
+
+	ImGui::Columns(2, nullptr, false);
+	ImGui::Text("Add border");
+	ImGui::NextColumn();
+
+	ImGui::Checkbox("##Add string border", &addBorder);
+	ImGui::NextColumn();
+
+	ImGui::Text("Border width");
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1);
+	ImGui::InputFloat("##Text Border width", &borderWidth);
+	ImGui::NextColumn();
+
+	ImGui::Text("Border color");
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1);
+	ImGui::ColorEdit3("##Border color", glm::value_ptr(borderColor));
+	ImGui::Columns();
+
+	ImGui::Unindent();
+
+	ImGui::NewLine();
+}
+
+void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font &font)
+{
+	ImGui::Bullet();
+	ImGui::Text("Character");
+
+	ImGui::Text("Font");
+	ImGui::SameLine();
+	ImGui::BeginGroup();
+
+	if (ImGui::Combo("##Text Font", &m_SelectedItem, m_Items.data(), 2))
+	{
+		text.setFont(m_Fonts[m_SelectedItem]);
+		text.loadTexture(m_Loader);
+	}
+
+	ImGui::SameLine();
+
+	static bool loadFont{};
+	EditorUtil::loadFontButton(m_FontIcon, "Load font", loadFont);
+	EditorUtil::loadFont(fileChooser, font, loadFont);
+
+	ImGui::SameLine();
+
+	static bool loadTextureAtlas{};
+	EditorUtil::loadFontButton(m_TextureIcon, "Load font texture atlas", loadTextureAtlas);
+	EditorUtil::loadFontTextureAtlas(fileChooser, text, font, m_Loader, loadTextureAtlas);
+	ImGui::EndGroup();
 }

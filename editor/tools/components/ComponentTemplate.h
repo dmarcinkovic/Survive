@@ -28,25 +28,7 @@ namespace Survive
 
 		EditorUtil m_EditorUtil;
 
-		int m_SelectedItem = -1;
-		Texture m_FontIcon;
-		Texture m_TextureIcon;
-		std::vector<Font> m_Fonts;
-
 	public:
-		ComponentTemplate()
-				: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
-				  m_TextureIcon(Loader::loadTexture("res/texture.png"))
-		{
-			Font arial("res/arial.png");
-			arial.loadFontFromFntFile("res/arial.fnt");
-			m_Fonts.emplace_back(arial);
-
-			Font candara("res/candara.png");
-			candara.loadFontFromFntFile("res/candara.fnt");
-			m_Fonts.emplace_back(candara);
-		}
-
 		template<typename ComponentType>
 		void drawComponent(ComponentType &component, bool * = nullptr)
 		{}
@@ -214,70 +196,8 @@ namespace Survive
 			ImGui::Text("Text");
 			Text &text = component.text;
 
-			std::string &string = text.m_Text;
-			char *buffer = string.data();
-
-			float height = ImGui::GetTextLineHeight();
-			ImVec2 size(-1, 3 * height);
-
-			if (ImGui::InputTextMultiline("##Text multiline", buffer, string.capacity(), size))
-			{
-				text.setText(buffer, m_Loader);
-			}
-
-			std::vector<const char *> items{"Arial", "Candara"};
-			ImGui::Separator();
-			ImGui::Bullet();
-			ImGui::Text("Character");
-
-			ImGui::Text("Font");
-			ImGui::SameLine();
-			ImGui::BeginGroup();
-
-			if (ImGui::Combo("##Text Font", &m_SelectedItem, items.data(), 2))
-			{
-				text.setFont(m_Fonts[m_SelectedItem]);
-				text.loadTexture(m_Loader);
-			}
-
-			ImGui::SameLine();
-
-			auto fontIcon = reinterpret_cast<ImTextureID>(m_FontIcon.textureId());
-
-			static bool openFont = false;
-			if (ImGui::ImageButton(fontIcon, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
-			{
-				openFont = true;
-			}
-
-			EditorUtil::loadFont(m_FileChooser, text.m_Font, openFont);
-
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::BeginTooltip();
-				ImGui::TextUnformatted("Load font");
-				ImGui::EndTooltip();
-			}
-
-			ImGui::SameLine();
-
-			auto textureIcon = reinterpret_cast<ImTextureID>(m_TextureIcon.textureId());
-			static bool openTextureAtlas = false;
-			if (ImGui::ImageButton(textureIcon, ImVec2(1.5f * height, 1.5f * height), ImVec2(0, 1), ImVec2(1, 0)))
-			{
-				openTextureAtlas = true;
-			}
-
-			EditorUtil::loadFontTextureAtlas(m_FileChooser, text, text.m_Font, m_Loader, openTextureAtlas);
-
-			if (ImGui::IsItemHovered())
-			{
-				ImGui::BeginTooltip();
-				ImGui::TextUnformatted("Load font texture atlas");
-				ImGui::EndTooltip();
-			}
-
-			ImGui::EndGroup();
+			EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
+			m_EditorUtil.chooseFont(m_FileChooser, text, text.m_Font);
 
 			ImGui::Columns(2, nullptr, false);
 			ImGui::Text("Line Spacing");
@@ -302,31 +222,7 @@ namespace Survive
 
 			ImGui::Columns();
 
-			ImGui::Separator();
-			ImGui::Text("Border");
-			ImGui::Indent();
-
-			ImGui::Columns(2, nullptr, false);
-			ImGui::Text("Add border");
-			ImGui::NextColumn();
-
-			ImGui::Checkbox("##Add string border", &text.m_AddBorder);
-			ImGui::NextColumn();
-			ImGui::Text("Border width");
-			ImGui::NextColumn();
-			ImGui::SetNextItemWidth(-1);
-			ImGui::InputFloat("##Text Border width", &text.m_BorderWidth);
-			ImGui::NextColumn();
-			ImGui::Text("Border color");
-			ImGui::NextColumn();
-
-			ImGui::SetNextItemWidth(-1);
-			ImGui::ColorEdit3("##Border color", glm::value_ptr(text.m_BorderColor));
-			ImGui::Columns();
-
-			ImGui::Unindent();
-
-			ImGui::NewLine();
+			EditorUtil::loadFontBorder(text.m_AddBorder, text.m_BorderWidth, text.m_BorderColor);
 		}
 	}
 }

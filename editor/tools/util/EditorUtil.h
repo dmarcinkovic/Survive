@@ -29,7 +29,17 @@ namespace Survive
 		bool m_LoadTexture{};
 		bool m_LoadSound{};
 
+		int m_SelectedItem = -1;
+		std::vector<Font> m_Fonts;
+
+		std::vector<const char*> m_Items;
+
+		Texture m_FontIcon;
+		Texture m_TextureIcon;
+
 	public:
+		EditorUtil();
+
 		static void setStyleColors();
 
 		static void resetStyleColors();
@@ -65,6 +75,14 @@ namespace Survive
 		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);
 
 		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
+
+		static void drawTextInput(Text &text, std::string &string, Loader &loader);
+
+		static void loadFontButton(const Texture &icon, const char *text, bool &open);
+
+		static void loadFontBorder(bool &addBorder, float &borderWidth, glm::vec3 &borderColor);
+
+		void chooseFont(FileChooser &fileChooser, Text &text, Font &font);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
