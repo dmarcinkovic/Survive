@@ -19,6 +19,11 @@ namespace Survive
 		ComponentTemplate m_ComponentTemplate;
 
 	public:
+		[[nodiscard]] bool isUsingKeyEvents() const
+		{
+			return m_ComponentTemplate.isUsingKeyEvents();
+		}
+
 		static std::vector<const char *> getListOfComponents()
 		{
 			std::vector<const char *> components = {

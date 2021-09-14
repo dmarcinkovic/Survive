@@ -28,10 +28,17 @@ namespace Survive
 
 		EditorUtil m_EditorUtil;
 
+		bool m_IsUsingKeyEvents{};
+
 	public:
 		template<typename ComponentType>
 		void drawComponent(ComponentType &component, bool * = nullptr)
 		{}
+
+		[[nodiscard]] bool isUsingKeyEvents() const
+		{
+			return m_IsUsingKeyEvents;
+		}
 	};
 
 	template<>
@@ -196,7 +203,7 @@ namespace Survive
 			ImGui::Text("Text");
 			Text &text = component.text;
 
-			EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
+			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
 			m_EditorUtil.chooseFont(m_FileChooser, text, text.m_Font);
 
 			EditorUtil::chooseFontSpacing(text.m_LineSpacing);

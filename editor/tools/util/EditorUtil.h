@@ -76,7 +76,7 @@ namespace Survive
 
 		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
 
-		static void drawTextInput(Text &text, std::string &string, Loader &loader);
+		static bool drawTextInput(Text &text, std::string &string, Loader &loader);
 
 		static void loadFontButton(const Texture &icon, const char *text, bool &open);
 

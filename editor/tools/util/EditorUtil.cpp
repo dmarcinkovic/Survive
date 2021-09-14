@@ -390,7 +390,7 @@ Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, 
 	}
 }
 
-void Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader &loader)
+bool Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader &loader)
 {
 	char *buffer = string.data();
 	float height = ImGui::GetTextLineHeight();
@@ -402,7 +402,11 @@ void Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader 
 		text.setText(buffer, loader);
 	}
 
+	bool isItemFocused = ImGui::IsItemFocused();
+
 	ImGui::Separator();
+
+	return isItemFocused;
 }
 
 void Survive::EditorUtil::loadFontButton(const Texture &icon, const char *text, bool &open)

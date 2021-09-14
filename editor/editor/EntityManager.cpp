@@ -208,5 +208,5 @@ void Survive::EntityManager::setSelectedEntity(int selectedEntity)
 
 bool Survive::EntityManager::isFocused() const
 {
-	return m_CreateOpen || m_RenameOpen;
+	return m_CreateOpen || m_RenameOpen || m_Util.isUsingKeyEvents();
 }
