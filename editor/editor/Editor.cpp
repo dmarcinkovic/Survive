@@ -47,8 +47,8 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	if (ImGui::Begin("Debug"))
 	{
 		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
-		ImGui::End();
 	}
+	ImGui::End();
 
 	Log::drawLogWindow();
 
@@ -73,26 +73,28 @@ void Survive::Editor::dock()
 
 void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &registry)
 {
-	ImGui::Begin("Scene window");
-	m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
+	if (ImGui::Begin("Scene window"))
+	{
+		m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
-	ImVec2 pos = ImGui::GetCursorScreenPos();
-	m_ScenePosX = pos.x;
-	m_ScenePosY = pos.y;
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+		m_ScenePosX = pos.x;
+		m_ScenePosY = pos.y;
 
-	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
+		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
-	m_SceneWidth = ImGui::GetWindowWidth();
-	m_SceneHeight = ImGui::GetWindowHeight();
+		m_SceneWidth = ImGui::GetWindowWidth();
+		m_SceneHeight = ImGui::GetWindowHeight();
 
-	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-										 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
-										 ImVec2(1, 0));
+		ImGui::GetWindowDrawList()->AddImage(textureId, pos,
+											 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
+											 ImVec2(1, 0));
 
-	m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
-	m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
+		m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
+		m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 
-	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+		m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+	}
 
 	ImGui::End();
 }
@@ -102,16 +104,16 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 	if (ImGui::Begin("Scene hierarchy"))
 	{
 		m_Manager.addEntity(registry);
-
-		ImGui::End();
 	}
+
+	ImGui::End();
 
 	if (ImGui::Begin("Property panel"))
 	{
 		m_Manager.drawPropertyPanel(registry);
-
-		ImGui::End();
 	}
+
+	ImGui::End();
 }
 
 void Survive::Editor::setColorStyle()

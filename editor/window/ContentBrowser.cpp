@@ -41,9 +41,9 @@ void Survive::ContentBrowser::draw()
 
 		ImGui::NextColumn();
 		drawDirectoryContent();
-
-		ImGui::End();
 	}
+
+	ImGui::End();
 
 	ImGui::PopStyleColor(3);
 }
@@ -176,15 +176,16 @@ void Survive::ContentBrowser::renderImageWindow()
 	if (m_DrawImage)
 	{
 		std::string windowTitle = m_ImageFilename + "###Image view";
-		ImGui::Begin(windowTitle.c_str(), &m_DrawImage);
+		if (ImGui::Begin(windowTitle.c_str(), &m_DrawImage))
+		{
+			auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
 
-		auto image = reinterpret_cast<ImTextureID>(m_Image.textureId());
+			ImVec2 windowSize = ImGui::GetWindowSize();
+			ImVec2 imagePosition((windowSize.x - imageSize.x) / 2.0f, (windowSize.y - imageSize.y) / 2.0f);
 
-		ImVec2 windowSize = ImGui::GetWindowSize();
-		ImVec2 imagePosition((windowSize.x - imageSize.x) / 2.0f, (windowSize.y - imageSize.y) / 2.0f);
-
-		ImGui::SetCursorPos(imagePosition);
-		ImGui::Image(image, imageSize, m_Uv0, m_Uv1);
+			ImGui::SetCursorPos(imagePosition);
+			ImGui::Image(image, imageSize, m_Uv0, m_Uv1);
+		}
 
 		ImGui::End();
 	}
