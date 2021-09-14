@@ -199,20 +199,7 @@ namespace Survive
 			EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
 			m_EditorUtil.chooseFont(m_FileChooser, text, text.m_Font);
 
-			ImGui::Columns(2, nullptr, false);
-			ImGui::Text("Line Spacing");
-			ImGui::NextColumn();
-
-			ImGui::SetNextItemWidth(-1);
-			ImGui::InputFloat("##Line spacing", &text.m_LineSpacing);
-
-			ImGui::Columns();
-
-			ImGui::Separator();
-			ImGui::Columns(2, nullptr, false);
-			ImGui::Text("Alignment");
-
-			ImGui::NextColumn();
+			EditorUtil::chooseFontSpacing(text.m_LineSpacing);
 
 			if (ImGui::Checkbox("Center string", &text.m_Centered) &&
 				!text.m_Text.empty() && text.m_Font.isFontLoaded())

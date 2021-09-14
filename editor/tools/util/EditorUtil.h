@@ -84,6 +84,8 @@ namespace Survive
 
 		void chooseFont(FileChooser &fileChooser, Text &text, Font &font);
 
+		static void chooseFontSpacing(float &spacing);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());

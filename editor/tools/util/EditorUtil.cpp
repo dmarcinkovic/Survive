@@ -487,3 +487,21 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font 
 	EditorUtil::loadFontTextureAtlas(fileChooser, text, font, m_Loader, loadTextureAtlas);
 	ImGui::EndGroup();
 }
+
+void Survive::EditorUtil::chooseFontSpacing(float &spacing)
+{
+	ImGui::Columns(2, nullptr, false);
+	ImGui::Text("Line Spacing");
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1);
+	ImGui::InputFloat("##Line spacing", &spacing);
+
+	ImGui::Columns();
+
+	ImGui::Separator();
+	ImGui::Columns(2, nullptr, false);
+	ImGui::Text("Alignment");
+
+	ImGui::NextColumn();
+}
