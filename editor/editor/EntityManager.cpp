@@ -137,15 +137,15 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 			m_CurrentItem = -1;
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
-		}
-
-		if (ImGui::Selectable("Remove entity"))
+		} else if (ImGui::Selectable("Remove entity"))
 		{
+			m_Selected = i;
+			m_SelectedEntity = selectedEntity;
 			removeEntity(registry);
-		}
-
-		if (ImGui::Selectable("Rename entity"))
+		} else if (ImGui::Selectable("Rename entity"))
 		{
+			m_Selected = i;
+			m_SelectedEntity = selectedEntity;
 			m_RenameEntity = true;
 		}
 
