@@ -97,3 +97,8 @@ float Survive::Font::getScaleHeight() const
 {
 	return m_ScaleHeight;
 }
+
+bool Survive::Font::isFontTextureValid() const
+{
+	return m_FontTexture.isValidTexture();
+}

@@ -111,6 +111,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "Transform3DComponent")
 		{
 			ComponentLoader::loadTransformComponent(registry, entity, reader);
+		} else if (componentType == "TextComponent")
+		{
+			ComponentLoader::loadTextComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}

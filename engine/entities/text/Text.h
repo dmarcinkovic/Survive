@@ -41,6 +41,9 @@ namespace Survive
 
 		Text();
 
+		Text(std::string text, Font font, float lineSpacing, bool centerText,
+			 bool addBorder, float borderWidth, glm::vec3 borderColor);
+
 		void loadTexture(Loader &loader);
 
 		void centerText();

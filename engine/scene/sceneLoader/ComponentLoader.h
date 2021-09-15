@@ -8,6 +8,7 @@
 #include <fstream>
 
 #include "entt.hpp"
+#include "Font.h"
 
 namespace Survive
 {
@@ -40,12 +41,16 @@ namespace Survive
 
 		static void loadTransformComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
+		static void loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
 		static glm::vec3 parseVec3(const std::string &vec3);
 
 		static glm::vec4 parseVec4(const std::string &vec4);
+
+		static std::optional<Font> getFont(const std::string &fontFile, const std::string &textureAtlas);
 	};
 }
 

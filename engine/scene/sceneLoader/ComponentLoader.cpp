@@ -168,3 +168,49 @@ glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
 
 	return {x, y, z, w};
 }
+
+void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+	std::string string = parseLine(reader, "text");
+	std::string fontFile = parseLine(reader, "fontFile");
+	std::string textureAtlas = parseLine(reader, "textureAtlas");
+
+	auto font = getFont(fontFile, textureAtlas);
+
+	if (!font)
+	{
+		return;
+	}
+
+	float lineSpacing = std::stof(parseLine(reader, "lineSpacing"));
+	bool centerText = std::stoi(parseLine(reader, "centerText"));
+
+	bool addBorder = std::stoi(parseLine(reader, "addBorder"));
+	float borderWidth = std::stof(parseLine(reader, "borderWidth"));
+	glm::vec3 borderColor = parseVec3(parseLine(reader, "borderColor"));
+
+	Text text(string, font.value(), lineSpacing, centerText, addBorder, borderWidth, borderColor);
+
+	registry.emplace<TextComponent>(entity, text);
+}
+
+std::optional<Survive::Font>
+Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas)
+{
+	Font font(textureAtlas.c_str());
+
+	if (fontFile.ends_with(".fnt"))
+	{
+		font.loadFontFromFntFile(fontFile.c_str());
+	} else if (fontFile.ends_with(".json"))
+	{
+		font.loadFontFromJsonFile(fontFile.c_str());
+	}
+
+	if (font.isFontLoaded() && font.isFontTextureValid())
+	{
+		return font;
+	}
+
+	return {};
+}

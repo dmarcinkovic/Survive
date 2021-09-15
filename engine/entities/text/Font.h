@@ -41,6 +41,8 @@ namespace Survive
 
 		[[nodiscard]] bool isFontLoaded() const;
 
+		[[nodiscard]] bool isFontTextureValid() const;
+
 		float getHeight() const;
 
 		float getScaleHeight() const;

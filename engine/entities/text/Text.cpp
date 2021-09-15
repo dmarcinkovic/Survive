@@ -17,6 +17,14 @@ Survive::Text::Text()
 	m_Text.reserve(512);
 }
 
+Survive::Text::Text(std::string text, Survive::Font font, float lineSpacing, bool centerText, bool addBorder,
+					float borderWidth, glm::vec3 borderColor)
+		: m_Text(std::move(text)), m_Font(std::move(font)), m_LineSpacing(lineSpacing), m_Centered(centerText),
+		  m_AddBorder(addBorder), m_BorderWidth(borderWidth), m_BorderColor(borderColor)
+{
+	m_Text.reserve(512);
+}
+
 Survive::Model Survive::Text::calculateVertices(Loader &loader)
 {
 	m_Vertices.clear();
