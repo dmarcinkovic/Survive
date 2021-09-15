@@ -41,7 +41,8 @@ namespace Survive
 
 		static void loadTransformComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+		static void
+		loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
 
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);

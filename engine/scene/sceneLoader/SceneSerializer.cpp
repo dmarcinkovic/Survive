@@ -113,7 +113,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 			ComponentLoader::loadTransformComponent(registry, entity, reader);
 		} else if (componentType == "TextComponent")
 		{
-			ComponentLoader::loadTextComponent(registry, entity, reader);
+			ComponentLoader::loadTextComponent(registry, entity, reader, m_Loader);
 		}
 	} catch (const std::exception &ignorable)
 	{}

@@ -169,7 +169,8 @@ glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
 	return {x, y, z, w};
 }
 
-void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt::entity entity,
+												 std::ifstream &reader, Loader &loader)
 {
 	std::string string = parseLine(reader, "text");
 	std::string fontFile = parseLine(reader, "fontFile");
@@ -190,6 +191,7 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 	glm::vec3 borderColor = parseVec3(parseLine(reader, "borderColor"));
 
 	Text text(string, font.value(), lineSpacing, centerText, addBorder, borderWidth, borderColor);
+	text.loadTexture(loader);
 
 	registry.emplace<TextComponent>(entity, text);
 }
