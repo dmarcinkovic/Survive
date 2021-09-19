@@ -194,7 +194,11 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 	Text text(string, font.value(), lineSpacing, centerText, addBorder, borderWidth, borderColor);
 	text.loadTexture(loader);
 
-	registry.emplace<TextComponent>(entity, text);
+	TextComponent textComponent(text);
+	textComponent.textureAtlas = textureAtlas;
+	textComponent.fontFile = fontFile;
+
+	registry.emplace<TextComponent>(entity, textComponent);
 }
 
 std::optional<Survive::Font>
