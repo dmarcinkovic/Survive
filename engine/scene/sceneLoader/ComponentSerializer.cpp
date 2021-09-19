@@ -155,3 +155,24 @@ void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *
 {
 	writer << "\t\t" << label << ':' << vec4.x << ',' << vec4.y << ',' << vec4.z << ',' << vec4.w << '\n';
 }
+
+void
+Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+{
+	if (registry.has<TextComponent>(entity))
+	{
+		const TextComponent &textComponent = registry.get<TextComponent>(entity);
+		const Text &text = textComponent.text;
+
+		writer << "\tcomponent:TextComponent\n";
+
+		writer << "\t\ttext:" << text.m_Text << '\n';
+		writer << "\t\tfontFile:" << textComponent.fontFile << '\n';
+		writer << "\t\ttextureAtlas:" << textComponent.textureAtlas << '\n';
+		writer << "\t\tlineSpacing:" << text.m_LineSpacing << '\n';
+		writer << "\t\tcenterText:" << text.m_Centered << '\n';
+		writer << "\t\taddBorder:" << text.m_AddBorder << '\n';
+		writer << "\t\tborderWidth:" << text.m_BorderWidth << '\n';
+		printVec3(writer, "borderColor", text.m_BorderColor);
+	}
+}

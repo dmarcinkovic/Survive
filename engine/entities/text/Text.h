@@ -36,6 +36,7 @@ namespace Survive
 
 	public:
 		friend class ComponentTemplate;
+		friend class ComponentSerializer;
 
 		Text(std::string text, Font font);
 

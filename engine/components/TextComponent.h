@@ -15,6 +15,9 @@ namespace Survive
 	{
 		Text text;
 
+		std::string fontFile;
+		std::string textureAtlas;
+
 		TextComponent() = default;
 
 		TextComponent(const std::string& string, const Font& font)
