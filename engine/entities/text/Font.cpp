@@ -6,6 +6,7 @@
 
 #include "Font.h"
 #include "Util.h"
+#include "Log.h"
 
 Survive::Font::Font(const char *textureAtlas)
 		: m_FontTexture(Loader::loadTexture(textureAtlas))
@@ -15,6 +16,12 @@ Survive::Font::Font(const char *textureAtlas)
 void Survive::Font::loadFontFromFntFile(const char *fntFile)
 {
 	std::ifstream reader(fntFile);
+
+	if (!reader)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot load font");
+		return;
+	}
 
 	float w = 0;
 
@@ -42,6 +49,12 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 {
 	std::ifstream reader(jsonFile);
+
+	if (!reader)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot load font");
+		return;
+	}
 
 	float scaleW = 0;
 
