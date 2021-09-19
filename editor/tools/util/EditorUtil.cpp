@@ -482,7 +482,7 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, TextComponent &te
 	if (ImGui::Combo("##Text Font", &m_SelectedItem, m_Items.data(), itemsCount))
 	{
 		textComponent.textureAtlas = m_FontInfo[m_SelectedItem].first;
-		textComponent.textureAtlas = m_FontInfo[m_SelectedItem].second;
+		textComponent.fontFile = m_FontInfo[m_SelectedItem].second;
 
 		text.setFont(m_Fonts[m_SelectedItem]);
 		text.loadTexture(m_Loader);

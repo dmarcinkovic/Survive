@@ -133,4 +133,5 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveSpriteComponent(registry, entity, writer);
 	ComponentSerializer::saveSpriteSheetComponent(registry, entity, writer);
 	ComponentSerializer::saveTransform3DComponent(registry, entity, writer);
+	ComponentSerializer::saveTextComponent(registry, entity, writer);
 }
