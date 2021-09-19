@@ -204,7 +204,7 @@ namespace Survive
 			Text &text = component.text;
 
 			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
-			m_EditorUtil.chooseFont(m_FileChooser, text, text.m_Font);
+			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
 
 			EditorUtil::chooseFontSpacing(text.m_LineSpacing);
 

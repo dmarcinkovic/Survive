@@ -32,7 +32,8 @@ namespace Survive
 		int m_SelectedItem = -1;
 		std::vector<Font> m_Fonts;
 
-		std::vector<const char*> m_Items;
+		std::vector<const char *> m_Items;
+		std::vector<std::pair<const char *, const char *>> m_FontInfo;
 
 		Texture m_FontIcon;
 		Texture m_TextureIcon;
@@ -66,9 +67,10 @@ namespace Survive
 		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 					   std::string &soundFile, bool &changed);
 
-		static void loadFont(FileChooser &fileChooser, Font &font, bool &open);
+		static void loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file);
 
-		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open);
+		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open,
+										 std::string &file);
 
 		static void centerText(const std::string &text);
 
@@ -82,7 +84,7 @@ namespace Survive
 
 		static void loadFontBorder(bool &addBorder, float &borderWidth, glm::vec3 &borderColor);
 
-		void chooseFont(FileChooser &fileChooser, Text &text, Font &font);
+		void chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font);
 
 		static void chooseFontSpacing(float &spacing);
 

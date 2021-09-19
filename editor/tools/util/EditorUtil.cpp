@@ -14,7 +14,9 @@
 Survive::EditorUtil::EditorUtil()
 		: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
 		  m_TextureIcon(Loader::loadTexture("res/texture.png")),
-		  m_Items{"Arial", "Candara"}
+		  m_Items{"Arial", "Candara"},
+		  m_FontInfo{{"res/arial.png",   "res/arial.fnt"},
+					 {"res/candara.png", "res/candara.fnt"}}
 {
 	Font arial("res/arial.png");
 	arial.loadFontFromFntFile("res/arial.fnt");
@@ -338,7 +340,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 	});
 }
 
-void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &open)
+void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -352,9 +354,11 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 				if (selectedFile.extension() == ".fnt")
 				{
 					font.loadFontFromFntFile(selectedFile.c_str());
+					file = selectedFile.string();
 				} else if (selectedFile.extension() == ".json")
 				{
 					font.loadFontFromJsonFile(selectedFile.c_str());
+					file = selectedFile.string();
 				} else
 				{
 					std::string message = "Cannot load file with extension: " + selectedFile.extension().string();
@@ -368,8 +372,8 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void
-Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open)
+void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text,
+											   Font &font, Loader &loader, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -382,6 +386,7 @@ Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, 
 			{
 				font.setTexture(Loader::loadTexture(selectedFile.c_str()));
 				text.loadTexture(loader);
+				file = selectedFile.string();
 			} catch (const std::exception &ignorable)
 			{
 				Log::logWindow(LogType::ERROR, "Cannot load " + selectedFile.filename().string());
@@ -462,8 +467,10 @@ void Survive::EditorUtil::loadFontBorder(bool &addBorder, float &borderWidth, gl
 	ImGui::NewLine();
 }
 
-void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font &font)
+void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font)
 {
+	Text &text = textComponent.text;
+
 	ImGui::Bullet();
 	ImGui::Text("Character");
 
@@ -474,6 +481,9 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font 
 	auto itemsCount = static_cast<int>(m_Items.size());
 	if (ImGui::Combo("##Text Font", &m_SelectedItem, m_Items.data(), itemsCount))
 	{
+		textComponent.textureAtlas = m_FontInfo[m_SelectedItem].first;
+		textComponent.textureAtlas = m_FontInfo[m_SelectedItem].second;
+
 		text.setFont(m_Fonts[m_SelectedItem]);
 		text.loadTexture(m_Loader);
 	}
@@ -482,13 +492,14 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, Text &text, Font 
 
 	static bool loadFont{};
 	EditorUtil::loadFontButton(m_FontIcon, "Load font", loadFont);
-	EditorUtil::loadFont(fileChooser, font, loadFont);
+	EditorUtil::loadFont(fileChooser, font, loadFont, textComponent.fontFile);
 
 	ImGui::SameLine();
 
 	static bool loadTextureAtlas{};
 	EditorUtil::loadFontButton(m_TextureIcon, "Load font texture atlas", loadTextureAtlas);
-	EditorUtil::loadFontTextureAtlas(fileChooser, text, font, m_Loader, loadTextureAtlas);
+	EditorUtil::loadFontTextureAtlas(fileChooser, text, font,
+									 m_Loader, loadTextureAtlas, textComponent.textureAtlas);
 	ImGui::EndGroup();
 }
 

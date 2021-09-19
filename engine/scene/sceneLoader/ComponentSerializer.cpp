@@ -165,7 +165,6 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 		const Text &text = textComponent.text;
 
 		writer << "\tcomponent:TextComponent\n";
-
 		writer << "\t\ttext:" << text.m_Text << '\n';
 		writer << "\t\tfontFile:" << textComponent.fontFile << '\n';
 		writer << "\t\ttextureAtlas:" << textComponent.textureAtlas << '\n';
