@@ -136,7 +136,8 @@ std::string Survive::ComponentLoader::parseLine(std::ifstream &reader, const cha
 	std::string line;
 	std::getline(reader, line);
 
-	if (line.find(text) == std::string::npos)
+	std::string pattern(text);
+	if (line.find(pattern + ':') == std::string::npos)
 	{
 		throw std::runtime_error("Did not find required string in text");
 	}
