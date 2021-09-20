@@ -535,3 +535,22 @@ void Survive::EditorUtil::drawPlayButton(bool &play)
 		play = true;
 	}
 }
+
+void Survive::EditorUtil::drawColumnInputInt(const char *text, const char *label, int &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1.0f);
+	ImGui::InputInt(label, &value);
+	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *label, bool &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::Checkbox(label, &value);
+	ImGui::NextColumn();
+}

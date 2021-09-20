@@ -90,6 +90,10 @@ namespace Survive
 
 		static void drawPlayButton(bool &play);
 
+		static void drawColumnInputInt(const char *text, const char *label, int &value);
+
+		static void drawColumnInputBool(const char *text, const char *label, bool &value);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
