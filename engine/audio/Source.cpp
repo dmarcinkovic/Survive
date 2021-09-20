@@ -12,6 +12,18 @@ Survive::Source::Source(float gain, float pitch)
 	alSourcef(m_Source, AL_PITCH, pitch);
 }
 
+Survive::Source::Source(const Source &source)
+{
+	alGenSources(1, &m_Source);
+
+	float gain, pitch;
+	alGetSourcef(source.m_Source, AL_GAIN, &gain);
+	alGetSourcef(source.m_Source, AL_PITCH, &pitch);
+
+	alSourcef(m_Source, AL_GAIN, gain);
+	alSourcef(m_Source, AL_PITCH, pitch);
+}
+
 Survive::Source::~Source()
 {
 	stop();

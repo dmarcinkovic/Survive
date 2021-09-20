@@ -18,6 +18,8 @@ namespace Survive
 	public:
 		explicit Source(float gain = 1.0f, float pitch = 1.0f);
 
+		Source(const Source &source);
+
 		~Source();
 
 		void play(ALint buffer) const;
