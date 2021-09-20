@@ -520,3 +520,18 @@ void Survive::EditorUtil::chooseFontSpacing(float &spacing)
 
 	ImGui::NextColumn();
 }
+
+void Survive::EditorUtil::drawPlayButton(bool &play)
+{
+	float width =  0.5f * ImGui::GetContentRegionAvailWidth();
+	float height = 2.0f * ImGui::GetTextLineHeight();
+	ImVec2 size(width, height);
+
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+	ImGui::SetCursorPos(ImVec2(cursorPos.x + width / 2.0f, cursorPos.y));
+
+	if (ImGui::Button("Play sound", size))
+	{
+		play = true;
+	}
+}

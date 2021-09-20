@@ -9,6 +9,7 @@
 
 #include "entt.hpp"
 #include "Font.h"
+#include "AudioMaster.h"
 
 namespace Survive
 {
@@ -33,7 +34,8 @@ namespace Survive
 
 		static void loadShadowComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+		static void loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+									   AudioMaster &audioMaster);
 
 		static void loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 

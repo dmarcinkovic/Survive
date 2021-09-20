@@ -101,7 +101,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 			ComponentLoader::loadShadowComponent(registry, entity, reader);
 		} else if (componentType == "SoundComponent")
 		{
-			ComponentLoader::loadSoundComponent(registry, entity, reader);
+			ComponentLoader::loadSoundComponent(registry, entity, reader, m_AudioMaster);
 		} else if (componentType == "SpriteComponent")
 		{
 			ComponentLoader::loadSpriteComponent(registry, entity, reader);

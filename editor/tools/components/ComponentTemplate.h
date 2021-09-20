@@ -183,6 +183,8 @@ namespace Survive
 			ImGui::Columns(2);
 			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();
+
+			EditorUtil::drawPlayButton(component.play);
 		}
 	}
 

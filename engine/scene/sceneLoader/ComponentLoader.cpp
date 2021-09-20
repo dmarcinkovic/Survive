@@ -101,9 +101,21 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
 }
 
-void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+												  AudioMaster &audioMaster)
 {
+	std::string soundFile = parseLine(reader, "soundFile");
 
+	float pitch = std::stof(parseLine(reader, "pitch"));
+	float gain = std::stof(parseLine(reader, "gain"));
+
+	bool playOnLoop = std::stoi(parseLine(reader, "playOnLoop"));
+	bool play = std::stoi(parseLine(reader, "play"));
+
+	ALint soundTrack = audioMaster.loadSound(soundFile.c_str());
+	Source source(gain, pitch);
+
+	registry.emplace<SoundComponent>(entity, soundTrack, source, soundFile, pitch, gain, playOnLoop, play);
 }
 
 void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)

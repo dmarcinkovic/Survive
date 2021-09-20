@@ -88,6 +88,8 @@ namespace Survive
 
 		static void chooseFontSpacing(float &spacing);
 
+		static void drawPlayButton(bool &play);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());

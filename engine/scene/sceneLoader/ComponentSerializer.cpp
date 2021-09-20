@@ -106,7 +106,14 @@ void Survive::ComponentSerializer::saveSoundComponent(entt::registry &registry,
 {
 	if (registry.has<SoundComponent>(entity))
 	{
+		const SoundComponent &soundComponent = registry.get<SoundComponent>(entity);
+
 		writer << "\tcomponent:SoundComponent\n";
+		writer << "\t\tsoundFile:" << soundComponent.soundFile << '\n';
+		writer << "\t\tpitch:" << soundComponent.pitch << '\n';
+		writer << "\t\tgain:" << soundComponent.gain << '\n';
+		writer << "\t\tplayOnLoop:" << soundComponent.playOnLoop << '\n';
+		writer << "\t\tplay:" << soundComponent.play << '\n';
 	}
 }
 

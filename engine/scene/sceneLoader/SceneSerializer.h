@@ -9,6 +9,7 @@
 
 #include "entt.hpp"
 #include "Components.h"
+#include "AudioMaster.h"
 
 namespace Survive
 {
@@ -16,6 +17,7 @@ namespace Survive
 	{
 	private:
 		Loader m_Loader;
+		AudioMaster m_AudioMaster;
 
 	public:
 		void loadScene(entt::registry &registry, const std::string &filename);
