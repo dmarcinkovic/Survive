@@ -129,6 +129,19 @@ void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, ent
 void Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry,
 														entt::entity entity, std::ifstream &reader)
 {
+	int rows = std::stoi(parseLine(reader, "rows"));
+	int cols = std::stoi(parseLine(reader, "cols"));
+
+	int startIndex = std::stoi(parseLine(reader, "startIndex"));
+	int endIndex = std::stoi(parseLine(reader, "endIndex"));
+
+	int spritesInSecond = std::stoi(parseLine(reader, "spritesInSecond"));
+	int numberOfEpochs = std::stoi(parseLine(reader, "numberOfEpochs"));
+
+	bool animate = std::stoi(parseLine(reader, "animate"));
+
+	registry.emplace<SpriteSheetComponent>(entity, rows, cols, spritesInSecond, startIndex,
+										   endIndex, numberOfEpochs, animate);
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,

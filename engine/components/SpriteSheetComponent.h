@@ -47,6 +47,12 @@ namespace Survive
 				  startIndex(currentFrameIndex)
 		{}
 
+		SpriteSheetComponent(int row, int col, int spritesInSecond, int startIndex, int endIndex, int numberOfEpochs,
+							 bool animate)
+				: row(row), col(col), spritesInSecond(spritesInSecond), startIndex(startIndex), endIndex(endIndex),
+				  numberOfEpochs(numberOfEpochs), animating(animate), currentFrameIndex(startIndex)
+		{}
+
 		friend class SpriteUpdate;
 	};
 }

@@ -134,7 +134,16 @@ void Survive::ComponentSerializer::saveSpriteSheetComponent(entt::registry &regi
 {
 	if (registry.has<SpriteSheetComponent>(entity))
 	{
+		const SpriteSheetComponent &component = registry.get<SpriteSheetComponent>(entity);
+
 		writer << "\tcomponent:SpriteSheetComponent\n";
+		writer << "\t\trows:" << component.row << '\n';
+		writer << "\t\tcols:" << component.col << '\n';
+		writer << "\t\tstartIndex:" << component.startIndex << '\n';
+		writer << "\t\tendIndex:" << component.endIndex << '\n';
+		writer << "\t\tspritesInSecond:" << component.spritesInSecond << '\n';
+		writer << "\t\tnumberOfEpochs:" << component.numberOfEpochs << '\n';
+		writer << "\t\tanimate:" << component.animating << '\n';
 	}
 }
 
