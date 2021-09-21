@@ -503,14 +503,17 @@ void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, TextComponent &te
 	ImGui::EndGroup();
 }
 
-void Survive::EditorUtil::chooseFontSpacing(float &spacing)
+void Survive::EditorUtil::chooseFontSpacing(float &spacing, Text &text, Loader &loader)
 {
 	ImGui::Columns(2, nullptr, false);
 	ImGui::Text("Line Spacing");
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1);
-	ImGui::InputFloat("##Line spacing", &spacing);
+	if (ImGui::InputFloat("##Line spacing", &spacing))
+	{
+		text.loadTexture(loader);
+	}
 
 	ImGui::Columns();
 

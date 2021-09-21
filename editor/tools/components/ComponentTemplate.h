@@ -208,7 +208,7 @@ namespace Survive
 			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
 			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
 
-			EditorUtil::chooseFontSpacing(text.m_LineSpacing);
+			EditorUtil::chooseFontSpacing(text.m_LineSpacing, text, m_Loader);
 
 			if (ImGui::Checkbox("Center string", &text.m_Centered) &&
 				!text.m_Text.empty() && text.m_Font.isFontLoaded())

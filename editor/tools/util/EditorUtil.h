@@ -86,7 +86,7 @@ namespace Survive
 
 		void chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font);
 
-		static void chooseFontSpacing(float &spacing);
+		static void chooseFontSpacing(float &spacing, Text &text, Loader &loader);
 
 		static void drawPlayButton(bool &play);
 
