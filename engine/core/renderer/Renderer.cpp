@@ -29,7 +29,7 @@ void Survive::Renderer::render3DScene(entt::registry &registry, const Camera &ca
 void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &camera) const
 {
 	m_GuiRenderer.render(registry, camera);
-	m_SpriteRenderer.render(registry);
+	m_SpriteRenderer.render(registry, camera);
 
 	m_TextRenderer.renderText(registry, camera);
 }

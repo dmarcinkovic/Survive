@@ -23,6 +23,8 @@ namespace Survive
 		GLint m_LocationCol{};
 		GLint m_LocationSpriteIndex{};
 
+		GLint m_LocationProjectionMatrix{};
+
 	public:
 		SpritesShader();
 
@@ -31,6 +33,8 @@ namespace Survive
 		void loadSpriteSize(int row, int col) const;
 
 		void loadSpritePosition(int currentIndex) const;
+
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
 	private:
 		void getUniformLocations();
