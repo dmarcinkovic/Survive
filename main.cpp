@@ -27,15 +27,15 @@ int main()
 	entt::registry registry;
 
 	auto dragon = registry.create();
-	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															Loader::loadTexture("res/lamp.jpg")));
+	registry.emplace<RenderComponent>(dragon, TexturedModel(ObjParser::loadObj("assets/models/dragon.obj", loader),
+															Loader::loadTexture("assets/textures/lamp.jpg")));
 	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -5, -30});
 	registry.emplace<RigidBodyComponent>(dragon, false);
 
 	auto character = registry.create();
 	DaeParser daeParser;
-	TexturedModel texturedModel(daeParser.loadDae("res/character.xml", loader),
-								Loader::loadTexture("res/character.png"));
+	TexturedModel texturedModel(daeParser.loadDae("assets/models/character.xml", loader),
+								Loader::loadTexture("assets/textures/character.png"));
 	registry.emplace<RenderComponent>(character, texturedModel);
 	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -40}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
 	registry.emplace<RigidBodyComponent>(character, false);
@@ -46,12 +46,14 @@ int main()
 
 	auto terrain = registry.create();
 	registry.emplace<RenderComponent>(terrain,
-									  TexturedModel(TerrainGenerator::generateTerrain(loader, "res/heightmap.png"),
-													Loader::loadTexture("res/blendMap.png")));
+									  TexturedModel(TerrainGenerator::generateTerrain(loader,
+																					  "assets/textures/heightmap.png"),
+													Loader::loadTexture("assets/textures/blendMap.png")));
 
 	registry.emplace<Transform3DComponent>(terrain, glm::vec3{-200, -10, -200}, glm::vec3{1, 1, 1});
 	registry.emplace<TexturedComponent>(terrain, Loader::loadAllTextures(
-			{"res/dirt.png", "res/grass.jpeg", "res/rock.png", "res/flowers.png"}));
+			{"assets/textures/dirt.png", "assets/textures/grass.jpeg", "assets/textures/rock.png",
+			 "assets/textures/flowers.png"}));
 
 	renderer.addShadow(registry, character);
 
