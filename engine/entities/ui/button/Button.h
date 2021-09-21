@@ -11,6 +11,7 @@
 #include "Display.h"
 #include "Font.h"
 #include "Text.h"
+#include "Entity.h"
 
 namespace Survive
 {
@@ -48,7 +49,7 @@ namespace Survive
 				}
 			};
 
-			Display::addMouseListener(mousePressedListener);
+			EventHandler::addMouseListener(mousePressedListener);
 		}
 
 	private:

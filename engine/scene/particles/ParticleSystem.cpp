@@ -2,9 +2,11 @@
 // Created by david on 13. 02. 2021..
 //
 
+#include <glm/ext/matrix_transform.hpp>
+
 #include "ParticleSystem.h"
 #include "Display.h"
-#include "Maths.h"
+#include "Util.h"
 
 Survive::ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength,
 										float scale)
@@ -34,13 +36,13 @@ void Survive::ParticleSystem::generateParticles(const glm::vec3 &systemCenter, c
 void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
 										   std::vector<Particle> &particles) const
 {
-	float dirX = Maths::getRandom() * 1.2f - 1.0f;
-	float dirZ = Maths::getRandom() * 1.2f - 1.0f;
+	float dirX = Util::getRandom() * 1.2f - 1.0f;
+	float dirZ = Util::getRandom() * 1.2f - 1.0f;
 
 	glm::vec3 velocity{dirX, 1.0f, dirZ};
 	velocity = glm::normalize(velocity) * m_Speed;
 
-	particles.emplace_back(Particle(particleModel, center, velocity, m_Gravity, m_LifeLength));
+	particles.emplace_back(particleModel, center, velocity, m_Gravity, m_LifeLength);
 }
 
 void Survive::ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
@@ -66,7 +68,7 @@ void Survive::ParticleSystem::setLifeError(float lifeError)
 
 float Survive::ParticleSystem::generateValue(float average, float errorMargin)
 {
-	float offset = (Maths::getRandom() - 0.5f) * 2.0f * errorMargin;
+	float offset = (Util::getRandom() - 0.5f) * 2.0f * errorMargin;
 
 	return average + offset;
 }
@@ -75,7 +77,7 @@ float Survive::ParticleSystem::generateRotation() const
 {
 	if (m_RandomRotation)
 	{
-		return Maths::getRandom() * 360.0f;
+		return Util::getRandom() * 360.0f;
 	}
 
 	return 0;
@@ -93,13 +95,13 @@ glm::vec3 Survive::ParticleSystem::generateRandomUnitVectorWithinCone(const glm:
 		direction.z *= -1;
 	}
 
-	return glm::vec3(direction);
+	return {direction};
 }
 
 glm::vec3 Survive::ParticleSystem::generateRandomUnitVector()
 {
-	float theta = Maths::getRandom() * 2.0f * std::numbers::pi_v<float>;
-	float z = Maths::getRandom() * 2.0f - 1;
+	float theta = Util::getRandom() * 2.0f * std::numbers::pi_v<float>;
+	float z = Util::getRandom() * 2.0f - 1;
 
 	return getDirection(z, theta);
 }
@@ -112,9 +114,9 @@ void Survive::ParticleSystem::setScaleError(float scaleError)
 glm::vec4 Survive::ParticleSystem::getDirection(float angle)
 {
 	float cosAngle = std::cos(angle);
-	float theta = Maths::getRandom() * 2.0f * std::numbers::pi_v<float>;
+	float theta = Util::getRandom() * 2.0f * std::numbers::pi_v<float>;
 
-	float z = cosAngle + Maths::getRandom() * (1 - cosAngle);
+	float z = cosAngle + Util::getRandom() * (1 - cosAngle);
 	return glm::vec4{getDirection(z, theta), 1.0f};
 }
 

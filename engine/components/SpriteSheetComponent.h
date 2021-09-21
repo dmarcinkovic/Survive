@@ -15,16 +15,16 @@ namespace Survive
 		int currentFrameIndex;
 		bool animating;
 
+		int spritesInSecond{};
+		int endIndex{};
+		int startIndex{};
+
+		int numberOfEpochs = -1;
+
 	private:
 		double m_Time{};
-
-		int m_EndRow{}, m_EndCol{};
-		int m_NumberOfEpochs{};
 		int m_CurrentEpoch{};
 		int m_PreviousFrameIndex{};
-
-		int m_SpritesInSecond{};
-		int m_StartIndex{};
 
 	public:
 		SpriteSheetComponent()
@@ -33,19 +33,24 @@ namespace Survive
 
 		SpriteSheetComponent(int row, int col, int spritesInSecond, int numberOfEpochs = -1, int startRow = 0,
 							 int startCol = 0)
-				: row(row), col(col), animating(true), m_SpritesInSecond(spritesInSecond),
-				  m_NumberOfEpochs(numberOfEpochs),
-				  currentFrameIndex(startRow * col + startCol), m_EndRow(row - 1), m_EndCol(col - 1),
-				  m_StartIndex(currentFrameIndex)
+				: row(row), col(col), animating(true), spritesInSecond(spritesInSecond),
+				  numberOfEpochs(numberOfEpochs),
+				  currentFrameIndex(startRow * col + startCol), endIndex(row * col - 1),
+				  startIndex(currentFrameIndex)
 		{}
 
 		SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol,
-							 int endRow, int endCol,
-							 int numberOfEpochs = -1)
-				: row(row), col(col), animating(true), m_SpritesInSecond(spritesInSecond),
-				  m_NumberOfEpochs(numberOfEpochs),
-				  currentFrameIndex(startRow * col + startCol), m_EndRow(endRow), m_EndCol(endCol),
-				  m_StartIndex(currentFrameIndex)
+							 int endRow, int endCol, int numberOfEpochs = -1)
+				: row(row), col(col), animating(true), spritesInSecond(spritesInSecond),
+				  numberOfEpochs(numberOfEpochs),
+				  currentFrameIndex(startRow * col + startCol), endIndex(endRow * col + endCol),
+				  startIndex(currentFrameIndex)
+		{}
+
+		SpriteSheetComponent(int row, int col, int spritesInSecond, int startIndex, int endIndex, int numberOfEpochs,
+							 bool animate)
+				: row(row), col(col), spritesInSecond(spritesInSecond), startIndex(startIndex), endIndex(endIndex),
+				  numberOfEpochs(numberOfEpochs), animating(animate), currentFrameIndex(startIndex)
 		{}
 
 		friend class SpriteUpdate;

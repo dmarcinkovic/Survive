@@ -40,7 +40,8 @@ namespace Survive
 
 		void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
-		void loadObjectUniforms(entt::registry &registry, entt::entity, const Camera &camera) const;
+		void loadObjectUniforms(entt::registry &registry, entt::entity,
+								const Texture &texture, const Camera &camera) const;
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
@@ -52,6 +53,8 @@ namespace Survive
 		void renderReflection(entt::registry &registry, entt::entity entity) const;
 
 		void renderRefraction(entt::registry &registry, entt::entity entity) const;
+
+		void renderMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

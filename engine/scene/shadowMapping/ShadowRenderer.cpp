@@ -4,10 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include "ShadowComponent.h"
-#include "Render3DComponent.h"
+#include "Components.h"
 #include "ShadowRenderer.h"
-#include "Transform3DComponent.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
 
@@ -22,9 +20,8 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
 
-	glm::mat4 viewMatrix = Maths::createLightViewMatrix(light);
-	m_ShadowShader.loadViewMatrix(viewMatrix);
-	m_ShadowShader.loadProjectionMatrix(Maths::lightProjectionMatrix);
+	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
+	m_ShadowShader.loadProjectionMatrix(light.getProjectionMatrix());
 
 	for (auto const&[texture, objects] : entities)
 	{
@@ -42,7 +39,18 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
-			glDrawArrays(GL_TRIANGLES, 0, texture.vertexCount());
+			if (registry.has<AnimationComponent>(object))
+			{
+				const AnimationComponent &animation = registry.get<AnimationComponent>(object);
+
+				m_ShadowShader.loadAnimatedModel(true);
+				m_ShadowShader.loadJointTransforms(animation.jointTransforms);
+			} else
+			{
+				m_ShadowShader.loadAnimatedModel(false);
+			}
+
+			glDrawElements(GL_TRIANGLES, texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
 			glDisable(GL_CULL_FACE);
 		}
 

@@ -53,7 +53,7 @@ namespace Survive
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 						const std::vector<float> &normals, const std::vector<float> &jointWeights,
-						const std::vector<unsigned> &jointIds);
+						const std::vector<int> &jointIds, const std::vector<unsigned> &indices);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, GLsizei size);
 
@@ -88,7 +88,7 @@ namespace Survive
 	private:
 		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size);
 
-		void storeDataInAttributeList(const std::vector<unsigned int> &data);
+		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<int> &data, GLint size);
 
 		void createIndexBuffer(const std::vector<unsigned> &indices);
 

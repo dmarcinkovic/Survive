@@ -9,6 +9,7 @@ uniform int col;
 uniform int spriteIndex;
 
 uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
 
 void main()
 {
@@ -16,7 +17,7 @@ void main()
     int currentRow = spriteIndex / col;
     currentRow = row - currentRow - 1;
 
-    gl_Position = transformationMatrix * vec4(position, 0.0, 1.0);
+    gl_Position = projectionMatrix * transformationMatrix * vec4(position, 0.0, 1.0);
     textureCoords = position / 2.0 + vec2(0.5);
 
     textureCoords.x = textureCoords.x / col + float(currentCol) / col;

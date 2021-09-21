@@ -1,18 +1,22 @@
 #include "Editor.h"
 #include "EventHandler.h"
-#include  "Renderer.h"
+#include "DaeParser.h"
+#include "Animator.h"
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Renderer.h"
 #include "Display.h"
 #include "entt.hpp"
+#include "Components.h"
+#include "AnimationSystem.h"
 
 int main()
 {
 	using namespace Survive;
 
-	constexpr int width = 1200;
-	constexpr int height = 800;
+	constexpr int width = 1500;
+	constexpr int height = 900;
 
 	Display display(width, height, "Survive");
 	Loader loader;
@@ -23,18 +27,37 @@ int main()
 	entt::registry registry;
 	Renderer renderer(light);
 
-	Editor editor(renderer.getRenderedTexture());
+	Editor editor(renderer);
+
+	DaeParser daeParser;
+	auto character = registry.create();
+	registry.emplace<TagComponent>(character, "character");
+	TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
+								Loader::loadTexture("res/character.png"));
+	registry.emplace<Render3DComponent>(character, texturedModel);
+	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
+	registry.emplace<RigidBodyComponent>(character, false);
+	registry.emplace<ShadowComponent>(character, true);
+
+	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
+	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
 
 	auto dragon = registry.create();
 	registry.emplace<TagComponent>(dragon, "dragon");
-	registry.emplace<Render3DComponent>(dragon, TexturedModel(Model(ObjParser::loadObj("res/dragon.obj", loader)),
+	registry.emplace<Render3DComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
 															  Loader::loadTexture("res/lamp.jpg")));
 	registry.emplace<RigidBodyComponent>(dragon, false);
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{0, 0, -20});
+	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -10, -40});
+	registry.emplace<ShadowComponent>(dragon, true);
 
+	auto textEntity = registry.create();
+
+	registry.emplace<TagComponent>(textEntity, "text");
+	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
+	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
+
+	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;
-
-	AudioMaster audioMaster;
 
 	while (display.isRunning())
 	{
@@ -42,9 +65,12 @@ int main()
 
 		editor.handleKeyEvents(eventHandler);
 
+		animator.update(registry);
+		AnimationSystem::update(registry);
+
 		Editor::newFrame();
 		Editor::dock();
-		editor.render(registry, renderer);
+		editor.render(registry, renderer, camera);
 
 		renderer.renderToFbo(registry, camera);
 

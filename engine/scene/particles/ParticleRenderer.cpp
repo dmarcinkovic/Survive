@@ -17,8 +17,8 @@ Survive::ParticleRenderer::ParticleRenderer()
 
 void Survive::ParticleRenderer::render(const Camera &camera) const
 {
-	prepare();
-	glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
+	prepare(camera);
+	glm::mat4 viewMatrix = camera.getViewMatrix();
 
 	for (auto const&[particleModel, particles] : m_Particles)
 	{
@@ -59,11 +59,11 @@ Survive::ParticleRenderer::updateParticles(const std::vector<Particle> &particle
 	return data;
 }
 
-void Survive::ParticleRenderer::prepare() const
+void Survive::ParticleRenderer::prepare(const Camera &camera) const
 {
 	m_Shader.start();
 
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	glEnable(GL_DEPTH_TEST);
 
 	enableBlending();

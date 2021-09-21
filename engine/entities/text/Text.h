@@ -7,13 +7,14 @@
 
 #include <string>
 #include <vector>
+#include <glm/glm.hpp>
 
 #include "Font.h"
-#include "Entity.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {
-	class Text : public Entity
+	class Text
 	{
 	private:
 		constexpr static float PADDING = -15.0f;
@@ -21,39 +22,44 @@ namespace Survive
 		std::string m_Text;
 		Font m_Font;
 		bool m_Centered{};
-		glm::vec3 m_Color{};
-
-		Texture m_TextTexture{};
 
 		glm::vec3 m_BorderColor{};
 		float m_BorderWidth{};
+		bool m_AddBorder{};
+
+		TexturedModel m_Model;
 
 		std::vector<float> m_Vertices;
 		std::vector<float> m_TextureCoordinates;
 
-	public:
-		Text(std::string text, Font font, const glm::vec3 &position,
-			 const glm::vec3 &color = glm::vec3{1, 1, 1}, float scale = 1.0);
+		float m_LineSpacing = 1.0f;
 
-		Text() = default;
+	public:
+		friend class ComponentTemplate;
+		friend class ComponentSerializer;
+
+		Text(std::string text, Font font);
+
+		Text();
+
+		Text(std::string text, Font font, float lineSpacing, bool centerText,
+			 bool addBorder, float borderWidth, glm::vec3 borderColor);
 
 		void loadTexture(Loader &loader);
 
 		void centerText();
 
-		const glm::vec3 &color() const;
+		const glm::vec3 &getBorderColor() const;
 
-		const glm::vec3 &getMBorderColor() const;
-
-		float getMBorderWidth() const;
+		float getBorderWidth() const;
 
 		void addBorder(float borderWidth, const glm::vec3 &borderColor);
 
 		void setText(std::string newText, Loader &loader);
 
-		float getScale() const;
+		const TexturedModel &getModel() const;
 
-		void scaleFor(float scaleFactor);
+		void setFont(const Font &font);
 
 	private:
 		void calculateTextureVertices();

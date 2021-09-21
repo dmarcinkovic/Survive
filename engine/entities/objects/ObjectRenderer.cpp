@@ -46,14 +46,14 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 {
 	for (auto const &object : objects)
 	{
-		loadObjectUniforms(registry, object, camera);
+		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
+		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
 		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
-		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
-		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
 		Texture::unbindTexture();
@@ -63,14 +63,12 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 
 void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const
 {
-	const glm::mat4 viewMatrix = Maths::createViewMatrix(camera);
-	const glm::mat4 lightViewMatrix = Maths::createLightViewMatrix(m_Light);
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7, 3);
 
-	m_Shader.loadViewMatrix(viewMatrix);
-	m_Shader.loadLightViewMatrix(lightViewMatrix);
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-	m_Shader.loadLightProjection(Maths::lightProjectionMatrix);
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
+	m_Shader.loadLightViewMatrix(m_Light.getViewMatrix());
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+	m_Shader.loadLightProjection(m_Light.getProjectionMatrix());
 	m_Shader.loadPlane(plane);
 
 	Texture texture(shadowMap);
@@ -80,7 +78,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 }
 
 void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,
-												 const Camera &camera) const
+												 const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 	glm::vec3 rotation = camera.rotation + transform.rotation;
@@ -97,6 +95,8 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 	{
 		m_Shader.loadAddShadow(false);
 	}
+
+	renderMaterial(registry, entity);
 
 	renderReflection(registry, entity);
 	renderRefraction(registry, entity);
@@ -192,4 +192,18 @@ void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::e
 void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 {
 	m_SkyBox = skybox;
+}
+
+void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity) const
+{
+	static glm::vec4 defaultColor{0, 0, 0, 0};
+
+	if (registry.has<SpriteComponent>(entity))
+	{
+		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(spriteComponent.color);
+	} else
+	{
+		m_Shader.loadColor(defaultColor);
+	}
 }

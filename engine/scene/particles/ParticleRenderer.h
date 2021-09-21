@@ -37,7 +37,7 @@ namespace Survive
 		std::vector<Particle> &getParticles(const ParticleModel &model);
 
 	private:
-		void prepare() const;
+		void prepare(const Camera &camera) const;
 
 		static void finish();
 

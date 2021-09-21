@@ -9,32 +9,53 @@
 #include "Key.h"
 #include "Editor.h"
 
-Survive::Editor::Editor(GLuint scene)
-		: m_Io(ImGui::GetIO()), m_Scene(scene)
+float Survive::Editor::m_SceneWidth{};
+float Survive::Editor::m_SceneHeight{};
+float Survive::Editor::m_ScenePosX{};
+float Survive::Editor::m_ScenePosY{};
+
+bool Survive::Editor::m_SceneFocused{};
+
+Survive::Editor::Editor(Renderer &renderer)
+		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture())
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
 
 	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
+	renderer.addMousePickingListener([this](int selectedEntity) {
+		m_Manager.setSelectedEntity(selectedEntity);
+	});
 
 	setColorStyle();
 }
 
-void Survive::Editor::render(entt::registry &registry, Renderer &renderer)
+void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camera &camera)
 {
 	renderPropertyWindow(registry);
-	renderSceneWindow();
+	renderSceneWindow(camera, registry);
 	renderMenu();
+
+	handleMouseDragging(registry, renderer);
 
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+	m_ContentBrowser.draw();
+
+	if (ImGui::Begin("Debug"))
+	{
+		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
+	}
+	ImGui::End();
 
 	Log::drawLogWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	camera.recalculateProjectionMatrix(m_SceneWidth, m_SceneHeight);
 }
 
 void Survive::Editor::newFrame()
@@ -42,6 +63,7 @@ void Survive::Editor::newFrame()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+	Gizmos::newFrame();
 }
 
 void Survive::Editor::dock()
@@ -49,21 +71,30 @@ void Survive::Editor::dock()
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 }
 
-void Survive::Editor::renderSceneWindow()
+void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &registry)
 {
-	ImGui::Begin("Scene window");
+	if (ImGui::Begin("Scene window"))
+	{
+		m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
-	m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+		m_ScenePosX = pos.x;
+		m_ScenePosY = pos.y;
 
-	ImVec2 pos = ImGui::GetCursorScreenPos();
+		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
-	auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
+		m_SceneWidth = ImGui::GetWindowWidth();
+		m_SceneHeight = ImGui::GetWindowHeight();
 
-	m_SceneSize = ImGui::GetWindowSize();
+		ImGui::GetWindowDrawList()->AddImage(textureId, pos,
+											 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
+											 ImVec2(1, 0));
 
-	ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-										 ImVec2(pos.x + m_SceneSize.x, pos.y + m_SceneSize.y), ImVec2(0, 1),
-										 ImVec2(1, 0));
+		m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
+		m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
+
+		m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+	}
 
 	ImGui::End();
 }
@@ -73,16 +104,16 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry)
 	if (ImGui::Begin("Scene hierarchy"))
 	{
 		m_Manager.addEntity(registry);
-
-		ImGui::End();
 	}
+
+	ImGui::End();
 
 	if (ImGui::Begin("Property panel"))
 	{
 		m_Manager.drawPropertyPanel(registry);
-
-		ImGui::End();
 	}
+
+	ImGui::End();
 }
 
 void Survive::Editor::setColorStyle()
@@ -129,10 +160,12 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 
 		if (!m_OpenDialog)
 		{
-			std::string file = m_OpenWindow.getSelectedFile();
+			std::string file = m_OpenWindow.getSelectedFile().string();
 			if (!file.empty())
 			{
+				m_Manager.setSelectedEntity(-1);
 				m_SceneLoader.loadScene(registry, file);
+				m_SavedFile = file;
 			}
 		}
 	}
@@ -151,7 +184,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 		if (!m_SaveAsDialog)
 		{
-			std::string selectedFile = m_SaveWindow.getSelectedFile();
+			std::string selectedFile = m_SaveWindow.getSelectedFile().string();
 			if (!selectedFile.empty())
 			{
 				m_SavedFile = std::move(selectedFile);
@@ -159,7 +192,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 			if (!m_SavedFile.empty())
 			{
-				m_SceneLoader.saveScene(registry, m_SavedFile);
+				Survive::SceneSerializer::saveScene(registry, m_SavedFile);
 			}
 		}
 	}
@@ -174,24 +207,92 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 			m_SaveAsDialog = true;
 		} else
 		{
-			m_SceneLoader.saveScene(registry, m_SavedFile);
+			Survive::SceneSerializer::saveScene(registry, m_SavedFile);
 		}
 
 		m_SaveDialog = false;
 	}
 }
 
-void Survive::Editor::handleKeyEvents(const Survive::EventHandler &eventHandler)
+void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 {
 	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
 		m_OpenDialog = true;
-	} else if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveDialog = true;
 	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
 			   eventHandler.isKeyPressed(Key::S))
 	{
 		m_SaveAsDialog = true;
+	} else if (eventHandler.isKeyControlPressed() &&
+			   eventHandler.isKeyPressed(Key::S))
+	{
+		m_SaveDialog = true;
 	}
+
+	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
+	{
+		m_Manager.handleKeyEvents(eventHandler);
+		m_Gizmos.handleKeyEvents(eventHandler);
+	}
+}
+
+float Survive::Editor::getSceneWidth()
+{
+	return m_SceneWidth;
+}
+
+float Survive::Editor::getSceneHeight()
+{
+	return m_SceneHeight;
+}
+
+std::pair<float, float> Survive::Editor::getScenePosition()
+{
+	return {m_ScenePosX, m_ScenePosY};
+}
+
+bool Survive::Editor::isSceneFocused()
+{
+	return m_SceneFocused;
+}
+
+void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer)
+{
+	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
+	{
+		if (isInsideScene())
+		{
+			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
+
+			if (file.has_extension())
+			{
+				std::string extension = file.extension().string();
+
+				if (extension == ".survive")
+				{
+					m_Manager.setSelectedEntity(-1);
+					m_SceneLoader.loadScene(registry, file.c_str());
+					m_SavedFile = file.string();
+				} else if (extension == ".obj" && file.has_stem())
+				{
+					m_EditorUtil.loadDraggedModels(registry, file);
+				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+				{
+					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+					EditorUtil::registerListener(registry, renderer, file);
+				}
+			}
+		}
+
+		m_ContentBrowser.stopDragging();
+	}
+}
+
+bool Survive::Editor::isInsideScene()
+{
+	float x = ImGui::GetMousePos().x;
+	float y = ImGui::GetMousePos().y;
+
+	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
+		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
 }

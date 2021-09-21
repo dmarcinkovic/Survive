@@ -28,6 +28,8 @@ uniform int addBloom;
 uniform sampler2D bloomTexture;
 uniform float bloomStrength;
 
+uniform vec4 color;
+
 float shadowCalculation(vec4 lightSpacePosition)
 {
     vec3 clipSpace = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -60,7 +62,7 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
-    vec4 textureColor = texture(objectTexture, textCoords);
+    vec4 textureColor = color + texture(objectTexture, textCoords);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;

@@ -9,6 +9,9 @@
 #include <glm/vec3.hpp>
 #include <AL/al.h>
 
+#include "entt.hpp"
+#include "Renderer.h"
+#include "DaeParser.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
 #include "FileChooser.h"
@@ -18,7 +21,26 @@ namespace Survive
 {
 	class EditorUtil
 	{
+	private:
+		DaeParser m_DaeParser;
+		Loader m_Loader;
+
+		bool m_LoadModel{};
+		bool m_LoadTexture{};
+		bool m_LoadSound{};
+
+		int m_SelectedItem = -1;
+		std::vector<Font> m_Fonts;
+
+		std::vector<const char *> m_Items;
+		std::vector<std::pair<const char *, const char *>> m_FontInfo;
+
+		Texture m_FontIcon;
+		Texture m_TextureIcon;
+
 	public:
+		EditorUtil();
+
 		static void setStyleColors();
 
 		static void resetStyleColors();
@@ -30,22 +52,47 @@ namespace Survive
 
 		static void drawTransform2DHeader();
 
-		static void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
+		void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
 
-		static void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
-								const char *format, const char *label, bool &changed);
+		void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+						 const char *format, const char *label, bool &changed);
 
 		static bool drawSlider(const char *label, const std::string &text,
 							   float &value, float start = 0.0f, float end = 1.0f);
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
-		static void toggleButton(const char *stringId, bool *v);
+		static void toggleButton(const char *stringId, bool &v);
 
-		static void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
-							  std::string &soundFile, bool &changed);
+		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+					   std::string &soundFile, bool &changed);
+
+		static void loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file);
+
+		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open,
+										 std::string &file);
 
 		static void centerText(const std::string &text);
+
+		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);
+
+		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
+
+		static bool drawTextInput(Text &text, std::string &string, Loader &loader);
+
+		static void loadFontButton(const Texture &icon, const char *text, bool &open);
+
+		static void loadFontBorder(bool &addBorder, float &borderWidth, glm::vec3 &borderColor);
+
+		void chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font);
+
+		static void chooseFontSpacing(float &spacing, Text &text, Loader &loader);
+
+		static void drawPlayButton(bool &play);
+
+		static void drawColumnInputInt(const char *text, const char *label, int &value);
+
+		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
@@ -53,7 +100,7 @@ namespace Survive
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
-		static std::optional<Model> getLoadedModel(const FileChooser &fileChooser, Loader &loader);
+		std::optional<Model> getLoadedModel(const FileChooser &fileChooser);
 
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
 

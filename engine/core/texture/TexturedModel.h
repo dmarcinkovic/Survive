@@ -31,8 +31,6 @@ namespace Survive
 
 		static void unbind();
 
-		static void unbindVao();
-
 		[[nodiscard]] const Texture &getTexture() const;
 
 		[[nodiscard]] GLuint vaoID() const;
@@ -50,6 +48,8 @@ namespace Survive
 		Model &getModel();
 
 		Texture &getTexture();
+
+		void setTexture(const Texture &texture);
 
 		friend class TextureHash;
 	};

@@ -9,8 +9,10 @@
 #include <functional>
 
 #include "entt.hpp"
+#include "Joint.h"
 #include "AnimationShader.h"
 #include "TexturedModel.h"
+#include "Components.h"
 #include "Camera.h"
 #include "Light.h"
 
@@ -22,19 +24,36 @@ namespace Survive
 		AnimationShader m_Shader;
 		const Light &m_Light;
 
+		Texture m_DefaultTexture{};
+		entt::entity m_Skybox = entt::null;
+
 	public:
 		explicit AnimationRenderer(const Light &light);
 
-		void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+					const glm::vec4 &plane = glm::vec4{}) const;
+
+		void addSkybox(entt::entity skybox);
 
 	private:
-		void renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
+		void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 						 const Camera &camera) const;
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
 
-		void loadUniforms(const Camera &camera, const glm::vec4 &plane) const;
+		void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
+
+		void loadObjectUniforms(entt::registry &registry, entt::entity entity,
+								const Texture &texture, const Camera &camera) const;
+
+		void renderBloom(const entt::registry &registry, entt::entity entity) const;
+
+		void renderReflectionAndRefraction(entt::registry &registry, entt::entity entity) const;
+
+		static void drawOutline(const entt::registry &registry, entt::entity entity);
+
+		void loadMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

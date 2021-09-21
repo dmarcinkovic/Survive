@@ -10,6 +10,10 @@ void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::st
 {
 	std::ifstream reader(filename);
 
+	registry.each([&](const entt::entity entity) {
+		registry.destroy(entity);
+	});
+
 	std::string line;
 	while (std::getline(reader, line))
 	{
@@ -97,7 +101,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 			ComponentLoader::loadShadowComponent(registry, entity, reader);
 		} else if (componentType == "SoundComponent")
 		{
-			ComponentLoader::loadSoundComponent(registry, entity, reader);
+			ComponentLoader::loadSoundComponent(registry, entity, reader, m_AudioMaster);
 		} else if (componentType == "SpriteComponent")
 		{
 			ComponentLoader::loadSpriteComponent(registry, entity, reader);
@@ -107,6 +111,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "Transform3DComponent")
 		{
 			ComponentLoader::loadTransformComponent(registry, entity, reader);
+		} else if (componentType == "TextComponent")
+		{
+			ComponentLoader::loadTextComponent(registry, entity, reader, m_Loader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -126,4 +133,5 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveSpriteComponent(registry, entity, writer);
 	ComponentSerializer::saveSpriteSheetComponent(registry, entity, writer);
 	ComponentSerializer::saveTransform3DComponent(registry, entity, writer);
+	ComponentSerializer::saveTextComponent(registry, entity, writer);
 }

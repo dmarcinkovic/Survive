@@ -10,6 +10,7 @@
 
 #include "GuiShader.h"
 #include "entt.hpp"
+#include "Camera.h"
 #include "TexturedModel.h"
 
 namespace Survive
@@ -20,7 +21,7 @@ namespace Survive
 		GuiShader m_Shader{};
 
 	public:
-		void render(entt::registry &registry) const;
+		void render(entt::registry &registry, const Camera &camera) const;
 
 	private:
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>

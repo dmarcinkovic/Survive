@@ -37,6 +37,8 @@ namespace Survive
 								  const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
 								  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
 								  unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex);
+
+		static float getRandom(float first = 0.0f, float second = 1.0f);
 	};
 }
 

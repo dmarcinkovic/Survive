@@ -5,6 +5,7 @@
 #ifndef SURVIVE_RENDERER_H
 #define SURVIVE_RENDERER_H
 
+#include "TextRenderer.h"
 #include "GuiRenderer.h"
 #include "SpritesRenderer.h"
 #include "AnimationRenderer.h"
@@ -32,6 +33,7 @@ namespace Survive
 		BloomRenderer m_BloomRenderer;
 		SpritesRenderer m_SpriteRenderer{};
 		GuiRenderer m_GuiRenderer{};
+		TextRenderer m_TextRenderer{};
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;
@@ -61,9 +63,15 @@ namespace Survive
 
 		void removeOutlineToObject(entt::registry &registry);
 
-		void render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
+		void render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
-		void render2DScene(entt::registry &registry) const;
+		void render2DScene(entt::registry &registry, const Camera &camera) const;
+
+		void setMousePickingPosition(float mouseX, float mouseY);
+
+		void addMousePickingListener(const MousePickingListener &listener);
+
+		void popMousePickingListener();
 
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;
@@ -72,7 +80,7 @@ namespace Survive
 
 		void renderWaterReflection(entt::registry &registry, Camera &camera) const;
 
-		void renderWaterRefraction(entt::registry &registry, Camera &camera) const;
+		void renderWaterRefraction(entt::registry &registry, const Camera &camera) const;
 	};
 }
 

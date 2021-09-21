@@ -13,6 +13,7 @@ void Survive::AudioSystem::update(entt::registry &registry)
 	{
 		SoundComponent &soundComponent = view.get<SoundComponent>(entity);
 		Source &source = soundComponent.audioSource;
+		source.setOnLoop(soundComponent.playOnLoop);
 
 		if (registry.has<Transform3DComponent>(entity))
 		{
@@ -20,9 +21,10 @@ void Survive::AudioSystem::update(entt::registry &registry)
 			source.setPosition(transform.position);
 		}
 
-		if (!source.isPlaying())
+		if (soundComponent.play && !source.isPlaying())
 		{
 			source.play(soundComponent.sound);
+			soundComponent.play = false;
 		}
 	}
 }

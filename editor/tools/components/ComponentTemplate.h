@@ -5,10 +5,11 @@
 #ifndef SURVIVE_COMPONENTTEMPLATE_H
 #define SURVIVE_COMPONENTTEMPLATE_H
 
+#include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 #include <iostream>
-#include <typeinfo>
 
+#include "DaeParser.h"
 #include "AudioMaster.h"
 #include "ObjParser.h"
 #include "Components.h"
@@ -22,13 +23,23 @@ namespace Survive
 	{
 	private:
 		AudioMaster m_AudioMaster;
+		FileChooser m_FileChooser;
+		Loader m_Loader;
+
+		EditorUtil m_EditorUtil;
+
+		bool m_IsUsingKeyEvents{};
 
 	public:
 		template<typename ComponentType>
 		void drawComponent(ComponentType &component, bool * = nullptr)
 		{}
-	};
 
+		[[nodiscard]] bool isUsingKeyEvents() const
+		{
+			return m_IsUsingKeyEvents;
+		}
+	};
 
 	template<>
 	inline void ComponentTemplate::drawComponent(Transform3DComponent &component, bool *visible)
@@ -52,7 +63,6 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(Render3DComponent &component, bool *visible)
 	{
-		static FileChooser fileChooser{};
 		static bool changed = true;
 
 		if (ImGui::CollapsingHeader("Render3D", visible))
@@ -60,10 +70,10 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			EditorUtil::loadModel(fileChooser, texturedModel.getModel(), component.modelName, changed);
+			m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
-			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
-									"Texture: %s", "Load texture", changed);
+			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+									 "Texture: %s", "Load texture", changed);
 
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
@@ -101,14 +111,13 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(BloomComponent &component, bool *visible)
 	{
-		static FileChooser fileChooser;
 		static bool changed = true;
 
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
 			ImGui::Columns(2);
-			EditorUtil::loadTexture(fileChooser, component.emissiveTexture, component.textureName,
-									"Texture: %s", "Load texture", changed);
+			m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
+									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
 
 			EditorUtil::drawSlider("##Bloom strength", "Bloom strength", component.bloomStrength, 0.0f, 5.0f);
@@ -137,18 +146,16 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(Render2DComponent &component, bool *visible)
 	{
-		static FileChooser fileChooser{};
 		static bool changed = true;
-		static Loader loader;
 
 		if (ImGui::CollapsingHeader("Render2D", visible))
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			EditorUtil::loadTexture(fileChooser, texturedModel.getTexture(), component.textureName,
-									"Texture: %s", "Load texture", changed);
-			EditorUtil::loadQuadModel(changed, texturedModel, loader);
+			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+									 "Texture: %s", "Load texture", changed);
+			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 			ImGui::Columns();
 		}
@@ -157,7 +164,6 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
 	{
-		static FileChooser fileChooser;
 		static bool changed = true;
 
 		if (ImGui::CollapsingHeader("Sound", visible))
@@ -172,11 +178,69 @@ namespace Survive
 				component.audioSource.setGain(component.gain);
 			}
 
-			EditorUtil::toggleButton("Toggle button", &component.playOnLoop);
+			EditorUtil::toggleButton("Toggle button", component.playOnLoop);
 
 			ImGui::Columns(2);
-			EditorUtil::loadSound(fileChooser, m_AudioMaster, component.sound, component.soundFile,
-								  changed);
+			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
+			ImGui::Columns();
+
+			EditorUtil::drawPlayButton(component.play);
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(SpriteComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Sprite", visible))
+		{
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.color));
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(TextComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Text", visible))
+		{
+			ImGui::Text("Text");
+			Text &text = component.text;
+
+			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
+			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
+
+			EditorUtil::chooseFontSpacing(text.m_LineSpacing, text, m_Loader);
+
+			if (ImGui::Checkbox("Center string", &text.m_Centered) &&
+				!text.m_Text.empty() && text.m_Font.isFontLoaded())
+			{
+				text.loadTexture(m_Loader);
+			}
+
+			ImGui::Columns();
+
+			EditorUtil::loadFontBorder(text.m_AddBorder, text.m_BorderWidth, text.m_BorderColor);
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(SpriteSheetComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Sprite sheet", visible))
+		{
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnInputInt("Number of rows", "##Number of rows", component.row);
+			EditorUtil::drawColumnInputInt("Number of columns", "##Number of columns", component.col);
+			ImGui::Separator();
+			EditorUtil::drawColumnInputInt("Start index", "##Start index", component.startIndex);
+			EditorUtil::drawColumnInputInt("End index", "##End index", component.endIndex);
+			ImGui::Separator();
+			EditorUtil::drawColumnInputInt("Sprites in second", "##NSprites", component.spritesInSecond);
+			EditorUtil::drawColumnInputInt("Number of epochs", "##NEpochs", component.numberOfEpochs);
+			ImGui::Separator();
+
+			EditorUtil::drawColumnInputBool("Animate", "##Animate sprites", component.animating);
+
 			ImGui::Columns();
 		}
 	}

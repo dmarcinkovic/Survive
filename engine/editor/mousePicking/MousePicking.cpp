@@ -5,13 +5,15 @@
 #include <iostream>
 
 #include "MousePicking.h"
+#include "Editor.h"
 #include "Constants.h"
 #include "Components.h"
-#include "Display.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
+#include "Display.h"
 
 bool Survive::MousePicking::mousePressed = false;
+int Survive::MousePicking::selectedEntity = -2;
 
 Survive::MousePicking::MousePicking()
 {
@@ -20,13 +22,15 @@ Survive::MousePicking::MousePicking()
 
 void Survive::MousePicking::mousePressedHandler()
 {
-	Display::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
+	EventHandler::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			mousePressed = true;
+			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || !Editor::isSceneFocused())
+			{
+				return;
+			}
 
-			int height = Display::getHeight();
-			m_MousePosition = glm::ivec2{mouseX, height - mouseY};
+			setMousePosition(static_cast<float>(mouseX), static_cast<float>(mouseY));
 		}
 	});
 }
@@ -37,7 +41,7 @@ glm::vec4 Survive::MousePicking::getColor(std::uint32_t id)
 	std::uint32_t g = (id & 0x0000FF00) >> 8;
 	std::uint32_t b = (id & 0x00FF0000) >> 16;
 
-	return glm::vec4(r / 255.0, g / 255.0, b / 255.0, 1.0f);
+	return {r / 255.0, g / 255.0, b / 255.0, 1.0f};
 }
 
 void Survive::MousePicking::render(entt::registry &registry, const Camera &camera) const
@@ -49,10 +53,8 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 
 	auto entities = prepareEntities(registry);
 
-	Renderer3DUtil::prepareRendering(m_Shader);
-
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
+	setViewport();
+	prepareRendering(camera);
 
 	for (auto const&[texturedModel, objects] : entities)
 	{
@@ -70,8 +72,9 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	Renderer3DUtil::finishRendering();
 
 	Display::clearWindow();
-
 	mousePressed = false;
+
+	informListeners(selectedEntity);
 }
 
 void Survive::MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
@@ -81,12 +84,13 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const st
 	{
 		loadTransformationMatrix(camera, registry, object);
 
-		const IdComponent &id = registry.get<IdComponent>(object);
-		glm::vec4 color = getColor(id.id);
+		int id = static_cast<int>(object);
+		glm::vec4 color = getColor(id);
+
 		m_Shader.loadPickingColor(color);
 
 		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
-		glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
 
@@ -96,15 +100,18 @@ void Survive::MousePicking::getRenderedObject() const
 	glFinish();
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 	std::uint8_t data[4];
-	glReadPixels(m_MousePosition.x, m_MousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-	int id = getID(data);
-	std::cout << id << '\n';
+	int x = static_cast<int>(m_MousePosition.x);
+	int y = static_cast<int>(m_MousePosition.y);
+	glReadPixels(x, y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+	selectedEntity = getEntity(data);
+
+	std::cout << selectedEntity << '\n';
 }
 
-int Survive::MousePicking::getID(const std::uint8_t *data)
+int Survive::MousePicking::getEntity(const std::uint8_t *data)
 {
 	int r = data[0];
 	int g = data[1] << 8;
@@ -114,17 +121,18 @@ int Survive::MousePicking::getID(const std::uint8_t *data)
 
 	if (r == clearColor.r && g == clearColor.g << 8 && b == clearColor.b << 16)
 	{
-		return 0;
+		return -1;
 	}
 
-	return r + g + b;
+	int entityId = r + g + b;
+	return entityId;
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
-	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
-	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent, IdComponent>();
+	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent>();
+	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : entities2D)
@@ -155,4 +163,60 @@ void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
 
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
+}
+
+bool Survive::MousePicking::isInsideWindow() const
+{
+	float width = Editor::getSceneWidth();
+	float height = Editor::getSceneHeight();
+
+	return m_MousePosition.x > 0 && m_MousePosition.x < width - 50  &&
+			m_MousePosition.y > 0 && m_MousePosition.y < height - 50;
+}
+
+void Survive::MousePicking::prepareRendering(const Camera &camera) const
+{
+	Renderer3DUtil::prepareRendering(m_Shader);
+
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
+}
+
+void Survive::MousePicking::setViewport()
+{
+	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
+	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
+
+	glViewport(0, 0, width, height);
+}
+
+void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
+{
+	float height = Editor::getSceneHeight();
+	auto[x, y] = Editor::getScenePosition();
+	m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
+
+	if (isInsideWindow())
+	{
+		mousePressed = true;
+		selectedEntity = -2;
+	}
+}
+
+void Survive::MousePicking::addListener(const MousePickingListener &listener)
+{
+	m_Listeners.emplace_back(listener);
+}
+
+void Survive::MousePicking::informListeners(int entity) const
+{
+	for (const MousePickingListener &listener : m_Listeners)
+	{
+		listener(entity);
+	}
+}
+
+void Survive::MousePicking::popListener()
+{
+	m_Listeners.pop_back();
 }

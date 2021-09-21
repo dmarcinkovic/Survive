@@ -6,7 +6,7 @@
 #include "Renderer2DUtil.h"
 #include "Maths.h"
 
-void Survive::SpritesRenderer::render(entt::registry &registry) const
+void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &camera) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -16,6 +16,7 @@ void Survive::SpritesRenderer::render(entt::registry &registry) const
 	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
+	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, sprites] : entities)
 	{

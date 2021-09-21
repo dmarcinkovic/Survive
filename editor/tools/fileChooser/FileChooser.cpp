@@ -9,8 +9,8 @@
 #include "Loader.h"
 
 Survive::FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
-		  m_DirectoryContent(listCurrentDirectory())
+		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
+		  m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
 	Texture folder = Loader::loadTexture("res/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
@@ -57,116 +57,6 @@ void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *ope
 	ImGui::PopStyleColor(7);
 }
 
-std::vector<Survive::File> Survive::FileChooser::listDirectory(const std::string &directory, bool showHidden)
-{
-	std::filesystem::directory_iterator directoryIterator(directory);
-	std::vector<File> files;
-
-	for (auto const &path : directoryIterator)
-	{
-		File file;
-		file.name = path.path().filename().string();
-
-		if (!showHidden && file.name.front() == '.')
-		{
-			continue;
-		}
-
-		if (path.is_regular_file())
-		{
-			file.size = path.file_size();
-		}
-
-		file.type = path.status().type();
-		files.emplace_back(file);
-	}
-
-	return files;
-}
-
-std::vector<Survive::File> Survive::FileChooser::listCurrentDirectory()
-{
-	auto workingDirectory = std::filesystem::current_path().string();
-
-	return listDirectory(std::filesystem::absolute(workingDirectory).string(), false);
-}
-
-std::string Survive::FileChooser::getFileSize(unsigned long fileSize, std::filesystem::file_type type)
-{
-	if (type != std::filesystem::file_type::regular)
-	{
-		return "";
-	}
-
-	static const int BYTE = 1024;
-	auto size = static_cast<double>(fileSize);
-
-	double kilobytes = size / BYTE;
-
-	if (kilobytes < 1.0)
-	{
-		return std::to_string(fileSize);
-	}
-
-	std::ostringstream stream;
-
-	double megabytes = kilobytes / BYTE;
-
-	if (megabytes < 1.0)
-	{
-		stream << std::setprecision(3) << kilobytes << "K";
-		return stream.str();
-	}
-
-	double gigabytes = megabytes / BYTE;
-
-	if (gigabytes < 1.0)
-	{
-		stream << std::setprecision(3) << megabytes << "M";
-		return stream.str();
-	}
-
-	double terabytes = gigabytes / BYTE;
-
-	if (terabytes < 1.0)
-	{
-		stream << std::setprecision(3) << gigabytes << "G";
-		return stream.str();
-	}
-
-	stream << std::setprecision(3) << terabytes << "T";
-	return stream.str();
-}
-
-const char *Survive::FileChooser::getFileType(std::filesystem::file_type type)
-{
-	switch (type)
-	{
-		case std::filesystem::file_type::directory :
-			return "directory";
-		case std::filesystem::file_type::none:
-			return "none";
-		case std::filesystem::file_type::not_found:
-			return "not found";
-		case std::filesystem::file_type::regular:
-			return "regular";
-		case std::filesystem::file_type::symlink:
-			return "symlink";
-		case std::filesystem::file_type::block:
-			return "block";
-		case std::filesystem::file_type::character:
-			return "character";
-		case std::filesystem::file_type::fifo:
-			return "fifo";
-		case std::filesystem::file_type::socket:
-			return "socket";
-		case std::filesystem::file_type::unknown:
-			return "unknown";
-		default:
-			return "";
-	}
-}
-
 void Survive::FileChooser::helpMarker(const char *description)
 {
 	ImGui::TextDisabled("(?)");
@@ -180,11 +70,11 @@ void Survive::FileChooser::helpMarker(const char *description)
 	}
 }
 
-std::string Survive::FileChooser::getParentPath(const std::string &currentDirectory)
+std::filesystem::path Survive::FileChooser::getParentPath(const std::string &currentDirectory)
 {
 	std::filesystem::path path(currentDirectory.c_str());
 
-	return path.parent_path().string();
+	return path.parent_path();
 }
 
 void Survive::FileChooser::setupDarkStyleColors()
@@ -214,7 +104,7 @@ void Survive::FileChooser::drawLeftArrow()
 		if (!m_Undo.empty())
 		{
 			m_CurrentDirectory = m_Undo.top();
-			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 			resetSelectedFile();
 
@@ -232,7 +122,7 @@ void Survive::FileChooser::drawRightArrow()
 		if (!m_Redo.empty())
 		{
 			m_CurrentDirectory = m_Redo.top();
-			m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 			resetSelectedFile();
 
@@ -249,7 +139,7 @@ void Survive::FileChooser::drawUpArrow()
 		m_Redo.push(m_CurrentDirectory);
 
 		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
-		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 		resetSelectedFile();
 	}
@@ -263,7 +153,7 @@ void Survive::FileChooser::drawCheckbox()
 
 	if (m_Previous != m_Hidden)
 	{
-		m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 		resetSelectedFile();
 	}
 
@@ -359,15 +249,15 @@ void Survive::FileChooser::drawCancelButton(bool *open)
 	ImGui::PopStyleColor();
 }
 
-std::string Survive::FileChooser::getSelectedFile() const
+std::filesystem::path Survive::FileChooser::getSelectedFile() const
 {
 	if (!m_OpenedFile)
 	{
-		return "";
+		return std::filesystem::path{};
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);
-	return path.append(m_SelectedFileName).string();
+	return path.append(m_SelectedFileName);
 }
 
 void Survive::FileChooser::resetSelectedFile()
@@ -379,7 +269,7 @@ void Survive::FileChooser::resetSelectedFile()
 	} else
 	{
 		m_SelectedFile = 0;
-		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].name;
+		m_SelectedFileName = m_DirectoryContent[m_SelectedFile].path.filename().string();
 	}
 }
 
@@ -397,10 +287,12 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open,
 	ImGui::TableNextColumn();
 	drawIcon();
 
-	if (ImGui::Selectable(file.name.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
+	const std::string &filename = file.path.filename().string();
+
+	if (ImGui::Selectable(filename.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
@@ -415,17 +307,17 @@ void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open,
 	}
 
 	ImGui::TableNextColumn();
-	if (ImGui::Selectable(getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
+	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 
 	ImGui::TableNextColumn();
-	if (ImGui::Selectable(getFileType(file.type), m_SelectedFile == index))
+	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
 	{
 		m_SelectedFile = index;
-		m_SelectedFileName = file.name;
+		m_SelectedFileName = filename;
 	}
 }
 
@@ -443,7 +335,10 @@ void Survive::FileChooser::openPressed(bool *open)
 
 bool Survive::FileChooser::sortByFilename(const File &file1, const File &file2)
 {
-	return file1.name.compare(file2.name) < 0;
+	const std::string &filename1 = file1.path.filename().string();
+	const std::string &filename2 = file2.path.filename().string();
+
+	return filename1.compare(filename2) < 0;
 }
 
 bool Survive::FileChooser::sortBySize(const File &file1, const File &file2)
@@ -478,7 +373,7 @@ std::string Survive::FileChooser::getSelectedFilename() const
 	if (m_OpenedFile)
 	{
 		std::filesystem::path selectedFile(getSelectedFile());
-		return std::filesystem::relative(selectedFile).string();
+		return std::filesystem::relative(selectedFile);
 	}
 
 	return "";
@@ -516,7 +411,7 @@ void Survive::FileChooser::savePressed(bool *open)
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);
-	std::string file = path.append(m_SelectedFileName).string();
+	std::string file = path.append(m_SelectedFileName);
 
 	if (std::filesystem::exists(file))
 	{
@@ -533,8 +428,8 @@ void Survive::FileChooser::buttonDoublePress()
 	std::filesystem::path path(m_CurrentDirectory);
 
 	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName).string();
-	m_DirectoryContent = listDirectory(m_CurrentDirectory, m_Hidden);
+	m_CurrentDirectory = path.append(m_SelectedFileName);
+	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 	resetSelectedFile();
 }

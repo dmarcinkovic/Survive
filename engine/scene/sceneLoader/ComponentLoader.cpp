@@ -5,6 +5,7 @@
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
+#include "Util.h"
 
 void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
@@ -46,7 +47,7 @@ void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 
 	float index = std::stof(refractiveIndex);
 	float factor = std::stof(refractiveFactor);
-	
+
 	registry.emplace<RefractionComponent>(entity, index, factor);
 }
 
@@ -100,20 +101,47 @@ void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
 	registry.emplace<ShadowComponent>(entity, std::stoi(loadShadow));
 }
 
-void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadSoundComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+												  AudioMaster &audioMaster)
 {
+	std::string soundFile = parseLine(reader, "soundFile");
 
+	float pitch = std::stof(parseLine(reader, "pitch"));
+	float gain = std::stof(parseLine(reader, "gain"));
+
+	bool playOnLoop = std::stoi(parseLine(reader, "playOnLoop"));
+	bool play = std::stoi(parseLine(reader, "play"));
+
+	ALint soundTrack = audioMaster.loadSound(soundFile.c_str());
+	Source source(gain, pitch);
+
+	registry.emplace<SoundComponent>(entity, soundTrack, source, soundFile, pitch, gain, playOnLoop, play);
 }
 
 void Survive::ComponentLoader::loadSpriteComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
+	std::string colorString = parseLine(reader, "color");
+	glm::vec4 color = parseVec4(colorString);
 
+	registry.emplace<SpriteComponent>(entity, color);
 }
 
-void
-Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadSpriteSheetComponent(entt::registry &registry,
+														entt::entity entity, std::ifstream &reader)
 {
+	int rows = std::stoi(parseLine(reader, "rows"));
+	int cols = std::stoi(parseLine(reader, "cols"));
 
+	int startIndex = std::stoi(parseLine(reader, "startIndex"));
+	int endIndex = std::stoi(parseLine(reader, "endIndex"));
+
+	int spritesInSecond = std::stoi(parseLine(reader, "spritesInSecond"));
+	int numberOfEpochs = std::stoi(parseLine(reader, "numberOfEpochs"));
+
+	bool animate = std::stoi(parseLine(reader, "animate"));
+
+	registry.emplace<SpriteSheetComponent>(entity, rows, cols, spritesInSecond, startIndex,
+										   endIndex, numberOfEpochs, animate);
 }
 
 void Survive::ComponentLoader::loadTransformComponent(entt::registry &registry,
@@ -133,7 +161,8 @@ std::string Survive::ComponentLoader::parseLine(std::ifstream &reader, const cha
 	std::string line;
 	std::getline(reader, line);
 
-	if (line.find(text) == std::string::npos)
+	std::string pattern(text);
+	if (line.find(pattern + ':') == std::string::npos)
 	{
 		throw std::runtime_error("Did not find required string in text");
 	}
@@ -151,5 +180,69 @@ glm::vec3 Survive::ComponentLoader::parseVec3(const std::string &vec3)
 	float y = std::stof(vec3.substr(start + 1, end - start - 1));
 	float z = std::stof(vec3.substr(end + 1));
 
-	return glm::vec3(x, y, z);
+	return {x, y, z};
+}
+
+glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
+{
+	std::vector<std::string> numbers = Util::split(vec4, ',');
+
+	float x = std::stof(numbers[0]);
+	float y = std::stof(numbers[1]);
+	float z = std::stof(numbers[2]);
+	float w = std::stof(numbers[3]);
+
+	return {x, y, z, w};
+}
+
+void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt::entity entity,
+												 std::ifstream &reader, Loader &loader)
+{
+	std::string string = parseLine(reader, "text");
+	std::string fontFile = parseLine(reader, "fontFile");
+	std::string textureAtlas = parseLine(reader, "textureAtlas");
+
+	auto font = getFont(fontFile, textureAtlas);
+
+	if (!font)
+	{
+		return;
+	}
+
+	float lineSpacing = std::stof(parseLine(reader, "lineSpacing"));
+	bool centerText = std::stoi(parseLine(reader, "centerText"));
+
+	bool addBorder = std::stoi(parseLine(reader, "addBorder"));
+	float borderWidth = std::stof(parseLine(reader, "borderWidth"));
+	glm::vec3 borderColor = parseVec3(parseLine(reader, "borderColor"));
+
+	Text text(string, font.value(), lineSpacing, centerText, addBorder, borderWidth, borderColor);
+	text.loadTexture(loader);
+
+	TextComponent textComponent(text);
+	textComponent.textureAtlas = textureAtlas;
+	textComponent.fontFile = fontFile;
+
+	registry.emplace<TextComponent>(entity, textComponent);
+}
+
+std::optional<Survive::Font>
+Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas)
+{
+	Font font(textureAtlas.c_str());
+
+	if (fontFile.ends_with(".fnt"))
+	{
+		font.loadFontFromFntFile(fontFile.c_str());
+	} else if (fontFile.ends_with(".json"))
+	{
+		font.loadFontFromJsonFile(fontFile.c_str());
+	}
+
+	if (font.isFontLoaded() && font.isFontTextureValid())
+	{
+		return font;
+	}
+
+	return {};
 }

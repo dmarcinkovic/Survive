@@ -6,6 +6,7 @@
 #define SURVIVE_ENTITYMANAGER_H
 
 #include "entt.hpp"
+#include "EventHandler.h"
 #include "Components.h"
 #include "ComponentUtil.h"
 
@@ -19,9 +20,16 @@ namespace Survive
 		char m_Buffer[BUFFER_SIZE]{};
 		bool m_AddNewComponent{};
 
-		entt::entity m_SelectedEntity{};
+		entt::entity m_SelectedEntity = entt::null;
 		int m_Selected = -1;
 		int m_CurrentItem = -1;
+		bool m_RenameEntity{};
+
+		ComponentUtil m_Util{};
+		bool m_DestroyEntity{};
+
+		bool m_RenameOpen{};
+		bool m_CreateOpen{};
 
 		ComponentUtil m_Util{};
 
@@ -29,6 +37,14 @@ namespace Survive
 		void addEntity(entt::registry &registry);
 
 		void drawPropertyPanel(entt::registry &registry);
+
+		void handleKeyEvents(const EventHandler &eventHandler);
+
+		[[nodiscard]] entt::entity getSelectedEntity() const;
+
+		void setSelectedEntity(int selectedEntity);
+
+		[[nodiscard]] bool isFocused() const;
 
 	private:
 		void createEntity(entt::registry &registry);
@@ -41,9 +57,11 @@ namespace Survive
 
 		inline void drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i);
 
-		inline void drawPopupContext(entt::registry &registry, int i);
+		inline void drawPopupContext(entt::registry &registry, entt::entity selectedEntity, int i);
 
 		void removeEntity(entt::registry &registry);
+
+		void renameEntity(entt::registry &registry);
 	};
 }
 

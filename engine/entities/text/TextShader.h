@@ -21,6 +21,7 @@ namespace Survive
 		GLint m_LocationBorderColor{};
 
 		GLint m_LocationTransformationMatrix{};
+		GLint m_LocationProjectionMatrix{};
 
 	public:
 		TextShader();
@@ -30,6 +31,8 @@ namespace Survive
 		void loadBorder(const glm::vec3 &borderColor, float borderWidth) const;
 
 		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
+
+		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
 	private:
 		void getUniformLocations();

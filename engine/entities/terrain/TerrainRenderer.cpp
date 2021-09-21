@@ -33,8 +33,7 @@ Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera,
 
 void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
 {
-	glm::mat4 lightView = Maths::createLightViewMatrix(light);
-	m_Shader.loadLightViewMatrix(lightView);
+	m_Shader.loadLightViewMatrix(light.getViewMatrix());
 
 	Texture texture(shadowMap);
 	texture.bindTexture(5);
@@ -68,9 +67,9 @@ void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &l
 
 	m_Shader.loadTextures();
 	m_Shader.loadTransformationMatrix(transformationMatrix);
-	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
-	m_Shader.loadLightProjectionMatrix(Maths::lightProjectionMatrix);
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+	m_Shader.loadLightProjectionMatrix(light.getProjectionMatrix());
 
 	m_Shader.loadLight(light);
 	m_Shader.loadPlane(plane);

@@ -24,7 +24,7 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 	prepareObject(renderComponent);
 	loadUniforms(transform, camera);
 
-	glDrawArrays(GL_TRIANGLES, 0, renderComponent.texturedModel.vertexCount());
+	glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
 	finishRenderingObject();
 
@@ -69,8 +69,8 @@ void Survive::OutlineRenderer::resetStencilFunctions()
 
 void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transform, const Camera &camera) const
 {
-	m_Shader.loadViewMatrix(Maths::createViewMatrix(camera));
-	m_Shader.loadProjectionMatrix(Maths::projectionMatrix);
+	m_Shader.loadViewMatrix(camera.getViewMatrix());
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 
 	glm::vec3 rotation = transform.rotation + camera.rotation;
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale * SCALE, rotation);

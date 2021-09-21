@@ -16,7 +16,7 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 		ImGui::OpenPopup("Create entity");
 	}
 
-	if (ImGui::BeginPopup("Create entity"))
+	if ((m_CreateOpen = ImGui::BeginPopup("Create entity")))
 	{
 		createEntity(registry);
 		ImGui::EndPopup();
@@ -25,6 +25,13 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 	ImGui::Separator();
 
 	listEntities(registry);
+	renameEntity(registry);
+
+	if (m_DestroyEntity)
+	{
+		m_DestroyEntity = false;
+		removeEntity(registry);
+	}
 
 	ImGui::PopStyleColor();
 }
@@ -52,15 +59,14 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.35f, 0.5f, 0.5f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
 
-	int index = 0;
 	registry.each([&](const entt::entity entity) {
 		if (registry.has<TagComponent>(entity))
 		{
 			const TagComponent &tag = registry.get<TagComponent>(entity);
+			auto index = static_cast<int>(entity);
 
 			drawSelectable(tag, entity, index);
-			drawPopupContext(registry, index);
-			++index;
+			drawPopupContext(registry, entity, index);
 		}
 	});
 
@@ -120,7 +126,7 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 	}
 }
 
-void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
+void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::entity selectedEntity, int i)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
@@ -130,11 +136,17 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 		{
 			m_CurrentItem = -1;
 			m_Selected = i;
-		}
-
-		if (ImGui::Selectable("Remove entity"))
+			m_SelectedEntity = selectedEntity;
+		} else if (ImGui::Selectable("Remove entity"))
 		{
+			m_Selected = i;
+			m_SelectedEntity = selectedEntity;
 			removeEntity(registry);
+		} else if (ImGui::Selectable("Rename entity"))
+		{
+			m_Selected = i;
+			m_SelectedEntity = selectedEntity;
+			m_RenameEntity = true;
 		}
 
 		ImGui::EndPopup();
@@ -144,7 +156,57 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, int i)
 void Survive::EntityManager::removeEntity(entt::registry &registry)
 {
 	registry.destroy(m_SelectedEntity);
-	m_SelectedEntity = entt::entity{};
+	m_SelectedEntity = entt::null;
 
 	m_Selected = m_CurrentItem = -1;
+}
+
+void Survive::EntityManager::renameEntity(entt::registry &registry)
+{
+	if (m_RenameEntity)
+	{
+		ImGui::OpenPopup("rename entity");
+		m_RenameEntity = false;
+	}
+
+	if ((m_RenameOpen = ImGui::BeginPopup("rename entity")))
+	{
+		if (ImGui::InputText("Entity name", m_Buffer, BUFFER_SIZE,
+							 ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			registry.replace<TagComponent>(m_SelectedEntity, m_Buffer);
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void Survive::EntityManager::handleKeyEvents(const EventHandler &eventHandler)
+{
+	if (eventHandler.isKeyPressed(Key::DELETE) && m_Selected != -1)
+	{
+		m_DestroyEntity = true;
+	}
+}
+
+entt::entity Survive::EntityManager::getSelectedEntity() const
+{
+	return m_SelectedEntity;
+}
+
+void Survive::EntityManager::setSelectedEntity(int selectedEntity)
+{
+	if (selectedEntity == -2)
+	{
+		return;
+	}
+
+	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
+	m_Selected = selectedEntity;
+}
+
+bool Survive::EntityManager::isFocused() const
+{
+	return m_CreateOpen || m_RenameOpen || m_Util.isUsingKeyEvents();
 }

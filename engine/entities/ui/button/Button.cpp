@@ -2,6 +2,7 @@
 // Created by david on 05. 05. 2020..
 //
 
+#include "Display.h"
 #include "Button.h"
 
 Survive::Button::Button(const TexturedModel &texture, const glm::vec3 &position, float scaleX, float scaleY,
@@ -48,16 +49,16 @@ void Survive::Button::addMouseMoveListener()
 		{
 			m_Scale.x = m_OriginalScaleX * 1.02f;
 			m_Scale.y = m_OriginalScaleY * 1.02f;
-			m_Text.scaleFor(1.02f);
+//			m_Text.scaleFor(1.02f);
 		} else
 		{
 			m_Scale.x = m_OriginalScaleX;
 			m_Scale.y = m_OriginalScaleY;
-			m_Text.scaleFor(1);
+//			m_Text.scaleFor(1);
 		}
 	};
 
-	Display::addMouseMovedListener(mouseListener);
+	EventHandler::addMouseMovedListener(mouseListener);
 }
 
 void Survive::Button::addWindowResizeListener()
@@ -66,7 +67,7 @@ void Survive::Button::addWindowResizeListener()
 		convertToScreenSpace(static_cast<float>(width), static_cast<float>(height));
 	};
 
-	Display::addWindowResizeListener(windowResizeListener);
+	EventHandler::addWindowResizeListener(windowResizeListener);
 }
 
 Survive::Text &Survive::Button::getText()
@@ -76,6 +77,6 @@ Survive::Text &Survive::Button::getText()
 
 void Survive::Button::setText(const std::string &text, const Font &font, const glm::vec3 &textColor)
 {
-	m_Text = Text(text, font, m_Position, textColor);
+//	m_Text = Text(text, font, m_Position, textColor);
 	m_Text.centerText();
 }

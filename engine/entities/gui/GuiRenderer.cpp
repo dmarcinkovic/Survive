@@ -7,7 +7,7 @@
 #include "Maths.h"
 #include "Renderer2DUtil.h"
 
-void Survive::GuiRenderer::render(entt::registry &registry) const
+void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -17,7 +17,7 @@ void Survive::GuiRenderer::render(entt::registry &registry) const
 	}
 
 	Renderer2DUtil::prepareRendering(m_Shader);
-	m_Shader.loadProjectionMatrix(Maths::orthographicProjectionMatrix);
+	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, guis] : entities)
 	{

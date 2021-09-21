@@ -55,6 +55,8 @@ void Survive::ObjectShader::loadUniformLocations()
 	m_LocationBloomStrength = glGetUniformLocation(m_Program, "bloomStrength");
 
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
+
+	m_LocationColor = glGetUniformLocation(m_Program, "color");
 }
 
 void
@@ -120,4 +122,9 @@ void Survive::ObjectShader::loadBloomTexture(float bloomStrength) const
 void Survive::ObjectShader::loadBloom(bool loadBloom) const
 {
 	loadInteger(m_LocationAddBloom, loadBloom);
+}
+
+void Survive::ObjectShader::loadColor(const glm::vec4 &color) const
+{
+	loadVector4(m_LocationColor, color);
 }

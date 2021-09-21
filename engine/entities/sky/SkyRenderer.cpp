@@ -54,7 +54,7 @@ void Survive::SkyRenderer::finishRendering()
 void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform,
 										const Camera &camera, const glm::vec4 &plane) const
 {
-	auto viewMatrix = Maths::createViewMatrix(camera);
+	glm::mat4 viewMatrix = camera.getViewMatrix();
 	viewMatrix[3][0] = 0;
 	viewMatrix[3][1] = 0;
 	viewMatrix[3][2] = 0;
@@ -69,8 +69,7 @@ void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Tr
 
 	viewMatrix = glm::rotate(viewMatrix, glm::radians(skyRotation), glm::vec3{0, 1, 0});
 
-	auto projectionMatrix = Maths::projectionMatrix;
-	m_Shader.loadViewAndProjectionMatrices(viewMatrix, projectionMatrix);
+	m_Shader.loadViewAndProjectionMatrices(viewMatrix, camera.getProjectionMatrix());
 
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);

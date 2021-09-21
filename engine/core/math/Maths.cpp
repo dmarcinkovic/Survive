@@ -2,18 +2,14 @@
 // Created by david on 28. 03. 2020..
 //
 
-#include <random>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Maths.h"
 #include "Constants.h"
-#include "Display.h"
-
-glm::mat4 Survive::Maths::projectionMatrix;
-glm::mat4 Survive::Maths::lightProjectionMatrix;
-glm::mat4 Survive::Maths::orthographicProjectionMatrix;
 
 glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translation, const glm::vec3 &scale,
-											const glm::vec3 &rotation)
+													 const glm::vec3 &rotation)
 {
 	glm::mat4 matrix{1.0f};
 
@@ -28,27 +24,26 @@ glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translatio
 	return matrix;
 }
 
-glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView)
+glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView, float width, float height)
 {
-	auto[width, height] = Display::getWindowSize<float>();
 	float aspectRatio = width / height;
 
 	return glm::perspective(fieldOfView, aspectRatio, Constants::NEAR, Constants::FAR);
 }
 
-glm::mat4 Survive::Maths::createViewMatrix(const Camera &camera)
+glm::mat4 Survive::Maths::createViewMatrix(float pitch, float yaw, const glm::vec3 &position)
 {
 	glm::mat4 viewMatrix{1.0};
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(camera.pitch), glm::vec3{1, 0, 0});
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(camera.yaw), glm::vec3{0, 1, 0});
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(pitch), glm::vec3{1, 0, 0});
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(yaw), glm::vec3{0, 1, 0});
 
-	viewMatrix = glm::translate(viewMatrix, -camera.position);
+	viewMatrix = glm::translate(viewMatrix, -position);
 	return viewMatrix;
 }
 
-glm::mat4 Survive::Maths::createLightViewMatrix(const Light &light)
+glm::mat4 Survive::Maths::createLightViewMatrix(const glm::vec3 &lightPosition)
 {
-	return glm::lookAt(light.position(), glm::vec3{0.0f}, glm::vec3{0, 1, 0});
+	return glm::lookAt(lightPosition, glm::vec3{0.0f}, glm::vec3{0, 1, 0});
 }
 
 glm::mat4 Survive::Maths::createLightProjectionMatrix()
@@ -62,11 +57,11 @@ glm::mat4 Survive::Maths::createOrthographicProjectionMatrix(float width, float 
 	return glm::ortho(-width, width, -height, height);
 }
 
-float Survive::Maths::getRandom(float first, float second)
+glm::mat4 Survive::Maths::recomposeMatrixFromComponents(const glm::vec3 &translation, const glm::vec3 &scale,
+														const glm::vec3 &rotation)
 {
-	static std::random_device device;
-	static std::mt19937_64 mt(device());
-	static std::uniform_real_distribution<float> distribution(first, second);
-
-	return distribution(mt);
+	return glm::translate(glm::mat4(1.0f), translation) *
+		   glm::toMat4(glm::quat(glm::radians(rotation))) *
+		   glm::scale(glm::mat4(1.0f), scale);
 }
+

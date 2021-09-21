@@ -17,13 +17,12 @@ void Survive::SpriteUpdate::update(entt::registry &registry)
 
 void Survive::SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 {
-	int epochs = sprite.m_NumberOfEpochs;
-	int startIndex = sprite.m_StartIndex;
+	int epochs = sprite.numberOfEpochs;
+	int startIndex = sprite.startIndex;
 
-	int endRow = sprite.m_EndRow;
-	int endCol = sprite.m_EndCol;
+	int endIndex = sprite.endIndex;
 
-	int frameIndex = calcFrameIndex(sprite, startIndex, endRow * sprite.col + endCol);
+	int frameIndex = calcFrameIndex(sprite, startIndex, endIndex);
 	if (epochs == -1)
 	{
 		sprite.currentFrameIndex = startIndex + frameIndex;
@@ -44,7 +43,7 @@ void Survive::SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 
 int Survive::SpriteUpdate::calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex)
 {
-	sprite.m_Time += Display::getFrameTime() * sprite.m_SpritesInSecond;
+	sprite.m_Time += Display::getFrameTime() * sprite.spritesInSecond;
 	sprite.m_Time = std::fmod(sprite.m_Time, endIndex - startIndex + 1);
 
 	return std::floor(sprite.m_Time);

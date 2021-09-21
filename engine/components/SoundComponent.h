@@ -14,8 +14,10 @@ namespace Survive
 	struct SoundComponent
 	{
 		ALint sound{};
+
 		float pitch = 1.0f, gain = 1.0f;
 		bool playOnLoop{};
+		bool play = true;
 
 		std::string soundFile{};
 		Source audioSource;
@@ -24,6 +26,12 @@ namespace Survive
 
 		SoundComponent(ALint sound, const Source &source)
 				: sound(sound), audioSource(source)
+		{}
+
+		SoundComponent(ALint sound, const Source &source, std::string soundFile, float pitch, float gain,
+					   bool playOnLoop, bool play)
+				: sound(sound), audioSource(source), soundFile(std::move(soundFile)), pitch(pitch), gain(gain),
+				  playOnLoop(playOnLoop), play(play)
 		{}
 	};
 }

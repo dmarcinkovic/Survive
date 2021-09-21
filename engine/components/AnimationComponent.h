@@ -14,6 +14,8 @@ namespace Survive
 		Joint rootJoint;
 		int numberOfJoints{};
 
+		std::vector<glm::mat4> jointTransforms;
+
 		AnimationComponent() = default;
 
 		AnimationComponent(Joint rootJoint, int numberOfJoints)

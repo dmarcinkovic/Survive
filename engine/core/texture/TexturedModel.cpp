@@ -37,11 +37,6 @@ void Survive::TexturedModel::unbind()
 	Texture::unbindTexture();
 }
 
-void Survive::TexturedModel::unbindVao()
-{
-	glBindVertexArray(0);
-}
-
 GLsizei Survive::TexturedModel::vertexCount() const
 {
 	return m_Model.m_VertexCount;
@@ -89,3 +84,7 @@ bool Survive::TexturedModel::isValidModel() const
 	return m_Model.isValidModel();
 }
 
+void Survive::TexturedModel::setTexture(const Texture &texture)
+{
+	m_Texture = texture;
+}

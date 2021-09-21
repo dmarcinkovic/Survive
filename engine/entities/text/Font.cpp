@@ -6,8 +6,9 @@
 
 #include "Font.h"
 #include "Util.h"
+#include "Log.h"
 
-Survive::Font::Font(const char *textureAtlas, Loader &loader)
+Survive::Font::Font(const char *textureAtlas)
 		: m_FontTexture(Loader::loadTexture(textureAtlas))
 {
 }
@@ -16,7 +17,13 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 {
 	std::ifstream reader(fntFile);
 
-	float w = 0, h = 0;
+	if (!reader)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot load font");
+		return;
+	}
+
+	float w = 0;
 
 	std::string line;
 	while (std::getline(reader, line))
@@ -24,15 +31,18 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 		auto result = Util::splitByRegex(line);
 		if (!result.empty() && result[0] == "char")
 		{
-			Character c = Util::getCharacterFromFntFile(result, w, h);
+			Character c = Util::getCharacterFromFntFile(result, w, m_ScaleHeight);
 			m_Characters.insert({c.m_Id, c});
 		} else if (!result.empty() && result[0] == "common")
 		{
 			w = Util::getNumber(result[3]);
-			h = Util::getNumber(result[4]);
+
+			m_ScaleHeight = Util::getNumber(result[4]);
+			m_Height = Util::getNumber(result[1]);
 		}
 	}
 
+	m_Loaded = true;
 	reader.close();
 }
 
@@ -40,12 +50,18 @@ void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 {
 	std::ifstream reader(jsonFile);
 
-	float scaleW = 0, scaleH = 0;
+	if (!reader)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot load font");
+		return;
+	}
+
+	float scaleW = 0;
 
 	std::string line;
 	while (std::getline(reader, line))
 	{
-		auto c = Util::getCharacterFromJsonFile(line, scaleW, scaleH);
+		auto c = Util::getCharacterFromJsonFile(line, scaleW, m_ScaleHeight);
 		if (c)
 		{
 			m_Characters.insert({c.value().m_Id, c.value()});
@@ -54,10 +70,14 @@ void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
 			scaleW = Util::getNumber(line, ':');
 		} else if (line.find("height") != -1)
 		{
-			scaleH = Util::getNumber(line, ':');
+			m_ScaleHeight = Util::getNumber(line, ':');
+		} else if (line.find("size") != -1)
+		{
+			m_Height = Util::getNumber(line, ':');
 		}
 	}
 
+	m_Loaded = true;
 	reader.close();
 }
 
@@ -69,4 +89,29 @@ const Survive::Character &Survive::Font::getCharacter(int ascii) const
 const Survive::Texture &Survive::Font::getTexture() const
 {
 	return m_FontTexture;
+}
+
+void Survive::Font::setTexture(const Texture &fontTexture)
+{
+	m_FontTexture = fontTexture;
+}
+
+bool Survive::Font::isFontLoaded() const
+{
+	return m_Loaded;
+}
+
+float Survive::Font::getHeight() const
+{
+	return m_Height;
+}
+
+float Survive::Font::getScaleHeight() const
+{
+	return m_ScaleHeight;
+}
+
+bool Survive::Font::isFontTextureValid() const
+{
+	return m_FontTexture.isValidTexture();
 }

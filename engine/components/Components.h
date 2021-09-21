@@ -7,7 +7,6 @@
 
 #include "AnimationComponent.h"
 #include "BloomComponent.h"
-#include "IdComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
 #include "ReflectionComponent.h"
@@ -20,6 +19,7 @@
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"
 #include "TagComponent.h"
+#include "TextComponent.h"
 #include "TexturedComponent.h"
 #include "Transform3DComponent.h"
 

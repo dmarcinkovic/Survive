@@ -11,6 +11,7 @@
 #include "entt.hpp"
 #include "SpritesShader.h"
 #include "TexturedModel.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -20,7 +21,7 @@ namespace Survive
 		SpritesShader m_Shader{};
 
 	public:
-		void render(entt::registry &registry) const;
+		void render(entt::registry &registry, const Camera &camera) const;
 
 	private:
 		void loadUniforms(const Transform3DComponent &transform, const SpriteSheetComponent &sprite) const;

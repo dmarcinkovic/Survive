@@ -8,26 +8,39 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <functional>
+#include <vector>
 
-#include "MousePickingShader.h"
 #include "entt.hpp"
+#include "MousePickingShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"
 
 namespace Survive
 {
+	using MousePickingListener = std::function<void(int)>;
+
 	class MousePicking
 	{
 	private:
 		static bool mousePressed;
+		static int selectedEntity;
+
 		MousePickingShader m_Shader;
 
-		glm::ivec2 m_MousePosition{};
+		glm::vec2 m_MousePosition{};
+
+		std::vector<MousePickingListener> m_Listeners;
 
 	public:
 		explicit MousePicking();
 
 		void render(entt::registry &registry, const Camera &camera) const;
+
+		void setMousePosition(float mouseX, float mouseY);
+
+		void addListener(const MousePickingListener &listener);
+
+		void popListener();
 
 	private:
 		void mousePressedHandler();
@@ -39,12 +52,20 @@ namespace Survive
 
 		static glm::vec4 getColor(std::uint32_t id);
 
-		static int getID(const std::uint8_t *data);
+		static int getEntity(const std::uint8_t *data);
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
 
 		void loadTransformationMatrix(const Camera &camera, const entt::registry &registry, entt::entity entity) const;
+
+		[[nodiscard]] bool isInsideWindow() const;
+
+		static void setViewport();
+
+		void prepareRendering(const Camera &camera) const;
+
+		void informListeners(int entity) const;
 	};
 }
 

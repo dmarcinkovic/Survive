@@ -5,11 +5,13 @@
 #ifndef SURVIVE_TEXTRENDERER_H
 #define SURVIVE_TEXTRENDERER_H
 
-#include "TextShader.h"
-#include "Text.h"
-
 #include <functional>
 #include <unordered_set>
+
+#include "entt.hpp"
+#include "TextShader.h"
+#include "Text.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -17,12 +19,12 @@ namespace Survive
 	{
 	private:
 		TextShader m_Shader{};
-		std::unordered_map<TexturedModel, std::vector<std::reference_wrapper<Text>>, TextureHash> m_Texts;
 
 	public:
-		void renderText() const;
+		void renderText(entt::registry &registry, const Camera &camera) const;
 
-		void addText(Text &text, Loader &loader);
+	private:
+		void loadUniforms(entt::registry &registry, entt::entity entity) const;
 	};
 }
 

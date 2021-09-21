@@ -17,19 +17,21 @@ Survive::Renderer::Renderer(const Light &light)
 	m_Scene = m_SceneFrameBuffer.createTexture(m_SceneSize.first, m_SceneSize.second);
 }
 
-void Survive::Renderer::render3DScene(entt::registry &registry, Camera &camera, const glm::vec4 &plane) const
+void Survive::Renderer::render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
 	m_ObjectRenderer.render(registry, camera, m_ShadowMap, plane);
 	m_TerrainRenderer.render(registry, camera, m_Light, m_ShadowMap, plane);
-	m_AnimationRenderer.render(registry, camera, plane);
+	m_AnimationRenderer.render(registry, camera, m_ShadowMap, plane);
 
 	m_SkyRenderer.render(registry, camera, plane);
 }
 
-void Survive::Renderer::render2DScene(entt::registry &registry) const
+void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &camera) const
 {
-	m_GuiRenderer.render(registry);
-	m_SpriteRenderer.render(registry);
+	m_GuiRenderer.render(registry, camera);
+	m_SpriteRenderer.render(registry, camera);
+
+	m_TextRenderer.renderText(registry, camera);
 }
 
 void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
@@ -46,13 +48,14 @@ void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
 	m_WaterRenderer.render(registry, camera, m_Light);
 	m_OutlineRenderer.render(registry, camera);
 
-	render2DScene(registry);
+	render2DScene(registry, camera);
 }
 
 void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 {
 	m_SkyRenderer.addSkyEntity(sky);
 	m_ObjectRenderer.addSkybox(sky);
+	m_AnimationRenderer.addSkybox(sky);
 }
 
 void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
@@ -71,18 +74,18 @@ void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) co
 											Constants::SHADOW_HEIGHT);
 
 	renderToWaterFrameBuffers(registry, camera);
-	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 
 	m_SceneFrameBuffer.bindFrameBuffer();
 	Display::clearWindow();
 
-//	m_MousePicking.render(camera);
+	m_MousePicking.render(registry, camera);
 
+	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
 	render3DScene(registry, camera);
 	m_WaterRenderer.render(registry, camera, m_Light);
 
 	m_OutlineRenderer.render(registry, camera);
-	render2DScene(registry);
+	render2DScene(registry, camera);
 	FrameBuffer::unbindFrameBuffer();
 
 	m_BloomRenderer.render(registry);
@@ -103,7 +106,6 @@ void Survive::Renderer::resetViewport()
 
 void Survive::Renderer::renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const
 {
-
 	if (WaterRenderer::shouldRender(registry))
 	{
 		glEnable(GL_CLIP_DISTANCE0);
@@ -133,9 +135,10 @@ void Survive::Renderer::renderWaterReflection(entt::registry &registry, Camera &
 	WaterFbo::unbindFrameBuffer();
 }
 
-void Survive::Renderer::renderWaterRefraction(entt::registry &registry, Camera &camera) const
+void Survive::Renderer::renderWaterRefraction(entt::registry &registry, const Camera &camera) const
 {
 	m_WaterRenderer.bindRefractionFrameBuffer();
+
 	Display::clearWindow();
 	render3DScene(registry, camera, m_RefractionCLippingPlane);
 	WaterFbo::unbindFrameBuffer();
@@ -145,5 +148,21 @@ void Survive::Renderer::removeSkyboxEntity()
 {
 	m_SkyRenderer.removeSkyEntity();
 	m_ObjectRenderer.addSkybox(entt::null);
+	m_AnimationRenderer.addSkybox(entt::null);
+}
+
+void Survive::Renderer::setMousePickingPosition(float mouseX, float mouseY)
+{
+	m_MousePicking.setMousePosition(mouseX, mouseY);
+}
+
+void Survive::Renderer::addMousePickingListener(const MousePickingListener &listener)
+{
+	m_MousePicking.addListener(listener);
+}
+
+void Survive::Renderer::popMousePickingListener()
+{
+	m_MousePicking.popListener();
 }
 

@@ -20,18 +20,10 @@ void Survive::Renderer2D::render(entt::registry &registry) const
 		return;
 	}
 
-	m_TextRenderer.renderText();
 	m_ButtonRenderer.render();
-}
-
-void Survive::Renderer2D::addText(Text &text) noexcept
-{
-	m_TextRenderer.addText(text, m_Loader);
-	auto color = text.color();
 }
 
 void Survive::Renderer2D::addButton(Button &button) noexcept
 {
 	m_ButtonRenderer.addButton(button);
-	addText(button.getText());
 }

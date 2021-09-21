@@ -3,7 +3,7 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 textures;
 layout (location = 2) in vec3 normal;
-layout (location = 3) in vec3 jointWeigth;
+layout (location = 3) in vec3 jointWeight;
 layout (location = 4) in ivec3 jointID;
 
 const int MAX_JOINTS = 50;
@@ -20,13 +20,19 @@ out vec3 surfaceNormal;
 out vec2 texCoordinates;
 out vec3 worldPosition;
 
+uniform mat4 lightProjectionMatrix;
+uniform mat4 lightViewMatrix;
+
+out vec4 fragmentPositionInLightSpace;
+
 void main()
 {
     vec4 worldPos = transformationMatrix * vec4(position, 1.0);
+    fragmentPositionInLightSpace = lightProjectionMatrix * lightViewMatrix * worldPos;
 
     gl_ClipDistance[0] = dot(worldPos, plane);
 
-    vec4 totalLocalPos = vec4(0.0);
+    vec4 totalLocalPos = vec4(position, 1.0);
     vec4 totalNormal = vec4(0.0);
 
     for (int i = 0; i < MAX_WEIGHTS; ++i)
@@ -38,13 +44,17 @@ void main()
 
         mat4 jointTransform = jointTransforms[jointID[i]];
         vec4 pose = jointTransform * vec4(position, 1.0);
-        totalLocalPos += pose * jointWeigth[i];
+        totalLocalPos += pose * jointWeight[i];
+
+        vec4 worldNormal = jointTransform * vec4(normal, 0.0);
+        totalNormal += worldNormal * jointWeight[i];
     }
 
-    gl_Position = projectionMatrix * viewMatrix * worldPos;
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * totalLocalPos;
 
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
     surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
+//    surfaceNormal = totalNormal.xyz;
     surfaceNormal = normalize(surfaceNormal);
 }

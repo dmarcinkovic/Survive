@@ -19,8 +19,13 @@ namespace Survive
 		std::unordered_map<int, Character> m_Characters;
 		Texture m_FontTexture{};
 
+		bool m_Loaded{};
+
+		float m_Height{};
+		float m_ScaleHeight{};
+
 	public:
-		Font(const char *textureAtlas, Loader &loader);
+		explicit Font(const char *textureAtlas);
 
 		Font() = default;
 
@@ -31,6 +36,16 @@ namespace Survive
 		const Character &getCharacter(int ascii) const;
 
 		const Texture &getTexture() const;
+
+		void setTexture(const Texture &fontTexture);
+
+		[[nodiscard]] bool isFontLoaded() const;
+
+		[[nodiscard]] bool isFontTextureValid() const;
+
+		float getHeight() const;
+
+		float getScaleHeight() const;
 	};
 }
 
