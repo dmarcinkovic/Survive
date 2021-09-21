@@ -83,7 +83,7 @@ namespace Survive
 
 		static void helpMarker(const char *description);
 
-		static std::string getParentPath(const std::string &currentDirectory);
+		static std::filesystem::path getParentPath(const std::string &currentDirectory);
 
 		void resetSelectedFile();
 

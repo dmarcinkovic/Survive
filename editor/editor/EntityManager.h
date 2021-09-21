@@ -31,8 +31,6 @@ namespace Survive
 		bool m_RenameOpen{};
 		bool m_CreateOpen{};
 
-		ComponentUtil m_Util{};
-
 	public:
 		void addEntity(entt::registry &registry);
 
