@@ -20,27 +20,19 @@ namespace Survive
 	struct LogInfo
 	{
 		std::string message;
-		float width, height;
 		LogType logType;
-
-		bool open;
-		double time;
 	};
 
 	class Log
 	{
 	private:
-		static constexpr int OFFSET_X = 4;
-		static constexpr int OFFSET_Y = 1;
-		static constexpr float MAX_WIDTH = 500.0f;
-
 		static LogInfo m_LogInfo;
 
 		using GLuint = unsigned;
 
 	public:
 		static void
-		logWindow(LogType logType, const std::string& message, const ImVec2 &size = ImVec2(300, 50), double time = 3.0);
+		logWindow(LogType logType, const std::string &message);
 
 	private:
 		static void drawLogWindow();
