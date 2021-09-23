@@ -3,16 +3,18 @@
 //
 
 #include "Log.h"
-#include "Display.h"
 #include "Texture.h"
 #include "Loader.h"
 
 Survive::LogInfo Survive::Log::m_LogInfo;
+std::vector<std::string> Survive::Log::m_Buffer;
 
 void Survive::Log::logWindow(LogType logType, const std::string &message)
 {
 	m_LogInfo.message = message;
 	m_LogInfo.logType = logType;
+
+	m_Buffer.emplace_back(message);
 }
 
 void Survive::Log::drawLogWindow()
@@ -25,9 +27,24 @@ void Survive::Log::drawLogWindow()
 
 	if (ImGui::Begin("Log window"))
 	{
-		drawIcon(warnIcon, errorIcon, infoIcon);
-		ImGui::SameLine();
-		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
+		ImGuiListClipper clipper;
+
+		float itemHeight = ImGui::GetTextLineHeightWithSpacing();
+		clipper.Begin(std::numeric_limits<int>::max(), itemHeight);
+
+		while(clipper.Step())
+		{
+			for (const std::string &line : m_Buffer)
+			{
+				ImGui::TextUnformatted(line.c_str());
+			}
+		}
+
+		clipper.End();
+
+//		drawIcon(warnIcon, errorIcon, infoIcon);
+//		ImGui::SameLine();
+//		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
 	}
 
 	ImGui::End();

@@ -42,6 +42,8 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+
+	Log::drawLogWindow();
 	m_ContentBrowser.draw();
 
 	if (ImGui::Begin("Debug"))
@@ -49,8 +51,6 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
 	}
 	ImGui::End();
-
-	Log::drawLogWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

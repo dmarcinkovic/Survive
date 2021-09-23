@@ -7,6 +7,7 @@
 
 #include <string>
 #include <imgui.h>
+#include <vector>
 
 #include "Texture.h"
 
@@ -27,8 +28,7 @@ namespace Survive
 	{
 	private:
 		static LogInfo m_LogInfo;
-
-		using GLuint = unsigned;
+		static std::vector<std::string> m_Buffer;
 
 	public:
 		static void
