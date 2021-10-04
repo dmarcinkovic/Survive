@@ -3,69 +3,64 @@
 //
 
 #include "Log.h"
-#include "Texture.h"
 #include "Loader.h"
 
-Survive::LogInfo Survive::Log::m_LogInfo;
-std::vector<std::string> Survive::Log::m_Buffer;
+std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
+
+Survive::Log::Log()
+	: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
+		m_WarnIcon(Loader::loadTexture("res/warn.png"))
+{
+}
 
 void Survive::Log::logWindow(LogType logType, const std::string &message)
 {
-	m_LogInfo.message = message;
-	m_LogInfo.logType = logType;
-
-	m_Buffer.emplace_back(message);
+	m_Buffer.emplace_back(message, logType);
 }
 
 void Survive::Log::drawLogWindow()
 {
-	static Texture errorIcon = Loader::loadTexture("res/error.png");
-	static Texture infoIcon = Loader::loadTexture("res/info.png");
-	static Texture warnIcon = Loader::loadTexture("res/warn.png");
-
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13, 0.13, 0.13, 1));
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1));
 
 	if (ImGui::Begin("Log window"))
 	{
-		ImGuiListClipper clipper;
+		auto numberOfItems = static_cast<int>(m_Buffer.size());
+		int start = numberOfItems - ITEMS_VISIBLE;
 
-		float itemHeight = ImGui::GetTextLineHeightWithSpacing();
-		clipper.Begin(std::numeric_limits<int>::max(), itemHeight);
-
-		while(clipper.Step())
+		if (ImGui::BeginTable("###Log table", 1, ImGuiTableFlags_RowBg))
 		{
-			for (const std::string &line : m_Buffer)
+			for (int i = std::max(0, start); i < numberOfItems; ++i)
 			{
-				ImGui::TextUnformatted(line.c_str());
+				ImGui::TableNextColumn();
+
+				drawIcon(m_Buffer[i].logType);
+				ImGui::SameLine();
+				ImGui::TextUnformatted(m_Buffer[i].message.c_str());
 			}
+
+			ImGui::EndTable();
 		}
-
-		clipper.End();
-
-//		drawIcon(warnIcon, errorIcon, infoIcon);
-//		ImGui::SameLine();
-//		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
 	}
 
 	ImGui::End();
 	ImGui::PopStyleColor();
 }
 
-void Survive::Log::drawIcon(const Texture &warnIcon, const Texture &errorIcon, const Texture &infoIcon)
+void Survive::Log::drawIcon(LogType logType) const
 {
-	float height = ImGui::GetTextLineHeight();
+	float height = 1.5f * ImGui::GetTextLineHeight();
 	ImTextureID icon = nullptr;
 
-	switch (m_LogInfo.logType)
+	switch (logType)
 	{
 		case LogType::ERROR:
-			icon = reinterpret_cast<ImTextureID>(errorIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_ErrorIcon.textureId());
 			break;
 		case LogType::WARN:
-			icon = reinterpret_cast<ImTextureID>(warnIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_WarnIcon.textureId());
 			break;
 		case LogType::INFO:
-			icon = reinterpret_cast<ImTextureID>(infoIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_InfoIcon.textureId());
 			break;
 	}
 

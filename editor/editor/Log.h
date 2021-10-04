@@ -7,6 +7,7 @@
 
 #include <string>
 #include <imgui.h>
+#include <utility>
 #include <vector>
 
 #include "Texture.h"
@@ -20,26 +21,37 @@ namespace Survive
 
 	struct LogInfo
 	{
-		std::string message;
-		LogType logType;
+		std::string message{};
+		LogType logType = LogType::ERROR;
+
+		LogInfo() = default;
+
+		LogInfo(std::string message, LogType logType)
+			: message(std::move(message)), logType(logType)
+		{}
 	};
 
 	class Log
 	{
 	private:
-		static LogInfo m_LogInfo;
-		static std::vector<std::string> m_Buffer;
+		static constexpr int ITEMS_VISIBLE = 10;
+
+		static std::vector<LogInfo> m_Buffer;
+
+		Texture m_ErrorIcon;
+		Texture m_InfoIcon;
+		Texture m_WarnIcon;
 
 	public:
+		Log();
+
 		static void
 		logWindow(LogType logType, const std::string &message);
 
+		void drawLogWindow();
+
 	private:
-		static void drawLogWindow();
-
-		static void drawIcon(const Texture &warnIcon, const Texture &errorIcon, const Texture &infoIcon);
-
-		friend class Editor;
+		void drawIcon(LogType logType) const;
 	};
 }
 

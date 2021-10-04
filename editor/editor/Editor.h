@@ -40,6 +40,8 @@ namespace Survive
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
 
+		Log m_Log;
+
 		bool m_OpenDialog = false;
 		bool m_SaveDialog = false;
 		bool m_SaveAsDialog = false;
