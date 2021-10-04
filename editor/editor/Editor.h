@@ -28,6 +28,7 @@ namespace Survive
 		static float m_SceneWidth;
 		static float m_SceneHeight;
 		static float m_ScenePosX, m_ScenePosY;
+		static float m_SceneRegionX, m_SceneRegionY;
 		static bool m_SceneFocused;
 
 		ImGuiIO &m_Io;
@@ -73,6 +74,8 @@ namespace Survive
 		static float getSceneHeight();
 
 		static std::pair<float, float> getScenePosition();
+
+		static std::pair<float, float> getSceneRegionMin();
 
 		static bool isSceneFocused();
 

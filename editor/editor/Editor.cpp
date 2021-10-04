@@ -13,6 +13,8 @@ float Survive::Editor::m_SceneWidth{};
 float Survive::Editor::m_SceneHeight{};
 float Survive::Editor::m_ScenePosX{};
 float Survive::Editor::m_ScenePosY{};
+float Survive::Editor::m_SceneRegionX{};
+float Survive::Editor::m_SceneRegionY{};
 
 bool Survive::Editor::m_SceneFocused{};
 
@@ -80,6 +82,9 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 		ImVec2 pos = ImGui::GetCursorScreenPos();
 		m_ScenePosX = pos.x;
 		m_ScenePosY = pos.y;
+
+		m_SceneRegionX = ImGui::GetWindowContentRegionMin().x;
+		m_SceneRegionY = ImGui::GetWindowContentRegionMin().y;
 
 		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
@@ -295,4 +300,9 @@ bool Survive::Editor::isInsideScene()
 
 	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
 		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
+}
+
+std::pair<float, float> Survive::Editor::getSceneRegionMin()
+{
+	return {m_SceneRegionX, m_SceneRegionY};
 }
