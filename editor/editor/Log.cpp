@@ -3,78 +3,64 @@
 //
 
 #include "Log.h"
-#include "Display.h"
-#include "Texture.h"
 #include "Loader.h"
 
-Survive::LogInfo Survive::Log::m_LogInfo;
+std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
 
-void Survive::Log::logWindow(LogType logType, const std::string& message, const ImVec2 &size, double time)
+Survive::Log::Log()
+	: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
+		m_WarnIcon(Loader::loadTexture("res/warn.png"))
 {
-	m_LogInfo.message = message;
-	float textWidth = ImGui::CalcTextSize(message.c_str()).x;
-	m_LogInfo.logType = logType;
+}
 
-	m_LogInfo.width = std::min(std::max(size.x, textWidth), MAX_WIDTH);
-	m_LogInfo.height = size.y;
-
-	m_LogInfo.open = true;
-	m_LogInfo.time = time;
+void Survive::Log::logWindow(LogType logType, const std::string &message)
+{
+	m_Buffer.emplace_back(message, logType);
 }
 
 void Survive::Log::drawLogWindow()
 {
-	static ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-									ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoTitleBar;
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1));
 
-	static Texture errorIcon = Loader::loadTexture("res/error.png");
-	static Texture infoIcon = Loader::loadTexture("res/info.png");
-	static Texture warnIcon = Loader::loadTexture("res/warn.png");
-
-	if (m_LogInfo.open)
+	if (ImGui::Begin("Log window"))
 	{
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13, 0.13, 0.13, 1));
+		auto numberOfItems = static_cast<int>(m_Buffer.size());
+		int start = numberOfItems - ITEMS_VISIBLE;
 
-		m_LogInfo.time -= Display::getFrameTime();
-		if (m_LogInfo.time <= 0)
+		if (ImGui::BeginTable("###Log table", 1, ImGuiTableFlags_RowBg))
 		{
-			m_LogInfo.open = false;
-			ImGui::PopStyleColor();
-			return;
+			for (int i = std::max(0, start); i < numberOfItems; ++i)
+			{
+				ImGui::TableNextColumn();
+
+				drawIcon(m_Buffer[i].logType);
+				ImGui::SameLine();
+				ImGui::TextUnformatted(m_Buffer[i].message.c_str());
+			}
+
+			ImGui::EndTable();
 		}
-
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.0f);
-		auto[width, height] = Display::getWindowSize<float>();
-		ImGui::Begin("##Log window", &m_LogInfo.open, flags);
-
-		drawIcon(warnIcon, errorIcon, infoIcon);
-		ImGui::SameLine();
-		ImGui::TextWrapped("%s", m_LogInfo.message.c_str());
-
-		ImGui::SetWindowPos(ImVec2(width - m_LogInfo.width - OFFSET_X, height - m_LogInfo.height - OFFSET_Y));
-		ImGui::SetWindowSize(ImVec2(m_LogInfo.width, m_LogInfo.height));
-
-		ImGui::End();
-		ImGui::PopStyleVar();
-		ImGui::PopStyleColor();
 	}
+
+	ImGui::End();
+	ImGui::PopStyleColor();
 }
 
-void Survive::Log::drawIcon(const Texture &warnIcon, const Texture &errorIcon, const Texture &infoIcon)
+void Survive::Log::drawIcon(LogType logType) const
 {
-	float height = ImGui::GetTextLineHeight();
+	float height = 1.5f * ImGui::GetTextLineHeight();
 	ImTextureID icon = nullptr;
 
-	switch (m_LogInfo.logType)
+	switch (logType)
 	{
 		case LogType::ERROR:
-			icon = reinterpret_cast<ImTextureID>(errorIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_ErrorIcon.textureId());
 			break;
 		case LogType::WARN:
-			icon = reinterpret_cast<ImTextureID>(warnIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_WarnIcon.textureId());
 			break;
 		case LogType::INFO:
-			icon = reinterpret_cast<ImTextureID>(infoIcon.textureId());
+			icon = reinterpret_cast<ImTextureID>(m_InfoIcon.textureId());
 			break;
 	}
 

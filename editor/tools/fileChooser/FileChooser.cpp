@@ -9,7 +9,7 @@
 #include "Loader.h"
 
 Survive::FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
+		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
 	Texture folder = Loader::loadTexture("res/folder.png");
@@ -138,7 +138,7 @@ void Survive::FileChooser::drawUpArrow()
 	{
 		m_Redo.push(m_CurrentDirectory);
 
-		m_CurrentDirectory = getParentPath(m_CurrentDirectory);
+		m_CurrentDirectory = getParentPath(m_CurrentDirectory).string();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 		resetSelectedFile();
@@ -373,7 +373,7 @@ std::string Survive::FileChooser::getSelectedFilename() const
 	if (m_OpenedFile)
 	{
 		std::filesystem::path selectedFile(getSelectedFile());
-		return std::filesystem::relative(selectedFile);
+		return std::filesystem::relative(selectedFile).string();
 	}
 
 	return "";
@@ -411,7 +411,7 @@ void Survive::FileChooser::savePressed(bool *open)
 	}
 
 	std::filesystem::path path(m_CurrentDirectory);
-	std::string file = path.append(m_SelectedFileName);
+	std::string file = path.append(m_SelectedFileName).string();
 
 	if (std::filesystem::exists(file))
 	{
@@ -428,7 +428,7 @@ void Survive::FileChooser::buttonDoublePress()
 	std::filesystem::path path(m_CurrentDirectory);
 
 	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName);
+	m_CurrentDirectory = path.append(m_SelectedFileName).string();
 	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
 	resetSelectedFile();

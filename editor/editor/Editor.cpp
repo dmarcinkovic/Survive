@@ -13,6 +13,8 @@ float Survive::Editor::m_SceneWidth{};
 float Survive::Editor::m_SceneHeight{};
 float Survive::Editor::m_ScenePosX{};
 float Survive::Editor::m_ScenePosY{};
+float Survive::Editor::m_SceneRegionX{};
+float Survive::Editor::m_SceneRegionY{};
 
 bool Survive::Editor::m_SceneFocused{};
 
@@ -42,6 +44,8 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderSaveAsDialog(registry);
 	renderSaveDialog(registry);
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+
+	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
 
 	if (ImGui::Begin("Debug"))
@@ -49,8 +53,6 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
 	}
 	ImGui::End();
-
-	Log::drawLogWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -80,6 +82,9 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 		ImVec2 pos = ImGui::GetCursorScreenPos();
 		m_ScenePosX = pos.x;
 		m_ScenePosY = pos.y;
+
+		m_SceneRegionX = ImGui::GetWindowContentRegionMin().x;
+		m_SceneRegionY = ImGui::GetWindowContentRegionMin().y;
 
 		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
 
@@ -271,7 +276,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 				if (extension == ".survive")
 				{
 					m_Manager.setSelectedEntity(-1);
-					m_SceneLoader.loadScene(registry, file.c_str());
+					m_SceneLoader.loadScene(registry, file.string());
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
@@ -295,4 +300,9 @@ bool Survive::Editor::isInsideScene()
 
 	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
 		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
+}
+
+std::pair<float, float> Survive::Editor::getSceneRegionMin()
+{
+	return {m_SceneRegionX, m_SceneRegionY};
 }
