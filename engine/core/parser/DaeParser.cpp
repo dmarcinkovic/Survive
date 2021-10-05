@@ -6,6 +6,7 @@
 #include <iostream>
 #include <glm/ext/matrix_transform.hpp>
 #include <numeric>
+#include <stack>
 
 #include "Log.h"
 #include "DaeParser.h"
