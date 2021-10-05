@@ -397,12 +397,14 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 
 bool Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader &loader)
 {
+	static const size_t BUFFER_SIZE = 512;
+
 	char *buffer = string.data();
 	float height = ImGui::GetTextLineHeight();
 
 	ImVec2 size(-1, 3 * height);
 
-	if (ImGui::InputTextMultiline("##Text multiline", buffer, string.capacity(), size))
+	if (ImGui::InputTextMultiline("##Text multiline", buffer, BUFFER_SIZE, size))
 	{
 		text.setText(buffer, loader);
 	}
