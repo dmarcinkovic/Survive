@@ -276,7 +276,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 				if (extension == ".survive")
 				{
 					m_Manager.setSelectedEntity(-1);
-					m_SceneLoader.loadScene(registry, file.c_str());
+					m_SceneLoader.loadScene(registry, file.string());
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
