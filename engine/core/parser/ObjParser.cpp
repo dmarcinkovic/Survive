@@ -10,14 +10,13 @@
 #include "ObjParser.h"
 #include "Util.h"
 
-Survive::Model Survive::ObjParser::loadObj(const char *objFile, Loader &loader)
+Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &loader)
 {
 	std::ifstream reader(objFile);
-	std::string file(objFile);
 
-	if (!reader || !file.ends_with("obj"))
+	if (!reader || !objFile.ends_with("obj"))
 	{
-		std::string message = "Could not load " + file;
+		std::string message = "Could not load " + objFile;
 		Log::logWindow(LogType::ERROR, message);
 		std::cout << message << '\n';
 
