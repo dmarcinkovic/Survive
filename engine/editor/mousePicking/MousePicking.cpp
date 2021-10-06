@@ -56,12 +56,12 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	setViewport();
 	prepareRendering(camera);
 
-	for (auto const&[texturedModel, objects] : entities)
+	for (auto const&[texturedModel, objects]: entities)
 	{
 		glBindVertexArray(texturedModel.vaoID());
 		glEnableVertexAttribArray(0);
 
-		renderScene(registry, objects, camera);
+		renderScene(registry, texturedModel, objects, camera);
 
 		glDisableVertexAttribArray(0);
 		Loader::unbindVao();
@@ -77,10 +77,10 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	informListeners(selectedEntity);
 }
 
-void Survive::MousePicking::renderScene(const entt::registry &registry, const std::vector<entt::entity> &objects,
-										const Camera &camera) const
+void Survive::MousePicking::renderScene(const entt::registry &registry, const TexturedModel &texturedModel,
+										const std::vector<entt::entity> &objects, const Camera &camera) const
 {
-	for (auto const &object : objects)
+	for (auto const &object: objects)
 	{
 		loadTransformationMatrix(camera, registry, object);
 
@@ -89,8 +89,7 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const st
 
 		m_Shader.loadPickingColor(color);
 
-		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
-		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
 
@@ -104,7 +103,7 @@ void Survive::MousePicking::getRenderedObject() const
 
 	int x = static_cast<int>(m_MousePosition.x);
 	int y = static_cast<int>(m_MousePosition.y);
-	glReadPixels(x, y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	selectedEntity = getEntity(data);
 
@@ -135,7 +134,7 @@ Survive::MousePicking::prepareEntities(entt::registry &registry)
 	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : entities2D)
+	for (auto const &entity: entities2D)
 	{
 		const Render3DComponent &renderComponent = entities2D.get<Render3DComponent>(entity);
 
@@ -143,7 +142,7 @@ Survive::MousePicking::prepareEntities(entt::registry &registry)
 		batch.emplace_back(entity);
 	}
 
-	for (auto const &entity : entities3D)
+	for (auto const &entity: entities3D)
 	{
 		const Render3DComponent &renderComponent = entities3D.get<Render3DComponent>(entity);
 
@@ -173,7 +172,7 @@ bool Survive::MousePicking::isInsideWindow() const
 	auto[regionX, regionY] = Editor::getSceneRegionMin();
 
 	return m_MousePosition.x > 0 && m_MousePosition.x <= width - regionX &&
-			m_MousePosition.y >= regionY && m_MousePosition.y < height;
+		   m_MousePosition.y >= regionY && m_MousePosition.y < height;
 }
 
 void Survive::MousePicking::prepareRendering(const Camera &camera) const
@@ -212,7 +211,7 @@ void Survive::MousePicking::addListener(const MousePickingListener &listener)
 
 void Survive::MousePicking::informListeners(int entity) const
 {
-	for (const MousePickingListener &listener : m_Listeners)
+	for (const MousePickingListener &listener: m_Listeners)
 	{
 		listener(entity);
 	}
