@@ -333,6 +333,12 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
+			} else if (registry.has<Render2DComponent>(entity))
+			{
+				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
+
+				renderComponent.texturedModel.setTexture(texture);
+				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
 		}
 
