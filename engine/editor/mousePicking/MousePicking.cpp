@@ -87,7 +87,11 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const Te
 		int id = static_cast<int>(object);
 		glm::vec4 color = getColor(id);
 
+		glm::mat4 projectionMatrix = registry.has<Render2DComponent>(object) ? camera.getOrthographicProjectionMatrix()
+																			 : camera.getProjectionMatrix();
+
 		m_Shader.loadPickingColor(color);
+		m_Shader.loadProjectionMatrix(projectionMatrix);
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
@@ -131,12 +135,12 @@ std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::T
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
 	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent>();
-	const auto &entities2D = registry.view<Render3DComponent, Transform3DComponent>();
+	const auto &entities2D = registry.view<Render2DComponent, Transform3DComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: entities2D)
 	{
-		const Render3DComponent &renderComponent = entities2D.get<Render3DComponent>(entity);
+		const Render2DComponent &renderComponent = entities2D.get<Render2DComponent>(entity);
 
 		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
 		batch.emplace_back(entity);
@@ -178,8 +182,6 @@ bool Survive::MousePicking::isInsideWindow() const
 void Survive::MousePicking::prepareRendering(const Camera &camera) const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
-
-	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 }
 
