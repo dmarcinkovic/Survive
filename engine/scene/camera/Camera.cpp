@@ -10,9 +10,9 @@ Survive::Camera::Camera()
 {
 	auto[width, height] = Display::getWindowSize<float>();
 
-	m_ProjectionMatrix = Maths::createProjectionMatrix(FOV, NEAR, FAR, width, height);
+	m_ProjectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far, width, height);
 	m_OrthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
-	m_LightProjectionMatrix = Maths::createLightProjectionMatrix(NEAR, FAR);
+	m_LightProjectionMatrix = Maths::createLightProjectionMatrix(near, far);
 }
 
 void Survive::Camera::invertPitch()
@@ -37,7 +37,7 @@ glm::mat4 Survive::Camera::getViewMatrix() const
 
 void Survive::Camera::recalculateProjectionMatrix(float width, float height)
 {
-	m_ProjectionMatrix = Maths::createProjectionMatrix(FOV, NEAR, FAR, width, height);
+	m_ProjectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far, width, height);
 	m_OrthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
 }
 
@@ -53,10 +53,10 @@ glm::mat4 Survive::Camera::getLightProjectionMatrix() const
 
 float Survive::Camera::getFar() const
 {
-	return FAR;
+	return far;
 }
 
 float Survive::Camera::getNear() const
 {
-	return NEAR;
+	return near;
 }

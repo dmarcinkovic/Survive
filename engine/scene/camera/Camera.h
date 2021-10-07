@@ -12,9 +12,9 @@ namespace Survive
 	class Camera
 	{
 	private:
-		float NEAR = 0.1f;
-		float FAR = 1000.0f;
-		float FOV = 70.0f;
+		float near = 0.1f;
+		float far = 1000.0f;
+		float fieldOfView = 70.0f;
 
 		glm::mat4 m_OrthographicProjectionMatrix{};
 		glm::mat4 m_ProjectionMatrix{};
