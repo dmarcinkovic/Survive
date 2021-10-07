@@ -21,7 +21,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 	Renderer3DUtil::prepareRendering(m_ShadowShader);
 
 	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
-	m_ShadowShader.loadProjectionMatrix(light.getProjectionMatrix());
+	m_ShadowShader.loadProjectionMatrix(camera.getLightProjectionMatrix());
 
 	for (auto const&[texture, objects] : entities)
 	{

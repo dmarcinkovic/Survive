@@ -12,8 +12,13 @@ namespace Survive
 	class Camera
 	{
 	private:
-		glm::mat4 m_ProjectionMatrix{};
+		float NEAR = 0.1f;
+		float FAR = 1000.0f;
+		float FOV = 70.0f;
+
 		glm::mat4 m_OrthographicProjectionMatrix{};
+		glm::mat4 m_ProjectionMatrix{};
+		glm::mat4 m_LightProjectionMatrix{};
 
 	public:
 		glm::vec3 position{};
@@ -32,9 +37,15 @@ namespace Survive
 
 		[[nodiscard]] glm::mat4 getOrthographicProjectionMatrix() const;
 
+		[[nodiscard]] glm::mat4 getLightProjectionMatrix() const;
+
 		[[nodiscard]] glm::mat4 getViewMatrix() const;
 
 		void recalculateProjectionMatrix(float width, float height);
+
+		[[nodiscard]] float getFar() const;
+
+		[[nodiscard]] float getNear() const;
 	};
 }
 

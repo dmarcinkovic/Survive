@@ -83,7 +83,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 
 	m_Shader.loadPlane(plane);
 
-	m_Shader.loadLightProjectionMatrix(m_Light.getProjectionMatrix());
+	m_Shader.loadLightProjectionMatrix(camera.getLightProjectionMatrix());
 	m_Shader.loadLightViewMatrix(m_Light.getViewMatrix());
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7f, 3);

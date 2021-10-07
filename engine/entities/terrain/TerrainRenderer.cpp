@@ -69,7 +69,7 @@ void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &l
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	m_Shader.loadLightProjectionMatrix(light.getProjectionMatrix());
+	m_Shader.loadLightProjectionMatrix(camera.getLightProjectionMatrix());
 
 	m_Shader.loadLight(light);
 	m_Shader.loadPlane(plane);
