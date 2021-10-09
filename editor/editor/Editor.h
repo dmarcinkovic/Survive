@@ -47,8 +47,6 @@ namespace Survive
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
 
-		CameraWindow m_CameraWindow{};
-
 		Log m_Log;
 
 		bool m_OpenDialog = false;
@@ -91,7 +89,7 @@ namespace Survive
 	private:
 		void renderSceneWindow(const Camera &camera, entt::registry &registry);
 
-		void renderPropertyWindow(entt::registry &registry, const Camera &camera);
+		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 
 		void renderMenu();
 

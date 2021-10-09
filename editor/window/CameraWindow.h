@@ -14,7 +14,20 @@ namespace Survive
 	class CameraWindow
 	{
 	public:
-		void draw(const Camera  &camera);
+		static void draw(Camera &camera);
+
+	private:
+		static void setColors();
+
+		static void drawHeader();
+
+		static void drawCameraTransform(Camera &camera);
+
+		static void drawCameraProperties(Camera &camera);
+
+		static void drawClipPlanes(Camera &camera);
+
+		static void showCameraProperties(Camera &camera);
 	};
 }
 

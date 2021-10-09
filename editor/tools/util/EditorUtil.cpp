@@ -116,7 +116,7 @@ try
 
 	if (selectedFile.ends_with("obj"))
 	{
-		model = ObjParser::loadObj(selectedFile.c_str(), m_Loader);
+		model = ObjParser::loadObj(selectedFile, m_Loader);
 	} else if (selectedFile.ends_with("dae"))
 	{
 		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
@@ -534,7 +534,7 @@ void Survive::EditorUtil::chooseFontSpacing(float &spacing, Text &text, Loader &
 
 void Survive::EditorUtil::drawPlayButton(bool &play)
 {
-	float width =  0.5f * ImGui::GetContentRegionAvailWidth();
+	float width = 0.5f * ImGui::GetContentRegionAvailWidth();
 	float height = 2.0f * ImGui::GetTextLineHeight();
 	ImVec2 size(width, height);
 
@@ -564,4 +564,23 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 
 	ImGui::Checkbox(label, &value);
 	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1.0f);
+	ImGui::InputFloat(label, &value);
+	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1.0f);
+	ImGui::DragFloat(label, &value, 1.0f, min, max);
 }

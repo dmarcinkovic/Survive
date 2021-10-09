@@ -28,7 +28,7 @@ glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView, float near, 
 {
 	float aspectRatio = width / height;
 
-	return glm::perspective(fieldOfView, aspectRatio, near, far);
+	return glm::perspective(glm::radians(fieldOfView), aspectRatio, near, far);
 }
 
 glm::mat4 Survive::Maths::createViewMatrix(float pitch, float yaw, const glm::vec3 &position)

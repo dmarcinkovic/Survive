@@ -50,13 +50,3 @@ glm::mat4 Survive::Camera::getLightProjectionMatrix() const
 {
 	return m_LightProjectionMatrix;
 }
-
-float Survive::Camera::getFar() const
-{
-	return far;
-}
-
-float Survive::Camera::getNear() const
-{
-	return near;
-}

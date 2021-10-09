@@ -104,7 +104,7 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	ImGui::End();
 }
 
-void Survive::Editor::renderPropertyWindow(entt::registry &registry, const Camera &camera)
+void Survive::Editor::renderPropertyWindow(entt::registry &registry, Camera &camera)
 {
 	if (ImGui::Begin("Scene hierarchy"))
 	{
@@ -124,7 +124,7 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry, const Camer
 				m_Manager.drawPropertyPanel(registry);
 				break;
 			case PropertyWindow::CAMERA:
-				m_CameraWindow.draw(camera);
+				CameraWindow::draw(camera);
 				break;
 			default:
 				break;
