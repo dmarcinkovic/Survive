@@ -3,3 +3,8 @@
 //
 
 #include "CameraWindow.h"
+
+void Survive::CameraWindow::draw(const Camera &camera)
+{
+	ImGui::Text("This is camera window");
+}
