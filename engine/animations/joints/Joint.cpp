@@ -59,3 +59,8 @@ const std::vector<Survive::Joint> &Survive::Joint::children() const
 {
 	return m_Children;
 }
+
+void Survive::Joint::applyCorrection(const glm::mat4 &correction)
+{
+	m_LocalBindTransform = correction * m_LocalBindTransform;
+}
