@@ -8,7 +8,7 @@
 #include "EntityManager.h"
 #include "EditorUtil.h"
 
-void Survive::EntityManager::addEntity(entt::registry &registry)
+bool Survive::EntityManager::addEntity(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 	if (ImGui::Button("Create new entity"))
@@ -34,6 +34,8 @@ void Survive::EntityManager::addEntity(entt::registry &registry)
 	}
 
 	ImGui::PopStyleColor();
+
+	return m_AddNewComponent || m_Selected >= 0;
 }
 
 void Survive::EntityManager::createEntity(entt::registry &registry)
@@ -209,4 +211,10 @@ void Survive::EntityManager::setSelectedEntity(int selectedEntity)
 bool Survive::EntityManager::isFocused() const
 {
 	return m_CreateOpen || m_RenameOpen || m_Util.isUsingKeyEvents();
+}
+
+void Survive::EntityManager::stopDrawing()
+{
+	m_AddNewComponent = false;
+	m_Selected = -1;
 }

@@ -12,6 +12,7 @@
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
+#include "CameraWindow.h"
 #include "EventHandler.h"
 #include "EditorUtil.h"
 #include "Log.h"
@@ -22,6 +23,11 @@
 
 namespace Survive
 {
+	enum class PropertyWindow
+	{
+		ENTITY, CAMERA
+	};
+
 	class Editor
 	{
 	private:
@@ -41,6 +47,8 @@ namespace Survive
 		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
 
+		CameraWindow m_CameraWindow{};
+
 		Log m_Log;
 
 		bool m_OpenDialog = false;
@@ -55,6 +63,7 @@ namespace Survive
 		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
+		PropertyWindow m_DrawingWindow;
 
 	public:
 		explicit Editor(Renderer &renderer);
