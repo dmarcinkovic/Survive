@@ -9,7 +9,7 @@ std::vector<Survive::File> Survive::FileUtil::listCurrentDirectory()
 {
 	auto workingDirectory = std::filesystem::current_path();
 
-	return listDirectory(std::filesystem::absolute(workingDirectory), false);
+	return listDirectory(std::filesystem::absolute(workingDirectory).string(), false);
 }
 
 std::vector<Survive::File> Survive::FileUtil::listDirectory(const std::string &directory, bool showHidden)
