@@ -34,7 +34,7 @@ Survive::Editor::Editor(Renderer &renderer)
 
 void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camera &camera)
 {
-	renderPropertyWindow(registry);
+	renderPropertyWindow(registry, camera);
 	renderSceneWindow(camera, registry);
 	renderMenu();
 
@@ -104,18 +104,31 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 	ImGui::End();
 }
 
-void Survive::Editor::renderPropertyWindow(entt::registry &registry)
+void Survive::Editor::renderPropertyWindow(entt::registry &registry, Camera &camera)
 {
 	if (ImGui::Begin("Scene hierarchy"))
 	{
-		m_Manager.addEntity(registry);
+		if (m_Manager.addEntity(registry))
+		{
+			m_DrawingWindow = PropertyWindow::ENTITY;
+		}
 	}
 
 	ImGui::End();
 
 	if (ImGui::Begin("Property panel"))
 	{
-		m_Manager.drawPropertyPanel(registry);
+		switch (m_DrawingWindow)
+		{
+			case PropertyWindow::ENTITY:
+				m_Manager.drawPropertyPanel(registry);
+				break;
+			case PropertyWindow::CAMERA:
+				CameraWindow::draw(camera);
+				break;
+			default:
+				break;
+		}
 	}
 
 	ImGui::End();
@@ -150,6 +163,13 @@ void Survive::Editor::renderMenu()
 		if (ImGui::BeginMenu("Window"))
 		{
 			ImGui::MenuItem("Skybox", "", &m_SkyboxDialog);
+
+			if (ImGui::MenuItem("Camera", "", nullptr))
+			{
+				m_DrawingWindow = PropertyWindow::CAMERA;
+				m_Manager.stopDrawing();
+			}
+
 			ImGui::EndMenu();
 		}
 

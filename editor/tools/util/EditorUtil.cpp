@@ -116,7 +116,7 @@ try
 
 	if (selectedFile.ends_with("obj"))
 	{
-		model = ObjParser::loadObj(selectedFile.c_str(), m_Loader);
+		model = ObjParser::loadObj(selectedFile, m_Loader);
 	} else if (selectedFile.ends_with("dae"))
 	{
 		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
@@ -333,6 +333,12 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
+			} else if (registry.has<Render2DComponent>(entity))
+			{
+				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
+
+				renderComponent.texturedModel.setTexture(texture);
+				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
 		}
 
@@ -397,12 +403,14 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 
 bool Survive::EditorUtil::drawTextInput(Text &text, std::string &string, Loader &loader)
 {
+	static const size_t BUFFER_SIZE = 512;
+
 	char *buffer = string.data();
 	float height = ImGui::GetTextLineHeight();
 
 	ImVec2 size(-1, 3 * height);
 
-	if (ImGui::InputTextMultiline("##Text multiline", buffer, string.capacity(), size))
+	if (ImGui::InputTextMultiline("##Text multiline", buffer, BUFFER_SIZE, size))
 	{
 		text.setText(buffer, loader);
 	}
@@ -526,7 +534,7 @@ void Survive::EditorUtil::chooseFontSpacing(float &spacing, Text &text, Loader &
 
 void Survive::EditorUtil::drawPlayButton(bool &play)
 {
-	float width =  0.5f * ImGui::GetContentRegionAvailWidth();
+	float width = 0.5f * ImGui::GetContentRegionAvailWidth();
 	float height = 2.0f * ImGui::GetTextLineHeight();
 	ImVec2 size(width, height);
 
@@ -556,4 +564,23 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 
 	ImGui::Checkbox(label, &value);
 	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1.0f);
+	ImGui::InputFloat(label, &value);
+	ImGui::NextColumn();
+}
+
+void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1.0f);
+	ImGui::DragFloat(label, &value, 1.0f, min, max);
 }

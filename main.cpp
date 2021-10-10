@@ -35,7 +35,7 @@ int main()
 	TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
 								Loader::loadTexture("res/character.png"));
 	registry.emplace<Render3DComponent>(character, texturedModel);
-	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30}, glm::vec3{1.0f}, glm::vec3{-90, 0, 0});
+	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30});
 	registry.emplace<RigidBodyComponent>(character, false);
 	registry.emplace<ShadowComponent>(character, true);
 

@@ -3,7 +3,6 @@
 //
 
 #include "WaterRenderer.h"
-#include "Constants.h"
 #include "Display.h"
 #include "Maths.h"
 #include "Renderer3DUtil.h"
@@ -71,7 +70,7 @@ Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComp
 	m_Shader.loadCameraPosition(camera.position);
 	loadMoveFactor(m_Shader, moveComponent);
 
-	m_Shader.loadNearAndFar(Constants::NEAR, Constants::FAR);
+	m_Shader.loadNearAndFar(camera.near, camera.far);
 	m_Shader.loadLight(light);
 }
 

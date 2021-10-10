@@ -68,7 +68,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 	m_Shader.loadLightViewMatrix(m_Light.getViewMatrix());
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	m_Shader.loadLightProjection(m_Light.getProjectionMatrix());
+	m_Shader.loadLightProjection(camera.getLightProjectionMatrix());
 	m_Shader.loadPlane(plane);
 
 	Texture texture(shadowMap);

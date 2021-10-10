@@ -100,6 +100,12 @@ void Survive::Text::centerText()
 void Survive::Text::setText(std::string newText, Loader &loader)
 {
 	m_Text = std::move(newText);
+	m_Text.reserve(512);
+
+	if (!m_Font.isFontLoaded())
+	{
+		return;
+	}
 
 	if (!m_Font.isFontLoaded())
 	{

@@ -45,6 +45,8 @@ namespace Survive
 		[[nodiscard]] const glm::mat4 &getAnimatedTransform() const;
 
 		[[nodiscard]] size_t index() const;
+
+		void applyCorrection(const glm::mat4 &correction);
 	};
 }
 

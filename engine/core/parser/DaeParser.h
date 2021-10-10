@@ -7,6 +7,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <glm/ext/matrix_transform.hpp>
 
 #include "Loader.h"
 #include "Joint.h"
@@ -43,6 +44,8 @@ namespace Survive
 	class DaeParser
 	{
 	private:
+		const glm::mat4 correction = glm::rotate(glm::mat4{1.0f}, glm::radians(-90.0f), glm::vec3{1, 0, 0});
+
 		VertexData m_VertexData;
 		JointData m_JointData;
 		std::vector<KeyFrame> m_KeyFrames;
@@ -61,7 +64,7 @@ namespace Survive
 
 		void loadGeometry(std::ifstream &reader);
 
-		static Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
+		Joint loadVisualScene(std::ifstream &reader, const std::vector<std::string> &jointNames);
 
 		static std::vector<AnimationData> loadAnimation(std::ifstream &reader);
 
@@ -87,6 +90,8 @@ namespace Survive
 		getKeyFrames(const std::vector<AnimationData> &animationData, const std::string &rootJoint);
 
 		void normalizeWeights();
+
+		std::vector<glm::vec3> applyCorrectionToVertices(const std::vector<glm::vec3> &vertices);
 	};
 }
 

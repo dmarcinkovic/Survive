@@ -25,8 +25,6 @@ namespace Survive
 		ImGuizmo::OPERATION m_Operation{};
 
 	public:
-		Gizmos();
-
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const;
 
 		static void newFrame();
@@ -41,6 +39,9 @@ namespace Survive
 		static glm::mat4 getTransform(const Transform3DComponent &transform);
 
 		static void useGizmo(Transform3DComponent &transformComponent, glm::mat4 &transform);
+
+		void drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
+						const Camera &camera, entt::registry &registry, entt::entity entity) const;
 	};
 }
 

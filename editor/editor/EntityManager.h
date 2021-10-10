@@ -32,7 +32,7 @@ namespace Survive
 		bool m_CreateOpen{};
 
 	public:
-		void addEntity(entt::registry &registry);
+		bool addEntity(entt::registry &registry);
 
 		void drawPropertyPanel(entt::registry &registry);
 
@@ -43,6 +43,8 @@ namespace Survive
 		void setSelectedEntity(int selectedEntity);
 
 		[[nodiscard]] bool isFocused() const;
+
+		void stopDrawing();
 
 	private:
 		void createEntity(entt::registry &registry);

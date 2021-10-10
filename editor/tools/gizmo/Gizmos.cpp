@@ -4,34 +4,26 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Gizmos.h"
 #include "Maths.h"
+#include "Render2DComponent.h"
+#include "Render3DComponent.h"
+#include "TextComponent.h"
+#include "Gizmos.h"
 
 bool Survive::Gizmos::validOperation = false;
-
-Survive::Gizmos::Gizmos()
-{
-	ImGuizmo::SetOrthographic(false);
-}
 
 void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
 {
 	if (validOperation && selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
 	{
-		ImGuizmo::SetDrawlist();
-		ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
-
-		glm::mat4 viewMatrix = camera.getViewMatrix();
-		glm::mat4 projectionMatrix = camera.getProjectionMatrix();
-
-		Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(selectedEntity);
-		glm::mat4 transform = getTransform(transformComponent);
-
-		float *matrix = glm::value_ptr(transform);
-		ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projectionMatrix),
-							 m_Operation, ImGuizmo::LOCAL, matrix);
-
-		useGizmo(transformComponent, transform);
+		if (registry.has<Render3DComponent>(selectedEntity))
+		{
+			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), camera, registry, selectedEntity);
+		} else if (registry.has<Render2DComponent>(selectedEntity) || registry.has<TextComponent>(selectedEntity))
+		{
+			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, camera, registry,
+					   selectedEntity);
+		}
 	}
 }
 
@@ -87,4 +79,22 @@ void Survive::Gizmos::useGizmo(Survive::Transform3DComponent &transformComponent
 bool Survive::Gizmos::isValidOperation()
 {
 	return validOperation;
+}
+
+void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
+								 const Camera &camera, entt::registry &registry, entt::entity entity) const
+{
+	ImGuizmo::SetOrthographic(isOrthographic);
+
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
+
+	Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(entity);
+	glm::mat4 transform = getTransform(transformComponent);
+
+	float *matrix = glm::value_ptr(transform);
+	ImGuizmo::Manipulate(glm::value_ptr(viewMatrix), glm::value_ptr(projectionMatrix),
+						 m_Operation, ImGuizmo::LOCAL, matrix);
+
+	useGizmo(transformComponent, transform);
 }

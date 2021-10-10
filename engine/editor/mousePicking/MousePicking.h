@@ -45,7 +45,7 @@ namespace Survive
 	private:
 		void mousePressedHandler();
 
-		void renderScene(const entt::registry &registry,
+		void renderScene(const entt::registry &registry, const TexturedModel &texturedModel,
 						 const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 		void getRenderedObject() const;
@@ -63,7 +63,7 @@ namespace Survive
 
 		static void setViewport();
 
-		void prepareRendering(const Camera &camera) const;
+		void prepareRendering() const;
 
 		void informListeners(int entity) const;
 	};

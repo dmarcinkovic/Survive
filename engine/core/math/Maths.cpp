@@ -24,11 +24,11 @@ glm::mat4 Survive::Maths::createTransformationMatrix(const glm::vec3 &translatio
 	return matrix;
 }
 
-glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView, float width, float height)
+glm::mat4 Survive::Maths::createProjectionMatrix(float fieldOfView, float near, float far, float width, float height)
 {
 	float aspectRatio = width / height;
 
-	return glm::perspective(fieldOfView, aspectRatio, Constants::NEAR, Constants::FAR);
+	return glm::perspective(glm::radians(fieldOfView), aspectRatio, near, far);
 }
 
 glm::mat4 Survive::Maths::createViewMatrix(float pitch, float yaw, const glm::vec3 &position)
@@ -46,10 +46,10 @@ glm::mat4 Survive::Maths::createLightViewMatrix(const glm::vec3 &lightPosition)
 	return glm::lookAt(lightPosition, glm::vec3{0.0f}, glm::vec3{0, 1, 0});
 }
 
-glm::mat4 Survive::Maths::createLightProjectionMatrix()
+glm::mat4 Survive::Maths::createLightProjectionMatrix(float near, float far)
 {
 	return glm::ortho(Constants::LEFT, Constants::RIGHT, Constants::BOTTOM,
-					  Constants::TOP, Constants::NEAR, Constants::FAR);
+					  Constants::TOP, near, far);
 }
 
 glm::mat4 Survive::Maths::createOrthographicProjectionMatrix(float width, float height)

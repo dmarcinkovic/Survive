@@ -12,6 +12,7 @@
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
 #include "FileChooser.h"
+#include "CameraWindow.h"
 #include "EventHandler.h"
 #include "EditorUtil.h"
 #include "Log.h"
@@ -22,6 +23,11 @@
 
 namespace Survive
 {
+	enum class PropertyWindow
+	{
+		ENTITY, CAMERA, NONE
+	};
+
 	class Editor
 	{
 	private:
@@ -55,6 +61,7 @@ namespace Survive
 		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
+		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
 
 	public:
 		explicit Editor(Renderer &renderer);
@@ -82,7 +89,7 @@ namespace Survive
 	private:
 		void renderSceneWindow(const Camera &camera, entt::registry &registry);
 
-		void renderPropertyWindow(entt::registry &registry);
+		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 
 		void renderMenu();
 

@@ -5,14 +5,14 @@
 #include "Display.h"
 #include "Camera.h"
 #include "Maths.h"
-#include "Constants.h"
 
 Survive::Camera::Camera()
 {
 	auto[width, height] = Display::getWindowSize<float>();
 
-	m_ProjectionMatrix = Maths::createProjectionMatrix(Constants::FOV, width, height);
+	m_ProjectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far, width, height);
 	m_OrthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
+	m_LightProjectionMatrix = Maths::createLightProjectionMatrix(near, far);
 }
 
 void Survive::Camera::invertPitch()
@@ -37,11 +37,16 @@ glm::mat4 Survive::Camera::getViewMatrix() const
 
 void Survive::Camera::recalculateProjectionMatrix(float width, float height)
 {
-	m_ProjectionMatrix = Maths::createProjectionMatrix(Constants::FOV, width, height);
+	m_ProjectionMatrix = Maths::createProjectionMatrix(fieldOfView, near, far, width, height);
 	m_OrthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
 }
 
 glm::mat4 Survive::Camera::getOrthographicProjectionMatrix() const
 {
 	return m_OrthographicProjectionMatrix;
+}
+
+glm::mat4 Survive::Camera::getLightProjectionMatrix() const
+{
+	return m_LightProjectionMatrix;
 }

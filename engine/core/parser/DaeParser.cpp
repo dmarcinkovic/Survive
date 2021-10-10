@@ -4,8 +4,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <glm/ext/matrix_transform.hpp>
 #include <numeric>
+#include <stack>
 
 #include "Log.h"
 #include "DaeParser.h"
@@ -85,9 +85,9 @@ void Survive::DaeParser::loadGeometry(std::ifstream &reader)
 		{
 			m_VertexData.indicesLine = line;
 			m_VertexData.size = coordinatesSize + 1;
-			m_VertexData.vertices = vertices;
+			m_VertexData.vertices = applyCorrectionToVertices(vertices);
 			m_VertexData.textures = textures;
-			m_VertexData.normals = normals;
+			m_VertexData.normals = applyCorrectionToVertices(normals);
 			break;
 		} else if (line.find("input semantic") != -1)
 		{
@@ -298,6 +298,7 @@ Survive::Joint Survive::DaeParser::loadVisualScene(std::ifstream &reader, const 
 		}
 	}
 
+	root.applyCorrection(correction);
 	return root;
 }
 
@@ -426,7 +427,7 @@ Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData
 		{
 			const glm::mat4 &mat = j.transforms[i];
 
-			glm::mat4 matrix = glm::transpose(mat);
+			glm::mat4 matrix = j.jointName == rootJoint ? correction * glm::transpose(mat) : glm::transpose(mat);
 			glm::vec3 translation{matrix[3][0], matrix[3][1], matrix[3][2]};
 
 			JointTransform jointTransform(translation, Quaternion::fromMatrix(matrix));
@@ -439,4 +440,21 @@ Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData
 	m_LengthInSeconds = timestamp;
 
 	return keyFrames;
+}
+
+std::vector<glm::vec3>
+Survive::DaeParser::applyCorrectionToVertices(const std::vector<glm::vec3> &vertices)
+{
+	std::vector<glm::vec3> result;
+	result.reserve(vertices.size());
+
+	for (auto const& vertex : vertices)
+	{
+		glm::vec4 point(vertex, 1.0f);
+		point = correction * point;
+
+		result.emplace_back(point);
+	}
+
+	return result;
 }

@@ -27,7 +27,7 @@ namespace Survive
 								   const std::string &line);
 
 	public:
-		static Model loadObj(const char *objFile, Loader &loader);
+		static Model loadObj(const std::string &objFile, Loader &loader);
 	};
 }
 

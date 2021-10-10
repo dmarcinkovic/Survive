@@ -94,6 +94,10 @@ namespace Survive
 
 		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
+		static void drawColumnInputFloat(const char *text, const char *label, float &value);
+
+		static void drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
