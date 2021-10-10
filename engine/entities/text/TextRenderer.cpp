@@ -43,6 +43,7 @@ void Survive::TextRenderer::loadUniforms(entt::registry &registry, entt::entity 
 	m_Shader.loadBorder(textComponent.text.getBorderColor(), textComponent.text.getBorderWidth());
 
 	const Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(entity);
-	m_Shader.loadTransformationMatrix(
-			Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale));
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
+															  transformComponent.rotation);
+	m_Shader.loadTransformationMatrix(modelMatrix);
 }
