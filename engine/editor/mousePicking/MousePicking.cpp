@@ -54,7 +54,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	auto entities = prepareEntities(registry);
 
 	setViewport();
-	prepareRendering(camera);
+	prepareRendering();
 
 	for (auto const&[texturedModel, objects]: entities)
 	{
@@ -87,11 +87,22 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const Te
 		int id = static_cast<int>(object);
 		glm::vec4 color = getColor(id);
 
-		glm::mat4 projectionMatrix = registry.has<Render2DComponent>(object) ? camera.getOrthographicProjectionMatrix()
-																			 : camera.getProjectionMatrix();
+		glm::mat4 projectionMatrix;
+		glm::mat4 viewMatrix;
+
+		if (registry.has<Render2DComponent>(object))
+		{
+			projectionMatrix = camera.getOrthographicProjectionMatrix();
+			viewMatrix = glm::mat4{1.0f};
+		} else
+		{
+			projectionMatrix = camera.getProjectionMatrix();
+			viewMatrix = camera.getViewMatrix();
+		}
 
 		m_Shader.loadPickingColor(color);
 		m_Shader.loadProjectionMatrix(projectionMatrix);
+		m_Shader.loadViewMatrix(viewMatrix);
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
@@ -179,10 +190,9 @@ bool Survive::MousePicking::isInsideWindow() const
 		   m_MousePosition.y >= regionY && m_MousePosition.y < height;
 }
 
-void Survive::MousePicking::prepareRendering(const Camera &camera) const
+void Survive::MousePicking::prepareRendering() const
 {
 	Renderer3DUtil::prepareRendering(m_Shader);
-	m_Shader.loadViewMatrix(camera.getViewMatrix());
 }
 
 void Survive::MousePicking::setViewport()

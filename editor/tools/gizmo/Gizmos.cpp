@@ -18,10 +18,11 @@ void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt:
 	{
 		if (registry.has<Render3DComponent>(selectedEntity))
 		{
-			drawGizmos(false, camera.getProjectionMatrix(), camera, registry, selectedEntity);
+			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), camera, registry, selectedEntity);
 		} else if (registry.has<Render2DComponent>(selectedEntity) || registry.has<TextComponent>(selectedEntity))
 		{
-			drawGizmos(true, camera.getOrthographicProjectionMatrix(), camera, registry, selectedEntity);
+			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, camera, registry,
+					   selectedEntity);
 		}
 	}
 }
@@ -80,15 +81,13 @@ bool Survive::Gizmos::isValidOperation()
 	return validOperation;
 }
 
-void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix,
+void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
 								 const Camera &camera, entt::registry &registry, entt::entity entity) const
 {
 	ImGuizmo::SetOrthographic(isOrthographic);
 
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
-
-	glm::mat4 viewMatrix = camera.getViewMatrix();
 
 	Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(entity);
 	glm::mat4 transform = getTransform(transformComponent);

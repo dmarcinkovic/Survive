@@ -63,7 +63,7 @@ namespace Survive
 
 		static void setViewport();
 
-		void prepareRendering(const Camera &camera) const;
+		void prepareRendering() const;
 
 		void informListeners(int entity) const;
 	};

@@ -40,7 +40,7 @@ namespace Survive
 
 		static void useGizmo(Transform3DComponent &transformComponent, glm::mat4 &transform);
 
-		void drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix,
+		void drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
 						const Camera &camera, entt::registry &registry, entt::entity entity) const;
 	};
 }
