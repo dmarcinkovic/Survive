@@ -29,9 +29,9 @@ namespace Survive
 
 		Font() = default;
 
-		void loadFontFromFntFile(const char *fntFile);
+		void loadFontFromFntFile(const std::string &fntFile);
 
-		void loadFontFromJsonFile(const char *jsonFile);
+		void loadFontFromJsonFile(const std::string &jsonFile);
 
 		const Character &getCharacter(int ascii) const;
 

@@ -13,7 +13,7 @@ Survive::Font::Font(const char *textureAtlas)
 {
 }
 
-void Survive::Font::loadFontFromFntFile(const char *fntFile)
+void Survive::Font::loadFontFromFntFile(const std::string &fntFile)
 {
 	std::ifstream reader(fntFile);
 
@@ -46,7 +46,7 @@ void Survive::Font::loadFontFromFntFile(const char *fntFile)
 	reader.close();
 }
 
-void Survive::Font::loadFontFromJsonFile(const char *jsonFile)
+void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
 {
 	std::ifstream reader(jsonFile);
 

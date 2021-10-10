@@ -294,7 +294,7 @@ void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audio
 void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file)
 try
 {
-	Model model = ObjParser::loadObj(file.c_str(), m_Loader);
+	Model model = ObjParser::loadObj(file.string(), m_Loader);
 
 	if (model.isValidModel())
 	{
@@ -302,7 +302,7 @@ try
 		registry.emplace<TagComponent>(entity, file.stem().string());
 
 		Render3DComponent renderComponent(TexturedModel(model, Texture()));
-		renderComponent.modelName = std::filesystem::relative(file);
+		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
 	}
 } catch (const std::exception &exception)
@@ -359,11 +359,11 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 			{
 				if (selectedFile.extension() == ".fnt")
 				{
-					font.loadFontFromFntFile(selectedFile.c_str());
+					font.loadFontFromFntFile(selectedFile.string());
 					file = selectedFile.string();
 				} else if (selectedFile.extension() == ".json")
 				{
-					font.loadFontFromJsonFile(selectedFile.c_str());
+					font.loadFontFromJsonFile(selectedFile.string());
 					file = selectedFile.string();
 				} else
 				{
@@ -390,9 +390,11 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 		{
 			try
 			{
-				font.setTexture(Loader::loadTexture(selectedFile.c_str()));
+				std::string textureName = selectedFile.string();
+
+				font.setTexture(Loader::loadTexture(textureName.c_str()));
 				text.loadTexture(loader);
-				file = selectedFile.string();
+				file = textureName;
 			} catch (const std::exception &ignorable)
 			{
 				Log::logWindow(LogType::ERROR, "Cannot load " + selectedFile.filename().string());

@@ -233,10 +233,10 @@ Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string
 
 	if (fontFile.ends_with(".fnt"))
 	{
-		font.loadFontFromFntFile(fontFile.c_str());
+		font.loadFontFromFntFile(fontFile);
 	} else if (fontFile.ends_with(".json"))
 	{
-		font.loadFontFromJsonFile(fontFile.c_str());
+		font.loadFontFromJsonFile(fontFile);
 	}
 
 	if (font.isFontLoaded() && font.isFontTextureValid())

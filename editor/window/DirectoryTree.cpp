@@ -52,7 +52,7 @@ void Survive::DirectoryTree::drawLeftArrow()
 		m_RedoStack.push(m_CurrentDirectory);
 
 		m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
 		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 
 		informListeners();
@@ -64,7 +64,7 @@ void Survive::DirectoryTree::drawRightArrow()
 	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
 	{
 		m_CurrentDirectory = m_RedoStack.top();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
 		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 
 		m_RedoStack.pop();
@@ -92,7 +92,8 @@ void Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, c
 
 	for (const File &nestedFile: content)
 	{
-		if (ImGui::TreeNodeEx(nestedFile.path.filename().c_str(), ImGuiTreeNodeFlags_Leaf))
+		std::string filename = nestedFile.path.filename().string();
+		if (ImGui::TreeNodeEx(filename.c_str(), ImGuiTreeNodeFlags_Leaf))
 		{
 			ImGui::TreePop();
 		}
@@ -103,14 +104,16 @@ void Survive::DirectoryTree::drawDirectoryTree()
 {
 	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
 
-	if (ImGui::TreeNode(m_CurrentDirectory.filename().c_str()))
+	std::string currentDirectory = m_CurrentDirectory.filename().string();
+	if (ImGui::TreeNode(currentDirectory.c_str()))
 	{
 		for (int i = 0; i < m_DirectoryContent.size(); ++i)
 		{
 			const File &file = m_DirectoryContent[i];
 			ImGuiTreeNodeFlags flags = getTreeFlags(file.type);
+			std::string filename = file.path.filename().string();
 
-			if (ImGui::TreeNodeEx(file.path.filename().c_str(), flags))
+			if (ImGui::TreeNodeEx(filename.c_str(), flags))
 			{
 				if (file.type == std::filesystem::file_type::directory)
 				{
@@ -133,7 +136,7 @@ const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() 
 void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDirectory)
 {
 	m_CurrentDirectory = std::move(currentDirectory);
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory);
+	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
 
 	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 }

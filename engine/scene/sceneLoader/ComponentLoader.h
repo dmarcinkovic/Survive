@@ -6,6 +6,7 @@
 #define SURVIVE_COMPONENTLOADER_H
 
 #include <fstream>
+#include <optional>
 
 #include "entt.hpp"
 #include "Font.h"
