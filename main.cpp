@@ -1,7 +1,5 @@
 #include "Editor.h"
 #include "EventHandler.h"
-#include "DaeParser.h"
-#include "Animator.h"
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
@@ -9,7 +7,6 @@
 #include "Display.h"
 #include "entt.hpp"
 #include "Components.h"
-#include "AnimationSystem.h"
 
 int main()
 {
@@ -29,34 +26,12 @@ int main()
 
 	Editor editor(renderer);
 
-	DaeParser daeParser;
-	auto character = registry.create();
-	registry.emplace<TagComponent>(character, "character");
-	TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
-								Loader::loadTexture("res/character.png"));
-	registry.emplace<Render3DComponent>(character, texturedModel);
-	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30});
-	registry.emplace<RigidBodyComponent>(character, false);
-	registry.emplace<ShadowComponent>(character, true);
+	auto rectangle = registry.create();
+	registry.emplace<TagComponent>(rectangle, "rectangle");
+	registry.emplace<Transform3DComponent>(rectangle, glm::vec3{-0.5f, 0, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
+	registry.emplace<Render2DComponent>(rectangle,
+										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/rectangle.png")));
 
-	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
-
-	auto dragon = registry.create();
-	registry.emplace<TagComponent>(dragon, "dragon");
-	registry.emplace<Render3DComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															  Loader::loadTexture("res/lamp.jpg")));
-	registry.emplace<RigidBodyComponent>(dragon, false);
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -10, -40});
-	registry.emplace<ShadowComponent>(dragon, true);
-
-	auto textEntity = registry.create();
-
-	registry.emplace<TagComponent>(textEntity, "text");
-	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
-	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
-
-	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;
 
 	while (display.isRunning())
@@ -64,9 +39,6 @@ int main()
 		Display::clearWindow();
 
 		editor.handleKeyEvents(eventHandler);
-
-		animator.update(registry);
-		AnimationSystem::update(registry);
 
 		Editor::newFrame();
 		Editor::dock();
