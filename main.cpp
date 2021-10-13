@@ -37,7 +37,7 @@ int main()
 	registry.emplace<Render2DComponent>(rectangle,
 										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/rectangle.png")));
 	RigidBody2DComponent rectangleRigidBody{b2_dynamicBody};
-	rectangleRigidBody.bodyDefinition.position.Set(rectanglePos.position.x, rectanglePos.position.y);
+	rectangleRigidBody.bodyDefinition.position.Set(rectanglePos.position.x*10, rectanglePos.position.y*10);
 	rectangleRigidBody.bodyDefinition.angle = rectanglePos.rotation.z;
 
 	// TODO Set position from transform 3d when the user clicks play
@@ -65,15 +65,16 @@ int main()
 
 	auto ground = registry.create();
 	registry.emplace<TagComponent>(ground, "ground");
-	registry.emplace<Transform3DComponent>(ground, glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
+	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
+	registry.emplace<Transform3DComponent>(ground, groundPos);
 	registry.emplace<Render2DComponent>(ground,
 										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
+	RigidBody2DComponent groundRigidBody(b2_staticBody);
+	groundRigidBody.bodyDefinition.position.Set(groundPos.position.x*10, groundPos.position.y*10);
+	groundRigidBody.bodyDefinition.angle = groundPos.rotation.z;
 
-	b2BodyDef bd;
-	bd.type = b2_staticBody;
-	bd.position.Set(-0.55f * 10.0f, -0.8f * 10.0f);
-
-	b2Body *groundBody = world->CreateBody(&bd);
+	groundRigidBody.body = world->CreateBody(&groundRigidBody.bodyDefinition);
+	registry.emplace<RigidBody2DComponent>(ground, groundRigidBody);
 
 	b2PolygonShape groundShape;
 	groundShape.SetAsBox(0.4f * 10.0f, 0.05f * 10.0f);
@@ -84,7 +85,7 @@ int main()
 	def.friction = 0.3f;
 	def.restitution = 0.5f;
 
-	groundBody->CreateFixture(&def);
+	groundRigidBody.body->CreateFixture(&def);
 
 	EventHandler eventHandler;
 
