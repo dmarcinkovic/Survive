@@ -7,6 +7,7 @@
 
 #include "AnimationComponent.h"
 #include "BloomComponent.h"
+#include "Collider2DComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
 #include "ReflectionComponent.h"
