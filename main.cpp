@@ -101,7 +101,7 @@ int main()
 		Editor::dock();
 		editor.render(registry, renderer, camera);
 
-		renderer.renderToFbo(registry, camera);
+		renderer.renderEditor(registry, camera);
 
 		b2Vec2 pos = body->GetPosition();
 		float rotation = body->GetAngle();
