@@ -13,6 +13,7 @@ namespace Survive
 	{
 		b2BodyDef bodyDefinition{};
 
+
 		RigidBody2DComponent() = default;
 
 		explicit RigidBody2DComponent(b2BodyType bodyType, float linearDrag = 0.0f, b2Vec2 linearVelocity = b2Vec2{},
