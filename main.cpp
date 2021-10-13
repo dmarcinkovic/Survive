@@ -1,7 +1,6 @@
 #include <Box2D/Box2D.h>
-#include <chrono>
-#include <iostream>
 
+#include "PhysicSystem.h"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "Loader.h"
@@ -29,26 +28,26 @@ int main()
 	Renderer renderer(light);
 
 	Editor editor(renderer);
+	auto *world = new b2World(b2Vec2(0.0f, -9.81f));
 
 	auto rectangle = registry.create();
 	registry.emplace<TagComponent>(rectangle, "rectangle");
-	registry.emplace<Transform3DComponent>(rectangle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
+	Transform3DComponent rectanglePos(glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
+	registry.emplace<Transform3DComponent>(rectangle, rectanglePos);
 	registry.emplace<Render2DComponent>(rectangle,
 										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/rectangle.png")));
-
-	auto *world = new b2World(b2Vec2(0.0f, -9.81f));
-
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	RigidBody2DComponent rectangleRigidBody{b2_dynamicBody};
+	rectangleRigidBody.bodyDefinition.position.Set(rectanglePos.position.x, rectanglePos.position.y);
+	rectangleRigidBody.bodyDefinition.angle = rectanglePos.rotation.z;
 
 	// TODO Set position from transform 3d when the user clicks play
 	// TODO Find all entities that have this component and transform3d and set position
-	bodyDef.position.Set(0, 0.7f * 10.0f);
 
 	// TODO define bodyDef.angle from transform 3d component
 
 	// TODO create the body/bodies when the user clicks on play button
-	b2Body *body = world->CreateBody(&bodyDef);
+	rectangleRigidBody.body = world->CreateBody(&rectangleRigidBody.bodyDefinition);
+	registry.emplace<RigidBody2DComponent>(rectangle, rectangleRigidBody);
 
 	// TODO add this into circle, box, polygon collider
 	// TODO when play is clicked, after creating body check if this component is presented and
@@ -62,7 +61,7 @@ int main()
 	fixtureDef.friction = 0.3f;
 	fixtureDef.restitution = 0.5f;
 
-	body->CreateFixture(&fixtureDef);
+	rectangleRigidBody.body->CreateFixture(&fixtureDef);
 
 	auto ground = registry.create();
 	registry.emplace<TagComponent>(ground, "ground");
@@ -87,8 +86,6 @@ int main()
 
 	groundBody->CreateFixture(&def);
 
-//	world->GetBodyList();
-
 	EventHandler eventHandler;
 
 	while (display.isRunning())
@@ -103,12 +100,7 @@ int main()
 
 		renderer.renderEditor(registry, camera);
 
-		b2Vec2 pos = body->GetPosition();
-		float rotation = body->GetAngle();
-
-		Transform3DComponent &transform = registry.get<Transform3DComponent>(rectangle);
-		transform.position = glm::vec3{pos.x * 0.1f, pos.y * 0.1f, 1.0f};
-		transform.rotation.z = glm::degrees(rotation);
+		PhysicSystem::update(registry);
 
 		float frameRate = ImGui::GetIO().Framerate;
 		world->Step(1.0f / frameRate, 5, 5);
