@@ -12,7 +12,7 @@ namespace Survive
 	struct RigidBody2DComponent
 	{
 		b2BodyDef bodyDefinition{};
-
+		b2Body *body{};
 
 		RigidBody2DComponent() = default;
 
