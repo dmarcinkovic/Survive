@@ -11,7 +11,20 @@ namespace Survive
 {
 	struct EdgeCollider2DComponent
 	{
+		b2FixtureDef fixtureDef;
+		b2EdgeShape edgeShape;
 
+		EdgeCollider2DComponent() = default;
+
+		EdgeCollider2DComponent(const b2Vec2 &point1, const b2Vec2 &point2, float density, float friction,
+								float elasticity)
+		{
+			edgeShape.Set(point1, point2);
+			fixtureDef.density = density;
+			fixtureDef.friction = friction;
+			fixtureDef.restitution = elasticity;
+			fixtureDef.shape = &edgeShape;
+		}
 	};
 }
 

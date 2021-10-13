@@ -6,12 +6,25 @@
 #define SURVIVE_POLYGONCOLLIDER2DCOMPONENT_H
 
 #include <Box2D/Box2D.h>
+#include <vector>
 
 namespace Survive
 {
 	struct PolygonCollider2DComponent
 	{
+		b2FixtureDef fixtureDef;
+		b2PolygonShape polygonShape;
 
+		PolygonCollider2DComponent() = default;
+
+		PolygonCollider2DComponent(const std::vector<b2Vec2> &points, float density, float friction, float elasticity)
+		{
+			polygonShape.Set(points.data(), static_cast<int>(points.size()));
+			fixtureDef.density = density;
+			fixtureDef.friction = friction;
+			fixtureDef.restitution = elasticity;
+			fixtureDef.shape = &polygonShape;
+		}
 	};
 }
 

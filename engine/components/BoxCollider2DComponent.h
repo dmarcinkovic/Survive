@@ -11,7 +11,19 @@ namespace Survive
 {
 	struct BoxCollider2DComponent
 	{
+		b2FixtureDef fixtureDef;
+		b2PolygonShape boxShape;
 
+		BoxCollider2DComponent() = default;
+
+		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
+		{
+			boxShape.SetAsBox(width, height);
+			fixtureDef.density = density;
+			fixtureDef.friction = friction;
+			fixtureDef.restitution = elasticity;
+			fixtureDef.shape = &boxShape;
+		}
 	};
 }
 
