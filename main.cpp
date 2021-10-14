@@ -32,36 +32,11 @@ int main()
 
 	auto rectangle = registry.create();
 	registry.emplace<TagComponent>(rectangle, "rectangle");
-	Transform3DComponent rectanglePos(glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
-	registry.emplace<Transform3DComponent>(rectangle, rectanglePos);
+	registry.emplace<Transform3DComponent>(rectangle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
 	registry.emplace<Render2DComponent>(rectangle,
 										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/rectangle.png")));
-	RigidBody2DComponent rectangleRigidBody{b2_dynamicBody};
-	rectangleRigidBody.bodyDefinition.position.Set(rectanglePos.position.x*10, rectanglePos.position.y*10);
-	rectangleRigidBody.bodyDefinition.angle = rectanglePos.rotation.z;
-
-	// TODO Set position from transform 3d when the user clicks play
-	// TODO Find all entities that have this component and transform3d and set position
-
-	// TODO define bodyDef.angle from transform 3d component
-
-	// TODO create the body/bodies when the user clicks on play button
-	rectangleRigidBody.body = world->CreateBody(&rectangleRigidBody.bodyDefinition);
-	registry.emplace<RigidBody2DComponent>(rectangle, rectangleRigidBody);
-
-	// TODO add this into circle, box, polygon collider
-	// TODO when play is clicked, after creating body check if this component is presented and
-	// TODO create fixture, it is not required to have fixture, this is only to enable object to collide
-	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(0.25f * 10.0f, 0.25f * 10.0f);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &polygonShape;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	fixtureDef.restitution = 0.5f;
-
-	rectangleRigidBody.body->CreateFixture(&fixtureDef);
+	registry.emplace<RigidBody2DComponent>(rectangle, b2_dynamicBody);
+	registry.emplace<BoxCollider2DComponent>(rectangle, 0.25f * 10.0f, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
 
 	auto ground = registry.create();
 	registry.emplace<TagComponent>(ground, "ground");
@@ -69,23 +44,10 @@ int main()
 	registry.emplace<Transform3DComponent>(ground, groundPos);
 	registry.emplace<Render2DComponent>(ground,
 										TexturedModel(loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
-	RigidBody2DComponent groundRigidBody(b2_staticBody);
-	groundRigidBody.bodyDefinition.position.Set(groundPos.position.x*10, groundPos.position.y*10);
-	groundRigidBody.bodyDefinition.angle = groundPos.rotation.z;
+	registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
+	registry.emplace<BoxCollider2DComponent>(ground, 0.4f * 10.0f, 0.05f * 10.0f, 1.0f, 0.3f, 0.5f);
 
-	groundRigidBody.body = world->CreateBody(&groundRigidBody.bodyDefinition);
-	registry.emplace<RigidBody2DComponent>(ground, groundRigidBody);
-
-	b2PolygonShape groundShape;
-	groundShape.SetAsBox(0.4f * 10.0f, 0.05f * 10.0f);
-
-	b2FixtureDef def;
-	def.shape = &groundShape;
-	def.density = 1.0f;
-	def.friction = 0.3f;
-	def.restitution = 0.5f;
-
-	groundRigidBody.body->CreateFixture(&def);
+	PhysicSystem::init(registry, world);
 
 	EventHandler eventHandler;
 

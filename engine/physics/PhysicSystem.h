@@ -13,6 +13,11 @@ namespace Survive
 	{
 	public:
 		static void update(entt::registry &registry);
+
+		static void init(entt::registry &registry, b2World *world);
+
+	private:
+		static void initFixture(entt::registry &registry, entt::entity entity, b2Body *body);
 	};
 }
 

@@ -23,7 +23,6 @@ namespace Survive
 			fixtureDef.density = density;
 			fixtureDef.friction = friction;
 			fixtureDef.restitution = elasticity;
-			fixtureDef.shape = &polygonShape;
 		}
 	};
 }

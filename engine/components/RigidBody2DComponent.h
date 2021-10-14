@@ -16,7 +16,7 @@ namespace Survive
 
 		RigidBody2DComponent() = default;
 
-		explicit RigidBody2DComponent(b2BodyType bodyType, float linearDrag = 0.0f, b2Vec2 linearVelocity = b2Vec2{},
+		explicit RigidBody2DComponent(b2BodyType bodyType, float linearDrag = 0.0f, b2Vec2 linearVelocity = b2Vec2{0, 0},
 							 float angularDrag = 0.0f, float gravityScale = 1.0f, bool fixedAngle = false)
 		{
 			bodyDefinition.type = bodyType;

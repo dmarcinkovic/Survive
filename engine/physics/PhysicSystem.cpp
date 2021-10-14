@@ -27,3 +27,48 @@ void Survive::PhysicSystem::update(entt::registry &registry)
 		transform.rotation.z = glm::degrees(body->GetAngle());
 	}
 }
+
+void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
+{
+	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
+
+	for (auto const &entity : view)
+	{
+		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
+		Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
+
+		float x = transform.position.x * Constants::BOX2D_SCALE;
+		float y = transform.position.y * Constants::BOX2D_SCALE;
+
+		rigidBody.bodyDefinition.position.Set(x, y);
+		rigidBody.bodyDefinition.angle = transform.rotation.z;
+		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
+
+		initFixture(registry, entity, rigidBody.body);
+	}
+}
+
+void Survive::PhysicSystem::initFixture(entt::registry &registry, entt::entity entity, b2Body *body)
+{
+	if (registry.has<BoxCollider2DComponent>(entity))
+	{
+		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(entity);
+		boxCollider.fixtureDef.shape = &boxCollider.boxShape;
+		body->CreateFixture(&boxCollider.fixtureDef);
+	} else if (registry.has<CircleCollider2DComponent>(entity))
+	{
+		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
+		circleCollider.fixtureDef.shape = &circleCollider.circleShape;
+		body->CreateFixture(&circleCollider.fixtureDef);
+	} else if (registry.has<EdgeCollider2DComponent>(entity))
+	{
+		EdgeCollider2DComponent &edgeCollider = registry.get<EdgeCollider2DComponent>(entity);
+		edgeCollider.fixtureDef.shape = &edgeCollider.edgeShape;
+		body->CreateFixture(&edgeCollider.fixtureDef);
+	} else if (registry.has<PolygonCollider2DComponent>(entity))
+	{
+		PolygonCollider2DComponent &polygonCollider = registry.get<PolygonCollider2DComponent>(entity);
+		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
+		body->CreateFixture(&polygonCollider.fixtureDef);
+	}
+}
