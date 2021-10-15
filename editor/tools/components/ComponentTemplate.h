@@ -178,8 +178,7 @@ namespace Survive
 				component.audioSource.setGain(component.gain);
 			}
 
-			EditorUtil::toggleButton("Toggle button", component.playOnLoop);
-
+			EditorUtil::toggleButton("Play on loop", component.playOnLoop);
 			ImGui::Columns(2);
 			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();

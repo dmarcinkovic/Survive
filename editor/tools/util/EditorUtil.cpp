@@ -266,6 +266,8 @@ void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
 	drawList->AddCircleFilled(ImVec2(v ? (pos.x + width - radius) : (pos.x + radius), pos.y + radius),
 							  radius - 1.5f, IM_COL32(255, 255, 255, 255));
 
+	ImGui::SameLine();
+	ImGui::TextUnformatted(stringId);
 }
 
 void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
