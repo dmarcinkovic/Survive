@@ -8,7 +8,7 @@
 Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
 		  m_Icons(Loader::loadAllTextures(
-				  {"res/grey_folder.png", "res/binary_file.png", "res/txt_file.png", "res/cpp_icon.png",
+				  {"res/grey_folder.png", "res/txt_file.png", "res/cpp_icon.png",
 				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png",
 				   "res/survive_icon.png"})),
 		  m_Uv0(0, 1), m_Uv1(1, 0), m_Lupa(Loader::loadTexture("res/lupa.png")),
@@ -61,9 +61,6 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file)
 	if (std::filesystem::is_directory(file))
 	{
 		m_ImageIndex = FOLDER;
-	} else if (FileUtil::isExecutable(file))
-	{
-		m_ImageIndex = BINARY;
 	} else if (file.has_extension())
 	{
 		std::string extension = file.extension().string();

@@ -115,18 +115,3 @@ const char *Survive::FileUtil::getFileType(std::filesystem::file_type type)
 			return "";
 	}
 }
-
-bool Survive::FileUtil::isExecutable(const std::filesystem::path &file)
-{
-	namespace fs = std::filesystem;
-
-	auto permissions = fs::status(file).permissions();
-	auto execPermission = fs::perms::group_exec | fs::perms::owner_exec | fs::perms::others_exec;
-
-	if ((permissions & execPermission) != fs::perms::none)
-	{
-		return true;
-	}
-
-	return false;
-}

@@ -17,7 +17,7 @@ namespace Survive
 {
 	enum Files
 	{
-		FOLDER, BINARY, TXT, CPP, README, IMAGE, OBJ, UNKNOWN, SURVIVE
+		FOLDER, TXT, CPP, README, IMAGE, OBJ, UNKNOWN, SURVIVE
 	};
 
 	class ContentBrowser
