@@ -188,9 +188,15 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 			std::string file = m_OpenWindow.getSelectedFile().string();
 			if (!file.empty())
 			{
-				m_Manager.setSelectedEntity(-1);
-				m_SceneLoader.loadScene(registry, file);
-				m_SavedFile = file;
+				if (file.ends_with(".survive"))
+				{
+					m_Manager.setSelectedEntity(-1);
+					m_SceneLoader.loadScene(registry, file);
+					m_SavedFile = file;
+				} else
+				{
+					Log::logWindow(LogType::ERROR, "Cannot load scene from " + file);
+				}
 			}
 		}
 	}
