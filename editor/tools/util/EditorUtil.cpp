@@ -586,3 +586,18 @@ void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *labe
 	ImGui::SetNextItemWidth(-1.0f);
 	ImGui::DragFloat(label, &value, 1.0f, min, max);
 }
+
+void Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	glm::vec2 vec(value.x, value.y);
+	if (ImGui::DragFloat2(label, glm::value_ptr(vec)))
+	{
+		value.x = vec.x;
+		value.y = vec.y;
+	}
+
+	ImGui::NextColumn();
+}

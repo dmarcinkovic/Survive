@@ -8,6 +8,7 @@
 #include <string>
 #include <glm/vec3.hpp>
 #include <AL/al.h>
+#include <Box2D/Box2D.h>
 
 #include "entt.hpp"
 #include "Renderer.h"
@@ -97,6 +98,8 @@ namespace Survive
 		static void drawColumnInputFloat(const char *text, const char *label, float &value);
 
 		static void drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max);
+
+		static void drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,

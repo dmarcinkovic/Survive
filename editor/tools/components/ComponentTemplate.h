@@ -250,7 +250,6 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
 		{
-
 		}
 	}
 
@@ -286,7 +285,26 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Rigid body 2D", visible))
 		{
+			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
+			int currentItem = component.bodyDefinition.type;
+			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
+			{
+				component.bodyDefinition.type = static_cast<b2BodyType>(currentItem);
+			}
+
+			ImGui::Separator();
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", component.bodyDefinition.linearDamping);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", component.bodyDefinition.angularDamping);
+			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", component.bodyDefinition.gravityScale);
+
+			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity",
+											 component.bodyDefinition.linearVelocity);
+			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", component.bodyDefinition.fixedRotation);
+
+			ImGui::Columns();
 		}
 	}
 }
