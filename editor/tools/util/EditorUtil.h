@@ -97,7 +97,8 @@ namespace Survive
 
 		static void drawColumnInputFloat(const char *text, const char *label, float &value);
 
-		static void drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max);
+		static void drawColumnDragFloat(const char *text, const char *label, float &value,
+										float min, float max, float step = 1.0f);
 
 		static void drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 

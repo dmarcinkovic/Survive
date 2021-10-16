@@ -578,13 +578,14 @@ void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *lab
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max)
+void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,
+											  float &value, float min, float max, float step)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	ImGui::DragFloat(label, &value, 1.0f, min, max);
+	ImGui::DragFloat(label, &value, step, min, max);
 	ImGui::NextColumn();
 }
 

@@ -256,8 +256,8 @@ namespace Survive
 			EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max);
 			EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max);
 			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1);
-			EditorUtil::drawColumnInputFloat("Elasticity", "Box restitution", component.fixtureDef.restitution);
+			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
 
 			ImGui::Columns();
 		}
@@ -268,7 +268,16 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
 		{
+			static constexpr float max = std::numeric_limits<float>::max();
+			ImGui::Columns(2, nullptr, false);
 
+			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
 		}
 	}
 
@@ -277,7 +286,6 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Edge collider 2D", visible))
 		{
-
 		}
 	}
 
