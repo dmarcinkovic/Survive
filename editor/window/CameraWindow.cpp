@@ -83,9 +83,6 @@ void Survive::CameraWindow::showCameraProperties(Survive::Camera &camera)
 	ImGui::Indent();
 
 	EditorUtil::drawColumnDragFloat("Pitch", "##Camera pitch", camera.pitch, -90.0f, 90.0f);
-
-	ImGui::NextColumn();
-
 	EditorUtil::drawColumnDragFloat("Yaw", "##Camera yaw", camera.yaw, -90.0f, 90.0f);
 
 	ImGui::Unindent();

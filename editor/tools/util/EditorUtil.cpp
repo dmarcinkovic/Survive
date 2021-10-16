@@ -585,6 +585,7 @@ void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *labe
 
 	ImGui::SetNextItemWidth(-1.0f);
 	ImGui::DragFloat(label, &value, 1.0f, min, max);
+	ImGui::NextColumn();
 }
 
 void Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value)

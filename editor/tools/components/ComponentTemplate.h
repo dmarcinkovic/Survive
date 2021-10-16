@@ -250,6 +250,16 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
 		{
+			static constexpr float max = std::numeric_limits<float>::max();
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max);
+			EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max);
+			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1);
+			EditorUtil::drawColumnInputFloat("Elasticity", "Box restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
 		}
 	}
 

@@ -14,9 +14,12 @@ namespace Survive
 		b2FixtureDef fixtureDef{};
 		b2PolygonShape boxShape{};
 
+		float width{}, height{};
+
 		BoxCollider2DComponent() = default;
 
 		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
+			: width(width), height(height)
 		{
 			boxShape.SetAsBox(width, height);
 			fixtureDef.density = density;
