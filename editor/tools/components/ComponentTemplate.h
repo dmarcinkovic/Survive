@@ -253,8 +253,16 @@ namespace Survive
 			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max);
-			EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max);
+			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
+			{
+				component.boxShape.SetAsBox(component.width, component.height);
+			}
+
+			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
+			{
+				component.boxShape.SetAsBox(component.width, component.height);
+			}
+
 			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
 			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
 			EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
@@ -286,6 +294,23 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Edge collider 2D", visible))
 		{
+			ImGui::Columns(2, nullptr, false);
+
+			if (EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.point1))
+			{
+				component.edgeShape.Set(component.point1, component.point2);
+			}
+
+			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.point2))
+			{
+				component.edgeShape.Set(component.point1, component.point2);
+			}
+
+			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", component.fixtureDef.restitution);
+			ImGui::Columns();
 		}
 	}
 

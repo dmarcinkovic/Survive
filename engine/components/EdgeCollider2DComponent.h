@@ -14,10 +14,13 @@ namespace Survive
 		b2FixtureDef fixtureDef;
 		b2EdgeShape edgeShape;
 
+		b2Vec2 point1, point2;
+
 		EdgeCollider2DComponent() = default;
 
 		EdgeCollider2DComponent(const b2Vec2 &point1, const b2Vec2 &point2, float density, float friction,
 								float elasticity)
+				: point1(point1), point2(point2)
 		{
 			edgeShape.Set(point1, point2);
 			fixtureDef.density = density;

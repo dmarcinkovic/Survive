@@ -97,10 +97,10 @@ namespace Survive
 
 		static void drawColumnInputFloat(const char *text, const char *label, float &value);
 
-		static void drawColumnDragFloat(const char *text, const char *label, float &value,
+		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
 										float min, float max, float step = 1.0f);
 
-		static void drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
+		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,

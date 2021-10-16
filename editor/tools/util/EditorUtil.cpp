@@ -578,28 +578,33 @@ void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *lab
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,
+bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,
 											  float &value, float min, float max, float step)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	ImGui::DragFloat(label, &value, step, min, max);
+	bool result = ImGui::DragFloat(label, &value, step, min, max);
 	ImGui::NextColumn();
+
+	return result;
 }
 
-void Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value)
+bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	glm::vec2 vec(value.x, value.y);
-	if (ImGui::DragFloat2(label, glm::value_ptr(vec)))
+	bool result{};
+	if ((result = ImGui::DragFloat2(label, glm::value_ptr(vec))))
 	{
 		value.x = vec.x;
 		value.y = vec.y;
 	}
 
 	ImGui::NextColumn();
+
+	return result;
 }
