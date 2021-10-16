@@ -27,9 +27,10 @@ namespace Survive
 		static std::vector<const char *> getListOfComponents()
 		{
 			std::vector<const char *> components = {
-					"Animation component", "Bloom component", "Reflection component",
+					"Animation component", "Bloom component", "Box Collider2D component", "Circle Collider2D component",
+					"Edge Collider2D component", "PolygonCollider2D component", "Reflection component",
 					"Refraction component", "Render2D Component", "Render3D component",
-					"Rigid body component", "Shadow component", "Sound component",
+					"RigidBody2D component", "Rigid body component", "Shadow component", "Sound component",
 					"Sprite component", "Sprite sheet component", "Text Component", "Transform3D component"
 			};
 
@@ -40,10 +41,15 @@ namespace Survive
 		{
 			drawComponent<AnimationComponent>(registry, entity);
 			drawComponent<BloomComponent>(registry, entity);
+			drawComponent<BoxCollider2DComponent>(registry, entity);
+			drawComponent<CircleCollider2DComponent>(registry, entity);
+			drawComponent<EdgeCollider2DComponent>(registry, entity);
+			drawComponent<PolygonCollider2DComponent>(registry, entity);
 			drawComponent<ReflectionComponent>(registry, entity);
 			drawComponent<RefractionComponent>(registry, entity);
 			drawComponent<Render2DComponent>(registry, entity);
 			drawComponent<Render3DComponent>(registry, entity);
+			drawComponent<RigidBody2DComponent>(registry, entity);
 			drawComponent<RigidBodyComponent>(registry, entity);
 			drawComponent<ShadowComponent>(registry, entity);
 			drawComponent<SoundComponent>(registry, entity);
@@ -62,26 +68,36 @@ namespace Survive
 				case 1:
 					return addComponent<BloomComponent>(registry, entity);
 				case 2:
-					return addComponent<ReflectionComponent>(registry, entity);
+					return addComponent<BoxCollider2DComponent>(registry, entity);
 				case 3:
-					return addComponent<RefractionComponent>(registry, entity);
+					return addComponent<CircleCollider2DComponent>(registry, entity);
 				case 4:
-					return addComponent<Render2DComponent>(registry, entity);
+					return addComponent<EdgeCollider2DComponent>(registry, entity);
 				case 5:
-					return addComponent<Render3DComponent>(registry, entity);
+					return addComponent<PolygonCollider2DComponent>(registry, entity);
 				case 6:
-					return addComponent<RigidBodyComponent>(registry, entity);
+					return addComponent<ReflectionComponent>(registry, entity);
 				case 7:
-					return addComponent<ShadowComponent>(registry, entity);
+					return addComponent<RefractionComponent>(registry, entity);
 				case 8:
-					return addComponent<SoundComponent>(registry, entity);
+					return addComponent<Render2DComponent>(registry, entity);
 				case 9:
-					return addComponent<SpriteComponent>(registry, entity);
+					return addComponent<Render3DComponent>(registry, entity);
 				case 10:
-					return addComponent<SpriteSheetComponent>(registry, entity);
+					return addComponent<RigidBody2DComponent>(registry, entity);
 				case 11:
-					return addComponent<TextComponent>(registry, entity);
+					return addComponent<RigidBodyComponent>(registry, entity);
 				case 12:
+					return addComponent<ShadowComponent>(registry, entity);
+				case 13:
+					return addComponent<SoundComponent>(registry, entity);
+				case 14:
+					return addComponent<SpriteComponent>(registry, entity);
+				case 15:
+					return addComponent<SpriteSheetComponent>(registry, entity);
+				case 16:
+					return addComponent<TextComponent>(registry, entity);
+				case 17:
 					return addComponent<Transform3DComponent>(registry, entity);
 				default:
 					throw std::runtime_error("Selected item not implemented");

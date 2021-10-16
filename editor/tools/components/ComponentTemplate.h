@@ -244,6 +244,51 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(BoxCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Box collider 2D", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(CircleCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(EdgeCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Edge collider 2D", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(PolygonCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Polygon collider 2D", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(RigidBody2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Rigid body 2D", visible))
+		{
+
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
