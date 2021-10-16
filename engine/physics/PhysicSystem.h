@@ -18,6 +18,14 @@ namespace Survive
 
 	private:
 		static void initFixture(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void addBoxCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void addEdgeCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 	};
 }
 

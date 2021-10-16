@@ -50,22 +50,45 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 
 void Survive::PhysicSystem::initFixture(entt::registry &registry, entt::entity entity, b2Body *body)
 {
+	addBoxCollider(registry, entity, body);
+	addEdgeCollider(registry, entity, body);
+	addCircleCollider(registry, entity, body);
+	addPolygonCollider(registry, entity, body);
+}
+
+void Survive::PhysicSystem::addBoxCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+{
 	if (registry.has<BoxCollider2DComponent>(entity))
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(entity);
 		boxCollider.fixtureDef.shape = &boxCollider.boxShape;
 		body->CreateFixture(&boxCollider.fixtureDef);
-	} else if (registry.has<CircleCollider2DComponent>(entity))
-	{
-		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
-		circleCollider.fixtureDef.shape = &circleCollider.circleShape;
-		body->CreateFixture(&circleCollider.fixtureDef);
-	} else if (registry.has<EdgeCollider2DComponent>(entity))
+	}
+}
+
+void Survive::PhysicSystem::addEdgeCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+{
+	if (registry.has<EdgeCollider2DComponent>(entity))
 	{
 		EdgeCollider2DComponent &edgeCollider = registry.get<EdgeCollider2DComponent>(entity);
 		edgeCollider.fixtureDef.shape = &edgeCollider.edgeShape;
 		body->CreateFixture(&edgeCollider.fixtureDef);
-	} else if (registry.has<PolygonCollider2DComponent>(entity))
+	}
+}
+
+void Survive::PhysicSystem::addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+{
+	if (registry.has<CircleCollider2DComponent>(entity))
+	{
+		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
+		circleCollider.fixtureDef.shape = &circleCollider.circleShape;
+		body->CreateFixture(&circleCollider.fixtureDef);
+	}
+}
+
+void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+{
+	if (registry.has<PolygonCollider2DComponent>(entity))
 	{
 		PolygonCollider2DComponent &polygonCollider = registry.get<PolygonCollider2DComponent>(entity);
 		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
