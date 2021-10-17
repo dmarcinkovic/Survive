@@ -102,6 +102,10 @@ namespace Survive
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
+		static void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
+		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());

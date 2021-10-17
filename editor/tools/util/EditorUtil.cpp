@@ -608,3 +608,38 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 
 	return result;
 }
+
+void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+{
+	for (int i = 0; i < points.size(); ++i)
+	{
+		b2Vec2 &point = points[i];
+
+		const std::string text = "Point" + std::to_string(i + 1);
+		const std::string label = "##Polygon p" + std::to_string(i + 1);
+
+		if (drawColumnDragFloat2(text.c_str(), label.c_str(), point))
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
+	}
+}
+
+void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+{
+	ImGui::TextUnformatted("Add new point");
+	ImGui::SameLine();
+	if (ImGui::Button(" + "))
+	{
+		points.emplace_back(0, 0);
+		shape.Set(points.data(), static_cast<int<(points.size()));
+	}
+
+	ImGui::TextUnformatted("Remove point");
+	ImGui::SameLine();
+	if (ImGui::Button(" - ") && !points.empty())
+	{
+		points.pop_back();
+		shape.Set(points.data(), static_cast<int>(points.size()));
+	}
+}

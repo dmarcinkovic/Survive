@@ -15,9 +15,12 @@ namespace Survive
 		b2FixtureDef fixtureDef;
 		b2PolygonShape polygonShape;
 
+		std::vector<b2Vec2> points;
+
 		PolygonCollider2DComponent() = default;
 
 		PolygonCollider2DComponent(const std::vector<b2Vec2> &points, float density, float friction, float elasticity)
+				: points(points)
 		{
 			polygonShape.Set(points.data(), static_cast<int>(points.size()));
 			fixtureDef.density = density;

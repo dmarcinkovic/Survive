@@ -319,7 +319,19 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Polygon collider 2D", visible))
 		{
+			EditorUtil::addPolygonPoint(component.points, component.polygonShape);
 
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
+
+			ImGui::Separator();
+			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
 		}
 	}
 
