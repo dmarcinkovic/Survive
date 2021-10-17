@@ -632,7 +632,7 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 	if (ImGui::Button(" + "))
 	{
 		points.emplace_back(0, 0);
-		shape.Set(points.data(), static_cast<int<(points.size()));
+		shape.Set(points.data(), static_cast<int>(points.size()));
 	}
 
 	ImGui::TextUnformatted("Remove point");
