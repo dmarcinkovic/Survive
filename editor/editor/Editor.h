@@ -49,9 +49,9 @@ namespace Survive
 
 		Log m_Log;
 
-		bool m_OpenDialog = false;
-		bool m_SaveDialog = false;
-		bool m_SaveAsDialog = false;
+		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
+		Texture m_PlayButton, m_PauseButton, m_ReloadButton;
+		bool m_IsScenePlaying{};
 
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
@@ -104,6 +104,12 @@ namespace Survive
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer);
 
 		static bool isInsideScene();
+
+		void drawStatusBar();
+
+		void drawPlayAndPauseButtons(float buttonSize);
+
+		static void setPlayButtonColorStyle();
 	};
 }
 

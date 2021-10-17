@@ -39,6 +39,8 @@ namespace Survive
 		std::unique_ptr<b2World> m_World;
 		entt::registry m_Registry;
 
+		bool m_PlayScene{};
+
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
 

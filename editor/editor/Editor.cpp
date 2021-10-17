@@ -5,6 +5,7 @@
 
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
+#include <imgui_internal.h>
 
 #include "Key.h"
 #include "Editor.h"
@@ -19,7 +20,10 @@ float Survive::Editor::m_SceneRegionY{};
 bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(Renderer &renderer)
-		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture())
+		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture()),
+		  m_PlayButton(Loader::loadTexture("res/play_button.png")),
+		  m_PauseButton(Loader::loadTexture("res/pause_button.png")),
+		  m_ReloadButton(Loader::loadTexture("res/reload_button.png"))
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
@@ -37,6 +41,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderPropertyWindow(registry, camera);
 	renderSceneWindow(camera, registry);
 	renderMenu();
+	drawStatusBar();
 
 	handleMouseDragging(registry, renderer);
 
@@ -217,7 +222,7 @@ void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 
 			if (!m_SavedFile.empty())
 			{
-				Survive::SceneSerializer::saveScene(registry, m_SavedFile);
+				SceneSerializer::saveScene(registry, m_SavedFile);
 			}
 		}
 	}
@@ -232,7 +237,7 @@ void Survive::Editor::renderSaveDialog(entt::registry &registry)
 			m_SaveAsDialog = true;
 		} else
 		{
-			Survive::SceneSerializer::saveScene(registry, m_SavedFile);
+			SceneSerializer::saveScene(registry, m_SavedFile);
 		}
 
 		m_SaveDialog = false;
@@ -325,4 +330,64 @@ bool Survive::Editor::isInsideScene()
 std::pair<float, float> Survive::Editor::getSceneRegionMin()
 {
 	return {m_SceneRegionX, m_SceneRegionY};
+}
+
+void Survive::Editor::drawStatusBar()
+{
+	ImGuiWindowFlags windowFlags =
+			ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0.6f * ImGui::GetTextLineHeight()));
+
+	setPlayButtonColorStyle();
+
+	float height = ImGui::GetFrameHeightWithSpacing();
+	if (ImGui::BeginViewportSideBar("Main side bar", ImGui::GetMainViewport(), ImGuiDir_Up, height, windowFlags))
+	{
+		drawPlayAndPauseButtons(0.5f * height);
+
+		ImGui::End();
+	}
+
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor(3);
+}
+
+void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+
+	GLuint texture = m_IsScenePlaying ? m_PauseButton.textureId() : m_PlayButton.textureId();
+	auto sceneButton = reinterpret_cast<ImTextureID>(texture);
+	auto reloadButton = reinterpret_cast<ImTextureID>(m_ReloadButton.textureId());
+
+	if (ImGui::BeginMenuBar())
+	{
+		float imagePosX = (ImGui::GetContentRegionAvailWidth() - buttonSize) / 2.0f;
+		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
+
+		if (ImGui::ImageButton(sceneButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1))
+		{
+			m_IsScenePlaying = !m_IsScenePlaying;
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::ImageButton(reloadButton, ImVec2(buttonSize * 1.2f, buttonSize * 1.2f), uv0, uv1))
+		{
+
+		}
+
+		ImGui::EndMenuBar();
+	}
+}
+
+void Survive::Editor::setPlayButtonColorStyle()
+{
+	ImVec4 menuBg = ImGui::GetStyleColorVec4(ImGuiCol_MenuBarBg);
+
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1));
+	ImGui::PushStyleColor(ImGuiCol_Button, menuBg);
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.35f, 0.35f, 0.35f, 1));
 }
