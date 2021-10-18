@@ -84,17 +84,9 @@ void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt
 		m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
 		ImVec2 pos = ImGui::GetCursorScreenPos();
-		m_ScenePosX = pos.x;
-		m_ScenePosY = pos.y;
-
-		m_SceneRegionX = ImGui::GetWindowContentRegionMin().x;
-		m_SceneRegionY = ImGui::GetWindowContentRegionMin().y;
+		collectSceneData();
 
 		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
-
-		m_SceneWidth = ImGui::GetWindowWidth();
-		m_SceneHeight = ImGui::GetWindowHeight();
-
 		ImGui::GetWindowDrawList()->AddImage(textureId, pos,
 											 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
 											 ImVec2(1, 0));
@@ -107,7 +99,6 @@ void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt
 
 		renderer.renderScene(registry, camera, !m_IsScenePlaying);
 
-		m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 	}
 
 	ImGui::End();
@@ -398,4 +389,20 @@ void Survive::Editor::setPlayButtonColorStyle()
 bool Survive::Editor::isScenePlaying() const
 {
 	return m_IsScenePlaying;
+}
+
+void Survive::Editor::collectSceneData()
+{
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+
+	m_ScenePosX = pos.x;
+	m_ScenePosY = pos.y;
+
+	m_SceneRegionX = ImGui::GetWindowContentRegionMin().x;
+	m_SceneRegionY = ImGui::GetWindowContentRegionMin().y;
+
+	m_SceneWidth = ImGui::GetWindowWidth();
+	m_SceneHeight = ImGui::GetWindowHeight();
+
+	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 }

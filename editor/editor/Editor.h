@@ -112,6 +112,8 @@ namespace Survive
 		void drawPlayAndPauseButtons(float buttonSize);
 
 		static void setPlayButtonColorStyle();
+
+		static void collectSceneData();
 	};
 }
 
