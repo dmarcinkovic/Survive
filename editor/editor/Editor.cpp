@@ -391,3 +391,8 @@ void Survive::Editor::setPlayButtonColorStyle()
 	ImGui::PushStyleColor(ImGuiCol_Button, menuBg);
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.35f, 0.35f, 0.35f, 1));
 }
+
+bool Survive::Editor::isScenePlaying() const
+{
+	return m_IsScenePlaying;
+}

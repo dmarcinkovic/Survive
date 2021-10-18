@@ -86,6 +86,8 @@ namespace Survive
 
 		static bool isSceneFocused();
 
+		[[nodiscard]] bool isScenePlaying() const;
+
 	private:
 		void renderSceneWindow(const Camera &camera, entt::registry &registry);
 

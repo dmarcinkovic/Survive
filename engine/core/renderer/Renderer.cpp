@@ -68,16 +68,6 @@ void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
 	m_OutlineRenderer.removeObject(registry);
 }
 
-void Survive::Renderer::renderEditor(entt::registry &registry, Camera &camera) const
-{
-	renderScene(registry, camera, true);
-}
-
-void Survive::Renderer::renderApp(entt::registry &registry, Survive::Camera &camera) const
-{
-	renderScene(registry, camera, false);
-}
-
 GLuint Survive::Renderer::getRenderedTexture() const
 {
 	return m_Scene;
