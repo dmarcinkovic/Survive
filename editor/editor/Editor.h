@@ -50,7 +50,7 @@ namespace Survive
 		Log m_Log;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
-		Texture m_PlayButton, m_PauseButton, m_ReloadButton;
+		Texture m_PlayButton, m_ReloadButton;
 		bool m_IsScenePlaying{};
 
 		SkyboxWindow m_SkyWindow;

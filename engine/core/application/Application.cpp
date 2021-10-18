@@ -41,7 +41,7 @@ void Survive::Application::run()
 		Editor::dock();
 		m_Editor.render(m_Registry, m_Renderer, m_Camera);
 
-		m_Renderer.renderEditor(m_Registry, m_Camera);
+		m_Renderer.renderScene(m_Registry, m_Camera, true);
 
 		PhysicSystem::update(m_Registry);
 

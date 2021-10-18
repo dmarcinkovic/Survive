@@ -22,7 +22,6 @@ bool Survive::Editor::m_SceneFocused{};
 Survive::Editor::Editor(Renderer &renderer)
 		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture()),
 		  m_PlayButton(Loader::loadTexture("res/play_button.png")),
-		  m_PauseButton(Loader::loadTexture("res/pause_button.png")),
 		  m_ReloadButton(Loader::loadTexture("res/reload_button.png"))
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
@@ -358,8 +357,7 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 	static const ImVec2 uv0(0, 1);
 	static const ImVec2 uv1(1, 0);
 
-	GLuint texture = m_IsScenePlaying ? m_PauseButton.textureId() : m_PlayButton.textureId();
-	auto sceneButton = reinterpret_cast<ImTextureID>(texture);
+	auto playButton = reinterpret_cast<ImTextureID>(m_PlayButton.textureId());
 	auto reloadButton = reinterpret_cast<ImTextureID>(m_ReloadButton.textureId());
 
 	if (ImGui::BeginMenuBar())
@@ -367,9 +365,9 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 		float imagePosX = (ImGui::GetContentRegionAvailWidth() - buttonSize) / 2.0f;
 		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
 
-		if (ImGui::ImageButton(sceneButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1))
+		if (ImGui::ImageButton(playButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1))
 		{
-			m_IsScenePlaying = !m_IsScenePlaying;
+			m_IsScenePlaying = true;
 		}
 
 		ImGui::SameLine();
