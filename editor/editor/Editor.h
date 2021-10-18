@@ -57,7 +57,6 @@ namespace Survive
 		bool m_SkyboxDialog = false;
 
 		SceneSerializer m_SceneLoader;
-		bool m_IsSceneWindowFocused = true;
 		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;

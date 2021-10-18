@@ -81,8 +81,6 @@ void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt
 {
 	if (ImGui::Begin("Scene window"))
 	{
-		m_IsSceneWindowFocused = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
-
 		ImVec2 pos = ImGui::GetCursorScreenPos();
 		collectSceneData();
 
@@ -98,7 +96,6 @@ void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt
 		}
 
 		renderer.renderScene(registry, camera, !m_IsScenePlaying);
-
 	}
 
 	ImGui::End();
