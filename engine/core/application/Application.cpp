@@ -41,12 +41,16 @@ void Survive::Application::run()
 		Editor::dock();
 		m_Editor.render(m_Registry, m_Renderer, m_Camera);
 
-		m_Renderer.renderScene(m_Registry, m_Camera, true);
+		bool isScenePlaying = m_Editor.isScenePlaying();
+		m_Renderer.renderScene(m_Registry, m_Camera, !isScenePlaying);
 
-		PhysicSystem::update(m_Registry);
+		if (isScenePlaying)
+		{
+			PhysicSystem::update(m_Registry);
 
-		float frameRate = ImGui::GetIO().Framerate;
-		m_World->Step(1.0f / frameRate, 5, 5);
+			float frameRate = ImGui::GetIO().Framerate;
+			m_World->Step(1.0f / frameRate, 5, 5);
+		}
 
 		m_Display.update();
 	}

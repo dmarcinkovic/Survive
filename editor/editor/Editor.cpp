@@ -99,8 +99,11 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 											 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
 											 ImVec2(1, 0));
 
-		m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
-		m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
+		if (!m_IsScenePlaying)
+		{
+			m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
+			m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
+		}
 
 		m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 	}
