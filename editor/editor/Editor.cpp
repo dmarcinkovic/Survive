@@ -196,11 +196,6 @@ void Survive::Editor::renderOpenDialog(entt::registry &registry)
 	}
 }
 
-bool &Survive::Editor::isSceneWindowFocused()
-{
-	return m_IsSceneWindowFocused;
-}
-
 void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
 {
 	if (m_SaveAsDialog)

@@ -74,8 +74,6 @@ namespace Survive
 
 		void handleKeyEvents(const EventHandler &eventHandler);
 
-		bool &isSceneWindowFocused();
-
 		static float getSceneWidth();
 
 		static float getSceneHeight();
