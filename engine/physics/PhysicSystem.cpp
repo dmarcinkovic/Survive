@@ -41,7 +41,7 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 		float y = transform.position.y * Constants::BOX2D_SCALE;
 
 		rigidBody.bodyDefinition.position.Set(x, y);
-		rigidBody.bodyDefinition.angle = transform.rotation.z;
+		rigidBody.bodyDefinition.angle = glm::radians(transform.rotation.z);
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
 		initFixture(registry, entity, rigidBody.body);
