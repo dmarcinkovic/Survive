@@ -41,10 +41,7 @@ void Survive::Application::run()
 		Editor::dock();
 		m_Editor.render(m_Registry, m_Renderer, m_Camera);
 
-		bool isScenePlaying = m_Editor.isScenePlaying();
-		m_Renderer.renderScene(m_Registry, m_Camera, !isScenePlaying);
-
-		if (isScenePlaying)
+		if (m_Editor.isScenePlaying())
 		{
 			PhysicSystem::update(m_Registry);
 

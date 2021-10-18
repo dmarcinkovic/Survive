@@ -89,7 +89,7 @@ namespace Survive
 		[[nodiscard]] bool isScenePlaying() const;
 
 	private:
-		void renderSceneWindow(const Camera &camera, entt::registry &registry);
+		void renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry);
 
 		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 

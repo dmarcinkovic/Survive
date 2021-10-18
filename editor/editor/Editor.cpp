@@ -38,7 +38,7 @@ Survive::Editor::Editor(Renderer &renderer)
 void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camera &camera)
 {
 	renderPropertyWindow(registry, camera);
-	renderSceneWindow(camera, registry);
+	renderSceneWindow(camera, renderer, registry);
 	renderMenu();
 	drawStatusBar();
 
@@ -77,7 +77,7 @@ void Survive::Editor::dock()
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 }
 
-void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &registry)
+void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry)
 {
 	if (ImGui::Begin("Scene window"))
 	{
@@ -104,6 +104,8 @@ void Survive::Editor::renderSceneWindow(const Camera &camera, entt::registry &re
 			m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
 			m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
 		}
+
+		renderer.renderScene(registry, camera, !m_IsScenePlaying);
 
 		m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 	}
