@@ -14,12 +14,12 @@ bool Survive::Gizmos::validOperation = false;
 
 void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
 {
-	if (validOperation && selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
+	if (validOperation && selectedEntity != entt::null && registry.any_of<Transform3DComponent>(selectedEntity))
 	{
-		if (registry.has<Render3DComponent>(selectedEntity))
+		if (registry.any_of<Render3DComponent>(selectedEntity))
 		{
 			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), camera, registry, selectedEntity);
-		} else if (registry.has<Render2DComponent>(selectedEntity) || registry.has<TextComponent>(selectedEntity))
+		} else if (registry.any_of<Render2DComponent>(selectedEntity) || registry.any_of<TextComponent>(selectedEntity))
 		{
 			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, camera, registry,
 					   selectedEntity);

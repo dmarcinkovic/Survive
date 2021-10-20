@@ -110,7 +110,7 @@ namespace Survive
 		{
 			static Component component;
 
-			if (registry.has<Component>(entity))
+			if (registry.any_of<Component>(entity))
 			{
 				m_ComponentTemplate.drawComponent(registry.get<Component>(entity));
 			} else
@@ -135,7 +135,7 @@ namespace Survive
 
 			if (ImGui::Button("Add component", ImVec2(width, height)))
 			{
-				if (!registry.has<Component>(entity))
+				if (!registry.any_of<Component>(entity))
 				{
 					registry.emplace<Component>(entity, component);
 				}
@@ -149,7 +149,7 @@ namespace Survive
 		template<typename Component>
 		void drawComponent(entt::registry &registry, entt::entity entity)
 		{
-			if (registry.has<Component>(entity))
+			if (registry.any_of<Component>(entity))
 			{
 				bool visible = true;
 				m_ComponentTemplate.drawComponent(registry.get<Component>(entity), &visible);

@@ -327,13 +327,13 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 		{
 			auto entity = static_cast<entt::entity>(selectedEntity);
 
-			if (registry.has<Render3DComponent>(entity))
+			if (registry.any_of<Render3DComponent>(entity))
 			{
 				Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
 
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
-			} else if (registry.has<Render2DComponent>(entity))
+			} else if (registry.any_of<Render2DComponent>(entity))
 			{
 				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
 

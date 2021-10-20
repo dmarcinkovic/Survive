@@ -90,7 +90,7 @@ void Survive::MousePicking::renderScene(const entt::registry &registry, const Te
 		glm::mat4 projectionMatrix;
 		glm::mat4 viewMatrix;
 
-		if (registry.has<Render2DComponent>(object))
+		if (registry.any_of<Render2DComponent>(object))
 		{
 			projectionMatrix = camera.getOrthographicProjectionMatrix();
 			viewMatrix = glm::mat4{1.0f};

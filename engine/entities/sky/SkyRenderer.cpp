@@ -61,7 +61,7 @@ void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Tr
 
 	float skyRotation = 0.0f;
 
-	if (registry.has<MoveComponent>(m_Sky))
+	if (registry.any_of<MoveComponent>(m_Sky))
 	{
 		const MoveComponent &moveComponent = registry.get<MoveComponent>(m_Sky);
 		skyRotation = moveComponent.currentMoveValue;
