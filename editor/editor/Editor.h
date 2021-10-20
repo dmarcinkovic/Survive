@@ -8,6 +8,7 @@
 #include <imgui.h>
 #include <utility>
 #include <ImGuizmo.h>
+#include <functional>
 
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
@@ -27,6 +28,8 @@ namespace Survive
 	{
 		ENTITY, CAMERA, NONE
 	};
+
+	using PlayButtonListener = std::function<void()>;
 
 	class Editor
 	{
@@ -62,6 +65,8 @@ namespace Survive
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
 
+		std::vector<PlayButtonListener> m_Listeners;
+
 	public:
 		explicit Editor(Renderer &renderer);
 
@@ -84,6 +89,8 @@ namespace Survive
 		static bool isSceneFocused();
 
 		[[nodiscard]] bool isScenePlaying() const;
+
+		void addPlayButtonListener(const PlayButtonListener &listener);
 
 	private:
 		void renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry);
@@ -111,6 +118,8 @@ namespace Survive
 		static void setPlayButtonColorStyle();
 
 		static void collectSceneData();
+
+		void notifyListeners() const;
 	};
 }
 

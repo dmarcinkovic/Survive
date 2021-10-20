@@ -356,6 +356,7 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 		if (ImGui::ImageButton(playButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1))
 		{
 			m_IsScenePlaying = true;
+			notifyListeners();
 		}
 
 		ImGui::SameLine();
@@ -397,4 +398,17 @@ void Survive::Editor::collectSceneData()
 	m_SceneHeight = ImGui::GetWindowHeight();
 
 	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
+}
+
+void Survive::Editor::addPlayButtonListener(const PlayButtonListener &listener)
+{
+	m_Listeners.emplace_back(listener);
+}
+
+void Survive::Editor::notifyListeners() const
+{
+	for (auto const& listener : m_Listeners)
+	{
+		listener();
+	}
 }

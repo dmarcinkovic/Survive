@@ -26,7 +26,9 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
 	m_Registry.emplace<BoxCollider2DComponent>(ground, 0.4f * 10.0f, 0.05f * 10.0f, 1.0f, 0.3f, 0.5f);
 
-	PhysicSystem::init(m_Registry, m_World.get());
+	m_Editor.addPlayButtonListener([this](){
+		PhysicSystem::init(m_Registry, m_World.get());
+	});
 }
 
 void Survive::Application::run()
