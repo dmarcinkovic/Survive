@@ -5,6 +5,8 @@
 #ifndef SURVIVE_PHYSICSYSTEM_H
 #define SURVIVE_PHYSICSYSTEM_H
 
+#include <Box2D/Box2D.h>
+
 #include "entt.hpp"
 
 namespace Survive

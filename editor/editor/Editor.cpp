@@ -363,7 +363,7 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 
 		if (ImGui::ImageButton(reloadButton, ImVec2(buttonSize * 1.2f, buttonSize * 1.2f), uv0, uv1))
 		{
-
+			m_IsScenePlaying = false;
 		}
 
 		ImGui::EndMenuBar();

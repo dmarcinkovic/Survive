@@ -13,7 +13,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<TagComponent>(rectangle, "rectangle");
 	m_Registry.emplace<Transform3DComponent>(rectangle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
 	m_Registry.emplace<Render2DComponent>(rectangle,
-										TexturedModel(m_Loader.renderQuad(), Loader::loadTexture("res/rectangle.png")));
+										  TexturedModel(m_Loader.renderQuad(),
+														Loader::loadTexture("res/rectangle.png")));
 	m_Registry.emplace<RigidBody2DComponent>(rectangle, b2_dynamicBody);
 	m_Registry.emplace<BoxCollider2DComponent>(rectangle, 0.25f * 10.0f, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
 
@@ -22,18 +23,20 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
 	m_Registry.emplace<Transform3DComponent>(ground, groundPos);
 	m_Registry.emplace<Render2DComponent>(ground,
-										TexturedModel(m_Loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
+										  TexturedModel(m_Loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
 	m_Registry.emplace<BoxCollider2DComponent>(ground, 0.4f * 10.0f, 0.05f * 10.0f, 1.0f, 0.3f, 0.5f);
 
-	m_Editor.addPlayButtonListener([this](){
+	m_Editor.addPlayButtonListener([this]() {
 		PhysicSystem::init(m_Registry, m_World.get());
+
+		m_SceneRegistry.clear();
 	});
 }
 
 void Survive::Application::run()
 {
-	while(m_Display.isRunning())
+	while (m_Display.isRunning())
 	{
 		Display::clearWindow();
 

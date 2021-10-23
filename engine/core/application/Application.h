@@ -8,7 +8,7 @@
 #include <memory>
 #include <Box2D/Box2D.h>
 
-#include "PhysicSystem.h"
+#include "entt.hpp"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "Loader.h"
@@ -17,7 +17,6 @@
 #include "Renderer.h"
 #include "Display.h"
 #include "Components.h"
-#include "entt.hpp"
 
 namespace Survive
 {
@@ -38,6 +37,7 @@ namespace Survive
 
 		std::unique_ptr<b2World> m_World;
 		entt::registry m_Registry;
+		entt::registry m_SceneRegistry;
 
 		bool m_PlayScene{};
 
