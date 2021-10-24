@@ -29,7 +29,7 @@ namespace Survive
 		ENTITY, CAMERA, NONE
 	};
 
-	using PlayButtonListener = std::function<void()>;
+	using ButtonListener = std::function<void()>;
 
 	class Editor
 	{
@@ -65,7 +65,8 @@ namespace Survive
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
 
-		std::vector<PlayButtonListener> m_Listeners;
+		std::vector<ButtonListener> m_PlayButtonListeners;
+		std::vector<ButtonListener> m_ReloadButtonListeners;
 
 	public:
 		explicit Editor(Renderer &renderer);
@@ -90,7 +91,9 @@ namespace Survive
 
 		[[nodiscard]] bool isScenePlaying() const;
 
-		void addPlayButtonListener(const PlayButtonListener &listener);
+		void addPlayButtonListener(const ButtonListener &listener);
+
+		void addReloadButtonListener(const ButtonListener &listener);
 
 	private:
 		void renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry);
@@ -119,7 +122,7 @@ namespace Survive
 
 		static void collectSceneData();
 
-		void notifyListeners() const;
+		static void notifyListeners(const std::vector<ButtonListener> &listeners);
 	};
 }
 

@@ -17,6 +17,7 @@
 #include "Renderer.h"
 #include "Display.h"
 #include "Components.h"
+#include "RegistryUtil.h"
 
 namespace Survive
 {
@@ -37,9 +38,10 @@ namespace Survive
 
 		std::unique_ptr<b2World> m_World;
 		entt::registry m_Registry;
-		entt::registry m_SceneRegistry;
 
 		bool m_PlayScene{};
+
+		RegistryUtil m_RegistryUtil;
 
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);

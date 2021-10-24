@@ -353,17 +353,19 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 		float imagePosX = (ImGui::GetContentRegionAvailWidth() - buttonSize) / 2.0f;
 		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
 
-		if (ImGui::ImageButton(playButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1))
+		if (ImGui::ImageButton(playButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1) && !m_IsScenePlaying)
 		{
 			m_IsScenePlaying = true;
-			notifyListeners();
+			notifyListeners(m_PlayButtonListeners);
 		}
 
 		ImGui::SameLine();
 
-		if (ImGui::ImageButton(reloadButton, ImVec2(buttonSize * 1.2f, buttonSize * 1.2f), uv0, uv1))
+		if (ImGui::ImageButton(reloadButton, ImVec2(buttonSize * 1.2f, buttonSize * 1.2f), uv0, uv1) &&
+			m_IsScenePlaying)
 		{
 			m_IsScenePlaying = false;
+			notifyListeners(m_ReloadButtonListeners);
 		}
 
 		ImGui::EndMenuBar();
@@ -400,14 +402,19 @@ void Survive::Editor::collectSceneData()
 	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 }
 
-void Survive::Editor::addPlayButtonListener(const PlayButtonListener &listener)
+void Survive::Editor::addPlayButtonListener(const ButtonListener &listener)
 {
-	m_Listeners.emplace_back(listener);
+	m_PlayButtonListeners.emplace_back(listener);
 }
 
-void Survive::Editor::notifyListeners() const
+void Survive::Editor::addReloadButtonListener(const ButtonListener &listener)
 {
-	for (auto const& listener : m_Listeners)
+	m_ReloadButtonListeners.emplace_back(listener);
+}
+
+void Survive::Editor::notifyListeners(const std::vector<ButtonListener> &listeners)
+{
+	for (auto const &listener: listeners)
 	{
 		listener();
 	}
