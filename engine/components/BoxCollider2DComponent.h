@@ -11,17 +11,24 @@ namespace Survive
 {
 	struct BoxCollider2DComponent
 	{
+		friend class PhysicsGizmo;
+
 		b2FixtureDef fixtureDef{};
 		b2PolygonShape boxShape{};
 
 		float width{}, height{};
 		float angle{};
+
 		b2Vec2 center{0, 0};
 
+	private:
+		bool m_Initialized{};
+
+	public:
 		BoxCollider2DComponent() = default;
 
 		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
-			: width(width), height(height)
+				: width(width), height(height)
 		{
 			boxShape.SetAsBox(width, height, center, angle);
 			fixtureDef.density = density;

@@ -6,6 +6,7 @@
 #define SURVIVE_PHYSICSGIZMO_H
 
 #include "entt.hpp"
+#include "Components.h"
 #include "EventHandler.h"
 #include "Camera.h"
 
@@ -26,6 +27,9 @@ namespace Survive
 	private:
 		[[nodiscard]] glm::vec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
 											 const glm::vec3 &point) const;
+
+		void drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
+								  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 	};
 }
 
