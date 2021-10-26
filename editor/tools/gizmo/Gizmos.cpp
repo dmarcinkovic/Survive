@@ -25,6 +25,8 @@ void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt:
 					   selectedEntity);
 		}
 	}
+
+	m_Gizmos.draw(registry, camera, selectedEntity);
 }
 
 void Survive::Gizmos::newFrame()
@@ -58,6 +60,8 @@ void Survive::Gizmos::setRect(float x, float y, float width, float height)
 	m_Y = y;
 	m_Width = width;
 	m_Height = height;
+
+	m_Gizmos.setRect(x, y, width, height);
 }
 
 glm::mat4 Survive::Gizmos::getTransform(const Survive::Transform3DComponent &transform)

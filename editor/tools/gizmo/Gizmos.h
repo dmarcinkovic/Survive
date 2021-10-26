@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "EventHandler.h"
 #include "Transform3DComponent.h"
+#include "PhysicsGizmo.h"
 
 namespace Survive
 {
@@ -23,6 +24,8 @@ namespace Survive
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
 		ImGuizmo::OPERATION m_Operation{};
+
+		PhysicsGizmo m_Gizmos;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const;
