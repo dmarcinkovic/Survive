@@ -17,7 +17,6 @@ namespace Survive
 		b2PolygonShape boxShape{};
 
 		float width{}, height{};
-		float angle{};
 
 		b2Vec2 center{0, 0};
 
@@ -30,7 +29,7 @@ namespace Survive
 		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
 				: width(width), height(height)
 		{
-			boxShape.SetAsBox(width, height, center, angle);
+			boxShape.SetAsBox(width, height, center, 0);
 			fixtureDef.density = density;
 			fixtureDef.friction = friction;
 			fixtureDef.restitution = elasticity;
