@@ -15,13 +15,15 @@ namespace Survive
 		b2PolygonShape boxShape{};
 
 		float width{}, height{};
+		float angle{};
+		b2Vec2 center{0, 0};
 
 		BoxCollider2DComponent() = default;
 
 		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
 			: width(width), height(height)
 		{
-			boxShape.SetAsBox(width, height);
+			boxShape.SetAsBox(width, height, center, angle);
 			fixtureDef.density = density;
 			fixtureDef.friction = friction;
 			fixtureDef.restitution = elasticity;

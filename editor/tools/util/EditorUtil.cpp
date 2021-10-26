@@ -568,14 +568,16 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	ImGui::InputFloat(label, &value);
+	bool result = ImGui::InputFloat(label, &value);
 	ImGui::NextColumn();
+
+	return result;
 }
 
 bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,

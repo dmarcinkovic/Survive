@@ -255,12 +255,22 @@ namespace Survive
 
 			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
 			{
-				component.boxShape.SetAsBox(component.width, component.height);
+				component.boxShape.SetAsBox(component.width, component.height, component.center, component.angle);
 			}
 
 			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
 			{
-				component.boxShape.SetAsBox(component.width, component.height);
+				component.boxShape.SetAsBox(component.width, component.height, component.center, component.angle);
+			}
+
+			if (EditorUtil::drawColumnInputFloat("Angle", "##Box angle", component.angle))
+			{
+				component.boxShape.SetAsBox(component.width, component.height, component.center, component.angle);
+			}
+
+			if (EditorUtil::drawColumnDragFloat2("Center", "##Box center", component.center))
+			{
+				component.boxShape.SetAsBox(component.width, component.height, component.center, component.angle);
 			}
 
 			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
