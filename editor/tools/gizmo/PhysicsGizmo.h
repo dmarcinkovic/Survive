@@ -17,6 +17,11 @@ namespace Survive
 	private:
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
+		const ImU32 lineColor = IM_COL32(255, 255, 255, 255);
+		const ImU32 lineColorHovered = IM_COL32(255, 90, 0, 255);
+
+		mutable bool m_Using{};
+
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const;
 
@@ -24,9 +29,13 @@ namespace Survive
 
 		void setRect(float x, float y, float width, float height);
 
+		bool isUsing() const;
+
 	private:
 		[[nodiscard]] ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
 										  const glm::vec3 &point) const;
+
+		glm::vec3 getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point) const;
 
 		void drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 								  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
@@ -41,6 +50,10 @@ namespace Survive
 							 ImU32 circleColor);
 
 		static glm::vec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform);
+
+		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
+
+		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 	};
 }
 

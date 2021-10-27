@@ -4,6 +4,7 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <iostream>
 
 #include "PhysicsGizmo.h"
 #include "Maths.h"
@@ -45,6 +46,20 @@ ImVec2 Survive::PhysicsGizmo::getScreenPos(const Survive::Camera &camera, const 
 	return {m_X + viewportSpace.x * m_Width, m_Y + m_Height - viewportSpace.y * m_Height};
 }
 
+glm::vec3 Survive::PhysicsGizmo::getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix,
+											   const ImVec2 &point) const
+{
+	glm::mat4 projectionMatrix = camera.getOrthographicProjectionMatrix();
+
+	ImVec2 screenPos(point.x - m_X, point.y - m_Y);
+	glm::vec2 viewport{screenPos.x / m_Width, 1.0f - screenPos.y / m_Height};
+
+	glm::vec4 clipSpace{viewport * 2.0f - 1.0f, 0.0f, 1.0f};
+	glm::vec4 localSpace = clipSpace * glm::inverse(projectionMatrix) * glm::inverse(transformationMatrix);
+
+	return glm::vec3{localSpace};
+}
+
 void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 												 const Transform3DComponent &transform,
 												 const glm::mat4 &modelMatrix) const
@@ -53,7 +68,33 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 	auto[p1, p2, p3, p4] = getRectanglePoints(boxCollider, transform, camera, modelMatrix);
 
-	drawRect(p1, p2, p3, p4, IM_COL32(255, 255, 255, 255), IM_COL32(0, 0, 255, 255));
+	bool hovered = false;
+	if (mouseHoversLine(p1, p2))
+	{
+		hovered = true;
+		if (ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+		{
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
+
+			glm::vec3 offset = transform.position;
+
+			localPos *= Constants::BOX2D_SCALE;
+			b2Vec2 *points = boxCollider.boxShape.m_vertices;
+			points[0].y = localPos.y;
+			points[1].y = localPos.y;
+
+			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
+
+			m_Using = true;
+		} else
+		{
+			m_Using = false;
+		}
+	}
+
+	ImU32 color = hovered ? lineColorHovered : lineColor;
+	drawRect(p1, p2, p3, p4, color, IM_COL32(0, 0, 255, 255));
 }
 
 void Survive::PhysicsGizmo::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -76,13 +117,19 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 {
 	glm::vec2 center = getBoxCenter(boxCollider, transform);
 
-	float width = boxCollider.width / Constants::BOX2D_SCALE;
-	float height = boxCollider.height / Constants::BOX2D_SCALE;
+	float scale = Constants::BOX2D_SCALE;
+	const b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
+	glm::vec2 offset = transform.position;
 
-	ImVec2 p1 = getScreenPos(camera, modelMatrix, {center.x - width, center.y + height, 0});
-	ImVec2 p2 = getScreenPos(camera, modelMatrix, {center.x + width, center.y + height, 0});
-	ImVec2 p3 = getScreenPos(camera, modelMatrix, {center.x + width, center.y - height, 0});
-	ImVec2 p4 = getScreenPos(camera, modelMatrix, {center.x - width, center.y - height, 0});
+	// TODO change this
+	ImVec2 p1 = getScreenPos(camera, modelMatrix,
+							 {vertices[0].x / scale + offset.x, vertices[0].y / scale + offset.y, 0});
+	ImVec2 p2 = getScreenPos(camera, modelMatrix,
+							 {vertices[1].x / scale + offset.x, vertices[1].y / scale + offset.y, 0});
+	ImVec2 p3 = getScreenPos(camera, modelMatrix,
+							 {vertices[2].x / scale + offset.x, vertices[2].y / scale + offset.y, 0});
+	ImVec2 p4 = getScreenPos(camera, modelMatrix,
+							 {vertices[3].x / scale + offset.x, vertices[3].y / scale + offset.y, 0});
 
 	return {p1, p2, p3, p4};
 }
@@ -96,7 +143,10 @@ Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
-	drawList->AddRect(p1, p3, rectColor, 0.0f, ImDrawFlags_None, lineThickness);
+	drawList->AddLine(p1, p2, rectColor, lineThickness);
+	drawList->AddLine(p2, p3, IM_COL32(255,255,255,255), lineThickness);
+	drawList->AddLine(p3, p4, IM_COL32(255,255,255,255), lineThickness);
+	drawList->AddLine(p4, p1, IM_COL32(255,255,255,255), lineThickness);
 
 	drawList->AddCircleFilled(p1, circleThickness, circleColor);
 	drawList->AddCircleFilled(p2, circleThickness, circleColor);
@@ -111,4 +161,30 @@ glm::vec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxC
 	glm::vec2 center{boxCenter.x / Constants::BOX2D_SCALE, boxCenter.y / Constants::BOX2D_SCALE};
 
 	return glm::vec2{transform.position} + center;
+}
+
+bool Survive::PhysicsGizmo::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2)
+{
+	static float constexpr threshold = 3;
+	ImVec2 mousePosition = ImGui::GetMousePos();
+
+	float lineLen = lineDistance(p1, p2);
+
+	float segmentLen1 = lineDistance(p1, mousePosition);
+	float segmentLen2 = lineDistance(p2, mousePosition);
+
+	return segmentLen1 + segmentLen2 - lineLen < threshold;
+}
+
+float Survive::PhysicsGizmo::lineDistance(const ImVec2 &p1, const ImVec2 &p2)
+{
+	float dx = p1.x - p2.x;
+	float dy = p1.y - p2.y;
+
+	return std::sqrt(dx * dx + dy * dy);
+}
+
+bool Survive::PhysicsGizmo::isUsing() const
+{
+	return m_Using;
 }
