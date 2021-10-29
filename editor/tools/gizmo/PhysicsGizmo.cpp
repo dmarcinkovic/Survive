@@ -3,8 +3,6 @@
 //
 
 #include <imgui.h>
-#include <imgui_internal.h>
-#include <iostream>
 
 #include "PhysicsGizmo.h"
 #include "Maths.h"
@@ -148,7 +146,8 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 		}
 	}
 
-	drawRect(p1, p2, p3, p4, m_HoveredLine);
+	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
+	drawRect(p1, p2, p3, p4, m_HoveredLine, center);
 }
 
 void Survive::PhysicsGizmo::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -169,8 +168,6 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 										  const Transform3DComponent &transform, const Camera &camera,
 										  const glm::mat4 &modelMatrix) const
 {
-	glm::vec2 center = getBoxCenter(boxCollider, transform);
-
 	float scale = Constants::BOX2D_SCALE;
 	const b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
 
@@ -190,9 +187,10 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 }
 
 void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4,
-									 int hoveredLine)
+									 int hoveredLine, const ImVec2 &boxCenter)
 {
 	static constexpr float circleThickness = 4.0f;
+	static constexpr float CIRCLE_RADIUS = 5.0f;
 	static constexpr ImU32 CIRCLE_COLOR = IM_COL32(0, 0, 255, 255);
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
@@ -206,15 +204,20 @@ void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const I
 	drawList->AddCircleFilled(p2, circleThickness, CIRCLE_COLOR);
 	drawList->AddCircleFilled(p3, circleThickness, CIRCLE_COLOR);
 	drawList->AddCircleFilled(p4, circleThickness, CIRCLE_COLOR);
+
+	drawList->AddCircle(boxCenter, CIRCLE_RADIUS, CIRCLE_COLOR, 0, circleThickness);
 }
 
-glm::vec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxCollider,
-											  const Transform3DComponent &transform)
+ImVec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
+										   const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const
 {
 	b2Vec2 boxCenter = boxCollider.center;
-	glm::vec2 center{boxCenter.x / Constants::BOX2D_SCALE, boxCenter.y / Constants::BOX2D_SCALE};
 
-	return glm::vec2{transform.position} + center;
+	float scale = Constants::BOX2D_SCALE;
+	glm::vec2 center{boxCenter.x / scale, boxCenter.y / scale};
+	glm::vec2 point{center.x + transform.position.x, center.y + transform.position.y};
+
+	return getScreenPos(camera, modelMatrix, point);
 }
 
 bool Survive::PhysicsGizmo::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2)

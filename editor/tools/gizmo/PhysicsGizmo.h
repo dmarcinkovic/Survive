@@ -50,9 +50,11 @@ namespace Survive
 		getRectanglePoints(const BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform,
 						   const Camera &camera, const glm::mat4 &modelMatrix) const;
 
-		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine);
+		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine,
+							 const ImVec2 &boxCenter);
 
-		static glm::vec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform);
+		[[nodiscard]] ImVec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
+										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 
 		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
 
