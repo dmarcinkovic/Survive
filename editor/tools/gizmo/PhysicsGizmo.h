@@ -35,6 +35,9 @@ namespace Survive
 		[[nodiscard]] ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
 										  const glm::vec3 &point) const;
 
+		[[nodiscard]] ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
+										  const glm::vec2 &point) const;
+
 		[[nodiscard]] glm::vec3
 		getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point) const;
 

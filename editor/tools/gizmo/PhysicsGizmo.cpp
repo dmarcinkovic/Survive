@@ -173,17 +173,18 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 
 	float scale = Constants::BOX2D_SCALE;
 	const b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
+
 	glm::vec2 offset = transform.position;
 
-	// TODO change this
-	ImVec2 p1 = getScreenPos(camera, modelMatrix,
-							 {vertices[0].x / scale + offset.x, vertices[0].y / scale + offset.y, 0});
-	ImVec2 p2 = getScreenPos(camera, modelMatrix,
-							 {vertices[1].x / scale + offset.x, vertices[1].y / scale + offset.y, 0});
-	ImVec2 p3 = getScreenPos(camera, modelMatrix,
-							 {vertices[2].x / scale + offset.x, vertices[2].y / scale + offset.y, 0});
-	ImVec2 p4 = getScreenPos(camera, modelMatrix,
-							 {vertices[3].x / scale + offset.x, vertices[3].y / scale + offset.y, 0});
+	glm::vec2 vertex1{vertices[0].x / scale, vertices[0].y / scale};
+	glm::vec2 vertex2{vertices[1].x / scale, vertices[1].y / scale};
+	glm::vec2 vertex3{vertices[2].x / scale, vertices[2].y / scale};
+	glm::vec2 vertex4{vertices[3].x / scale, vertices[3].y / scale};
+
+	ImVec2 p1 = getScreenPos(camera, modelMatrix, vertex1 + offset);
+	ImVec2 p2 = getScreenPos(camera, modelMatrix, vertex2 + offset);
+	ImVec2 p3 = getScreenPos(camera, modelMatrix, vertex3 + offset);
+	ImVec2 p4 = getScreenPos(camera, modelMatrix, vertex4 + offset);
 
 	return {p1, p2, p3, p4};
 }
@@ -250,4 +251,10 @@ void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, con
 
 	ImU32 color = isHovered ? LINE_COLOR_HOVERED : LINE_COLOR;
 	drawList->AddLine(p1, p2, color, lineThickness);
+}
+
+ImVec2 Survive::PhysicsGizmo::getScreenPos(const Survive::Camera &camera, const glm::mat4 &transformationMatrix,
+										   const glm::vec2 &point) const
+{
+	return getScreenPos(camera, transformationMatrix, glm::vec3{point, 0.0f});
 }
