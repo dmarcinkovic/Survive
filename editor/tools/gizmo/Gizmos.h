@@ -28,7 +28,7 @@ namespace Survive
 		PhysicsGizmo m_Gizmos;
 
 	public:
-		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const;
+		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
 
 		static void newFrame();
 

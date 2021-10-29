@@ -12,7 +12,7 @@
 
 bool Survive::Gizmos::validOperation = false;
 
-void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
+void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (validOperation && selectedEntity != entt::null && registry.any_of<Transform3DComponent>(selectedEntity))
 	{

@@ -9,7 +9,7 @@
 #include "PhysicsGizmo.h"
 #include "Maths.h"
 
-void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
+void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity != entt::null &&
 		registry.all_of<BoxCollider2DComponent, Transform3DComponent, Render2DComponent>(selectedEntity))
@@ -18,6 +18,7 @@ void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera,
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);
 
 		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position);
+
 		drawBoxColliderGizmo(camera, boxCollider, transform, transformationMatrix);
 	}
 }
@@ -62,39 +63,85 @@ glm::vec3 Survive::PhysicsGizmo::getLocalSpace(const Camera &camera, const glm::
 
 void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 												 const Transform3DComponent &transform,
-												 const glm::mat4 &modelMatrix) const
+												 const glm::mat4 &modelMatrix)
 {
 	initializeBoxCollider(boxCollider, transform);
 
 	auto[p1, p2, p3, p4] = getRectanglePoints(boxCollider, transform, camera, modelMatrix);
 
-	bool hovered = false;
+	m_HoveredLine = -1;
 	if (mouseHoversLine(p1, p2))
 	{
-		hovered = true;
-		if (ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+		m_HoveredLine = 0;
+		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
 
-			glm::vec3 offset = transform.position;
+			float offset = transform.position.y * Constants::BOX2D_SCALE;
 
 			localPos *= Constants::BOX2D_SCALE;
 			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-			points[0].y = localPos.y;
-			points[1].y = localPos.y;
+
+			points[0].y = localPos.y - offset;
+			points[1].y = localPos.y - offset;
 
 			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
-
-			m_Using = true;
-		} else
+		}
+	} else if (mouseHoversLine(p2, p3))
+	{
+		m_HoveredLine = 1;
+		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
-			m_Using = false;
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
+
+			float offset = transform.position.x * Constants::BOX2D_SCALE;
+
+			localPos *= Constants::BOX2D_SCALE;
+			b2Vec2 *points = boxCollider.boxShape.m_vertices;
+			points[1].x = localPos.x - offset;
+			points[2].x = localPos.x - offset;
+
+			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
+		}
+	} else if (mouseHoversLine(p3, p4))
+	{
+		m_HoveredLine = 2;
+		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		{
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
+
+			float offset = transform.position.y * Constants::BOX2D_SCALE;
+
+			localPos *= Constants::BOX2D_SCALE;
+			b2Vec2 *points = boxCollider.boxShape.m_vertices;
+			points[2].y = localPos.y - offset;
+			points[3].y = localPos.y - offset;
+
+			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
+		}
+	} else if (mouseHoversLine(p4, p1))
+	{
+		m_HoveredLine = 3;
+		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		{
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
+
+			float offset = transform.position.x * Constants::BOX2D_SCALE;
+
+			localPos *= Constants::BOX2D_SCALE;
+			b2Vec2 *points = boxCollider.boxShape.m_vertices;
+			points[3].x = localPos.x - offset;
+			points[0].x = localPos.x - offset;
+
+			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 		}
 	}
 
-	ImU32 color = hovered ? lineColorHovered : lineColor;
-	drawRect(p1, p2, p3, p4, color, IM_COL32(0, 0, 255, 255));
+	drawRect(p1, p2, p3, p4, m_HoveredLine);
 }
 
 void Survive::PhysicsGizmo::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -134,24 +181,23 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 	return {p1, p2, p3, p4};
 }
 
-void
-Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, ImU32 rectColor,
-								ImU32 circleColor)
+void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4,
+									 int hoveredLine)
 {
-	static constexpr float lineThickness = 2.0f;
 	static constexpr float circleThickness = 4.0f;
+	static constexpr ImU32 CIRCLE_COLOR = IM_COL32(0, 0, 255, 255);
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
-	drawList->AddLine(p1, p2, rectColor, lineThickness);
-	drawList->AddLine(p2, p3, IM_COL32(255,255,255,255), lineThickness);
-	drawList->AddLine(p3, p4, IM_COL32(255,255,255,255), lineThickness);
-	drawList->AddLine(p4, p1, IM_COL32(255,255,255,255), lineThickness);
+	drawLine(drawList, p1, p2, hoveredLine == 0);
+	drawLine(drawList, p2, p3, hoveredLine == 1);
+	drawLine(drawList, p3, p4, hoveredLine == 2);
+	drawLine(drawList, p4, p1, hoveredLine == 3);
 
-	drawList->AddCircleFilled(p1, circleThickness, circleColor);
-	drawList->AddCircleFilled(p2, circleThickness, circleColor);
-	drawList->AddCircleFilled(p3, circleThickness, circleColor);
-	drawList->AddCircleFilled(p4, circleThickness, circleColor);
+	drawList->AddCircleFilled(p1, circleThickness, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p2, circleThickness, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p3, circleThickness, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p4, circleThickness, CIRCLE_COLOR);
 }
 
 glm::vec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxCollider,
@@ -187,4 +233,14 @@ float Survive::PhysicsGizmo::lineDistance(const ImVec2 &p1, const ImVec2 &p2)
 bool Survive::PhysicsGizmo::isUsing() const
 {
 	return m_Using;
+}
+
+void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered)
+{
+	static constexpr float lineThickness = 2.0f;
+	static constexpr ImU32 LINE_COLOR = IM_COL32(255, 255, 255, 255);
+	static constexpr ImU32 LINE_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
+
+	ImU32 color = isHovered ? LINE_COLOR_HOVERED : LINE_COLOR;
+	drawList->AddLine(p1, p2, color, lineThickness);
 }
