@@ -18,6 +18,7 @@ namespace Survive
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
 		int m_HoveredLine = -1;
+		bool m_CenterHovered{};
 		bool m_Using{};
 
 		bool m_GizmoEnabled{};
@@ -50,8 +51,9 @@ namespace Survive
 		getRectanglePoints(const BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform,
 						   const Camera &camera, const glm::mat4 &modelMatrix) const;
 
-		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine,
-							 const ImVec2 &boxCenter);
+		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine);
+
+		static void drawCenter(const ImVec2 &boxCenter, float radius, bool isHovered);
 
 		[[nodiscard]] ImVec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
 										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
@@ -61,6 +63,8 @@ namespace Survive
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
+
+		static bool mouseHoversPoint(const ImVec2 &point, float radius);
 	};
 }
 

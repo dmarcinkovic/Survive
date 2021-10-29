@@ -74,6 +74,9 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 	auto[p1, p2, p3, p4] = getRectanglePoints(boxCollider, transform, camera, modelMatrix);
 
+	const float radius = 4.0f;
+	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
+
 	m_HoveredLine = -1;
 	if (mouseHoversLine(p1, p2))
 	{
@@ -144,10 +147,23 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 		}
+	} else if ((m_CenterHovered = mouseHoversPoint(center, radius)))
+	{
+		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		{
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			glm::vec3 localPos = getLocalSpace(camera, modelMatrix, mousePosition);
+
+			glm::vec3 offset = transform.position * Constants::BOX2D_SCALE;
+			localPos *= Constants::BOX2D_SCALE;
+
+			glm::vec3 boxCenter = localPos - offset;
+			boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+		}
 	}
 
-	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
-	drawRect(p1, p2, p3, p4, m_HoveredLine, center);
+	drawRect(p1, p2, p3, p4, m_HoveredLine);
+	drawCenter(center, radius, m_CenterHovered);
 }
 
 void Survive::PhysicsGizmo::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -186,10 +202,9 @@ Survive::PhysicsGizmo::getRectanglePoints(const BoxCollider2DComponent &boxColli
 	return {p1, p2, p3, p4};
 }
 
-void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4,
-									 int hoveredLine, const ImVec2 &boxCenter)
+void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3,
+									 const ImVec2 &p4, int hoveredLine)
 {
-	static constexpr float circleThickness = 4.0f;
 	static constexpr float CIRCLE_RADIUS = 5.0f;
 	static constexpr ImU32 CIRCLE_COLOR = IM_COL32(0, 0, 255, 255);
 
@@ -200,12 +215,10 @@ void Survive::PhysicsGizmo::drawRect(const ImVec2 &p1, const ImVec2 &p2, const I
 	drawLine(drawList, p3, p4, hoveredLine == 2);
 	drawLine(drawList, p4, p1, hoveredLine == 3);
 
-	drawList->AddCircleFilled(p1, circleThickness, CIRCLE_COLOR);
-	drawList->AddCircleFilled(p2, circleThickness, CIRCLE_COLOR);
-	drawList->AddCircleFilled(p3, circleThickness, CIRCLE_COLOR);
-	drawList->AddCircleFilled(p4, circleThickness, CIRCLE_COLOR);
-
-	drawList->AddCircle(boxCenter, CIRCLE_RADIUS, CIRCLE_COLOR, 0, circleThickness);
+	drawList->AddCircleFilled(p1, CIRCLE_RADIUS, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p2, CIRCLE_RADIUS, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p3, CIRCLE_RADIUS, CIRCLE_COLOR);
+	drawList->AddCircleFilled(p4, CIRCLE_RADIUS, CIRCLE_COLOR);
 }
 
 ImVec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
@@ -248,16 +261,36 @@ bool Survive::PhysicsGizmo::isUsing() const
 
 void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered)
 {
-	static constexpr float lineThickness = 2.0f;
+	static constexpr float LINE_THICKNESS = 2.0f;
 	static constexpr ImU32 LINE_COLOR = IM_COL32(255, 255, 255, 255);
 	static constexpr ImU32 LINE_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
 
 	ImU32 color = isHovered ? LINE_COLOR_HOVERED : LINE_COLOR;
-	drawList->AddLine(p1, p2, color, lineThickness);
+	drawList->AddLine(p1, p2, color, LINE_THICKNESS);
 }
 
 ImVec2 Survive::PhysicsGizmo::getScreenPos(const Survive::Camera &camera, const glm::mat4 &transformationMatrix,
 										   const glm::vec2 &point) const
 {
 	return getScreenPos(camera, transformationMatrix, glm::vec3{point, 0.0f});
+}
+
+void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, float radius, bool isHovered)
+{
+	static constexpr ImU32 POINT_COLOR = IM_COL32(255, 255, 255, 255);
+	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+
+	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
+	drawList->AddCircle(boxCenter, radius, color, 0, 2.0f);
+}
+
+bool Survive::PhysicsGizmo::mouseHoversPoint(const ImVec2 &point, float radius)
+{
+	static constexpr float EPSILON = 4.0f;
+	ImVec2 mousePos = ImGui::GetMousePos();
+
+	return std::abs(mousePos.x - point.x) < radius + EPSILON &&
+		   std::abs(mousePos.y - point.y) < radius + EPSILON;
 }
