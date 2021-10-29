@@ -33,15 +33,6 @@ namespace Survive
 		[[nodiscard]] bool isUsing() const;
 
 	private:
-		[[nodiscard]] ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
-										  const glm::vec3 &point) const;
-
-		[[nodiscard]] ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
-										  const glm::vec2 &point) const;
-
-		[[nodiscard]] glm::vec3
-		getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point) const;
-
 		void drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 								  const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
 
@@ -58,13 +49,7 @@ namespace Survive
 		[[nodiscard]] ImVec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
 										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 
-		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
-
-		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
-
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
-
-		static bool mouseHoversPoint(const ImVec2 &point, float radius);
 	};
 }
 

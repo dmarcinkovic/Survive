@@ -128,4 +128,67 @@ float Survive::Util::getRandom(float first, float second)
 	return distribution(mt);
 }
 
+ImVec2 Survive::Util::getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
+								   const glm::vec3 &point, float x, float y, float width, float height)
+{
+	glm::mat4 projectionMatrix = camera.getOrthographicProjectionMatrix();
+	glm::vec4 clipSpace = glm::vec4(point, 1) * transformationMatrix * projectionMatrix;
+
+	glm::vec3 normalizedDeviceSpace{clipSpace};
+	glm::vec3 viewportSpace = normalizedDeviceSpace * 0.5f + 0.5f;
+
+	return {x + viewportSpace.x * width, y + height - viewportSpace.y * height};
+}
+
+ImVec2 Survive::Util::getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix,
+								   const glm::vec2 &point, float x, float y, float width, float height)
+{
+	return getScreenPos(camera, transformationMatrix, glm::vec3{point, 0.0f}, x, y, width, height);
+}
+
+glm::vec3
+Survive::Util::getLocalSpace(const Survive::Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point,
+							 float x, float y, float width, float height)
+{
+	glm::mat4 projectionMatrix = camera.getOrthographicProjectionMatrix();
+
+	ImVec2 screenPos(point.x - x, point.y - y);
+	glm::vec2 viewport{screenPos.x / width, 1.0f - screenPos.y / height};
+
+	glm::vec4 clipSpace{viewport * 2.0f - 1.0f, 0.0f, 1.0f};
+	glm::vec4 localSpace = clipSpace * glm::inverse(projectionMatrix) * glm::inverse(transformationMatrix);
+
+	return glm::vec3{localSpace};
+}
+
+bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius)
+{
+	static constexpr float EPSILON = 4.0f;
+	ImVec2 mousePos = ImGui::GetMousePos();
+
+	return std::abs(mousePos.x - point.x) < radius + EPSILON &&
+		   std::abs(mousePos.y - point.y) < radius + EPSILON;
+}
+
+bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2)
+{
+	static float constexpr threshold = 3;
+	ImVec2 mousePosition = ImGui::GetMousePos();
+
+	float lineLen = lineDistance(p1, p2);
+
+	float segmentLen1 = lineDistance(p1, mousePosition);
+	float segmentLen2 = lineDistance(p2, mousePosition);
+
+	return segmentLen1 + segmentLen2 - lineLen < threshold;
+}
+
+float Survive::Util::lineDistance(const ImVec2 &p1, const ImVec2 &p2)
+{
+	float dx = p1.x - p2.x;
+	float dy = p1.y - p2.y;
+
+	return std::sqrt(dx * dx + dy * dy);
+}
+
 
