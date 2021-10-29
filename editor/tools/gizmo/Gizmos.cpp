@@ -52,6 +52,11 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 	{
 		validOperation = false;
 	}
+
+	if (!validOperation)
+	{
+		m_Gizmos.handleKeyEvents(eventHandler);
+	}
 }
 
 void Survive::Gizmos::setRect(float x, float y, float width, float height)

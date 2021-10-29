@@ -20,6 +20,8 @@ namespace Survive
 		int m_HoveredLine = -1;
 		bool m_Using{};
 
+		bool m_GizmoEnabled{};
+
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
 

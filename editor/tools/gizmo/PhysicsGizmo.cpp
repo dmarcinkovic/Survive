@@ -11,7 +11,7 @@
 
 void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
-	if (selectedEntity != entt::null &&
+	if (m_GizmoEnabled && selectedEntity != entt::null &&
 		registry.all_of<BoxCollider2DComponent, Transform3DComponent, Render2DComponent>(selectedEntity))
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(selectedEntity);
@@ -25,6 +25,13 @@ void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera,
 
 void Survive::PhysicsGizmo::handleKeyEvents(const EventHandler &eventHandler)
 {
+	if (eventHandler.isKeyPressed(Key::A))
+	{
+		m_GizmoEnabled = true;
+	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
+	{
+		m_GizmoEnabled = false;
+	}
 }
 
 void Survive::PhysicsGizmo::setRect(float x, float y, float width, float height)
