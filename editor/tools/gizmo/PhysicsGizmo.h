@@ -15,6 +15,8 @@ namespace Survive
 	class PhysicsGizmo
 	{
 	private:
+		static constexpr float THRESHOLD = 3.0f;
+
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
 		int m_HoveredLine = -1;

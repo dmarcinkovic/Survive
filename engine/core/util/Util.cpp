@@ -170,9 +170,8 @@ bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius)
 		   std::abs(mousePos.y - point.y) < radius + EPSILON;
 }
 
-bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2)
+bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float threshold)
 {
-	static float constexpr threshold = 3;
 	ImVec2 mousePosition = ImGui::GetMousePos();
 
 	float lineLen = lineDistance(p1, p2);

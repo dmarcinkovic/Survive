@@ -56,7 +56,7 @@ namespace Survive
 
 		static bool mouseHoversPoint(const ImVec2 &point, float radius);
 
-		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
+		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float threshold);
 
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 	};

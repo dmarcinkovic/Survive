@@ -53,7 +53,9 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
 
 	m_HoveredLine = -1;
-	if (Util::mouseHoversLine(p1, p2))
+
+	float threshold = m_Using ? THRESHOLD * 2.0f : THRESHOLD;
+	if (Util::mouseHoversLine(p1, p2, threshold))
 	{
 		m_HoveredLine = 0;
 		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
@@ -71,7 +73,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
 		}
-	} else if (Util::mouseHoversLine(p2, p3))
+	} else if (Util::mouseHoversLine(p2, p3, threshold))
 	{
 		m_HoveredLine = 1;
 		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
@@ -88,7 +90,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 		}
-	} else if (Util::mouseHoversLine(p3, p4))
+	} else if (Util::mouseHoversLine(p3, p4, threshold))
 	{
 		m_HoveredLine = 2;
 		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
@@ -105,7 +107,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
 		}
-	} else if (Util::mouseHoversLine(p4, p1))
+	} else if (Util::mouseHoversLine(p4, p1, threshold))
 	{
 		m_HoveredLine = 3;
 		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
