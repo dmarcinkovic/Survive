@@ -8,6 +8,9 @@
 #include "Maths.h"
 #include "Util.h"
 
+bool Survive::PhysicsGizmo::m_IsUsing = false;
+int Survive::PhysicsGizmo::m_HoveredLine = -1;
+
 void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (m_GizmoEnabled && selectedEntity != entt::null &&
@@ -54,11 +57,11 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 	m_HoveredLine = -1;
 
-	float threshold = m_Using ? THRESHOLD * 2.0f : THRESHOLD;
+	float threshold = m_IsUsing ? THRESHOLD * 2.0f : THRESHOLD;
 	if (Util::mouseHoversLine(p1, p2, threshold))
 	{
 		m_HoveredLine = 0;
-		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -76,7 +79,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	} else if (Util::mouseHoversLine(p2, p3, threshold))
 	{
 		m_HoveredLine = 1;
-		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -93,7 +96,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	} else if (Util::mouseHoversLine(p3, p4, threshold))
 	{
 		m_HoveredLine = 2;
-		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -110,7 +113,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	} else if (Util::mouseHoversLine(p4, p1, threshold))
 	{
 		m_HoveredLine = 3;
-		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -126,7 +129,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 		}
 	} else if ((m_CenterHovered = Util::mouseHoversPoint(center, radius)))
 	{
-		if ((m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
+		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{
 			ImVec2 mousePosition = ImGui::GetMousePos();
 			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -210,9 +213,9 @@ ImVec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxColl
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
 }
 
-bool Survive::PhysicsGizmo::isUsing() const
+bool Survive::PhysicsGizmo::isUsing()
 {
-	return m_Using;
+	return m_IsUsing;
 }
 
 void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered)
@@ -234,4 +237,9 @@ void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, float radius, bo
 
 	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
 	drawList->AddCircle(boxCenter, radius, color, 0, 2.0f);
+}
+
+bool Survive::PhysicsGizmo::isOver()
+{
+	return m_HoveredLine != -1;
 }

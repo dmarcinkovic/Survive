@@ -16,12 +16,11 @@ namespace Survive
 	{
 	private:
 		static constexpr float THRESHOLD = 3.0f;
+		static bool m_IsUsing;
+		static int m_HoveredLine;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
-
-		int m_HoveredLine = -1;
 		bool m_CenterHovered{};
-		bool m_Using{};
 
 		bool m_GizmoEnabled{};
 
@@ -32,7 +31,9 @@ namespace Survive
 
 		void setRect(float x, float y, float width, float height);
 
-		[[nodiscard]] bool isUsing() const;
+		static bool isUsing();
+
+		static bool isOver();
 
 	private:
 		void drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,

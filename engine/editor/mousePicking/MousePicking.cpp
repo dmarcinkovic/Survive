@@ -11,6 +11,7 @@
 #include "Maths.h"
 #include "Renderer3DUtil.h"
 #include "Display.h"
+#include "PhysicsGizmo.h"
 
 bool Survive::MousePicking::mousePressed = false;
 int Survive::MousePicking::selectedEntity = -2;
@@ -25,7 +26,8 @@ void Survive::MousePicking::mousePressedHandler()
 	EventHandler::addMouseListener([this](int button, int action, double mouseX, double mouseY) {
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || !Editor::isSceneFocused())
+			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || PhysicsGizmo::isOver() ||
+				!Editor::isSceneFocused())
 			{
 				return;
 			}
