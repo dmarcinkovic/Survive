@@ -8,8 +8,9 @@
 #include "Maths.h"
 #include "Util.h"
 
-bool Survive::PhysicsGizmo::m_IsUsing = false;
+bool Survive::PhysicsGizmo::m_IsUsing{};
 int Survive::PhysicsGizmo::m_HoveredLine = -1;
+bool Survive::PhysicsGizmo::m_CenterHovered{};
 
 void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -138,7 +139,16 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 			localPos *= Constants::BOX2D_SCALE;
 
 			glm::vec3 boxCenter = localPos - offset;
+			b2Vec2 oldCenter = boxCollider.center;
 			boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+
+			b2Vec2 diff = boxCollider.center - oldCenter;
+
+			b2Vec2 *points = boxCollider.boxShape.m_vertices;
+			points[0] += diff;
+			points[1] += diff;
+			points[2] += diff;
+			points[3] += diff;
 		}
 	}
 
@@ -241,5 +251,5 @@ void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, bool isHovered)
 
 bool Survive::PhysicsGizmo::isOver()
 {
-	return m_HoveredLine != -1;
+	return m_HoveredLine != -1 || m_CenterHovered;
 }

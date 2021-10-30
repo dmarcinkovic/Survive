@@ -17,10 +17,11 @@ namespace Survive
 	private:
 		static constexpr float THRESHOLD = 3.0f;
 		static bool m_IsUsing;
+
+		static bool m_CenterHovered;
 		static int m_HoveredLine;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
-		bool m_CenterHovered{};
 
 		bool m_GizmoEnabled{};
 
