@@ -127,7 +127,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 		}
-	} else if ((m_CenterHovered = Util::mouseHoversPoint(center, radius)))
+	} else if ((m_CenterHovered = Util::mouseHoversPoint(center, radius, threshold)))
 	{
 		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
 		{

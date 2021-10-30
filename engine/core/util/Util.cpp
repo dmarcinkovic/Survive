@@ -161,13 +161,12 @@ Survive::Util::getLocalSpace(const Survive::Camera &camera, const glm::mat4 &tra
 	return glm::vec3{localSpace};
 }
 
-bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius)
+bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius, float threshold)
 {
-	static constexpr float EPSILON = 4.0f;
 	ImVec2 mousePos = ImGui::GetMousePos();
 
-	return std::abs(mousePos.x - point.x) < radius + EPSILON &&
-		   std::abs(mousePos.y - point.y) < radius + EPSILON;
+	return std::abs(mousePos.x - point.x) < radius + threshold &&
+		   std::abs(mousePos.y - point.y) < radius + threshold;
 }
 
 bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float threshold)
