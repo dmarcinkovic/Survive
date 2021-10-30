@@ -143,7 +143,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	}
 
 	drawRect(p1, p2, p3, p4, m_HoveredLine);
-	drawCenter(center, radius, m_CenterHovered);
+	drawCenter(center, m_CenterHovered);
 }
 
 void Survive::PhysicsGizmo::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -228,7 +228,7 @@ void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, con
 	drawList->AddLine(p1, p2, color, LINE_THICKNESS);
 }
 
-void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, float radius, bool isHovered)
+void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, bool isHovered)
 {
 	static constexpr ImU32 POINT_COLOR = IM_COL32(255, 255, 255, 255);
 	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
@@ -236,7 +236,7 @@ void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, float radius, bo
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
 	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
-	drawList->AddCircle(boxCenter, radius, color, 0, 2.0f);
+	drawList->AddCircle(boxCenter, 4.0, color, 0, 2.0f);
 }
 
 bool Survive::PhysicsGizmo::isOver()

@@ -47,7 +47,7 @@ namespace Survive
 
 		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine);
 
-		static void drawCenter(const ImVec2 &boxCenter, float radius, bool isHovered);
+		static void drawCenter(const ImVec2 &boxCenter, bool isHovered);
 
 		[[nodiscard]] ImVec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
 										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
