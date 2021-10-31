@@ -266,13 +266,7 @@ namespace Survive
 			b2Vec2 oldCenter = component.center;
 			if (EditorUtil::drawColumnDragFloat2("Center", "##Box center", component.center))
 			{
-				b2Vec2 diff = component.center - oldCenter;
-
-				b2Vec2 *points = component.boxShape.m_vertices;
-				points[0] += diff;
-				points[1] += diff;
-				points[2] += diff;
-				points[3] += diff;
+				EditorUtil::moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
 			}
 
 			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);

@@ -7,6 +7,7 @@
 #include "PhysicsGizmo.h"
 #include "Maths.h"
 #include "Util.h"
+#include "EditorUtil.h"
 
 int Survive::PhysicsGizmo::m_HoveredLine = -1;
 bool Survive::PhysicsGizmo::m_CenterHovered{};
@@ -93,13 +94,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 		b2Vec2 oldCenter = boxCollider.center;
 		boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
 
-		b2Vec2 diff = boxCollider.center - oldCenter;
-
-		b2Vec2 *points = boxCollider.boxShape.m_vertices;
-		points[0] += diff;
-		points[1] += diff;
-		points[2] += diff;
-		points[3] += diff;
+		EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, boxCollider.center - oldCenter);
 	}
 
 	if (m_HoveredLine == 0 && m_IsUsing)

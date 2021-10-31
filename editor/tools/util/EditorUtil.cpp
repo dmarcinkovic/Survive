@@ -645,3 +645,11 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 		shape.Set(points.data(), static_cast<int>(points.size()));
 	}
 }
+
+void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
+{
+	points[0] += diff;
+	points[1] += diff;
+	points[2] += diff;
+	points[3] += diff;
+}

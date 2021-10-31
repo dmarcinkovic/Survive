@@ -106,6 +106,8 @@ namespace Survive
 
 		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape);
 
+		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
