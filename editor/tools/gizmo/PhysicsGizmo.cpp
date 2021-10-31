@@ -56,100 +56,107 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	const float radius = 4.0f;
 	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
 
-	m_HoveredLine = -1;
-
-	float threshold = m_IsUsing ? THRESHOLD * 2.0f : THRESHOLD;
-	if (Util::mouseHoversLine(p1, p2, threshold))
+	float threshold = THRESHOLD;
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+	if (!m_IsUsing && Util::mouseHoversLine(p1, p2, threshold))
 	{
 		m_HoveredLine = 0;
-		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-			float offset = transform.position.y * Constants::BOX2D_SCALE;
-
-			localPos *= Constants::BOX2D_SCALE;
-			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-
-			points[0].y = localPos.y - offset;
-			points[1].y = localPos.y - offset;
-
-			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
-		}
-	} else if (Util::mouseHoversLine(p2, p3, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3, threshold))
 	{
 		m_HoveredLine = 1;
-		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-			float offset = transform.position.x * Constants::BOX2D_SCALE;
-
-			localPos *= Constants::BOX2D_SCALE;
-			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-			points[1].x = localPos.x - offset;
-			points[2].x = localPos.x - offset;
-
-			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
-		}
-	} else if (Util::mouseHoversLine(p3, p4, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4, threshold))
 	{
 		m_HoveredLine = 2;
-		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-			float offset = transform.position.y * Constants::BOX2D_SCALE;
-
-			localPos *= Constants::BOX2D_SCALE;
-			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-			points[2].y = localPos.y - offset;
-			points[3].y = localPos.y - offset;
-
-			boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
-		}
-	} else if (Util::mouseHoversLine(p4, p1, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1, threshold))
 	{
 		m_HoveredLine = 3;
-		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-			float offset = transform.position.x * Constants::BOX2D_SCALE;
-
-			localPos *= Constants::BOX2D_SCALE;
-			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-			points[3].x = localPos.x - offset;
-			points[0].x = localPos.x - offset;
-
-			boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
-		}
-	} else if ((m_CenterHovered = Util::mouseHoversPoint(center, radius, threshold)))
+	} else if (!m_IsUsing)
 	{
-		if ((m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left)))
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+		m_HoveredLine = -1;
+	}
 
-			glm::vec3 offset = transform.position * Constants::BOX2D_SCALE;
-			localPos *= Constants::BOX2D_SCALE;
+	if (!m_IsUsing && Util::mouseHoversPoint(center, radius, threshold))
+	{
+		m_CenterHovered = true;
+	} else if (!m_IsUsing)
+	{
+		m_CenterHovered = false;
+	}
 
-			glm::vec3 boxCenter = localPos - offset;
-			b2Vec2 oldCenter = boxCollider.center;
-			boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+	if (m_CenterHovered && m_IsUsing)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
 
-			b2Vec2 diff = boxCollider.center - oldCenter;
+		glm::vec3 offset = transform.position * Constants::BOX2D_SCALE;
+		localPos *= Constants::BOX2D_SCALE;
 
-			b2Vec2 *points = boxCollider.boxShape.m_vertices;
-			points[0] += diff;
-			points[1] += diff;
-			points[2] += diff;
-			points[3] += diff;
-		}
+		glm::vec3 boxCenter = localPos - offset;
+		b2Vec2 oldCenter = boxCollider.center;
+		boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+
+		b2Vec2 diff = boxCollider.center - oldCenter;
+
+		b2Vec2 *points = boxCollider.boxShape.m_vertices;
+		points[0] += diff;
+		points[1] += diff;
+		points[2] += diff;
+		points[3] += diff;
+	}
+
+	if (m_HoveredLine == 0 && m_IsUsing)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+		float offset = transform.position.y * Constants::BOX2D_SCALE;
+
+		localPos *= Constants::BOX2D_SCALE;
+		b2Vec2 *points = boxCollider.boxShape.m_vertices;
+
+		points[0].y = localPos.y - offset;
+		points[1].y = localPos.y - offset;
+
+		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
+	} else if (m_HoveredLine == 1 && m_IsUsing)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+		float offset = transform.position.x * Constants::BOX2D_SCALE;
+
+		localPos *= Constants::BOX2D_SCALE;
+		b2Vec2 *points = boxCollider.boxShape.m_vertices;
+		points[1].x = localPos.x - offset;
+		points[2].x = localPos.x - offset;
+
+		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
+	} else if (m_HoveredLine == 2 && m_IsUsing)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+		float offset = transform.position.y * Constants::BOX2D_SCALE;
+
+		localPos *= Constants::BOX2D_SCALE;
+		b2Vec2 *points = boxCollider.boxShape.m_vertices;
+		points[2].y = localPos.y - offset;
+		points[3].y = localPos.y - offset;
+
+		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
+	} else if (m_HoveredLine == 3 && m_IsUsing)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+		float offset = transform.position.x * Constants::BOX2D_SCALE;
+
+		localPos *= Constants::BOX2D_SCALE;
+		b2Vec2 *points = boxCollider.boxShape.m_vertices;
+		points[3].x = localPos.x - offset;
+		points[0].x = localPos.x - offset;
+
+		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 	}
 
 	drawRect(p1, p2, p3, p4, m_HoveredLine);
