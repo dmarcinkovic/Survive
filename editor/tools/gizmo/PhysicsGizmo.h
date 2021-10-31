@@ -15,7 +15,8 @@ namespace Survive
 	class PhysicsGizmo
 	{
 	private:
-		bool m_IsUsing;
+		static constexpr float RADIUS = 4.0f;
+		bool m_IsUsing{};
 
 		static bool m_CenterHovered;
 		static int m_HoveredLine;
@@ -51,6 +52,16 @@ namespace Survive
 										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
+
+		void drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
+							 float offset, int p1, int p2, bool isVertical) const;
+
+		void drawHoveredPoint(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
+							  const glm::vec3 &position) const;
+
+		void drawHoveredLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
+							  const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+							  const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4);
 	};
 }
 

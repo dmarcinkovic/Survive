@@ -51,30 +51,14 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 {
 	initializeBoxCollider(boxCollider, transform);
 
-	auto[p1, p2, p3, p4] = getRectanglePoints(boxCollider, transform, camera, modelMatrix);
-
-	const float radius = 4.0f;
 	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
 
 	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-	if (!m_IsUsing && Util::mouseHoversLine(p1, p2))
-	{
-		m_HoveredLine = 0;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3))
-	{
-		m_HoveredLine = 1;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4))
-	{
-		m_HoveredLine = 2;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1))
-	{
-		m_HoveredLine = 3;
-	} else if (!m_IsUsing)
-	{
-		m_HoveredLine = -1;
-	}
 
-	if (!m_IsUsing && Util::mouseHoversPoint(center, radius))
+	auto[p1, p2, p3, p4] = getRectanglePoints(boxCollider, transform, camera, modelMatrix);
+	drawHoveredLines(camera, boxCollider, transform, modelMatrix, p1, p2, p3, p4);
+
+	if (!m_IsUsing && Util::mouseHoversPoint(center, RADIUS))
 	{
 		m_CenterHovered = true;
 	} else if (!m_IsUsing)
@@ -84,72 +68,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 
 	if (m_CenterHovered && m_IsUsing)
 	{
-		ImVec2 mousePosition = ImGui::GetMousePos();
-		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-		glm::vec3 offset = transform.position * Constants::BOX2D_SCALE;
-		localPos *= Constants::BOX2D_SCALE;
-
-		glm::vec3 boxCenter = localPos - offset;
-		b2Vec2 oldCenter = boxCollider.center;
-		boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
-
-		EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, boxCollider.center - oldCenter);
-	}
-
-	if (m_HoveredLine == 0 && m_IsUsing)
-	{
-		ImVec2 mousePosition = ImGui::GetMousePos();
-		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-		float offset = transform.position.y * Constants::BOX2D_SCALE;
-
-		localPos *= Constants::BOX2D_SCALE;
-		b2Vec2 *points = boxCollider.boxShape.m_vertices;
-
-		points[0].y = localPos.y - offset;
-		points[1].y = localPos.y - offset;
-
-		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
-	} else if (m_HoveredLine == 1 && m_IsUsing)
-	{
-		ImVec2 mousePosition = ImGui::GetMousePos();
-		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-		float offset = transform.position.x * Constants::BOX2D_SCALE;
-
-		localPos *= Constants::BOX2D_SCALE;
-		b2Vec2 *points = boxCollider.boxShape.m_vertices;
-		points[1].x = localPos.x - offset;
-		points[2].x = localPos.x - offset;
-
-		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
-	} else if (m_HoveredLine == 2 && m_IsUsing)
-	{
-		ImVec2 mousePosition = ImGui::GetMousePos();
-		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-		float offset = transform.position.y * Constants::BOX2D_SCALE;
-
-		localPos *= Constants::BOX2D_SCALE;
-		b2Vec2 *points = boxCollider.boxShape.m_vertices;
-		points[2].y = localPos.y - offset;
-		points[3].y = localPos.y - offset;
-
-		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
-	} else if (m_HoveredLine == 3 && m_IsUsing)
-	{
-		ImVec2 mousePosition = ImGui::GetMousePos();
-		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-		float offset = transform.position.x * Constants::BOX2D_SCALE;
-
-		localPos *= Constants::BOX2D_SCALE;
-		b2Vec2 *points = boxCollider.boxShape.m_vertices;
-		points[3].x = localPos.x - offset;
-		points[0].x = localPos.x - offset;
-
-		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
+		drawHoveredPoint(camera, boxCollider, modelMatrix, transform.position);
 	}
 
 	drawRect(p1, p2, p3, p4, m_HoveredLine);
@@ -247,4 +166,85 @@ void Survive::PhysicsGizmo::drawCenter(const ImVec2 &boxCenter, bool isHovered)
 bool Survive::PhysicsGizmo::isOver()
 {
 	return m_HoveredLine != -1 || m_CenterHovered;
+}
+
+void Survive::PhysicsGizmo::drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider,
+											const glm::mat4 &modelMatrix, float offset, int p1, int p2,
+											bool isVertical) const
+{
+	ImVec2 mousePosition = ImGui::GetMousePos();
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+	float offsetBox2D = offset * Constants::BOX2D_SCALE;
+	localPos *= Constants::BOX2D_SCALE;
+
+	b2Vec2 *points = boxCollider.boxShape.m_vertices;
+
+	if (isVertical)
+	{
+		points[p1].x = localPos.x - offsetBox2D;
+		points[p2].x = localPos.x - offsetBox2D;
+
+		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
+	} else
+	{
+		points[p1].y = localPos.y - offsetBox2D;
+		points[p2].y = localPos.y - offsetBox2D;
+
+		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
+	}
+}
+
+void
+Survive::PhysicsGizmo::drawHoveredPoint(const Survive::Camera &camera, Survive::BoxCollider2DComponent &boxCollider,
+										const glm::mat4 &modelMatrix, const glm::vec3 &position) const
+{
+	ImVec2 mousePosition = ImGui::GetMousePos();
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+	glm::vec3 offset = position * Constants::BOX2D_SCALE;
+	localPos *= Constants::BOX2D_SCALE;
+
+	glm::vec3 boxCenter = localPos - offset;
+	b2Vec2 oldCenter = boxCollider.center;
+	boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+
+	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, boxCollider.center - oldCenter);
+}
+
+void
+Survive::PhysicsGizmo::drawHoveredLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
+										const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+										const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4)
+{
+	if (!m_IsUsing && Util::mouseHoversLine(p1, p2))
+	{
+		m_HoveredLine = 0;
+	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3))
+	{
+		m_HoveredLine = 1;
+	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4))
+	{
+		m_HoveredLine = 2;
+	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1))
+	{
+		m_HoveredLine = 3;
+	} else if (!m_IsUsing)
+	{
+		m_HoveredLine = -1;
+	}
+
+	if (m_HoveredLine == 0 && m_IsUsing)
+	{
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 0, 1, false);
+	} else if (m_HoveredLine == 1 && m_IsUsing)
+	{
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 1, 2, true);
+	} else if (m_HoveredLine == 2 && m_IsUsing)
+	{
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 2, 3, false);
+	} else if (m_HoveredLine == 3 && m_IsUsing)
+	{
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 3, 0, true);
+	}
 }
