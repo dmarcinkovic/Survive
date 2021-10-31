@@ -15,8 +15,7 @@ namespace Survive
 	class PhysicsGizmo
 	{
 	private:
-		static constexpr float THRESHOLD = 3.0f;
-		static bool m_IsUsing;
+		bool m_IsUsing;
 
 		static bool m_CenterHovered;
 		static int m_HoveredLine;
@@ -31,8 +30,6 @@ namespace Survive
 		void handleKeyEvents(const EventHandler &eventHandler);
 
 		void setRect(float x, float y, float width, float height);
-
-		static bool isUsing();
 
 		static bool isOver();
 

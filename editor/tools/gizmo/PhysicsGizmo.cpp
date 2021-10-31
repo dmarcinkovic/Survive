@@ -8,7 +8,6 @@
 #include "Maths.h"
 #include "Util.h"
 
-bool Survive::PhysicsGizmo::m_IsUsing{};
 int Survive::PhysicsGizmo::m_HoveredLine = -1;
 bool Survive::PhysicsGizmo::m_CenterHovered{};
 
@@ -56,18 +55,17 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 	const float radius = 4.0f;
 	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
 
-	float threshold = THRESHOLD;
 	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-	if (!m_IsUsing && Util::mouseHoversLine(p1, p2, threshold))
+	if (!m_IsUsing && Util::mouseHoversLine(p1, p2))
 	{
 		m_HoveredLine = 0;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3))
 	{
 		m_HoveredLine = 1;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4))
 	{
 		m_HoveredLine = 2;
-	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1, threshold))
+	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1))
 	{
 		m_HoveredLine = 3;
 	} else if (!m_IsUsing)
@@ -75,7 +73,7 @@ void Survive::PhysicsGizmo::drawBoxColliderGizmo(const Camera &camera, BoxCollid
 		m_HoveredLine = -1;
 	}
 
-	if (!m_IsUsing && Util::mouseHoversPoint(center, radius, threshold))
+	if (!m_IsUsing && Util::mouseHoversPoint(center, radius))
 	{
 		m_CenterHovered = true;
 	} else if (!m_IsUsing)
@@ -228,11 +226,6 @@ ImVec2 Survive::PhysicsGizmo::getBoxCenter(const BoxCollider2DComponent &boxColl
 	glm::vec2 point{center.x + transform.position.x, center.y + transform.position.y};
 
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
-}
-
-bool Survive::PhysicsGizmo::isUsing()
-{
-	return m_IsUsing;
 }
 
 void Survive::PhysicsGizmo::drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered)

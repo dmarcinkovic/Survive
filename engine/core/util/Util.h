@@ -54,9 +54,9 @@ namespace Survive
 		getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point, float x,
 					  float y, float width, float height);
 
-		static bool mouseHoversPoint(const ImVec2 &point, float radius, float threshold);
+		static bool mouseHoversPoint(const ImVec2 &point, float radius);
 
-		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float threshold);
+		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
 
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 	};

@@ -161,16 +161,18 @@ Survive::Util::getLocalSpace(const Survive::Camera &camera, const glm::mat4 &tra
 	return glm::vec3{localSpace};
 }
 
-bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius, float threshold)
+bool Survive::Util::mouseHoversPoint(const ImVec2 &point, float radius)
 {
+	static constexpr float THRESHOLD = 3.0f;
 	ImVec2 mousePos = ImGui::GetMousePos();
 
-	return std::abs(mousePos.x - point.x) < radius + threshold &&
-		   std::abs(mousePos.y - point.y) < radius + threshold;
+	return std::abs(mousePos.x - point.x) < radius + THRESHOLD &&
+		   std::abs(mousePos.y - point.y) < radius + THRESHOLD;
 }
 
-bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float threshold)
+bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2)
 {
+	static constexpr float THRESHOLD = 3.0f;
 	ImVec2 mousePosition = ImGui::GetMousePos();
 
 	float lineLen = lineDistance(p1, p2);
@@ -178,7 +180,7 @@ bool Survive::Util::mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2, float th
 	float segmentLen1 = lineDistance(p1, mousePosition);
 	float segmentLen2 = lineDistance(p2, mousePosition);
 
-	return segmentLen1 + segmentLen2 - lineLen < threshold;
+	return segmentLen1 + segmentLen2 - lineLen < THRESHOLD;
 }
 
 float Survive::Util::lineDistance(const ImVec2 &p1, const ImVec2 &p2)
