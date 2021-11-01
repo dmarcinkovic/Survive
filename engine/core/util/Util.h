@@ -11,9 +11,11 @@
 #include <optional>
 #include <glm/glm.hpp>
 #include <imgui.h>
+#include <Box2D/Box2D.h>
 
 #include "Character.h"
 #include "Camera.h"
+#include "Transform3DComponent.h"
 
 namespace Survive
 {
@@ -59,6 +61,9 @@ namespace Survive
 		static bool mouseHoversLine(const ImVec2 &p1, const ImVec2 &p2);
 
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
+
+		static ImVec2 getCenter(const b2Vec2 &localCenter, const Camera &camera, const Transform3DComponent &transform,
+								const glm::mat4 &modelMatrix, float x, float y, float width, float height);
 	};
 }
 
