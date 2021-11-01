@@ -60,6 +60,7 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 
 	if (!m_IsUsing && Util::mouseHoversPoint(center, RADIUS))
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		m_CenterHovered = true;
 	} else if (!m_IsUsing)
 	{
@@ -68,6 +69,7 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 
 	if (m_CenterHovered && m_IsUsing)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		drawHoveredPoint(camera, boxCollider, modelMatrix, transform.position);
 	}
 
