@@ -9,7 +9,7 @@ namespace Survive
 {
 	class CircleGizmos
 	{
-		
+
 	};
 }
 

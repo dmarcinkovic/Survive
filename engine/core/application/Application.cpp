@@ -9,14 +9,14 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer), m_World(std::make_unique<b2World>(m_Gravity))
 {
-	auto rectangle = m_Registry.create();
-	m_Registry.emplace<TagComponent>(rectangle, "rectangle");
-	m_Registry.emplace<Transform3DComponent>(rectangle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
-	m_Registry.emplace<Render2DComponent>(rectangle,
+	auto circle = m_Registry.create();
+	m_Registry.emplace<TagComponent>(circle, "circle");
+	m_Registry.emplace<Transform3DComponent>(circle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
+	m_Registry.emplace<Render2DComponent>(circle,
 										  TexturedModel(m_Loader.renderQuad(),
-														Loader::loadTexture("res/rectangle.png")));
-	m_Registry.emplace<RigidBody2DComponent>(rectangle, b2_dynamicBody);
-	m_Registry.emplace<BoxCollider2DComponent>(rectangle, 0.25f * 10.0f, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
+														Loader::loadTexture("res/circle.png")));
+	m_Registry.emplace<RigidBody2DComponent>(circle, b2_dynamicBody);
+	m_Registry.emplace<CircleCollider2DComponent>(circle, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
