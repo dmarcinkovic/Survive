@@ -46,8 +46,8 @@ void Survive::BoxGizmos::setRect(float x, float y, float width, float height)
 }
 
 void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
-												 const Transform3DComponent &transform,
-												 const glm::mat4 &modelMatrix)
+											  const Transform3DComponent &transform,
+											  const glm::mat4 &modelMatrix)
 {
 	initializeBoxCollider(boxCollider, transform);
 
@@ -76,7 +76,7 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 }
 
 void Survive::BoxGizmos::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
-												  const Transform3DComponent &transform)
+											   const Transform3DComponent &transform)
 {
 	if (!boxCollider.m_Initialized)
 	{
@@ -90,8 +90,8 @@ void Survive::BoxGizmos::initializeBoxCollider(BoxCollider2DComponent &boxCollid
 
 std::tuple<ImVec2, ImVec2, ImVec2, ImVec2>
 Survive::BoxGizmos::getRectanglePoints(const BoxCollider2DComponent &boxCollider,
-										  const Transform3DComponent &transform, const Camera &camera,
-										  const glm::mat4 &modelMatrix) const
+									   const Transform3DComponent &transform, const Camera &camera,
+									   const glm::mat4 &modelMatrix) const
 {
 	float scale = Constants::BOX2D_SCALE;
 	const b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
@@ -112,7 +112,7 @@ Survive::BoxGizmos::getRectanglePoints(const BoxCollider2DComponent &boxCollider
 }
 
 void Survive::BoxGizmos::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3,
-									 const ImVec2 &p4, int hoveredLine)
+								  const ImVec2 &p4, int hoveredLine)
 {
 	static constexpr float CIRCLE_RADIUS = 5.0f;
 	static constexpr ImU32 CIRCLE_COLOR = IM_COL32(0, 0, 255, 255);
@@ -131,7 +131,7 @@ void Survive::BoxGizmos::drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVe
 }
 
 ImVec2 Survive::BoxGizmos::getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
-										   const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const
+										const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const
 {
 	b2Vec2 boxCenter = boxCollider.center;
 
@@ -169,8 +169,8 @@ bool Survive::BoxGizmos::isOver()
 }
 
 void Survive::BoxGizmos::drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider,
-											const glm::mat4 &modelMatrix, float offset, int p1, int p2,
-											bool isVertical) const
+										 const glm::mat4 &modelMatrix, float offset, int p1, int p2,
+										 bool isVertical) const
 {
 	ImVec2 mousePosition = ImGui::GetMousePos();
 	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -197,7 +197,7 @@ void Survive::BoxGizmos::drawHoveredLine(const Camera &camera, BoxCollider2DComp
 
 void
 Survive::BoxGizmos::drawHoveredPoint(const Survive::Camera &camera, Survive::BoxCollider2DComponent &boxCollider,
-										const glm::mat4 &modelMatrix, const glm::vec3 &position) const
+									 const glm::mat4 &modelMatrix, const glm::vec3 &position) const
 {
 	ImVec2 mousePosition = ImGui::GetMousePos();
 	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
@@ -214,37 +214,46 @@ Survive::BoxGizmos::drawHoveredPoint(const Survive::Camera &camera, Survive::Box
 
 void
 Survive::BoxGizmos::drawHoveredLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
-										const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
-										const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4)
+									 const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+									 const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4)
 {
 	if (!m_IsUsing && Util::mouseHoversLine(p1, p2))
 	{
 		m_HoveredLine = 0;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
 	} else if (!m_IsUsing && Util::mouseHoversLine(p2, p3))
 	{
 		m_HoveredLine = 1;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 	} else if (!m_IsUsing && Util::mouseHoversLine(p3, p4))
 	{
 		m_HoveredLine = 2;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
 	} else if (!m_IsUsing && Util::mouseHoversLine(p4, p1))
 	{
 		m_HoveredLine = 3;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 	} else if (!m_IsUsing)
 	{
 		m_HoveredLine = -1;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 	}
 
 	if (m_HoveredLine == 0 && m_IsUsing)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 0, 1, false);
 	} else if (m_HoveredLine == 1 && m_IsUsing)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 1, 2, true);
 	} else if (m_HoveredLine == 2 && m_IsUsing)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 2, 3, false);
 	} else if (m_HoveredLine == 3 && m_IsUsing)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 3, 0, true);
 	}
 }
