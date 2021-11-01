@@ -3,7 +3,6 @@
 //
 
 #include <imgui.h>
-#include <iostream>
 
 #include "Components.h"
 #include "CircleGizmos.h"
@@ -26,7 +25,8 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 		ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
 		float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
 
-		drawList->AddCircle(center, radius, IM_COL32(255, 0, 0, 255), 0, 3.0f);
+		ImU32 color = mouseHoversCircle(center, radius) ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
+		drawList->AddCircle(center, radius, color, 0, THICKNESS);
 	}
 }
 
@@ -63,10 +63,20 @@ ImVec2 Survive::CircleGizmos::getCircleCenter(const CircleCollider2DComponent &c
 	return Util::getCenter(circleCenter, camera, transform, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 
-float Survive::CircleGizmos::calculateRadius(float radius, const Survive::Camera &camera, const glm::mat4 &modelMatrix)
+float Survive::CircleGizmos::calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix) const
 {
 	float circleRadius = radius / Constants::BOX2D_SCALE;
 	ImVec2 r = Util::getScreenPos(camera, modelMatrix, glm::vec2{circleRadius}, m_X, m_Y, m_Width, m_Height);
 
 	return r.x - m_Width / 2.0f - m_X;
+}
+
+bool Survive::CircleGizmos::mouseHoversCircle(const ImVec2 &center, float radius)
+{
+	static constexpr float THRESHOLD = 4.0f;
+
+	ImVec2 mousePosition = ImGui::GetMousePos();
+	float centerMouseDistance = Util::lineDistance(mousePosition, center);
+
+	return std::abs(radius - centerMouseDistance) < THRESHOLD;
 }

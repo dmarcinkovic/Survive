@@ -15,6 +15,10 @@ namespace Survive
 	class CircleGizmos
 	{
 	private:
+		static constexpr ImU32 CIRCLE_COLOR = IM_COL32(255, 255, 255, 255);
+		static constexpr ImU32 CIRCLE_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
+		static constexpr float THICKNESS = 3.0f;
+
 		bool m_GizmoEnabled = true;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
@@ -29,10 +33,12 @@ namespace Survive
 		static bool isOver();
 
 	private:
-		ImVec2 getCircleCenter(const CircleCollider2DComponent &circleCollider, const Camera &camera,
+		[[nodiscard]] ImVec2 getCircleCenter(const CircleCollider2DComponent &circleCollider, const Camera &camera,
 							   const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 
-		float calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix);
+		[[nodiscard]] float calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix) const;
+
+		static bool mouseHoversCircle(const ImVec2 &center, float radius);
 	};
 }
 
