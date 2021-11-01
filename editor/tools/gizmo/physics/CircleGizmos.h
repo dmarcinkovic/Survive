@@ -20,6 +20,9 @@ namespace Survive
 		static constexpr float THICKNESS = 3.0f;
 
 		bool m_GizmoEnabled = true;
+		bool m_Using{};
+
+		bool m_Hovered{};
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 

@@ -25,7 +25,27 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 		ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
 		float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
 
-		ImU32 color = mouseHoversCircle(center, radius) ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
+		m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+		if (!m_Using && mouseHoversCircle(center, radius))
+		{
+			m_Hovered = true;
+		} else if (!m_Using)
+		{
+			m_Hovered = false;
+		}
+
+		if (m_Using)
+		{
+			ImVec2 mousePosition = ImGui::GetMousePos();
+			float newRadius = Util::lineDistance(mousePosition, center) + m_X + m_Width / 2.0f;
+
+			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, ImVec2(newRadius, 0), m_X, m_Y, m_Width,
+													 m_Height);
+			circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
+		}
+
+		ImU32 color = m_Hovered ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
 		drawList->AddCircle(center, radius, color, 0, THICKNESS);
 	}
 }
