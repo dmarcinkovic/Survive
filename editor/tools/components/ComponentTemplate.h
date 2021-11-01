@@ -286,6 +286,7 @@ namespace Survive
 			ImGui::Columns(2, nullptr, false);
 
 			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
 			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
 			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
 											0.05f);
