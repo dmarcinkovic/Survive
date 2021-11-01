@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <iostream>
 
 #include "Components.h"
 #include "CircleGizmos.h"
@@ -23,14 +24,21 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 		ImDrawList *drawList = ImGui::GetWindowDrawList();
 
 		ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
+		float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
 
-		drawList->AddCircle(center, 100, IM_COL32(255, 0, 0, 255), 0, 3.0f);
+		drawList->AddCircle(center, radius, IM_COL32(255, 0, 0, 255), 0, 3.0f);
 	}
 }
 
-void Survive::CircleGizmos::handleKeyEvents(const Survive::EventHandler &eventHandler)
+void Survive::CircleGizmos::handleKeyEvents(const EventHandler &eventHandler)
 {
-
+	if (eventHandler.isKeyPressed(Key::A))
+	{
+		m_GizmoEnabled = true;
+	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
+	{
+		m_GizmoEnabled = false;
+	}
 }
 
 void Survive::CircleGizmos::setRect(float x, float y, float width, float height)
@@ -48,9 +56,17 @@ bool Survive::CircleGizmos::isOver()
 
 ImVec2 Survive::CircleGizmos::getCircleCenter(const CircleCollider2DComponent &circleCollider,
 											  const Camera &camera, const Transform3DComponent &transform,
-											  const glm::mat4 &modelMatrix)
+											  const glm::mat4 &modelMatrix) const
 {
 	b2Vec2 circleCenter = circleCollider.circleShape.m_p;
 
 	return Util::getCenter(circleCenter, camera, transform, modelMatrix, m_X, m_Y, m_Width, m_Height);
+}
+
+float Survive::CircleGizmos::calculateRadius(float radius, const Survive::Camera &camera, const glm::mat4 &modelMatrix)
+{
+	float circleRadius = radius / Constants::BOX2D_SCALE;
+	ImVec2 r = Util::getScreenPos(camera, modelMatrix, glm::vec2{circleRadius}, m_X, m_Y, m_Width, m_Height);
+
+	return r.x - m_Width / 2.0f - m_X;
 }

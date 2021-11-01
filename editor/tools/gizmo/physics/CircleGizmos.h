@@ -30,7 +30,9 @@ namespace Survive
 
 	private:
 		ImVec2 getCircleCenter(const CircleCollider2DComponent &circleCollider, const Camera &camera,
-							   const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
+							   const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
+
+		float calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix);
 	};
 }
 
