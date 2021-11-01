@@ -138,11 +138,7 @@ ImVec2 Survive::BoxGizmos::getBoxCenter(const BoxCollider2DComponent &boxCollide
 {
 	b2Vec2 boxCenter = boxCollider.center;
 
-	float scale = Constants::BOX2D_SCALE;
-	glm::vec2 center{boxCenter.x / scale, boxCenter.y / scale};
-	glm::vec2 point{center.x + transform.position.x, center.y + transform.position.y};
-
-	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
+	return Util::getCenter(boxCenter, camera, transform, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 
 void Survive::BoxGizmos::drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered)
