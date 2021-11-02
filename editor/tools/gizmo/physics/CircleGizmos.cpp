@@ -10,11 +10,14 @@
 #include "Util.h"
 #include "Maths.h"
 
+bool Survive::CircleGizmos::m_Hovered{};
+
 void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (m_GizmoEnabled && selectedEntity != entt::null &&
 		registry.all_of<Render2DComponent, CircleCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
+		// TODO initialize circle using transform.scale
 		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(selectedEntity);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);
 
@@ -71,7 +74,7 @@ void Survive::CircleGizmos::setRect(float x, float y, float width, float height)
 
 bool Survive::CircleGizmos::isOver()
 {
-	return false;
+	return m_Hovered;
 }
 
 ImVec2 Survive::CircleGizmos::getCircleCenter(const CircleCollider2DComponent &circleCollider,

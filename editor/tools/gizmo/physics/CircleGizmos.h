@@ -22,7 +22,7 @@ namespace Survive
 		bool m_GizmoEnabled = true;
 		bool m_Using{};
 
-		bool m_Hovered{};
+		static bool m_Hovered;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
