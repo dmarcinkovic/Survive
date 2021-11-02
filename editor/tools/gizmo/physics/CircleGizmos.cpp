@@ -48,7 +48,7 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 			circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
 		}
 
-		ImU32 color = m_Hovered ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
+		ImU32 color = m_Hovered || m_Using ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
 		drawList->AddCircle(center, radius, color, 0, THICKNESS);
 	}
 }
