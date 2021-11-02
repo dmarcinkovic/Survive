@@ -11,9 +11,15 @@ namespace Survive
 {
 	struct CircleCollider2DComponent
 	{
+		friend class CircleGizmos;
+
 		b2FixtureDef fixtureDef;
 		b2CircleShape circleShape;
 
+	private:
+		bool m_Initialized{};
+
+	public:
 		CircleCollider2DComponent() = default;
 
 		CircleCollider2DComponent(float radius, float density, float friction, float elasticity)

@@ -37,11 +37,14 @@ namespace Survive
 
 	private:
 		[[nodiscard]] ImVec2 getCircleCenter(const CircleCollider2DComponent &circleCollider, const Camera &camera,
-							   const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
+											 const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 
 		[[nodiscard]] float calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix) const;
 
 		static bool mouseHoversCircle(const ImVec2 &center, float radius);
+
+		static void initializeCircleCollider(CircleCollider2DComponent &circleCollider,
+									  const Transform3DComponent &transform);
 	};
 }
 

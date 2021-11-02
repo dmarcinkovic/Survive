@@ -14,42 +14,46 @@ bool Survive::CircleGizmos::m_Hovered{};
 
 void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
-	if (m_GizmoEnabled && selectedEntity != entt::null &&
+	if (selectedEntity != entt::null &&
 		registry.all_of<Render2DComponent, CircleCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
-		// TODO initialize circle using transform.scale
 		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(selectedEntity);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);
 
-		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+		initializeCircleCollider(circleCollider, transform);
 
-		ImDrawList *drawList = ImGui::GetWindowDrawList();
-
-		ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
-		float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
-
-		m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-		if (!m_Using && mouseHoversCircle(center, radius))
+		if (m_GizmoEnabled)
 		{
-			m_Hovered = true;
-		} else if (!m_Using)
-		{
-			m_Hovered = false;
+			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+			ImDrawList *drawList = ImGui::GetWindowDrawList();
+
+			ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
+			float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
+
+			m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+			if (!m_Using && mouseHoversCircle(center, radius))
+			{
+				m_Hovered = true;
+			} else if (!m_Using)
+			{
+				m_Hovered = false;
+			}
+
+			if (m_Using)
+			{
+				ImVec2 mousePosition = ImGui::GetMousePos();
+				float newRadius = Util::lineDistance(mousePosition, center) + m_X + m_Width / 2.0f;
+
+				glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, ImVec2(newRadius, 0), m_X, m_Y, m_Width,
+														 m_Height);
+				circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
+			}
+
+			ImU32 color = m_Hovered || m_Using ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
+			drawList->AddCircle(center, radius, color, 0, THICKNESS);
 		}
-
-		if (m_Using)
-		{
-			ImVec2 mousePosition = ImGui::GetMousePos();
-			float newRadius = Util::lineDistance(mousePosition, center) + m_X + m_Width / 2.0f;
-
-			glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, ImVec2(newRadius, 0), m_X, m_Y, m_Width,
-													 m_Height);
-			circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
-		}
-
-		ImU32 color = m_Hovered || m_Using ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
-		drawList->AddCircle(center, radius, color, 0, THICKNESS);
 	}
 }
 
@@ -102,4 +106,16 @@ bool Survive::CircleGizmos::mouseHoversCircle(const ImVec2 &center, float radius
 	float centerMouseDistance = Util::lineDistance(mousePosition, center);
 
 	return std::abs(radius - centerMouseDistance) < THRESHOLD;
+}
+
+void Survive::CircleGizmos::initializeCircleCollider(CircleCollider2DComponent &circleCollider,
+													 const Transform3DComponent &transform)
+{
+	if (!circleCollider.m_Initialized)
+	{
+		const glm::vec3 &scale = transform.scale;
+
+		circleCollider.circleShape.m_radius = std::min(scale.x, scale.y) * Constants::BOX2D_SCALE;
+		circleCollider.m_Initialized = true;
+	}
 }
