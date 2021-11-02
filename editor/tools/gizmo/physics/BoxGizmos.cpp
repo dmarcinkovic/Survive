@@ -15,15 +15,20 @@ bool Survive::BoxGizmos::m_CenterHovered{};
 
 void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
-	if (m_GizmoEnabled && selectedEntity != entt::null &&
+	if (selectedEntity != entt::null &&
 		registry.all_of<BoxCollider2DComponent, Transform3DComponent, Render2DComponent>(selectedEntity))
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(selectedEntity);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);
 
-		glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position);
+		initializeBoxCollider(boxCollider, transform);
 
-		drawBoxColliderGizmo(camera, boxCollider, transform, transformationMatrix);
+		if (m_GizmoEnabled)
+		{
+			glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position);
+
+			drawBoxColliderGizmo(camera, boxCollider, transform, transformationMatrix);
+		}
 	}
 }
 
@@ -50,8 +55,6 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 											  const Transform3DComponent &transform,
 											  const glm::mat4 &modelMatrix)
 {
-	initializeBoxCollider(boxCollider, transform);
-
 	ImVec2 center = getBoxCenter(boxCollider, camera, transform, modelMatrix);
 
 	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
