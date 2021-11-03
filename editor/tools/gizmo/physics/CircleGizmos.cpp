@@ -113,7 +113,8 @@ void Survive::CircleGizmos::drawCircle(const ImVec2 &center, float radius) const
 }
 
 void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radius, const Camera &camera,
-											   const glm::mat4 &modelMatrix, CircleCollider2DComponent &circleCollider)
+											   const glm::mat4 &modelMatrix,
+											   CircleCollider2DComponent &circleCollider) const
 {
 	if (!m_Using && mouseHoversCircle(center, radius))
 	{
