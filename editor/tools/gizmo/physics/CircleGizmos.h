@@ -17,7 +17,7 @@ namespace Survive
 	private:
 		static constexpr float RADIUS = 4.0f;
 
-		bool m_GizmoEnabled = true;
+		bool m_GizmoEnabled{};
 		bool m_Using{};
 
 		static bool m_Hovered;
