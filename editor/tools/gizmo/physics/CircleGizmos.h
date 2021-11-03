@@ -35,6 +35,9 @@ namespace Survive
 		static bool isOver();
 
 	private:
+		void drawGizmos(const Transform3DComponent &transform, CircleCollider2DComponent &circleCollider,
+						const Camera &camera);
+
 		[[nodiscard]] ImVec2 getCircleCenter(const CircleCollider2DComponent &circleCollider, const Camera &camera,
 											 const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
 

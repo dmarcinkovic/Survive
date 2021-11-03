@@ -25,18 +25,7 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 
 		if (m_GizmoEnabled)
 		{
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
-
-			ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
-			float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
-
-			m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-			updateCircleRadius(center, radius, camera, modelMatrix, circleCollider);
-			updateCircleCenter(center, camera, modelMatrix, circleCollider, transform);
-
-			drawCircle(center, radius);
-			drawCenter(center);
+			drawGizmos(transform, circleCollider, camera);
 		}
 	}
 }
@@ -174,4 +163,22 @@ void Survive::CircleGizmos::updateCircleCenter(const ImVec2 &center, const Camer
 		glm::vec3 circleCenter = localPos - offset;
 		circleCollider.circleShape.m_p = b2Vec2(circleCenter.x, circleCenter.y);
 	}
+}
+
+void Survive::CircleGizmos::drawGizmos(const Transform3DComponent &transform,
+									   Survive::CircleCollider2DComponent &circleCollider,
+									   const Camera &camera)
+{
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+	ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
+	float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
+
+	m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+	updateCircleRadius(center, radius, camera, modelMatrix, circleCollider);
+	updateCircleCenter(center, camera, modelMatrix, circleCollider, transform);
+
+	drawCircle(center, radius);
+	drawCenter(center);
 }
