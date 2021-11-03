@@ -111,9 +111,11 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 {
 	if (!m_Using && mouseHoversCircle(center, radius) && !m_CenterHovered)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		m_Hovered = true;
 	} else if (!m_Using)
 	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		m_Hovered = false;
 	}
 
@@ -146,6 +148,7 @@ void Survive::CircleGizmos::updateCircleCenter(const ImVec2 &center, const Camer
 	if (!m_Using && !m_Hovered && Util::mouseHoversPoint(center, RADIUS))
 	{
 		m_CenterHovered = true;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	} else if (!m_Using)
 	{
 		m_CenterHovered = false;
