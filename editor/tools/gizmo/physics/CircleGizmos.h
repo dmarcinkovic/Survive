@@ -15,10 +15,13 @@ namespace Survive
 	class CircleGizmos
 	{
 	private:
+		static constexpr float RADIUS = 4.0f;
+
 		bool m_GizmoEnabled = true;
 		bool m_Using{};
 
 		static bool m_Hovered;
+		static bool m_CenterHovered;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 
@@ -42,10 +45,15 @@ namespace Survive
 		static void initializeCircleCollider(CircleCollider2DComponent &circleCollider,
 											 const Transform3DComponent &transform);
 
-		void drawCircle(const ImVec2 &center, float radius) const;
+		static void drawCircle(const ImVec2 &center, float radius);
 
 		void updateCircleRadius(const ImVec2 &center, float radius, const Camera &camera, const glm::mat4 &modelMatrix,
 								CircleCollider2DComponent &circleCollider) const;
+
+		static void drawCenter(const ImVec2 &center);
+
+		void updateCircleCenter(const ImVec2 &center, const Camera &camera, const glm::mat4 &modelMatrix,
+								CircleCollider2DComponent &circleCollider, const Transform3DComponent &transform) const;
 	};
 }
 

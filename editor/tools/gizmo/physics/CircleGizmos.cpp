@@ -11,6 +11,7 @@
 #include "Maths.h"
 
 bool Survive::CircleGizmos::m_Hovered{};
+bool Survive::CircleGizmos::m_CenterHovered{};
 
 void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -32,7 +33,10 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 			m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
 			updateCircleRadius(center, radius, camera, modelMatrix, circleCollider);
+			updateCircleCenter(center, camera, modelMatrix, circleCollider, transform);
+
 			drawCircle(center, radius);
+			drawCenter(center);
 		}
 	}
 }
@@ -58,7 +62,7 @@ void Survive::CircleGizmos::setRect(float x, float y, float width, float height)
 
 bool Survive::CircleGizmos::isOver()
 {
-	return m_Hovered;
+	return m_Hovered || m_CenterHovered;
 }
 
 ImVec2 Survive::CircleGizmos::getCircleCenter(const CircleCollider2DComponent &circleCollider,
@@ -100,7 +104,7 @@ void Survive::CircleGizmos::initializeCircleCollider(CircleCollider2DComponent &
 	}
 }
 
-void Survive::CircleGizmos::drawCircle(const ImVec2 &center, float radius) const
+void Survive::CircleGizmos::drawCircle(const ImVec2 &center, float radius)
 {
 	static constexpr ImU32 CIRCLE_COLOR = IM_COL32(255, 255, 255, 255);
 	static constexpr ImU32 CIRCLE_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
@@ -108,7 +112,7 @@ void Survive::CircleGizmos::drawCircle(const ImVec2 &center, float radius) const
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
-	ImU32 color = m_Hovered || m_Using ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
+	ImU32 color = m_Hovered ? CIRCLE_COLOR_HOVERED : CIRCLE_COLOR;
 	drawList->AddCircle(center, radius, color, 0, THICKNESS);
 }
 
@@ -116,7 +120,7 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 											   const glm::mat4 &modelMatrix,
 											   CircleCollider2DComponent &circleCollider) const
 {
-	if (!m_Using && mouseHoversCircle(center, radius))
+	if (!m_Using && mouseHoversCircle(center, radius) && !m_CenterHovered)
 	{
 		m_Hovered = true;
 	} else if (!m_Using)
@@ -124,7 +128,7 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 		m_Hovered = false;
 	}
 
-	if (m_Using)
+	if (m_Using && m_Hovered)
 	{
 		ImVec2 mousePosition = ImGui::GetMousePos();
 		float newRadius = Util::lineDistance(mousePosition, center) + m_X + m_Width / 2.0f;
@@ -132,5 +136,42 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, ImVec2(newRadius, 0), m_X, m_Y, m_Width,
 												 m_Height);
 		circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
+	}
+}
+
+void Survive::CircleGizmos::drawCenter(const ImVec2 &center)
+{
+	static constexpr ImU32 COLOR = IM_COL32(255, 255, 255, 255);
+	static constexpr ImU32 COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+
+	ImU32 color = m_CenterHovered ? COLOR_HOVERED : COLOR;
+	drawList->AddCircle(center, 4.0, color, 0, 2.0f);
+}
+
+void Survive::CircleGizmos::updateCircleCenter(const ImVec2 &center, const Camera &camera, const glm::mat4 &modelMatrix,
+											   CircleCollider2DComponent &circleCollider,
+											   const Transform3DComponent &transform) const
+{
+	if (!m_Using && !m_Hovered && Util::mouseHoversPoint(center, RADIUS))
+	{
+		m_CenterHovered = true;
+	} else if (!m_Using)
+	{
+		m_CenterHovered = false;
+	}
+
+	if (m_Using && m_CenterHovered)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+
+		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+
+		glm::vec3 offset = transform.position * Constants::BOX2D_SCALE;
+		localPos *= Constants::BOX2D_SCALE;
+
+		glm::vec3 circleCenter = localPos - offset;
+		circleCollider.circleShape.m_p = b2Vec2(circleCenter.x, circleCenter.y);
 	}
 }
