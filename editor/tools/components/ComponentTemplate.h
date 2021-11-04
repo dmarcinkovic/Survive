@@ -303,14 +303,14 @@ namespace Survive
 		{
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.point1))
+			if (EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex0))
 			{
-				component.edgeShape.Set(component.point1, component.point2);
+				component.edgeShape.Set(component.edgeShape.m_vertex0, component.edgeShape.m_vertex1);
 			}
 
-			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.point2))
+			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex1))
 			{
-				component.edgeShape.Set(component.point1, component.point2);
+				component.edgeShape.Set(component.edgeShape.m_vertex0, component.edgeShape.m_vertex1);
 			}
 
 			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);

@@ -11,16 +11,19 @@ namespace Survive
 {
 	struct EdgeCollider2DComponent
 	{
+		friend class EdgeGizmos;
+
 		b2FixtureDef fixtureDef;
 		b2EdgeShape edgeShape;
 
-		b2Vec2 point1, point2;
+	private:
+		bool m_Initialized{};
 
+	public:
 		EdgeCollider2DComponent() = default;
 
 		EdgeCollider2DComponent(const b2Vec2 &point1, const b2Vec2 &point2, float density, float friction,
 								float elasticity)
-				: point1(point1), point2(point2)
 		{
 			edgeShape.Set(point1, point2);
 			fixtureDef.density = density;
