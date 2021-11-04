@@ -8,6 +8,7 @@
 #include "entt.hpp"
 #include "BoxGizmos.h"
 #include "CircleGizmos.h"
+#include "EdgeGizmos.h"
 #include "EventHandler.h"
 #include "Camera.h"
 
@@ -18,6 +19,7 @@ namespace Survive
 	private:
 		BoxGizmos m_BoxGizmos;
 		CircleGizmos m_CircleGizmos;
+		EdgeGizmos m_EdgeGizmos;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
