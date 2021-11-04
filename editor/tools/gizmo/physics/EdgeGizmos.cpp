@@ -9,6 +9,8 @@
 #include "Constants.h"
 #include "Util.h"
 
+int Survive::EdgeGizmos::m_PointHovered = -1;
+
 void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity != entt::null &&
@@ -26,7 +28,20 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
 			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
 
-			drawGizmo(p1, p2, false);
+			m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+			if (!m_Using && Util::mouseHoversPoint(p1, RADIUS))
+			{
+				m_PointHovered = 0;
+			} else if (!m_Using && Util::mouseHoversPoint(p2, RADIUS))
+			{
+				m_PointHovered = 1;
+			} else if (!m_Using)
+			{
+				m_PointHovered = -1;
+			}
+
+			drawGizmo(p1, p2);
 		}
 	}
 }
@@ -52,7 +67,7 @@ void Survive::EdgeGizmos::setRect(float x, float y, float width, float height)
 
 bool Survive::EdgeGizmos::isOver()
 {
-	return false;
+	return m_PointHovered != -1;
 }
 
 void Survive::EdgeGizmos::initializeEdgeCollider(EdgeCollider2DComponent &edgeCollider,
@@ -78,7 +93,7 @@ ImVec2 Survive::EdgeGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &v
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
 }
 
-void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2, bool isHovered) const
+void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2) const
 {
 	static constexpr ImU32 POINT_COLOR = IM_COL32(0, 0, 255, 255);
 	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
@@ -88,7 +103,8 @@ void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2, bool isH
 
 	drawList->AddLine(p1, p2, LINE_COLOR, 3.0f);
 
-	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
-	drawList->AddCircleFilled(p1, RADIUS, color);
-	drawList->AddCircleFilled(p2, RADIUS, color);
+	ImU32 color1 = m_PointHovered == 0 ? POINT_COLOR_HOVERED : POINT_COLOR;
+	ImU32 color2 = m_PointHovered == 1 ? POINT_COLOR_HOVERED : POINT_COLOR;
+	drawList->AddCircleFilled(p1, RADIUS, color1);
+	drawList->AddCircleFilled(p2, RADIUS, color2);
 }
