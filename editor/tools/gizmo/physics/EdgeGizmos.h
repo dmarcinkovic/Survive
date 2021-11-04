@@ -33,6 +33,9 @@ namespace Survive
 	private:
 		static void
 		initializeEdgeCollider(EdgeCollider2DComponent &edgeCollider, const Transform3DComponent &transform);
+
+		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
+									  const glm::mat4 &modelMatrix) const;
 	};
 }
 

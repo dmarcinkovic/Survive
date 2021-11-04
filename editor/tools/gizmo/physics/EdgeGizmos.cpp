@@ -2,9 +2,12 @@
 // Created by david on 04. 11. 2021..
 //
 
+#include <imgui.h>
+
 #include "EdgeGizmos.h"
 #include "Maths.h"
 #include "Constants.h"
+#include "Util.h"
 
 void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -20,7 +23,13 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 		{
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
+			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
+			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
 
+			ImDrawList *drawList = ImGui::GetWindowDrawList();
+			drawList->AddLine(p1, p2, IM_COL32(255, 255, 255, 255), 3.0f);
+			drawList->AddCircleFilled(p1, 5, IM_COL32(0, 0, 255, 255));
+			drawList->AddCircleFilled(p2, 5, IM_COL32(0, 0, 255, 255));
 		}
 	}
 }
@@ -61,4 +70,13 @@ void Survive::EdgeGizmos::initializeEdgeCollider(EdgeCollider2DComponent &edgeCo
 
 		edgeCollider.m_Initialized = true;
 	}
+}
+
+ImVec2 Survive::EdgeGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
+									 const glm::mat4 &modelMatrix) const
+{
+	float scale = Constants::BOX2D_SCALE;
+
+	glm::vec3 point = globalPos + glm::vec3{vertex.x / scale, vertex.y / scale, 0};
+	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
 }
