@@ -15,6 +15,8 @@ namespace Survive
 	class EdgeGizmos
 	{
 	private:
+		static constexpr float RADIUS = 5.0f;
+
 		bool isUsing{};
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
@@ -36,6 +38,8 @@ namespace Survive
 
 		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
 									  const glm::mat4 &modelMatrix) const;
+
+		void drawGizmo(const ImVec2 &p1, const ImVec2 &p2, bool isHovered) const;
 	};
 }
 

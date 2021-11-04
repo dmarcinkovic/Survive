@@ -26,10 +26,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
 			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
 
-			ImDrawList *drawList = ImGui::GetWindowDrawList();
-			drawList->AddLine(p1, p2, IM_COL32(255, 255, 255, 255), 3.0f);
-			drawList->AddCircleFilled(p1, 5, IM_COL32(0, 0, 255, 255));
-			drawList->AddCircleFilled(p2, 5, IM_COL32(0, 0, 255, 255));
+			drawGizmo(p1, p2, false);
 		}
 	}
 }
@@ -79,4 +76,19 @@ ImVec2 Survive::EdgeGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &v
 
 	glm::vec3 point = globalPos + glm::vec3{vertex.x / scale, vertex.y / scale, 0};
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
+}
+
+void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2, bool isHovered) const
+{
+	static constexpr ImU32 POINT_COLOR = IM_COL32(0, 0, 255, 255);
+	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
+	static constexpr ImU32 LINE_COLOR = IM_COL32(255, 255, 255, 255);
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+
+	drawList->AddLine(p1, p2, LINE_COLOR, 3.0f);
+
+	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
+	drawList->AddCircleFilled(p1, RADIUS, color);
+	drawList->AddCircleFilled(p2, RADIUS, color);
 }
