@@ -41,6 +41,14 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 				m_PointHovered = -1;
 			}
 
+			if (m_Using && m_PointHovered == 0)
+			{
+				moveVertex(camera, modelMatrix, transform.position, edgeCollider.edgeShape.m_vertex1);
+			} else if (m_Using && m_PointHovered == 1)
+			{
+				moveVertex(camera, modelMatrix, transform.position, edgeCollider.edgeShape.m_vertex2);
+			}
+
 			drawGizmo(p1, p2);
 		}
 	}
@@ -93,7 +101,7 @@ ImVec2 Survive::EdgeGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &v
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
 }
 
-void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2) const
+void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2)
 {
 	static constexpr ImU32 POINT_COLOR = IM_COL32(0, 0, 255, 255);
 	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
@@ -107,4 +115,19 @@ void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2) const
 	ImU32 color2 = m_PointHovered == 1 ? POINT_COLOR_HOVERED : POINT_COLOR;
 	drawList->AddCircleFilled(p1, RADIUS, color1);
 	drawList->AddCircleFilled(p2, RADIUS, color2);
+}
+
+void Survive::EdgeGizmos::moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
+									 b2Vec2 &vertex) const
+{
+	ImVec2 mousePosition = ImGui::GetMousePos();
+
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
+											 m_Height);
+
+	localPos *= Constants::BOX2D_SCALE;
+	glm::vec3 offset = position * Constants::BOX2D_SCALE;
+
+	glm::vec3 newPosition = localPos - offset;
+	vertex = b2Vec2(newPosition.x, newPosition.y);
 }

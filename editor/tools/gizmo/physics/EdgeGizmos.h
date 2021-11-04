@@ -39,7 +39,9 @@ namespace Survive
 		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
 									  const glm::mat4 &modelMatrix) const;
 
-		void drawGizmo(const ImVec2 &p1, const ImVec2 &p2) const;
+		static void drawGizmo(const ImVec2 &p1, const ImVec2 &p2) ;
+
+		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position, b2Vec2 &vertex) const;
 	};
 }
 
