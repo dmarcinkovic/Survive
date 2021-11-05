@@ -21,7 +21,7 @@ namespace Survive
 		static int m_PointHovered;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
-		bool m_GizmoEnabled = true;
+		bool m_GizmoEnabled{};
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
