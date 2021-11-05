@@ -6,24 +6,30 @@
 #include "Loader.h"
 
 std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
+bool Survive::Log::m_LogViewed = true;
 
 Survive::Log::Log()
-	: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
-		m_WarnIcon(Loader::loadTexture("res/warn.png"))
+		: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
+		  m_WarnIcon(Loader::loadTexture("res/warn.png"))
 {
 }
 
 void Survive::Log::logWindow(LogType logType, const std::string &message)
 {
 	m_Buffer.emplace_back(message, logType);
+	m_LogViewed = false;
 }
 
 void Survive::Log::drawLogWindow()
 {
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1));
 
-	if (ImGui::Begin("Log window"))
+	ImGuiWindowFlags flags = m_LogViewed ? ImGuiWindowFlags_None : ImGuiWindowFlags_UnsavedDocument;
+
+	if (ImGui::Begin("Log window", nullptr, flags))
 	{
+		m_LogViewed = true;
+
 		auto numberOfItems = static_cast<int>(m_Buffer.size());
 		int start = numberOfItems - ITEMS_VISIBLE;
 
