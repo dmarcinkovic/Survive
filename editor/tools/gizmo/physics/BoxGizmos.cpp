@@ -32,25 +32,6 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 	}
 }
 
-void Survive::BoxGizmos::handleKeyEvents(const EventHandler &eventHandler)
-{
-	if (eventHandler.isKeyPressed(Key::A))
-	{
-		m_GizmoEnabled = true;
-	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
-	{
-		m_GizmoEnabled = false;
-	}
-}
-
-void Survive::BoxGizmos::setRect(float x, float y, float width, float height)
-{
-	m_X = x;
-	m_Y = y;
-	m_Width = width;
-	m_Height = height;
-}
-
 void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 											  const Transform3DComponent &transform,
 											  const glm::mat4 &modelMatrix)

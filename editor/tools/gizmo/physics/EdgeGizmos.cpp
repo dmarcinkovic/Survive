@@ -28,31 +28,12 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
 			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
 
-			m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
 			updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2);
 			drawGizmo(p1, p2);
 		}
 	}
-}
-
-void Survive::EdgeGizmos::handleKeyEvents(const EventHandler &eventHandler)
-{
-	if (eventHandler.isKeyPressed(Key::A))
-	{
-		m_GizmoEnabled = true;
-	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
-	{
-		m_GizmoEnabled = false;
-	}
-}
-
-void Survive::EdgeGizmos::setRect(float x, float y, float width, float height)
-{
-	m_X = x;
-	m_Y = y;
-	m_Width = width;
-	m_Height = height;
 }
 
 bool Survive::EdgeGizmos::isOver()
@@ -118,25 +99,25 @@ void
 Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 								 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2)
 {
-	if (!m_Using && Util::mouseHoversPoint(p1, RADIUS))
+	if (!m_IsUsing && Util::mouseHoversPoint(p1, RADIUS))
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		m_PointHovered = 0;
-	} else if (!m_Using && Util::mouseHoversPoint(p2, RADIUS))
+	} else if (!m_IsUsing && Util::mouseHoversPoint(p2, RADIUS))
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		m_PointHovered = 1;
-	} else if (!m_Using)
+	} else if (!m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		m_PointHovered = -1;
 	}
 
-	if (m_Using && m_PointHovered == 0)
+	if (m_IsUsing && m_PointHovered == 0)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex1);
-	} else if (m_Using && m_PointHovered == 1)
+	} else if (m_IsUsing && m_PointHovered == 1)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2);

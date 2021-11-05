@@ -30,25 +30,6 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 	}
 }
 
-void Survive::CircleGizmos::handleKeyEvents(const EventHandler &eventHandler)
-{
-	if (eventHandler.isKeyPressed(Key::A))
-	{
-		m_GizmoEnabled = true;
-	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
-	{
-		m_GizmoEnabled = false;
-	}
-}
-
-void Survive::CircleGizmos::setRect(float x, float y, float width, float height)
-{
-	m_X = x;
-	m_Y = y;
-	m_Width = width;
-	m_Height = height;
-}
-
 bool Survive::CircleGizmos::isOver()
 {
 	return m_Hovered || m_CenterHovered;
@@ -109,17 +90,17 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 											   const glm::mat4 &modelMatrix,
 											   CircleCollider2DComponent &circleCollider) const
 {
-	if (!m_Using && mouseHoversCircle(center, radius) && !m_CenterHovered)
+	if (!m_IsUsing && mouseHoversCircle(center, radius) && !m_CenterHovered)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		m_Hovered = true;
-	} else if (!m_Using)
+	} else if (!m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		m_Hovered = false;
 	}
 
-	if (m_Using && m_Hovered)
+	if (m_IsUsing && m_Hovered)
 	{
 		ImVec2 mousePosition = ImGui::GetMousePos();
 		float newRadius = Util::lineDistance(mousePosition, center) + m_X + m_Width / 2.0f;
@@ -147,16 +128,16 @@ void Survive::CircleGizmos::updateCircleCenter(const ImVec2 &center, const Camer
 											   CircleCollider2DComponent &circleCollider,
 											   const Transform3DComponent &transform) const
 {
-	if (!m_Using && !m_Hovered && Util::mouseHoversPoint(center, RADIUS))
+	if (!m_IsUsing && !m_Hovered && Util::mouseHoversPoint(center, RADIUS))
 	{
 		m_CenterHovered = true;
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-	} else if (!m_Using)
+	} else if (!m_IsUsing)
 	{
 		m_CenterHovered = false;
 	}
 
-	if (m_Using && m_CenterHovered)
+	if (m_IsUsing && m_CenterHovered)
 	{
 		ImVec2 mousePosition = ImGui::GetMousePos();
 
@@ -181,7 +162,7 @@ void Survive::CircleGizmos::drawGizmos(const Transform3DComponent &transform,
 	ImVec2 center = getCircleCenter(circleCollider, camera, transform, modelMatrix);
 	float radius = calculateRadius(circleCollider.circleShape.m_radius, camera, modelMatrix);
 
-	m_Using = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
 	updateCircleRadius(center, radius, camera, modelMatrix, circleCollider);
 	updateCircleCenter(center, camera, modelMatrix, circleCollider, transform);

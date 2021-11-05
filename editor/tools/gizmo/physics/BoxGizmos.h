@@ -12,28 +12,20 @@
 #include "Components.h"
 #include "EventHandler.h"
 #include "Camera.h"
+#include "ColliderGizmos.h"
 
 namespace Survive
 {
-	class BoxGizmos
+	class BoxGizmos : public ColliderGizmos
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
-		bool m_IsUsing{};
 
 		static bool m_CenterHovered;
 		static int m_HoveredLine;
 
-		float m_X{}, m_Y{}, m_Width{}, m_Height{};
-
-		bool m_GizmoEnabled{};
-
 	public:
-		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
-
-		void handleKeyEvents(const EventHandler &eventHandler);
-
-		void setRect(float x, float y, float width, float height);
+		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
 
 		static bool isOver();
 
