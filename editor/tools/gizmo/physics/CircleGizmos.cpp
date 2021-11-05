@@ -127,6 +127,8 @@ void Survive::CircleGizmos::updateCircleRadius(const ImVec2 &center, float radiu
 		glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, ImVec2(newRadius, 0), m_X, m_Y, m_Width,
 												 m_Height);
 		circleCollider.circleShape.m_radius = localPos.x * Constants::BOX2D_SCALE;
+
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	}
 }
 
@@ -165,6 +167,8 @@ void Survive::CircleGizmos::updateCircleCenter(const ImVec2 &center, const Camer
 
 		glm::vec3 circleCenter = localPos - offset;
 		circleCollider.circleShape.m_p = b2Vec2(circleCenter.x, circleCenter.y);
+
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	}
 }
 
