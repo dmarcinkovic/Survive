@@ -4,3 +4,6 @@
 [submodule "editor/ImGuizmo"]
 	path = editor/ImGuizmo
 	url = https://github.com/CedricGuillemet/ImGuizmo.git
+[submodule "engine/physics/reactphysics3d"]
+	path = engine/physics/reactphysics3d
+	url = https://github.com/DanielChappuis/reactphysics3d.git
