@@ -1,3 +1,5 @@
+#include <reactphysics3d/reactphysics3d.h>
+
 #include "Editor.h"
 #include "EventHandler.h"
 #include "DaeParser.h"
