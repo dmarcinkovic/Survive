@@ -16,7 +16,7 @@ bool Survive::CircleGizmos::m_CenterHovered{};
 void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity != entt::null &&
-		registry.all_of<Render2DComponent, CircleCollider2DComponent, Transform3DComponent>(selectedEntity))
+		registry.all_of<CircleCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
 		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(selectedEntity);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);

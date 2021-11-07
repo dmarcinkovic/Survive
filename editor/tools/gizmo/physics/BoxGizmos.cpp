@@ -16,7 +16,7 @@ bool Survive::BoxGizmos::m_CenterHovered{};
 void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity != entt::null &&
-		registry.all_of<BoxCollider2DComponent, Transform3DComponent, Render2DComponent>(selectedEntity))
+		registry.all_of<BoxCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(selectedEntity);
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(selectedEntity);
