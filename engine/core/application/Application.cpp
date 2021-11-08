@@ -31,6 +31,18 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		m_RegistryUtil.restore<RigidBody2DComponent>(m_Registry);
 		m_World = std::make_unique<b2World>(m_Gravity);
 	});
+
+	rp3d::PhysicsCommon physicsCommon;
+
+	rp3d::PhysicsWorld::WorldSettings settings;
+	settings.gravity = rp3d::Vector3(0, -9.81, 0);
+	rp3d::PhysicsWorld *world = physicsCommon.createPhysicsWorld(settings);
+
+	rp3d::Vector3 position(0.0, 2, -10);
+	rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(0, glm::radians(30.0f), 0);
+	rp3d::Transform transform(position, orientation);
+	rp3d::RigidBody *body = world->createRigidBody(transform);
+	body->setType(rp3d::BodyType::DYNAMIC);
 }
 
 void Survive::Application::run()
