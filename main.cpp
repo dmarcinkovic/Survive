@@ -2,8 +2,6 @@
 
 #include "Editor.h"
 #include "EventHandler.h"
-#include "DaeParser.h"
-#include "Animator.h"
 #include "Loader.h"
 #include "Camera.h"
 #include "Light.h"
@@ -24,7 +22,7 @@ int main()
 
 	Camera camera;
 	camera.position = glm::vec3{0, 0, 8};
-	
+
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
 	entt::registry registry;
@@ -43,6 +41,18 @@ int main()
 	registry.emplace<RigidBodyComponent>(ground, false);
 	registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("res/cube.obj", loader), Texture()));
 	registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});
+
+	rp3d::PhysicsCommon physicsCommon;
+
+	rp3d::PhysicsWorld::WorldSettings settings;
+	settings.gravity = rp3d::Vector3(0, -9.81, 0);
+	rp3d::PhysicsWorld *world = physicsCommon.createPhysicsWorld(settings);
+
+	rp3d::Vector3 position(0.0, 2, -10);
+	rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(0, glm::radians(30.0f), 0);
+	rp3d::Transform transform(position, orientation);
+	rp3d::RigidBody *body = world->createRigidBody(transform);
+	body->setType(rp3d::BodyType::DYNAMIC);
 
 	EventHandler eventHandler;
 
