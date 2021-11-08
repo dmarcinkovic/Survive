@@ -9,23 +9,17 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer), m_World(std::make_unique<b2World>(m_Gravity))
 {
-	auto circle = m_Registry.create();
-	m_Registry.emplace<TagComponent>(circle, "circle");
-	m_Registry.emplace<Transform3DComponent>(circle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
-	m_Registry.emplace<Render2DComponent>(circle,
-										  TexturedModel(m_Loader.renderQuad(),
-														Loader::loadTexture("res/ball.png")));
-	m_Registry.emplace<RigidBody2DComponent>(circle, b2_dynamicBody);
-	m_Registry.emplace<CircleCollider2DComponent>(circle, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
+	auto cube = m_Registry.create();
+	m_Registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 2, -10}, glm::vec3{1.0f}, glm::vec3{0, 30, 0});
+	m_Registry.emplace<RigidBodyComponent>(cube, false);
+	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("res/cube.obj", m_Loader), Texture()));
+	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
 
 	auto ground = m_Registry.create();
-	m_Registry.emplace<TagComponent>(ground, "ground");
-	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
-	m_Registry.emplace<Transform3DComponent>(ground, groundPos);
-	m_Registry.emplace<Render2DComponent>(ground,
-										  TexturedModel(m_Loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
-	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
-	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-2, 0.5}, b2Vec2{2, 0.5}, 1.0f, 0.3, 0.5);
+	m_Registry.emplace<Transform3DComponent>(ground, glm::vec3{0, -2, -10}, glm::vec3{6, 0.5f, 8});
+	m_Registry.emplace<RigidBodyComponent>(ground, false);
+	m_Registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("res/cube.obj", m_Loader), Texture()));
+	m_Registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});
 
 	m_Editor.addPlayButtonListener([this]() {
 		PhysicSystem::init(m_Registry, m_World.get());

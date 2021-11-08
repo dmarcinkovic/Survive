@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <Box2D/Box2D.h>
+#include <reactphysics3d/reactphysics3d.h>
 
 #include "entt.hpp"
 #include "Editor.h"
