@@ -31,12 +31,14 @@ int main()
 	Editor editor(renderer);
 
 	auto cube = registry.create();
+	registry.emplace<TagComponent>(cube, "cube");
 	registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 2, -10}, glm::vec3{1.0f}, glm::vec3{0, 30, 0});
 	registry.emplace<RigidBodyComponent>(cube, false);
 	registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("res/cube.obj", loader), Texture()));
 	registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
 
 	auto ground = registry.create();
+	registry.emplace<TagComponent>(ground, "ground");
 	registry.emplace<Transform3DComponent>(ground, glm::vec3{0, -2, -10}, glm::vec3{6, 0.5f, 8});
 	registry.emplace<RigidBodyComponent>(ground, false);
 	registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("res/cube.obj", loader), Texture()));
