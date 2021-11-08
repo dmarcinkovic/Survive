@@ -11,7 +11,6 @@
 #include "Display.h"
 #include "entt.hpp"
 #include "Components.h"
-#include "AnimationSystem.h"
 
 int main()
 {
@@ -24,6 +23,8 @@ int main()
 	Loader loader;
 
 	Camera camera;
+	camera.position = glm::vec3{0, 0, 8};
+	
 	Light light(glm::vec3{100, 100, 100}, glm::vec3{1.0f, 1.0f, 1.0f});
 
 	entt::registry registry;
@@ -31,34 +32,18 @@ int main()
 
 	Editor editor(renderer);
 
-	DaeParser daeParser;
-	auto character = registry.create();
-	registry.emplace<TagComponent>(character, "character");
-	TexturedModel texturedModel(daeParser.loadDae("res/character.dae", loader),
-								Loader::loadTexture("res/character.png"));
-	registry.emplace<Render3DComponent>(character, texturedModel);
-	registry.emplace<Transform3DComponent>(character, glm::vec3{5, -10, -30});
-	registry.emplace<RigidBodyComponent>(character, false);
-	registry.emplace<ShadowComponent>(character, true);
+	auto cube = registry.create();
+	registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 2, -10}, glm::vec3{1.0f}, glm::vec3{0, 30, 0});
+	registry.emplace<RigidBodyComponent>(cube, false);
+	registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("res/cube.obj", loader), Texture()));
+	registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
 
-	auto[rootJoint, numberOfJoints] = daeParser.getJointData();
-	registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
+	auto ground = registry.create();
+	registry.emplace<Transform3DComponent>(ground, glm::vec3{0, -2, -10}, glm::vec3{6, 0.5f, 8});
+	registry.emplace<RigidBodyComponent>(ground, false);
+	registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("res/cube.obj", loader), Texture()));
+	registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});
 
-	auto dragon = registry.create();
-	registry.emplace<TagComponent>(dragon, "dragon");
-	registry.emplace<Render3DComponent>(dragon, TexturedModel(ObjParser::loadObj("res/dragon.obj", loader),
-															  Loader::loadTexture("res/lamp.jpg")));
-	registry.emplace<RigidBodyComponent>(dragon, false);
-	registry.emplace<Transform3DComponent>(dragon, glm::vec3{-5, -10, -40});
-	registry.emplace<ShadowComponent>(dragon, true);
-
-	auto textEntity = registry.create();
-
-	registry.emplace<TagComponent>(textEntity, "text");
-	registry.emplace<Transform3DComponent>(textEntity, glm::vec3{-0.5, -0.5, 0});
-	registry.emplace<SpriteComponent>(textEntity, glm::vec4{1, 0, 0, 1});
-
-	Animator animator(daeParser.getAnimation());
 	EventHandler eventHandler;
 
 	while (display.isRunning())
@@ -66,9 +51,6 @@ int main()
 		Display::clearWindow();
 
 		editor.handleKeyEvents(eventHandler);
-
-		animator.update(registry);
-		AnimationSystem::update(registry);
 
 		Editor::newFrame();
 		Editor::dock();
