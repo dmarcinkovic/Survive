@@ -13,6 +13,7 @@
 #include "RefractionComponent.h"
 #include "Render2DComponent.h"
 #include "Render3DComponent.h"
+#include "RigidBody3DComponent.h"
 #include "RigidBodyComponent.h"
 #include "ShadowComponent.h"
 #include "SoundComponent.h"
