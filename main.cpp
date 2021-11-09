@@ -70,6 +70,14 @@ int main()
 
 		renderer.renderToFbo(registry, camera);
 
+		world->update(1./60.0);
+
+		const rp3d::Transform &t = body->getTransform();
+		const rp3d::Vector3 &newPos = t.getPosition();
+		const rp3d::Quaternion &q = t.getOrientation();
+
+		registry.replace<Transform3DComponent>(cube, glm::vec3{newPos.x, newPos.y, newPos.z});
+
 		display.update();
 	}
 
