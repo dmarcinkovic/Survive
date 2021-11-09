@@ -37,12 +37,16 @@ namespace Survive
 		Editor m_Editor;
 		EventHandler m_EventHandler;
 
-		std::unique_ptr<b2World> m_World;
+		std::unique_ptr<b2World> m_World2D;
 		entt::registry m_Registry;
 
 		bool m_PlayScene{};
 
 		RegistryUtil m_RegistryUtil;
+
+		rp3d::PhysicsCommon m_PhysicsCommon;
+		rp3d::PhysicsWorld *m_World3D;
+		rp3d::RigidBody *m_Body;
 
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
