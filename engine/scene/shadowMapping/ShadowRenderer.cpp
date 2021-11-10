@@ -39,7 +39,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 
-			if (registry.has<AnimationComponent>(object))
+			if (registry.any_of<AnimationComponent>(object))
 			{
 				const AnimationComponent &animation = registry.get<AnimationComponent>(object);
 

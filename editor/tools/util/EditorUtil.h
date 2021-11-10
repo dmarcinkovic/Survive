@@ -8,6 +8,7 @@
 #include <string>
 #include <glm/vec3.hpp>
 #include <AL/al.h>
+#include <Box2D/Box2D.h>
 
 #include "entt.hpp"
 #include "Renderer.h"
@@ -94,9 +95,18 @@ namespace Survive
 
 		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
-		static void drawColumnInputFloat(const char *text, const char *label, float &value);
+		static bool drawColumnInputFloat(const char *text, const char *label, float &value);
 
-		static void drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max);
+		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
+										float min, float max, float step = 1.0f);
+
+		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
+
+		static void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
+		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
+		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff);
 
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,

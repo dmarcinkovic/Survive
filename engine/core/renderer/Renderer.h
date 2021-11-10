@@ -51,8 +51,6 @@ namespace Survive
 
 		void render(entt::registry &registry, Camera &camera) const;
 
-		void renderToFbo(entt::registry &registry, Camera &camera) const;
-
 		void addSkyboxEntity(entt::entity sky);
 
 		void removeSkyboxEntity();
@@ -72,6 +70,8 @@ namespace Survive
 		void addMousePickingListener(const MousePickingListener &listener);
 
 		void popMousePickingListener();
+
+		void renderScene(entt::registry &registry, Camera &camera, bool renderEditor) const;
 
 	private:
 		void renderToWaterFrameBuffers(entt::registry &registry, Camera &camera) const;

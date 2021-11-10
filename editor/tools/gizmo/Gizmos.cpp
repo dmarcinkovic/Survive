@@ -12,19 +12,21 @@
 
 bool Survive::Gizmos::validOperation = false;
 
-void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) const
+void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
-	if (validOperation && selectedEntity != entt::null && registry.has<Transform3DComponent>(selectedEntity))
+	if (validOperation && selectedEntity != entt::null && registry.any_of<Transform3DComponent>(selectedEntity))
 	{
-		if (registry.has<Render3DComponent>(selectedEntity))
+		if (registry.any_of<Render3DComponent>(selectedEntity))
 		{
 			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), camera, registry, selectedEntity);
-		} else if (registry.has<Render2DComponent>(selectedEntity) || registry.has<TextComponent>(selectedEntity))
+		} else if (registry.any_of<Render2DComponent>(selectedEntity) || registry.any_of<TextComponent>(selectedEntity))
 		{
 			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, camera, registry,
 					   selectedEntity);
 		}
 	}
+
+	m_Gizmos.draw(registry, camera, selectedEntity);
 }
 
 void Survive::Gizmos::newFrame()
@@ -50,6 +52,11 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 	{
 		validOperation = false;
 	}
+
+	if (!validOperation)
+	{
+		m_Gizmos.handleKeyEvents(eventHandler);
+	}
 }
 
 void Survive::Gizmos::setRect(float x, float y, float width, float height)
@@ -58,6 +65,8 @@ void Survive::Gizmos::setRect(float x, float y, float width, float height)
 	m_Y = y;
 	m_Width = width;
 	m_Height = height;
+
+	m_Gizmos.setRect(x, y, width, height);
 }
 
 glm::mat4 Survive::Gizmos::getTransform(const Survive::Transform3DComponent &transform)

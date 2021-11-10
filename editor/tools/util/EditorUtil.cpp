@@ -329,13 +329,13 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 		{
 			auto entity = static_cast<entt::entity>(selectedEntity);
 
-			if (registry.has<Render3DComponent>(entity))
+			if (registry.any_of<Render3DComponent>(entity))
 			{
 				Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
 
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
-			} else if (registry.has<Render2DComponent>(entity))
+			} else if (registry.any_of<Render2DComponent>(entity))
 			{
 				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
 
@@ -570,21 +570,88 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	ImGui::InputFloat(label, &value);
+	bool result = ImGui::InputFloat(label, &value);
 	ImGui::NextColumn();
+
+	return result;
 }
 
-void Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label, float &value, float min, float max)
+bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,
+											  float &value, float min, float max, float step)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	ImGui::DragFloat(label, &value, 1.0f, min, max);
+	bool result = ImGui::DragFloat(label, &value, step, min, max);
+	ImGui::NextColumn();
+
+	return result;
+}
+
+bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	glm::vec2 vec(value.x, value.y);
+	bool result{};
+	if ((result = ImGui::DragFloat2(label, glm::value_ptr(vec))))
+	{
+		value.x = vec.x;
+		value.y = vec.y;
+	}
+
+	ImGui::NextColumn();
+
+	return result;
+}
+
+void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+{
+	for (int i = 0; i < points.size(); ++i)
+	{
+		b2Vec2 &point = points[i];
+
+		const std::string text = "Point" + std::to_string(i + 1);
+		const std::string label = "##Polygon p" + std::to_string(i + 1);
+
+		if (drawColumnDragFloat2(text.c_str(), label.c_str(), point))
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
+	}
+}
+
+void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+{
+	ImGui::TextUnformatted("Add new point");
+	ImGui::SameLine();
+	if (ImGui::Button(" + "))
+	{
+		points.emplace_back(0, 0);
+		shape.Set(points.data(), static_cast<int>(points.size()));
+	}
+
+	ImGui::TextUnformatted("Remove point");
+	ImGui::SameLine();
+	if (ImGui::Button(" - ") && !points.empty())
+	{
+		points.pop_back();
+		shape.Set(points.data(), static_cast<int>(points.size()));
+	}
+}
+
+void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
+{
+	points[0] += diff;
+	points[1] += diff;
+	points[2] += diff;
+	points[3] += diff;
 }

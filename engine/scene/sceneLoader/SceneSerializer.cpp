@@ -29,7 +29,7 @@ void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::st
 	std::ofstream writer(filename);
 
 	registry.each([&](const entt::entity &entity) {
-		if (registry.has<TagComponent>(entity))
+		if (registry.any_of<TagComponent>(entity))
 		{
 			const TagComponent &tag = registry.get<TagComponent>(entity);
 			writer << "entity:" << tag.tag << '\n';
