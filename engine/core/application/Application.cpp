@@ -24,7 +24,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});
 
 	m_Editor.addPlayButtonListener([this]() {
-		PhysicSystem::init(m_Registry, m_World2D.get());
+		PhysicSystem::init(m_Registry, m_World2D.get(), m_World3D);
 
 		m_RegistryUtil.store<RigidBody2DComponent>(m_Registry);
 	});
@@ -63,9 +63,8 @@ void Survive::Application::run()
 
 			float frameRate = ImGui::GetIO().Framerate;
 			m_World2D->Step(1.0f / frameRate, 5, 5);
+			m_World3D->update(1.0 / frameRate);
 		}
-
-		m_World3D->update(1./60.0);
 
 		const rp3d::Transform &t = m_Body->getTransform();
 		const rp3d::Vector3 &newPos = t.getPosition();

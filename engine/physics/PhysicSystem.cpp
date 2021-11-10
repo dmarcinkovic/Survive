@@ -11,6 +11,12 @@
 
 void Survive::PhysicSystem::update(entt::registry &registry)
 {
+	update2DPhysics(registry);
+	update3DPhysics(registry);
+}
+
+void Survive::PhysicSystem::update2DPhysics(entt::registry &registry)
+{
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
 	for (auto const &entity: view)
@@ -28,7 +34,18 @@ void Survive::PhysicSystem::update(entt::registry &registry)
 	}
 }
 
-void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
+void Survive::PhysicSystem::update3DPhysics(entt::registry &registry)
+{
+
+}
+
+void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
+{
+	init2DPhysics(registry, world2D);
+	init3DPhysics(registry, world3D);
+}
+
+void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *world)
 {
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
@@ -46,6 +63,11 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 
 		initFixture(registry, entity, rigidBody.body);
 	}
+}
+
+void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::PhysicsWorld *world)
+{
+
 }
 
 void Survive::PhysicSystem::initFixture(entt::registry &registry, entt::entity entity, b2Body *body)
