@@ -46,7 +46,6 @@ namespace Survive
 
 		rp3d::PhysicsCommon m_PhysicsCommon;
 		rp3d::PhysicsWorld *m_World3D;
-		rp3d::RigidBody *m_Body;
 
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);

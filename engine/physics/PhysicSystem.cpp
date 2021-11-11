@@ -36,7 +36,22 @@ void Survive::PhysicSystem::update2DPhysics(entt::registry &registry)
 
 void Survive::PhysicSystem::update3DPhysics(entt::registry &registry)
 {
+	auto view = registry.view<RigidBody3DComponent, Transform3DComponent>();
 
+	for (auto const &entity: view)
+	{
+		RigidBody3DComponent &rigidBody = view.get<RigidBody3DComponent>(entity);
+
+		rp3d::RigidBody *body = rigidBody.body;
+
+		const rp3d::Transform &transform = body->getTransform();
+		Transform3DComponent &transformComponent = view.get<Transform3DComponent>(entity);
+
+		const rp3d::Vector3 &position = transform.getPosition();
+		transformComponent.position = glm::vec3{position.x, position.y, position.z};
+
+		// TODO update rotation
+	}
 }
 
 void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
@@ -49,7 +64,7 @@ void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *wor
 {
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
 		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
 		Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
@@ -67,7 +82,22 @@ void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *wor
 
 void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::PhysicsWorld *world)
 {
+	auto view = registry.view<RigidBody3DComponent, Transform3DComponent>();
 
+	for (auto const &entity: view)
+	{
+		RigidBody3DComponent &rigidBody = view.get<RigidBody3DComponent>(entity);
+		Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
+
+		rp3d::Vector3 position{transform.position.x, transform.position.y, transform.position.z};
+
+		glm::vec3 rotation = glm::radians(transform.rotation);
+		rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(rotation.x, rotation.y, rotation.z);
+
+		rigidBody.body = world->createRigidBody({position, orientation});
+
+		// TODO init body mass, linearDamping...
+	}
 }
 
 void Survive::PhysicSystem::initFixture(entt::registry &registry, entt::entity entity, b2Body *body)

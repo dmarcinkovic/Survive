@@ -15,6 +15,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<RigidBodyComponent>(cube, false);
 	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("res/cube.obj", m_Loader), Texture()));
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
+	m_Registry.emplace<RigidBody3DComponent>(cube, rp3d::BodyType::DYNAMIC, 1.0f);
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
@@ -37,12 +38,6 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	rp3d::PhysicsWorld::WorldSettings settings;
 	settings.gravity = rp3d::Vector3(0, -9.81, 0);
 	m_World3D = m_PhysicsCommon.createPhysicsWorld(settings);
-
-	rp3d::Vector3 position(0.0, 2, -10);
-	rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(0, glm::radians(30.0f), 0);
-	rp3d::Transform transform(position, orientation);
-	m_Body = m_World3D->createRigidBody(transform);
-	m_Body->setType(rp3d::BodyType::DYNAMIC);
 }
 
 void Survive::Application::run()
@@ -63,14 +58,8 @@ void Survive::Application::run()
 
 			float frameRate = ImGui::GetIO().Framerate;
 			m_World2D->Step(1.0f / frameRate, 5, 5);
-			m_World3D->update(1.0 / frameRate);
+			m_World3D->update(1.0f / frameRate);
 		}
-
-		const rp3d::Transform &t = m_Body->getTransform();
-		const rp3d::Vector3 &newPos = t.getPosition();
-		const rp3d::Quaternion &q = t.getOrientation();
-
-//		m_Registry.replace<Transform3DComponent>(cube, glm::vec3{newPos.x, newPos.y, newPos.z});
 
 		m_Display.update();
 	}
