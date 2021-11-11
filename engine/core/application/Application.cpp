@@ -33,11 +33,12 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Editor.addReloadButtonListener([this]() {
 		m_RegistryUtil.restore<RigidBody2DComponent>(m_Registry);
 		m_World2D = std::make_unique<b2World>(m_Gravity);
+
+		m_PhysicsCommon.destroyPhysicsWorld(m_World3D);
+		m_World3D = m_PhysicsCommon.createPhysicsWorld();
 	});
 
-	rp3d::PhysicsWorld::WorldSettings settings;
-	settings.gravity = rp3d::Vector3(0, -9.81, 0);
-	m_World3D = m_PhysicsCommon.createPhysicsWorld(settings);
+	m_World3D = m_PhysicsCommon.createPhysicsWorld();
 }
 
 void Survive::Application::run()
