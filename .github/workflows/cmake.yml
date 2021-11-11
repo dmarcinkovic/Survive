@@ -20,13 +20,13 @@ jobs:
         with:
             submodules: recursive
 
+      - name: Update packages
+        run: |
+          sudo apt-get update
+
       - name: Install compiler
         run: |
           sudo apt-get install g++-10
-
-      - name: Update packages
-        run : |
-          sudo apt-get update
 
       - name: Install dependencies
         run: |
