@@ -3,7 +3,6 @@
 //
 
 #include <glm/glm.hpp>
-#include <Box2D/Box2D.h>
 
 #include "PhysicSystem.h"
 #include "Components.h"

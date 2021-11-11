@@ -11,7 +11,7 @@
 #include <optional>
 #include <glm/glm.hpp>
 #include <imgui.h>
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 
 #include "Character.h"
 #include "Camera.h"
