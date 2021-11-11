@@ -5,7 +5,7 @@
 #ifndef SURVIVE_EDGECOLLIDER2DCOMPONENT_H
 #define SURVIVE_EDGECOLLIDER2DCOMPONENT_H
 
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 
 namespace Survive
 {
@@ -25,7 +25,7 @@ namespace Survive
 		EdgeCollider2DComponent(const b2Vec2 &point1, const b2Vec2 &point2, float density, float friction,
 								float elasticity)
 		{
-			edgeShape.Set(point1, point2);
+			edgeShape.SetTwoSided(point1, point2);
 			fixtureDef.density = density;
 			fixtureDef.friction = friction;
 			fixtureDef.restitution = elasticity;

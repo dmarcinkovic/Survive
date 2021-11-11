@@ -6,8 +6,8 @@
 #define SURVIVE_APPLICATION_H
 
 #include <memory>
-#include <Box2D/Box2D.h>
 #include <reactphysics3d/reactphysics3d.h>
+#include <box2d/box2d.h>
 
 #include "entt.hpp"
 #include "Editor.h"
