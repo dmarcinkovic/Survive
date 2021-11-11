@@ -107,11 +107,6 @@ void Survive::Text::setText(std::string newText, Loader &loader)
 		return;
 	}
 
-	if (!m_Font.isFontLoaded())
-	{
-		return;
-	}
-
 	m_TextureCoordinates.clear();
 	m_Vertices.clear();
 

@@ -68,31 +68,6 @@ void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
 	m_OutlineRenderer.removeObject(registry);
 }
 
-void Survive::Renderer::renderToFbo(entt::registry &registry, Camera &camera) const
-{
-	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
-											Constants::SHADOW_HEIGHT);
-
-	renderToWaterFrameBuffers(registry, camera);
-
-	m_SceneFrameBuffer.bindFrameBuffer();
-	Display::clearWindow();
-
-	m_MousePicking.render(registry, camera);
-
-	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
-	render3DScene(registry, camera);
-	m_WaterRenderer.render(registry, camera, m_Light);
-
-	m_OutlineRenderer.render(registry, camera);
-	render2DScene(registry, camera);
-	FrameBuffer::unbindFrameBuffer();
-
-	m_BloomRenderer.render(registry);
-
-	resetViewport();
-}
-
 GLuint Survive::Renderer::getRenderedTexture() const
 {
 	return m_Scene;
@@ -164,5 +139,35 @@ void Survive::Renderer::addMousePickingListener(const MousePickingListener &list
 void Survive::Renderer::popMousePickingListener()
 {
 	m_MousePicking.popListener();
+}
+
+void Survive::Renderer::renderScene(entt::registry &registry, Camera &camera, bool renderEditor) const
+{
+	m_ShadowFrameBuffer.renderToFrameBuffer(registry, m_ShadowRenderer, camera, m_Light, Constants::SHADOW_WIDTH,
+											Constants::SHADOW_HEIGHT);
+
+	renderToWaterFrameBuffers(registry, camera);
+	m_SceneFrameBuffer.bindFrameBuffer();
+	Display::clearWindow();
+
+	if (renderEditor)
+	{
+		m_MousePicking.render(registry, camera);
+	}
+
+	glViewport(0, 0, m_SceneSize.first, m_SceneSize.second);
+	render3DScene(registry, camera);
+	m_WaterRenderer.render(registry, camera, m_Light);
+
+	if (renderEditor)
+	{
+		m_OutlineRenderer.render(registry, camera);
+	}
+
+	render2DScene(registry, camera);
+	FrameBuffer::unbindFrameBuffer();
+
+	m_BloomRenderer.render(registry);
+	resetViewport();
 }
 

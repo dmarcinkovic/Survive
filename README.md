@@ -29,6 +29,7 @@
 * `openAL`: Cross-platform 3D audio API.
 * `glm`: C++ library for OpenGL GLSL type-base mathematics
 * `libtbb`: Parallelism library for C++ 
+* `Box2D`: A 2D physics engine for games
 
 ## Linux
 
@@ -45,6 +46,7 @@
         * ` $ apt install libalut-dev`
         * ` $ apt install libglm-dev`
         * ` $ apt install libtbb-dev`
+        * ` $ apt install libbox2d-dev`
 
     - ##### Gentoo
         * ` $ emerge dev-util/pkgconfig`
@@ -57,6 +59,7 @@
         * ` $ emerge media-libs/freealut`
         * ` $ emerge media-libs/glm`
         * ` $ emerge dev-cpp/tbb`
+        * ` $ emerge games-engines/box2d`
 
     - ##### Archlinux
         * ` $ pacman -S pkg-config`
@@ -69,6 +72,7 @@
         * ` $ pacman -S freealut`
         * ` $ pacman -S glm`
         * ` $ pacman -S tbb`
+        * ` $ pacman -S box2d`
 
     - ##### Fedora
         * ` $ dnf install pkgconf-pkg-config`
@@ -81,6 +85,7 @@
         * ` $ dnf install freealut-devel`
         * ` $ dnf install glm-devel`
         * ` $ dnf install tbb-devel`
+        * ` $ dnf install Box2D-devel`
 
 ### Build and run
 

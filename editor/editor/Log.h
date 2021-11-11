@@ -42,6 +42,8 @@ namespace Survive
 		Texture m_InfoIcon;
 		Texture m_WarnIcon;
 
+		static bool m_LogViewed;
+
 	public:
 		Log();
 

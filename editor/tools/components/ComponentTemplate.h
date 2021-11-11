@@ -178,8 +178,7 @@ namespace Survive
 				component.audioSource.setGain(component.gain);
 			}
 
-			EditorUtil::toggleButton("Toggle button", component.playOnLoop);
-
+			EditorUtil::toggleButton("Play on loop", component.playOnLoop);
 			ImGui::Columns(2);
 			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();
@@ -240,6 +239,124 @@ namespace Survive
 			ImGui::Separator();
 
 			EditorUtil::drawColumnInputBool("Animate", "##Animate sprites", component.animating);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(BoxCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Box collider 2D", visible))
+		{
+			static constexpr float max = std::numeric_limits<float>::max();
+			ImGui::Columns(2, nullptr, false);
+
+			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
+			{
+				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+			}
+
+			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
+			{
+				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+			}
+
+			b2Vec2 oldCenter = component.center;
+			if (EditorUtil::drawColumnDragFloat2("Center", "##Box center", component.center))
+			{
+				EditorUtil::moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
+			}
+
+			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(CircleCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
+		{
+			static constexpr float max = std::numeric_limits<float>::max();
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
+			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(EdgeCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Edge collider 2D", visible))
+		{
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1);
+			EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2);
+
+			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", component.fixtureDef.restitution);
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(PolygonCollider2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Polygon collider 2D", visible))
+		{
+			EditorUtil::addPolygonPoint(component.points, component.polygonShape);
+
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
+
+			ImGui::Separator();
+			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", component.fixtureDef.friction, 0, 1,
+											0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", component.fixtureDef.restitution);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(RigidBody2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Rigid body 2D", visible))
+		{
+			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
+
+			int currentItem = component.bodyDefinition.type;
+			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
+			{
+				component.bodyDefinition.type = static_cast<b2BodyType>(currentItem);
+			}
+
+			ImGui::Separator();
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", component.bodyDefinition.linearDamping);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", component.bodyDefinition.angularDamping);
+			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", component.bodyDefinition.gravityScale);
+
+			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity",
+											 component.bodyDefinition.linearVelocity);
+			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", component.bodyDefinition.fixedRotation);
 
 			ImGui::Columns();
 		}

@@ -87,7 +87,7 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 
-	if (registry.has<ShadowComponent>(entity))
+	if (registry.any_of<ShadowComponent>(entity))
 	{
 		const ShadowComponent &shadowComponent = registry.get<ShadowComponent>(entity);
 		m_Shader.loadAddShadow(shadowComponent.loadShadow);
@@ -123,7 +123,7 @@ Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 
 void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
 {
-	if (registry.has<OutlineComponent>(entity))
+	if (registry.any_of<OutlineComponent>(entity))
 	{
 		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
 		if (outline.drawOutline)
@@ -139,7 +139,7 @@ void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::
 
 void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
 {
-	if (registry.has<BloomComponent>(entity))
+	if (registry.any_of<BloomComponent>(entity))
 	{
 		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
@@ -159,7 +159,7 @@ void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::e
 {
 	m_DefaultTexture.bindTexture(2);
 
-	if (registry.has<ReflectionComponent>(entity) && m_SkyBox != entt::null)
+	if (registry.any_of<ReflectionComponent>(entity) && m_SkyBox != entt::null)
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
@@ -176,7 +176,7 @@ void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::e
 {
 	m_DefaultTexture.bindTexture(2);
 
-	if (registry.has<RefractionComponent>(entity) && m_SkyBox != entt::null)
+	if (registry.any_of<RefractionComponent>(entity) && m_SkyBox != entt::null)
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
@@ -198,7 +198,7 @@ void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, ent
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
 
-	if (registry.has<SpriteComponent>(entity))
+	if (registry.any_of<SpriteComponent>(entity))
 	{
 		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
 		m_Shader.loadColor(spriteComponent.color);

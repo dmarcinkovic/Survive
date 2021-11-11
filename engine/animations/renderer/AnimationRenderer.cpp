@@ -104,7 +104,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 
-	if (registry.has<ShadowComponent>(entity))
+	if (registry.any_of<ShadowComponent>(entity))
 	{
 		ShadowComponent shadowComponent = registry.get<ShadowComponent>(entity);
 		m_Shader.loadAddShadow(shadowComponent.loadShadow);
@@ -124,7 +124,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 
 void Survive::AnimationRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
 {
-	if (registry.has<BloomComponent>(entity))
+	if (registry.any_of<BloomComponent>(entity))
 	{
 		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
@@ -145,7 +145,7 @@ Survive::AnimationRenderer::renderReflectionAndRefraction(entt::registry &regist
 {
 	m_DefaultTexture.bindTexture(2);
 
-	if (registry.has<ReflectionComponent>(entity) && m_Skybox != entt::null)
+	if (registry.any_of<ReflectionComponent>(entity) && m_Skybox != entt::null)
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
@@ -157,7 +157,7 @@ Survive::AnimationRenderer::renderReflectionAndRefraction(entt::registry &regist
 		m_Shader.loadReflectionFactor(0.0f);
 	}
 
-	if (registry.has<RefractionComponent>(entity) && m_Skybox != entt::null)
+	if (registry.any_of<RefractionComponent>(entity) && m_Skybox != entt::null)
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
@@ -172,7 +172,7 @@ Survive::AnimationRenderer::renderReflectionAndRefraction(entt::registry &regist
 
 void Survive::AnimationRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
 {
-	if (registry.has<OutlineComponent>(entity))
+	if (registry.any_of<OutlineComponent>(entity))
 	{
 		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
 		if (outline.drawOutline)
@@ -189,7 +189,7 @@ void Survive::AnimationRenderer::drawOutline(const entt::registry &registry, ent
 void Survive::AnimationRenderer::loadMaterial(const entt::registry &registry, entt::entity entity) const
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
-	if (registry.has<SpriteComponent>(entity))
+	if (registry.any_of<SpriteComponent>(entity))
 	{
 		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
 		m_Shader.loadColor(spriteComponent.color);

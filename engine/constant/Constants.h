@@ -22,6 +22,7 @@ namespace Survive
 		constexpr static float WATER_HEIGHT = -6;
 		constexpr static int BLOOM_WIDTH = 100;
 		constexpr static int BLOOM_HEIGHT = 100;
+		constexpr static float BOX2D_SCALE = 10.0f;
 	};
 }
 

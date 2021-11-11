@@ -62,7 +62,7 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.1f, 0.3f, 0.3f, 1.0f));
 
 	registry.each([&](const entt::entity entity) {
-		if (registry.has<TagComponent>(entity))
+		if (registry.any_of<TagComponent>(entity))
 		{
 			const TagComponent &tag = registry.get<TagComponent>(entity);
 			auto index = static_cast<int>(entity);

@@ -15,7 +15,7 @@ void Survive::AudioSystem::update(entt::registry &registry)
 		Source &source = soundComponent.audioSource;
 		source.setOnLoop(soundComponent.playOnLoop);
 
-		if (registry.has<Transform3DComponent>(entity))
+		if (registry.any_of<Transform3DComponent>(entity))
 		{
 			const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 			source.setPosition(transform.position);

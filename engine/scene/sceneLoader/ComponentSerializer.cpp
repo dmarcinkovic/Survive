@@ -8,7 +8,7 @@
 void Survive::ComponentSerializer::saveAnimationComponent(entt::registry &registry, entt::entity entity,
 														  std::ofstream &writer)
 {
-	if (registry.has<AnimationComponent>(entity))
+	if (registry.any_of<AnimationComponent>(entity))
 	{
 		writer << "\tcomponent:AnimationComponent\n";
 	}
@@ -17,7 +17,7 @@ void Survive::ComponentSerializer::saveAnimationComponent(entt::registry &regist
 void
 Survive::ComponentSerializer::saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-	if (registry.has<BloomComponent>(entity))
+	if (registry.any_of<BloomComponent>(entity))
 	{
 		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
@@ -30,7 +30,7 @@ Survive::ComponentSerializer::saveBloomComponent(entt::registry &registry, entt:
 void Survive::ComponentSerializer::saveReflectionComponent(entt::registry &registry, entt::entity entity,
 														   std::ofstream &writer)
 {
-	if (registry.has<ReflectionComponent>(entity))
+	if (registry.any_of<ReflectionComponent>(entity))
 	{
 		const ReflectionComponent &reflectionComponent = registry.get<ReflectionComponent>(entity);
 
@@ -42,7 +42,7 @@ void Survive::ComponentSerializer::saveReflectionComponent(entt::registry &regis
 void Survive::ComponentSerializer::saveRefractionComponent(entt::registry &registry, entt::entity entity,
 														   std::ofstream &writer)
 {
-	if (registry.has<RefractionComponent>(entity))
+	if (registry.any_of<RefractionComponent>(entity))
 	{
 		const RefractionComponent &refractionComponent = registry.get<RefractionComponent>(entity);
 
@@ -55,7 +55,7 @@ void Survive::ComponentSerializer::saveRefractionComponent(entt::registry &regis
 void Survive::ComponentSerializer::saveRender2DComponent(entt::registry &registry, entt::entity entity,
 														 std::ofstream &writer)
 {
-	if (registry.has<Render2DComponent>(entity))
+	if (registry.any_of<Render2DComponent>(entity))
 	{
 		const Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
 
@@ -67,7 +67,7 @@ void Survive::ComponentSerializer::saveRender2DComponent(entt::registry &registr
 void Survive::ComponentSerializer::saveRender3DComponent(entt::registry &registry, entt::entity entity,
 														 std::ofstream &writer)
 {
-	if (registry.has<Render3DComponent>(entity))
+	if (registry.any_of<Render3DComponent>(entity))
 	{
 		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
 
@@ -80,7 +80,7 @@ void Survive::ComponentSerializer::saveRender3DComponent(entt::registry &registr
 void Survive::ComponentSerializer::saveRigidBodyComponent(entt::registry &registry, entt::entity entity,
 														  std::ofstream &writer)
 {
-	if (registry.has<RigidBodyComponent>(entity))
+	if (registry.any_of<RigidBodyComponent>(entity))
 	{
 		const RigidBodyComponent &rigidBodyComponent = registry.get<RigidBodyComponent>(entity);
 
@@ -92,7 +92,7 @@ void Survive::ComponentSerializer::saveRigidBodyComponent(entt::registry &regist
 void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry,
 													   entt::entity entity, std::ofstream &writer)
 {
-	if (registry.has<ShadowComponent>(entity))
+	if (registry.any_of<ShadowComponent>(entity))
 	{
 		const ShadowComponent &shadowComponent = registry.get<ShadowComponent>(entity);
 
@@ -104,7 +104,7 @@ void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry,
 void Survive::ComponentSerializer::saveSoundComponent(entt::registry &registry,
 													  entt::entity entity, std::ofstream &writer)
 {
-	if (registry.has<SoundComponent>(entity))
+	if (registry.any_of<SoundComponent>(entity))
 	{
 		const SoundComponent &soundComponent = registry.get<SoundComponent>(entity);
 
@@ -120,7 +120,7 @@ void Survive::ComponentSerializer::saveSoundComponent(entt::registry &registry,
 void
 Survive::ComponentSerializer::saveSpriteComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-	if (registry.has<SpriteComponent>(entity))
+	if (registry.any_of<SpriteComponent>(entity))
 	{
 		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
 
@@ -132,7 +132,7 @@ Survive::ComponentSerializer::saveSpriteComponent(entt::registry &registry, entt
 void Survive::ComponentSerializer::saveSpriteSheetComponent(entt::registry &registry, entt::entity entity,
 															std::ofstream &writer)
 {
-	if (registry.has<SpriteSheetComponent>(entity))
+	if (registry.any_of<SpriteSheetComponent>(entity))
 	{
 		const SpriteSheetComponent &component = registry.get<SpriteSheetComponent>(entity);
 
@@ -150,7 +150,7 @@ void Survive::ComponentSerializer::saveSpriteSheetComponent(entt::registry &regi
 void Survive::ComponentSerializer::saveTransform3DComponent(entt::registry &registry, entt::entity entity,
 															std::ofstream &writer)
 {
-	if (registry.has<Transform3DComponent>(entity))
+	if (registry.any_of<Transform3DComponent>(entity))
 	{
 		const Transform3DComponent &transformComponent = registry.get<Transform3DComponent>(entity);
 
@@ -175,7 +175,7 @@ void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *
 void
 Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-	if (registry.has<TextComponent>(entity))
+	if (registry.any_of<TextComponent>(entity))
 	{
 		const TextComponent &textComponent = registry.get<TextComponent>(entity);
 		const Text &text = textComponent.text;

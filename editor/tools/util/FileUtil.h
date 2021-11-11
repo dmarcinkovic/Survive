@@ -28,8 +28,6 @@ namespace Survive
 		static std::string getFileSize(unsigned long fileSize, std::filesystem::file_type type);
 
 		static const char *getFileType(std::filesystem::file_type type);
-
-		static bool isExecutable(const std::filesystem::path &file);
 	};
 }
 

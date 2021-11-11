@@ -8,6 +8,7 @@
 #include <imgui.h>
 #include <utility>
 #include <ImGuizmo.h>
+#include <functional>
 
 #include "ContentBrowser.h"
 #include "SkyboxWindow.h"
@@ -27,6 +28,8 @@ namespace Survive
 	{
 		ENTITY, CAMERA, NONE
 	};
+
+	using ButtonListener = std::function<void()>;
 
 	class Editor
 	{
@@ -49,19 +52,21 @@ namespace Survive
 
 		Log m_Log;
 
-		bool m_OpenDialog = false;
-		bool m_SaveDialog = false;
-		bool m_SaveAsDialog = false;
+		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
+		Texture m_PlayButton, m_ReloadButton;
+		bool m_IsScenePlaying{};
 
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
 
 		SceneSerializer m_SceneLoader;
-		bool m_IsSceneWindowFocused = true;
 		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
+
+		std::vector<ButtonListener> m_PlayButtonListeners;
+		std::vector<ButtonListener> m_ReloadButtonListeners;
 
 	public:
 		explicit Editor(Renderer &renderer);
@@ -74,8 +79,6 @@ namespace Survive
 
 		void handleKeyEvents(const EventHandler &eventHandler);
 
-		bool &isSceneWindowFocused();
-
 		static float getSceneWidth();
 
 		static float getSceneHeight();
@@ -86,8 +89,14 @@ namespace Survive
 
 		static bool isSceneFocused();
 
+		[[nodiscard]] bool isScenePlaying() const;
+
+		void addPlayButtonListener(const ButtonListener &listener);
+
+		void addReloadButtonListener(const ButtonListener &listener);
+
 	private:
-		void renderSceneWindow(const Camera &camera, entt::registry &registry);
+		void renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry);
 
 		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 
@@ -104,6 +113,16 @@ namespace Survive
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer);
 
 		static bool isInsideScene();
+
+		void drawStatusBar();
+
+		void drawPlayAndPauseButtons(float buttonSize);
+
+		static void setPlayButtonColorStyle();
+
+		static void collectSceneData();
+
+		static void notifyListeners(const std::vector<ButtonListener> &listeners);
 	};
 }
 
