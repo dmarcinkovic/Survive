@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(OpenGlLinkers -lGLU -lGL -lGLEW -lopenal)
 set(TBB_LIBRARY -ltbb)
-set(BOX2D_LIBRARY Box2D)
+set(BOX2D_LIBRARY box2d)
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
