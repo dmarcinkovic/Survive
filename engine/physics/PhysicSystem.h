@@ -5,7 +5,7 @@
 #ifndef SURVIVE_PHYSICSYSTEM_H
 #define SURVIVE_PHYSICSYSTEM_H
 
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 
 #include "entt.hpp"
 
