@@ -28,10 +28,13 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		PhysicSystem::init(m_Registry, m_World2D.get(), m_World3D);
 
 		m_RegistryUtil.store<RigidBody2DComponent>(m_Registry);
+		m_RegistryUtil.store<RigidBody3DComponent>(m_Registry);
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
 		m_RegistryUtil.restore<RigidBody2DComponent>(m_Registry);
+		m_RegistryUtil.restore<RigidBody3DComponent>(m_Registry);
+
 		m_World2D = std::make_unique<b2World>(m_Gravity);
 
 		m_PhysicsCommon.destroyPhysicsWorld(m_World3D);
