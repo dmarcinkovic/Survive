@@ -95,7 +95,12 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 
 		rigidBody.body = world->createRigidBody({position, orientation});
 
-		// TODO init body mass, linearDamping...
+		rigidBody.body->setType(rigidBody.bodyType);
+		rigidBody.body->setMass(rigidBody.mass);
+		rigidBody.body->setAngularDamping(rigidBody.angularDrag);
+		rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
+		rigidBody.body->setLinearDamping(rigidBody.linearDamping);
+		rigidBody.body->enableGravity(rigidBody.useGravity);
 	}
 }
 
