@@ -94,13 +94,7 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 		rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(rotation.x, rotation.y, rotation.z);
 
 		rigidBody.body = world->createRigidBody({position, orientation});
-
-		rigidBody.body->setType(rigidBody.bodyType);
-		rigidBody.body->setMass(rigidBody.mass);
-		rigidBody.body->setAngularDamping(rigidBody.angularDrag);
-		rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
-		rigidBody.body->setLinearDamping(rigidBody.linearDamping);
-		rigidBody.body->enableGravity(rigidBody.useGravity);
+		initializeRigidBody3D(rigidBody);
 	}
 }
 
@@ -150,4 +144,14 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
 		body->CreateFixture(&polygonCollider.fixtureDef);
 	}
+}
+
+void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBody)
+{
+	rigidBody.body->setType(rigidBody.bodyType);
+	rigidBody.body->setMass(rigidBody.mass);
+	rigidBody.body->setAngularDamping(rigidBody.angularDrag);
+	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
+	rigidBody.body->setLinearDamping(rigidBody.linearDamping);
+	rigidBody.body->enableGravity(rigidBody.useGravity);
 }

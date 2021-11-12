@@ -9,6 +9,7 @@
 #include <box2d/box2d.h>
 
 #include "entt.hpp"
+#include "RigidBody3DComponent.h"
 
 namespace Survive
 {
@@ -37,6 +38,8 @@ namespace Survive
 		static void addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void initializeRigidBody3D(RigidBody3DComponent &rigidBody);
 	};
 }
 
