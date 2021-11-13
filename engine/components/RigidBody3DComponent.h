@@ -15,17 +15,16 @@ namespace Survive
 
 		rp3d::BodyType bodyType = rp3d::BodyType::STATIC;
 		float mass{};
+		bool useGravity = true;
 		float linearDamping{};
 		rp3d::Vector3 linearVelocity = rp3d::Vector3{0.0f, 0.0f, 0.0f};
 		float angularDrag{};
-		bool useGravity = true;
 
 		RigidBody3DComponent() = default;
 
-		RigidBody3DComponent(rp3d::BodyType bodyType, float mass, float linearDamping = 0.0f,
+		RigidBody3DComponent(rp3d::BodyType bodyType, float mass, bool useGravity = true, float linearDamping = 0.0f,
 							 const rp3d::Vector3 &linearVelocity = rp3d::Vector3{0.0f, 0.0f, 0.0f},
-							 float angularDrag = 0.0f,
-							 bool useGravity = true)
+							 float angularDrag = 0.0f)
 				: bodyType(bodyType), mass(mass), linearDamping(linearDamping),
 				  linearVelocity(linearVelocity), angularDrag(angularDrag), useGravity(useGravity)
 		{
