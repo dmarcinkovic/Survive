@@ -18,7 +18,8 @@ namespace Survive
 	public:
 		static void update(entt::registry &registry);
 
-		static void init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D);
+		static void init(entt::registry &registry, b2World *world2D, rp3d::PhysicsCommon &physicsCommon,
+						 rp3d::PhysicsWorld *world3D);
 
 	private:
 		static void update3DPhysics(entt::registry &registry);
@@ -27,7 +28,8 @@ namespace Survive
 
 		static void init2DPhysics(entt::registry &registry, b2World *world);
 
-		static void init3DPhysics(entt::registry &registry, rp3d::PhysicsWorld *world);
+		static void
+		init3DPhysics(entt::registry &registry, rp3d::PhysicsCommon &physicsCommon, rp3d::PhysicsWorld *world);
 
 		static void initFixture(entt::registry &registry, entt::entity entity, b2Body *body);
 

@@ -53,10 +53,11 @@ void Survive::PhysicSystem::update3DPhysics(entt::registry &registry)
 	}
 }
 
-void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
+void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsCommon &physicsCommon,
+								 rp3d::PhysicsWorld *world3D)
 {
 	init2DPhysics(registry, world2D);
-	init3DPhysics(registry, world3D);
+	init3DPhysics(registry, physicsCommon, world3D);
 }
 
 void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *world)
@@ -79,7 +80,8 @@ void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *wor
 	}
 }
 
-void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::PhysicsWorld *world)
+void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::PhysicsCommon &physicsCommon,
+										  rp3d::PhysicsWorld *world)
 {
 	auto view = registry.view<RigidBody3DComponent, Transform3DComponent>();
 
@@ -95,6 +97,15 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 
 		rigidBody.body = world->createRigidBody({position, orientation});
 		initializeRigidBody3D(rigidBody);
+
+		if (registry.any_of<BoxCollider3DComponent>(entity))
+		{
+			BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
+			boxCollider.boxShape = physicsCommon.createBoxShape(boxCollider.position);
+			// TODO this is center: allow user to change it
+			rigidBody.body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
+//			rigidBody.body->updateMassPropertiesFromColliders();
+		}
 	}
 }
 
@@ -149,7 +160,10 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBody)
 {
 	rigidBody.body->setType(rigidBody.bodyType);
-	rigidBody.body->setMass(rigidBody.mass);
+	if (rigidBody.bodyType == rp3d::BodyType::DYNAMIC)
+	{
+		rigidBody.body->setMass(rigidBody.mass);
+	}
 	rigidBody.body->setAngularDamping(rigidBody.angularDrag);
 	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
 	rigidBody.body->setLinearDamping(rigidBody.linearDamping);

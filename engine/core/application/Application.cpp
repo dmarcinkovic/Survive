@@ -16,6 +16,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("res/cube.obj", m_Loader), Texture()));
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
 	m_Registry.emplace<RigidBody3DComponent>(cube, rp3d::BodyType::DYNAMIC, 1.0f);
+	m_Registry.emplace<BoxCollider3DComponent>(cube, rp3d::Vector3{1.0f, 1.0f, 1.0f});
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
@@ -24,9 +25,10 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("res/cube.obj", m_Loader), Texture()));
 	m_Registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});
 	m_Registry.emplace<RigidBody3DComponent>(ground, rp3d::BodyType::STATIC, 1.0f, false);
+	m_Registry.emplace<BoxCollider3DComponent>(ground, rp3d::Vector3{6, 0.5f, 8});
 
 	m_Editor.addPlayButtonListener([this]() {
-		PhysicSystem::init(m_Registry, m_World2D.get(), m_World3D);
+		PhysicSystem::init(m_Registry, m_World2D.get(), m_PhysicsCommon, m_World3D);
 
 		m_RegistryUtil.store<RigidBody2DComponent>(m_Registry);
 		m_RegistryUtil.store<RigidBody3DComponent>(m_Registry);
