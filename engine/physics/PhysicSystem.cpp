@@ -3,6 +3,7 @@
 //
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include "PhysicSystem.h"
 #include "Components.h"
@@ -49,7 +50,9 @@ void Survive::PhysicSystem::update3DPhysics(entt::registry &registry)
 		const rp3d::Vector3 &position = transform.getPosition();
 		transformComponent.position = glm::vec3{position.x, position.y, position.z};
 
-		// TODO update rotation
+		const rp3d::Quaternion &rotation = transform.getOrientation();
+		glm::quat quaternion{rotation.w, rotation.x, rotation.y, rotation.z};
+		transformComponent.rotation = glm::degrees(glm::eulerAngles(quaternion));
 	}
 }
 
