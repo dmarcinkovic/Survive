@@ -101,14 +101,7 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 		rigidBody.body = world->createRigidBody({position, orientation});
 		initializeRigidBody3D(rigidBody);
 
-		if (registry.any_of<BoxCollider3DComponent>(entity))
-		{
-			BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
-			boxCollider.boxShape = physicsCommon.createBoxShape(boxCollider.position);
-			// TODO this is center: allow user to change it
-			rigidBody.body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
-//			rigidBody.body->updateMassPropertiesFromColliders();
-		}
+		initColliders3D(registry, entity, physicsCommon, rigidBody.body);
 	}
 }
 
@@ -171,4 +164,22 @@ void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBod
 	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
 	rigidBody.body->setLinearDamping(rigidBody.linearDamping);
 	rigidBody.body->enableGravity(rigidBody.useGravity);
+}
+
+void Survive::PhysicSystem::initColliders3D(entt::registry &registry, entt::entity entity,
+											rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+{
+	initBox3DCollider(registry, entity, physicsCommon, body);
+}
+
+void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+{
+	if (registry.any_of<BoxCollider3DComponent>(entity))
+	{
+		BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
+		boxCollider.boxShape = physicsCommon.createBoxShape(boxCollider.position);
+		// TODO this is center: allow user to change it
+		body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
+//			rigidBody.body->updateMassPropertiesFromColliders();
+	}
 }

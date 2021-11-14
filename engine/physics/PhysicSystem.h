@@ -42,6 +42,13 @@ namespace Survive
 		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void initializeRigidBody3D(RigidBody3DComponent &rigidBody);
+
+		static void initColliders3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
+									rp3d::RigidBody *body);
+
+		static void
+		initBox3DCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
+						  rp3d::RigidBody *body);
 	};
 }
 
