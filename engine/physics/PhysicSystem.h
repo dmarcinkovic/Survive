@@ -31,7 +31,7 @@ namespace Survive
 		static void
 		init3DPhysics(entt::registry &registry, rp3d::PhysicsCommon &physicsCommon, rp3d::PhysicsWorld *world);
 
-		static void initFixture(entt::registry &registry, entt::entity entity, b2Body *body);
+		static void initColliders2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void addBoxCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 

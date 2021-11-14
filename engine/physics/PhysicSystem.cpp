@@ -79,7 +79,7 @@ void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *wor
 		rigidBody.bodyDefinition.angle = glm::radians(transform.rotation.z);
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
-		initFixture(registry, entity, rigidBody.body);
+		initColliders2D(registry, entity, rigidBody.body);
 	}
 }
 
@@ -112,7 +112,7 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 	}
 }
 
-void Survive::PhysicSystem::initFixture(entt::registry &registry, entt::entity entity, b2Body *body)
+void Survive::PhysicSystem::initColliders2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
 	addBoxCollider(registry, entity, body);
 	addEdgeCollider(registry, entity, body);
