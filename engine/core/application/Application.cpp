@@ -9,6 +9,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer), m_World2D(std::make_unique<b2World>(m_Gravity))
 {
+	m_Camera.position = glm::vec3{0, 0, 7};
+
 	auto cube = m_Registry.create();
 	m_Registry.emplace<TagComponent>(cube, "cube");
 	m_Registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 2, -10}, glm::vec3{1.0f}, glm::vec3{0, 30, 0});
