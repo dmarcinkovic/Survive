@@ -9,8 +9,9 @@ std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
 bool Survive::Log::m_LogViewed = true;
 
 Survive::Log::Log()
-		: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
-		  m_WarnIcon(Loader::loadTexture("res/warn.png"))
+		: m_ErrorIcon(Loader::loadTexture("assets/textures/error.png")),
+		  m_InfoIcon(Loader::loadTexture("assets/textures/info.png")),
+		  m_WarnIcon(Loader::loadTexture("assets/textures/warn.png"))
 {
 }
 

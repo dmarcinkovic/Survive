@@ -12,18 +12,18 @@
 #include "EditorUtil.h"
 
 Survive::EditorUtil::EditorUtil()
-		: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
-		  m_TextureIcon(Loader::loadTexture("res/texture.png")),
+		: m_FontIcon(Loader::loadTexture("assets/textures/font_icon.jpg")),
+		  m_TextureIcon(Loader::loadTexture("assets/textures/texture.png")),
 		  m_Items{"Arial", "Candara"},
-		  m_FontInfo{{"res/arial.png",   "res/arial.fnt"},
-					 {"res/candara.png", "res/candara.fnt"}}
+		  m_FontInfo{{"assets/fonts/arial.png",   "assets/fonts/arial.fnt"},
+					 {"assets/fonts/candara.png", "assets/fonts/candara.fnt"}}
 {
-	Font arial("res/arial.png");
-	arial.loadFontFromFntFile("res/arial.fnt");
+	Font arial("assets/fonts/arial.png");
+	arial.loadFontFromFntFile("assets/fonts/arial.fnt");
 	m_Fonts.emplace_back(arial);
 
-	Font candara("res/candara.png");
-	candara.loadFontFromFntFile("res/candara.fnt");
+	Font candara("assets/fonts/candara.png");
+	candara.loadFontFromFntFile("assets/fonts/candara.fnt");
 	m_Fonts.emplace_back(candara);
 }
 

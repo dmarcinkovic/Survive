@@ -21,8 +21,8 @@ bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(Renderer &renderer)
 		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture()),
-		  m_PlayButton(Loader::loadTexture("res/play_button.png")),
-		  m_ReloadButton(Loader::loadTexture("res/reload_button.png"))
+		  m_PlayButton(Loader::loadTexture("assets/textures/play_button.png")),
+		  m_ReloadButton(Loader::loadTexture("assets/textures/reload_button.png"))
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
