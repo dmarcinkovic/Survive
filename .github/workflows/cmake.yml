@@ -30,7 +30,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev libbox2d-dev
+          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev
+
+      - name: Install box2d
+        run: |
+          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d-dev_2.4.1-2_amd64.deb
+          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d2_2.4.1-2_amd64.deb
+          sudo dpkg -i libbox2d2_2.4.1-2_amd64.deb
+          sudo dpkg -i libbox2d-dev_2.4.1-2_amd64.deb
 
       - name: Build executable
         run: |
