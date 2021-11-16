@@ -36,21 +36,24 @@ void Survive::Gizmos::newFrame()
 
 void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 {
-	if (eventHandler.isKeyPressed(Key::W))
+	if (!m_Gizmos.isEnabled())
 	{
-		m_Operation = ImGuizmo::OPERATION::TRANSLATE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::E))
-	{
-		m_Operation = ImGuizmo::OPERATION::ROTATE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::R))
-	{
-		m_Operation = ImGuizmo::OPERATION::SCALE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
-	{
-		validOperation = false;
+		if (eventHandler.isKeyPressed(Key::W))
+		{
+			m_Operation = ImGuizmo::OPERATION::TRANSLATE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::E))
+		{
+			m_Operation = ImGuizmo::OPERATION::ROTATE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::R))
+		{
+			m_Operation = ImGuizmo::OPERATION::SCALE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::ESCAPE))
+		{
+			validOperation = false;
+		}
 	}
 
 	if (!validOperation)
