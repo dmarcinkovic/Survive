@@ -125,7 +125,7 @@ namespace Survive
 		static void notifyListeners(const std::vector<ButtonListener> &listeners);
 
 		static bool drawImageButton(const Texture &image, bool disabled, const ImVec2 &buttonSize,
-							   const std::vector<ButtonListener> &buttonListener);
+							   const std::vector<ButtonListener> &buttonListener, const char *tooltipText);
 	};
 }
 

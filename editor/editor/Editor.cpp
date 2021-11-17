@@ -354,12 +354,13 @@ void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
 
 		ImVec2 playButtonSize{buttonSize * 1.2f, buttonSize};
-		m_IsScenePlaying = drawImageButton(m_PlayButton, m_IsScenePlaying, playButtonSize, m_PlayButtonListeners);
+		m_IsScenePlaying = drawImageButton(m_PlayButton, m_IsScenePlaying, playButtonSize, m_PlayButtonListeners,
+										   "Play scene");
 		ImGui::SameLine();
 
 		ImVec2 reloadButtonSize{buttonSize * 1.2f, buttonSize * 1.2f};
 		m_IsScenePlaying = !drawImageButton(m_ReloadButton, !m_IsScenePlaying, reloadButtonSize,
-											m_ReloadButtonListeners);
+											m_ReloadButtonListeners, "Reload scene");
 
 		ImGui::EndMenuBar();
 	}
@@ -414,7 +415,7 @@ void Survive::Editor::notifyListeners(const std::vector<ButtonListener> &listene
 }
 
 bool Survive::Editor::drawImageButton(const Texture &image, bool disabled, const ImVec2 &buttonSize,
-									  const std::vector<ButtonListener> &buttonListener)
+									  const std::vector<ButtonListener> &buttonListener, const char *tooltipText)
 {
 	static const ImVec2 uv0(0, 1);
 	static const ImVec2 uv1(1, 0);
@@ -432,6 +433,13 @@ bool Survive::Editor::drawImageButton(const Texture &image, bool disabled, const
 	{
 		disabled = !disabled;
 		notifyListeners(buttonListener);
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted(tooltipText);
+		ImGui::EndTooltip();
 	}
 
 	if (popFlag)
