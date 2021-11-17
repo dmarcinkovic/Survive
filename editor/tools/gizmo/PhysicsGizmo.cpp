@@ -7,6 +7,7 @@
 
 void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
+
 	m_BoxGizmos.draw(registry, camera, selectedEntity);
 	m_CircleGizmos.draw(registry, camera, selectedEntity);
 	m_EdgeGizmos.draw(registry, camera, selectedEntity);
