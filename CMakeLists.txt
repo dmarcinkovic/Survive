@@ -23,3 +23,7 @@ include_directories(${GLEW_INCLUDE_DIRS})
 target_link_libraries(Survive box2d)
 target_link_libraries(Survive ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLFW3_LIBRARY} ${GLEW_LIBRARY} ${TBB_LIBRARY} ${CMAKE_DL_LIBS})
 
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/engine/core/shader/sources DESTINATION engine/core/shader)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets DESTINATION .)
+install(FILES ${CMAKE_SOURCE_DIR}/imgui.ini DESTINATION .)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION)
