@@ -204,3 +204,21 @@ ImVec2 Survive::Util::getCenter(const b2Vec2 &localCenter, const Camera &camera,
 	return Util::getScreenPos(camera, modelMatrix, point, x, y, width, height);
 }
 
+glm::vec3 Survive::Util::getMouseRay(const Camera &camera, float x, float y, float width, float height)
+{
+	const glm::mat4 &projectionMatrix = camera.getProjectionMatrix();
+	const glm::mat4 &viewMatrix = camera.getViewMatrix();
+
+	ImVec2 mousePos = ImGui::GetMousePos();
+	ImVec2 screenPos(mousePos.x - x, mousePos.y - y);
+	glm::vec2 viewport{screenPos.x / width, 1.0f - screenPos.y / height};
+
+	glm::vec4 clipSpace{viewport * 2.0f - 1.0f, -1.0f, 1.0f};
+
+	glm::vec4 eyeSpace = glm::inverse(projectionMatrix) * clipSpace;
+	eyeSpace = glm::vec4{eyeSpace.x, eyeSpace.y, -1.0, 0.0f};
+
+	glm::vec3 worldSpace = glm::vec3{glm::inverse(viewMatrix) * eyeSpace};
+	return worldSpace;
+}
+
