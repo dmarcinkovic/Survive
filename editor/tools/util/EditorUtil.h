@@ -75,7 +75,9 @@ namespace Survive
 
 		static void centerText(const std::string &text);
 
-		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file);
+		void
+		loadDraggedModels(entt::registry &registry, const std::filesystem::path &file, const Camera &camera,
+						  float x, float y, float width, float height);
 
 		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
 

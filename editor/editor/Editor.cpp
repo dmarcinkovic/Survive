@@ -42,7 +42,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderMenu();
 	drawStatusBar();
 
-	handleMouseDragging(registry, renderer);
+	handleMouseDragging(registry, renderer, camera);
 
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
@@ -279,7 +279,7 @@ bool Survive::Editor::isSceneFocused()
 	return m_SceneFocused;
 }
 
-void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer)
+void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -298,7 +298,8 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
-					m_EditorUtil.loadDraggedModels(registry, file);
+					m_EditorUtil.loadDraggedModels(registry, file, camera, m_ScenePosX, m_ScenePosY, m_SceneWidth,
+												   m_SceneHeight);
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);

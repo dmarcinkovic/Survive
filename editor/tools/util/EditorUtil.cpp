@@ -9,6 +9,7 @@
 #include "Loader.h"
 #include "ObjParser.h"
 #include "Components.h"
+#include "Util.h"
 #include "EditorUtil.h"
 
 Survive::EditorUtil::EditorUtil()
@@ -293,7 +294,8 @@ void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audio
 	}
 }
 
-void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file)
+void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file,
+											const Camera &camera, float x, float y, float width, float height)
 try
 {
 	Model model = ObjParser::loadObj(file.string(), m_Loader);
@@ -306,6 +308,11 @@ try
 		Render3DComponent renderComponent(TexturedModel(model, Texture()));
 		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
+		registry.emplace<RigidBodyComponent>(entity, false);
+		
+		constexpr float scale = 15.0f;
+		glm::vec3 position = Util::getMouseRay(camera, x, y, width, height) * scale;
+		registry.emplace<Transform3DComponent>(entity, position);
 	}
 } catch (const std::exception &exception)
 {

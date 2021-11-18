@@ -110,7 +110,7 @@ namespace Survive
 
 		static void setColorStyle();
 
-		void handleMouseDragging(entt::registry &registry, Renderer &renderer);
+		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
 
 		static bool isInsideScene();
 
