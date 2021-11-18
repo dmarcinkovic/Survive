@@ -44,11 +44,12 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
+          cmake -D CMAKE_CXX_COMPILER=g++-10 -D CMAKE_INSTALL_PREFIX="" ..
           make
+          make DESTDIR=${{github.workspace}}/build/artifact install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: Artifact
-          path: ${{github.workspace}}/build
+          path: ${{github.workspace}}/build/artifact
