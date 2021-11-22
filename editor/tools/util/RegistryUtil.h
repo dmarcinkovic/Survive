@@ -18,29 +18,49 @@ namespace Survive
 		std::unordered_map<int, Storage> m_Components;
 
 	public:
-		template<typename... Components>
+		template<typename Component, typename... Components>
 		void store(entt::registry &registry)
 		{
-			auto view = registry.view<Components...>();
+			storeComponent<Component>(registry);
+			if constexpr(sizeof...(Components) != 0)
+			{
+				store<Components...>(registry);
+			}
+		}
 
-			for (auto const entity : view)
+		template<typename Component, typename... Components>
+		void restore(entt::registry &registry)
+		{
+			restoreComponent<Component>(registry);
+			if constexpr(sizeof...(Components) != 0)
+			{
+				restore<Components...>(registry);
+			}
+		}
+
+	private:
+		template<typename Component>
+		void storeComponent(entt::registry &registry)
+		{
+			auto view = registry.view<Component>();
+
+			for (auto const entity: view)
 			{
 				storeComponents(entity, registry);
 			}
 		}
 
-		template<typename... Components>
-		void restore(entt::registry &registry)
+		template<typename Components>
+		void restoreComponent(entt::registry &registry)
 		{
-			auto view = registry.view<Components...>();
+			auto view = registry.view<Components>();
 
-			for (auto const entity : view)
+			for (auto const entity: view)
 			{
 				restoreComponents(entity, registry);
 			}
 		}
 
-	private:
 		void storeComponents(entt::entity entity, entt::registry &registry)
 		{
 			auto index = static_cast<int>(entity);
