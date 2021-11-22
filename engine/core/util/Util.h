@@ -64,6 +64,8 @@ namespace Survive
 
 		static ImVec2 getCenter(const b2Vec2 &localCenter, const Camera &camera, const Transform3DComponent &transform,
 								const glm::mat4 &modelMatrix, float x, float y, float width, float height);
+
+		static glm::vec3 getMouseRay(const Camera &camera, float x, float y, float width, float height);
 	};
 }
 

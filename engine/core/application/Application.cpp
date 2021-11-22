@@ -14,7 +14,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<Transform3DComponent>(circle, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
 	m_Registry.emplace<Render2DComponent>(circle,
 										  TexturedModel(m_Loader.renderQuad(),
-														Loader::loadTexture("res/ball.png")));
+														Loader::loadTexture("assets/textures/ball.png")));
 	m_Registry.emplace<RigidBody2DComponent>(circle, b2_dynamicBody);
 	m_Registry.emplace<CircleCollider2DComponent>(circle, 0.25f * 10.0f, 1.0f, 0.3f, 0.5f);
 
@@ -23,7 +23,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
 	m_Registry.emplace<Transform3DComponent>(ground, groundPos);
 	m_Registry.emplace<Render2DComponent>(ground,
-										  TexturedModel(m_Loader.renderQuad(), Loader::loadTexture("res/dirt.png")));
+										  TexturedModel(m_Loader.renderQuad(),
+														Loader::loadTexture("assets/textures/dirt.png")));
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
 	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-2, 0.5}, b2Vec2{2, 0.5}, 1.0f, 0.3, 0.5);
 

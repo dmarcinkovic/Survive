@@ -30,3 +30,8 @@ bool Survive::PhysicsGizmo::isOver()
 {
 	return BoxGizmos::isOver() || CircleGizmos::isOver() || EdgeGizmos::isOver();
 }
+
+bool Survive::PhysicsGizmo::isEnabled() const
+{
+	return m_BoxGizmos.isEnabled() || m_CircleGizmos.isEnabled() || m_EdgeGizmos.isEnabled();
+}

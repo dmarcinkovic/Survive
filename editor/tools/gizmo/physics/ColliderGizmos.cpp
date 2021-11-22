@@ -27,3 +27,8 @@ void Survive::ColliderGizmos::setRect(float x, float y, float width, float heigh
 	m_Width = width;
 	m_Height = height;
 }
+
+bool Survive::ColliderGizmos::isEnabled() const
+{
+	return m_GizmoEnabled;
+}

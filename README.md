@@ -29,7 +29,7 @@
 * `openAL`: Cross-platform 3D audio API.
 * `glm`: C++ library for OpenGL GLSL type-base mathematics
 * `libtbb`: Parallelism library for C++ 
-* `Box2D`: A 2D physics engine for games
+* `Box2D`: A 2D physics engine for games. Make sure to use version 2.4.1 or higher. 
 
 ## Linux
 

@@ -29,6 +29,8 @@ namespace Survive
 		void handleKeyEvents(const EventHandler &eventHandler);
 
 		void setRect(float x, float y, float width, float height);
+
+		[[nodiscard]] bool isEnabled() const;
 	};
 }
 

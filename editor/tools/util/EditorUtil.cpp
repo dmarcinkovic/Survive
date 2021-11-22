@@ -9,21 +9,22 @@
 #include "Loader.h"
 #include "ObjParser.h"
 #include "Components.h"
+#include "Util.h"
 #include "EditorUtil.h"
 
 Survive::EditorUtil::EditorUtil()
-		: m_FontIcon(Loader::loadTexture("res/font_icon.jpg")),
-		  m_TextureIcon(Loader::loadTexture("res/texture.png")),
+		: m_FontIcon(Loader::loadTexture("assets/textures/font_icon.jpg")),
+		  m_TextureIcon(Loader::loadTexture("assets/textures/texture.png")),
 		  m_Items{"Arial", "Candara"},
-		  m_FontInfo{{"res/arial.png",   "res/arial.fnt"},
-					 {"res/candara.png", "res/candara.fnt"}}
+		  m_FontInfo{{"assets/fonts/arial.png",   "assets/fonts/arial.fnt"},
+					 {"assets/fonts/candara.png", "assets/fonts/candara.fnt"}}
 {
-	Font arial("res/arial.png");
-	arial.loadFontFromFntFile("res/arial.fnt");
+	Font arial("assets/fonts/arial.png");
+	arial.loadFontFromFntFile("assets/fonts/arial.fnt");
 	m_Fonts.emplace_back(arial);
 
-	Font candara("res/candara.png");
-	candara.loadFontFromFntFile("res/candara.fnt");
+	Font candara("assets/fonts/candara.png");
+	candara.loadFontFromFntFile("assets/fonts/candara.fnt");
 	m_Fonts.emplace_back(candara);
 }
 
@@ -293,7 +294,8 @@ void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audio
 	}
 }
 
-void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file)
+void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, const std::filesystem::path &file,
+											const Camera &camera, float x, float y, float width, float height)
 try
 {
 	Model model = ObjParser::loadObj(file.string(), m_Loader);
@@ -306,6 +308,11 @@ try
 		Render3DComponent renderComponent(TexturedModel(model, Texture()));
 		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
+		registry.emplace<RigidBodyComponent>(entity, false);
+		
+		constexpr float scale = 15.0f;
+		glm::vec3 position = Util::getMouseRay(camera, x, y, width, height) * scale;
+		registry.emplace<Transform3DComponent>(entity, position);
 	}
 } catch (const std::exception &exception)
 {

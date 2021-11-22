@@ -110,7 +110,7 @@ namespace Survive
 
 		static void setColorStyle();
 
-		void handleMouseDragging(entt::registry &registry, Renderer &renderer);
+		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
 
 		static bool isInsideScene();
 
@@ -123,6 +123,9 @@ namespace Survive
 		static void collectSceneData();
 
 		static void notifyListeners(const std::vector<ButtonListener> &listeners);
+
+		static bool drawImageButton(const Texture &image, bool disabled, const ImVec2 &buttonSize,
+							   const std::vector<ButtonListener> &buttonListener, const char *tooltipText);
 	};
 }
 

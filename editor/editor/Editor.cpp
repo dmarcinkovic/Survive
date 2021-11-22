@@ -21,8 +21,8 @@ bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(Renderer &renderer)
 		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture()),
-		  m_PlayButton(Loader::loadTexture("res/play_button.png")),
-		  m_ReloadButton(Loader::loadTexture("res/reload_button.png"))
+		  m_PlayButton(Loader::loadTexture("assets/textures/play_button.png")),
+		  m_ReloadButton(Loader::loadTexture("assets/textures/reload_button.png"))
 {
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
@@ -42,7 +42,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderMenu();
 	drawStatusBar();
 
-	handleMouseDragging(registry, renderer);
+	handleMouseDragging(registry, renderer, camera);
 
 	renderOpenDialog(registry);
 	renderSaveAsDialog(registry);
@@ -279,7 +279,7 @@ bool Survive::Editor::isSceneFocused()
 	return m_SceneFocused;
 }
 
-void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer)
+void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -298,7 +298,8 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
-					m_EditorUtil.loadDraggedModels(registry, file);
+					m_EditorUtil.loadDraggedModels(registry, file, camera, m_ScenePosX, m_ScenePosY, m_SceneWidth,
+												   m_SceneHeight);
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
@@ -348,31 +349,19 @@ void Survive::Editor::drawStatusBar()
 
 void Survive::Editor::drawPlayAndPauseButtons(float buttonSize)
 {
-	static const ImVec2 uv0(0, 1);
-	static const ImVec2 uv1(1, 0);
-
-	auto playButton = reinterpret_cast<ImTextureID>(m_PlayButton.textureId());
-	auto reloadButton = reinterpret_cast<ImTextureID>(m_ReloadButton.textureId());
-
 	if (ImGui::BeginMenuBar())
 	{
 		float imagePosX = (ImGui::GetContentRegionAvailWidth() - buttonSize) / 2.0f;
 		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
 
-		if (ImGui::ImageButton(playButton, ImVec2(buttonSize * 1.2f, buttonSize), uv0, uv1) && !m_IsScenePlaying)
-		{
-			m_IsScenePlaying = true;
-			notifyListeners(m_PlayButtonListeners);
-		}
-
+		ImVec2 playButtonSize{buttonSize * 1.2f, buttonSize};
+		m_IsScenePlaying = drawImageButton(m_PlayButton, m_IsScenePlaying, playButtonSize, m_PlayButtonListeners,
+										   "Play scene");
 		ImGui::SameLine();
 
-		if (ImGui::ImageButton(reloadButton, ImVec2(buttonSize * 1.2f, buttonSize * 1.2f), uv0, uv1) &&
-			m_IsScenePlaying)
-		{
-			m_IsScenePlaying = false;
-			notifyListeners(m_ReloadButtonListeners);
-		}
+		ImVec2 reloadButtonSize{buttonSize * 1.2f, buttonSize * 1.2f};
+		m_IsScenePlaying = !drawImageButton(m_ReloadButton, !m_IsScenePlaying, reloadButtonSize,
+											m_ReloadButtonListeners, "Reload scene");
 
 		ImGui::EndMenuBar();
 	}
@@ -424,4 +413,41 @@ void Survive::Editor::notifyListeners(const std::vector<ButtonListener> &listene
 	{
 		listener();
 	}
+}
+
+bool Survive::Editor::drawImageButton(const Texture &image, bool disabled, const ImVec2 &buttonSize,
+									  const std::vector<ButtonListener> &buttonListener, const char *tooltipText)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+	auto buttonTexture = reinterpret_cast<ImTextureID>(image.textureId());
+
+	bool popFlag{};
+	if (disabled)
+	{
+		popFlag = true;
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+	}
+
+	if (ImGui::ImageButton(buttonTexture, buttonSize, uv0, uv1))
+	{
+		disabled = !disabled;
+		notifyListeners(buttonListener);
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted(tooltipText);
+		ImGui::EndTooltip();
+	}
+
+	if (popFlag)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
+
+	return disabled;
 }

@@ -8,10 +8,10 @@
 Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()),
 		  m_Icons(Loader::loadAllTextures(
-				  {"res/grey_folder.png", "res/txt_file.png", "res/cpp_icon.png",
-				   "res/readme_icon.png", "res/image_icon.png", "res/obj_icon.png", "res/unknown_icon.png",
-				   "res/survive_icon.png"})),
-		  m_Uv0(0, 1), m_Uv1(1, 0), m_Lupa(Loader::loadTexture("res/lupa.png")),
+				  {"assets/textures/grey_folder.png", "assets/textures/txt_file.png", "assets/textures/cpp_icon.png",
+				   "assets/textures/readme_icon.png", "assets/textures/image_icon.png", "assets/textures/obj_icon.png",
+				   "assets/textures/unknown_icon.png", "assets/textures/survive_icon.png"})),
+		  m_Uv0(0, 1), m_Uv1(1, 0), m_Lupa(Loader::loadTexture("assets/textures/lupa.png")),
 		  m_CurrentDirectory(std::filesystem::current_path()),
 		  m_Tree(m_CurrentDirectory, m_DirectoryContent)
 {
