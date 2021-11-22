@@ -9,9 +9,9 @@
 #include "SpriteUpdate.h"
 #include "System.h"
 
-void Survive::System::update(entt::registry &registry)
+void Survive::System::update(entt::registry &registry, b2World *world)
 {
-	PhysicSystem::update(registry);
+	PhysicSystem::update(registry, world);
 	AudioSystem::update(registry);
 	AnimationSystem::update(registry);
 	// TODO change this

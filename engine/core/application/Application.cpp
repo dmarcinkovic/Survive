@@ -54,10 +54,7 @@ void Survive::Application::run()
 
 		if (m_Editor.isScenePlaying())
 		{
-			PhysicSystem::update(m_Registry);
-
-			float frameRate = ImGui::GetIO().Framerate;
-			m_World->Step(1.0f / frameRate, 5, 5);
+			PhysicSystem::update(m_Registry, m_World.get());
 		}
 
 		m_Display.update();

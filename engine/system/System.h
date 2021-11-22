@@ -5,6 +5,8 @@
 #ifndef SURVIVE_SYSTEM_H
 #define SURVIVE_SYSTEM_H
 
+#include <box2d/box2d.h>
+
 #include "entt.hpp"
 
 namespace Survive
@@ -12,7 +14,7 @@ namespace Survive
 	class System
 	{
 	public:
-		static void update(entt::registry &registry);
+		static void update(entt::registry &registry, b2World *world);
 	};
 }
 
