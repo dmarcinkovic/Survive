@@ -12,7 +12,7 @@ namespace Survive
 	class System
 	{
 	public:
-		void update(entt::registry &registry);
+		static void update(entt::registry &registry);
 	};
 }
 
