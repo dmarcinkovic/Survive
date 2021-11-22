@@ -79,6 +79,7 @@ jobs:
           conan install ..
           cmake .. -G "Visual Studio 16" -D CONAN_DISABLE_CHECK_COMPILER=ON
           cmake --build . --config Release
+          cmake --install . --prefix "${{github.workspace}}/build/artifact"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
