@@ -49,13 +49,13 @@ jobs:
           conan install .. --settings compiler="gcc"
           cmake -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
-          make DESTDIR=${{github.workspace}}/build/artifact install
+          make DESTDIR=${{github.workspace}}/build/Linux install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: Artifact
-          path: ${{github.workspace}}/build
+          path: ${{github.workspace}}/build/Linux
 
   Windows:
     name: Windows
@@ -79,10 +79,10 @@ jobs:
           conan install ..
           cmake .. -G "Visual Studio 16" -D CONAN_DISABLE_CHECK_COMPILER=ON
           cmake --build . --config Release
-          cmake --install . --prefix "${{github.workspace}}/build/artifact"
+          cmake --install . --prefix "${{github.workspace}}/build/Windows"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: Artifact
-          path: ${{github.workspace}}/build
+          path: ${{github.workspace}}/build/Windows
