@@ -99,7 +99,7 @@ jobs:
 
       - name: Install conan
         run: |
-          pip install conan
+          pip3 install conan
 
       - name: Build executable
         run: |
