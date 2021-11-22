@@ -20,13 +20,13 @@ jobs:
         with:
             submodules: recursive
 
+      - name: Update packages
+        run: |
+          sudo apt-get update
+
       - name: Install compiler
         run: |
           sudo apt-get install g++-10
-
-      - name: Update packages
-        run : |
-          sudo apt-get update
 
       - name: Install conan
         run : |
@@ -49,6 +49,7 @@ jobs:
           conan install .. --settings compiler="gcc"
           cmake -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON
           make
+          make DESTDIR=${{github.workspace}}/build/artifact install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
