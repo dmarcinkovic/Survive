@@ -3,6 +3,7 @@
 //
 
 #include "Application.h"
+#include "System.h"
 #include "PhysicSystem.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
@@ -54,7 +55,7 @@ void Survive::Application::run()
 
 		if (m_Editor.isScenePlaying())
 		{
-			PhysicSystem::update(m_Registry, m_World.get());
+			System::update(m_Registry, m_World.get());
 		}
 
 		m_Display.update();
