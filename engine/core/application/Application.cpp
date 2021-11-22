@@ -32,11 +32,11 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Editor.addPlayButtonListener([this]() {
 		PhysicSystem::init(m_Registry, m_World.get());
 
-		m_RegistryUtil.store<RigidBody2DComponent>(m_Registry);
+		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
-		m_RegistryUtil.restore<RigidBody2DComponent>(m_Registry);
+		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
 		m_World = std::make_unique<b2World>(m_Gravity);
 	});
 }
