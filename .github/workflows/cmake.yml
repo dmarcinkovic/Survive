@@ -54,7 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Artifact
+          name: Linux
           path: ${{github.workspace}}/build/Linux
 
   Windows:
@@ -84,5 +84,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Artifact
+          name: Windows
           path: ${{github.workspace}}/build/Windows
