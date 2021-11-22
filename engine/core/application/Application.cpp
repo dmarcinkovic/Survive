@@ -27,7 +27,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 										  TexturedModel(m_Loader.renderQuad(),
 														Loader::loadTexture("assets/textures/dirt.png")));
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
-	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-2, 0.5}, b2Vec2{2, 0.5}, 1.0f, 0.3, 0.5);
+	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-4, 0.5}, b2Vec2{4, 0.5}, 1.0f, 0.3, 0.5);
 
 	m_Editor.addPlayButtonListener([this]() {
 		PhysicSystem::init(m_Registry, m_World.get());
