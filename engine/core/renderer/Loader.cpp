@@ -9,8 +9,6 @@
 #include "Loader.h"
 #include "stb_image.h"
 
-std::vector<GLuint> Survive::Loader::m_Textures;
-
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, GLint size)
 {
@@ -28,7 +26,7 @@ Survive::Loader::~Loader()
 {
 	glDeleteVertexArrays(static_cast<GLsizei>(m_Vaos.size()), m_Vaos.data());
 	glDeleteBuffers(static_cast<GLsizei>(m_Vbos.size()), m_Vbos.data());
-	glDeleteTextures(1, m_Textures.data());
+	glDeleteTextures(static_cast<GLsizei>(m_Textures.size()), m_Textures.data());
 }
 
 void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices,
