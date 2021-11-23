@@ -42,12 +42,6 @@ namespace Survive
 
 		static void unbindVao();
 
-		Model loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-						const std::vector<float> &textureCoordinates, GLint size);
-
-		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
-						const std::vector<float> &normals);
-
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						const std::vector<float> &normals, const std::vector<unsigned> &indices);
 
@@ -98,7 +92,7 @@ namespace Survive
 
 		static void addMipMap();
 
-		void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
+		static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
 
 		static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
 		loadImages(const std::vector<const char *> &textures);
