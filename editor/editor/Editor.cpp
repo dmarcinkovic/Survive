@@ -20,15 +20,16 @@ float Survive::Editor::m_SceneRegionY{};
 bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(Renderer &renderer)
-		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture())
+		: m_Scene(renderer.getRenderedTexture())
 {
 	m_PlayButton = m_Loader.loadTexture("assets/textures/play_button.png");
 	m_ReloadButton = m_Loader.loadTexture("assets/textures/reload_button.png");
 
-	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
+	ImGuiIO &io = ImGui::GetIO();
+	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
 
-	m_Io.ConfigWindowsMoveFromTitleBarOnly = true;
+	io.ConfigWindowsMoveFromTitleBarOnly = true;
 	renderer.addMousePickingListener([this](int selectedEntity) {
 		m_Manager.setSelectedEntity(selectedEntity);
 	});

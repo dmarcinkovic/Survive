@@ -43,7 +43,6 @@ namespace Survive
 
 		Loader m_Loader;
 
-		ImGuiIO &m_Io;
 		GLuint m_Scene;
 
 		FileChooser m_OpenWindow;
