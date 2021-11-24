@@ -82,7 +82,7 @@ namespace Survive
 	private:
 		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size);
 
-		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<int> &data, GLint size);
+		void storeDataInAttributeList(const std::vector<int> &data);
 
 		void createIndexBuffer(const std::vector<unsigned> &indices);
 

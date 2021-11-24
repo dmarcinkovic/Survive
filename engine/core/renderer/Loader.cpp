@@ -47,11 +47,14 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 }
 
 void
-Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<int> &data, GLint size)
+Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
 {
+	constexpr GLint size = 3;
+	constexpr GLuint attributeNumber = 4;
+
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	glEnableVertexAttribArray(attributeNumber);
+	glEnableVertexAttribArray(4);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	auto dataSize = static_cast<GLsizeiptr>(sizeof(int) * data.size());
@@ -115,7 +118,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(1, textures, 2);
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
-	storeDataInAttributeList(4, jointIds, 3);
+	storeDataInAttributeList(jointIds);
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
