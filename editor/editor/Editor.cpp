@@ -20,10 +20,11 @@ float Survive::Editor::m_SceneRegionY{};
 bool Survive::Editor::m_SceneFocused{};
 
 Survive::Editor::Editor(Renderer &renderer)
-		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture()),
-		  m_PlayButton(Loader::loadTexture("assets/textures/play_button.png")),
-		  m_ReloadButton(Loader::loadTexture("assets/textures/reload_button.png"))
+		: m_Io(ImGui::GetIO()), m_Scene(renderer.getRenderedTexture())
 {
+	m_PlayButton = m_Loader.loadTexture("assets/textures/play_button.png");
+	m_ReloadButton = m_Loader.loadTexture("assets/textures/reload_button.png");
+
 	m_Io.ConfigFlags = m_Io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					   ImGuiWindowFlags_UnsavedDocument;
 
@@ -303,7 +304,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-					EditorUtil::registerListener(registry, renderer, file);
+					EditorUtil::registerListener(registry, renderer, file, m_Loader);
 				}
 			}
 		}

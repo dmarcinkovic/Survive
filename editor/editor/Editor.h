@@ -21,6 +21,7 @@
 #include "EntityManager.h"
 #include "Camera.h"
 #include "Gizmos.h"
+#include "Loader.h"
 
 namespace Survive
 {
@@ -39,6 +40,8 @@ namespace Survive
 		static float m_ScenePosX, m_ScenePosY;
 		static float m_SceneRegionX, m_SceneRegionY;
 		static bool m_SceneFocused;
+
+		Loader m_Loader;
 
 		ImGuiIO &m_Io;
 		GLuint m_Scene;

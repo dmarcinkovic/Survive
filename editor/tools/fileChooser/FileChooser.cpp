@@ -6,13 +6,12 @@
 
 #include "FileChooser.h"
 #include "Display.h"
-#include "Loader.h"
 
 Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
-	Texture folder = Loader::loadTexture("assets/textures/folder.png");
+	Texture folder = m_Loader.loadTexture("assets/textures/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
 }
 

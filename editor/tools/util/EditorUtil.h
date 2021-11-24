@@ -79,7 +79,8 @@ namespace Survive
 		loadDraggedModels(entt::registry &registry, const std::filesystem::path &file, const Camera &camera,
 						  float x, float y, float width, float height);
 
-		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file);
+		static void registerListener(entt::registry &registry, Renderer &renderer,
+									 const std::filesystem::path &file, Loader &loader);
 
 		static bool drawTextInput(Text &text, std::string &string, Loader &loader);
 
@@ -118,7 +119,7 @@ namespace Survive
 
 		std::optional<Model> getLoadedModel(const FileChooser &fileChooser);
 
-		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser);
+		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser, Loader &loader);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 	};

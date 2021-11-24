@@ -13,17 +13,18 @@
 #include "EditorUtil.h"
 
 Survive::EditorUtil::EditorUtil()
-		: m_FontIcon(Loader::loadTexture("assets/textures/font_icon.jpg")),
-		  m_TextureIcon(Loader::loadTexture("assets/textures/texture.png")),
-		  m_Items{"Arial", "Candara"},
+		: m_Items{"Arial", "Candara"},
 		  m_FontInfo{{"assets/fonts/arial.png",   "assets/fonts/arial.fnt"},
 					 {"assets/fonts/candara.png", "assets/fonts/candara.fnt"}}
 {
-	Font arial("assets/fonts/arial.png");
+	m_FontIcon = m_Loader.loadTexture("assets/textures/font_icon.jpg");
+	m_TextureIcon = m_Loader.loadTexture("assets/textures/texture.png");
+
+	Font arial("assets/fonts/arial.png", m_Loader);
 	arial.loadFontFromFntFile("assets/fonts/arial.fnt");
 	m_Fonts.emplace_back(arial);
 
-	Font candara("assets/fonts/candara.png");
+	Font candara("assets/fonts/candara.png", m_Loader);
 	candara.loadFontFromFntFile("assets/fonts/candara.fnt");
 	m_Fonts.emplace_back(candara);
 }
@@ -145,7 +146,7 @@ void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture
 		std::string selectedFilename = fileChooser.getSelectedFilename();
 		if (!m_LoadTexture && !selectedFilename.empty())
 		{
-			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser);
+			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser, m_Loader);
 
 			if (loadedTexture.has_value())
 			{
@@ -157,10 +158,10 @@ void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture
 	}
 }
 
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser)
+std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser, Loader &loader)
 {
 	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Texture texture = Loader::loadTexture(selectedFile.c_str());
+	Texture texture = loader.loadTexture(selectedFile.c_str());
 
 	if (texture.isValidTexture())
 	{
@@ -309,7 +310,7 @@ try
 		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
 		registry.emplace<RigidBodyComponent>(entity, false);
-		
+
 		constexpr float scale = 15.0f;
 		glm::vec3 position = Util::getMouseRay(camera, x, y, width, height) * scale;
 		registry.emplace<Transform3DComponent>(entity, position);
@@ -320,18 +321,18 @@ try
 }
 
 void
-Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file)
+Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file, Loader &loader)
 {
 	std::string filename = file.string();
 
-	renderer.addMousePickingListener([=, &registry, &renderer](int selectedEntity) {
+	renderer.addMousePickingListener([=, &registry, &renderer, &loader](int selectedEntity) {
 		if (selectedEntity < 0)
 		{
 			renderer.popMousePickingListener();
 			return;
 		}
 
-		Texture texture = Loader::loadTexture(filename.c_str());
+		Texture texture = loader.loadTexture(filename.c_str());
 		if (texture.isValidTexture())
 		{
 			auto entity = static_cast<entt::entity>(selectedEntity);
@@ -387,8 +388,8 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text,
-											   Font &font, Loader &loader, bool &open, std::string &file)
+void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font,
+											   Loader &loader, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -401,7 +402,7 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 			{
 				std::string textureName = selectedFile.string();
 
-				font.setTexture(Loader::loadTexture(textureName.c_str()));
+				font.setTexture(loader.loadTexture(textureName.c_str()));
 				text.loadTexture(loader);
 				file = textureName;
 			} catch (const std::exception &ignorable)
@@ -608,7 +609,7 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	ImGui::NextColumn();
 
 	glm::vec2 vec(value.x, value.y);
-	bool result{};
+	bool result;
 	if ((result = ImGui::DragFloat2(label, glm::value_ptr(vec))))
 	{
 		value.x = vec.x;

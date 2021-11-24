@@ -8,8 +8,8 @@
 #include "Util.h"
 #include "Log.h"
 
-Survive::Font::Font(const char *textureAtlas)
-		: m_FontTexture(Loader::loadTexture(textureAtlas))
+Survive::Font::Font(const char *textureAtlas, Loader &loader)
+		: m_FontTexture(loader.loadTexture(textureAtlas))
 {
 }
 

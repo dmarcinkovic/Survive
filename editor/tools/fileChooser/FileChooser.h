@@ -14,6 +14,7 @@
 
 #include "ConfirmWindow.h"
 #include "FileUtil.h"
+#include "Loader.h"
 
 namespace Survive
 {
@@ -29,6 +30,8 @@ namespace Survive
 		static constexpr float CONFIRM_WIDTH = 400.0f;
 		static constexpr float CONFIRM_HEIGHT = 80.0f;
 		static constexpr int BUFFER_SIZE = 255;
+
+		Loader m_Loader;
 
 		std::string m_CurrentDirectory;
 		const std::filesystem::path m_Root;
