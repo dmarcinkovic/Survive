@@ -79,6 +79,8 @@ namespace Survive
 			replace<Transform3DComponent>(registry, entity, storage);
 			replace<SpriteSheetComponent>(registry, entity, storage);
 			replace<RigidBody2DComponent>(registry, entity, storage);
+
+			restoreSoundComponent(registry, entity);
 		}
 
 		template<typename Component>
@@ -97,6 +99,16 @@ namespace Survive
 			if (registry.any_of<Component>(entity))
 			{
 				registry.replace<Component>(entity, std::get<Component>(storage));
+			}
+		}
+
+		static void restoreSoundComponent(entt::registry &registry, entt::entity entity)
+		{
+			if (registry.any_of<SoundComponent>(entity))
+			{
+				SoundComponent &soundComponent = registry.get<SoundComponent>(entity);
+				soundComponent.audioSource.setOnLoop(false);
+				soundComponent.play = true;
 			}
 		}
 	};
