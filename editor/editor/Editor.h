@@ -23,6 +23,7 @@
 #include "Gizmos.h"
 #include "Loader.h"
 #include "Scene.h"
+#include "StatusBar.h"
 
 namespace Survive
 {
@@ -30,8 +31,6 @@ namespace Survive
 	{
 		ENTITY, CAMERA, NONE
 	};
-
-	using ButtonListener = std::function<void()>;
 
 	class Editor
 	{
@@ -47,10 +46,9 @@ namespace Survive
 		ContentBrowser m_ContentBrowser{};
 
 		Log m_Log;
+		StatusBar m_StatusBar;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
-		Texture m_PlayButton, m_ReloadButton;
-		bool m_IsScenePlaying{};
 
 		SkyboxWindow m_SkyWindow;
 		bool m_SkyboxDialog = false;
@@ -60,9 +58,6 @@ namespace Survive
 
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
-
-		std::vector<ButtonListener> m_PlayButtonListeners;
-		std::vector<ButtonListener> m_ReloadButtonListeners;
 
 	public:
 		explicit Editor(Renderer &renderer);
@@ -105,17 +100,6 @@ namespace Survive
 		static void setColorStyle();
 
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
-
-		void drawStatusBar();
-
-		void drawPlayAndPauseButtons(float buttonSize);
-
-		static void setPlayButtonColorStyle();
-
-		static void notifyListeners(const std::vector<ButtonListener> &listeners);
-
-		static bool drawImageButton(const Texture &image, bool disabled, const ImVec2 &buttonSize,
-							   const std::vector<ButtonListener> &buttonListener, const char *tooltipText);
 	};
 }
 
