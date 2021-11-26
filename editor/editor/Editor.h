@@ -11,47 +11,33 @@
 #include <functional>
 
 #include "ContentBrowser.h"
-#include "SkyboxWindow.h"
-#include "FileChooser.h"
-#include "CameraWindow.h"
 #include "EventHandler.h"
 #include "EditorUtil.h"
 #include "Log.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
 #include "Camera.h"
-#include "Gizmos.h"
 #include "Loader.h"
 #include "Scene.h"
 #include "StatusBar.h"
+#include "PropertyWindow.h"
+#include "Menu.h"
 
 namespace Survive
 {
-	enum class PropertyWindow
-	{
-		ENTITY, CAMERA, NONE
-	};
-
 	class Editor
 	{
 	private:
 		Loader m_Loader;
 
 		Scene m_Scene;
-
-		FileChooser m_OpenWindow;
-		FileChooser m_SaveWindow;
+		Menu m_Menu;
 
 		EntityManager m_Manager{};
 		ContentBrowser m_ContentBrowser{};
 
 		Log m_Log;
 		StatusBar m_StatusBar;
-
-		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
-
-		SkyboxWindow m_SkyWindow;
-		bool m_SkyboxDialog = false;
 
 		SceneSerializer m_SceneLoader;
 		EditorUtil m_EditorUtil;
@@ -89,17 +75,11 @@ namespace Survive
 	private:
 		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 
-		void renderMenu();
-
-		void renderOpenDialog(entt::registry &registry);
-
-		void renderSaveAsDialog(entt::registry &registry);
-
-		void renderSaveDialog(entt::registry &registry);
-
 		static void setColorStyle();
 
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
+
+		void drawMenu(entt::registry &registry, Renderer &renderer);
 	};
 }
 

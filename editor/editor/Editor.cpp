@@ -7,8 +7,8 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_internal.h>
 
-#include "Key.h"
 #include "Editor.h"
+#include "CameraWindow.h"
 
 Survive::Editor::Editor(Renderer &renderer)
 		: m_Scene(renderer.getRenderedTexture())
@@ -29,15 +29,11 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 {
 	renderPropertyWindow(registry, camera);
 	m_Scene.renderSceneWindow(camera, renderer, registry, m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
-	renderMenu();
 	m_StatusBar.draw();
 
 	handleMouseDragging(registry, renderer, camera);
 
-	renderOpenDialog(registry);
-	renderSaveAsDialog(registry);
-	renderSaveDialog(registry);
-	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+	drawMenu(registry, renderer);
 
 	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
@@ -113,112 +109,9 @@ void Survive::Editor::setColorStyle()
 	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
 }
 
-void Survive::Editor::renderMenu()
-{
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::MenuItem("Open", "Ctrl+O", &m_OpenDialog);
-			ImGui::MenuItem("Save", "Ctrl+S", &m_SaveDialog);
-			ImGui::MenuItem("Save As", "Ctrl+Shift+S", &m_SaveAsDialog);
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Window"))
-		{
-			ImGui::MenuItem("Skybox", "", &m_SkyboxDialog);
-
-			if (ImGui::MenuItem("Camera", "", nullptr))
-			{
-				m_DrawingWindow = PropertyWindow::CAMERA;
-				m_Manager.stopDrawing();
-			}
-
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMainMenuBar();
-	}
-}
-
-void Survive::Editor::renderOpenDialog(entt::registry &registry)
-{
-	if (m_OpenDialog)
-	{
-		m_OpenWindow.open(600.0f, 400.0f, &m_OpenDialog);
-
-		if (!m_OpenDialog)
-		{
-			std::string file = m_OpenWindow.getSelectedFile().string();
-			if (!file.empty())
-			{
-				if (file.ends_with(".survive"))
-				{
-					m_Manager.setSelectedEntity(-1);
-					m_SceneLoader.loadScene(registry, file);
-					m_SavedFile = file;
-				} else
-				{
-					Log::logWindow(LogType::ERROR, "Cannot load scene from " + file);
-				}
-			}
-		}
-	}
-}
-
-void Survive::Editor::renderSaveAsDialog(entt::registry &registry)
-{
-	if (m_SaveAsDialog)
-	{
-		m_SaveWindow.save(600.0f, 400.0f, &m_SaveAsDialog);
-
-		if (!m_SaveAsDialog)
-		{
-			std::string selectedFile = m_SaveWindow.getSelectedFile().string();
-			if (!selectedFile.empty())
-			{
-				m_SavedFile = std::move(selectedFile);
-			}
-
-			if (!m_SavedFile.empty())
-			{
-				SceneSerializer::saveScene(registry, m_SavedFile);
-			}
-		}
-	}
-}
-
-void Survive::Editor::renderSaveDialog(entt::registry &registry)
-{
-	if (m_SaveDialog)
-	{
-		if (m_SavedFile.empty())
-		{
-			m_SaveAsDialog = true;
-		} else
-		{
-			SceneSerializer::saveScene(registry, m_SavedFile);
-		}
-
-		m_SaveDialog = false;
-	}
-}
-
 void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 {
-	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
-	{
-		m_OpenDialog = true;
-	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveAsDialog = true;
-	} else if (eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
-	{
-		m_SaveDialog = true;
-	}
+	m_Menu.handleKeyEvents(eventHandler);
 
 	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
 	{
@@ -300,4 +193,15 @@ void Survive::Editor::addPlayButtonListener(const ButtonListener &listener)
 void Survive::Editor::addReloadButtonListener(const ButtonListener &listener)
 {
 	m_StatusBar.addReloadButtonListener(listener);
+}
+
+void Survive::Editor::drawMenu(entt::registry &registry, Renderer &renderer)
+{
+	m_Menu.renderMenu(m_Manager, m_DrawingWindow);
+
+	m_Menu.renderOpenDialog(registry, m_Manager, m_SceneLoader, m_SavedFile);
+	m_Menu.renderSaveAsDialog(registry, m_SavedFile);
+	m_Menu.renderSaveDialog(registry, m_SavedFile);
+
+	m_Menu.drawSkyboxWindow(registry, renderer);
 }
