@@ -48,6 +48,7 @@ void Survive::Application::run()
 		Display::clearWindow();
 
 		m_Editor.handleKeyEvents(m_EventHandler);
+		m_Editor.handleMouseDragging(m_Registry, m_Renderer, m_Camera);
 
 		Editor::newFrame();
 		Editor::dock();

@@ -25,31 +25,29 @@ Survive::Editor::Editor(Renderer &renderer)
 	setColorStyle();
 }
 
+Survive::Editor::~Editor()
+{
+	ImGui::PopStyleColor(6);
+}
+
 void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camera &camera)
 {
 	renderPropertyWindow(registry, camera);
-	m_Scene.renderSceneWindow(camera, renderer, registry, m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
+	m_Scene.renderSceneWindow(camera, renderer, registry,
+							  m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
 	m_StatusBar.draw();
-
-	handleMouseDragging(registry, renderer, camera);
 
 	drawMenu(registry, renderer);
 
 	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
 
-	if (ImGui::Begin("Debug"))
-	{
-		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
-	}
-	ImGui::End();
+	renderDebugWindow();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	float width = Scene::getSceneWidth();
-	float height = Scene::getSceneHeight();
-	camera.recalculateProjectionMatrix(width, height);
+	camera.recalculateProjectionMatrix(Scene::getSceneWidth(), Scene::getSceneHeight());
 }
 
 void Survive::Editor::newFrame()
@@ -97,16 +95,13 @@ void Survive::Editor::renderPropertyWindow(entt::registry &registry, Camera &cam
 
 void Survive::Editor::setColorStyle()
 {
-	ImGuiStyle *style = &ImGui::GetStyle();
-	ImVec4 *colors = style->Colors;
+	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.14f, 0.14f, 0.14f, 1.0f));
 
-	colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
-
-	colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.07f, 0.1f, 1.0f);
-	colors[ImGuiCol_TabHovered] = ImVec4(0.13f, 0.1f, 0.13f, 0.8f);
-	colors[ImGuiCol_TabActive] = ImVec4(0.306f, 0.32f, 0.329f, 1);
-	colors[ImGuiCol_TabUnfocused] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
-	colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 0.8f);
+	ImGui::PushStyleColor(ImGuiCol_Tab, ImVec4(0.1f, 0.07f, 0.1f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_TabHovered, ImVec4(0.13f, 0.1f, 0.13f, 0.8f));
+	ImGui::PushStyleColor(ImGuiCol_TabActive, ImVec4(0.306f, 0.32f, 0.329f, 1));
+	ImGui::PushStyleColor(ImGuiCol_TabUnfocused, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_TabUnfocusedActive, ImVec4(0.2f, 0.2f, 0.2f, 0.8f));
 }
 
 void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
@@ -204,4 +199,13 @@ void Survive::Editor::drawMenu(entt::registry &registry, Renderer &renderer)
 	m_Menu.renderSaveDialog(registry, m_SavedFile);
 
 	m_Menu.drawSkyboxWindow(registry, renderer);
+}
+
+void Survive::Editor::renderDebugWindow()
+{
+	if (ImGui::Begin("Debug"))
+	{
+		ImGui::Text("Application average %.1f FPS", ImGui::GetIO().Framerate);
+	}
+	ImGui::End();
 }

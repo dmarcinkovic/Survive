@@ -48,6 +48,8 @@ namespace Survive
 	public:
 		explicit Editor(Renderer &renderer);
 
+		~Editor();
+
 		void render(entt::registry &registry, Renderer &renderer, Camera &camera);
 
 		static void dock();
@@ -55,6 +57,8 @@ namespace Survive
 		static void newFrame();
 
 		void handleKeyEvents(const EventHandler &eventHandler);
+
+		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
 
 		static float getSceneWidth();
 
@@ -77,9 +81,9 @@ namespace Survive
 
 		static void setColorStyle();
 
-		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
-
 		void drawMenu(entt::registry &registry, Renderer &renderer);
+
+		static void renderDebugWindow();
 	};
 }
 
