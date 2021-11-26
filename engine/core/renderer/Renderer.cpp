@@ -68,9 +68,9 @@ void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
 	m_OutlineRenderer.removeObject(registry);
 }
 
-GLuint Survive::Renderer::getRenderedTexture() const
+Survive::Texture Survive::Renderer::getRenderedTexture() const
 {
-	return m_Scene;
+	return Texture(m_Scene);
 }
 
 void Survive::Renderer::resetViewport()

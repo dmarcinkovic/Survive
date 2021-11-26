@@ -10,15 +10,6 @@
 #include "Key.h"
 #include "Editor.h"
 
-float Survive::Editor::m_SceneWidth{};
-float Survive::Editor::m_SceneHeight{};
-float Survive::Editor::m_ScenePosX{};
-float Survive::Editor::m_ScenePosY{};
-float Survive::Editor::m_SceneRegionX{};
-float Survive::Editor::m_SceneRegionY{};
-
-bool Survive::Editor::m_SceneFocused{};
-
 Survive::Editor::Editor(Renderer &renderer)
 		: m_Scene(renderer.getRenderedTexture())
 {
@@ -27,7 +18,7 @@ Survive::Editor::Editor(Renderer &renderer)
 
 	ImGuiIO &io = ImGui::GetIO();
 	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
-					   ImGuiWindowFlags_UnsavedDocument;
+					 ImGuiWindowFlags_UnsavedDocument;
 
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
 	renderer.addMousePickingListener([this](int selectedEntity) {
@@ -40,7 +31,7 @@ Survive::Editor::Editor(Renderer &renderer)
 void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camera &camera)
 {
 	renderPropertyWindow(registry, camera);
-	renderSceneWindow(camera, renderer, registry);
+	m_Scene.renderSceneWindow(camera, renderer, registry, m_Manager.getSelectedEntity(), m_IsScenePlaying);
 	renderMenu();
 	drawStatusBar();
 
@@ -63,7 +54,9 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	camera.recalculateProjectionMatrix(m_SceneWidth, m_SceneHeight);
+	float width = Scene::getSceneWidth();
+	float height = Scene::getSceneHeight();
+	camera.recalculateProjectionMatrix(width, height);
 }
 
 void Survive::Editor::newFrame()
@@ -77,30 +70,6 @@ void Survive::Editor::newFrame()
 void Survive::Editor::dock()
 {
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-}
-
-void Survive::Editor::renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry)
-{
-	if (ImGui::Begin("Scene window"))
-	{
-		ImVec2 pos = ImGui::GetCursorScreenPos();
-		collectSceneData();
-
-		auto textureId = reinterpret_cast<ImTextureID>(m_Scene);
-		ImGui::GetWindowDrawList()->AddImage(textureId, pos,
-											 ImVec2(pos.x + m_SceneWidth, pos.y + m_SceneHeight), ImVec2(0, 1),
-											 ImVec2(1, 0));
-
-		if (!m_IsScenePlaying)
-		{
-			m_Gizmos.setRect(pos.x, pos.y, m_SceneWidth, m_SceneHeight);
-			m_Gizmos.draw(registry, camera, m_Manager.getSelectedEntity());
-		}
-
-		renderer.renderScene(registry, camera, !m_IsScenePlaying);
-	}
-
-	ImGui::End();
 }
 
 void Survive::Editor::renderPropertyWindow(entt::registry &registry, Camera &camera)
@@ -257,35 +226,35 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
 	{
 		m_Manager.handleKeyEvents(eventHandler);
-		m_Gizmos.handleKeyEvents(eventHandler);
+		m_Scene.handleKeyEvents(eventHandler);
 	}
 }
 
 float Survive::Editor::getSceneWidth()
 {
-	return m_SceneWidth;
+	return Scene::getSceneWidth();
 }
 
 float Survive::Editor::getSceneHeight()
 {
-	return m_SceneHeight;
+	return Scene::getSceneHeight();
 }
 
 std::pair<float, float> Survive::Editor::getScenePosition()
 {
-	return {m_ScenePosX, m_ScenePosY};
+	return Scene::getScenePosition();
 }
 
 bool Survive::Editor::isSceneFocused()
 {
-	return m_SceneFocused;
+	return Scene::isSceneFocused();
 }
 
 void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
-		if (isInsideScene())
+		if (Scene::isInsideScene())
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
@@ -300,8 +269,10 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 					m_SavedFile = file.string();
 				} else if (extension == ".obj" && file.has_stem())
 				{
-					m_EditorUtil.loadDraggedModels(registry, file, camera, m_ScenePosX, m_ScenePosY, m_SceneWidth,
-												   m_SceneHeight);
+					auto[x, y] = Scene::getScenePosition();
+					float width = Scene::getSceneWidth();
+					float height = Scene::getSceneHeight();
+					m_EditorUtil.loadDraggedModels(registry, file, camera, x, y, width, height);
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
@@ -314,18 +285,9 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 	}
 }
 
-bool Survive::Editor::isInsideScene()
-{
-	float x = ImGui::GetMousePos().x;
-	float y = ImGui::GetMousePos().y;
-
-	return x >= m_ScenePosX && x <= m_ScenePosX + m_SceneWidth &&
-		   y >= m_ScenePosY && y <= m_ScenePosY + m_SceneHeight;
-}
-
 std::pair<float, float> Survive::Editor::getSceneRegionMin()
 {
-	return {m_SceneRegionX, m_SceneRegionY};
+	return Scene::getSceneRegionMin();
 }
 
 void Survive::Editor::drawStatusBar()
@@ -381,22 +343,6 @@ void Survive::Editor::setPlayButtonColorStyle()
 bool Survive::Editor::isScenePlaying() const
 {
 	return m_IsScenePlaying;
-}
-
-void Survive::Editor::collectSceneData()
-{
-	ImVec2 pos = ImGui::GetCursorScreenPos();
-
-	m_ScenePosX = pos.x;
-	m_ScenePosY = pos.y;
-
-	m_SceneRegionX = ImGui::GetWindowContentRegionMin().x;
-	m_SceneRegionY = ImGui::GetWindowContentRegionMin().y;
-
-	m_SceneWidth = ImGui::GetWindowWidth();
-	m_SceneHeight = ImGui::GetWindowHeight();
-
-	m_SceneFocused = !ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId | ImGuiPopupFlags_AnyPopupLevel);
 }
 
 void Survive::Editor::addPlayButtonListener(const ButtonListener &listener)

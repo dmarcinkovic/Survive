@@ -16,6 +16,7 @@
 #include "MousePicking.h"
 #include "OutlineRenderer.h"
 #include "BloomRenderer.h"
+#include "Texture.h"
 
 namespace Survive
 {
@@ -57,7 +58,7 @@ namespace Survive
 
 		void addOutlineToObject(entt::registry &registry, entt::entity entity);
 
-		[[nodiscard]] GLuint getRenderedTexture() const;
+		[[nodiscard]] Texture getRenderedTexture() const;
 
 		void removeOutlineToObject(entt::registry &registry);
 

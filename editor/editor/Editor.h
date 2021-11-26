@@ -22,6 +22,7 @@
 #include "Camera.h"
 #include "Gizmos.h"
 #include "Loader.h"
+#include "Scene.h"
 
 namespace Survive
 {
@@ -35,21 +36,14 @@ namespace Survive
 	class Editor
 	{
 	private:
-		static float m_SceneWidth;
-		static float m_SceneHeight;
-		static float m_ScenePosX, m_ScenePosY;
-		static float m_SceneRegionX, m_SceneRegionY;
-		static bool m_SceneFocused;
-
 		Loader m_Loader;
 
-		GLuint m_Scene;
+		Scene m_Scene;
 
 		FileChooser m_OpenWindow;
 		FileChooser m_SaveWindow;
 
 		EntityManager m_Manager{};
-		Gizmos m_Gizmos;
 		ContentBrowser m_ContentBrowser{};
 
 		Log m_Log;
@@ -98,8 +92,6 @@ namespace Survive
 		void addReloadButtonListener(const ButtonListener &listener);
 
 	private:
-		void renderSceneWindow(Camera &camera, Renderer &renderer, entt::registry &registry);
-
 		void renderPropertyWindow(entt::registry &registry, Camera &camera);
 
 		void renderMenu();
@@ -114,15 +106,11 @@ namespace Survive
 
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
 
-		static bool isInsideScene();
-
 		void drawStatusBar();
 
 		void drawPlayAndPauseButtons(float buttonSize);
 
 		static void setPlayButtonColorStyle();
-
-		static void collectSceneData();
 
 		static void notifyListeners(const std::vector<ButtonListener> &listeners);
 
