@@ -115,26 +115,6 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 	}
 }
 
-float Survive::Editor::getSceneWidth()
-{
-	return Scene::getSceneWidth();
-}
-
-float Survive::Editor::getSceneHeight()
-{
-	return Scene::getSceneHeight();
-}
-
-std::pair<float, float> Survive::Editor::getScenePosition()
-{
-	return Scene::getScenePosition();
-}
-
-bool Survive::Editor::isSceneFocused()
-{
-	return Scene::isSceneFocused();
-}
-
 void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
@@ -168,11 +148,6 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 
 		m_ContentBrowser.stopDragging();
 	}
-}
-
-std::pair<float, float> Survive::Editor::getSceneRegionMin()
-{
-	return Scene::getSceneRegionMin();
 }
 
 bool Survive::Editor::isScenePlaying() const

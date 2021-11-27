@@ -27,7 +27,7 @@ void Survive::MousePicking::mousePressedHandler()
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || PhysicsGizmo::isOver() ||
-				!Editor::isSceneFocused())
+				!Scene::isSceneFocused())
 			{
 				return;
 			}
@@ -183,10 +183,10 @@ void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
 
 bool Survive::MousePicking::isInsideWindow() const
 {
-	float width = Editor::getSceneWidth();
-	float height = Editor::getSceneHeight();
+	float width = Scene::getSceneWidth();
+	float height = Scene::getSceneHeight();
 
-	auto[regionX, regionY] = Editor::getSceneRegionMin();
+	auto[regionX, regionY] = Scene::getSceneRegionMin();
 
 	return m_MousePosition.x > 0 && m_MousePosition.x <= width - regionX &&
 		   m_MousePosition.y >= regionY && m_MousePosition.y < height;
@@ -199,16 +199,16 @@ void Survive::MousePicking::prepareRendering() const
 
 void Survive::MousePicking::setViewport()
 {
-	auto width = static_cast<GLsizei>(Editor::getSceneWidth());
-	auto height = static_cast<GLsizei>(Editor::getSceneHeight());
+	auto width = static_cast<GLsizei>(Scene::getSceneWidth());
+	auto height = static_cast<GLsizei>(Scene::getSceneHeight());
 
 	glViewport(0, 0, width, height);
 }
 
 void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
 {
-	float height = Editor::getSceneHeight();
-	auto[x, y] = Editor::getScenePosition();
+	float height = Scene::getSceneHeight();
+	auto[x, y] = Scene::getScenePosition();
 	m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
 
 	if (isInsideWindow())

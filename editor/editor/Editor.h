@@ -60,16 +60,6 @@ namespace Survive
 
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera);
 
-		static float getSceneWidth();
-
-		static float getSceneHeight();
-
-		static std::pair<float, float> getScenePosition();
-
-		static std::pair<float, float> getSceneRegionMin();
-
-		static bool isSceneFocused();
-
 		[[nodiscard]] bool isScenePlaying() const;
 
 		void addPlayButtonListener(const ButtonListener &listener);
