@@ -119,6 +119,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 
 void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
 {
+	ImGui::PushID(i);
 	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
 	{
 		m_SelectedEntity = selectedEntity;
@@ -126,6 +127,7 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 		m_Selected = i;
 		m_CurrentItem = -1;
 	}
+	ImGui::PopID();
 }
 
 void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::entity selectedEntity, int i)
