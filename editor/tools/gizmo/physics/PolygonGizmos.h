@@ -5,6 +5,8 @@
 #ifndef SURVIVE_POLYGONGIZMOS_H
 #define SURVIVE_POLYGONGIZMOS_H
 
+#include <vector>
+
 #include "entt.hpp"
 #include "Components.h"
 #include "Camera.h"
@@ -21,8 +23,15 @@ namespace Survive
 		static bool isOver();
 
 	private:
-		static void
-		initializePolygonCollider(PolygonCollider2DComponent &polygonCollider, const Transform3DComponent &transform);
+		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
+									  const glm::mat4 &modelMatrix) const;
+
+		std::vector<ImVec2> getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
+											 const Camera &camera, const glm::mat4 &modelMatrix);
+
+		static void drawPoints(const std::vector<ImVec2> &points);
+
+		void drawLines(const std::vector<ImVec2> &points);
 	};
 }
 
