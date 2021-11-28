@@ -630,7 +630,7 @@ void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2Polyg
 		const std::string text = "Point" + std::to_string(i + 1);
 		const std::string label = "##Polygon p" + std::to_string(i + 1);
 
-		if (drawColumnDragFloat2(text.c_str(), label.c_str(), point))
+		if (drawColumnDragFloat2(text.c_str(), label.c_str(), point) && points.size() >= 3)
 		{
 			shape.Set(points.data(), static_cast<int>(points.size()));
 		}
@@ -644,7 +644,10 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 	if (ImGui::Button(" + "))
 	{
 		points.emplace_back(0, 0);
-		shape.Set(points.data(), static_cast<int>(points.size()));
+		if (points.size() >= 3)
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
 	}
 
 	ImGui::TextUnformatted("Remove point");
@@ -652,8 +655,13 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 	if (ImGui::Button(" - ") && !points.empty())
 	{
 		points.pop_back();
-		shape.Set(points.data(), static_cast<int>(points.size()));
+		if (points.size() >= 3)
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
 	}
+
+	ImGui::Separator();
 }
 
 void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
