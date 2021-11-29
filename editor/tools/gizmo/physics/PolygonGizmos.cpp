@@ -7,6 +7,8 @@
 #include "Util.h"
 #include "Constants.h"
 
+int Survive::PolygonGizmos::m_PointHovered = -1;
+
 void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity == entt::null)
@@ -24,12 +26,13 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 		{
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
-			const glm::vec3 globalPos = transform.position;
-			const std::vector<b2Vec2> &points = polygonCollider.points;
-			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, globalPos, camera, modelMatrix);
+			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
-			drawLines(polygonPoints);
-			drawPoints(polygonPoints);
+			const std::vector<b2Vec2> &points = polygonCollider.points;
+			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, transform.position, camera, modelMatrix);
+
+			updateGizmo(camera, modelMatrix, transform.position, polygonPoints);
+			drawGizmos(polygonPoints);
 		}
 	}
 }
@@ -71,10 +74,10 @@ void Survive::PolygonGizmos::drawPoints(const std::vector<ImVec2> &points)
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 
-	ImU32 color = POINT_COLOR;
-	for (const ImVec2 &point: points)
+	for (int i = 0; i < points.size(); ++i)
 	{
-		drawList->AddCircleFilled(point, RADIUS, color);
+		ImU32 color = m_PointHovered == i ? POINT_COLOR_HOVERED : POINT_COLOR;
+		drawList->AddCircleFilled(points[i], RADIUS, color);
 	}
 }
 
@@ -94,5 +97,36 @@ void Survive::PolygonGizmos::drawLines(const std::vector<ImVec2> &points)
 		const ImVec2 &p2 = points[(i + 1) % points.size()];
 
 		drawList->AddLine(p1, p2, LINE_COLOR, 3.0f);
+	}
+}
+
+void Survive::PolygonGizmos::drawGizmos(const std::vector<ImVec2> &polygonPoints)
+{
+	drawLines(polygonPoints);
+	drawPoints(polygonPoints);
+}
+
+void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix,
+										 const glm::vec3 &position, const std::vector<ImVec2> &points)
+{
+	static constexpr float RADIUS = 5.0f;
+
+	bool hovered{};
+	for (int i = 0; i < points.size(); ++i)
+	{
+		if (!m_IsUsing && Util::mouseHoversPoint(points[i], RADIUS))
+		{
+			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+			m_PointHovered = i;
+			hovered = true;
+
+			break;
+		}
+	}
+
+	if (!hovered && !m_IsUsing)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
+		m_PointHovered = -1;
 	}
 }
