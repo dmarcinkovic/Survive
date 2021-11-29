@@ -28,10 +28,10 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
-			const std::vector<b2Vec2> &points = polygonCollider.points;
+			std::vector<b2Vec2> &points = polygonCollider.points;
 			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, transform.position, camera, modelMatrix);
 
-			updateGizmo(camera, modelMatrix, transform.position, polygonPoints);
+			updateGizmo(camera, modelMatrix, transform.position, polygonPoints, points);
 			drawGizmos(polygonPoints);
 		}
 	}
@@ -39,7 +39,7 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 
 bool Survive::PolygonGizmos::isOver()
 {
-	return false;
+	return m_PointHovered != -1;
 }
 
 ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
@@ -107,14 +107,15 @@ void Survive::PolygonGizmos::drawGizmos(const std::vector<ImVec2> &polygonPoints
 }
 
 void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix,
-										 const glm::vec3 &position, const std::vector<ImVec2> &points)
+										 const glm::vec3 &position, const std::vector<ImVec2> &polygonPoints,
+										 std::vector<b2Vec2> &points)
 {
 	static constexpr float RADIUS = 5.0f;
 
 	bool hovered{};
-	for (int i = 0; i < points.size(); ++i)
+	for (int i = 0; i < polygonPoints.size(); ++i)
 	{
-		if (!m_IsUsing && Util::mouseHoversPoint(points[i], RADIUS))
+		if (!m_IsUsing && Util::mouseHoversPoint(polygonPoints[i], RADIUS))
 		{
 			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 			m_PointHovered = i;
@@ -129,4 +130,28 @@ void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		m_PointHovered = -1;
 	}
+
+	for (int i = 0; i < points.size(); ++i)
+	{
+		if (m_IsUsing && m_PointHovered == i)
+		{
+			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+			moveVertex(camera, modelMatrix, position, points[i]);
+		}
+	}
+}
+
+void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
+										b2Vec2 &vertex) const
+{
+	ImVec2 mousePosition = ImGui::GetMousePos();
+
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
+											 m_Height);
+
+	localPos *= Constants::BOX2D_SCALE;
+	glm::vec3 offset = position * Constants::BOX2D_SCALE;
+
+	glm::vec3 newPosition = localPos - offset;
+	vertex = b2Vec2(newPosition.x, newPosition.y);
 }
