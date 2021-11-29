@@ -17,6 +17,9 @@ namespace Survive
 {
 	class PolygonGizmos : public ColliderGizmos
 	{
+	private:
+		static int m_PointHovered;
+
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
 
@@ -31,7 +34,12 @@ namespace Survive
 
 		static void drawPoints(const std::vector<ImVec2> &points);
 
-		void drawLines(const std::vector<ImVec2> &points);
+		static void drawLines(const std::vector<ImVec2> &points);
+
+		static void drawGizmos(const std::vector<ImVec2> &polygonPoints);
+
+		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
+						 const std::vector<ImVec2> &points);
 	};
 }
 
