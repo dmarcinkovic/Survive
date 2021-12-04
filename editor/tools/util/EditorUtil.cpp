@@ -641,7 +641,7 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 {
 	ImGui::TextUnformatted("Add new point");
 	ImGui::SameLine();
-	if (ImGui::Button(" + "))
+	if (ImGui::Button(" + ") && points.size() < b2_maxPolygonVertices)
 	{
 		points.emplace_back(0, 0);
 		if (points.size() >= 3)
