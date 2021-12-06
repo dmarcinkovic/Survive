@@ -25,10 +25,14 @@ namespace Survive
 
 		static bool isOver();
 
-	private:
+	protected:
 		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
 									  const glm::mat4 &modelMatrix) const;
 
+		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
+						const glm::vec3 &position, b2Vec2 &vertex) const;
+
+	private:
 		std::vector<ImVec2> getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
 											 const Camera &camera, const glm::mat4 &modelMatrix);
 
@@ -40,9 +44,6 @@ namespace Survive
 
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points, b2PolygonShape &shape);
-
-		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
-						const glm::vec3 &position, b2Vec2 &vertex) const;
 	};
 }
 
