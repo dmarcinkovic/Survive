@@ -12,16 +12,15 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 {
 	auto polygon = m_Registry.create();
 	m_Registry.emplace<TagComponent>(polygon, "polygon");
-	m_Registry.emplace<Transform3DComponent>(polygon, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f},
-											 glm::vec3{0, 0, 30});
+	m_Registry.emplace<Transform3DComponent>(polygon, glm::vec3{0, 0.7f, 0}, glm::vec3{0.25f, 0.25f, 1.0f});
 	m_Registry.emplace<Render2DComponent>(polygon,
 										  TexturedModel(m_Loader.renderQuad(),
 														m_Loader.loadTexture("assets/textures/polygon.png")));
 	m_Registry.emplace<RigidBody2DComponent>(polygon, b2_dynamicBody);
 	m_Registry.emplace<PolygonCollider2DComponent>(polygon,
-												   std::vector<b2Vec2>{b2Vec2(-2.5, -0.7), b2Vec2(-0.25, -2.85),
-																	   b2Vec2(2.5, -1.5), b2Vec2(1.7, 1.7),
-																	   b2Vec2(-1.4, 2)}, 1.0f, 0.3f, 0.5f);
+												   std::vector<b2Vec2>{b2Vec2(-2.5, 0.5), b2Vec2(-1.4, -2.5),
+																	   b2Vec2(1.4, -2.5), b2Vec2(2.5, 0.5),
+																	   b2Vec2(0, 2.5)}, 1.0f, 0.3f, 0.5f);
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
