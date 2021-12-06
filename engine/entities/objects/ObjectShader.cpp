@@ -10,6 +10,12 @@ Survive::ObjectShader::ObjectShader()
 	loadUniformLocations();
 }
 
+Survive::ObjectShader::ObjectShader(const char *vertexShaderFile, const char *fragmentShaderFile)
+		: Shader(vertexShaderFile, fragmentShaderFile)
+{
+
+}
+
 void Survive::ObjectShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
 {
 	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);

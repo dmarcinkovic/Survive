@@ -7,24 +7,9 @@
 #include "AnimationShader.h"
 
 Survive::AnimationShader::AnimationShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: ObjectShader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 	loadUniformLocations();
-}
-
-void Survive::AnimationShader::loadTransformationMatrix(const glm::mat4 &transformationMatrix) const
-{
-	loadMatrix(m_LocationTransformationMatrix, transformationMatrix);
-}
-
-void Survive::AnimationShader::loadViewMatrix(const glm::mat4 &viewMatrix) const
-{
-	loadMatrix(m_LocationViewMatrix, viewMatrix);
-}
-
-void Survive::AnimationShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
-{
-	loadMatrix(m_LocationProjectionMatrix, projectionMatrix);
 }
 
 void Survive::AnimationShader::loadUniformLocations()
@@ -34,7 +19,7 @@ void Survive::AnimationShader::loadUniformLocations()
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 
 	m_LocationLightColor = glGetUniformLocation(m_Program, "lightColor");
-	m_LocationLightPosition = glGetUniformLocation(m_Program, "lightPosition");
+	m_LocationLightPos = glGetUniformLocation(m_Program, "lightPosition");
 
 	for (int i = 0; i < MAX_JOINTS; ++i)
 	{
@@ -45,7 +30,7 @@ void Survive::AnimationShader::loadUniformLocations()
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 	m_LocationCameraPosition = glGetUniformLocation(m_Program, "cameraPosition");
 
-	m_LocationLightProjectionMatrix = glGetUniformLocation(m_Program, "lightProjectionMatrix");
+	m_LocationLightProjection = glGetUniformLocation(m_Program, "lightProjectionMatrix");
 	m_LocationLightViewMatrix = glGetUniformLocation(m_Program, "lightViewMatrix");
 
 	m_LocationObjectTexture = glGetUniformLocation(m_Program, "objectTexture");
@@ -67,16 +52,6 @@ void Survive::AnimationShader::loadUniformLocations()
 	m_LocationMaterial = glGetUniformLocation(m_Program, "material");
 }
 
-void Survive::AnimationShader::loadLight(const glm::vec3 &lightPosition, const glm::vec3 &lightColor,
-										 float shineDamper, int material) const
-{
-	loadVector3(m_LocationLightPosition, lightPosition);
-	loadVector3(m_LocationLightColor, lightColor);
-
-	loadFloat(m_LocationShineDamper, shineDamper);
-	loadInteger(m_LocationMaterial, material);
-}
-
 void Survive::AnimationShader::loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const
 {
 	for (int i = 0; i < jointTransforms.size(); ++i)
@@ -88,63 +63,4 @@ void Survive::AnimationShader::loadJointTransforms(const std::vector<glm::mat4> 
 	{
 		loadMatrix(m_LocationJointTransforms[i], glm::mat4{});
 	}
-}
-
-void Survive::AnimationShader::loadPlane(const glm::vec4 &plane) const
-{
-	loadVector4(m_LocationPlane, plane);
-}
-
-void Survive::AnimationShader::loadColor(const glm::vec4 &color) const
-{
-	loadVector4(m_LocationColor, color);
-}
-
-void Survive::AnimationShader::loadBloom(bool loadBloom) const
-{
-	loadInteger(m_LocationAddBloom, loadBloom);
-}
-
-void Survive::AnimationShader::loadBloomTexture(float bloomStrength) const
-{
-	loadInteger(m_LocationBloomTexture, 3);
-	loadFloat(m_LocationBloomStrength, bloomStrength);
-}
-
-void Survive::AnimationShader::loadAddShadow(bool addShadow) const
-{
-	loadInteger(m_LocationAddShadow, addShadow);
-}
-
-void Survive::AnimationShader::loadRefractionData(float refractionIndex, float refractionFactor) const
-{
-	loadFloat(m_LocationRefractionIndex, refractionIndex);
-	loadFloat(m_LocationRefractionFactor, refractionFactor);
-}
-
-void Survive::AnimationShader::loadReflectionFactor(float reflectionFactor) const
-{
-	loadFloat(m_LocationReflectiveFactor, reflectionFactor);
-}
-
-void Survive::AnimationShader::loadTextures() const
-{
-	loadInteger(m_LocationObjectTexture, 0);
-	loadInteger(m_LocationShadowMap, 1);
-	loadInteger(m_LocationSkybox, 2);
-}
-
-void Survive::AnimationShader::loadLightViewMatrix(const glm::mat4 &lightViewMatrix) const
-{
-	loadMatrix(m_LocationLightViewMatrix, lightViewMatrix);
-}
-
-void Survive::AnimationShader::loadLightProjectionMatrix(const glm::mat4 &lightProjectionMatrix) const
-{
-	loadMatrix(m_LocationLightProjectionMatrix, lightProjectionMatrix);
-}
-
-void Survive::AnimationShader::loadCameraPosition(const glm::vec3 &cameraPosition) const
-{
-	loadVector3(m_LocationCameraPosition, cameraPosition);
 }
