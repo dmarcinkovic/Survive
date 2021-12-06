@@ -30,8 +30,8 @@ namespace Survive
 	public:
 		explicit AnimationRenderer(const Light &light);
 
-		void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
-					const glm::vec4 &plane = glm::vec4{}) const;
+		void renderAnimation(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+							 const glm::vec4 &plane = glm::vec4{}) const;
 
 		void addSkybox(entt::entity skybox);
 

@@ -13,8 +13,8 @@ Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 {
 }
 
-void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &camera,
-										GLuint shadowMap, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const Camera &camera,
+												 GLuint shadowMap, const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 

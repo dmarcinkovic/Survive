@@ -48,7 +48,7 @@ void Survive::BlurRenderer::renderToFbo(entt::registry &registry, const Camera &
 	m_Fbo.bindDrawBuffer();
 	Display::clearWindow();
 
-	m_AnimationRenderer.render(registry, camera, 0);
+	m_AnimationRenderer.renderAnimation(registry, camera, 0);
 	m_ObjectRenderer.render(registry, camera, 0);
 	m_TerrainRenderer.render(registry, camera, m_Light, 0);
 
