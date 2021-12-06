@@ -31,7 +31,7 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 			std::vector<b2Vec2> &points = polygonCollider.points;
 			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, transform.position, camera, modelMatrix);
 
-			updateGizmo(camera, modelMatrix, transform.position, polygonPoints, points);
+			updateGizmo(camera, modelMatrix, transform.position, polygonPoints, points, polygonCollider.polygonShape);
 			drawGizmos(polygonPoints);
 		}
 	}
@@ -108,7 +108,7 @@ void Survive::PolygonGizmos::drawGizmos(const std::vector<ImVec2> &polygonPoints
 
 void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix,
 										 const glm::vec3 &position, const std::vector<ImVec2> &polygonPoints,
-										 std::vector<b2Vec2> &points)
+										 std::vector<b2Vec2> &points, b2PolygonShape &shape)
 {
 	static constexpr float RADIUS = 5.0f;
 
@@ -137,6 +137,7 @@ void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &
 		{
 			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 			moveVertex(camera, modelMatrix, position, points[i]);
+			shape.Set(points.data(), static_cast<int>(points.size()));
 		}
 	}
 }

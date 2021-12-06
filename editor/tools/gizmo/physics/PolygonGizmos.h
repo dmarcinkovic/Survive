@@ -39,7 +39,7 @@ namespace Survive
 		static void drawGizmos(const std::vector<ImVec2> &polygonPoints);
 
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points);
+						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points, b2PolygonShape &shape);
 
 		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
 						const glm::vec3 &position, b2Vec2 &vertex) const;
