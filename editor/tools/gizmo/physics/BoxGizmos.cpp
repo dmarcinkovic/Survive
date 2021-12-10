@@ -137,27 +137,24 @@ bool Survive::BoxGizmos::isOver()
 }
 
 void Survive::BoxGizmos::drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider,
-										 const glm::mat4 &modelMatrix, float offset, int p1, int p2,
+										 const glm::mat4 &modelMatrix, const glm::vec3 &position, float angle, int p1, int p2,
 										 bool isVertical) const
 {
-	ImVec2 mousePosition = ImGui::GetMousePos();
-	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-
-	float offsetBox2D = offset * Constants::BOX2D_SCALE;
-	localPos *= Constants::BOX2D_SCALE;
+	glm::vec3 mouseLocalPosition = getMouseLocalPosition(camera, modelMatrix, position);
+	glm::vec3 offset = rotatePointAroundOrigin(mouseLocalPosition.x, mouseLocalPosition.y, -angle);
 
 	b2Vec2 *points = boxCollider.boxShape.m_vertices;
 
 	if (isVertical)
 	{
-		points[p1].x = localPos.x - offsetBox2D;
-		points[p2].x = localPos.x - offsetBox2D;
+		points[p1].x = offset.x;
+		points[p2].x = offset.x;
 
 		boxCollider.width = std::abs(points[0].x - points[1].x) / 2.0f;
 	} else
 	{
-		points[p1].y = localPos.y - offsetBox2D;
-		points[p2].y = localPos.y - offsetBox2D;
+		points[p1].y = offset.y;
+		points[p2].y = offset.y;
 
 		boxCollider.height = std::abs(points[0].y - points[3].y) / 2.0f;
 	}
@@ -180,8 +177,8 @@ Survive::BoxGizmos::drawHoveredPoint(const Camera &camera, BoxCollider2DComponen
 
 void
 Survive::BoxGizmos::updateGizmos(const Camera &camera, BoxCollider2DComponent &boxCollider,
-									 const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
-									 const std::vector<ImVec2> &points)
+								 const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+								 const std::vector<ImVec2> &points)
 {
 	if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(points[0], points[1]))
 	{
@@ -205,22 +202,23 @@ Survive::BoxGizmos::updateGizmos(const Camera &camera, BoxCollider2DComponent &b
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 	}
 
+	float angle = glm::radians(transform.rotation.z);
 	if (m_HoveredLine == 0 && m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 0, 1, false);
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position, angle, 0, 1, false);
 	} else if (m_HoveredLine == 1 && m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 1, 2, true);
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position, angle, 1, 2, true);
 	} else if (m_HoveredLine == 2 && m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 2, 3, false);
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position, angle, 2, 3, false);
 	} else if (m_HoveredLine == 3 && m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 3, 0, true);
+		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position, angle, 3, 0, true);
 	}
 }
 

@@ -45,7 +45,7 @@ namespace Survive
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
 
 		void drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
-							 float offset, int p1, int p2, bool isVertical) const;
+							 const glm::vec3 &position, float angle, int p1, int p2, bool isVertical) const;
 
 		void drawHoveredPoint(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
 							  const glm::vec3 &position, float angle) const;
