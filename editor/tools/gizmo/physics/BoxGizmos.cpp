@@ -187,7 +187,7 @@ Survive::BoxGizmos::updateGizmos(const Camera &camera, BoxCollider2DComponent &b
 	{
 		m_HoveredLine = 0;
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-	} else if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(points[1], points[3]))
+	} else if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(points[1], points[2]))
 	{
 		m_HoveredLine = 1;
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
