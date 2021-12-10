@@ -151,7 +151,7 @@ void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &m
 	vertex = b2Vec2(rotatedPoint.x, rotatedPoint.y);
 }
 
-glm::vec3 Survive::PolygonGizmos::rotatePointAroundOrigin(float x, float y, float angle) const
+glm::vec3 Survive::PolygonGizmos::rotatePointAroundOrigin(float x, float y, float angle)
 {
 	float cosAngle = std::cos(angle);
 	float sinAngle = std::sin(angle);

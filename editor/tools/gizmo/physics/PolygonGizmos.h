@@ -46,7 +46,7 @@ namespace Survive
 						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points,
 						 b2PolygonShape &shape, float angle);
 
-		[[nodiscard]] glm::vec3 rotatePointAroundOrigin(float x, float y, float angle) const;
+		[[nodiscard]] static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle) ;
 
 		void enableGizmos(PolygonCollider2DComponent &polygonCollider, const Transform3DComponent &transform,
 						  const Camera &camera);
