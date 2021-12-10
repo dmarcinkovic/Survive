@@ -28,7 +28,7 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
-			float angle = transform.rotation.z;
+			float angle = glm::radians(transform.rotation.z);
 			const glm::vec3 &position = transform.position;
 			std::vector<b2Vec2> &points = polygonCollider.points;
 			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, position, camera, modelMatrix, angle);
@@ -49,7 +49,14 @@ ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2
 {
 	float scale = Constants::BOX2D_SCALE;
 
-	glm::vec3 point = globalPos + glm::vec3{vertex.x / scale, vertex.y / scale, 0};
+	float x = vertex.x / scale;
+	float y = vertex.y / scale;
+
+	float cosAngle = std::cos(angle);
+	float sinAngle = std::sin(angle);
+	glm::vec3 rotatedPoint{x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
+	glm::vec3 point = globalPos + rotatedPoint;
+
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
 }
 

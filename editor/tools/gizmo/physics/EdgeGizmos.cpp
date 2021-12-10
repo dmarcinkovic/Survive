@@ -30,7 +30,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 		{
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
-			float angle = transform.rotation.z;
+			float angle = glm::radians(transform.rotation.z);
 			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix, angle);
 			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix, angle);
 
