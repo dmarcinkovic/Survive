@@ -30,8 +30,9 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 		{
 			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
-			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
-			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
+			float angle = transform.rotation.z;
+			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix, angle);
+			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix, angle);
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 

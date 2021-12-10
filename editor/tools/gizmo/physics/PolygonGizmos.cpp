@@ -28,10 +28,12 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
+			float angle = transform.rotation.z;
+			const glm::vec3 &position = transform.position;
 			std::vector<b2Vec2> &points = polygonCollider.points;
-			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, transform.position, camera, modelMatrix);
+			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, position, camera, modelMatrix, angle);
 
-			updateGizmo(camera, modelMatrix, transform.position, polygonPoints, points, polygonCollider.polygonShape);
+			updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape);
 			drawGizmos(polygonPoints);
 		}
 	}
@@ -43,7 +45,7 @@ bool Survive::PolygonGizmos::isOver()
 }
 
 ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-										const glm::mat4 &modelMatrix) const
+										const glm::mat4 &modelMatrix, float angle) const
 {
 	float scale = Constants::BOX2D_SCALE;
 
@@ -53,14 +55,14 @@ ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2
 
 std::vector<ImVec2>
 Survive::PolygonGizmos::getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
-										 const Camera &camera, const glm::mat4 &modelMatrix)
+										 const Camera &camera, const glm::mat4 &modelMatrix, float angle)
 {
 	std::vector<ImVec2> polygonPoints;
 	polygonPoints.reserve(points.size());
 
 	for (const b2Vec2 &point: points)
 	{
-		polygonPoints.emplace_back(getPoint(globalPos, point, camera, modelMatrix));
+		polygonPoints.emplace_back(getPoint(globalPos, point, camera, modelMatrix, angle));
 	}
 
 	return polygonPoints;

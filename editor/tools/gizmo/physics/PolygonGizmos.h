@@ -27,14 +27,14 @@ namespace Survive
 
 	protected:
 		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-									  const glm::mat4 &modelMatrix) const;
+									  const glm::mat4 &modelMatrix, float angle) const;
 
 		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
 						const glm::vec3 &position, b2Vec2 &vertex) const;
 
 	private:
 		std::vector<ImVec2> getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
-											 const Camera &camera, const glm::mat4 &modelMatrix);
+											 const Camera &camera, const glm::mat4 &modelMatrix, float angle);
 
 		static void drawPoints(const std::vector<ImVec2> &points);
 
