@@ -47,6 +47,9 @@ namespace Survive
 						 b2PolygonShape &shape, float angle);
 
 		[[nodiscard]] glm::vec3 rotatePointAroundOrigin(float x, float y, float angle) const;
+
+		void enableGizmos(PolygonCollider2DComponent &polygonCollider, const Transform3DComponent &transform,
+						  const Camera &camera);
 	};
 }
 

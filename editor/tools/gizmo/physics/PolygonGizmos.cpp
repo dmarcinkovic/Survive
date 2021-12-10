@@ -24,17 +24,7 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 
 		if (m_GizmoEnabled)
 		{
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
-
-			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-			float angle = glm::radians(transform.rotation.z);
-			const glm::vec3 &position = transform.position;
-			std::vector<b2Vec2> &points = polygonCollider.points;
-			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, position, camera, modelMatrix, angle);
-
-			updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape, angle);
-			drawGizmos(polygonPoints);
+			enableGizmos(polygonCollider, transform, camera);
 		}
 	}
 }
@@ -167,4 +157,20 @@ glm::vec3 Survive::PolygonGizmos::rotatePointAroundOrigin(float x, float y, floa
 	float sinAngle = std::sin(angle);
 
 	return {x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
+}
+
+void Survive::PolygonGizmos::enableGizmos(PolygonCollider2DComponent &polygonCollider,
+										  const Transform3DComponent &transform, const Camera &camera)
+{
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+	float angle = glm::radians(transform.rotation.z);
+	const glm::vec3 &position = transform.position;
+	std::vector<b2Vec2> &points = polygonCollider.points;
+	std::vector<ImVec2> polygonPoints = getPolygonPoints(points, position, camera, modelMatrix, angle);
+
+	updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape, angle);
+	drawGizmos(polygonPoints);
 }
