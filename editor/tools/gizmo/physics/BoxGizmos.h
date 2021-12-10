@@ -39,20 +39,24 @@ namespace Survive
 
 		static void drawCenter(const ImVec2 &boxCenter, bool isHovered);
 
-		[[nodiscard]] ImVec2 getBoxCenter(const BoxCollider2DComponent &boxCollider, const Camera &camera,
-										  const Transform3DComponent &transform, const glm::mat4 &modelMatrix) const;
-
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
 
-		void drawHoveredLine(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
-							 const glm::vec3 &position, float angle, int p1, int p2, bool isVertical) const;
+		void moveLine(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
+					  const glm::vec3 &position, float angle, int p1, int p2, bool isVertical) const;
 
-		void drawHoveredPoint(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
-							  const glm::vec3 &position, float angle) const;
+		void moveCenter(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
+						const glm::vec3 &position, float angle) const;
 
 		void updateGizmos(const Camera &camera, BoxCollider2DComponent &boxCollider,
 						  const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
-						  const std::vector<ImVec2> &points);
+						  const std::vector<ImVec2> &points, const ImVec2 &center);
+
+		void updateLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
+						 const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+						 const std::vector<ImVec2> &points);
+
+		void updateCenter(const ImVec2 &center, const Camera &camera, BoxCollider2DComponent &boxCollider,
+						  const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
 	};
 }
 
