@@ -33,7 +33,7 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 			std::vector<b2Vec2> &points = polygonCollider.points;
 			std::vector<ImVec2> polygonPoints = getPolygonPoints(points, position, camera, modelMatrix, angle);
 
-			updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape);
+			updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape, angle);
 			drawGizmos(polygonPoints);
 		}
 	}
@@ -117,7 +117,7 @@ void Survive::PolygonGizmos::drawGizmos(const std::vector<ImVec2> &polygonPoints
 
 void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix,
 										 const glm::vec3 &position, const std::vector<ImVec2> &polygonPoints,
-										 std::vector<b2Vec2> &points, b2PolygonShape &shape)
+										 std::vector<b2Vec2> &points, b2PolygonShape &shape, float angle)
 {
 	static constexpr float RADIUS = 5.0f;
 
@@ -145,23 +145,28 @@ void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &
 		if (m_IsUsing && m_PointHovered == i)
 		{
 			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-			moveVertex(camera, modelMatrix, position, points[i]);
+			moveVertex(camera, modelMatrix, position, points[i], angle);
 			shape.Set(points.data(), static_cast<int>(points.size()));
 		}
 	}
 }
 
 void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-										b2Vec2 &vertex) const
+										b2Vec2 &vertex, float angle) const
 {
 	ImVec2 mousePosition = ImGui::GetMousePos();
 
-	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
-											 m_Height);
-
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
 	localPos *= Constants::BOX2D_SCALE;
 	glm::vec3 offset = position * Constants::BOX2D_SCALE;
 
 	glm::vec3 newPosition = localPos - offset;
-	vertex = b2Vec2(newPosition.x, newPosition.y);
+
+	float cosAngle = std::cos(-angle);
+	float sinAngle = std::sin(-angle);
+	float x = newPosition.x;
+	float y = newPosition.y;
+	glm::vec2 rotatedPoint{x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle};
+
+	vertex = b2Vec2(rotatedPoint.x, rotatedPoint.y);
 }

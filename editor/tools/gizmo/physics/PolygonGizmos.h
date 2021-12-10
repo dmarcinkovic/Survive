@@ -30,7 +30,7 @@ namespace Survive
 									  const glm::mat4 &modelMatrix, float angle) const;
 
 		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
-						const glm::vec3 &position, b2Vec2 &vertex) const;
+						const glm::vec3 &position, b2Vec2 &vertex, float angle) const;
 
 	private:
 		std::vector<ImVec2> getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
@@ -43,7 +43,8 @@ namespace Survive
 		static void drawGizmos(const std::vector<ImVec2> &polygonPoints);
 
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points, b2PolygonShape &shape);
+						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points,
+						 b2PolygonShape &shape, float angle);
 	};
 }
 

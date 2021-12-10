@@ -17,7 +17,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 	{
 		m_GizmoEnabled = false;
 	}
-	
+
 	if (selectedEntity != entt::null &&
 		registry.all_of<EdgeCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
@@ -36,7 +36,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 
-			updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2);
+			updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2, angle);
 			drawGizmo(p1, p2);
 		}
 	}
@@ -77,9 +77,9 @@ void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2)
 	drawList->AddCircleFilled(p2, RADIUS, color2);
 }
 
-void
-Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-								 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2)
+void Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
+									  EdgeCollider2DComponent &edgeCollider,
+									  const ImVec2 &p1, const ImVec2 &p2, float angle)
 {
 	if (!m_IsUsing && Util::mouseHoversPoint(p1, RADIUS))
 	{
@@ -98,10 +98,10 @@ Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMat
 	if (m_IsUsing && m_PointHovered == 0)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex1);
+		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex1, angle);
 	} else if (m_IsUsing && m_PointHovered == 1)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2);
+		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2, angle);
 	}
 }
