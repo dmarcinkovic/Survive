@@ -139,13 +139,7 @@ void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &
 void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 										b2Vec2 &vertex, float angle) const
 {
-	ImVec2 mousePosition = ImGui::GetMousePos();
-
-	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
-	localPos *= Constants::BOX2D_SCALE;
-	glm::vec3 offset = position * Constants::BOX2D_SCALE;
-
-	glm::vec3 newPosition = localPos - offset;
+	glm::vec3 newPosition = getMouseLocalPosition(camera, modelMatrix, position);
 	glm::vec3 rotatedPoint = rotatePointAroundOrigin(newPosition.x, newPosition.y, -angle);
 
 	vertex = b2Vec2(rotatedPoint.x, rotatedPoint.y);
@@ -173,4 +167,18 @@ void Survive::PolygonGizmos::enableGizmos(PolygonCollider2DComponent &polygonCol
 
 	updateGizmo(camera, modelMatrix, position, polygonPoints, points, polygonCollider.polygonShape, angle);
 	drawGizmos(polygonPoints);
+}
+
+glm::vec3 Survive::PolygonGizmos::getMouseLocalPosition(const Camera &camera, const glm::mat4 &modelMatrix,
+														const glm::vec3 &position) const
+{
+	ImVec2 mousePosition = ImGui::GetMousePos();
+
+	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width, m_Height);
+	localPos *= Constants::BOX2D_SCALE;
+	glm::vec3 offset = position * Constants::BOX2D_SCALE;
+
+	glm::vec3 newPosition = localPos - offset;
+
+	return newPosition;
 }

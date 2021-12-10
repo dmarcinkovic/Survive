@@ -32,10 +32,15 @@ namespace Survive
 		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
 						const glm::vec3 &position, b2Vec2 &vertex, float angle) const;
 
-	private:
 		std::vector<ImVec2> getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
 											 const Camera &camera, const glm::mat4 &modelMatrix, float angle);
 
+		[[nodiscard]] glm::vec3
+		getMouseLocalPosition(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position) const;
+
+		[[nodiscard]] static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle);
+
+	private:
 		static void drawPoints(const std::vector<ImVec2> &points);
 
 		static void drawLines(const std::vector<ImVec2> &points);
@@ -45,8 +50,6 @@ namespace Survive
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points,
 						 b2PolygonShape &shape, float angle);
-
-		[[nodiscard]] static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle) ;
 
 		void enableGizmos(PolygonCollider2DComponent &polygonCollider, const Transform3DComponent &transform,
 						  const Camera &camera);

@@ -12,11 +12,11 @@
 #include "Components.h"
 #include "EventHandler.h"
 #include "Camera.h"
-#include "ColliderGizmos.h"
+#include "PolygonGizmos.h"
 
 namespace Survive
 {
-	class BoxGizmos : public ColliderGizmos
+	class BoxGizmos : public PolygonGizmos
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
@@ -35,11 +35,7 @@ namespace Survive
 
 		static void initializeBoxCollider(BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform);
 
-		[[nodiscard]] std::tuple<ImVec2, ImVec2, ImVec2, ImVec2>
-		getRectanglePoints(const BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform,
-						   const Camera &camera, const glm::mat4 &modelMatrix) const;
-
-		static void drawRect(const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4, int hoveredLine);
+		static void drawRect(const std::vector<ImVec2> &points, int hoveredLine);
 
 		static void drawCenter(const ImVec2 &boxCenter, bool isHovered);
 
@@ -52,11 +48,11 @@ namespace Survive
 							 float offset, int p1, int p2, bool isVertical) const;
 
 		void drawHoveredPoint(const Camera &camera, BoxCollider2DComponent &boxCollider, const glm::mat4 &modelMatrix,
-							  const glm::vec3 &position) const;
+							  const glm::vec3 &position, float angle) const;
 
-		void drawHoveredLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
-							  const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
-							  const ImVec2 &p1, const ImVec2 &p2, const ImVec2 &p3, const ImVec2 &p4);
+		void updateGizmos(const Camera &camera, BoxCollider2DComponent &boxCollider,
+						  const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
+						  const std::vector<ImVec2> &points);
 	};
 }
 
