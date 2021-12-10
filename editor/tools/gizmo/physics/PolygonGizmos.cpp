@@ -49,12 +49,7 @@ ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2
 {
 	float scale = Constants::BOX2D_SCALE;
 
-	float x = vertex.x / scale;
-	float y = vertex.y / scale;
-
-	float cosAngle = std::cos(angle);
-	float sinAngle = std::sin(angle);
-	glm::vec3 rotatedPoint{x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
+	glm::vec3 rotatedPoint = rotatePointAroundOrigin(vertex.x / scale, vertex.y / scale, angle);
 	glm::vec3 point = globalPos + rotatedPoint;
 
 	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
@@ -161,12 +156,15 @@ void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &m
 	glm::vec3 offset = position * Constants::BOX2D_SCALE;
 
 	glm::vec3 newPosition = localPos - offset;
-
-	float cosAngle = std::cos(-angle);
-	float sinAngle = std::sin(-angle);
-	float x = newPosition.x;
-	float y = newPosition.y;
-	glm::vec2 rotatedPoint{x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle};
+	glm::vec3 rotatedPoint = rotatePointAroundOrigin(newPosition.x, newPosition.y, -angle);
 
 	vertex = b2Vec2(rotatedPoint.x, rotatedPoint.y);
+}
+
+glm::vec3 Survive::PolygonGizmos::rotatePointAroundOrigin(float x, float y, float angle) const
+{
+	float cosAngle = std::cos(angle);
+	float sinAngle = std::sin(angle);
+
+	return {x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
 }

@@ -45,6 +45,8 @@ namespace Survive
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 						 const std::vector<ImVec2> &polygonPoints, std::vector<b2Vec2> &points,
 						 b2PolygonShape &shape, float angle);
+
+		[[nodiscard]] glm::vec3 rotatePointAroundOrigin(float x, float y, float angle) const;
 	};
 }
 
