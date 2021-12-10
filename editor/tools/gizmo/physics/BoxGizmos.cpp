@@ -208,19 +208,19 @@ Survive::BoxGizmos::drawHoveredLines(const Camera &camera, BoxCollider2DComponen
 	if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(p1, p2))
 	{
 		m_HoveredLine = 0;
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	} else if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(p2, p3))
 	{
 		m_HoveredLine = 1;
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	} else if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(p3, p4))
 	{
 		m_HoveredLine = 2;
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	} else if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(p4, p1))
 	{
 		m_HoveredLine = 3;
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 	} else if (!m_IsUsing)
 	{
 		m_HoveredLine = -1;
@@ -229,19 +229,19 @@ Survive::BoxGizmos::drawHoveredLines(const Camera &camera, BoxCollider2DComponen
 
 	if (m_HoveredLine == 0 && m_IsUsing)
 	{
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 0, 1, false);
 	} else if (m_HoveredLine == 1 && m_IsUsing)
 	{
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 1, 2, true);
 	} else if (m_HoveredLine == 2 && m_IsUsing)
 	{
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.y, 2, 3, false);
 	} else if (m_HoveredLine == 3 && m_IsUsing)
 	{
-		ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		drawHoveredLine(camera, boxCollider, modelMatrix, transform.position.x, 3, 0, true);
 	}
 }
