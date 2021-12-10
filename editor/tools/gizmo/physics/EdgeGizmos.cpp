@@ -28,16 +28,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 
 		if (m_GizmoEnabled)
 		{
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
-
-			float angle = glm::radians(transform.rotation.z);
-			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix, angle);
-			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix, angle);
-
-			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-			updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2, angle);
-			drawGizmo(p1, p2);
+			enableGizmos(edgeCollider, transform, camera);
 		}
 	}
 }
@@ -104,4 +95,19 @@ void Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &mod
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2, angle);
 	}
+}
+
+void Survive::EdgeGizmos::enableGizmos(EdgeCollider2DComponent &edgeCollider,
+									   const Transform3DComponent &transform, const Camera &camera)
+{
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+	float angle = glm::radians(transform.rotation.z);
+	ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix, angle);
+	ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix, angle);
+
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+	updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2, angle);
+	drawGizmo(p1, p2);
 }

@@ -33,6 +33,9 @@ namespace Survive
 
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
 						 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2, float angle);
+
+		void enableGizmos(EdgeCollider2DComponent &edgeCollider, const Transform3DComponent &transform,
+						  const Camera &camera);
 	};
 }
 
