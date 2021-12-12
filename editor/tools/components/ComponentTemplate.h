@@ -312,7 +312,7 @@ namespace Survive
 			{
 				component.m_Initialized = true;
 			}
-			
+
 			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2))
 			{
 				component.m_Initialized = true;
