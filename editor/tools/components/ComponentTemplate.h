@@ -255,11 +255,13 @@ namespace Survive
 			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+				component.m_Initialized = true;
 			}
 
 			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+				component.m_Initialized = true;
 			}
 
 			b2Vec2 oldCenter = component.center;

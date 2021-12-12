@@ -58,8 +58,8 @@ namespace Survive
 		void updateCenter(const ImVec2 &center, const Camera &camera, BoxCollider2DComponent &boxCollider,
 						  const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
 
-		ImVec2 calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
-						  const glm::mat4 &modelMatrix, float angle) const;
+		[[nodiscard]] ImVec2 calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
+										const glm::mat4 &modelMatrix, float angle) const;
 	};
 }
 

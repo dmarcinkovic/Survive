@@ -12,6 +12,7 @@ namespace Survive
 	struct BoxCollider2DComponent
 	{
 		friend class BoxGizmos;
+		friend class ComponentTemplate;
 
 		b2FixtureDef fixtureDef{};
 		b2PolygonShape boxShape{};
