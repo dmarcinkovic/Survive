@@ -12,6 +12,7 @@ namespace Survive
 	struct CircleCollider2DComponent
 	{
 		friend class CircleGizmos;
+		friend class ComponentTemplate;
 
 		b2FixtureDef fixtureDef;
 		b2CircleShape circleShape;

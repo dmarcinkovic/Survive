@@ -286,7 +286,11 @@ namespace Survive
 			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			if (EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max))
+			{
+				component.m_Initialized = true;
+			}
+
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
 			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
 			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
