@@ -62,7 +62,7 @@ namespace Survive
 
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 
-		static ImVec2 getCenter(const b2Vec2 &localCenter, const Camera &camera, const Transform3DComponent &transform,
+		static ImVec2 getCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
 								const glm::mat4 &modelMatrix, float x, float y, float width, float height);
 
 		static glm::vec3 getMouseRay(const Camera &camera, float x, float y, float width, float height);

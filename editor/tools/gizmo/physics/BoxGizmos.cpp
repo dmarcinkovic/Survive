@@ -41,9 +41,9 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
 											  const Transform3DComponent &transform, const glm::mat4 &modelMatrix)
 {
-	ImVec2 center = Util::getCenter(boxCollider.center, camera, transform, modelMatrix, m_X, m_Y, m_Width, m_Height);
-
 	float angle = glm::radians(transform.rotation.z);
+
+	ImVec2 center = calcCenter(boxCollider.center, camera, transform.position, modelMatrix, angle);
 
 	b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
 	std::vector<b2Vec2> points{vertices, vertices + 4};
@@ -142,14 +142,12 @@ Survive::BoxGizmos::moveCenter(const Camera &camera, BoxCollider2DComponent &box
 							   const glm::mat4 &modelMatrix, const glm::vec3 &position, float angle) const
 {
 	glm::vec3 boxCenter = getMouseLocalPosition(camera, modelMatrix, position);
+	glm::vec3 oldCenter = rotatePointAroundOrigin(boxCollider.center.x, boxCollider.center.y, angle);
 
-	b2Vec2 oldCenter = boxCollider.center;
-	boxCollider.center = b2Vec2(boxCenter.x, boxCenter.y);
+	glm::vec3 diff = boxCenter - oldCenter;
+	boxCollider.center += b2Vec2(diff.x, diff.y);
 
-	b2Vec2 diff = boxCollider.center - oldCenter;
-	glm::vec3 rotatedDiff = rotatePointAroundOrigin(diff.x, diff.y, angle);
-
-	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, b2Vec2(rotatedDiff.x, rotatedDiff.y));
+	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, b2Vec2(diff.x, diff.y));
 }
 
 void
@@ -178,7 +176,7 @@ void Survive::BoxGizmos::updateCenter(const ImVec2 &center, const Camera &camera
 	if (m_CenterHovered && m_IsUsing)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		moveCenter(camera, boxCollider, modelMatrix, transform.position, -angle);
+		moveCenter(camera, boxCollider, modelMatrix, transform.position, angle);
 	}
 }
 
@@ -226,5 +224,14 @@ void Survive::BoxGizmos::updateLines(const Camera &camera, BoxCollider2DComponen
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		moveLine(camera, boxCollider, modelMatrix, transform.position, angle, 3, 0, true);
 	}
+}
+
+ImVec2 Survive::BoxGizmos::calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
+									  const glm::mat4 &modelMatrix, float angle) const
+{
+	glm::vec3 point = rotatePointAroundOrigin(localCenter.x, localCenter.y, angle);
+	b2Vec2 center(point.x, point.y);
+
+	return Util::getCenter(center, camera, position, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 

@@ -46,7 +46,7 @@ ImVec2 Survive::CircleGizmos::getCircleCenter(const CircleCollider2DComponent &c
 {
 	b2Vec2 circleCenter = circleCollider.circleShape.m_p;
 
-	return Util::getCenter(circleCenter, camera, transform, modelMatrix, m_X, m_Y, m_Width, m_Height);
+	return Util::getCenter(circleCenter, camera, transform.position, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 
 float Survive::CircleGizmos::calculateRadius(float radius, const Camera &camera, const glm::mat4 &modelMatrix) const
