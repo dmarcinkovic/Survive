@@ -12,6 +12,7 @@ namespace Survive
 	struct EdgeCollider2DComponent
 	{
 		friend class EdgeGizmos;
+		friend class ComponentTemplate;
 
 		b2FixtureDef fixtureDef;
 		b2EdgeShape edgeShape;

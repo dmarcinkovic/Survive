@@ -308,8 +308,15 @@ namespace Survive
 		{
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1);
-			EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2);
+			if (EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1))
+			{
+				component.m_Initialized = true;
+			}
+			
+			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2))
+			{
+				component.m_Initialized = true;
+			}
 
 			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
 			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
