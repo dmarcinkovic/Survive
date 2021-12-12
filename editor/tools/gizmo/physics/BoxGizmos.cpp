@@ -142,12 +142,14 @@ Survive::BoxGizmos::moveCenter(const Camera &camera, BoxCollider2DComponent &box
 							   const glm::mat4 &modelMatrix, const glm::vec3 &position, float angle) const
 {
 	glm::vec3 boxCenter = getMouseLocalPosition(camera, modelMatrix, position);
-	glm::vec3 oldCenter = rotatePointAroundOrigin(boxCollider.center.x, boxCollider.center.y, angle);
+	glm::vec3 rotatedCenter = rotatePointAroundOrigin(boxCenter.x, boxCenter.y, -angle);
 
-	glm::vec3 diff = boxCenter - oldCenter;
-	boxCollider.center += b2Vec2(diff.x, diff.y);
+	b2Vec2 &center = boxCollider.center;
 
-	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, b2Vec2(diff.x, diff.y));
+	b2Vec2 diff = b2Vec2(rotatedCenter.x, rotatedCenter.y) - center;
+	center = b2Vec2(rotatedCenter.x, rotatedCenter.y);
+
+	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, diff);
 }
 
 void
