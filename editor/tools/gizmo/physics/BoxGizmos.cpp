@@ -11,7 +11,6 @@
 #include "EditorUtil.h"
 
 int Survive::BoxGizmos::m_HoveredLine = -1;
-bool Survive::BoxGizmos::m_CenterHovered{};
 
 void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -53,7 +52,7 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 	updateGizmos(camera, boxCollider, transform, modelMatrix, rectanglePoints, center);
 
 	drawRect(rectanglePoints, m_HoveredLine);
-	drawCenter(center, m_CenterHovered);
+	drawCenter(center);
 }
 
 void Survive::BoxGizmos::initializeBoxCollider(BoxCollider2DComponent &boxCollider,
@@ -95,17 +94,6 @@ void Survive::BoxGizmos::drawLine(ImDrawList *drawList, const ImVec2 &p1, const 
 
 	ImU32 color = isHovered ? LINE_COLOR_HOVERED : LINE_COLOR;
 	drawList->AddLine(p1, p2, color, LINE_THICKNESS);
-}
-
-void Survive::BoxGizmos::drawCenter(const ImVec2 &boxCenter, bool isHovered)
-{
-	static constexpr ImU32 POINT_COLOR = IM_COL32(255, 255, 255, 255);
-	static constexpr ImU32 POINT_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
-
-	ImDrawList *drawList = ImGui::GetWindowDrawList();
-
-	ImU32 color = isHovered ? POINT_COLOR_HOVERED : POINT_COLOR;
-	drawList->AddCircle(boxCenter, 4.0, color, 0, 2.0f);
 }
 
 bool Survive::BoxGizmos::isOver()
@@ -234,6 +222,6 @@ ImVec2 Survive::BoxGizmos::calcCenter(const b2Vec2 &localCenter, const Camera &c
 	glm::vec3 point = rotatePointAroundOrigin(localCenter.x, localCenter.y, angle);
 	b2Vec2 center(point.x, point.y);
 
-	return Util::getCenter(center, camera, position, modelMatrix, m_X, m_Y, m_Width, m_Height);
+	return getCenter(center, camera, position, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 

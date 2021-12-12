@@ -5,7 +5,6 @@
 #ifndef SURVIVE_BOXGIZMOS_H
 #define SURVIVE_BOXGIZMOS_H
 
-#include <tuple>
 #include <imgui.h>
 
 #include "entt.hpp"
@@ -13,15 +12,15 @@
 #include "EventHandler.h"
 #include "Camera.h"
 #include "PolygonGizmos.h"
+#include "Centroid.h"
 
 namespace Survive
 {
-	class BoxGizmos : public PolygonGizmos
+	class BoxGizmos : public PolygonGizmos, public Centroid
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
 
-		static bool m_CenterHovered;
 		static int m_HoveredLine;
 
 	public:
@@ -36,8 +35,6 @@ namespace Survive
 		static void initializeBoxCollider(BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform);
 
 		static void drawRect(const std::vector<ImVec2> &points, int hoveredLine);
-
-		static void drawCenter(const ImVec2 &boxCenter, bool isHovered);
 
 		static void drawLine(ImDrawList *drawList, const ImVec2 &p1, const ImVec2 &p2, bool isHovered);
 

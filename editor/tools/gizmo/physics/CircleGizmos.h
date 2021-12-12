@@ -10,16 +10,16 @@
 #include "EventHandler.h"
 #include "CircleCollider2DComponent.h"
 #include "ColliderGizmos.h"
+#include "Centroid.h"
 
 namespace Survive
 {
-	class CircleGizmos : public ColliderGizmos
+	class CircleGizmos : public ColliderGizmos, public Centroid
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
 
 		static bool m_Hovered;
-		static bool m_CenterHovered;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
@@ -44,8 +44,6 @@ namespace Survive
 
 		void updateCircleRadius(const ImVec2 &center, float radius, const Camera &camera, const glm::mat4 &modelMatrix,
 								CircleCollider2DComponent &circleCollider) const;
-
-		static void drawCenter(const ImVec2 &center);
 
 		void updateCircleCenter(const ImVec2 &center, const Camera &camera, const glm::mat4 &modelMatrix,
 								CircleCollider2DComponent &circleCollider, const Transform3DComponent &transform) const;
