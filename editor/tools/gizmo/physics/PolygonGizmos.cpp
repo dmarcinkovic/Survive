@@ -131,7 +131,11 @@ void Survive::PolygonGizmos::updateGizmo(const Camera &camera, const glm::mat4 &
 		{
 			ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 			moveVertex(camera, modelMatrix, position, points[i], angle);
-			shape.Set(points.data(), static_cast<int>(points.size()));
+
+			if (points.size() > 3)
+			{
+				shape.Set(points.data(), static_cast<int>(points.size()));
+			}
 		}
 	}
 }
