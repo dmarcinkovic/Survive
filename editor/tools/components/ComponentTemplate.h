@@ -335,7 +335,7 @@ namespace Survive
 
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
+			m_EditorUtil.drawPolygonPoints(component.points, component.polygonShape);
 
 			ImGui::Separator();
 			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);

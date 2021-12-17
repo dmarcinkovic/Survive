@@ -38,6 +38,7 @@ namespace Survive
 
 		Texture m_FontIcon;
 		Texture m_TextureIcon;
+		Texture m_DeleteIcon;
 
 	public:
 		EditorUtil();
@@ -105,7 +106,7 @@ namespace Survive
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
-		static void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+		void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape) const;
 
 		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape);
 
@@ -122,6 +123,11 @@ namespace Survive
 		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser, Loader &loader);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
+
+		static void drawPoint(int index, std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
+		static int drawDeleteButton(int index, const Texture &deleteIcon,
+									const std::vector<b2Vec2> &points, b2PolygonShape &shape);
 	};
 }
 
