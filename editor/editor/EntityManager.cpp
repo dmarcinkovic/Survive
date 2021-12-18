@@ -79,7 +79,7 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
-	if (m_AddNewComponent)
+	if (m_AddNewComponent && m_SelectedEntity != entt::null)
 	{
 		addNewComponent(registry);
 	} else if (m_Selected >= 0)
