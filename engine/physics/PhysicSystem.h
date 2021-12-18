@@ -30,6 +30,8 @@ namespace Survive
 		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void updateWorld(b2World *world);
+
+		static void initHingeJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
 	};
 }
 

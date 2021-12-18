@@ -13,7 +13,6 @@ namespace Survive
 	struct HingeJoint2DComponent
 	{
 		b2RevoluteJointDef jointDef{};
-		b2Body *connectedBody{};
 
 		HingeJoint2DComponent() = default;
 
