@@ -115,12 +115,14 @@ namespace Survive
 
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5, 0.1f);
+
+			ImGui::Separator();
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
-
-			EditorUtil::drawSlider("##Bloom strength", "Bloom strength", component.bloomStrength, 0.0f, 5.0f);
 		}
 	}
 
