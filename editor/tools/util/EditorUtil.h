@@ -59,12 +59,7 @@ namespace Survive
 		void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
 						 const char *format, const char *label, bool &changed);
 
-		static bool drawSlider(const char *label, const std::string &text,
-							   float &value, float start = 0.0f, float end = 1.0f);
-
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
-
-		static void toggleButton(const char *stringId, bool &v);
 
 		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
 					   std::string &soundFile, bool &changed);
@@ -92,8 +87,6 @@ namespace Survive
 		void chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font);
 
 		static void chooseFontSpacing(float &spacing, Text &text, Loader &loader);
-
-		static void drawPlayButton(bool &play);
 
 		static void drawColumnInputInt(const char *text, const char *label, int &value);
 
