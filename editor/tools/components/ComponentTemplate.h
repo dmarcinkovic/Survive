@@ -168,22 +168,23 @@ namespace Survive
 
 		if (ImGui::CollapsingHeader("Sound", visible))
 		{
-			if (EditorUtil::drawSlider("##Pitch", "Pitch", component.pitch, 0.0f, 5.0f))
+			ImGui::Columns(2, nullptr, false);
+			if (EditorUtil::drawColumnDragFloat("Pitch", "##Pitch", component.pitch, 0.0f, 5.0f, 0.1f))
 			{
 				component.audioSource.setPitch(component.pitch);
 			}
 
-			if (EditorUtil::drawSlider("##Gain", "Gain", component.gain, 0.0f, 5.0f))
+			if (EditorUtil::drawColumnDragFloat("Gain", "##Gain", component.gain, 0.0f, 5.0f, 0.1f))
 			{
 				component.audioSource.setGain(component.gain);
 			}
 
-			EditorUtil::toggleButton("Play on loop", component.playOnLoop);
+			EditorUtil::drawColumnInputBool("Play on loop", "##LoopSound", component.playOnLoop);
+			ImGui::Separator();
+
 			ImGui::Columns(2);
 			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();
-
-			EditorUtil::drawPlayButton(component.play);
 		}
 	}
 
