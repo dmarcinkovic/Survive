@@ -17,19 +17,20 @@ namespace Survive
 
 		HingeJoint2DComponent() = default;
 
-		HingeJoint2DComponent(b2Body *connectedBody, const b2Vec2 &anchor, const b2Vec2 &connectedAnchor,
+		HingeJoint2DComponent(b2Body *connectedBody, const b2Vec2 &anchor, const b2Vec2 &connectedAnchor, bool collideConnected = false,
 							  bool useMotor = false, float motorSpeed = 0, float maxTorque = 0, bool useLimits = false,
 							  float lowerAngle = 0, float upperAngle = 0)
 		{
 			jointDef.bodyB = connectedBody;
 			jointDef.localAnchorA = anchor;
 			jointDef.localAnchorB = connectedAnchor;
+			jointDef.collideConnected = collideConnected;
+			jointDef.upperAngle = glm::radians(upperAngle);
 			jointDef.enableMotor = useMotor;
 			jointDef.motorSpeed = motorSpeed;
 			jointDef.maxMotorTorque = maxTorque;
 			jointDef.enableLimit = useLimits;
 			jointDef.lowerAngle = glm::radians(lowerAngle);
-			jointDef.upperAngle = glm::radians(upperAngle);
 		}
 	};
 }
