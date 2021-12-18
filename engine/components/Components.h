@@ -10,6 +10,7 @@
 #include "BoxCollider2DComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "EdgeCollider2DComponent.h"
+#include "HingeJoint2DComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
 #include "PolygonCollider2DComponent.h"
