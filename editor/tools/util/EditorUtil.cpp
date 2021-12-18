@@ -197,28 +197,6 @@ void Survive::EditorUtil::drawTransform2DHeader()
 	ImGui::NextColumn();
 }
 
-bool Survive::EditorUtil::drawSlider(const char *label, const std::string &text, float &value, float start, float end)
-{
-	ImGui::NewLine();
-	centerText(text);
-
-	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.87f, 0.19f, 0.14f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.88f, 0.46f, 0.05f, 1.0f));
-
-	ImGui::PushStyleVar(ImGuiStyleVar_GrabMinSize, 16);
-	ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 4);
-
-	ImGui::PushItemWidth(-1);
-	bool sliderChanged = ImGui::SliderFloat(label, &value, start, end);
-	ImGui::PopItemWidth();
-
-	ImGui::PopStyleColor(3);
-	ImGui::PopStyleVar(2);
-
-	return sliderChanged;
-}
-
 void Survive::EditorUtil::centerText(const std::string &text)
 {
 	auto size = static_cast<float>(text.size());
@@ -239,37 +217,6 @@ void Survive::EditorUtil::loadQuadModel(bool &changed, TexturedModel &texturedMo
 			texturedModel.getModel() = loader.renderQuad();
 		}
 	}
-}
-
-void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
-{
-	ImVec2 pos = ImGui::GetCursorScreenPos();
-	ImDrawList *drawList = ImGui::GetWindowDrawList();
-
-	float height = ImGui::GetFrameHeight() * 1.2f;
-	float width = height * 1.55f;
-	float radius = height * 0.50f;
-
-	if (ImGui::InvisibleButton(stringId, ImVec2(width, height)))
-	{
-		v = !v;
-	}
-
-	ImU32 backgroundColor;
-	if (ImGui::IsItemHovered())
-	{
-		backgroundColor = v ? IM_COL32(15, 120, 40, 255) : IM_COL32(150, 150, 150, 255);
-	} else
-	{
-		backgroundColor = v ? IM_COL32(51, 244, 92, 255) : IM_COL32(180, 180, 180, 255);
-	}
-
-	drawList->AddRectFilled(pos, ImVec2(pos.x + width, pos.y + height), backgroundColor, height * 0.5f);
-	drawList->AddCircleFilled(ImVec2(v ? (pos.x + width - radius) : (pos.x + radius), pos.y + radius),
-							  radius - 1.5f, IM_COL32(255, 255, 255, 255));
-
-	ImGui::SameLine();
-	ImGui::TextUnformatted(stringId);
 }
 
 void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
@@ -542,21 +489,6 @@ void Survive::EditorUtil::chooseFontSpacing(float &spacing, Text &text, Loader &
 	ImGui::Text("Alignment");
 
 	ImGui::NextColumn();
-}
-
-void Survive::EditorUtil::drawPlayButton(bool &play)
-{
-	float width = 0.5f * ImGui::GetContentRegionAvailWidth();
-	float height = 2.0f * ImGui::GetTextLineHeight();
-	ImVec2 size(width, height);
-
-	ImVec2 cursorPos = ImGui::GetCursorPos();
-	ImGui::SetCursorPos(ImVec2(cursorPos.x + width / 2.0f, cursorPos.y));
-
-	if (ImGui::Button("Play sound", size))
-	{
-		play = true;
-	}
 }
 
 void Survive::EditorUtil::drawColumnInputInt(const char *text, const char *label, int &value)
