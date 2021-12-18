@@ -21,13 +21,14 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
-	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.8f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
+	Transform3DComponent groundPos(glm::vec3{-0.55f, -0.5f, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
 	m_Registry.emplace<Transform3DComponent>(ground, groundPos);
 	m_Registry.emplace<Render2DComponent>(ground,
 										  TexturedModel(m_Loader.renderQuad(),
 														m_Loader.loadTexture("assets/textures/dirt.png")));
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
 	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-4, 0.5}, b2Vec2{4, 0.5}, 1.0f, 0.3, 0.5);
+	m_Registry.emplace<HingeJoint2DComponent>(ground, nullptr, b2Vec2(0, 0), b2Vec2(0, 0));
 
 	m_Editor.addPlayButtonListener([this]() {
 		PhysicSystem::init(m_Registry, m_World.get());
