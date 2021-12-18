@@ -129,7 +129,10 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Reflection", visible))
 		{
-			EditorUtil::drawSlider("##Reflection factor", "Reflection factor", component.reflectionFactor);
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Reflection factor", "##Reflection factor",
+											component.reflectionFactor, 0, 1, 0.1f);
+			ImGui::Columns();
 		}
 	}
 
@@ -138,8 +141,10 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Refraction", visible))
 		{
-			EditorUtil::drawSlider("##Refraction index", "Refraction index", component.refractiveIndex, 0.0f, 3.0f);
-			EditorUtil::drawSlider("##Refraction factor", "Refraction factor", component.refractiveFactor);
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Refraction index", "##RIndex", component.refractiveIndex, 0, 3, 0.1f);
+			EditorUtil::drawColumnDragFloat("Refraction factor", "##RFactor", component.refractiveFactor, 0, 1, 0.1f);
+			ImGui::Columns();
 		}
 	}
 
