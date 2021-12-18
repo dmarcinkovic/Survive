@@ -52,8 +52,9 @@ void Survive::ContentBrowser::draw()
 
 void Survive::ContentBrowser::setColors()
 {
+	ImVec4 windowBg = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.2f, 0.2f, 1));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.086f, 0.086f, 0.086f, 1));
+	ImGui::PushStyleColor(ImGuiCol_Button, windowBg);
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.02f, 0.02f, 0.02f, 1));
 }
 
