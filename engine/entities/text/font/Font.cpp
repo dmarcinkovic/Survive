@@ -7,6 +7,7 @@
 #include "Font.h"
 #include "Util.h"
 #include "Log.h"
+#include "FontJsonParser.h"
 
 Survive::Font::Font(const char *textureAtlas, Loader &loader)
 		: m_FontTexture(loader.loadTexture(textureAtlas))
@@ -48,37 +49,14 @@ void Survive::Font::loadFontFromFntFile(const std::string &fntFile)
 
 void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
 {
-	std::ifstream reader(jsonFile);
-
-	if (!reader)
+	try
+	{
+		FontJsonParser::parseFontJson(jsonFile, m_Characters, m_ScaleHeight, m_Height);
+		m_Loaded = true;
+	} catch(const std::exception &exception)
 	{
 		Log::logWindow(LogType::ERROR, "Cannot load font");
-		return;
 	}
-
-	float scaleW = 0;
-
-	std::string line;
-	while (std::getline(reader, line))
-	{
-		auto c = Util::getCharacterFromJsonFile(line, scaleW, m_ScaleHeight);
-		if (c)
-		{
-			m_Characters.insert({c.value().m_Id, c.value()});
-		} else if (line.find("width") != -1)
-		{
-			scaleW = Util::getNumber(line, ':');
-		} else if (line.find("height") != -1)
-		{
-			m_ScaleHeight = Util::getNumber(line, ':');
-		} else if (line.find("size") != -1)
-		{
-			m_Height = Util::getNumber(line, ':');
-		}
-	}
-
-	m_Loaded = true;
-	reader.close();
 }
 
 const Survive::Character &Survive::Font::getCharacter(int ascii) const
