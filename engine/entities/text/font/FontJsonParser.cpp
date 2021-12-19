@@ -8,7 +8,7 @@
 #include "FontJsonParser.h"
 
 void
-Survive::FontJsonParser::parseFontJson(const std::string &jsonFile, std::unordered_map<int, Character> characters,
+Survive::FontJsonParser::parseFontJson(const std::string &jsonFile, std::unordered_map<int, Character> &characters,
 									   float &scaleHeight, float &height)
 {
 	std::ifstream reader(jsonFile);
