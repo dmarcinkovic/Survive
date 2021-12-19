@@ -42,7 +42,8 @@ Survive::FontJsonParser::parseFontJson(const std::string &jsonFile, std::unorder
 	reader.close();
 }
 
-std::optional<Survive::Character> Survive::FontJsonParser::getCharacter(const std::string &line, float scaleW, float scaleH)
+std::optional<Survive::Character>
+Survive::FontJsonParser::getCharacter(const std::string &line, float scaleW, float scaleH)
 {
 	static std::string pattern = R"(\s+\"(.?.?)\":\{\"x\":(\d+),\"y\":(\d+),\"width\":(\d+),\"height\")"
 								 R"(:(\d+),\"originX\":(-?\d+),\"originY\":(-?\d+),\"advance\":(\d+))";

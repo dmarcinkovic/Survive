@@ -16,7 +16,7 @@ namespace Survive
 	{
 	public:
 		static void parseFontJson(const std::string &jsonFile, std::unordered_map<int, Character> &characters,
-						   float &scaleHeight, float &height);
+								  float &scaleHeight, float &height);
 
 	private:
 		static std::optional<Character> getCharacter(const std::string &line, float scaleW, float scaleH);

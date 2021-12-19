@@ -16,28 +16,26 @@ Survive::Font::Font(const char *textureAtlas, Loader &loader)
 }
 
 void Survive::Font::loadFontFromFntFile(const std::string &fntFile)
+try
 {
-	try
-	{
-		FontFntParser::parseFontFnt(fntFile, m_Characters, m_ScaleHeight, m_Height);
-		m_Loaded = true;
-	} catch (const std::exception &exception)
-	{
-		Log::logWindow(LogType::ERROR, "Cannot load font from fnt file");
-	}
+	FontFntParser::parseFontFnt(fntFile, m_Characters, m_ScaleHeight, m_Height);
+	m_Loaded = true;
+} catch (const std::exception &exception)
+{
+	Log::logWindow(LogType::ERROR, "Cannot load font from fnt file");
 }
 
+
 void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
+try
 {
-	try
-	{
-		FontJsonParser::parseFontJson(jsonFile, m_Characters, m_ScaleHeight, m_Height);
-		m_Loaded = true;
-	} catch(const std::exception &exception)
-	{
-		Log::logWindow(LogType::ERROR, "Cannot load font from json file");
-	}
+	FontJsonParser::parseFontJson(jsonFile, m_Characters, m_ScaleHeight, m_Height);
+	m_Loaded = true;
+} catch (const std::exception &exception)
+{
+	Log::logWindow(LogType::ERROR, "Cannot load font from json file");
 }
+
 
 const Survive::Character &Survive::Font::getCharacter(int ascii) const
 {

@@ -15,7 +15,7 @@ namespace Survive
 	class FontFntParser
 	{
 	public:
-		static void parseFontFnt(const std::string &fntFile,  std::unordered_map<int, Character> &characters,
+		static void parseFontFnt(const std::string &fntFile, std::unordered_map<int, Character> &characters,
 								 float &scaleHeight, float &height);
 
 	private:
