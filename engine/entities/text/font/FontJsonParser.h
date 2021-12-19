@@ -23,7 +23,7 @@ namespace Survive
 
 		static Character getCharacterFromJsonFile(const std::smatch &result, float scaleW, float scaleH);
 
-		static float getNumber(const std::string &string, char delimiter = '=');
+		static float getNumber(const std::string &string);
 	};
 }
 

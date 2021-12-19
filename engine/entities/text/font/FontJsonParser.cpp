@@ -29,13 +29,13 @@ Survive::FontJsonParser::parseFontJson(const std::string &jsonFile, std::unorder
 			characters.insert({c.value().m_Id, c.value()});
 		} else if (line.find("width") != -1)
 		{
-			scaleW = getNumber(line, ':');
+			scaleW = getNumber(line);
 		} else if (line.find("height") != -1)
 		{
-			scaleHeight = getNumber(line, ':');
+			scaleHeight = getNumber(line);
 		} else if (line.find("size") != -1)
 		{
-			height = getNumber(line, ':');
+			height = getNumber(line);
 		}
 	}
 
@@ -73,8 +73,8 @@ Survive::FontJsonParser::getCharacterFromJsonFile(const std::smatch &result, flo
 	return {id, x, y, width, height, xOffset, yOffset, advance, scaleW, scaleH};
 }
 
-float Survive::FontJsonParser::getNumber(const std::string &string, char delimiter)
+float Survive::FontJsonParser::getNumber(const std::string &string)
 {
-	unsigned int index = string.find(delimiter);
+	unsigned int index = string.find(':');
 	return std::stof(string.substr(index + 1));
 }
