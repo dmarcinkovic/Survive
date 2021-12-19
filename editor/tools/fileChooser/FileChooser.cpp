@@ -189,7 +189,7 @@ void Survive::FileChooser::drawOpenFilenameTextbox(bool *open)
 {
 	if (ImGui::BeginChild("open text box"))
 	{
-		ImGui::InputText("", m_SelectedFileName.data(), BUFFER_SIZE, ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputText("##FilenameTextbox", m_SelectedFileName.data(), BUFFER_SIZE, ImGuiInputTextFlags_ReadOnly);
 
 		drawCancelButton(open);
 		if (ImGui::Button("Open"))
@@ -392,7 +392,7 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool openAction)
 {
 	drawNavigationArrows();
-	ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputText("##InputText", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
 	ImGui::SameLine();
 
 	drawCheckbox();
