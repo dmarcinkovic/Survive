@@ -21,12 +21,6 @@ std::vector<std::string> Survive::Util::splitByRegex(const std::string &string)
 	return result;
 }
 
-float Survive::Util::getNumber(const std::string &string, char delimiter)
-{
-	unsigned int index = string.find(delimiter);
-	return std::stof(string.substr(index + 1));
-}
-
 std::vector<std::string> Survive::Util::split(std::string string, char delimiter)
 {
 	std::vector<std::string> result;

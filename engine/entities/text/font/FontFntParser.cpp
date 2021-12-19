@@ -29,10 +29,10 @@ void Survive::FontFntParser::parseFontFnt(const std::string &fntFile, std::unord
 			characters.insert({c.m_Id, c});
 		} else if (!result.empty() && result[0] == "common")
 		{
-			w = Util::getNumber(result[3]);
+			w = getNumber(result[3]);
 
-			scaleHeight = Util::getNumber(result[4]);
-			height = Util::getNumber(result[1]);
+			scaleHeight = getNumber(result[4]);
+			height = getNumber(result[1]);
 		}
 	}
 
@@ -54,8 +54,8 @@ Survive::FontFntParser::getCharacter(const std::vector<std::string> &line, float
 	return {id, x, y, width, height, xOffset, yOffset, advance, w, h};
 }
 
-float Survive::FontFntParser::getNumber(const std::string &string, char delimiter)
+float Survive::FontFntParser::getNumber(const std::string &string)
 {
-	unsigned int index = string.find(61);
+	unsigned int index = string.find('=');
 	return std::stof(string.substr(index + 1));
 }

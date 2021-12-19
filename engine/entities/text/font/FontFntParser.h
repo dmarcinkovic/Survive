@@ -21,7 +21,7 @@ namespace Survive
 	private:
 		static Character getCharacter(const std::vector<std::string> &line, float w, float h);
 
-		static float getNumber(const std::string &string, char delimiter = '=');
+		static float getNumber(const std::string &string);
 	};
 }
 

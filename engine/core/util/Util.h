@@ -25,8 +25,6 @@ namespace Survive
 		static void removeTrailingSpaces(std::string &string);
 
 	public:
-		static float getNumber(const std::string &string, char delimiter = '=');
-
 		static std::vector<std::string> splitByRegex(const std::string &string);
 
 		static std::vector<std::string> split(std::string string, char delimiter);
