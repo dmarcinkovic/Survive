@@ -8,6 +8,7 @@
 #include "Util.h"
 #include "Log.h"
 #include "FontJsonParser.h"
+#include "FontFntParser.h"
 
 Survive::Font::Font(const char *textureAtlas, Loader &loader)
 		: m_FontTexture(loader.loadTexture(textureAtlas))
@@ -16,35 +17,14 @@ Survive::Font::Font(const char *textureAtlas, Loader &loader)
 
 void Survive::Font::loadFontFromFntFile(const std::string &fntFile)
 {
-	std::ifstream reader(fntFile);
-
-	if (!reader)
+	try
 	{
-		Log::logWindow(LogType::ERROR, "Cannot load font");
-		return;
-	}
-
-	float w = 0;
-
-	std::string line;
-	while (std::getline(reader, line))
+		FontFntParser::parseFontFnt(fntFile, m_Characters, m_ScaleHeight, m_Height);
+		m_Loaded = true;
+	} catch (const std::exception &exception)
 	{
-		auto result = Util::splitByRegex(line);
-		if (!result.empty() && result[0] == "char")
-		{
-			Character c = Util::getCharacterFromFntFile(result, w, m_ScaleHeight);
-			m_Characters.insert({c.m_Id, c});
-		} else if (!result.empty() && result[0] == "common")
-		{
-			w = Util::getNumber(result[3]);
-
-			m_ScaleHeight = Util::getNumber(result[4]);
-			m_Height = Util::getNumber(result[1]);
-		}
+		Log::logWindow(LogType::ERROR, "Cannot load font from fnt file");
 	}
-
-	m_Loaded = true;
-	reader.close();
 }
 
 void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
@@ -55,7 +35,7 @@ void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
 		m_Loaded = true;
 	} catch(const std::exception &exception)
 	{
-		Log::logWindow(LogType::ERROR, "Cannot load font");
+		Log::logWindow(LogType::ERROR, "Cannot load font from json file");
 	}
 }
 
