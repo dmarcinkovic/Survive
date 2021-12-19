@@ -172,7 +172,7 @@ void Survive::FileChooser::drawSaveFilenameTextbox(bool *open)
 			strcpy(buffer, m_SelectedFileName.c_str());
 		}
 
-		ImGui::InputText("", buffer, BUFFER_SIZE);
+		ImGui::InputText("##SaveTextBoxInput", buffer, BUFFER_SIZE);
 		m_SelectedFileName = std::string(buffer);
 
 		drawCancelButton(open);
