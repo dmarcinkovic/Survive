@@ -55,7 +55,7 @@ namespace Survive
 
 		void informListeners() const;
 
-		std::string getCurrentDirectoryFilename() const;
+		[[nodiscard]] std::string getCurrentDirectoryFilename() const;
 	};
 }
 

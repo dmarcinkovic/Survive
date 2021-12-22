@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <imgui_internal.h>
+
 #include "DirectoryTree.h"
 
 Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent)
@@ -47,6 +49,16 @@ void Survive::DirectoryTree::drawArrows()
 
 void Survive::DirectoryTree::drawLeftArrow()
 {
+	bool disabled = false;
+
+	if (m_CurrentDirectory == m_CurrentDirectory.root_path())
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
 		m_RedoStack.push(m_CurrentDirectory);
@@ -56,6 +68,12 @@ void Survive::DirectoryTree::drawLeftArrow()
 		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 
 		informListeners();
+	}
+
+	if (disabled)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
 	}
 }
 
