@@ -54,6 +54,8 @@ namespace Survive
 		static void drawNestedDirectories(std::vector<File> &content, const File &file);
 
 		void informListeners() const;
+
+		std::string getCurrentDirectoryFilename() const;
 	};
 }
 

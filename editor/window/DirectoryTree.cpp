@@ -104,8 +104,8 @@ void Survive::DirectoryTree::drawDirectoryTree()
 {
 	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
 
-	std::string currentDirectory = m_CurrentDirectory.filename().string();
-	if (ImGui::TreeNode(currentDirectory.c_str()))
+	std::string directory = getCurrentDirectoryFilename();
+	if (ImGui::TreeNode(directory.c_str()))
 	{
 		for (int i = 0; i < m_DirectoryContent.size(); ++i)
 		{
@@ -152,4 +152,13 @@ void Survive::DirectoryTree::informListeners() const
 	{
 		listener(m_CurrentDirectory, m_DirectoryContent);
 	}
+}
+
+std::string Survive::DirectoryTree::getCurrentDirectoryFilename() const
+{
+	if (m_CurrentDirectory.has_filename())
+	{
+		return m_CurrentDirectory.filename().string();
+	}
+	return m_CurrentDirectory.string();
 }
