@@ -79,6 +79,16 @@ void Survive::DirectoryTree::drawLeftArrow()
 
 void Survive::DirectoryTree::drawRightArrow()
 {
+	bool disabled = false;
+
+	if (m_RedoStack.empty())
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
 	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
 	{
 		m_CurrentDirectory = m_RedoStack.top();
@@ -88,6 +98,12 @@ void Survive::DirectoryTree::drawRightArrow()
 		m_RedoStack.pop();
 
 		informListeners();
+	}
+
+	if (disabled)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
 	}
 }
 
