@@ -36,7 +36,7 @@ namespace Survive
 
 		[[nodiscard]] const std::vector<File> &getDirectoryContent() const;
 
-		void setCurrentDirectory(std::filesystem::path currentDirectory);
+		void setCurrentDirectory(const std::filesystem::path& currentDirectory);
 
 	private:
 		static void setStyleColors();
