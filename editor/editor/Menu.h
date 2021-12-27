@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "FileChooser.h"
+#include "SaveDialog.h"
 #include "EntityManager.h"
 #include "SceneSerializer.h"
 #include "EventHandler.h"
@@ -21,7 +22,7 @@ namespace Survive
 	{
 	private:
 		FileChooser m_OpenWindow;
-		FileChooser m_SaveWindow;
+		SaveDialog m_SaveWindow;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
 		bool m_SkyboxDialog = false;

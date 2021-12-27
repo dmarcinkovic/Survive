@@ -70,7 +70,7 @@ void Survive::Menu::renderSaveAsDialog(entt::registry &registry, std::string &sa
 {
 	if (m_SaveAsDialog)
 	{
-		m_SaveWindow.save(600.0f, 400.0f, &m_SaveAsDialog);
+		m_SaveWindow.open(600.0f, 400.0f, &m_SaveAsDialog);
 
 		if (!m_SaveAsDialog)
 		{

@@ -16,29 +16,6 @@ Survive::FileChooser::FileChooser()
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
 }
 
-void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
-{
-	constexpr bool openAction = false;
-	drawDialogHeader(windowWidth, windowHeight);
-
-	ImGui::OpenPopup("Save");
-	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
-	{
-		drawDialogBody(open, windowHeight, openAction);
-		drawSaveFilenameTextbox(open);
-
-		if (m_ConfirmWindow.draw(CONFIRM_WIDTH, CONFIRM_HEIGHT, windowWidth, windowHeight))
-		{
-			*open = false;
-			m_OpenedFile = true;
-		}
-
-		ImGui::EndPopup();
-	}
-
-	ImGui::PopStyleColor(7);
-}
-
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
 	constexpr bool openAction = true;
@@ -159,31 +136,6 @@ void Survive::FileChooser::drawCheckbox()
 
 	m_Previous = m_Hidden;
 	ImGui::SameLine();
-}
-
-void Survive::FileChooser::drawSaveFilenameTextbox(bool *open)
-{
-	if (ImGui::BeginChild("save text box"))
-	{
-		char buffer[BUFFER_SIZE]{};
-
-		m_SelectedFile = -1;
-		if (!m_SelectedFileName.empty())
-		{
-			strcpy(buffer, m_SelectedFileName.c_str());
-		}
-
-		ImGui::InputText("##SaveTextBoxInput", buffer, BUFFER_SIZE);
-		m_SelectedFileName = std::string(buffer);
-
-		drawCancelButton(open);
-		if (ImGui::Button("Save"))
-		{
-			savePressed(open);
-		}
-
-		ImGui::EndChild();
-	}
 }
 
 void Survive::FileChooser::drawOpenFilenameTextbox(bool *open)
@@ -404,6 +356,7 @@ void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool o
 	drawTable(windowHeight, open, openAction);
 }
 
+// TODO remove this method
 void Survive::FileChooser::savePressed(bool *open)
 {
 	if (directoryChosen())
