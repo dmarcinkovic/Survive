@@ -33,7 +33,7 @@ namespace Survive
 
 		Loader m_Loader;
 
-		std::string m_CurrentDirectory;
+		std::filesystem::path m_CurrentDirectory;
 		const std::filesystem::path m_Root;
 
 		ImTextureID m_Icon{};
@@ -44,8 +44,8 @@ namespace Survive
 		bool m_Previous{};
 
 		std::string m_SelectedFileName;
-		std::stack<std::string> m_Undo;
-		std::stack<std::string> m_Redo;
+		std::stack<std::filesystem::path> m_Undo;
+		std::stack<std::filesystem::path> m_Redo;
 
 		bool m_OpenedFile{};
 		ConfirmWindow m_ConfirmWindow;
@@ -85,8 +85,6 @@ namespace Survive
 		static void drawCancelButton(bool *open);
 
 		static void helpMarker(const char *description);
-
-		static std::filesystem::path getParentPath(const std::string &currentDirectory);
 
 		void resetSelectedFile();
 

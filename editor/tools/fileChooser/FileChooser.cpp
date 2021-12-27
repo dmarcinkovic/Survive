@@ -8,7 +8,7 @@
 #include "Display.h"
 
 Survive::FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
+		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
 	Texture folder = m_Loader.loadTexture("assets/textures/folder.png");
@@ -67,13 +67,6 @@ void Survive::FileChooser::helpMarker(const char *description)
 		ImGui::PopTextWrapPos();
 		ImGui::EndTooltip();
 	}
-}
-
-std::filesystem::path Survive::FileChooser::getParentPath(const std::string &currentDirectory)
-{
-	std::filesystem::path path(currentDirectory.c_str());
-
-	return path.parent_path();
 }
 
 void Survive::FileChooser::setupDarkStyleColors()
@@ -137,8 +130,8 @@ void Survive::FileChooser::drawUpArrow()
 	{
 		m_Redo.push(m_CurrentDirectory);
 
-		m_CurrentDirectory = getParentPath(m_CurrentDirectory).string();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		m_CurrentDirectory = m_CurrentDirectory.parent_path();
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
 		resetSelectedFile();
 	}
@@ -152,7 +145,7 @@ void Survive::FileChooser::drawCheckbox()
 
 	if (m_Previous != m_Hidden)
 	{
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 		resetSelectedFile();
 	}
 
@@ -255,7 +248,7 @@ std::filesystem::path Survive::FileChooser::getSelectedFile() const
 		return std::filesystem::path{};
 	}
 
-	std::filesystem::path path(m_CurrentDirectory);
+	std::filesystem::path path = m_CurrentDirectory;
 	return path.append(m_SelectedFileName);
 }
 
@@ -392,7 +385,9 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool openAction)
 {
 	drawNavigationArrows();
-	ImGui::InputText("##InputText", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
+
+	std::string currentDirectory = m_CurrentDirectory.string();
+	ImGui::InputText("##InputText", currentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
 	ImGui::SameLine();
 
 	drawCheckbox();
@@ -409,7 +404,7 @@ void Survive::FileChooser::savePressed(bool *open)
 		return;
 	}
 
-	std::filesystem::path path(m_CurrentDirectory);
+	std::filesystem::path path = m_CurrentDirectory;
 	std::string file = path.append(m_SelectedFileName).string();
 
 	if (std::filesystem::exists(file))
@@ -424,11 +419,11 @@ void Survive::FileChooser::savePressed(bool *open)
 
 void Survive::FileChooser::buttonDoublePress()
 {
-	std::filesystem::path path(m_CurrentDirectory);
+	std::filesystem::path path = m_CurrentDirectory;
 
 	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName).string();
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+	m_CurrentDirectory = path.append(m_SelectedFileName);
+	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
 	resetSelectedFile();
 }
