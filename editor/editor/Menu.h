@@ -10,6 +10,7 @@
 
 #include "FileChooser.h"
 #include "SaveDialog.h"
+#include "OpenDialog.h"
 #include "EntityManager.h"
 #include "SceneSerializer.h"
 #include "EventHandler.h"
@@ -21,7 +22,7 @@ namespace Survive
 	class Menu
 	{
 	private:
-		FileChooser m_OpenWindow;
+		OpenDialog m_OpenWindow;
 		SaveDialog m_SaveWindow;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
