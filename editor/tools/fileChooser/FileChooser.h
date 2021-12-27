@@ -62,13 +62,17 @@ namespace Survive
 	protected:
 		void drawDialogHeader(float windowWidth, float windowHeight);
 
-		void drawDialogBody(bool *open, float windowHeight, bool openAction);
+		void drawDialogBody(bool *open, float windowHeight);
 
 		static void drawCancelButton(bool *open);
 
 		[[nodiscard]] bool directoryChosen() const;
 
 		void buttonDoublePress();
+
+		virtual void fillTableRow(const File &file, int index, bool *open);
+
+		void drawIcon();
 
 	private:
 		static void setupDarkStyleColors();
@@ -83,23 +87,13 @@ namespace Survive
 
 		void drawCheckbox();
 
-		void drawOpenFilenameTextbox(bool *open);
-
-		void drawTable(float windowHeight, bool *open, bool openAction);
+		void drawTable(float windowHeight, bool *open);
 
 		void drawHeader();
 
 		static void helpMarker(const char *description);
 
 		void resetSelectedFile();
-
-		void drawIcon();
-
-		void fillTableRow(const File &file, int index, bool *open, bool openAction);
-
-		void openPressed(bool *open);
-
-		void savePressed(bool *open);
 
 		static bool sortByFilename(const File &file1, const File &file2);
 

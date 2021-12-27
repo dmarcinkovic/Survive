@@ -18,6 +18,8 @@ namespace Survive
 		void drawSaveFilenameTextbox(bool *open);
 
 		void savePressed(bool *open);
+
+		void fillTableRow(const File &file, int index, bool *open) override;
 	};
 }
 

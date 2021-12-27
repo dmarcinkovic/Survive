@@ -18,20 +18,6 @@ Survive::FileChooser::FileChooser()
 
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
-	constexpr bool openAction = true;
-
-	drawDialogHeader(windowWidth, windowHeight);
-
-	ImGui::OpenPopup("Open");
-	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
-	{
-		drawDialogBody(open, windowHeight, openAction);
-		drawOpenFilenameTextbox(open);
-
-		ImGui::EndPopup();
-	}
-
-	ImGui::PopStyleColor(7);
 }
 
 void Survive::FileChooser::helpMarker(const char *description)
@@ -138,23 +124,7 @@ void Survive::FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::drawOpenFilenameTextbox(bool *open)
-{
-	if (ImGui::BeginChild("open text box"))
-	{
-		ImGui::InputText("##FilenameTextbox", m_SelectedFileName.data(), BUFFER_SIZE, ImGuiInputTextFlags_ReadOnly);
-
-		drawCancelButton(open);
-		if (ImGui::Button("Open"))
-		{
-			openPressed(open);
-		}
-
-		ImGui::EndChild();
-	}
-}
-
-void Survive::FileChooser::drawTable(float windowHeight, bool *open, bool openAction)
+void Survive::FileChooser::drawTable(float windowHeight, bool *open)
 {
 	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 	{
@@ -167,7 +137,7 @@ void Survive::FileChooser::drawTable(float windowHeight, bool *open, bool openAc
 				File file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
-				fillTableRow(file, i, open, openAction);
+				fillTableRow(file, i, open);
 			}
 			ImGui::EndTable();
 		}
@@ -234,57 +204,6 @@ void Survive::FileChooser::drawIcon()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open, bool openAction)
-{
-	ImGui::TableNextColumn();
-	drawIcon();
-
-	const std::string &filename = file.path.filename().string();
-
-	if (ImGui::Selectable(filename.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-	{
-		if (openAction)
-		{
-			openPressed(open);
-		} else
-		{
-			savePressed(open);
-		}
-	}
-
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-}
-
-void Survive::FileChooser::openPressed(bool *open)
-{
-	if (directoryChosen())
-	{
-		buttonDoublePress();
-	} else
-	{
-		*open = false;
-		m_OpenedFile = true;
-	}
-}
-
 bool Survive::FileChooser::sortByFilename(const File &file1, const File &file2)
 {
 	const std::string &filename1 = file1.path.filename().string();
@@ -342,7 +261,7 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 	m_OpenedFile = false;
 }
 
-void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool openAction)
+void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
 {
 	drawNavigationArrows();
 
@@ -353,29 +272,7 @@ void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool o
 	drawCheckbox();
 	helpMarker("Show hidden files");
 
-	drawTable(windowHeight, open, openAction);
-}
-
-// TODO remove this method
-void Survive::FileChooser::savePressed(bool *open)
-{
-	if (directoryChosen())
-	{
-		buttonDoublePress();
-		return;
-	}
-
-	std::filesystem::path path = m_CurrentDirectory;
-	std::string file = path.append(m_SelectedFileName).string();
-
-	if (std::filesystem::exists(file))
-	{
-		m_ConfirmWindow.openConfirmWindow();
-	} else
-	{
-		*open = false;
-		m_OpenedFile = true;
-	}
+	drawTable(windowHeight, open);
 }
 
 void Survive::FileChooser::buttonDoublePress()
@@ -392,4 +289,8 @@ void Survive::FileChooser::buttonDoublePress()
 bool Survive::FileChooser::directoryChosen() const
 {
 	return m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory;
+}
+
+void Survive::FileChooser::fillTableRow(const Survive::File &file, int index, bool *open)
+{
 }

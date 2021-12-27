@@ -11,7 +11,7 @@ void Survive::SaveDialog::open(float windowWidth, float windowHeight, bool *open
 	ImGui::OpenPopup("Save");
 	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
 	{
-		drawDialogBody(open, windowHeight, false);
+		drawDialogBody(open, windowHeight);
 		drawSaveFilenameTextbox(open);
 
 		if (m_ConfirmWindow.draw(CONFIRM_WIDTH, CONFIRM_HEIGHT, windowWidth, windowHeight))
@@ -69,5 +69,38 @@ void Survive::SaveDialog::savePressed(bool *open)
 	{
 		*open = false;
 		m_OpenedFile = true;
+	}
+}
+
+void Survive::SaveDialog::fillTableRow(const Survive::File &file, int index, bool *open)
+{
+	ImGui::TableNextColumn();
+	drawIcon();
+
+	const std::string &filename = file.path.filename().string();
+
+	if (ImGui::Selectable(filename.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
+
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+	{
+		savePressed(open);
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
 	}
 }
