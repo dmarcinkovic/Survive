@@ -3,10 +3,10 @@
 //
 
 #include <imgui.h>
-#include <imgui_internal.h>
 
 #include "FileChooser.h"
 #include "Display.h"
+#include "EditorUtil.h"
 
 Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
@@ -91,15 +91,7 @@ void Survive::FileChooser::drawNavigationArrows()
 
 void Survive::FileChooser::drawLeftArrow()
 {
-	bool disabled = false;
-
-	if (m_Undo.empty())
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		disabled = true;
-	}
+	bool disabled = EditorUtil::disableButton(m_Undo.empty());
 
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
@@ -113,26 +105,13 @@ void Survive::FileChooser::drawLeftArrow()
 		m_Undo.pop();
 	}
 
-	if (disabled)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
-
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawRightArrow()
 {
-	bool disabled = false;
-
-	if (m_Redo.empty())
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		disabled = true;
-	}
+	bool disabled = EditorUtil::disableButton(m_Redo.empty());
 
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
@@ -146,26 +125,13 @@ void Survive::FileChooser::drawRightArrow()
 		m_Redo.pop();
 	}
 
-	if (disabled)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
-
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawUpArrow()
 {
-	bool disabled = false;
-
-	if (m_CurrentDirectory == m_Root)
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		disabled = true;
-	}
+	bool disabled = EditorUtil::disableButton(m_CurrentDirectory == m_Root);
 
 	if (ImGui::ArrowButton("up", ImGuiDir_Up))
 	{
@@ -177,12 +143,7 @@ void Survive::FileChooser::drawUpArrow()
 		resetSelectedFile();
 	}
 
-	if (disabled)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
-
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 

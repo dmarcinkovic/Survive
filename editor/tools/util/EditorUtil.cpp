@@ -4,6 +4,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
+#include <imgui_internal.h>
 
 #include "Log.h"
 #include "Loader.h"
@@ -594,4 +595,28 @@ void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
 	points[1] += diff;
 	points[2] += diff;
 	points[3] += diff;
+}
+
+bool Survive::EditorUtil::disableButton(bool condition)
+{
+	bool disabled = false;
+
+	if (condition)
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
+	return disabled;
+}
+
+void Survive::EditorUtil::enableButton(bool condition)
+{
+	if (condition)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
 }
