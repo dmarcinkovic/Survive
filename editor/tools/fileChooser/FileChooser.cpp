@@ -3,6 +3,7 @@
 //
 
 #include <imgui.h>
+#include <imgui_internal.h>
 
 #include "FileChooser.h"
 #include "Display.h"
@@ -90,43 +91,83 @@ void Survive::FileChooser::drawNavigationArrows()
 
 void Survive::FileChooser::drawLeftArrow()
 {
+	bool disabled = false;
+
+	if (m_Undo.empty())
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
 		m_Redo.push(m_CurrentDirectory);
-		if (!m_Undo.empty())
-		{
-			m_CurrentDirectory = m_Undo.top();
-			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			resetSelectedFile();
+		m_CurrentDirectory = m_Undo.top();
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			m_Undo.pop();
-		}
+		resetSelectedFile();
+
+		m_Undo.pop();
 	}
+
+	if (disabled)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
+
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawRightArrow()
 {
+	bool disabled = false;
+
+	if (m_Redo.empty())
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
 		m_Undo.push(m_CurrentDirectory);
-		if (!m_Redo.empty())
-		{
-			m_CurrentDirectory = m_Redo.top();
-			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			resetSelectedFile();
+		m_CurrentDirectory = m_Redo.top();
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			m_Redo.pop();
-		}
+		resetSelectedFile();
+
+		m_Redo.pop();
 	}
+
+	if (disabled)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
+
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawUpArrow()
 {
-	if (ImGui::ArrowButton("up", ImGuiDir_Up) && m_CurrentDirectory != m_Root)
+	bool disabled = false;
+
+	if (m_CurrentDirectory == m_Root)
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
+	if (ImGui::ArrowButton("up", ImGuiDir_Up))
 	{
 		m_Redo.push(m_CurrentDirectory);
 
@@ -134,6 +175,12 @@ void Survive::FileChooser::drawUpArrow()
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
 		resetSelectedFile();
+	}
+
+	if (disabled)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
 	}
 
 	ImGui::SameLine();
