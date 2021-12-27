@@ -3,10 +3,10 @@
 //
 
 #include <iostream>
-#include <imgui_internal.h>
 
 #include "DirectoryTree.h"
 #include "Log.h"
+#include "EditorUtil.h"
 
 Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent)
 		: m_CurrentDirectory(std::move(currentDirectory)), m_DirectoryContent(std::move(directoryContent)),
@@ -50,15 +50,7 @@ void Survive::DirectoryTree::drawArrows()
 
 void Survive::DirectoryTree::drawLeftArrow()
 {
-	bool disabled = false;
-
-	if (m_CurrentDirectory == m_CurrentDirectory.root_path())
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		disabled = true;
-	}
+	bool disabled = EditorUtil::disableButton(m_CurrentDirectory == m_CurrentDirectory.root_path());
 
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
@@ -71,26 +63,14 @@ void Survive::DirectoryTree::drawLeftArrow()
 		informListeners();
 	}
 
-	if (disabled)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
+	EditorUtil::enableButton(disabled);
 }
 
 void Survive::DirectoryTree::drawRightArrow()
 {
-	bool disabled = false;
+	bool disabled = EditorUtil::disableButton(m_RedoStack.empty());
 
-	if (m_RedoStack.empty())
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-
-		disabled = true;
-	}
-
-	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
+	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right))
 	{
 		m_CurrentDirectory = m_RedoStack.top();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
@@ -101,11 +81,7 @@ void Survive::DirectoryTree::drawRightArrow()
 		informListeners();
 	}
 
-	if (disabled)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
+	EditorUtil::enableButton(disabled);
 }
 
 ImGuiTreeNodeFlags Survive::DirectoryTree::getTreeFlags(std::filesystem::file_type type)
