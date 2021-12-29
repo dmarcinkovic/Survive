@@ -14,20 +14,32 @@ Survive::Source::Source(float gain, float pitch)
 
 Survive::Source::Source(const Source &source)
 {
-	alGenSources(1, &m_Source);
-
-	float gain, pitch;
-	alGetSourcef(source.m_Source, AL_GAIN, &gain);
-	alGetSourcef(source.m_Source, AL_PITCH, &pitch);
-
-	alSourcef(m_Source, AL_GAIN, gain);
-	alSourcef(m_Source, AL_PITCH, pitch);
+	generateNewSource(source.m_Source);
 }
 
 Survive::Source::~Source()
 {
 	stop();
 	alDeleteSources(1, &m_Source);
+}
+
+Survive::Source::Source(Source &&source) noexcept
+{
+	generateNewSource(source.m_Source);
+}
+
+Survive::Source &Survive::Source::operator=(const Source &source)
+{
+	generateNewSource(source.m_Source);
+
+	return *this;
+}
+
+Survive::Source &Survive::Source::operator=(Source &&source) noexcept
+{
+	generateNewSource(source.m_Source);
+
+	return *this;
 }
 
 void Survive::Source::play(ALint buffer) const
@@ -77,5 +89,17 @@ void Survive::Source::setGain(float gain) const
 
 void Survive::Source::setPitch(float pitch) const
 {
+	alSourcef(m_Source, AL_PITCH, pitch);
+}
+
+void Survive::Source::generateNewSource(ALuint oldSource)
+{
+	alGenSources(1, &m_Source);
+
+	float gain, pitch;
+	alGetSourcef(oldSource, AL_GAIN, &gain);
+	alGetSourcef(oldSource, AL_PITCH, &pitch);
+
+	alSourcef(m_Source, AL_GAIN, gain);
 	alSourcef(m_Source, AL_PITCH, pitch);
 }

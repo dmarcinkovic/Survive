@@ -12,28 +12,23 @@
 #include "Joint.h"
 #include "AnimationShader.h"
 #include "TexturedModel.h"
+#include "ObjectRenderer.h"
 #include "Components.h"
 #include "Camera.h"
 #include "Light.h"
 
 namespace Survive
 {
-	class AnimationRenderer
+	class AnimationRenderer : public ObjectRenderer
 	{
 	private:
 		AnimationShader m_Shader;
-		const Light &m_Light;
-
-		Texture m_DefaultTexture{};
-		entt::entity m_Skybox = entt::null;
 
 	public:
 		explicit AnimationRenderer(const Light &light);
 
-		void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
-					const glm::vec4 &plane = glm::vec4{}) const;
-
-		void addSkybox(entt::entity skybox);
+		void renderAnimation(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+							 const glm::vec4 &plane = glm::vec4{}) const;
 
 	private:
 		void renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
@@ -46,14 +41,6 @@ namespace Survive
 
 		void loadObjectUniforms(entt::registry &registry, entt::entity entity,
 								const Texture &texture, const Camera &camera) const;
-
-		void renderBloom(const entt::registry &registry, entt::entity entity) const;
-
-		void renderReflectionAndRefraction(entt::registry &registry, entt::entity entity) const;
-
-		static void drawOutline(const entt::registry &registry, entt::entity entity);
-
-		void loadMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

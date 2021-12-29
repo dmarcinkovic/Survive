@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Texture.h"
+#include "Loader.h"
 
 namespace Survive
 {
@@ -37,6 +38,7 @@ namespace Survive
 		static constexpr int ITEMS_VISIBLE = 10;
 
 		static std::vector<LogInfo> m_Buffer;
+		Loader m_Loader;
 
 		Texture m_ErrorIcon;
 		Texture m_InfoIcon;

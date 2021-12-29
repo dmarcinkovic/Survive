@@ -88,7 +88,7 @@ void main()
     float attenuation = c0 + distance * c1 + distance * distance * c2;
     vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
 
-    vec3 totalColor = (diffuse * (1- shadow) + ambient + specular) * textureColor.rgb;
+    vec3 totalColor = (diffuse * (1- shadow) + ambient) * textureColor.rgb + specular;
 
     vec3 R = reflect(toCameraVector, surfaceNormal);
     vec3 reflectionColor = texture(skybox, R).rgb;

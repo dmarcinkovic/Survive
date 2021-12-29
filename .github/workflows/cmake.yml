@@ -20,28 +20,36 @@ jobs:
         with:
             submodules: recursive
 
+      - name: Update packages
+        run: |
+          sudo apt-get update
+
       - name: Install compiler
         run: |
           sudo apt-get install g++-10
 
-      - name: Update packages
-        run : |
-          sudo apt-get update
-
       - name: Install dependencies
         run: |
           sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev
+
+      - name: Install box2d
+        run: |
+          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d-dev_2.4.1-2_amd64.deb
+          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d2_2.4.1-2_amd64.deb
+          sudo dpkg -i libbox2d2_2.4.1-2_amd64.deb
+          sudo dpkg -i libbox2d-dev_2.4.1-2_amd64.deb
 
       - name: Build executable
         run: |
           cd ${{github.workspace}}
           mkdir build
           cd build
-          cmake -D CMAKE_CXX_COMPILER=g++-10 ..
+          cmake -D CMAKE_CXX_COMPILER=g++-10 -D CMAKE_INSTALL_PREFIX="" ..
           make
+          make DESTDIR=${{github.workspace}}/build/artifact install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: Artifact
-          path: ${{github.workspace}}/build
+          path: ${{github.workspace}}/build/artifact

@@ -1,7 +1,7 @@
 entity:dragon
 	component:Render3DComponent
-		modelName:res/dragon.obj
-		textureName:res/lamp.jpg
+		modelName:assets/models/dragon.obj
+		textureName:assets/textures/lamp.jpg
 	component:RigidBodyComponent
 		isTransparent:0
 	component:ShadowComponent

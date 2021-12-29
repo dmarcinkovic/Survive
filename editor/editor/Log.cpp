@@ -9,9 +9,10 @@ std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
 bool Survive::Log::m_LogViewed = true;
 
 Survive::Log::Log()
-		: m_ErrorIcon(Loader::loadTexture("res/error.png")), m_InfoIcon(Loader::loadTexture("res/info.png")),
-		  m_WarnIcon(Loader::loadTexture("res/warn.png"))
 {
+	m_ErrorIcon = m_Loader.loadTexture("assets/textures/error.png");
+	m_InfoIcon = m_Loader.loadTexture("assets/textures/info.png");
+	m_WarnIcon = m_Loader.loadTexture("assets/textures/warn.png");
 }
 
 void Survive::Log::logWindow(LogType logType, const std::string &message)
@@ -22,8 +23,6 @@ void Survive::Log::logWindow(LogType logType, const std::string &message)
 
 void Survive::Log::drawLogWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.13f, 0.13f, 0.13f, 1));
-
 	ImGuiWindowFlags flags = m_LogViewed ? ImGuiWindowFlags_None : ImGuiWindowFlags_UnsavedDocument;
 
 	if (ImGui::Begin("Log window", nullptr, flags))
@@ -49,7 +48,6 @@ void Survive::Log::drawLogWindow()
 	}
 
 	ImGui::End();
-	ImGui::PopStyleColor();
 }
 
 void Survive::Log::drawIcon(LogType logType) const

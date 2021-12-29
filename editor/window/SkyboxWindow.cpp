@@ -79,15 +79,15 @@ void Survive::SkyboxWindow::drawOpenDialog()
 {
 	if (m_DialogOpen)
 	{
-		m_FileChooser.open(600, 400, &m_DialogOpen);
+		m_OpenDialog.open(600, 400, &m_DialogOpen);
 
 		if (!m_DialogOpen)
 		{
-			std::string filename = m_FileChooser.getSelectedFile().string();
+			std::string filename = m_OpenDialog.getSelectedFile().string();
 
 			if (!filename.empty())
 			{
-				Texture image = Loader::loadTexture(filename.c_str());
+				Texture image = m_Loader.loadTexture(filename.c_str());
 				if (image.isValidTexture())
 				{
 					m_Textures[m_CurrentImage] = image;
@@ -105,7 +105,7 @@ void Survive::SkyboxWindow::drawAddSkyboxButton(entt::registry &registry, Render
 	{
 		if (m_Loaded)
 		{
-			registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+			registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, m_Loader.loadCubeMap(m_TextureNames)));
 		} else
 		{
 			createSkybox(registry, renderer);
@@ -121,6 +121,6 @@ void Survive::SkyboxWindow::createSkybox(entt::registry &registry, Survive::Rend
 	m_Sky = registry.create();
 
 	registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
-	registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, Loader::loadCubeMap(m_TextureNames)));
+	registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, m_Loader.loadCubeMap(m_TextureNames)));
 	renderer.addSkyboxEntity(m_Sky);
 }

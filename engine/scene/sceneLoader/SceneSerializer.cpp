@@ -80,7 +80,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 		} else if (componentType == "BloomComponent")
 		{
-			ComponentLoader::loadBloomComponent(registry, entity, reader);
+			ComponentLoader::loadBloomComponent(registry, entity, reader, m_Loader);
 		} else if (componentType == "ReflectionComponent")
 		{
 			ComponentLoader::loadReflectionComponent(registry, entity, reader);

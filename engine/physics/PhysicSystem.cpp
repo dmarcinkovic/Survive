@@ -4,15 +4,18 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <imgui.h>
 
 #include "PhysicSystem.h"
 #include "Components.h"
 #include "Constants.h"
 
-void Survive::PhysicSystem::update(entt::registry &registry)
+void Survive::PhysicSystem::update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
 {
 	update2DPhysics(registry);
 	update3DPhysics(registry);
+
+	updateWorld(world2D, world3D);
 }
 
 void Survive::PhysicSystem::update2DPhysics(entt::registry &registry)
@@ -182,4 +185,12 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 		body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
 //			rigidBody.body->updateMassPropertiesFromColliders();
 	}
+}
+
+void Survive::PhysicSystem::updateWorld(b2World *world2D, rp3d::PhysicsWorld *world3D)
+{
+	float frameRate = ImGui::GetIO().Framerate;
+	world2D->Step(1.0f / frameRate, 5, 5);
+
+	world3D->update(1.0f / frameRate);
 }

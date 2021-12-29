@@ -29,6 +29,8 @@ namespace Survive
 		void setRect(float x, float y, float width, float height);
 
 		static bool isOver();
+
+		[[nodiscard]] bool isEnabled() const;
 	};
 }
 

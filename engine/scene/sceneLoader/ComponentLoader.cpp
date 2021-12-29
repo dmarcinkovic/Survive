@@ -13,13 +13,13 @@ void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 
 }
 
-void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
 	std::string bloomStrength = parseLine(reader, "bloomStrength");
 
 	float strength = std::stof(bloomStrength);
-	Texture bloomTexture = Loader::loadTexture(textureName.c_str());
+	Texture bloomTexture = loader.loadTexture(textureName.c_str());
 
 	if (bloomTexture.isValidTexture())
 	{
@@ -55,7 +55,7 @@ void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
 													 entt::entity entity, std::ifstream &reader, Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
-	Texture image = Loader::loadTexture(textureName.c_str());
+	Texture image = loader.loadTexture(textureName.c_str());
 
 	if (image.isValidTexture())
 	{
@@ -72,8 +72,8 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	std::string modelName = parseLine(reader, "modelName");
 	std::string textureName = parseLine(reader, "textureName");
 
-	Model model = ObjParser::loadObj(modelName.c_str(), loader);
-	Texture texture = Loader::loadTexture(textureName.c_str());
+	Model model = ObjParser::loadObj(modelName, loader);
+	Texture texture = loader.loadTexture(textureName.c_str());
 
 	if (model.isValidModel() && texture.isValidTexture())
 	{
@@ -202,7 +202,7 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 	std::string fontFile = parseLine(reader, "fontFile");
 	std::string textureAtlas = parseLine(reader, "textureAtlas");
 
-	auto font = getFont(fontFile, textureAtlas);
+	auto font = getFont(fontFile, textureAtlas, loader);
 
 	if (!font)
 	{
@@ -227,9 +227,9 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 }
 
 std::optional<Survive::Font>
-Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas)
+Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader)
 {
-	Font font(textureAtlas.c_str());
+	Font font(textureAtlas.c_str(), loader);
 
 	if (fontFile.ends_with(".fnt"))
 	{

@@ -3,7 +3,10 @@
 //
 
 #include <iostream>
+
 #include "DirectoryTree.h"
+#include "Log.h"
+#include "EditorUtil.h"
 
 Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent)
 		: m_CurrentDirectory(std::move(currentDirectory)), m_DirectoryContent(std::move(directoryContent)),
@@ -47,6 +50,8 @@ void Survive::DirectoryTree::drawArrows()
 
 void Survive::DirectoryTree::drawLeftArrow()
 {
+	bool disabled = EditorUtil::disableButton(m_CurrentDirectory == m_CurrentDirectory.root_path());
+
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
 		m_RedoStack.push(m_CurrentDirectory);
@@ -57,11 +62,15 @@ void Survive::DirectoryTree::drawLeftArrow()
 
 		informListeners();
 	}
+
+	EditorUtil::enableButton(disabled);
 }
 
 void Survive::DirectoryTree::drawRightArrow()
 {
-	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
+	bool disabled = EditorUtil::disableButton(m_RedoStack.empty());
+
+	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right))
 	{
 		m_CurrentDirectory = m_RedoStack.top();
 		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
@@ -71,6 +80,8 @@ void Survive::DirectoryTree::drawRightArrow()
 
 		informListeners();
 	}
+
+	EditorUtil::enableButton(disabled);
 }
 
 ImGuiTreeNodeFlags Survive::DirectoryTree::getTreeFlags(std::filesystem::file_type type)
@@ -104,8 +115,8 @@ void Survive::DirectoryTree::drawDirectoryTree()
 {
 	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
 
-	std::string currentDirectory = m_CurrentDirectory.filename().string();
-	if (ImGui::TreeNode(currentDirectory.c_str()))
+	std::string directory = getCurrentDirectoryFilename();
+	if (ImGui::TreeNode(directory.c_str()))
 	{
 		for (int i = 0; i < m_DirectoryContent.size(); ++i)
 		{
@@ -133,13 +144,18 @@ const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() 
 	return m_DirectoryContent;
 }
 
-void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDirectory)
+void Survive::DirectoryTree::setCurrentDirectory(const std::filesystem::path &currentDirectory)
+try
 {
-	m_CurrentDirectory = std::move(currentDirectory);
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
+	m_DirectoryContent = FileUtil::listDirectory(currentDirectory.string());
+	m_CurrentDirectory = currentDirectory;
 
 	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+} catch (const std::filesystem::filesystem_error &error)
+{
+	Log::logWindow(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
 }
+
 
 void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
 {
@@ -152,4 +168,13 @@ void Survive::DirectoryTree::informListeners() const
 	{
 		listener(m_CurrentDirectory, m_DirectoryContent);
 	}
+}
+
+std::string Survive::DirectoryTree::getCurrentDirectoryFilename() const
+{
+	if (m_CurrentDirectory.has_filename())
+	{
+		return m_CurrentDirectory.filename().string();
+	}
+	return m_CurrentDirectory.string();
 }

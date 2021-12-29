@@ -3,11 +3,11 @@
 //
 
 #include <fstream>
-#include <iostream>
 #include <numeric>
 
 #include "Log.h"
 #include "ObjParser.h"
+#include "Vertex.h"
 #include "Util.h"
 
 Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &loader)
@@ -18,7 +18,6 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	{
 		std::string message = "Could not load " + objFile;
 		Log::logWindow(LogType::ERROR, message);
-		std::cout << message << '\n';
 
 		return {};
 	}
@@ -96,7 +95,7 @@ void Survive::ObjParser::processVertex(const std::vector<glm::vec3> &points, con
 	unsigned textureIndex = std::stoi(index[1]) - 1;
 	unsigned normalIndex = std::stoi(index[2]) - 1;
 
-	Util::processVertex(points, normals, textureCoordinates,
+	Vertex::processVertex(points, normals, textureCoordinates,
 						resultPoints, resultNormals, resultTextures,
 						vertexIndex, textureIndex, normalIndex);
 }

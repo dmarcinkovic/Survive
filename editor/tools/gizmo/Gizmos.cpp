@@ -14,7 +14,12 @@ bool Survive::Gizmos::validOperation = false;
 
 void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
-	if (validOperation && selectedEntity != entt::null && registry.any_of<Transform3DComponent>(selectedEntity))
+	if (selectedEntity == entt::null)
+	{
+		validOperation = false;
+	}
+
+	if (validOperation && registry.any_of<Transform3DComponent>(selectedEntity))
 	{
 		if (registry.any_of<Render3DComponent>(selectedEntity))
 		{
@@ -36,21 +41,24 @@ void Survive::Gizmos::newFrame()
 
 void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 {
-	if (eventHandler.isKeyPressed(Key::W))
+	if (!m_Gizmos.isEnabled())
 	{
-		m_Operation = ImGuizmo::OPERATION::TRANSLATE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::E))
-	{
-		m_Operation = ImGuizmo::OPERATION::ROTATE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::R))
-	{
-		m_Operation = ImGuizmo::OPERATION::SCALE;
-		validOperation = true;
-	} else if (eventHandler.isKeyPressed(Key::ESCAPE))
-	{
-		validOperation = false;
+		if (eventHandler.isKeyPressed(Key::W))
+		{
+			m_Operation = ImGuizmo::OPERATION::TRANSLATE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::E))
+		{
+			m_Operation = ImGuizmo::OPERATION::ROTATE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::R))
+		{
+			m_Operation = ImGuizmo::OPERATION::SCALE;
+			validOperation = true;
+		} else if (eventHandler.isKeyPressed(Key::ESCAPE))
+		{
+			validOperation = false;
+		}
 	}
 
 	if (!validOperation)
