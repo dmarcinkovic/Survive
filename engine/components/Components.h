@@ -23,6 +23,7 @@
 #include "RigidBodyComponent.h"
 #include "ShadowComponent.h"
 #include "SoundComponent.h"
+#include "SphereColliderComponent.h"
 #include "SpriteComponent.h"
 #include "SpriteSheetComponent.h"
 #include "TagComponent.h"
