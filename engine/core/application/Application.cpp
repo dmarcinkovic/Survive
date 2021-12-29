@@ -12,14 +12,23 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 {
 	m_Camera.position = glm::vec3{0, 0, 7};
 
-	auto cube = m_Registry.create();
-	m_Registry.emplace<TagComponent>(cube, "cube");
-	m_Registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 2, -10}, glm::vec3{1.0f}, glm::vec3{0, 30, 0});
-	m_Registry.emplace<RigidBodyComponent>(cube, false);
-	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader), Texture()));
-	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
-	m_Registry.emplace<RigidBody3DComponent>(cube, rp3d::BodyType::DYNAMIC, 1.0f);
-	m_Registry.emplace<BoxCollider3DComponent>(cube, rp3d::Vector3{1.0f, 1.0f, 1.0f});
+	auto sphere = m_Registry.create();
+	m_Registry.emplace<TagComponent>(sphere, "sphere");
+	m_Registry.emplace<Transform3DComponent>(sphere, glm::vec3{0, 2, -10}, glm::vec3{1.0f});
+	m_Registry.emplace<RigidBodyComponent>(sphere, false);
+	m_Registry.emplace<Render3DComponent>(sphere, TexturedModel(ObjParser::loadObj("assets/models/sphere.obj", m_Loader), Texture()));
+	m_Registry.emplace<SpriteComponent>(sphere, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
+	m_Registry.emplace<RigidBody3DComponent>(sphere, rp3d::BodyType::DYNAMIC, 1.0f);
+	m_Registry.emplace<SphereColliderComponent>(sphere, 1.0f);
+
+	auto sphere2 = m_Registry.create();
+	m_Registry.emplace<TagComponent>(sphere2, "sphere2");
+	m_Registry.emplace<Transform3DComponent>(sphere2, glm::vec3{1, 4, -10}, glm::vec3{1.0f});
+	m_Registry.emplace<RigidBodyComponent>(sphere2, false);
+	m_Registry.emplace<Render3DComponent>(sphere2, TexturedModel(ObjParser::loadObj("assets/models/sphere.obj", m_Loader), Texture()));
+	m_Registry.emplace<SpriteComponent>(sphere2, glm::vec4{0.8f, 0.3f, 0.1f, 1.0f});
+	m_Registry.emplace<RigidBody3DComponent>(sphere2, rp3d::BodyType::DYNAMIC, 1.0f);
+	m_Registry.emplace<SphereColliderComponent>(sphere2, 1.0f);
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
