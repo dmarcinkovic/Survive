@@ -383,7 +383,13 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Sphere collider", visible))
 		{
+			static constexpr float max = std::numeric_limits<float>::max();
 
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, max, 0.1f);
+
+			ImGui::Columns();
 		}
 	}
 
