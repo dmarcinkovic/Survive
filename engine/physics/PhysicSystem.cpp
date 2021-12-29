@@ -175,7 +175,8 @@ void Survive::PhysicSystem::initColliders3D(entt::registry &registry, entt::enti
 	initBox3DCollider(registry, entity, physicsCommon, body);
 }
 
-void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity,
+											  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	if (registry.any_of<BoxCollider3DComponent>(entity))
 	{

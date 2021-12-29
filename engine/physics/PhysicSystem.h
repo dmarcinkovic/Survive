@@ -46,9 +46,8 @@ namespace Survive
 		static void initColliders3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
 									rp3d::RigidBody *body);
 
-		static void
-		initBox3DCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
-						  rp3d::RigidBody *body);
+		static void initBox3DCollider(entt::registry &registry, entt::entity entity,
+									  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
 
 		static void updateWorld(b2World *world2D, rp3d::PhysicsWorld *world3D);
 	};
