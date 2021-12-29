@@ -173,6 +173,7 @@ void Survive::PhysicSystem::initColliders3D(entt::registry &registry, entt::enti
 											rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	initBox3DCollider(registry, entity, physicsCommon, body);
+	initSphereCollider(registry, entity, physicsCommon, body);
 }
 
 void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity,
@@ -185,6 +186,18 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 		// TODO this is center: allow user to change it
 		body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
 //			rigidBody.body->updateMassPropertiesFromColliders();
+	}
+}
+
+void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::entity entity,
+											   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+{
+	if (registry.any_of<SphereColliderComponent>(entity))
+	{
+		SphereColliderComponent &sphereCollider = registry.get<SphereColliderComponent>(entity);
+		sphereCollider.sphereShape = physicsCommon.createSphereShape(sphereCollider.radius);
+
+		body->addCollider(sphereCollider.sphereShape, rp3d::Transform::identity());
 	}
 }
 
