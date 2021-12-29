@@ -368,6 +368,33 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(RigidBody3DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Rigid body 3D", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(SphereColliderComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Sphere collider", visible))
+		{
+
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(BoxCollider3DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Box collider 3D", visible))
+		{
+
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
