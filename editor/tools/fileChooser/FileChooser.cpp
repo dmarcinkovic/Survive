@@ -7,6 +7,7 @@
 #include "FileChooser.h"
 #include "Display.h"
 #include "EditorUtil.h"
+#include "Log.h"
 
 Survive::FileChooser::FileChooser()
 		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
@@ -277,12 +278,20 @@ void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
 void Survive::FileChooser::buttonDoublePress()
 {
 	std::filesystem::path path = m_CurrentDirectory;
+	path.append(m_SelectedFileName);
 
-	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName);
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
+	try
+	{
+		m_DirectoryContent = FileUtil::listDirectory(path, m_Hidden);
 
-	resetSelectedFile();
+		m_Undo.push(m_CurrentDirectory);
+		m_CurrentDirectory = path;
+
+		resetSelectedFile();
+	} catch(const std::filesystem::filesystem_error &error)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot enter directory: " + m_CurrentDirectory.string());
+	}
 }
 
 bool Survive::FileChooser::directoryChosen() const

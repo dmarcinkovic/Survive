@@ -144,19 +144,18 @@ const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() 
 	return m_DirectoryContent;
 }
 
-void Survive::DirectoryTree::setCurrentDirectory(const std::filesystem::path& currentDirectory)
+void Survive::DirectoryTree::setCurrentDirectory(const std::filesystem::path &currentDirectory)
+try
 {
-	try
-	{
-		m_DirectoryContent = FileUtil::listDirectory(currentDirectory.string());
-		m_CurrentDirectory = currentDirectory;
+	m_DirectoryContent = FileUtil::listDirectory(currentDirectory.string());
+	m_CurrentDirectory = currentDirectory;
 
-		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
-	} catch(const std::filesystem::filesystem_error &error)
-	{
-		Log::logWindow(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
-	}
+	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+} catch (const std::filesystem::filesystem_error &error)
+{
+	Log::logWindow(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
 }
+
 
 void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
 {

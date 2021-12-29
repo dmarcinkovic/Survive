@@ -6,8 +6,6 @@
 
 void Survive::OpenDialog::open(float windowWidth, float windowHeight, bool *open)
 {
-	constexpr bool openAction = true;
-
 	drawDialogHeader(windowWidth, windowHeight);
 
 	ImGui::OpenPopup("Open");
