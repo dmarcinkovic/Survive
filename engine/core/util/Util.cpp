@@ -49,26 +49,6 @@ void Survive::Util::removeTrailingSpaces(std::string &string)
 	}
 }
 
-void Survive::Util::processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
-								  const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
-								  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-								  unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex)
-{
-	const auto &point = vertices[vertexIndex];
-	resultPoints.emplace_back(point.x);
-	resultPoints.emplace_back(point.y);
-	resultPoints.emplace_back(point.z);
-
-	const auto &texture = textures[textureIndex];
-	resultTextures.emplace_back(texture.x);
-	resultTextures.emplace_back(texture.y);
-
-	const auto &normal = normals[normalIndex];
-	resultNormals.emplace_back(normal.x);
-	resultNormals.emplace_back(normal.y);
-	resultNormals.emplace_back(normal.z);
-}
-
 float Survive::Util::getRandom(float first, float second)
 {
 	static std::random_device device;

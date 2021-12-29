@@ -29,11 +29,6 @@ namespace Survive
 
 		static std::vector<std::string> split(std::string string, char delimiter);
 
-		static void processVertex(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
-								  const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
-								  std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-								  unsigned vertexIndex, unsigned textureIndex, unsigned normalIndex);
-
 		static float getRandom(float first = 0.0f, float second = 1.0f);
 
 		static ImVec2
