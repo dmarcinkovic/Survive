@@ -87,7 +87,7 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 			vec1.z + vec2.z, vec1.w + vec2.w};
 }
 
-void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed)
+void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed)
 {
 	showLoadedFile("Model: %s", modelName, "Load model", m_LoadModel);
 
@@ -111,7 +111,7 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 }
 
 std::optional<Survive::Model>
-Survive::EditorUtil::getLoadedModel(const FileChooser &fileChooser)
+Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
 try
 {
 	std::string selectedFile = fileChooser.getSelectedFile().string();
@@ -135,7 +135,7 @@ try
 	return {};
 }
 
-void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
 									  const char *format, const char *label, bool &changed)
 {
 	showLoadedFile(format, textureName, label, m_LoadTexture);
@@ -159,7 +159,7 @@ void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture
 	}
 }
 
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser, Loader &loader)
+std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const OpenDialog &fileChooser, Loader &loader)
 {
 	std::string selectedFile = fileChooser.getSelectedFile().string();
 	Texture texture = loader.loadTexture(selectedFile.c_str());
@@ -220,7 +220,7 @@ void Survive::EditorUtil::loadQuadModel(bool &changed, TexturedModel &texturedMo
 	}
 }
 
-void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+void Survive::EditorUtil::loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
 									std::string &soundFile, bool &changed)
 {
 	showLoadedFile("Sound: %s", soundFile, "Load sound", m_LoadSound);
@@ -304,7 +304,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 	});
 }
 
-void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file)
+void Survive::EditorUtil::loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -336,7 +336,7 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font,
+void Survive::EditorUtil::loadFontTextureAtlas(OpenDialog &fileChooser, Text &text, Font &font,
 											   Loader &loader, bool &open, std::string &file)
 {
 	if (open)
@@ -435,7 +435,7 @@ void Survive::EditorUtil::loadFontBorder(bool &addBorder, float &borderWidth, gl
 	ImGui::NewLine();
 }
 
-void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font)
+void Survive::EditorUtil::chooseFont(OpenDialog &fileChooser, TextComponent &textComponent, Font &font)
 {
 	Text &text = textComponent.text;
 

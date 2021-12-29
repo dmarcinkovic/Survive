@@ -197,8 +197,8 @@ void Survive::FileChooser::resetSelectedFile()
 
 void Survive::FileChooser::drawIcon()
 {
-	ImVec2 uv0(0.0f, 1.0f);
-	ImVec2 uv1(1.0f, 0.0f);
+	static const ImVec2 uv0(0.0f, 1.0f);
+	static const ImVec2 uv1(1.0f, 0.0f);
 
 	ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
 	ImGui::SameLine();
@@ -223,8 +223,7 @@ void Survive::FileChooser::sortDirectoryContent()
 	{
 		if (sortSpecs->SpecsDirty)
 		{
-			std::function<bool(const File &, const File &)> comparator =
-					sortSpecs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
+			auto comparator = sortSpecs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
 
 			if (sortSpecs->Specs->SortDirection == ImGuiSortDirection_Ascending)
 			{

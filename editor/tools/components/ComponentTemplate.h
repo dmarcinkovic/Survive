@@ -7,14 +7,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "ObjParser.h"
 #include "Components.h"
 #include "EditorUtil.h"
-#include "FileChooser.h"
+#include "OpenDialog.h"
 #include "Loader.h"
 
 namespace Survive
@@ -23,7 +22,7 @@ namespace Survive
 	{
 	private:
 		AudioMaster m_AudioMaster;
-		FileChooser m_FileChooser;
+		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
 		EditorUtil m_EditorUtil;
@@ -70,9 +69,9 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
+			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
@@ -120,7 +119,7 @@ namespace Survive
 
 			ImGui::Separator();
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
 		}
@@ -160,7 +159,7 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
@@ -190,7 +189,7 @@ namespace Survive
 			ImGui::Separator();
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
+			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();
 		}
 	}
@@ -213,7 +212,7 @@ namespace Survive
 			Text &text = component.text;
 
 			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
-			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
+			m_EditorUtil.chooseFont(m_OpenDialog, component, text.m_Font);
 
 			EditorUtil::chooseFontSpacing(text.m_LineSpacing, text, m_Loader);
 

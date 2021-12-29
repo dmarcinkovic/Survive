@@ -79,11 +79,11 @@ void Survive::SkyboxWindow::drawOpenDialog()
 {
 	if (m_DialogOpen)
 	{
-		m_FileChooser.open(600, 400, &m_DialogOpen);
+		m_OpenDialog.open(600, 400, &m_DialogOpen);
 
 		if (!m_DialogOpen)
 		{
-			std::string filename = m_FileChooser.getSelectedFile().string();
+			std::string filename = m_OpenDialog.getSelectedFile().string();
 
 			if (!filename.empty())
 			{

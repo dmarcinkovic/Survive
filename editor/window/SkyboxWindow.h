@@ -7,7 +7,7 @@
 
 #include "entt.hpp"
 #include "Renderer.h"
-#include "FileChooser.h"
+#include "OpenDialog.h"
 #include "Texture.h"
 
 namespace Survive
@@ -19,7 +19,7 @@ namespace Survive
 		static constexpr int THUMBNAIL_WIDTH = 100;
 		static constexpr int THUMBNAIL_HEIGHT = 100;
 
-		FileChooser m_FileChooser;
+		OpenDialog m_OpenDialog;
 		std::vector<Texture> m_Textures;
 		std::vector<const char *> m_Labels;
 		std::vector<std::string> m_TextureNames;

@@ -8,7 +8,6 @@
 #include <functional>
 #include <vector>
 
-#include "FileChooser.h"
 #include "SaveDialog.h"
 #include "OpenDialog.h"
 #include "EntityManager.h"
