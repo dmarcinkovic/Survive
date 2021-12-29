@@ -374,7 +374,27 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Rigid body 3D", visible))
 		{
+			static constexpr float max = std::numeric_limits<float>::max();
+			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
+			auto currentItem = static_cast<int>(component.bodyType);
+			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
+			{
+				component.bodyType = static_cast<rp3d::BodyType>(currentItem);
+			}
+
+			ImGui::Separator();
+
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat("Mass", "##3D Body mass", component.mass, 0, max);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##3D drag", component.angularDrag);
+			EditorUtil::drawColumnInputFloat("Linear damping", "##3D linear damping", component.linearDamping);
+			EditorUtil::drawColumnInputBool("Use gravity", "##3D use gravity", component.useGravity);
+
+			EditorUtil::drawColumnDragFloat3("Linear velocity", "##3D Linear velocity", component.linearVelocity);
+
+			ImGui::Columns();
 		}
 	}
 

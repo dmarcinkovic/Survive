@@ -554,6 +554,28 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	return result;
 }
 
+bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	glm::vec3 vec(value.x, value.y, value.z);
+	bool result;
+
+	ImGui::SetNextItemWidth(-1);
+
+	if ((result = ImGui::DragFloat3(label, glm::value_ptr(vec))))
+	{
+		value.x = vec.x;
+		value.y = vec.y;
+		value.z = vec.z;
+	}
+
+	ImGui::NextColumn();
+
+	return result;
+}
+
 void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape)
 {
 	for (int i = 0; i < points.size(); ++i)
