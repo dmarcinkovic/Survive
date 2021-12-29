@@ -84,6 +84,10 @@ namespace Survive
 		void renderImageWindow();
 
 		void drawTextDialog();
+
+		void startDraggingIcon(const std::filesystem::path &file);
+
+		void iconDoubleClicked(const std::filesystem::path &file);
 	};
 }
 

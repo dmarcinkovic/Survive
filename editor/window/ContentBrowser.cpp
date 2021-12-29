@@ -101,27 +101,8 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
 	ImGui::PopID();
 
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-	{
-		if (m_ImageIndex == IMAGE)
-		{
-			m_DrawImage = true;
-			std::string textureName = file.string();
-			m_Image = m_Loader.loadTexture(textureName.c_str());
-			m_ImageFilename = filename;
-		} else if (m_ImageIndex == FOLDER)
-		{
-			m_Tree.setCurrentDirectory(file);
-			m_ContentChanged = true;
-		}
-	}
-
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
-	{
-		m_StartedDragging = true;
-		m_DraggedFile = file;
-		ImGui::EndDragDropSource();
-	}
+	iconDoubleClicked(file);
+	startDraggingIcon(file);
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
 	ImGui::TextWrapped("%s", filename.c_str());
@@ -229,4 +210,33 @@ const std::filesystem::path &Survive::ContentBrowser::getDraggedFile() const
 bool Survive::ContentBrowser::isUsingKeyEvents() const
 {
 	return m_InputText;
+}
+
+void Survive::ContentBrowser::startDraggingIcon(const std::filesystem::path &file)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		m_StartedDragging = true;
+		m_DraggedFile = file;
+		ImGui::EndDragDropSource();
+	}
+}
+
+void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &file)
+{
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+	{
+		if (m_ImageIndex == IMAGE)
+		{
+			m_DrawImage = true;
+
+			std::string textureName = file.string();
+			m_Image = m_Loader.loadTexture(textureName.c_str());
+			m_ImageFilename = file.filename().string();
+		} else if (m_ImageIndex == FOLDER)
+		{
+			m_Tree.setCurrentDirectory(file);
+			m_ContentChanged = true;
+		}
+	}
 }
