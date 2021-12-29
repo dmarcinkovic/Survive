@@ -74,6 +74,8 @@ namespace Survive
 
 		void drawIcon();
 
+		void drawTableColumns(const File &file, int index);
+
 	private:
 		static void setupDarkStyleColors();
 

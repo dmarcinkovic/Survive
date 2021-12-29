@@ -66,17 +66,5 @@ void Survive::OpenDialog::fillTableRow(const Survive::File &file, int index, boo
 		openPressed(open);
 	}
 
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
+	drawTableColumns(file, index);
 }

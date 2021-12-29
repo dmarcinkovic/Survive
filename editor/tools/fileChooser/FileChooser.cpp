@@ -288,7 +288,7 @@ void Survive::FileChooser::buttonDoublePress()
 		m_CurrentDirectory = path;
 
 		resetSelectedFile();
-	} catch(const std::filesystem::filesystem_error &error)
+	} catch (const std::filesystem::filesystem_error &error)
 	{
 		Log::logWindow(LogType::ERROR, "Cannot enter directory: " + m_CurrentDirectory.string());
 	}
@@ -301,4 +301,23 @@ bool Survive::FileChooser::directoryChosen() const
 
 void Survive::FileChooser::fillTableRow(const Survive::File &file, int index, bool *open)
 {
+}
+
+void Survive::FileChooser::drawTableColumns(const Survive::File &file, int index)
+{
+	const std::string &filename = file.path.filename().string();
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
 }
