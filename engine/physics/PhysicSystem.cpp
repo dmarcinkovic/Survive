@@ -198,6 +198,7 @@ void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::e
 
 		rp3d::Transform transform(sphereCollider.offset, rp3d::Quaternion::identity());
 		body->addCollider(sphereCollider.sphereShape, transform);
+		body->updateLocalCenterOfMassFromColliders();
 	}
 }
 
