@@ -12,12 +12,14 @@ namespace Survive
 	struct SphereColliderComponent
 	{
 		float radius{};
+
+		rp3d::Vector3 offset{0, 0, 0};
 		rp3d::SphereShape *sphereShape{};
 
 		SphereColliderComponent() = default;
 
-		explicit SphereColliderComponent(float radius)
-			: radius(radius)
+		SphereColliderComponent(float radius, const rp3d::Vector3 &offset)
+				: radius(radius), offset(offset)
 		{
 		}
 	};
