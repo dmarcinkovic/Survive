@@ -98,7 +98,8 @@ namespace Survive
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
-		static bool drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value);
+		static bool drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed = 1.0f,
+										 float min = 0.0f, float max = 0.0f);
 
 		static void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape);
 

@@ -419,7 +419,14 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 3D", visible))
 		{
+			static constexpr float max = std::numeric_limits<float>::max();
 
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat3("Size", "##BoxSize", component.position, 0.01f, 0.0f, max);
+			EditorUtil::drawColumnDragFloat3("Center", "##Box3DCenter", component.center);
+
+			ImGui::Columns();
 		}
 	}
 }

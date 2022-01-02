@@ -13,11 +13,12 @@ namespace Survive
 	{
 		rp3d::Vector3 position{};
 		rp3d::BoxShape *boxShape{};
+		rp3d::Vector3 center{};
 
 		BoxCollider3DComponent() = default;
 
-		explicit BoxCollider3DComponent(const rp3d::Vector3 &position)
-			: position(position)
+		explicit BoxCollider3DComponent(const rp3d::Vector3 &position, const rp3d::Vector3 &center = rp3d::Vector3{})
+			: position(position), center(center)
 		{
 		}
 	};

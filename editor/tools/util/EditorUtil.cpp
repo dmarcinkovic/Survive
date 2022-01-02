@@ -554,7 +554,7 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	return result;
 }
 
-bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value)
+bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed, float min, float max)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
@@ -564,7 +564,7 @@ bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *lab
 
 	ImGui::SetNextItemWidth(-1);
 
-	if ((result = ImGui::DragFloat3(label, glm::value_ptr(vec))))
+	if ((result = ImGui::DragFloat3(label, glm::value_ptr(vec), speed, min, max)))
 	{
 		value.x = vec.x;
 		value.y = vec.y;
