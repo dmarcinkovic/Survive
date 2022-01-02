@@ -408,6 +408,7 @@ namespace Survive
 			ImGui::Columns(2, nullptr, false);
 
 			EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, max, 0.1f);
+			EditorUtil::drawColumnDragFloat3("Center", "##SphereCenter", component.offset);
 
 			ImGui::Columns();
 		}
