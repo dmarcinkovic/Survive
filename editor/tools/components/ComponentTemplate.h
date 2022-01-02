@@ -293,10 +293,11 @@ namespace Survive
 
 			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
-			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", component.fixtureDef.restitution);
+
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", fixtureDef.restitution);
 
 			ImGui::Columns();
 		}
@@ -312,10 +313,11 @@ namespace Survive
 			EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1);
 			EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2);
 
-			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", component.fixtureDef.restitution);
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", fixtureDef.restitution);
+
 			ImGui::Columns();
 		}
 	}
@@ -332,10 +334,11 @@ namespace Survive
 			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
 
 			ImGui::Separator();
-			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", component.fixtureDef.restitution);
+
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", fixtureDef.restitution);
 
 			ImGui::Columns();
 		}
@@ -348,22 +351,23 @@ namespace Survive
 		{
 			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
-			int currentItem = component.bodyDefinition.type;
+			b2BodyDef &bodyDef = component.bodyDefinition;
+
+			int currentItem = bodyDef.type;
 			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
 			{
-				component.bodyDefinition.type = static_cast<b2BodyType>(currentItem);
+				bodyDef.type = static_cast<b2BodyType>(currentItem);
 			}
 
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", component.bodyDefinition.linearDamping);
-			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", component.bodyDefinition.angularDamping);
-			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", component.bodyDefinition.gravityScale);
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
+			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
-			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity",
-											 component.bodyDefinition.linearVelocity);
-			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", component.bodyDefinition.fixedRotation);
+			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
+			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", bodyDef.fixedRotation);
 
 			ImGui::Columns();
 		}
