@@ -183,8 +183,10 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 	{
 		BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
 		boxCollider.boxShape = physicsCommon.createBoxShape(boxCollider.position);
-		// TODO this is center: allow user to change it
-		body->addCollider(boxCollider.boxShape, rp3d::Transform::identity());
+
+		rp3d::Transform transform(boxCollider.center, rp3d::Quaternion::identity());
+		body->addCollider(boxCollider.boxShape, transform);
+		body->updateLocalCenterOfMassFromColliders();
 	}
 }
 
