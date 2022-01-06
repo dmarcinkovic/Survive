@@ -399,7 +399,7 @@ namespace Survive
 	}
 
 	template<>
-	inline void ComponentTemplate::drawComponent(SphereColliderComponent &component, bool *visible)
+	inline void ComponentTemplate::drawComponent(SphereCollider3DComponent &component, bool *visible)
 	{
 		if (ImGui::CollapsingHeader("Sphere collider", visible))
 		{

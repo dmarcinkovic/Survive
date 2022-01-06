@@ -56,7 +56,7 @@ namespace Survive
 			drawComponent<RigidBodyComponent>(registry, entity);
 			drawComponent<ShadowComponent>(registry, entity);
 			drawComponent<SoundComponent>(registry, entity);
-			drawComponent<SphereColliderComponent>(registry, entity);
+			drawComponent<SphereCollider3DComponent>(registry, entity);
 			drawComponent<SpriteComponent>(registry, entity);
 			drawComponent<SpriteSheetComponent>(registry, entity);
 			drawComponent<TextComponent>(registry, entity);

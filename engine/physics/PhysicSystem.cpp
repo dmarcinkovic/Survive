@@ -193,9 +193,9 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::entity entity,
 											   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
-	if (registry.any_of<SphereColliderComponent>(entity))
+	if (registry.any_of<SphereCollider3DComponent>(entity))
 	{
-		SphereColliderComponent &sphereCollider = registry.get<SphereColliderComponent>(entity);
+		SphereCollider3DComponent &sphereCollider = registry.get<SphereCollider3DComponent>(entity);
 		sphereCollider.sphereShape = physicsCommon.createSphereShape(sphereCollider.radius);
 
 		rp3d::Transform transform(sphereCollider.offset, rp3d::Quaternion::identity());
