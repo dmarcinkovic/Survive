@@ -399,11 +399,31 @@ namespace Survive
 	}
 
 	template<>
+	inline void ComponentTemplate::drawComponent(Collider3DComponent &component, bool *)
+	{
+		ImGui::TextUnformatted("Material");
+		ImGui::Indent();
+
+		ImGui::Columns(2, nullptr, false);
+
+		EditorUtil::drawColumnDragFloat("Bounciness", "##Box3DBounciness", component.bounciness, 0, 1, 0.01f);
+		EditorUtil::drawColumnDragFloat("Friction", "##Box3DFriction", component.friction, 0, 1, 0.01f);
+		EditorUtil::drawColumnDragFloat("Rolling friction", "##Box3RR", component.rollingResistance, 0, 1, 0.01f);
+
+		ImGui::Unindent();
+		ImGui::Columns();
+
+		ImGui::Separator();
+	}
+
+	template<>
 	inline void ComponentTemplate::drawComponent(SphereCollider3DComponent &component, bool *visible)
 	{
 		if (ImGui::CollapsingHeader("Sphere collider", visible))
 		{
 			static constexpr float max = std::numeric_limits<float>::max();
+
+			drawComponent<Collider3DComponent>(component, nullptr);
 
 			ImGui::Columns(2, nullptr, false);
 
@@ -420,6 +440,8 @@ namespace Survive
 		if (ImGui::CollapsingHeader("Box collider 3D", visible))
 		{
 			static constexpr float max = std::numeric_limits<float>::max();
+
+			drawComponent<Collider3DComponent>(component, nullptr);
 
 			ImGui::Columns(2, nullptr, false);
 
