@@ -100,7 +100,7 @@ namespace Survive
 				case 15:
 					return addComponent<SoundComponent>(registry, entity);
 				case 16:
-					return addComponent<SphereColliderComponent>(registry, entity);
+					return addComponent<SphereCollider3DComponent>(registry, entity);
 				case 17:
 					return addComponent<SpriteComponent>(registry, entity);
 				case 18:
