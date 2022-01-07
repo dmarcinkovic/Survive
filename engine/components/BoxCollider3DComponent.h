@@ -7,9 +7,11 @@
 
 #include <reactphysics3d/reactphysics3d.h>
 
+#include "Collider3DComponent.h"
+
 namespace Survive
 {
-	struct BoxCollider3DComponent
+	struct BoxCollider3DComponent : public Collider3DComponent
 	{
 		rp3d::Vector3 position{};
 		rp3d::BoxShape *boxShape{};

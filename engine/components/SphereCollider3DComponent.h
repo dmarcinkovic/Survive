@@ -7,9 +7,11 @@
 
 #include <reactphysics3d/reactphysics3d.h>
 
+#include "Collider3DComponent.h"
+
 namespace Survive
 {
-	struct SphereCollider3DComponent
+	struct SphereCollider3DComponent : public Collider3DComponent
 	{
 		float radius{};
 

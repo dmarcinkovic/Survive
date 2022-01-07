@@ -199,7 +199,13 @@ void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::e
 		sphereCollider.sphereShape = physicsCommon.createSphereShape(sphereCollider.radius);
 
 		rp3d::Transform transform(sphereCollider.offset, rp3d::Quaternion::identity());
-		body->addCollider(sphereCollider.sphereShape, transform);
+		rp3d::Collider *collider = body->addCollider(sphereCollider.sphereShape, transform);
+
+		rp3d::Material &material = collider->getMaterial();
+		material.setBounciness(sphereCollider.bounciness);
+		material.setFrictionCoefficient(sphereCollider.friction);
+		material.setRollingResistance(sphereCollider.rollingResistance);
+
 		body->updateLocalCenterOfMassFromColliders();
 	}
 }
