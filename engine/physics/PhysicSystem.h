@@ -10,6 +10,7 @@
 
 #include "entt.hpp"
 #include "RigidBody3DComponent.h"
+#include "Collider3DComponent.h"
 
 namespace Survive
 {
@@ -51,9 +52,10 @@ namespace Survive
 
 		static void updateWorld(b2World *world2D, rp3d::PhysicsWorld *world3D);
 
-		static void
-		initSphereCollider(entt::registry &registry, entt::entity entity,
+		static void initSphereCollider(entt::registry &registry, entt::entity entity,
 									   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
+
+		static void initCollider3DMaterial(rp3d::Material &material, const Collider3DComponent &collider3D);
 	};
 }
 

@@ -163,6 +163,7 @@ void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBod
 	{
 		rigidBody.body->setMass(rigidBody.mass);
 	}
+
 	rigidBody.body->setAngularDamping(rigidBody.angularDrag);
 	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
 	rigidBody.body->setLinearDamping(rigidBody.linearDamping);
@@ -185,8 +186,10 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 		boxCollider.boxShape = physicsCommon.createBoxShape(boxCollider.position);
 
 		rp3d::Transform transform(boxCollider.center, rp3d::Quaternion::identity());
-		body->addCollider(boxCollider.boxShape, transform);
+		rp3d::Collider *collider = body->addCollider(boxCollider.boxShape, transform);
 		body->updateLocalCenterOfMassFromColliders();
+
+		initCollider3DMaterial(collider->getMaterial(), boxCollider);
 	}
 }
 
@@ -200,13 +203,9 @@ void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::e
 
 		rp3d::Transform transform(sphereCollider.offset, rp3d::Quaternion::identity());
 		rp3d::Collider *collider = body->addCollider(sphereCollider.sphereShape, transform);
-
-		rp3d::Material &material = collider->getMaterial();
-		material.setBounciness(sphereCollider.bounciness);
-		material.setFrictionCoefficient(sphereCollider.friction);
-		material.setRollingResistance(sphereCollider.rollingResistance);
-
 		body->updateLocalCenterOfMassFromColliders();
+
+		initCollider3DMaterial(collider->getMaterial(), sphereCollider);
 	}
 }
 
@@ -216,4 +215,11 @@ void Survive::PhysicSystem::updateWorld(b2World *world2D, rp3d::PhysicsWorld *wo
 	world2D->Step(1.0f / frameRate, 5, 5);
 
 	world3D->update(1.0f / frameRate);
+}
+
+void Survive::PhysicSystem::initCollider3DMaterial(rp3d::Material &material, const Collider3DComponent &collider3D)
+{
+	material.setBounciness(collider3D.bounciness);
+	material.setFrictionCoefficient(collider3D.friction);
+	material.setRollingResistance(collider3D.rollingResistance);
 }
