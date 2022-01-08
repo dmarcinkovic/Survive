@@ -7,14 +7,16 @@
 
 #include <box2d/box2d.h>
 
+#include "Collider2DComponent.h"
+
 namespace Survive
 {
-	struct CircleCollider2DComponent
+	struct CircleCollider2DComponent : public Collider2DComponent
 	{
 		friend class CircleGizmos;
+
 		friend class ComponentTemplate;
 
-		b2FixtureDef fixtureDef;
 		b2CircleShape circleShape;
 
 	private:
@@ -24,6 +26,7 @@ namespace Survive
 		CircleCollider2DComponent() = default;
 
 		CircleCollider2DComponent(float radius, float density, float friction, float elasticity)
+				: Collider2DComponent(density, friction, elasticity)
 		{
 			circleShape.m_radius = radius;
 			fixtureDef.density = density;

@@ -7,14 +7,16 @@
 
 #include <box2d/box2d.h>
 
+#include "Collider2DComponent.h"
+
 namespace Survive
 {
-	struct BoxCollider2DComponent
+	struct BoxCollider2DComponent : public Collider2DComponent
 	{
 		friend class BoxGizmos;
+
 		friend class ComponentTemplate;
 
-		b2FixtureDef fixtureDef{};
 		b2PolygonShape boxShape{};
 
 		float width{}, height{};
@@ -28,7 +30,7 @@ namespace Survive
 		BoxCollider2DComponent() = default;
 
 		BoxCollider2DComponent(float width, float height, float density, float friction, float elasticity)
-				: width(width), height(height)
+				: Collider2DComponent(density, friction, elasticity), width(width), height(height)
 		{
 			boxShape.SetAsBox(width, height, center, 0);
 			fixtureDef.density = density;

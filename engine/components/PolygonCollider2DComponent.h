@@ -8,11 +8,12 @@
 #include <box2d/box2d.h>
 #include <vector>
 
+#include "Collider2DComponent.h"
+
 namespace Survive
 {
-	struct PolygonCollider2DComponent
+	struct PolygonCollider2DComponent : public Collider2DComponent
 	{
-		b2FixtureDef fixtureDef;
 		b2PolygonShape polygonShape;
 
 		std::vector<b2Vec2> points;
@@ -20,12 +21,9 @@ namespace Survive
 		PolygonCollider2DComponent() = default;
 
 		PolygonCollider2DComponent(const std::vector<b2Vec2> &points, float density, float friction, float elasticity)
-				: points(points)
+				: Collider2DComponent(density, friction, elasticity), points(points)
 		{
 			polygonShape.Set(points.data(), static_cast<int>(points.size()));
-			fixtureDef.density = density;
-			fixtureDef.friction = friction;
-			fixtureDef.restitution = elasticity;
 		}
 	};
 }
