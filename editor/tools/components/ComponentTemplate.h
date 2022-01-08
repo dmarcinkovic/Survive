@@ -21,6 +21,8 @@ namespace Survive
 	class ComponentTemplate
 	{
 	private:
+		static constexpr float m_Max = std::numeric_limits<float>::max();
+
 		AudioMaster m_AudioMaster;
 		OpenDialog m_OpenDialog;
 		Loader m_Loader;
@@ -256,15 +258,14 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, m_Max))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 			}
 
-			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, m_Max))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 			}
@@ -288,10 +289,9 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, m_Max);
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
 			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
 			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
@@ -374,7 +374,6 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Rigid body 3D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
 			auto currentItem = static_cast<int>(component.bodyType);
@@ -387,7 +386,7 @@ namespace Survive
 
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Mass", "##3D Body mass", component.mass, 0, max);
+			EditorUtil::drawColumnDragFloat("Mass", "##3D Body mass", component.mass, 0, m_Max);
 			EditorUtil::drawColumnInputFloat("Angular drag", "##3D drag", component.angularDrag);
 			EditorUtil::drawColumnInputFloat("Linear damping", "##3D linear damping", component.linearDamping);
 			EditorUtil::drawColumnInputBool("Use gravity", "##3D use gravity", component.useGravity);
@@ -421,13 +420,11 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Sphere collider", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
-
 			drawComponent<Collider3DComponent>(component, nullptr);
 
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, max, 0.1f);
+			EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, m_Max, 0.1f);
 			EditorUtil::drawColumnDragFloat3("Center", "##SphereCenter", component.offset);
 
 			ImGui::Columns();
@@ -439,14 +436,29 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 3D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
-
 			drawComponent<Collider3DComponent>(component, nullptr);
 
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat3("Size", "##BoxSize", component.position, 0.01f, 0.0f, max);
+			EditorUtil::drawColumnDragFloat3("Size", "##BoxSize", component.position, 0.01f, 0.0f, m_Max);
 			EditorUtil::drawColumnDragFloat3("Center", "##Box3DCenter", component.center);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(CapsuleCollider3DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Capsule collider 3D", visible))
+		{
+			drawComponent<Collider3DComponent>(component, nullptr);
+
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnDragFloat("Radius", "##CapsuleRadius", component.radius, 0, m_Max, 0.1f);
+			EditorUtil::drawColumnDragFloat("Height", "##CapsuleHeight", component.height, 0, m_Max, 0.1f);
+			EditorUtil::drawColumnDragFloat3("Center", "##CapsuleCenter", component.center);
 
 			ImGui::Columns();
 		}
