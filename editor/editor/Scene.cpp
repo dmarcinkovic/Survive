@@ -98,5 +98,8 @@ bool Survive::Scene::isInsideScene()
 
 void Survive::Scene::handleKeyEvents(const EventHandler &eventHandler)
 {
-	m_Gizmos.handleKeyEvents(eventHandler);
+	if (m_SceneFocused)
+	{
+		m_Gizmos.handleKeyEvents(eventHandler);
+	}
 }
