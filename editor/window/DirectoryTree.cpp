@@ -113,7 +113,7 @@ void Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, c
 
 void Survive::DirectoryTree::drawDirectoryTree()
 {
-	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
 	std::string directory = getCurrentDirectoryFilename();
 	if (ImGui::TreeNode(directory.c_str()))
