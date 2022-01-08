@@ -420,7 +420,9 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Sphere collider", visible))
 		{
+			ImGui::PushID("Sphere3D");
 			drawComponent<Collider3DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns(2, nullptr, false);
 
@@ -436,7 +438,9 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 3D", visible))
 		{
+			ImGui::PushID("Box3D");
 			drawComponent<Collider3DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns(2, nullptr, false);
 
@@ -452,7 +456,9 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Capsule collider 3D", visible))
 		{
+			ImGui::PushID("Capsule3D");
 			drawComponent<Collider3DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns(2, nullptr, false);
 
