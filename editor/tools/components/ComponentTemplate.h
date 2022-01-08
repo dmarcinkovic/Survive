@@ -253,6 +253,14 @@ namespace Survive
 	}
 
 	template<>
+	inline void ComponentTemplate::drawComponent(Collider2DComponent &component, bool *)
+	{
+		EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
+		EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
+		EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
+	}
+
+	template<>
 	inline void ComponentTemplate::drawComponent(BoxCollider2DComponent &component, bool *visible)
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
@@ -278,9 +286,9 @@ namespace Survive
 				EditorUtil::moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
 			}
 
-			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
+			ImGui::PushID("Box2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -300,10 +308,10 @@ namespace Survive
 			}
 
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
-			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", component.fixtureDef.restitution);
+
+			ImGui::PushID("Circle2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -326,10 +334,10 @@ namespace Survive
 				component.m_Initialized = true;
 			}
 
-			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", component.fixtureDef.restitution);
+			ImGui::PushID("Edge2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
+
 			ImGui::Columns();
 		}
 	}
@@ -346,10 +354,10 @@ namespace Survive
 			m_EditorUtil.drawPolygonPoints(component.points, component.polygonShape);
 
 			ImGui::Separator();
-			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", component.fixtureDef.restitution);
+
+			ImGui::PushID("Polygon2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
