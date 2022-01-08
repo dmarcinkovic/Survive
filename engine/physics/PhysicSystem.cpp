@@ -175,6 +175,7 @@ void Survive::PhysicSystem::initColliders3D(entt::registry &registry, entt::enti
 {
 	initBox3DCollider(registry, entity, physicsCommon, body);
 	initSphereCollider(registry, entity, physicsCommon, body);
+	initCapsuleCollider(registry, entity, physicsCommon, body);
 }
 
 void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity,
@@ -222,4 +223,23 @@ void Survive::PhysicSystem::initCollider3DMaterial(rp3d::Material &material, con
 	material.setBounciness(collider3D.bounciness);
 	material.setFrictionCoefficient(collider3D.friction);
 	material.setRollingResistance(collider3D.rollingResistance);
+}
+
+void Survive::PhysicSystem::initCapsuleCollider(entt::registry &registry, entt::entity entity,
+												rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+{
+	if (registry.any_of<CapsuleCollider3DComponent>(entity))
+	{
+		CapsuleCollider3DComponent &capsuleCollider = registry.get<CapsuleCollider3DComponent>(entity);
+
+		float radius = capsuleCollider.radius;
+		float height = capsuleCollider.height;
+		capsuleCollider.capsuleShape = physicsCommon.createCapsuleShape(radius, height);
+
+		rp3d::Transform transform(capsuleCollider.center, rp3d::Quaternion::identity());
+		rp3d::Collider *collider = body->addCollider(capsuleCollider.capsuleShape, transform);
+		body->updateLocalCenterOfMassFromColliders();
+
+		initCollider3DMaterial(collider->getMaterial(), capsuleCollider);
+	}
 }
