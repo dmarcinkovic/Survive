@@ -6,7 +6,6 @@
 
 #include "Font.h"
 #include "Util.h"
-#include "Log.h"
 #include "FontJsonParser.h"
 #include "FontFntParser.h"
 
