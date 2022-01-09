@@ -6,7 +6,6 @@
 #include <numeric>
 #include <stack>
 
-#include "Log.h"
 #include "DaeParser.h"
 #include "Vertex.h"
 #include "Util.h"
@@ -20,9 +19,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 	if (!reader)
 	{
 		std::string message = "Could not load " + std::string(daeFile);
-		Log::logWindow(LogType::ERROR, message);
-
-		return {};
+		throw std::runtime_error(message);
 	}
 
 	std::string line;
