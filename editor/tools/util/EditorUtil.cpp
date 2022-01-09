@@ -112,27 +112,31 @@ void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::
 
 std::optional<Survive::Model>
 Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
-try
 {
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Model model;
+	std::string selectedFile;
 
-	if (selectedFile.ends_with("obj"))
+	try
 	{
-		model = ObjParser::loadObj(selectedFile, m_Loader);
-	} else if (selectedFile.ends_with("dae"))
+		selectedFile = fileChooser.getSelectedFile().string();
+		Model model;
+
+		if (selectedFile.ends_with("obj"))
+		{
+			model = ObjParser::loadObj(selectedFile, m_Loader);
+		} else if (selectedFile.ends_with("dae"))
+		{
+			model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+		} else
+		{
+			Log::logWindow(LogType::ERROR, "Unknown file type");
+		}
+
+		return model.isValidModel() ? model : std::optional<Survive::Model>{};
+	} catch (const std::exception &exception)
 	{
-		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
-	} else
-	{
-		Log::logWindow(LogType::ERROR, "Unknown file type");
+		Log::logWindow(LogType::ERROR, "Could not load the model from " + selectedFile);
+		return {};
 	}
-
-	return model.isValidModel() ? model : std::optional<Survive::Model>{};
-} catch (const std::exception &exception)
-{
-	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
-	return {};
 }
 
 void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
@@ -273,7 +277,8 @@ try
 }
 
 void
-Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file, Loader &loader)
+Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
+									  Loader &loader)
 {
 	std::string filename = file.string();
 
