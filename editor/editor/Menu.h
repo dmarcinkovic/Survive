@@ -45,7 +45,7 @@ namespace Survive
 
 	private:
 		static void loadScene(entt::registry &registry, SceneSerializer &sceneLoader, std::string &savedFile,
-					   const std::string &file);
+							  const std::string &file);
 	};
 }
 
