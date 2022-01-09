@@ -103,7 +103,7 @@ void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::
 			if (loadedModel.has_value())
 			{
 				modelName = selectedFilename;
-				model = loadedModel.value();
+				model = Model(loadedModel.value());
 				changed = true;
 			}
 		}
@@ -156,7 +156,7 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 			if (loadedTexture.has_value())
 			{
 				textureName = selectedFilename;
-				texture = loadedTexture.value();
+				texture = Texture(loadedTexture.value());
 				changed = true;
 			}
 		}
