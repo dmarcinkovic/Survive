@@ -42,6 +42,10 @@ namespace Survive
 		void renderSaveAsDialog(entt::registry &registry, std::string &savedFile);
 
 		void drawSkyboxWindow(entt::registry &registry, Renderer &renderer);
+
+	private:
+		static void loadScene(entt::registry &registry, SceneSerializer &sceneLoader, std::string &savedFile,
+					   const std::string &file);
 	};
 }
 
