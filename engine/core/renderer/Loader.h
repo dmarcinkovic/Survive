@@ -53,13 +53,13 @@ namespace Survive
 
 		Model loadToVao(const std::vector<float> &vertices, GLsizei size);
 
-		Texture loadTexture(const char *texture) noexcept;
+		Texture loadTexture(const char *texture);
 
 		std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
 
 		std::vector<Texture> loadAllTextures(const std::vector<const char *> &textures);
 
-		Texture loadCubeMap(const std::vector<const char *> &faces) noexcept;
+		Texture loadCubeMap(const std::vector<const char *> &faces);
 
 		Texture loadCubeMap(const std::vector<std::string> &faces);
 
@@ -88,11 +88,11 @@ namespace Survive
 
 		GLuint createVao();
 
-		static bool loadImage(const char *texture) noexcept;
+		static bool loadImage(const char *texture);
 
 		static void addMipMap();
 
-		static void loadToCubeMap(const std::vector<const char *> &faces) noexcept;
+		static void loadToCubeMap(const std::vector<const char *> &faces);
 
 		static std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>>
 		loadImages(const std::vector<const char *> &textures);

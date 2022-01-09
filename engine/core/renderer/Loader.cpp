@@ -164,7 +164,7 @@ void Survive::Loader::addMipMap()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4);
 }
 
-Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
+Survive::Texture Survive::Loader::loadTexture(const char *texture)
 {
 	GLuint textureId;
 	glGenTextures(1, &textureId);
@@ -187,7 +187,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
 	return Texture(textureId);
 }
 
-bool Survive::Loader::loadImage(const char *texture) noexcept
+bool Survive::Loader::loadImage(const char *texture)
 {
 	stbi_set_flip_vertically_on_load(1);
 
@@ -307,7 +307,7 @@ Survive::Model Survive::Loader::renderCube()
 	return Model(loadToVao(vertices, indices, 3));
 }
 
-Survive::Texture Survive::Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
+Survive::Texture Survive::Loader::loadCubeMap(const std::vector<const char *> &faces)
 {
 	GLuint cubeMap;
 	glGenTextures(1, &cubeMap);
@@ -338,7 +338,7 @@ Survive::Texture Survive::Loader::loadCubeMap(const std::vector<std::string> &fa
 	return loadCubeMap(newFaces);
 }
 
-void Survive::Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
+void Survive::Loader::loadToCubeMap(const std::vector<const char *> &faces)
 {
 	stbi_set_flip_vertically_on_load(0);
 
