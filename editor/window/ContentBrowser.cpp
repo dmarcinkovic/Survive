@@ -4,6 +4,7 @@
 
 #include "ContentBrowser.h"
 #include "Loader.h"
+#include "Log.h"
 
 Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()), m_Uv0(0, 1), m_Uv1(1, 0),
@@ -231,8 +232,15 @@ void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &fil
 			m_DrawImage = true;
 
 			std::string textureName = file.string();
-			m_Image = m_Loader.loadTexture(textureName.c_str());
-			m_ImageFilename = file.filename().string();
+
+			try
+			{
+				m_Image = m_Loader.loadTexture(textureName.c_str());
+				m_ImageFilename = file.filename().string();
+			} catch (const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Cannot load texture " + textureName);
+			}
 		} else if (m_ImageIndex == FOLDER)
 		{
 			m_Tree.setCurrentDirectory(file);
