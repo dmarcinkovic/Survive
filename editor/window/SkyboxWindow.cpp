@@ -6,6 +6,7 @@
 
 #include "EditorUtil.h"
 #include "SkyboxWindow.h"
+#include "Log.h"
 
 Survive::SkyboxWindow::SkyboxWindow()
 		: m_Textures(N), m_Labels{"Right", "Left", "Top", "Bottom", "Front", "Back"}, m_TextureNames(N)
@@ -87,11 +88,14 @@ void Survive::SkyboxWindow::drawOpenDialog()
 
 			if (!filename.empty())
 			{
-				Texture image = m_Loader.loadTexture(filename.c_str());
-				if (image.isValidTexture())
+				try
 				{
+					Texture image = m_Loader.loadTexture(filename.c_str());
 					m_Textures[m_CurrentImage] = image;
 					m_TextureNames[m_CurrentImage] = filename;
+				} catch (const std::exception &exception)
+				{
+					Log::logWindow(LogType::ERROR, "Could not load " + filename);
 				}
 			}
 		}
