@@ -146,16 +146,6 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
 	return {vao, static_cast<GLsizei>(vertices.size()) / size};
 }
 
-Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, GLsizei size)
-{
-	GLuint vao = createVao();
-
-	storeDataInAttributeList(0, vertices, size);
-	unbindVao();
-
-	return {vao, static_cast<GLsizei>(vertices.size()) / size};
-}
-
 void Survive::Loader::addMipMap()
 {
 	glGenerateMipmap(GL_TEXTURE_2D);

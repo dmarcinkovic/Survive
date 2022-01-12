@@ -51,8 +51,6 @@ namespace Survive
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, GLsizei size);
 
-		Model loadToVao(const std::vector<float> &vertices, GLsizei size);
-
 		Texture loadTexture(const char *texture);
 
 		std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
