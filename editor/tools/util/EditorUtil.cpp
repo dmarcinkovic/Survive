@@ -151,29 +151,20 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 		std::string selectedFilename = fileChooser.getSelectedFilename();
 		if (!m_LoadTexture && !selectedFilename.empty())
 		{
-			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser, m_Loader);
+			std::string selectedFile = fileChooser.getSelectedFile().string();
 
-			if (loadedTexture.has_value())
+			try
 			{
+				texture = m_Loader.loadTexture(selectedFile.c_str());
+
 				textureName = selectedFilename;
-				texture = Texture(loadedTexture.value());
 				changed = true;
+			} catch(const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
 		}
 	}
-}
-
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const OpenDialog &fileChooser, Loader &loader)
-{
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Texture texture = loader.loadTexture(selectedFile.c_str());
-
-	if (texture.isValidTexture())
-	{
-		return texture;
-	}
-
-	return {};
 }
 
 void Survive::EditorUtil::showLoadedFile(const char *format, const std::string &name, const char *label, bool &load)
@@ -288,10 +279,11 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 			renderer.popMousePickingListener();
 			return;
 		}
-
-		Texture texture = loader.loadTexture(filename.c_str());
-		if (texture.isValidTexture())
+		
+		try
 		{
+			Texture texture = loader.loadTexture(filename.c_str());
+
 			auto entity = static_cast<entt::entity>(selectedEntity);
 
 			if (registry.any_of<Render3DComponent>(entity))
@@ -307,6 +299,9 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
+		} catch(const std::exception &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
 		}
 
 		renderer.popMousePickingListener();
