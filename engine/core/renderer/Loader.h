@@ -65,8 +65,6 @@ namespace Survive
 
 		Model renderQuad();
 
-		Model renderQuadStrip();
-
 		Model renderCube();
 
 		GLuint createEmptyVBO(GLsizeiptr vertexCount);

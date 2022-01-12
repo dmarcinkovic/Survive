@@ -277,13 +277,6 @@ Survive::Model Survive::Loader::renderQuad()
 	return Model(loadToVao(vertices, indices, 2));
 }
 
-Survive::Model Survive::Loader::renderQuadStrip()
-{
-	static const std::vector<float> vertices{-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
-
-	return loadToVao(vertices, 2);
-}
-
 Survive::Model Survive::Loader::renderCube()
 {
 	static const std::vector<float> vertices{-1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, -1,
