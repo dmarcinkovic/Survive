@@ -5,7 +5,6 @@
 #include <iostream>
 #include <execution>
 
-#include "Log.h"
 #include "Loader.h"
 #include "stb_image.h"
 
@@ -173,12 +172,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	bool loaded = loadImage(texture);
-	if (!loaded)
-	{
-		textureId = 0;
-	}
-
+	loadImage(texture);
 	addMipMap();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -187,7 +181,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture)
 	return Texture(textureId);
 }
 
-bool Survive::Loader::loadImage(const char *texture)
+void Survive::Loader::loadImage(const char *texture)
 {
 	stbi_set_flip_vertically_on_load(1);
 
@@ -196,17 +190,11 @@ bool Survive::Loader::loadImage(const char *texture)
 
 	if (!image)
 	{
-		std::string message = "Error while loading " + std::string(texture);
-		Log::logWindow(LogType::ERROR, message);
-		std::cout << message << '\n';
-
-		return false;
+		throw std::runtime_error("Cannot load texture");
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	stbi_image_free(image);
-
-	return true;
 }
 
 std::unordered_map<const char *, Survive::Texture>
