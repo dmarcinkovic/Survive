@@ -2,7 +2,6 @@
 // Created by david on 24. 03. 2020..
 //
 
-#include <iostream>
 #include <execution>
 
 #include "Loader.h"
@@ -187,24 +186,6 @@ void Survive::Loader::loadImage(const char *texture)
 	stbi_image_free(image);
 }
 
-std::unordered_map<const char *, Survive::Texture>
-Survive::Loader::loadTextures(const std::vector<const char *> &textures)
-{
-	stbi_set_flip_vertically_on_load(1);
-
-	auto images = loadImages(textures);
-
-	std::unordered_map<const char *, Texture> result;
-	for (auto const&[filename, imageData]: images)
-	{
-		GLuint textureId = loadTexture(imageData);
-
-		result[filename] = Texture(textureId);
-	}
-
-	return result;
-}
-
 std::vector<Survive::Texture> Survive::Loader::loadAllTextures(const std::vector<const char *> &textures)
 {
 	stbi_set_flip_vertically_on_load(1);
@@ -252,6 +233,11 @@ Survive::Loader::loadImages(const std::vector<const char *> &textures)
 	std::for_each(std::execution::seq, textures.begin(), textures.end(), [&](const char *filename) {
 		int width, height, BPP;
 		std::uint8_t *image = stbi_load(filename, &width, &height, &BPP, 4);
+
+		if (!image)
+		{
+			throw std::runtime_error("Could not load image");
+		}
 
 		images[filename] = std::make_tuple(image, width, height);
 	});

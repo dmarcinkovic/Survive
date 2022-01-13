@@ -53,8 +53,6 @@ namespace Survive
 
 		Texture loadTexture(const char *texture);
 
-		std::unordered_map<const char *, Texture> loadTextures(const std::vector<const char *> &textures);
-
 		std::vector<Texture> loadAllTextures(const std::vector<const char *> &textures);
 
 		Texture loadCubeMap(const std::vector<const char *> &faces);
