@@ -28,7 +28,7 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texturedModel, objects] : entities)
+	for (auto const&[texturedModel, objects]: entities)
 	{
 		Renderer3DUtil::prepareEntity(texturedModel);
 		renderScene(registry, objects, camera);
@@ -44,7 +44,7 @@ void
 Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 									 const Camera &camera) const
 {
-	for (auto const &object : objects)
+	for (auto const &object: objects)
 	{
 		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
@@ -96,11 +96,11 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 		m_Shader.loadAddShadow(false);
 	}
 
-	renderMaterial(registry, entity);
+	renderMaterial(registry, entity, m_Shader);
 
-	renderReflection(registry, entity);
-	renderRefraction(registry, entity);
-	renderBloom(registry, entity);
+	renderReflection(registry, entity, m_Shader);
+	renderRefraction(registry, entity, m_Shader);
+	renderBloom(registry, entity, m_Shader);
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
@@ -110,7 +110,7 @@ Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
 		Render3DComponent renderComponent = view.get<Render3DComponent>(entity);
 
@@ -137,25 +137,27 @@ void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::
 	}
 }
 
-void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity,
+										  const ObjectShader &shader)
 {
 	if (registry.any_of<BloomComponent>(entity))
 	{
 		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
 
 		bloomComponent.bloomTexture.bindTexture(3);
-		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
-		m_Shader.loadBloom(true);
+		shader.loadBloomTexture(bloomComponent.bloomStrength);
+		shader.loadBloom(true);
 	} else
 	{
-		m_Shader.loadBloom(false);
+		shader.loadBloom(false);
 
 		static Texture bloomDefaultTexture(0);
 		bloomDefaultTexture.bindTexture(3);
 	}
 }
 
-void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::entity entity,
+											   const ObjectShader &shader) const
 {
 	m_DefaultTexture.bindTexture(2);
 
@@ -165,14 +167,15 @@ void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::e
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
 
 		skybox.texturedModel.getTexture().bindCubeTexture(2);
-		m_Shader.loadReflectiveFactor(reflection.reflectionFactor);
+		shader.loadReflectiveFactor(reflection.reflectionFactor);
 	} else
 	{
-		m_Shader.loadReflectiveFactor(0.0f);
+		shader.loadReflectiveFactor(0.0f);
 	}
 }
 
-void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::entity entity,
+											   const ObjectShader &shader) const
 {
 	m_DefaultTexture.bindTexture(2);
 
@@ -182,10 +185,10 @@ void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::e
 		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
 
 		skybox.texturedModel.getTexture().bindCubeTexture(2);
-		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
+		shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	} else
 	{
-		m_Shader.loadRefractionData(0.0f, 0.0f);
+		shader.loadRefractionData(0.0f, 0.0f);
 	}
 }
 
@@ -194,16 +197,17 @@ void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 	m_SkyBox = skybox;
 }
 
-void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity) const
+void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
+											 const ObjectShader &shader)
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
 
 	if (registry.any_of<SpriteComponent>(entity))
 	{
 		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
-		m_Shader.loadColor(spriteComponent.color);
+		shader.loadColor(spriteComponent.color);
 	} else
 	{
-		m_Shader.loadColor(defaultColor);
+		shader.loadColor(defaultColor);
 	}
 }

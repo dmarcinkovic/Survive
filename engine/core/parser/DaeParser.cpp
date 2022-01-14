@@ -3,12 +3,11 @@
 //
 
 #include <fstream>
-#include <iostream>
 #include <numeric>
 #include <stack>
 
-#include "Log.h"
 #include "DaeParser.h"
+#include "Vertex.h"
 #include "Util.h"
 
 Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
@@ -20,10 +19,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 	if (!reader)
 	{
 		std::string message = "Could not load " + std::string(daeFile);
-		Log::logWindow(LogType::ERROR, message);
-		std::cout << "Could not open: " << daeFile << '\n';
-
-		return {};
+		throw std::runtime_error(message);
 	}
 
 	std::string line;
@@ -145,7 +141,7 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 		unsigned normalIndex = std::stoi(numbers[i + 1]);
 		unsigned textureIndex = std::stoi(numbers[i + 2]);
 
-		Util::processVertex(m_VertexData.vertices, m_VertexData.normals, m_VertexData.textures,
+		Vertex::processVertex(m_VertexData.vertices, m_VertexData.normals, m_VertexData.textures,
 							resultPoints, resultNormals, resultTextures,
 							vertexIndex, textureIndex, normalIndex);
 

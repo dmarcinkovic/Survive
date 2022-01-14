@@ -20,6 +20,12 @@ namespace Survive
 
 		Source(const Source &source);
 
+		Source(Source &&source) noexcept;
+
+		Source &operator=(const Source &source);
+
+		Source &operator=(Source &&source) noexcept;
+
 		~Source();
 
 		void play(ALint buffer) const;
@@ -39,6 +45,9 @@ namespace Survive
 		void setGain(float gain) const;
 
 		void setPitch(float pitch) const;
+
+	private:
+		void generateNewSource(ALuint oldSource);
 	};
 }
 

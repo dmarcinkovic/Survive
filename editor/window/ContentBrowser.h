@@ -12,6 +12,7 @@
 #include "FileUtil.h"
 #include "Texture.h"
 #include "DirectoryTree.h"
+#include "Loader.h"
 
 namespace Survive
 {
@@ -29,6 +30,8 @@ namespace Survive
 		static constexpr float COLUMN_WIDTH = 250.0f;
 
 		static constexpr size_t BUFFER_SIZE = 256;
+
+		Loader m_Loader;
 
 		const ImVec2 m_Uv0, m_Uv1;
 		std::vector<File> m_DirectoryContent;
@@ -81,6 +84,10 @@ namespace Survive
 		void renderImageWindow();
 
 		void drawTextDialog();
+
+		void startDraggingIcon(const std::filesystem::path &file);
+
+		void iconDoubleClicked(const std::filesystem::path &file);
 	};
 }
 

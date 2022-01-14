@@ -36,7 +36,7 @@ namespace Survive
 
 		[[nodiscard]] const std::vector<File> &getDirectoryContent() const;
 
-		void setCurrentDirectory(std::filesystem::path currentDirectory);
+		void setCurrentDirectory(const std::filesystem::path& currentDirectory);
 
 	private:
 		static void setStyleColors();
@@ -54,6 +54,8 @@ namespace Survive
 		static void drawNestedDirectories(std::vector<File> &content, const File &file);
 
 		void informListeners() const;
+
+		[[nodiscard]] std::string getCurrentDirectoryFilename() const;
 	};
 }
 

@@ -4,6 +4,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
+#include <imgui_internal.h>
 
 #include "Log.h"
 #include "Loader.h"
@@ -13,17 +14,18 @@
 #include "EditorUtil.h"
 
 Survive::EditorUtil::EditorUtil()
-		: m_FontIcon(Loader::loadTexture("assets/textures/font_icon.jpg")),
-		  m_TextureIcon(Loader::loadTexture("assets/textures/texture.png")),
-		  m_Items{"Arial", "Candara"},
+		: m_Items{"Arial", "Candara"},
 		  m_FontInfo{{"assets/fonts/arial.png",   "assets/fonts/arial.fnt"},
 					 {"assets/fonts/candara.png", "assets/fonts/candara.fnt"}}
 {
-	Font arial("assets/fonts/arial.png");
+	m_FontIcon = m_Loader.loadTexture("assets/textures/font_icon.jpg");
+	m_TextureIcon = m_Loader.loadTexture("assets/textures/texture.png");
+
+	Font arial("assets/fonts/arial.png", m_Loader);
 	arial.loadFontFromFntFile("assets/fonts/arial.fnt");
 	m_Fonts.emplace_back(arial);
 
-	Font candara("assets/fonts/candara.png");
+	Font candara("assets/fonts/candara.png", m_Loader);
 	candara.loadFontFromFntFile("assets/fonts/candara.fnt");
 	m_Fonts.emplace_back(candara);
 }
@@ -85,7 +87,7 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 			vec1.z + vec2.z, vec1.w + vec2.w};
 }
 
-void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed)
+void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed)
 {
 	showLoadedFile("Model: %s", modelName, "Load model", m_LoadModel);
 
@@ -101,7 +103,7 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 			if (loadedModel.has_value())
 			{
 				modelName = selectedFilename;
-				model = loadedModel.value();
+				model = Model(loadedModel.value());
 				changed = true;
 			}
 		}
@@ -109,31 +111,35 @@ void Survive::EditorUtil::loadModel(FileChooser &fileChooser, Model &model, std:
 }
 
 std::optional<Survive::Model>
-Survive::EditorUtil::getLoadedModel(const FileChooser &fileChooser)
-try
+Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
 {
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Model model;
+	std::string selectedFile;
 
-	if (selectedFile.ends_with("obj"))
+	try
 	{
-		model = ObjParser::loadObj(selectedFile, m_Loader);
-	} else if (selectedFile.ends_with("dae"))
+		selectedFile = fileChooser.getSelectedFile().string();
+		Model model;
+
+		if (selectedFile.ends_with("obj"))
+		{
+			model = ObjParser::loadObj(selectedFile, m_Loader);
+		} else if (selectedFile.ends_with("dae"))
+		{
+			model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+		} else
+		{
+			Log::logWindow(LogType::ERROR, "Unknown file type");
+		}
+
+		return model.isValidModel() ? model : std::optional<Survive::Model>{};
+	} catch (const std::exception &exception)
 	{
-		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
-	} else
-	{
-		Log::logWindow(LogType::ERROR, "Unknown file type");
+		Log::logWindow(LogType::ERROR, "Could not load the model from " + selectedFile);
+		return {};
 	}
-
-	return model.isValidModel() ? model : std::optional<Survive::Model>{};
-} catch (const std::exception &exception)
-{
-	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
-	return {};
 }
 
-void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
 									  const char *format, const char *label, bool &changed)
 {
 	showLoadedFile(format, textureName, label, m_LoadTexture);
@@ -145,29 +151,20 @@ void Survive::EditorUtil::loadTexture(FileChooser &fileChooser, Texture &texture
 		std::string selectedFilename = fileChooser.getSelectedFilename();
 		if (!m_LoadTexture && !selectedFilename.empty())
 		{
-			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser);
+			std::string selectedFile = fileChooser.getSelectedFile().string();
 
-			if (loadedTexture.has_value())
+			try
 			{
+				texture = m_Loader.loadTexture(selectedFile.c_str());
+
 				textureName = selectedFilename;
-				texture = loadedTexture.value();
 				changed = true;
+			} catch(const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
 		}
 	}
-}
-
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const FileChooser &fileChooser)
-{
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Texture texture = Loader::loadTexture(selectedFile.c_str());
-
-	if (texture.isValidTexture())
-	{
-		return texture;
-	}
-
-	return {};
 }
 
 void Survive::EditorUtil::showLoadedFile(const char *format, const std::string &name, const char *label, bool &load)
@@ -196,28 +193,6 @@ void Survive::EditorUtil::drawTransform2DHeader()
 	ImGui::NextColumn();
 }
 
-bool Survive::EditorUtil::drawSlider(const char *label, const std::string &text, float &value, float start, float end)
-{
-	ImGui::NewLine();
-	centerText(text);
-
-	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.87f, 0.19f, 0.14f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.88f, 0.46f, 0.05f, 1.0f));
-
-	ImGui::PushStyleVar(ImGuiStyleVar_GrabMinSize, 16);
-	ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 4);
-
-	ImGui::PushItemWidth(-1);
-	bool sliderChanged = ImGui::SliderFloat(label, &value, start, end);
-	ImGui::PopItemWidth();
-
-	ImGui::PopStyleColor(3);
-	ImGui::PopStyleVar(2);
-
-	return sliderChanged;
-}
-
 void Survive::EditorUtil::centerText(const std::string &text)
 {
 	auto size = static_cast<float>(text.size());
@@ -240,38 +215,7 @@ void Survive::EditorUtil::loadQuadModel(bool &changed, TexturedModel &texturedMo
 	}
 }
 
-void Survive::EditorUtil::toggleButton(const char *stringId, bool &v)
-{
-	ImVec2 pos = ImGui::GetCursorScreenPos();
-	ImDrawList *drawList = ImGui::GetWindowDrawList();
-
-	float height = ImGui::GetFrameHeight() * 1.2f;
-	float width = height * 1.55f;
-	float radius = height * 0.50f;
-
-	if (ImGui::InvisibleButton(stringId, ImVec2(width, height)))
-	{
-		v = !v;
-	}
-
-	ImU32 backgroundColor;
-	if (ImGui::IsItemHovered())
-	{
-		backgroundColor = v ? IM_COL32(15, 120, 40, 255) : IM_COL32(150, 150, 150, 255);
-	} else
-	{
-		backgroundColor = v ? IM_COL32(51, 244, 92, 255) : IM_COL32(180, 180, 180, 255);
-	}
-
-	drawList->AddRectFilled(pos, ImVec2(pos.x + width, pos.y + height), backgroundColor, height * 0.5f);
-	drawList->AddCircleFilled(ImVec2(v ? (pos.x + width - radius) : (pos.x + radius), pos.y + radius),
-							  radius - 1.5f, IM_COL32(255, 255, 255, 255));
-
-	ImGui::SameLine();
-	ImGui::TextUnformatted(stringId);
-}
-
-void Survive::EditorUtil::loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+void Survive::EditorUtil::loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
 									std::string &soundFile, bool &changed)
 {
 	showLoadedFile("Sound: %s", soundFile, "Load sound", m_LoadSound);
@@ -309,9 +253,13 @@ try
 		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
 		registry.emplace<RigidBodyComponent>(entity, false);
-		
+
 		constexpr float scale = 15.0f;
-		glm::vec3 position = Util::getMouseRay(camera, x, y, width, height) * scale;
+		glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
+
+		glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
+		glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
+
 		registry.emplace<Transform3DComponent>(entity, position);
 	}
 } catch (const std::exception &exception)
@@ -320,20 +268,22 @@ try
 }
 
 void
-Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file)
+Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
+									  Loader &loader)
 {
 	std::string filename = file.string();
 
-	renderer.addMousePickingListener([=, &registry, &renderer](int selectedEntity) {
+	renderer.addMousePickingListener([=, &registry, &renderer, &loader](int selectedEntity) {
 		if (selectedEntity < 0)
 		{
 			renderer.popMousePickingListener();
 			return;
 		}
-
-		Texture texture = Loader::loadTexture(filename.c_str());
-		if (texture.isValidTexture())
+		
+		try
 		{
+			Texture texture = loader.loadTexture(filename.c_str());
+
 			auto entity = static_cast<entt::entity>(selectedEntity);
 
 			if (registry.any_of<Render3DComponent>(entity))
@@ -349,13 +299,16 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
+		} catch(const std::exception &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
 		}
 
 		renderer.popMousePickingListener();
 	});
 }
 
-void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file)
+void Survive::EditorUtil::loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -387,8 +340,8 @@ void Survive::EditorUtil::loadFont(FileChooser &fileChooser, Font &font, bool &o
 	}
 }
 
-void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &text,
-											   Font &font, Loader &loader, bool &open, std::string &file)
+void Survive::EditorUtil::loadFontTextureAtlas(OpenDialog &fileChooser, Text &text, Font &font,
+											   Loader &loader, bool &open, std::string &file)
 {
 	if (open)
 	{
@@ -401,7 +354,7 @@ void Survive::EditorUtil::loadFontTextureAtlas(FileChooser &fileChooser, Text &t
 			{
 				std::string textureName = selectedFile.string();
 
-				font.setTexture(Loader::loadTexture(textureName.c_str()));
+				font.setTexture(loader.loadTexture(textureName.c_str()));
 				text.loadTexture(loader);
 				file = textureName;
 			} catch (const std::exception &ignorable)
@@ -486,7 +439,7 @@ void Survive::EditorUtil::loadFontBorder(bool &addBorder, float &borderWidth, gl
 	ImGui::NewLine();
 }
 
-void Survive::EditorUtil::chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font)
+void Survive::EditorUtil::chooseFont(OpenDialog &fileChooser, TextComponent &textComponent, Font &font)
 {
 	Text &text = textComponent.text;
 
@@ -543,21 +496,6 @@ void Survive::EditorUtil::chooseFontSpacing(float &spacing, Text &text, Loader &
 	ImGui::NextColumn();
 }
 
-void Survive::EditorUtil::drawPlayButton(bool &play)
-{
-	float width = 0.5f * ImGui::GetContentRegionAvailWidth();
-	float height = 2.0f * ImGui::GetTextLineHeight();
-	ImVec2 size(width, height);
-
-	ImVec2 cursorPos = ImGui::GetCursorPos();
-	ImGui::SetCursorPos(ImVec2(cursorPos.x + width / 2.0f, cursorPos.y));
-
-	if (ImGui::Button("Play sound", size))
-	{
-		play = true;
-	}
-}
-
 void Survive::EditorUtil::drawColumnInputInt(const char *text, const char *label, int &value)
 {
 	ImGui::TextUnformatted(text);
@@ -608,7 +546,7 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	ImGui::NextColumn();
 
 	glm::vec2 vec(value.x, value.y);
-	bool result{};
+	bool result;
 	if ((result = ImGui::DragFloat2(label, glm::value_ptr(vec))))
 	{
 		value.x = vec.x;
@@ -661,4 +599,28 @@ void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
 	points[1] += diff;
 	points[2] += diff;
 	points[3] += diff;
+}
+
+bool Survive::EditorUtil::disableButton(bool condition)
+{
+	bool disabled = false;
+
+	if (condition)
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+
+		disabled = true;
+	}
+
+	return disabled;
+}
+
+void Survive::EditorUtil::enableButton(bool condition)
+{
+	if (condition)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
 }

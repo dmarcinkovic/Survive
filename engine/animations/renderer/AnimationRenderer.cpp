@@ -9,12 +9,12 @@
 #include "Renderer3DUtil.h"
 
 Survive::AnimationRenderer::AnimationRenderer(const Light &light)
-		: m_Light(light)
+		: ObjectRenderer(light)
 {
 }
 
-void Survive::AnimationRenderer::render(entt::registry &registry, const Camera &camera,
-										GLuint shadowMap, const glm::vec4 &plane) const
+void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const Camera &camera,
+												 GLuint shadowMap, const glm::vec4 &plane) const
 {
 	auto entities = prepareEntities(registry);
 
@@ -83,7 +83,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 
 	m_Shader.loadPlane(plane);
 
-	m_Shader.loadLightProjectionMatrix(camera.getLightProjectionMatrix());
+	m_Shader.loadLightProjection(camera.getLightProjectionMatrix());
 	m_Shader.loadLightViewMatrix(m_Light.getViewMatrix());
 
 	m_Shader.loadLight(m_Light.position(), m_Light.color(), 0.7f, 3);
@@ -98,7 +98,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 													const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
-	auto rotation = camera.rotation + transform.rotation;
+	glm::vec3 rotation = camera.rotation + transform.rotation;
 
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
@@ -116,90 +116,9 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 	const AnimationComponent &animationComponent = registry.get<AnimationComponent>(entity);
 	m_Shader.loadJointTransforms(animationComponent.jointTransforms);
 
-	loadMaterial(registry, entity);
+	renderMaterial(registry, entity, m_Shader);
 
-	renderBloom(registry, entity);
-	renderReflectionAndRefraction(registry, entity);
-}
-
-void Survive::AnimationRenderer::renderBloom(const entt::registry &registry, entt::entity entity) const
-{
-	if (registry.any_of<BloomComponent>(entity))
-	{
-		const BloomComponent &bloomComponent = registry.get<BloomComponent>(entity);
-
-		bloomComponent.bloomTexture.bindTexture(3);
-		m_Shader.loadBloomTexture(bloomComponent.bloomStrength);
-		m_Shader.loadBloom(true);
-	} else
-	{
-		m_Shader.loadBloom(false);
-
-		static Texture bloomDefaultTexture(0);
-		bloomDefaultTexture.bindTexture(3);
-	}
-}
-
-void
-Survive::AnimationRenderer::renderReflectionAndRefraction(entt::registry &registry, entt::entity entity) const
-{
-	m_DefaultTexture.bindTexture(2);
-
-	if (registry.any_of<ReflectionComponent>(entity) && m_Skybox != entt::null)
-	{
-		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
-		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
-
-		skybox.texturedModel.getTexture().bindCubeTexture(2);
-		m_Shader.loadReflectionFactor(reflection.reflectionFactor);
-	} else
-	{
-		m_Shader.loadReflectionFactor(0.0f);
-	}
-
-	if (registry.any_of<RefractionComponent>(entity) && m_Skybox != entt::null)
-	{
-		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
-		Render3DComponent &skybox = registry.get<Render3DComponent>(m_Skybox);
-
-		skybox.texturedModel.getTexture().bindCubeTexture(2);
-		m_Shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
-	} else
-	{
-		m_Shader.loadRefractionData(0.0f, 0.0f);
-	}
-}
-
-void Survive::AnimationRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
-{
-	if (registry.any_of<OutlineComponent>(entity))
-	{
-		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
-		if (outline.drawOutline)
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-		}
-	} else
-	{
-		glStencilMask(0x00);
-	}
-}
-
-void Survive::AnimationRenderer::loadMaterial(const entt::registry &registry, entt::entity entity) const
-{
-	static glm::vec4 defaultColor{0, 0, 0, 0};
-	if (registry.any_of<SpriteComponent>(entity))
-	{
-		const SpriteComponent &spriteComponent = registry.get<SpriteComponent>(entity);
-		m_Shader.loadColor(spriteComponent.color);
-	} else
-	{
-		m_Shader.loadColor(defaultColor);
-	}
-}
-
-void Survive::AnimationRenderer::addSkybox(entt::entity skybox)
-{
-	m_Skybox = skybox;
+	renderReflection(registry, entity, m_Shader);
+	renderRefraction(registry, entity, m_Shader);
+	renderBloom(registry, entity, m_Shader);
 }

@@ -7,6 +7,8 @@
 
 #include <AL/al.h>
 
+#include <utility>
+
 #include "Source.h"
 
 namespace Survive
@@ -24,8 +26,14 @@ namespace Survive
 
 		SoundComponent() = default;
 
-		SoundComponent(ALint sound, const Source &source)
-				: sound(sound), audioSource(source)
+		SoundComponent(ALint sound, Source source)
+				: sound(sound), audioSource(std::move(source))
+		{}
+
+		SoundComponent(ALint sound, Source source, std::string soundFile, float pitch, float gain,
+					   bool playOnLoop, bool play)
+				: sound(sound), audioSource(std::move(source)), soundFile(std::move(soundFile)), pitch(pitch), gain(gain),
+				  playOnLoop(playOnLoop), play(play)
 		{}
 
 		SoundComponent(ALint sound, const Source &source, std::string soundFile, float pitch, float gain,

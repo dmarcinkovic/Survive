@@ -14,7 +14,7 @@ namespace Survive
 	class PhysicSystem
 	{
 	public:
-		static void update(entt::registry &registry);
+		static void update(entt::registry &registry, b2World *world);
 
 		static void init(entt::registry &registry, b2World *world);
 
@@ -28,6 +28,8 @@ namespace Survive
 		static void addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+
+		static void updateWorld(b2World *world);
 	};
 }
 

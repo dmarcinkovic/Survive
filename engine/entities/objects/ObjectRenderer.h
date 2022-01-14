@@ -20,10 +20,12 @@ namespace Survive
 	{
 	private:
 		ObjectShader m_Shader;
-		const Light &m_Light;
 
 		Texture m_DefaultTexture{};
 		entt::entity m_SkyBox = entt::null;
+
+	protected:
+		const Light &m_Light;
 
 	public:
 		explicit ObjectRenderer(const Light &light);
@@ -33,10 +35,20 @@ namespace Survive
 
 		void addSkybox(entt::entity skybox);
 
+	protected:
+		static void drawOutline(const entt::registry &registry, entt::entity entity);
+
+		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) ;
+
+		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
+
+		void renderRefraction(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
+
+		static void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
+
 	private:
-		void
-		renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
-					const Camera &camera) const;
+		void renderScene(entt::registry &registry,
+						 const std::vector<entt::entity> &objects, const Camera &camera) const;
 
 		void loadUniforms(const Camera &camera, GLuint shadowMap, const glm::vec4 &plane) const;
 
@@ -45,16 +57,6 @@ namespace Survive
 
 		static std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash>
 		prepareEntities(entt::registry &registry);
-
-		static void drawOutline(const entt::registry &registry, entt::entity entity);
-
-		void renderBloom(const entt::registry &registry, entt::entity entity) const;
-
-		void renderReflection(entt::registry &registry, entt::entity entity) const;
-
-		void renderRefraction(entt::registry &registry, entt::entity entity) const;
-
-		void renderMaterial(const entt::registry &registry, entt::entity entity) const;
 	};
 }
 

@@ -3,12 +3,13 @@
 //
 
 #include <glm/glm.hpp>
+#include <imgui.h>
 
 #include "PhysicSystem.h"
 #include "Components.h"
 #include "Constants.h"
 
-void Survive::PhysicSystem::update(entt::registry &registry)
+void Survive::PhysicSystem::update(entt::registry &registry, b2World *world)
 {
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
@@ -25,6 +26,8 @@ void Survive::PhysicSystem::update(entt::registry &registry)
 		transform.position.y = bodyPosition.y / Constants::BOX2D_SCALE;
 		transform.rotation.z = glm::degrees(body->GetAngle());
 	}
+
+	updateWorld(world);
 }
 
 void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
@@ -93,4 +96,10 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
 		body->CreateFixture(&polygonCollider.fixtureDef);
 	}
+}
+
+void Survive::PhysicSystem::updateWorld(b2World *world)
+{
+	float frameRate = ImGui::GetIO().Framerate;
+	world->Step(1.0f / frameRate, 5, 5);
 }

@@ -2,14 +2,10 @@
 // Created by david on 24. 03. 2020..
 //
 
-#include <iostream>
 #include <execution>
 
-#include "Log.h"
 #include "Loader.h"
 #include "stb_image.h"
-
-std::vector<GLuint> Survive::Loader::m_Textures;
 
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices, GLint size)
@@ -28,7 +24,7 @@ Survive::Loader::~Loader()
 {
 	glDeleteVertexArrays(static_cast<GLsizei>(m_Vaos.size()), m_Vaos.data());
 	glDeleteBuffers(static_cast<GLsizei>(m_Vbos.size()), m_Vbos.data());
-	glDeleteTextures(1, m_Textures.data());
+	glDeleteTextures(static_cast<GLsizei>(m_Textures.size()), m_Textures.data());
 }
 
 void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices,
@@ -49,11 +45,14 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 }
 
 void
-Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<int> &data, GLint size)
+Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
 {
+	constexpr GLint size = 3;
+	constexpr GLuint attributeNumber = 4;
+
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
-	glEnableVertexAttribArray(attributeNumber);
+	glEnableVertexAttribArray(4);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	auto dataSize = static_cast<GLsizeiptr>(sizeof(int) * data.size());
@@ -91,33 +90,6 @@ void Survive::Loader::unbindVao()
 	glBindVertexArray(0);
 }
 
-Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<unsigned> &indices,
-										  const std::vector<float> &textureCoordinates, GLint size)
-{
-	GLuint vao = createVao();
-
-	createIndexBuffer(indices);
-	storeDataInAttributeList(0, vertices, size);
-	storeDataInAttributeList(1, textureCoordinates, 2);
-	unbindVao();
-
-	return {vao, static_cast<GLsizei>(indices.size())};
-}
-
-Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
-										  const std::vector<float> &textureCoordinates,
-										  const std::vector<float> &normals)
-{
-	GLuint vao = createVao();
-
-	storeDataInAttributeList(0, vertices, 3);
-	storeDataInAttributeList(1, textureCoordinates, 2);
-	storeDataInAttributeList(2, normals, 3);
-	unbindVao();
-
-	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
-}
-
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						   const std::vector<float> &normals, const std::vector<unsigned int> &indices)
@@ -144,7 +116,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(1, textures, 2);
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
-	storeDataInAttributeList(4, jointIds, 3);
+	storeDataInAttributeList(jointIds);
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
@@ -173,16 +145,6 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
 	return {vao, static_cast<GLsizei>(vertices.size()) / size};
 }
 
-Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, GLsizei size)
-{
-	GLuint vao = createVao();
-
-	storeDataInAttributeList(0, vertices, size);
-	unbindVao();
-
-	return {vao, static_cast<GLsizei>(vertices.size()) / size};
-}
-
 void Survive::Loader::addMipMap()
 {
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -190,7 +152,7 @@ void Survive::Loader::addMipMap()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4);
 }
 
-Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
+Survive::Texture Survive::Loader::loadTexture(const char *texture)
 {
 	GLuint textureId;
 	glGenTextures(1, &textureId);
@@ -199,12 +161,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	bool loaded = loadImage(texture);
-	if (!loaded)
-	{
-		textureId = 0;
-	}
-
+	loadImage(texture);
 	addMipMap();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -213,7 +170,7 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture) noexcept
 	return Texture(textureId);
 }
 
-bool Survive::Loader::loadImage(const char *texture) noexcept
+void Survive::Loader::loadImage(const char *texture)
 {
 	stbi_set_flip_vertically_on_load(1);
 
@@ -222,35 +179,11 @@ bool Survive::Loader::loadImage(const char *texture) noexcept
 
 	if (!image)
 	{
-		std::string message = "Error while loading " + std::string(texture);
-		Log::logWindow(LogType::ERROR, message);
-		std::cout << message << '\n';
-
-		return false;
+		throw std::runtime_error("Cannot load texture");
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	stbi_image_free(image);
-
-	return true;
-}
-
-std::unordered_map<const char *, Survive::Texture>
-Survive::Loader::loadTextures(const std::vector<const char *> &textures)
-{
-	stbi_set_flip_vertically_on_load(1);
-
-	auto images = loadImages(textures);
-
-	std::unordered_map<const char *, Texture> result;
-	for (auto const&[filename, imageData]: images)
-	{
-		GLuint textureId = loadTexture(imageData);
-
-		result[filename] = Texture(textureId);
-	}
-
-	return result;
 }
 
 std::vector<Survive::Texture> Survive::Loader::loadAllTextures(const std::vector<const char *> &textures)
@@ -301,6 +234,11 @@ Survive::Loader::loadImages(const std::vector<const char *> &textures)
 		int width, height, BPP;
 		std::uint8_t *image = stbi_load(filename, &width, &height, &BPP, 4);
 
+		if (!image)
+		{
+			throw std::runtime_error("Could not load image");
+		}
+
 		images[filename] = std::make_tuple(image, width, height);
 	});
 
@@ -315,13 +253,6 @@ Survive::Model Survive::Loader::renderQuad()
 	return Model(loadToVao(vertices, indices, 2));
 }
 
-Survive::Model Survive::Loader::renderQuadStrip()
-{
-	static const std::vector<float> vertices{-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f};
-
-	return loadToVao(vertices, 2);
-}
-
 Survive::Model Survive::Loader::renderCube()
 {
 	static const std::vector<float> vertices{-1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, -1,
@@ -333,7 +264,7 @@ Survive::Model Survive::Loader::renderCube()
 	return Model(loadToVao(vertices, indices, 3));
 }
 
-Survive::Texture Survive::Loader::loadCubeMap(const std::vector<const char *> &faces) noexcept
+Survive::Texture Survive::Loader::loadCubeMap(const std::vector<const char *> &faces)
 {
 	GLuint cubeMap;
 	glGenTextures(1, &cubeMap);
@@ -364,7 +295,7 @@ Survive::Texture Survive::Loader::loadCubeMap(const std::vector<std::string> &fa
 	return loadCubeMap(newFaces);
 }
 
-void Survive::Loader::loadToCubeMap(const std::vector<const char *> &faces) noexcept
+void Survive::Loader::loadToCubeMap(const std::vector<const char *> &faces)
 {
 	stbi_set_flip_vertically_on_load(0);
 

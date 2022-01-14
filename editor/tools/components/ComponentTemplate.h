@@ -7,14 +7,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "ObjParser.h"
 #include "Components.h"
 #include "EditorUtil.h"
-#include "FileChooser.h"
+#include "OpenDialog.h"
 #include "Loader.h"
 
 namespace Survive
@@ -23,7 +22,7 @@ namespace Survive
 	{
 	private:
 		AudioMaster m_AudioMaster;
-		FileChooser m_FileChooser;
+		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
 		EditorUtil m_EditorUtil;
@@ -70,9 +69,9 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
+			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
@@ -115,12 +114,14 @@ namespace Survive
 
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5, 0.1f);
+
+			ImGui::Separator();
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
-
-			EditorUtil::drawSlider("##Bloom strength", "Bloom strength", component.bloomStrength, 0.0f, 5.0f);
 		}
 	}
 
@@ -129,7 +130,10 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Reflection", visible))
 		{
-			EditorUtil::drawSlider("##Reflection factor", "Reflection factor", component.reflectionFactor);
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Reflection factor", "##Reflection factor",
+											component.reflectionFactor, 0, 1, 0.1f);
+			ImGui::Columns();
 		}
 	}
 
@@ -138,8 +142,10 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Refraction", visible))
 		{
-			EditorUtil::drawSlider("##Refraction index", "Refraction index", component.refractiveIndex, 0.0f, 3.0f);
-			EditorUtil::drawSlider("##Refraction factor", "Refraction factor", component.refractiveFactor);
+			ImGui::Columns(2, nullptr, false);
+			EditorUtil::drawColumnDragFloat("Refraction index", "##RIndex", component.refractiveIndex, 0, 3, 0.1f);
+			EditorUtil::drawColumnDragFloat("Refraction factor", "##RFactor", component.refractiveFactor, 0, 1, 0.1f);
+			ImGui::Columns();
 		}
 	}
 
@@ -153,7 +159,7 @@ namespace Survive
 			TexturedModel &texturedModel = component.texturedModel;
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
@@ -168,22 +174,23 @@ namespace Survive
 
 		if (ImGui::CollapsingHeader("Sound", visible))
 		{
-			if (EditorUtil::drawSlider("##Pitch", "Pitch", component.pitch, 0.0f, 5.0f))
+			ImGui::Columns(2, nullptr, false);
+			if (EditorUtil::drawColumnDragFloat("Pitch", "##Pitch", component.pitch, 0.0f, 5.0f, 0.1f))
 			{
 				component.audioSource.setPitch(component.pitch);
 			}
 
-			if (EditorUtil::drawSlider("##Gain", "Gain", component.gain, 0.0f, 5.0f))
+			if (EditorUtil::drawColumnDragFloat("Gain", "##Gain", component.gain, 0.0f, 5.0f, 0.1f))
 			{
 				component.audioSource.setGain(component.gain);
 			}
 
-			EditorUtil::toggleButton("Play on loop", component.playOnLoop);
-			ImGui::Columns(2);
-			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
-			ImGui::Columns();
+			EditorUtil::drawColumnInputBool("Play on loop", "##LoopSound", component.playOnLoop);
+			ImGui::Separator();
 
-			EditorUtil::drawPlayButton(component.play);
+			ImGui::Columns(2);
+			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed);
+			ImGui::Columns();
 		}
 	}
 
@@ -205,7 +212,7 @@ namespace Survive
 			Text &text = component.text;
 
 			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
-			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
+			m_EditorUtil.chooseFont(m_OpenDialog, component, text.m_Font);
 
 			EditorUtil::chooseFontSpacing(text.m_LineSpacing, text, m_Loader);
 
@@ -286,10 +293,11 @@ namespace Survive
 
 			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
-			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", component.fixtureDef.restitution);
+
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", fixtureDef.restitution);
 
 			ImGui::Columns();
 		}
@@ -305,10 +313,11 @@ namespace Survive
 			EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1);
 			EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2);
 
-			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", component.fixtureDef.restitution);
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", fixtureDef.restitution);
+
 			ImGui::Columns();
 		}
 	}
@@ -325,10 +334,11 @@ namespace Survive
 			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
 
 			ImGui::Separator();
-			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", component.fixtureDef.friction, 0, 1,
-											0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", component.fixtureDef.restitution);
+
+			b2FixtureDef &fixtureDef = component.fixtureDef;
+			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", fixtureDef.density);
+			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", fixtureDef.friction, 0, 1, 0.05f);
+			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", fixtureDef.restitution);
 
 			ImGui::Columns();
 		}
@@ -341,22 +351,23 @@ namespace Survive
 		{
 			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
-			int currentItem = component.bodyDefinition.type;
+			b2BodyDef &bodyDef = component.bodyDefinition;
+
+			int currentItem = bodyDef.type;
 			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
 			{
-				component.bodyDefinition.type = static_cast<b2BodyType>(currentItem);
+				bodyDef.type = static_cast<b2BodyType>(currentItem);
 			}
 
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", component.bodyDefinition.linearDamping);
-			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", component.bodyDefinition.angularDamping);
-			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", component.bodyDefinition.gravityScale);
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
+			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
-			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity",
-											 component.bodyDefinition.linearVelocity);
-			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", component.bodyDefinition.fixedRotation);
+			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
+			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", bodyDef.fixedRotation);
 
 			ImGui::Columns();
 		}
