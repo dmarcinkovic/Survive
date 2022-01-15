@@ -23,8 +23,8 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 				loadUniforms(camera, transform, moveComponent, light);
 				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-		Renderer3DUtil::finishRenderingEntity();
-	});
+				Renderer3DUtil::finishRenderingEntity();
+			});
 
 	finishRendering();
 }

@@ -30,9 +30,9 @@ void Survive::TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices
 	auto imageWidth = static_cast<float>(width);
 	auto imageHeight = static_cast<float>(height);
 
-	vertices.reserve(3 * numberOfVertices);
-	normals.reserve(3 * numberOfVertices);
-	textureCoordinates.reserve(2 * numberOfVertices);
+	vertices.reserve(3L * numberOfVertices);
+	normals.reserve(3L * numberOfVertices);
+	textureCoordinates.reserve(2L * numberOfVertices);
 
 	auto terrainHeight = preprocessHeight(image, width, height);
 
@@ -143,9 +143,7 @@ Survive::TerrainGenerator::preprocessHeight(const std::uint8_t *image, int width
 		for (int x = 0; x < width; ++x)
 		{
 			result[y][x] = getHTerrainHeight(x, y, image, width);
-//			std::cout << result[y][x] << ' ';
 		}
-//		std::cout << '\n';
 	}
 
 	return result;

@@ -58,7 +58,7 @@ namespace Survive
 
 		void addCallbacks() const;
 
-		static void addListener() ;
+		static void addListener();
 
 		static void setViewport(int width, int height);
 
