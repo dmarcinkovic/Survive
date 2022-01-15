@@ -62,7 +62,7 @@ void Survive::FileChooser::drawLeftArrow()
 		m_Redo.push(m_CurrentDirectory);
 
 		m_CurrentDirectory = m_Undo.top();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
 		resetSelectedFile();
 
@@ -82,7 +82,7 @@ void Survive::FileChooser::drawRightArrow()
 		m_Undo.push(m_CurrentDirectory);
 
 		m_CurrentDirectory = m_Redo.top();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
 		resetSelectedFile();
 
@@ -282,7 +282,7 @@ void Survive::FileChooser::buttonDoublePress()
 
 	try
 	{
-		m_DirectoryContent = FileUtil::listDirectory(path, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(path.string(), m_Hidden);
 
 		m_Undo.push(m_CurrentDirectory);
 		m_CurrentDirectory = path;
