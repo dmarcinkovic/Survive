@@ -7,6 +7,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <regex>
+#include <optional>
 
 #include "Character.h"
 
