@@ -89,7 +89,7 @@ jobs:
 
   MacOS:
     name: MacOS
-    runs-on: macos-latest
+    runs-on: macos-11
 
     steps:
       - name: Checkout
@@ -106,7 +106,7 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          conan install ..
+          conan install .. --build=missing
           cmake .. -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
           make DESTDIR=${{github.workspace}}/build/MacOS install
