@@ -29,8 +29,8 @@ Survive::Display::Display(const char *title)
 	glfwInit();
 	setWindowHints();
 
-	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode *mode = glfwGetVideoMode(monitor);
 
 	init(mode->width, mode->height, title);
 }
@@ -148,8 +148,8 @@ int Survive::Display::getHeight()
 
 std::pair<int, int> Survive::Display::getMaxViewportSize()
 {
-	static GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-	static const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	static GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+	static const GLFWvidmode *mode = glfwGetVideoMode(monitor);
 
 	return {mode->width, mode->height};
 }
