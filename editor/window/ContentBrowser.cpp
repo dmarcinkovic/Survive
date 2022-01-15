@@ -140,16 +140,21 @@ void Survive::ContentBrowser::drawDirectoryContent()
 			continue;
 		}
 
-		ImTextureID image = getIcon(file.path);
+		try
+		{
+			ImTextureID image = getIcon(file.path);
 
-		ImGui::BeginGroup();
+			ImGui::BeginGroup();
 
-		float availableRegion = ImGui::GetContentRegionAvail().x;
+			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-		drawIcon(image, file.path);
-		ImGui::EndGroup();
+			drawIcon(image, file.path);
+			ImGui::EndGroup();
 
-		alignIcons(availableRegion);
+			alignIcons(availableRegion);
+		} catch(const std::filesystem::filesystem_error &ignorable)
+		{
+		}
 	}
 
 	ImGui::EndChild();
