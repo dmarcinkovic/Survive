@@ -25,7 +25,7 @@ namespace Survive
 		float m_ScaleHeight{};
 
 	public:
-		explicit Font(const char *textureAtlas);
+		explicit Font(const char *textureAtlas, Loader &loader);
 
 		Font() = default;
 

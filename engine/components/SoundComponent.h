@@ -35,12 +35,6 @@ namespace Survive
 				: sound(sound), audioSource(std::move(source)), soundFile(std::move(soundFile)), pitch(pitch), gain(gain),
 				  playOnLoop(playOnLoop), play(play)
 		{}
-
-		SoundComponent(ALint sound, const Source &source, std::string soundFile, float pitch, float gain,
-					   bool playOnLoop, bool play)
-				: sound(sound), audioSource(source), soundFile(std::move(soundFile)), pitch(pitch), gain(gain),
-				  playOnLoop(playOnLoop), play(play)
-		{}
 	};
 }
 
