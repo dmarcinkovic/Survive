@@ -390,6 +390,15 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(HingeJoint2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
+		{
+
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H
