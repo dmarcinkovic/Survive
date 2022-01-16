@@ -404,8 +404,25 @@ namespace Survive
 			ImGui::NextColumn();
 			ImGui::SetNextItemWidth(-1.0f);
 
-			std::string name = component.connectedBodyName;
+			// TODO make this look better: Make input darker
+			// TODO make this drag and drop target and extract entity name from payload
+			std::string &name = component.connectedBodyName;
 			ImGui::InputText("##Text", name.data(), name.capacity(), ImGuiInputTextFlags_ReadOnly);
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+				{
+					auto *data = reinterpret_cast<std::pair<int, const char*> *>(payload->Data);
+					name = std::string(data->second);
+					component.connectedBody = static_cast<entt::entity>(data->first);
+					std::cout << "Entity name: " << data->second << '\n';
+					std::cout << "entity ID: " << data->first << '\n';
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
 			ImGui::NextColumn();
 			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
 			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);

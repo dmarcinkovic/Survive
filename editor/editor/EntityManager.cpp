@@ -117,7 +117,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	EditorUtil::resetStyleColors();
 }
 
-void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
+void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i)
 {
 	ImGui::PushID(i);
 	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
@@ -127,6 +127,18 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 		m_Selected = i;
 		m_CurrentItem = -1;
 	}
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		auto id = static_cast<int>(selectedEntity);
+		const char *data = tag.tag.c_str();
+
+		std::pair<int, const char*> payload = std::make_pair(id, data);
+
+		ImGui::SetDragDropPayload("DND_DEMO_CELL", &payload, sizeof(payload));
+		ImGui::EndDragDropSource();
+	}
+
 	ImGui::PopID();
 }
 
