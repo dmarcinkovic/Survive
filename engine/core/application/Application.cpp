@@ -21,27 +21,26 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 
 	auto ground2 = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground2, "ground2");
-	m_Registry.emplace<Transform3DComponent>(ground2, glm::vec3{0, -0.35f, 0}, glm::vec3{0.05f, 0.3f, 1.0f});
+	m_Registry.emplace<Transform3DComponent>(ground2, glm::vec3{0, 0, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
 	m_Registry.emplace<Render2DComponent>(ground2, TexturedModel(m_Loader.renderQuad(),
 																 m_Loader.loadTexture("assets/textures/dirt.png")));
-	m_Registry.emplace<BoxCollider2DComponent>(ground2, 0.5f, 3, 1, 0.3, 0.5);
-	m_Registry.emplace<RigidBody2DComponent>(ground2, b2_staticBody);
+	m_Registry.emplace<RigidBody2DComponent>(ground2, b2_dynamicBody);
+	m_Registry.emplace<BoxCollider2DComponent>(ground2, 4, 0.5f, 1.0f, 0.3, 0.5);
 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
-	m_Registry.emplace<Transform3DComponent>(ground, glm::vec3{0, 0, 0}, glm::vec3{0.4f, 0.05f, 1.0f});
+	m_Registry.emplace<Transform3DComponent>(ground, glm::vec3{0, -0.37f, 0}, glm::vec3{0.05f, 0.3f, 1.0f});
 	m_Registry.emplace<Render2DComponent>(ground,
 										  TexturedModel(m_Loader.renderQuad(),
 														m_Loader.loadTexture("assets/textures/dirt.png")));
-	m_Registry.emplace<RigidBody2DComponent>(ground, b2_dynamicBody);
-	m_Registry.emplace<BoxCollider2DComponent>(ground, 4, 0.5f, 1.0f, 0.3, 0.5);
-	RigidBody2DComponent &ground2Body = m_Registry.get<RigidBody2DComponent>(ground2);
-//	m_Registry.emplace<HingeJoint2DComponent>(ground, nullptr, b2Vec2(0, 0), b2Vec2(0, 0));
+	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
+	m_Registry.emplace<BoxCollider2DComponent>(ground, 0.5f, 3, 1, 0.3, 0.5);
+
+	m_Registry.emplace<HingeJoint2DComponent>(ground2, ground, b2Vec2(0, 0), b2Vec2(0, 3.7), true);
 
 	m_Editor.addPlayButtonListener([this]() {
-		PhysicSystem::init(m_Registry, m_World.get());
-
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
+		PhysicSystem::init(m_Registry, m_World.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
