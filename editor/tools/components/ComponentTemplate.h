@@ -265,16 +265,15 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
 			}
 
-			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
@@ -299,10 +298,9 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius))
 			{
 				component.m_Initialized = true;
 			}
@@ -396,7 +394,47 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
 		{
+			static constexpr float min = std::numeric_limits<float>::min();
 
+			ImGui::Columns(2, nullptr, false);
+
+			b2RevoluteJointDef &jointDef = component.jointDef;
+
+			ImGui::TextUnformatted("Connected Rigid Body");
+			ImGui::NextColumn();
+			ImGui::SetNextItemWidth(-1.0f);
+
+			std::string name = component.connectedBodyName;
+			ImGui::InputText("##Text", name.data(), name.capacity(), ImGuiInputTextFlags_ReadOnly);
+			ImGui::NextColumn();
+			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
+
+			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
+
+			ImGui::Separator();
+
+			ImGui::TextUnformatted("Motor");
+			ImGui::NextColumn();
+			ImGui::NextColumn();
+			ImGui::Indent();
+			EditorUtil::drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
+			EditorUtil::drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
+			EditorUtil::drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
+			ImGui::Unindent();
+
+			ImGui::Separator();
+
+			ImGui::TextUnformatted("Angle limits");
+			ImGui::NextColumn();
+			ImGui::NextColumn();
+			ImGui::Indent();
+			EditorUtil::drawColumnInputBool("Use limits", "##UseHingeLimits", jointDef.enableLimit);
+			EditorUtil::drawColumnDragFloat("Lower angle", "##HingeLAngle", jointDef.lowerAngle, -359, 359);
+			EditorUtil::drawColumnDragFloat("Upper angle", "##HingeUAngle", jointDef.upperAngle, -359, 359);
+			ImGui::Unindent();
+
+			ImGui::Columns();
 		}
 	}
 }

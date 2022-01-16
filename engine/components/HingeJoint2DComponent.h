@@ -16,6 +16,7 @@ namespace Survive
 	{
 		b2RevoluteJointDef jointDef{};
 		entt::entity connectedBody = entt::null;
+		std::string connectedBodyName = "none";
 
 		HingeJoint2DComponent() = default;
 
