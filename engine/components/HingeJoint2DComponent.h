@@ -8,19 +8,22 @@
 #include <box2d/box2d.h>
 #include <glm/glm.hpp>
 
+#include "entt.hpp"
+
 namespace Survive
 {
 	struct HingeJoint2DComponent
 	{
 		b2RevoluteJointDef jointDef{};
+		entt::entity connectedBody = entt::null;
 
 		HingeJoint2DComponent() = default;
 
-		HingeJoint2DComponent(b2Body *connectedBody, const b2Vec2 &anchor, const b2Vec2 &connectedAnchor, bool collideConnected = false,
-							  bool useMotor = false, float motorSpeed = 0, float maxTorque = 0, bool useLimits = false,
-							  float lowerAngle = 0, float upperAngle = 0)
+		HingeJoint2DComponent(entt::entity connectedBody, const b2Vec2 &anchor, const b2Vec2 &connectedAnchor,
+							  bool collideConnected = false, bool useMotor = false, float motorSpeed = 0,
+							  float maxTorque = 0, bool useLimits = false, float lowerAngle = 0, float upperAngle = 0)
+				: connectedBody(connectedBody)
 		{
-			jointDef.bodyB = connectedBody;
 			jointDef.localAnchorA = anchor;
 			jointDef.localAnchorB = connectedAnchor;
 			jointDef.collideConnected = collideConnected;

@@ -4,7 +4,6 @@
 
 #include <glm/glm.hpp>
 #include <imgui.h>
-#include <iostream>
 
 #include "PhysicSystem.h"
 #include "Components.h"
@@ -35,11 +34,8 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 {
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
-		TagComponent tag = registry.get<TagComponent>(entity);
-		std::cout << "Initialize: " << tag.tag << '\n';
-
 		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
 		Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
 
@@ -51,6 +47,11 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
 		initFixture(registry, entity, rigidBody.body);
+	}
+
+	for (auto const &entity: view)
+	{
+		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
 		initHingeJoint(registry, entity, world, rigidBody.body);
 	}
 }
@@ -116,13 +117,16 @@ void Survive::PhysicSystem::initHingeJoint(entt::registry &registry, entt::entit
 		HingeJoint2DComponent &hingeJoint = registry.get<HingeJoint2DComponent>(entity);
 		hingeJoint.jointDef.bodyA = body;
 
-		if (hingeJoint.jointDef.bodyB == nullptr)
+		if (hingeJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(hingeJoint.connectedBody))
 		{
-			std::cout << "Body is nullptr\n";
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_staticBody;
 			hingeJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
-			hingeJoint.jointDef.localAnchorB = b2Vec2(1, 0);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(hingeJoint.connectedBody);
+			hingeJoint.jointDef.bodyB = bodyB.body;
 		}
 
 		world->CreateJoint(&hingeJoint.jointDef);
