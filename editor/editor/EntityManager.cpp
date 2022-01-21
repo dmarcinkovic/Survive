@@ -135,7 +135,7 @@ void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entit
 
 		std::pair<int, const char*> payload = std::make_pair(id, data);
 
-		ImGui::SetDragDropPayload("DND_DEMO_CELL", &payload, sizeof(payload));
+		ImGui::SetDragDropPayload("HingeJoint", &payload, sizeof(payload));
 		ImGui::EndDragDropSource();
 	}
 

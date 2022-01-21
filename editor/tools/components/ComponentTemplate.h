@@ -404,7 +404,7 @@ namespace Survive
 
 			if (ImGui::BeginDragDropTarget())
 			{
-				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
+				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HingeJoint"))
 				{
 					auto *data = reinterpret_cast<std::pair<int, const char *> *>(payload->Data);
 					component.connectedBody = static_cast<entt::entity>(data->first);
