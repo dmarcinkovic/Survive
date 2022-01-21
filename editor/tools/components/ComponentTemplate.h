@@ -400,24 +400,15 @@ namespace Survive
 
 			b2RevoluteJointDef &jointDef = component.jointDef;
 
-			ImGui::TextUnformatted("Connected Rigid Body");
-			ImGui::NextColumn();
-			ImGui::SetNextItemWidth(-1.0f);
-
-			// TODO make this look better: Make input darker
-			// TODO make this drag and drop target and extract entity name from payload
-			std::string &name = component.connectedBodyName;
-			ImGui::InputText("##Text", name.data(), name.capacity(), ImGuiInputTextFlags_ReadOnly);
+			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
 
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("DND_DEMO_CELL"))
 				{
-					auto *data = reinterpret_cast<std::pair<int, const char*> *>(payload->Data);
-					name = std::string(data->second);
+					auto *data = reinterpret_cast<std::pair<int, const char *> *>(payload->Data);
 					component.connectedBody = static_cast<entt::entity>(data->first);
-					std::cout << "Entity name: " << data->second << '\n';
-					std::cout << "entity ID: " << data->first << '\n';
+					component.connectedBodyName = data->second;
 				}
 
 				ImGui::EndDragDropTarget();

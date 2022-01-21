@@ -666,3 +666,17 @@ int Survive::EditorUtil::drawDeleteButton(int index, const Texture &deleteIcon, 
 
 	return itemToDelete;
 }
+
+void Survive::EditorUtil::drawColumnInputText(const char *label, const char *text, std::string &buffer,
+											  ImGuiInputTextFlags flags)
+{
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.15f, 0.15f, 0.15f, 0.8f});
+
+	ImGui::TextUnformatted("Connected Rigid Body");
+	ImGui::NextColumn();
+	ImGui::SetNextItemWidth(-1.0f);
+
+	ImGui::InputText(label, buffer.data(), buffer.capacity(), flags);
+
+	ImGui::PopStyleColor();
+}

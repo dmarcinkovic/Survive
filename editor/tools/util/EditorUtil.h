@@ -71,9 +71,8 @@ namespace Survive
 
 		static void centerText(const std::string &text);
 
-		void
-		loadDraggedModels(entt::registry &registry, const std::filesystem::path &file, const Camera &camera,
-						  float x, float y, float width, float height);
+		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file,
+							   const Camera &camera, float x, float y, float width, float height);
 
 		static void registerListener(entt::registry &registry, Renderer &renderer,
 									 const std::filesystem::path &file, Loader &loader);
@@ -95,7 +94,11 @@ namespace Survive
 		static bool drawColumnInputFloat(const char *text, const char *label, float &value);
 
 		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
-										float min = 0, float max = std::numeric_limits<float>::max(), float step = 1.0f);
+										float min = 0, float max = std::numeric_limits<float>::max(),
+										float step = 1.0f);
+
+		static void drawColumnInputText(const char *label, const char *text, std::string &buffer,
+										ImGuiInputTextFlags flags = ImGuiInputTextFlags_ReadOnly);
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 

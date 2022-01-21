@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 project(Survive)
 
 set(CMAKE_CXX_STANDARD 20)
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined")
+#set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined")
 
 set(OpenGlLinkers -lGLU -lGL -lGLEW -lopenal)
 set(TBB_LIBRARY -ltbb)
