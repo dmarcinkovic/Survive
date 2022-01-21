@@ -133,7 +133,7 @@ void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entit
 		auto id = static_cast<int>(selectedEntity);
 		const char *data = tag.tag.c_str();
 
-		std::pair<int, const char*> payload = std::make_pair(id, data);
+		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
 
 		ImGui::SetDragDropPayload("HingeJoint", &payload, sizeof(payload));
 		ImGui::EndDragDropSource();

@@ -16,6 +16,7 @@
 #include "EditorUtil.h"
 #include "FileChooser.h"
 #include "Loader.h"
+#include "Log.h"
 
 namespace Survive
 {
@@ -406,9 +407,19 @@ namespace Survive
 			{
 				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HingeJoint"))
 				{
-					auto *data = reinterpret_cast<std::pair<int, const char *> *>(payload->Data);
-					component.connectedBody = static_cast<entt::entity>(data->first);
-					component.connectedBodyName = data->second;
+					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
+
+					int bodyA = std::get<0>(*data);
+					int bodyB = std::get<1>(*data);
+
+					if (bodyA == bodyB)
+					{
+						Log::logWindow(LogType::ERROR, "Body A should not be equal as body B");
+					} else
+					{
+						component.connectedBody = static_cast<entt::entity>(bodyB);
+						component.connectedBodyName = std::get<2>(*data);
+					}
 				}
 
 				ImGui::EndDragDropTarget();
