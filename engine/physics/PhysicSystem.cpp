@@ -53,6 +53,7 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 	{
 		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
 		initHingeJoint(registry, entity, world, rigidBody.body);
+		initDistanceJoint(registry, entity, world, rigidBody.body);
 	}
 }
 
@@ -130,5 +131,29 @@ void Survive::PhysicSystem::initHingeJoint(entt::registry &registry, entt::entit
 		}
 
 		world->CreateJoint(&hingeJoint.jointDef);
+	}
+}
+
+void
+Survive::PhysicSystem::initDistanceJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body)
+{
+	if (registry.any_of<DistanceJoint2DComponent>(entity))
+	{
+		DistanceJoint2DComponent &distanceJoint = registry.get<DistanceJoint2DComponent>(entity);
+		distanceJoint.jointDef.bodyA = body;
+
+		if (distanceJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(distanceJoint.connectedBody))
+		{
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+			distanceJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(distanceJoint.connectedBody);
+			distanceJoint.jointDef.bodyB = bodyB.body;
+		}
+
+		world->CreateJoint(&distanceJoint.jointDef);
 	}
 }
