@@ -9,6 +9,7 @@
 #include "BloomComponent.h"
 #include "BoxCollider2DComponent.h"
 #include "CircleCollider2DComponent.h"
+#include "DistanceJoint2DComponent.h"
 #include "EdgeCollider2DComponent.h"
 #include "HingeJoint2DComponent.h"
 #include "MoveComponent.h"
