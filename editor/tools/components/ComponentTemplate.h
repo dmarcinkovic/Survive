@@ -400,7 +400,7 @@ namespace Survive
 			b2RevoluteJointDef &jointDef = component.jointDef;
 
 			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
-			EditorUtil::initializeDragDropTarget(component);
+			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
 
 			ImGui::NextColumn();
 			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
@@ -412,6 +412,32 @@ namespace Survive
 
 			ImGui::Separator();
 			EditorUtil::drawHingeAngleProperties(component);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(DistanceJoint2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Distance joint 2D", visible))
+		{
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
+			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
+
+			b2DistanceJointDef &jointDef = component.jointDef;
+
+			ImGui::NextColumn();
+			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
+
+			ImGui::Separator();
+
+			EditorUtil::drawColumnDragFloat("Min length", "##DistanceJointMinLen", jointDef.minLength);
+			EditorUtil::drawColumnDragFloat("Max length", "##DistanceJointMaxLen", jointDef.maxLength);
 
 			ImGui::Columns();
 		}

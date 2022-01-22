@@ -681,11 +681,11 @@ void Survive::EditorUtil::drawColumnInputText(const char *label, const char *tex
 	ImGui::PopStyleColor();
 }
 
-void Survive::EditorUtil::initializeDragDropTarget(HingeJoint2DComponent &component)
+void Survive::EditorUtil::initializeDragDropTarget(entt::entity &connectedBody, std::string &name)
 {
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HingeJoint"))
+		if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Joint2D"))
 		{
 			auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
 
@@ -697,8 +697,8 @@ void Survive::EditorUtil::initializeDragDropTarget(HingeJoint2DComponent &compon
 				Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
 			} else
 			{
-				component.connectedBody = static_cast<entt::entity>(bodyB);
-				component.connectedBodyName = std::get<2>(*data);
+				connectedBody = static_cast<entt::entity>(bodyB);
+				name = std::get<2>(*data);
 			}
 		}
 

@@ -108,7 +108,7 @@ namespace Survive
 
 		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff);
 
-		static void initializeDragDropTarget(HingeJoint2DComponent &component);
+		static void initializeDragDropTarget(entt::entity &connectedBody, std::string &name);
 
 		static void drawHingeMotorProperties(HingeJoint2DComponent &component);
 
