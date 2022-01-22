@@ -128,16 +128,7 @@ void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entit
 		m_CurrentItem = -1;
 	}
 
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		auto id = static_cast<int>(selectedEntity);
-		const char *data = tag.tag.c_str();
-
-		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
-
-		ImGui::SetDragDropPayload("HingeJoint", &payload, sizeof(payload));
-		ImGui::EndDragDropSource();
-	}
+	initializeDragDropSource(selectedEntity, tag);
 
 	ImGui::PopID();
 }
@@ -231,4 +222,18 @@ void Survive::EntityManager::stopDrawing()
 {
 	m_AddNewComponent = false;
 	m_Selected = -1;
+}
+
+void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		auto id = static_cast<int>(selectedEntity);
+		const char *data = tag.tag.c_str();
+
+		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
+
+		ImGui::SetDragDropPayload("HingeJoint", &payload, sizeof(payload));
+		ImGui::EndDragDropSource();
+	}
 }
