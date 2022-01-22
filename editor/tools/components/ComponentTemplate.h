@@ -414,7 +414,7 @@ namespace Survive
 
 					if (bodyA == bodyB)
 					{
-						Log::logWindow(LogType::ERROR, "Body A should not be equal as body B");
+						Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
 					} else
 					{
 						component.connectedBody = static_cast<entt::entity>(bodyB);
