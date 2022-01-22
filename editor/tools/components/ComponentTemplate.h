@@ -395,63 +395,23 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
 		{
-			static constexpr float min = std::numeric_limits<float>::min();
-
 			ImGui::Columns(2, nullptr, false);
 
 			b2RevoluteJointDef &jointDef = component.jointDef;
 
 			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
-
-			if (ImGui::BeginDragDropTarget())
-			{
-				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HingeJoint"))
-				{
-					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
-
-					int bodyA = std::get<0>(*data);
-					int bodyB = std::get<1>(*data);
-
-					if (bodyA == bodyB)
-					{
-						Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
-					} else
-					{
-						component.connectedBody = static_cast<entt::entity>(bodyB);
-						component.connectedBodyName = std::get<2>(*data);
-					}
-				}
-
-				ImGui::EndDragDropTarget();
-			}
+			EditorUtil::initializeDragDropTarget(component);
 
 			ImGui::NextColumn();
 			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
 			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
-
 			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
 
 			ImGui::Separator();
-
-			ImGui::TextUnformatted("Motor");
-			ImGui::NextColumn();
-			ImGui::NextColumn();
-			ImGui::Indent();
-			EditorUtil::drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
-			EditorUtil::drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
-			EditorUtil::drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
-			ImGui::Unindent();
+			EditorUtil::drawHingeMotorProperties(component);
 
 			ImGui::Separator();
-
-			ImGui::TextUnformatted("Angle limits");
-			ImGui::NextColumn();
-			ImGui::NextColumn();
-			ImGui::Indent();
-			EditorUtil::drawColumnInputBool("Use limits", "##UseHingeLimits", jointDef.enableLimit);
-			EditorUtil::drawColumnDragFloat("Lower angle", "##HingeLAngle", jointDef.lowerAngle, -359, 359);
-			EditorUtil::drawColumnDragFloat("Upper angle", "##HingeUAngle", jointDef.upperAngle, -359, 359);
-			ImGui::Unindent();
+			EditorUtil::drawHingeAngleProperties(component);
 
 			ImGui::Columns();
 		}

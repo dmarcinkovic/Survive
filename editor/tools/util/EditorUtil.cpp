@@ -680,3 +680,71 @@ void Survive::EditorUtil::drawColumnInputText(const char *label, const char *tex
 
 	ImGui::PopStyleColor();
 }
+
+void Survive::EditorUtil::initializeDragDropTarget(HingeJoint2DComponent &component)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("HingeJoint"))
+		{
+			auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
+
+			int bodyA = std::get<0>(*data);
+			int bodyB = std::get<1>(*data);
+
+			if (bodyA == bodyB)
+			{
+				Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
+			} else
+			{
+				component.connectedBody = static_cast<entt::entity>(bodyB);
+				component.connectedBodyName = std::get<2>(*data);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+}
+
+void Survive::EditorUtil::drawHingeMotorProperties(HingeJoint2DComponent &component)
+{
+	static constexpr float min = std::numeric_limits<float>::min();
+
+	b2RevoluteJointDef &jointDef = component.jointDef;
+
+	ImGui::TextUnformatted("Motor");
+	ImGui::NextColumn();
+	ImGui::NextColumn();
+
+	ImGui::Indent();
+	drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
+	drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
+	drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
+	ImGui::Unindent();
+}
+
+void Survive::EditorUtil::drawHingeAngleProperties(Survive::HingeJoint2DComponent &component)
+{
+	b2RevoluteJointDef &jointDef = component.jointDef;
+
+	ImGui::TextUnformatted("Angle limits");
+	ImGui::NextColumn();
+	ImGui::NextColumn();
+
+	ImGui::Indent();
+	drawColumnInputBool("Use limits", "##UseHingeLimits", jointDef.enableLimit);
+
+	float lowerAngle = glm::degrees(jointDef.lowerAngle);
+	if (drawColumnDragFloat("Lower angle", "##HingeLAngle", lowerAngle, -359, 359))
+	{
+		jointDef.lowerAngle = glm::radians(lowerAngle);
+	}
+
+	float upperAngle = glm::degrees(jointDef.upperAngle);
+	if (drawColumnDragFloat("Upper angle", "##HingeUAngle", upperAngle, -359, 359))
+	{
+		jointDef.upperAngle = glm::radians(upperAngle);
+	}
+
+	ImGui::Unindent();
+}

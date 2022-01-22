@@ -108,6 +108,12 @@ namespace Survive
 
 		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff);
 
+		static void initializeDragDropTarget(HingeJoint2DComponent &component);
+
+		static void drawHingeMotorProperties(HingeJoint2DComponent &component);
+
+		static void drawHingeAngleProperties(HingeJoint2DComponent &component);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
