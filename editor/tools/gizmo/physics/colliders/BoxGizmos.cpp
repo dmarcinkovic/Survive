@@ -2,8 +2,6 @@
 // Created by david on 31. 10. 2021..
 //
 
-#include "imgui.h"
-
 #include "Maths.h"
 #include "Constants.h"
 #include "BoxGizmos.h"
