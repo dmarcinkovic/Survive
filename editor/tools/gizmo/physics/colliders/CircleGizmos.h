@@ -9,12 +9,12 @@
 #include "Camera.h"
 #include "EventHandler.h"
 #include "CircleCollider2DComponent.h"
-#include "ColliderGizmos.h"
+#include "PhysicsGizmosBase.h"
 #include "Centroid.h"
 
 namespace Survive
 {
-	class CircleGizmos : public ColliderGizmos, public Centroid
+	class CircleGizmos : public PhysicsGizmosBase, public Centroid
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;

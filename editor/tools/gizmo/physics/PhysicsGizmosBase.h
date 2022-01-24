@@ -2,10 +2,10 @@
 // Created by david on 06. 11. 2021..
 //
 
-#ifndef SURVIVE_COLLIDERGIZMOS_H
-#define SURVIVE_COLLIDERGIZMOS_H
+#ifndef SURVIVE_PHYSICSGIZMOSBASE_H
+#define SURVIVE_PHYSICSGIZMOSBASE_H
 
-#include <imgui.h>
+#include "imgui.h"
 
 #include "entt.hpp"
 #include "Components.h"
@@ -14,7 +14,7 @@
 
 namespace Survive
 {
-	class ColliderGizmos
+	class PhysicsGizmosBase
 	{
 	protected:
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
@@ -34,4 +34,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_COLLIDERGIZMOS_H
+#endif //SURVIVE_PHYSICSGIZMOSBASE_H

@@ -11,11 +11,11 @@
 #include "Components.h"
 #include "Camera.h"
 #include "EventHandler.h"
-#include "ColliderGizmos.h"
+#include "PhysicsGizmosBase.h"
 
 namespace Survive
 {
-	class PolygonGizmos : public ColliderGizmos
+	class PolygonGizmos : public PhysicsGizmosBase
 	{
 	private:
 		static int m_PointHovered;
