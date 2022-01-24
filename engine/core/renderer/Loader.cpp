@@ -28,7 +28,7 @@ Survive::Loader::~Loader()
 }
 
 void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices,
-											   GLint size)
+											   GLint size, GLenum type)
 {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
@@ -36,7 +36,7 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	auto bufferSize = static_cast<GLsizeiptr>(vertices.size() * sizeof(float));
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), type);
 
 	glVertexAttribPointer(attributeNumber, size, GL_FLOAT, GL_FALSE, 0, nullptr);
 	m_Vbos.emplace_back(vbo);
@@ -143,6 +143,18 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / size};
+}
+
+std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(const std::vector<float> &vertices, int size)
+{
+	GLuint vao = createVao();
+
+	storeDataInAttributeList(0, vertices, size, GL_STREAM_DRAW);
+
+	GLuint vbo = m_Vbos.back();
+	auto vertexCount = static_cast<GLsizei>(vertices.size()) / size;
+
+	return {Model(vao, vertexCount), vbo};
 }
 
 void Survive::Loader::addMipMap()

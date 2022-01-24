@@ -73,8 +73,11 @@ namespace Survive
 
 		void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
+		std::pair<Model, GLuint> loadToVao(const std::vector<float> &vertices, int size);
+
 	private:
-		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size);
+		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size,
+									  GLenum type = GL_STATIC_DRAW);
 
 		void storeDataInAttributeList(const std::vector<int> &data);
 
