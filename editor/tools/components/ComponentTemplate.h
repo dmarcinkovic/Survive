@@ -399,10 +399,11 @@ namespace Survive
 
 			b2RevoluteJointDef &jointDef = component.jointDef;
 
-			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
+			EditorUtil::drawColumnInputText("##HingeBody", "Connected Rigid Body", component.connectedBodyName);
 			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
 
 			ImGui::NextColumn();
+
 			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
 			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
 			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
@@ -424,15 +425,16 @@ namespace Survive
 		{
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputText("##ConnectedRBody", "Connected Rigid Body", component.connectedBodyName);
+			EditorUtil::drawColumnInputText("##DistanceBody", "Connected Rigid Body", component.connectedBodyName);
 			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
+
+			ImGui::NextColumn();
 
 			b2DistanceJointDef &jointDef = component.jointDef;
 
-			ImGui::NextColumn();
-			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
-			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
-			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
+			EditorUtil::drawColumnDragFloat2("Anchor", "##DistanceAnchorA", jointDef.localAnchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##DistanceAnchorB", jointDef.localAnchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##DistanceCollide", jointDef.collideConnected);
 
 			ImGui::Separator();
 

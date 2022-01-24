@@ -672,7 +672,7 @@ void Survive::EditorUtil::drawColumnInputText(const char *label, const char *tex
 {
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.15f, 0.15f, 0.15f, 0.8f});
 
-	ImGui::TextUnformatted("Connected Rigid Body");
+	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 	ImGui::SetNextItemWidth(-1.0f);
 
