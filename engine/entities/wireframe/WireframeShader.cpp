@@ -2,9 +2,9 @@
 // Created by david on 24. 01. 2022..
 //
 
-#include "WireFrameShader.h"
+#include "WireframeShader.h"
 
-Survive::WireFrameShader::WireFrameShader()
+Survive::WireframeShader::WireframeShader()
 	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
 
