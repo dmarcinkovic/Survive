@@ -13,17 +13,27 @@ namespace Survive
 	class WireframeRenderer
 	{
 	private:
+		static constexpr int MAX_VERTICES = 100'000;
+
 		WireframeShader m_Shader;
 
 		Loader m_Loader;
-
 		Model m_Model;
-		GLuint m_Vbo{};
+
+		static std::vector<float> m_Vertices;
+		static GLuint m_Vbo;
 
 	public:
 		WireframeRenderer();
 
 		void render() const;
+
+		static void updateData(std::vector<float> vertices);
+
+	private:
+		void prepareRendering() const;
+
+		static void finish();
 	};
 }
 

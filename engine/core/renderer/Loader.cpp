@@ -28,7 +28,7 @@ Survive::Loader::~Loader()
 }
 
 void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices,
-											   GLint size, GLenum type)
+											   GLint size)
 {
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
@@ -36,7 +36,7 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	auto bufferSize = static_cast<GLsizeiptr>(vertices.size() * sizeof(float));
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), type);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(attributeNumber, size, GL_FLOAT, GL_FALSE, 0, nullptr);
 	m_Vbos.emplace_back(vbo);
@@ -58,6 +58,22 @@ Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
 	auto dataSize = static_cast<GLsizeiptr>(sizeof(int) * data.size());
 	glBufferData(GL_ARRAY_BUFFER, dataSize, data.data(), GL_STATIC_DRAW);
 	glVertexAttribIPointer(attributeNumber, size, GL_INT, 0, nullptr);
+	m_Vbos.emplace_back(vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Survive::Loader::reserveFloatDataInAttributeList(GLint size, GLsizeiptr numberOfVertices)
+{
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	auto bufferSize = static_cast<GLsizeiptr>(numberOfVertices * sizeof(float));
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STREAM_DRAW);
+
+	glVertexAttribPointer(0, size, GL_FLOAT, GL_FALSE, 0, nullptr);
 	m_Vbos.emplace_back(vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -145,14 +161,14 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
 	return {vao, static_cast<GLsizei>(vertices.size()) / size};
 }
 
-std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(const std::vector<float> &vertices, int size)
+std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(int numberOfVertices, int size)
 {
 	GLuint vao = createVao();
 
-	storeDataInAttributeList(0, vertices, size, GL_STREAM_DRAW);
+	reserveFloatDataInAttributeList(size, numberOfVertices);
 
 	GLuint vbo = m_Vbos.back();
-	auto vertexCount = static_cast<GLsizei>(vertices.size()) / size;
+	GLsizeiptr vertexCount = numberOfVertices / size;
 
 	return {Model(vao, vertexCount), vbo};
 }

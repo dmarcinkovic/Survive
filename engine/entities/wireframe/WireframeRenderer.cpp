@@ -3,14 +3,15 @@
 //
 
 #include "WireframeRenderer.h"
-#include "Renderer2DUtil.h"
+#include "Renderer3DUtil.h"
+#include <iostream>
+
+std::vector<float> Survive::WireframeRenderer::m_Vertices{};
+GLuint Survive::WireframeRenderer::m_Vbo{};
 
 Survive::WireframeRenderer::WireframeRenderer()
 {
-	std::vector<float> vertices{-0.5f, -0.5f,
-								0.5f, -0.5f,
-								-0.5f, 0.5f};
-	auto[model, vbo] = m_Loader.loadToVao(vertices, 2);
+	auto[model, vbo] = m_Loader.loadToVao(MAX_VERTICES, 3);
 
 	m_Model = model;
 	m_Vbo = vbo;
@@ -18,17 +19,40 @@ Survive::WireframeRenderer::WireframeRenderer()
 
 void Survive::WireframeRenderer::render() const
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (m_Vertices.empty())
+	{
+		return;
+	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
-	glBindVertexArray(m_Model.m_Vao);
-	glEnableVertexAttribArray(0);
+	prepareRendering();
 
 	glDrawArrays(GL_TRIANGLES, 0, m_Model.m_VertexCount);
 
+	finish();
+}
+
+void Survive::WireframeRenderer::prepareRendering() const
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	Renderer3DUtil::prepareRendering(m_Shader);
+	glBindVertexArray(m_Model.m_Vao);
+	glEnableVertexAttribArray(0);
+}
+
+void Survive::WireframeRenderer::finish()
+{
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-	Renderer2DUtil::finishRendering();
+	Renderer3DUtil::finishRendering();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void Survive::WireframeRenderer::updateData(std::vector<float> vertices)
+{
+	m_Vertices = std::move(vertices);
+
+	auto sizeOfData = static_cast<GLsizeiptr>(m_Vertices.size());
+	Loader::updateVBO(m_Vbo, m_Vertices, sizeOfData);
 }
