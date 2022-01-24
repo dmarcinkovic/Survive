@@ -27,10 +27,7 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 
 		if (m_GizmoEnabled)
 		{
-			glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position);
-
-			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-			drawBoxColliderGizmo(camera, boxCollider, transform, transformationMatrix);
+			drawBoxColliderGizmo(camera, boxCollider, transform);
 		} else
 		{
 			m_HoveredLine = -1;
@@ -40,10 +37,13 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 }
 
 void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
-											  const Transform3DComponent &transform, const glm::mat4 &modelMatrix)
+											  const Transform3DComponent &transform)
 {
-	float angle = glm::radians(transform.rotation.z);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+	float angle = glm::radians(transform.rotation.z);
 	ImVec2 center = calcCenter(boxCollider.center, camera, transform.position, modelMatrix, angle);
 
 	b2Vec2 *vertices = boxCollider.boxShape.m_vertices;
@@ -52,7 +52,6 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 	std::vector<ImVec2> rectanglePoints = getPolygonPoints(points, transform.position, camera, modelMatrix, angle);
 
 	updateGizmos(camera, boxCollider, transform, modelMatrix, rectanglePoints, center);
-
 	drawRect(rectanglePoints, m_HoveredLine);
 	drawCenter(center);
 }
@@ -176,6 +175,21 @@ void Survive::BoxGizmos::updateLines(const Camera &camera, BoxCollider2DComponen
 									 const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
 									 const std::vector<ImVec2> &points)
 {
+	mouseHoversLine(points);
+	moveLines(camera, boxCollider, transform, modelMatrix);
+}
+
+ImVec2 Survive::BoxGizmos::calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
+									  const glm::mat4 &modelMatrix, float angle) const
+{
+	glm::vec3 point = rotatePointAroundOrigin(localCenter.x, localCenter.y, angle);
+	b2Vec2 center(point.x, point.y);
+
+	return getCenter(center, camera, position, modelMatrix, m_X, m_Y, m_Width, m_Height);
+}
+
+void Survive::BoxGizmos::mouseHoversLine(const std::vector<ImVec2> &points)
+{
 	if (!m_IsUsing && !m_CenterHovered && Util::mouseHoversLine(points[0], points[1]))
 	{
 		m_HoveredLine = 0;
@@ -197,7 +211,11 @@ void Survive::BoxGizmos::updateLines(const Camera &camera, BoxCollider2DComponen
 		m_HoveredLine = -1;
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 	}
+}
 
+void Survive::BoxGizmos::moveLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
+								   const Transform3DComponent &transform, const glm::mat4 &modelMatrix)
+{
 	float angle = glm::radians(transform.rotation.z);
 	if (m_HoveredLine == 0 && m_IsUsing)
 	{
@@ -216,14 +234,5 @@ void Survive::BoxGizmos::updateLines(const Camera &camera, BoxCollider2DComponen
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 		moveLine(camera, boxCollider, modelMatrix, transform.position, angle, 3, 0, true);
 	}
-}
-
-ImVec2 Survive::BoxGizmos::calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
-									  const glm::mat4 &modelMatrix, float angle) const
-{
-	glm::vec3 point = rotatePointAroundOrigin(localCenter.x, localCenter.y, angle);
-	b2Vec2 center(point.x, point.y);
-
-	return getCenter(center, camera, position, modelMatrix, m_X, m_Y, m_Width, m_Height);
 }
 

@@ -30,7 +30,7 @@ namespace Survive
 
 	private:
 		void drawBoxColliderGizmo(const Camera &camera, BoxCollider2DComponent &boxCollider,
-								  const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
+								  const Transform3DComponent &transform);
 
 		static void initializeBoxCollider(BoxCollider2DComponent &boxCollider, const Transform3DComponent &transform);
 
@@ -57,6 +57,11 @@ namespace Survive
 
 		[[nodiscard]] ImVec2 calcCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
 										const glm::mat4 &modelMatrix, float angle) const;
+
+		void mouseHoversLine(const std::vector<ImVec2> &points);
+
+		void moveLines(const Camera &camera, BoxCollider2DComponent &boxCollider,
+					   const Transform3DComponent &transform, const glm::mat4 &modelMatrix);
 	};
 }
 
