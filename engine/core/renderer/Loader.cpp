@@ -347,7 +347,6 @@ void Survive::Loader::updateVBO(GLuint vbo, const std::vector<float> &data, GLsi
 
 	GLsizeiptr dataSize = sizeOfData * static_cast<GLsizeiptr>(sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, dataSize, data.data(), GL_STREAM_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
