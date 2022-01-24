@@ -30,6 +30,10 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 		if (m_GizmoEnabled)
 		{
 			drawGizmos(transform, circleCollider, camera);
+		} else
+		{
+			m_CenterHovered = false;
+			m_Hovered = false;
 		}
 	}
 }

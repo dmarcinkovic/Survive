@@ -31,6 +31,10 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 
 			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
 			drawBoxColliderGizmo(camera, boxCollider, transform, transformationMatrix);
+		} else
+		{
+			m_HoveredLine = -1;
+			m_CenterHovered = false;
 		}
 	}
 }

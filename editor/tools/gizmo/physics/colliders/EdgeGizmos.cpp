@@ -29,6 +29,10 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 		if (m_GizmoEnabled)
 		{
 			enableGizmos(edgeCollider, transform, camera);
+		} else
+		{
+			m_PointHovered = -1;
+
 		}
 	}
 }

@@ -25,6 +25,9 @@ void Survive::PolygonGizmos::draw(entt::registry &registry, const Camera &camera
 		if (m_GizmoEnabled)
 		{
 			enableGizmos(polygonCollider, transform, camera);
+		} else
+		{
+			m_PointHovered = -1;
 		}
 	}
 }
