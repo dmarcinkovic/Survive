@@ -6,7 +6,6 @@
 #include <numeric>
 #include <stack>
 
-#include "Log.h"
 #include "DaeParser.h"
 #include "Vertex.h"
 #include "Util.h"
@@ -20,9 +19,7 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 	if (!reader)
 	{
 		std::string message = "Could not load " + std::string(daeFile);
-		Log::logWindow(LogType::ERROR, message);
-
-		return {};
+		throw std::runtime_error(message);
 	}
 
 	std::string line;
@@ -145,8 +142,8 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 		unsigned textureIndex = std::stoi(numbers[i + 2]);
 
 		Vertex::processVertex(m_VertexData.vertices, m_VertexData.normals, m_VertexData.textures,
-							resultPoints, resultNormals, resultTextures,
-							vertexIndex, textureIndex, normalIndex);
+							  resultPoints, resultNormals, resultTextures,
+							  vertexIndex, textureIndex, normalIndex);
 
 		processJointsData(resultWeights, resultIds, vertexIndex);
 	}
@@ -175,7 +172,7 @@ void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std:
 			auto numbers = getData(line);
 			weights.reserve(numbers.size());
 
-			for (auto const &weight : numbers)
+			for (auto const &weight: numbers)
 			{
 				weights.emplace_back(std::stof(weight));
 			}
@@ -184,7 +181,7 @@ void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std:
 			auto numbers = getData(line);
 			count.reserve(numbers.size());
 
-			for (auto const &c : numbers)
+			for (auto const &c: numbers)
 			{
 				count.emplace_back(std::stoi(c));
 			}
@@ -193,7 +190,7 @@ void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std:
 			auto numbers = getData(line);
 
 			int index = 0;
-			for (int n : count)
+			for (int n: count)
 			{
 				int numberOfJoints = std::min(n, 3);
 
@@ -226,7 +223,7 @@ void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std:
 
 void Survive::DaeParser::normalizeWeights()
 {
-	for (glm::vec3 &vec : m_VertexData.jointWeights)
+	for (glm::vec3 &vec: m_VertexData.jointWeights)
 	{
 		float sum = vec.x + vec.y + vec.z;
 
@@ -375,7 +372,7 @@ Survive::AnimationData Survive::DaeParser::getAnimationData(std::ifstream &reade
 		{
 			auto timestamps = getData(line);
 
-			for (auto const &timestamp : timestamps)
+			for (auto const &timestamp: timestamps)
 			{
 				animationData.timestamps.emplace_back(std::stof(timestamp));
 			}
@@ -422,7 +419,7 @@ Survive::DaeParser::getKeyFrames(const std::vector<AnimationData> &animationData
 	for (auto i = 0; i < timeStamps.size(); ++i)
 	{
 		std::unordered_map<std::string, JointTransform> pose;
-		for (auto const &j : animationData)
+		for (auto const &j: animationData)
 		{
 			const glm::mat4 &mat = j.transforms[i];
 
@@ -447,7 +444,7 @@ Survive::DaeParser::applyCorrectionToVertices(const std::vector<glm::vec3> &vert
 	std::vector<glm::vec3> result;
 	result.reserve(vertices.size());
 
-	for (auto const& vertex : vertices)
+	for (auto const &vertex: vertices)
 	{
 		glm::vec4 point(vertex, 1.0f);
 		point = correction * point;

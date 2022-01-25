@@ -4,8 +4,8 @@
 
 #include <imgui.h>
 
-#include "EditorUtil.h"
 #include "SkyboxWindow.h"
+#include "Log.h"
 
 Survive::SkyboxWindow::SkyboxWindow()
 		: m_Textures(N), m_Labels{"Right", "Left", "Top", "Bottom", "Front", "Back"}, m_TextureNames(N)
@@ -87,11 +87,14 @@ void Survive::SkyboxWindow::drawOpenDialog()
 
 			if (!filename.empty())
 			{
-				Texture image = m_Loader.loadTexture(filename.c_str());
-				if (image.isValidTexture())
+				try
 				{
+					Texture image = m_Loader.loadTexture(filename.c_str());
 					m_Textures[m_CurrentImage] = image;
 					m_TextureNames[m_CurrentImage] = filename;
+				} catch (const std::exception &exception)
+				{
+					Log::logWindow(LogType::ERROR, "Could not load " + filename);
 				}
 			}
 		}
@@ -105,7 +108,16 @@ void Survive::SkyboxWindow::drawAddSkyboxButton(entt::registry &registry, Render
 	{
 		if (m_Loaded)
 		{
-			registry.replace<Render3DComponent>(m_Sky, TexturedModel(m_Model, m_Loader.loadCubeMap(m_TextureNames)));
+			try
+			{
+				Texture cubeMap = m_Loader.loadCubeMap(m_TextureNames);
+				TexturedModel model(m_Model, cubeMap);
+
+				registry.replace<Render3DComponent>(m_Sky, model);
+			} catch (const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Could not load cube map");
+			}
 		} else
 		{
 			createSkybox(registry, renderer);
@@ -121,6 +133,14 @@ void Survive::SkyboxWindow::createSkybox(entt::registry &registry, Survive::Rend
 	m_Sky = registry.create();
 
 	registry.emplace<Transform3DComponent>(m_Sky, glm::vec3{}, glm::vec3{500.0f});
-	registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, m_Loader.loadCubeMap(m_TextureNames)));
-	renderer.addSkyboxEntity(m_Sky);
+
+	try
+	{
+		Texture cubeMap = m_Loader.loadCubeMap(m_TextureNames);
+		registry.emplace<Render3DComponent>(m_Sky, TexturedModel(m_Model, cubeMap));
+		renderer.addSkyboxEntity(m_Sky);
+	} catch (const std::exception &exception)
+	{
+		Log::logWindow(LogType::ERROR, "Could not create skybox");
+	}
 }

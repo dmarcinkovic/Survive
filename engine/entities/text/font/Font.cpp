@@ -2,11 +2,8 @@
 // Created by david on 29. 03. 2020..
 //
 
-#include <fstream>
-
 #include "Font.h"
-#include "Util.h"
-#include "Log.h"
+
 #include "FontJsonParser.h"
 #include "FontFntParser.h"
 
@@ -20,22 +17,18 @@ try
 {
 	FontFntParser::parseFontFnt(fntFile, m_Characters, m_ScaleHeight, m_Height);
 	m_Loaded = true;
-} catch (const std::exception &exception)
+} catch (const std::exception &ignorable)
 {
-	Log::logWindow(LogType::ERROR, "Cannot load font from fnt file");
 }
-
 
 void Survive::Font::loadFontFromJsonFile(const std::string &jsonFile)
 try
 {
 	FontJsonParser::parseFontJson(jsonFile, m_Characters, m_ScaleHeight, m_Height);
 	m_Loaded = true;
-} catch (const std::exception &exception)
+} catch (const std::exception &ignorable)
 {
-	Log::logWindow(LogType::ERROR, "Cannot load font from json file");
 }
-
 
 const Survive::Character &Survive::Font::getCharacter(int ascii) const
 {

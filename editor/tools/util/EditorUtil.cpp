@@ -103,7 +103,7 @@ void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::
 			if (loadedModel.has_value())
 			{
 				modelName = selectedFilename;
-				model = loadedModel.value();
+				model = Model(loadedModel.value());
 				changed = true;
 			}
 		}
@@ -112,27 +112,31 @@ void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::
 
 std::optional<Survive::Model>
 Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
-try
 {
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Model model;
+	std::string selectedFile;
 
-	if (selectedFile.ends_with("obj"))
+	try
 	{
-		model = ObjParser::loadObj(selectedFile, m_Loader);
-	} else if (selectedFile.ends_with("dae"))
+		selectedFile = fileChooser.getSelectedFile().string();
+		Model model;
+
+		if (selectedFile.ends_with("obj"))
+		{
+			model = ObjParser::loadObj(selectedFile, m_Loader);
+		} else if (selectedFile.ends_with("dae"))
+		{
+			model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+		} else
+		{
+			Log::logWindow(LogType::ERROR, "Unknown file type");
+		}
+
+		return model.isValidModel() ? model : std::optional<Survive::Model>{};
+	} catch (const std::exception &exception)
 	{
-		model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
-	} else
-	{
-		Log::logWindow(LogType::ERROR, "Unknown file type");
+		Log::logWindow(LogType::ERROR, "Could not load the model from " + selectedFile);
+		return {};
 	}
-
-	return model.isValidModel() ? model : std::optional<Survive::Model>{};
-} catch (const std::exception &exception)
-{
-	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
-	return {};
 }
 
 void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
@@ -147,29 +151,20 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 		std::string selectedFilename = fileChooser.getSelectedFilename();
 		if (!m_LoadTexture && !selectedFilename.empty())
 		{
-			std::optional<Texture> loadedTexture = getLoadedTexture(fileChooser, m_Loader);
+			std::string selectedFile = fileChooser.getSelectedFile().string();
 
-			if (loadedTexture.has_value())
+			try
 			{
+				texture = m_Loader.loadTexture(selectedFile.c_str());
+
 				textureName = selectedFilename;
-				texture = loadedTexture.value();
 				changed = true;
+			} catch (const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
 		}
 	}
-}
-
-std::optional<Survive::Texture> Survive::EditorUtil::getLoadedTexture(const OpenDialog &fileChooser, Loader &loader)
-{
-	std::string selectedFile = fileChooser.getSelectedFile().string();
-	Texture texture = loader.loadTexture(selectedFile.c_str());
-
-	if (texture.isValidTexture())
-	{
-		return texture;
-	}
-
-	return {};
 }
 
 void Survive::EditorUtil::showLoadedFile(const char *format, const std::string &name, const char *label, bool &load)
@@ -260,7 +255,11 @@ try
 		registry.emplace<RigidBodyComponent>(entity, false);
 
 		constexpr float scale = 15.0f;
-		glm::vec3 position = Util::getMouseRay(camera, x, y, width, height) * scale;
+		glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
+
+		glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
+		glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
+
 		registry.emplace<Transform3DComponent>(entity, position);
 	}
 } catch (const std::exception &exception)
@@ -269,7 +268,8 @@ try
 }
 
 void
-Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file, Loader &loader)
+Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
+									  Loader &loader)
 {
 	std::string filename = file.string();
 
@@ -280,9 +280,10 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 			return;
 		}
 
-		Texture texture = loader.loadTexture(filename.c_str());
-		if (texture.isValidTexture())
+		try
 		{
+			Texture texture = loader.loadTexture(filename.c_str());
+
 			auto entity = static_cast<entt::entity>(selectedEntity);
 
 			if (registry.any_of<Render3DComponent>(entity))
@@ -298,6 +299,9 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
+		} catch (const std::exception &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
 		}
 
 		renderer.popMousePickingListener();
@@ -554,7 +558,8 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	return result;
 }
 
-bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed, float min, float max)
+bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed,
+											   float min, float max)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();

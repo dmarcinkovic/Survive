@@ -52,7 +52,8 @@ void Survive::StatusBar::drawPlayAndPauseButtons(float buttonSize)
 {
 	if (ImGui::BeginMenuBar())
 	{
-		float imagePosX = (ImGui::GetContentRegionAvailWidth() - buttonSize) / 2.0f;
+		float width = ImGui::GetContentRegionAvail().x;
+		float imagePosX = (width - buttonSize) / 2.0f;
 		ImGui::SetCursorPos(ImVec2(imagePosX, 0));
 
 		ImVec2 playButtonSize{buttonSize * 1.2f, buttonSize};

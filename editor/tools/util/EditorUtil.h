@@ -119,8 +119,6 @@ namespace Survive
 
 		std::optional<Model> getLoadedModel(const OpenDialog &fileChooser);
 
-		static std::optional<Texture> getLoadedTexture(const OpenDialog &fileChooser, Loader &loader);
-
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 	};
 }

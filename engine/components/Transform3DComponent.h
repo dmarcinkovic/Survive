@@ -16,7 +16,7 @@ namespace Survive
 		glm::vec3 scale;
 
 		Transform3DComponent()
-			: position{}, rotation{}, scale{1.0f}
+				: position{}, rotation{}, scale{1.0f}
 		{
 		}
 
