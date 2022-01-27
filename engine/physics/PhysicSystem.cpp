@@ -238,3 +238,20 @@ void Survive::PhysicSystem::initCapsuleCollider(entt::registry &registry, entt::
 		initCollider3DMaterial(collider->getMaterial(), capsuleCollider);
 	}
 }
+
+void Survive::PhysicSystem::initMeshCollider(entt::registry &registry, entt::entity entity,
+											 rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+{
+	if (registry.any_of<ConvexMeshCollider3DComponent>(entity))
+	{
+		ConvexMeshCollider3DComponent &meshCollider = registry.get<ConvexMeshCollider3DComponent>(entity);
+
+		meshCollider.polyhedronMesh = physicsCommon.createPolyhedronMesh(meshCollider.polygonVertexArray);
+		meshCollider.meshShape = physicsCommon.createConvexMeshShape(meshCollider.polyhedronMesh);
+
+		rp3d::Collider *collider = body->addCollider(meshCollider.meshShape, rp3d::Transform::identity());
+		body->updateLocalCenterOfMassFromColliders();
+
+		initCollider3DMaterial(collider->getMaterial(), meshCollider);
+	}
+}

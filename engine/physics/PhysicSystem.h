@@ -59,6 +59,9 @@ namespace Survive
 										rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
 
 		static void initCollider3DMaterial(rp3d::Material &material, const Collider3DComponent &collider3D);
+
+		static void initMeshCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
+									 rp3d::RigidBody *body);
 	};
 }
 
