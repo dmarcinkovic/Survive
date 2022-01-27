@@ -157,6 +157,7 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 
 void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBody)
 {
+	rigidBody.body->setMass(rigidBody.mass);
 	rigidBody.body->setType(rigidBody.bodyType);
 	rigidBody.body->setAngularDamping(rigidBody.angularDrag);
 	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
