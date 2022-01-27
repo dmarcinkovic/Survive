@@ -29,6 +29,8 @@ namespace Survive
 		rp3d::PolygonVertexArray *polygonVertexArray{};
 		rp3d::PolyhedronMesh *polyhedronMesh{};
 
+		rp3d::ConvexMeshShape *meshShape{};
+
 		ConvexMeshCollider3DComponent() = default;
 
 		ConvexMeshCollider3DComponent(std::vector<float> meshVertices, std::vector<int> meshIndices, int numberOfFaces,
