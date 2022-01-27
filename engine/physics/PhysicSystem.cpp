@@ -102,9 +102,8 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 		rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(rotation.x, rotation.y, rotation.z);
 
 		rigidBody.body = world->createRigidBody({position, orientation});
-		initializeRigidBody3D(rigidBody);
-
 		initColliders3D(registry, entity, physicsCommon, rigidBody.body);
+		initializeRigidBody3D(rigidBody);
 	}
 }
 
@@ -159,11 +158,6 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBody)
 {
 	rigidBody.body->setType(rigidBody.bodyType);
-	if (rigidBody.bodyType == rp3d::BodyType::DYNAMIC)
-	{
-		rigidBody.body->setMass(rigidBody.mass);
-	}
-
 	rigidBody.body->setAngularDamping(rigidBody.angularDrag);
 	rigidBody.body->setLinearVelocity(rigidBody.linearVelocity);
 	rigidBody.body->setLinearDamping(rigidBody.linearDamping);
