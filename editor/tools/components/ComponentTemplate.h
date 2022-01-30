@@ -411,7 +411,6 @@ namespace Survive
 
 		EditorUtil::drawColumnDragFloat("Bounciness", "##Box3DBounciness", component.bounciness, 0, 1, 0.01f);
 		EditorUtil::drawColumnDragFloat("Friction", "##Box3DFriction", component.friction, 0, 1, 0.01f);
-		EditorUtil::drawColumnDragFloat("Rolling friction", "##Box3RR", component.rollingResistance, 0, 1, 0.01f);
 
 		ImGui::Unindent();
 		ImGui::Columns();

@@ -217,7 +217,6 @@ void Survive::PhysicSystem::initCollider3DMaterial(rp3d::Material &material, con
 {
 	material.setBounciness(collider3D.bounciness);
 	material.setFrictionCoefficient(collider3D.friction);
-	material.setRollingResistance(collider3D.rollingResistance);
 }
 
 void Survive::PhysicSystem::initCapsuleCollider(entt::registry &registry, entt::entity entity,

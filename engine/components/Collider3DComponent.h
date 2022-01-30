@@ -10,7 +10,6 @@ namespace Survive
 	struct Collider3DComponent
 	{
 		float friction = 0.3f;
-		float rollingResistance = 0.0f;
 		float bounciness = 0.5f;
 	};
 }
