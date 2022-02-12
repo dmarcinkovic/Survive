@@ -75,7 +75,7 @@ void Survive::FileChooser::drawLeftArrow()
 
 void Survive::FileChooser::drawRightArrow()
 {
-	bool disabled = EditorUtil::disableButton(m_Redo.empty());
+	bool disabled = EditorUtil::disableButton(m_Redo.empty() || !std::filesystem::exists(m_Redo.top()));
 
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
