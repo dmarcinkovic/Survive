@@ -52,9 +52,11 @@ void Survive::DirectoryTree::drawLeftArrow()
 
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
+		const std::string &path = m_CurrentDirectory.parent_path().string();
+
 		try
 		{
-			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.parent_path().string());
+			m_DirectoryContent = FileUtil::listDirectory(path);
 			m_IsCollapsed = std::vector<bool>(m_DirectoryContent.size(), false);
 
 			m_RedoStack.push(m_CurrentDirectory);
@@ -65,7 +67,6 @@ void Survive::DirectoryTree::drawLeftArrow()
 			informListeners();
 		} catch (const std::filesystem::filesystem_error &exception)
 		{
-			const std::string &path = m_CurrentDirectory.parent_path().string();
 			Log::logWindow(LogType::ERROR, "Cannot enter directory: " + path);
 		}
 	}
