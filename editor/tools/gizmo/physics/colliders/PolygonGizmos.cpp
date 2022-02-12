@@ -37,17 +37,6 @@ bool Survive::PolygonGizmos::isOver()
 	return m_PointHovered != -1;
 }
 
-ImVec2 Survive::PolygonGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-										const glm::mat4 &modelMatrix, float angle) const
-{
-	float scale = Constants::BOX2D_SCALE;
-
-	glm::vec3 rotatedPoint = rotatePointAroundOrigin(vertex.x / scale, vertex.y / scale, angle);
-	glm::vec3 point = globalPos + rotatedPoint;
-
-	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
-}
-
 std::vector<ImVec2>
 Survive::PolygonGizmos::getPolygonPoints(const std::vector<b2Vec2> &points, const glm::vec3 &globalPos,
 										 const Camera &camera, const glm::mat4 &modelMatrix, float angle)
@@ -150,14 +139,6 @@ void Survive::PolygonGizmos::moveVertex(const Camera &camera, const glm::mat4 &m
 	glm::vec3 rotatedPoint = rotatePointAroundOrigin(newPosition.x, newPosition.y, -angle);
 
 	vertex = b2Vec2(rotatedPoint.x, rotatedPoint.y);
-}
-
-glm::vec3 Survive::PolygonGizmos::rotatePointAroundOrigin(float x, float y, float angle)
-{
-	float cosAngle = std::cos(angle);
-	float sinAngle = std::sin(angle);
-
-	return {x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
 }
 
 void Survive::PolygonGizmos::enableGizmos(PolygonCollider2DComponent &polygonCollider,

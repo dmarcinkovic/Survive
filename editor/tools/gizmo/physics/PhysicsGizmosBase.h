@@ -31,6 +31,12 @@ namespace Survive
 		void setRect(float x, float y, float width, float height);
 
 		[[nodiscard]] bool isEnabled() const;
+
+	protected:
+		ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
+						const glm::mat4 &modelMatrix, float angle) const;
+
+		static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle);
 	};
 }
 

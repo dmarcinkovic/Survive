@@ -26,9 +26,6 @@ namespace Survive
 		static bool isOver();
 
 	protected:
-		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-									  const glm::mat4 &modelMatrix, float angle) const;
-
 		void moveVertex(const Camera &camera, const glm::mat4 &modelMatrix,
 						const glm::vec3 &position, b2Vec2 &vertex, float angle) const;
 
@@ -37,8 +34,6 @@ namespace Survive
 
 		[[nodiscard]] glm::vec3
 		getMouseLocalPosition(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position) const;
-
-		[[nodiscard]] static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle);
 
 	private:
 		static void drawPoints(const std::vector<ImVec2> &points);

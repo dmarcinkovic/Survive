@@ -3,6 +3,8 @@
 //
 
 #include "PhysicsGizmosBase.h"
+#include "Util.h"
+#include "Constants.h"
 
 void Survive::PhysicsGizmosBase::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -31,4 +33,24 @@ void Survive::PhysicsGizmosBase::setRect(float x, float y, float width, float he
 bool Survive::PhysicsGizmosBase::isEnabled() const
 {
 	return m_GizmoEnabled;
+}
+
+ImVec2
+Survive::PhysicsGizmosBase::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
+									 const glm::mat4 &modelMatrix, float angle) const
+{
+	float scale = Constants::BOX2D_SCALE;
+
+	glm::vec3 rotatedPoint = rotatePointAroundOrigin(vertex.x / scale, vertex.y / scale, angle);
+	glm::vec3 point = globalPos + rotatedPoint;
+
+	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
+}
+
+glm::vec3 Survive::PhysicsGizmosBase::rotatePointAroundOrigin(float x, float y, float angle)
+{
+	float cosAngle = std::cos(angle);
+	float sinAngle = std::sin(angle);
+
+	return {x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle, 0};
 }
