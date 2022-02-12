@@ -10,6 +10,7 @@
 #include "CircleGizmos.h"
 #include "PolygonGizmos.h"
 #include "EdgeGizmos.h"
+#include "HingeJointGizmos.h"
 #include "EventHandler.h"
 #include "Camera.h"
 
@@ -22,6 +23,8 @@ namespace Survive
 		CircleGizmos m_CircleGizmos;
 		EdgeGizmos m_EdgeGizmos;
 		PolygonGizmos m_PolygonGizmos;
+
+		HingeJointGizmos m_HingeGizmos;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
