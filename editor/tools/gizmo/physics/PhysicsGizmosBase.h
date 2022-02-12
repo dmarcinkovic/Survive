@@ -26,7 +26,7 @@ namespace Survive
 	public:
 		virtual void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
 
-		void handleKeyEvents(const EventHandler &eventHandler);
+		virtual void handleKeyEvents(const EventHandler &eventHandler);
 
 		void setRect(float x, float y, float width, float height);
 
