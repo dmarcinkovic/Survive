@@ -15,6 +15,7 @@ namespace Survive
 	private:
 		static constexpr float ANCHOR_RADIUS = 7.0f;
 		static constexpr ImU32 ANCHOR_COLOR = IM_COL32(0, 0, 230, 255);
+		static constexpr ImU32 ANCHOR_CONNECTOR_COLOR = IM_COL32(0, 255, 0, 255);
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
@@ -29,6 +30,8 @@ namespace Survive
 		void drawAnchorA(const ImVec2 &anchorPosition);
 
 		void drawAnchorB(const ImVec2 &anchorPosition);
+
+		void drawAnchorConnector(const ImVec2 &anchorA, const ImVec2 &anchorB);
 
 		ImVec2
 		getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera, const b2Vec2 &anchor);

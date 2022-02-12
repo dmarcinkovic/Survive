@@ -48,6 +48,7 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 	ImVec2 anchorA = getAnchorPosition(registry, bodyA, camera, jointDef.localAnchorA);
 	ImVec2 anchorB = getAnchorPosition(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
 
+	drawAnchorConnector(anchorA, anchorB);
 	drawAnchorA(anchorA);
 	drawAnchorB(anchorB);
 }
@@ -78,4 +79,10 @@ ImVec2 Survive::HingeJointGizmos::getAnchorPosition(entt::registry &registry, en
 	}
 
 	return getPoint(glm::vec3{0.0f}, anchor, camera, glm::mat4{1.0f}, 0.0f);
+}
+
+void Survive::HingeJointGizmos::drawAnchorConnector(const ImVec2 &anchorA, const ImVec2 &anchorB)
+{
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+	drawList->AddLine(anchorA, anchorB, ANCHOR_CONNECTOR_COLOR);
 }
