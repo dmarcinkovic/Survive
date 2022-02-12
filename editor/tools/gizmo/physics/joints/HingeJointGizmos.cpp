@@ -2,11 +2,8 @@
 // Created by david on 24. 01. 2022..
 //
 
-#include <iostream>
-
 #include "HingeJointGizmos.h"
 #include "Maths.h"
-#include "Constants.h"
 #include "Util.h"
 
 void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
@@ -48,43 +45,37 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 	HingeJoint2DComponent &hingeComponent = registry.get<HingeJoint2DComponent>(bodyA);
 	const b2RevoluteJointDef &jointDef = hingeComponent.jointDef;
 
-	drawAnchorA(registry, bodyA, camera, jointDef.localAnchorA);
-	drawAnchorB(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
+	ImVec2 anchorA = getAnchorPosition(registry, bodyA, camera, jointDef.localAnchorA);
+	ImVec2 anchorB = getAnchorPosition(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
+
+	drawAnchorA(anchorA);
+	drawAnchorB(anchorB);
 }
 
-void Survive::HingeJointGizmos::drawAnchorA(entt::registry &registry, entt::entity bodyA, const Camera &camera,
-											const b2Vec2 &anchor)
+void Survive::HingeJointGizmos::drawAnchorA(const ImVec2 &anchorPosition)
 {
-	ImVec2 anchorPosition = getAnchorPosition(registry, bodyA, camera, anchor);
-
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
-	drawList->AddCircle(anchorPosition, 7, IM_COL32(0, 0, 230, 255), 0, 3.0f);
+	drawList->AddCircle(anchorPosition, ANCHOR_RADIUS, ANCHOR_COLOR, 0, 3.0f);
 }
 
-void Survive::HingeJointGizmos::drawAnchorB(entt::registry &registry, entt::entity bodyB, const Camera &camera,
-											const b2Vec2 &anchor)
+void Survive::HingeJointGizmos::drawAnchorB(const ImVec2 &anchorPosition)
 {
-	ImVec2 anchorPosition;
-
-	if (bodyB == entt::null)
-	{
-		anchorPosition = getPoint(glm::vec3{0.0f}, anchor, camera, glm::mat4{1.0f}, 0.0f);
-	} else
-	{
-		anchorPosition = getAnchorPosition(registry, bodyB, camera, anchor);
-	}
-
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
-	drawList->AddCircleFilled(anchorPosition, 5, IM_COL32(0, 0, 200, 255));
+	drawList->AddCircleFilled(anchorPosition, ANCHOR_RADIUS, ANCHOR_COLOR);
 }
 
 ImVec2 Survive::HingeJointGizmos::getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera,
 													const b2Vec2 &anchor)
 {
-	const Transform3DComponent &transform = registry.get<Transform3DComponent>(body);
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+	if (body != entt::null)
+	{
+		const Transform3DComponent &transform = registry.get<Transform3DComponent>(body);
+		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
 
-	float angle = glm::radians(transform.rotation.z);
+		float angle = glm::radians(transform.rotation.z);
 
-	return getPoint(transform.position, anchor, camera, modelMatrix, angle);
+		return getPoint(transform.position, anchor, camera, modelMatrix, angle);
+	}
+
+	return getPoint(glm::vec3{0.0f}, anchor, camera, glm::mat4{1.0f}, 0.0f);
 }

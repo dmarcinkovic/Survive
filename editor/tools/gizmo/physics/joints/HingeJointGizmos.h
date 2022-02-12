@@ -12,6 +12,10 @@ namespace Survive
 {
 	class HingeJointGizmos : public PhysicsGizmosBase
 	{
+	private:
+		static constexpr float ANCHOR_RADIUS = 7.0f;
+		static constexpr ImU32 ANCHOR_COLOR = IM_COL32(0, 0, 230, 255);
+
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
 
@@ -22,9 +26,9 @@ namespace Survive
 	private:
 		void drawGizmos(entt::registry &registry, entt::entity bodyA, const Camera &camera);
 
-		void drawAnchorA(entt::registry &registry, entt::entity bodyA, const Camera &camera, const b2Vec2 &anchor);
+		void drawAnchorA(const ImVec2 &anchorPosition);
 
-		void drawAnchorB(entt::registry &registry, entt::entity bodyB, const Camera &camera, const b2Vec2 &anchor);
+		void drawAnchorB(const ImVec2 &anchorPosition);
 
 		ImVec2
 		getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera, const b2Vec2 &anchor);
