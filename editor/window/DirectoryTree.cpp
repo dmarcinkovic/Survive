@@ -54,13 +54,21 @@ void Survive::DirectoryTree::drawLeftArrow()
 
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
-		m_RedoStack.push(m_CurrentDirectory);
+		try
+		{
+			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.parent_path().string());
 
-		m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
-		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+			m_RedoStack.push(m_CurrentDirectory);
+			m_CurrentDirectory = m_CurrentDirectory.parent_path();
 
-		informListeners();
+			m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+
+			informListeners();
+		} catch (const std::filesystem::filesystem_error &exception)
+		{
+			const std::string &path = m_CurrentDirectory.parent_path().string();
+			Log::logWindow(LogType::ERROR, "Cannot enter directory: " + path);
+		}
 	}
 
 	EditorUtil::enableButton(disabled);
