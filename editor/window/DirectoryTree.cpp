@@ -75,7 +75,7 @@ void Survive::DirectoryTree::drawLeftArrow()
 
 void Survive::DirectoryTree::drawRightArrow()
 {
-	bool disabled = EditorUtil::disableButton(m_RedoStack.empty());
+	bool disabled = EditorUtil::disableButton(m_RedoStack.empty() || !std::filesystem::exists(m_RedoStack.top()));
 
 	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right))
 	{
