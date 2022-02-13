@@ -5,6 +5,7 @@
 #include "HingeJointGizmos.h"
 #include "Maths.h"
 #include "Util.h"
+#include "Constants.h"
 
 bool Survive::HingeJointGizmos::m_AnchorAHovered{};
 bool Survive::HingeJointGizmos::m_AnchorBHovered{};
@@ -46,7 +47,7 @@ void Survive::HingeJointGizmos::handleKeyEvents(const Survive::EventHandler &eve
 void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entity bodyA, const Camera &camera)
 {
 	HingeJoint2DComponent &hingeComponent = registry.get<HingeJoint2DComponent>(bodyA);
-	const b2RevoluteJointDef &jointDef = hingeComponent.jointDef;
+	b2RevoluteJointDef &jointDef = hingeComponent.jointDef;
 
 	ImVec2 anchorA = getAnchorPosition(registry, bodyA, camera, jointDef.localAnchorA);
 	ImVec2 anchorB = getAnchorPosition(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
@@ -77,7 +78,7 @@ void Survive::HingeJointGizmos::drawAnchorB(const ImVec2 &anchorPosition)
 ImVec2 Survive::HingeJointGizmos::getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera,
 													const b2Vec2 &anchor)
 {
-	if (body != entt::null)
+	if (body != entt::null && registry.all_of<Transform3DComponent>(body))
 	{
 		const Transform3DComponent &transform = registry.get<Transform3DComponent>(body);
 		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
