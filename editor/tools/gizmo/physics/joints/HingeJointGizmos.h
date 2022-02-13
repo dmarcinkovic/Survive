@@ -5,6 +5,8 @@
 #ifndef SURVIVE_HINGEJOINTGIZMOS_H
 #define SURVIVE_HINGEJOINTGIZMOS_H
 
+#include <tuple>
+
 #include "PhysicsGizmosBase.h"
 #include "Components.h"
 
@@ -37,10 +39,14 @@ namespace Survive
 
 		static void drawAnchorConnector(const ImVec2 &anchorA, const ImVec2 &anchorB);
 
-		ImVec2
-		getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera, const b2Vec2 &anchor);
-
 		void mouseHoversAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB);
+
+		static void drawAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB);
+
+		static std::tuple<glm::mat4, glm::vec3, float> getBodyTransform(entt::registry &registry, entt::entity body);
+
+		void updateAnchor(b2Vec2 &anchor, const Camera &camera, const glm::mat4 &modelMatrix,
+						   const glm::vec3 &position, float angle, bool isHovered) const;
 	};
 }
 

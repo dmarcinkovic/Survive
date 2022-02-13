@@ -49,14 +49,18 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 	HingeJoint2DComponent &hingeComponent = registry.get<HingeJoint2DComponent>(bodyA);
 	b2RevoluteJointDef &jointDef = hingeComponent.jointDef;
 
-	ImVec2 anchorA = getAnchorPosition(registry, bodyA, camera, jointDef.localAnchorA);
-	ImVec2 anchorB = getAnchorPosition(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
+	auto[modelMatrixA, positionA, angleA] = getBodyTransform(registry, bodyA);
+	auto[modelMatrixB, positionB, angleB] = getBodyTransform(registry, hingeComponent.connectedBody);
+
+	ImVec2 anchorA = getPoint(positionA, jointDef.localAnchorA, camera, modelMatrixA, angleA);
+	ImVec2 anchorB = getPoint(positionB, jointDef.localAnchorB, camera, modelMatrixB, angleB);
 
 	mouseHoversAnchors(anchorA, anchorB);
 
-	drawAnchorConnector(anchorA, anchorB);
-	drawAnchorA(anchorA);
-	drawAnchorB(anchorB);
+	updateAnchor(jointDef.localAnchorA, camera, modelMatrixA, positionA, angleA, m_AnchorAHovered);
+	updateAnchor(jointDef.localAnchorB, camera, modelMatrixB, positionB, angleB, m_AnchorBHovered);
+
+	drawAnchors(anchorA, anchorB);
 }
 
 void Survive::HingeJointGizmos::drawAnchorA(const ImVec2 &anchorPosition)
@@ -73,22 +77,6 @@ void Survive::HingeJointGizmos::drawAnchorB(const ImVec2 &anchorPosition)
 
 	ImU32 color = m_AnchorBHovered ? CIRCLE_COLOR_HOVERED : ANCHOR_COLOR;
 	drawList->AddCircleFilled(anchorPosition, ANCHOR_RADIUS, color);
-}
-
-ImVec2 Survive::HingeJointGizmos::getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera,
-													const b2Vec2 &anchor)
-{
-	if (body != entt::null && registry.all_of<Transform3DComponent>(body))
-	{
-		const Transform3DComponent &transform = registry.get<Transform3DComponent>(body);
-		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
-
-		float angle = glm::radians(transform.rotation.z);
-
-		return getPoint(transform.position, anchor, camera, modelMatrix, angle);
-	}
-
-	return getPoint(glm::vec3{0.0f}, anchor, camera, glm::mat4{1.0f}, 0.0f);
 }
 
 void Survive::HingeJointGizmos::drawAnchorConnector(const ImVec2 &anchorA, const ImVec2 &anchorB)
@@ -111,5 +99,47 @@ void Survive::HingeJointGizmos::mouseHoversAnchors(const ImVec2 &anchorA, const 
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
 		m_AnchorAHovered = m_AnchorBHovered = false;
+	}
+}
+
+std::tuple<glm::mat4, glm::vec3, float>
+Survive::HingeJointGizmos::getBodyTransform(entt::registry &registry, entt::entity body)
+{
+	if (body != entt::null && registry.all_of<Transform3DComponent>(body))
+	{
+		const Transform3DComponent &transform = registry.get<Transform3DComponent>(body);
+		glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+		float angle = glm::radians(transform.rotation.z);
+
+		return {modelMatrix, transform.position, angle};
+	}
+
+	return {glm::mat4{1.0f}, glm::vec3{0.0f}, 0.0f};
+}
+
+void Survive::HingeJointGizmos::drawAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB)
+{
+	drawAnchorConnector(anchorA, anchorB);
+
+	drawAnchorA(anchorA);
+	drawAnchorB(anchorB);
+}
+
+void Survive::HingeJointGizmos::updateAnchor(b2Vec2 &anchor, const Camera &camera, const glm::mat4 &modelMatrix,
+											 const glm::vec3 &position, float angle, bool isHovered) const
+{
+	if (m_IsUsing && isHovered)
+	{
+		ImVec2 mousePosition = ImGui::GetMousePos();
+
+		glm::vec3 localPosition = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
+													  m_Height);
+		glm::vec3 rotatedAnchor = rotatePointAroundOrigin(localPosition.x, localPosition.y, -angle);
+
+		glm::vec3 offset = (rotatedAnchor - position) * Constants::BOX2D_SCALE;
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+
+		anchor = b2Vec2(offset.x, offset.y);
 	}
 }
