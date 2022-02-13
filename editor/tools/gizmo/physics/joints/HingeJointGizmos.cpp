@@ -135,9 +135,10 @@ void Survive::HingeJointGizmos::updateAnchor(b2Vec2 &anchor, const Camera &camer
 
 		glm::vec3 localPosition = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
 													  m_Height);
+		localPosition -= position;
 		glm::vec3 rotatedAnchor = rotatePointAroundOrigin(localPosition.x, localPosition.y, -angle);
 
-		glm::vec3 offset = (rotatedAnchor - position) * Constants::BOX2D_SCALE;
+		glm::vec3 offset = rotatedAnchor * Constants::BOX2D_SCALE;
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 
 		anchor = b2Vec2(offset.x, offset.y);
