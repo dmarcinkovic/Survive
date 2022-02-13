@@ -36,6 +36,9 @@ namespace Survive
 		static bool isOver();
 
 		[[nodiscard]] bool isEnabled() const;
+
+	private:
+		bool isColliderGizmosEnabled() const;
 	};
 }
 

@@ -17,12 +17,18 @@ void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera,
 
 void Survive::PhysicsGizmo::handleKeyEvents(const EventHandler &eventHandler)
 {
-	m_BoxGizmos.handleKeyEvents(eventHandler);
-	m_CircleGizmos.handleKeyEvents(eventHandler);
-	m_EdgeGizmos.handleKeyEvents(eventHandler);
-	m_PolygonGizmos.handleKeyEvents(eventHandler);
+	if (!isColliderGizmosEnabled())
+	{
+		m_HingeGizmos.handleKeyEvents(eventHandler);
+	}
 
-	m_HingeGizmos.handleKeyEvents(eventHandler);
+	if (!m_HingeGizmos.isEnabled())
+	{
+		m_BoxGizmos.handleKeyEvents(eventHandler);
+		m_CircleGizmos.handleKeyEvents(eventHandler);
+		m_EdgeGizmos.handleKeyEvents(eventHandler);
+		m_PolygonGizmos.handleKeyEvents(eventHandler);
+	}
 }
 
 void Survive::PhysicsGizmo::setRect(float x, float y, float width, float height)
@@ -43,6 +49,11 @@ bool Survive::PhysicsGizmo::isOver()
 
 bool Survive::PhysicsGizmo::isEnabled() const
 {
+	return isColliderGizmosEnabled() || m_HingeGizmos.isEnabled();
+}
+
+bool Survive::PhysicsGizmo::isColliderGizmosEnabled() const
+{
 	return m_BoxGizmos.isEnabled() || m_CircleGizmos.isEnabled() || m_EdgeGizmos.isEnabled() ||
-		   m_PolygonGizmos.isEnabled() || m_HingeGizmos.isEnabled();
+		   m_PolygonGizmos.isEnabled();
 }
