@@ -6,6 +6,9 @@
 #include "Maths.h"
 #include "Util.h"
 
+bool Survive::HingeJointGizmos::m_AnchorAHovered{};
+bool Survive::HingeJointGizmos::m_AnchorBHovered{};
+
 void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity == entt::null)
@@ -26,7 +29,7 @@ void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &cam
 
 bool Survive::HingeJointGizmos::isOver()
 {
-	return false;
+	return m_AnchorAHovered || m_AnchorAHovered;
 }
 
 void Survive::HingeJointGizmos::handleKeyEvents(const Survive::EventHandler &eventHandler)
@@ -48,6 +51,8 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 	ImVec2 anchorA = getAnchorPosition(registry, bodyA, camera, jointDef.localAnchorA);
 	ImVec2 anchorB = getAnchorPosition(registry, hingeComponent.connectedBody, camera, jointDef.localAnchorB);
 
+	mouseHoversAnchors(anchorA, anchorB);
+
 	drawAnchorConnector(anchorA, anchorB);
 	drawAnchorA(anchorA);
 	drawAnchorB(anchorB);
@@ -56,13 +61,17 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 void Survive::HingeJointGizmos::drawAnchorA(const ImVec2 &anchorPosition)
 {
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
-	drawList->AddCircle(anchorPosition, ANCHOR_RADIUS, ANCHOR_COLOR, 0, 3.0f);
+
+	ImU32 color = m_AnchorAHovered ? CIRCLE_COLOR_HOVERED : ANCHOR_COLOR;
+	drawList->AddCircle(anchorPosition, ANCHOR_RADIUS, color, 0, 3.0f);
 }
 
 void Survive::HingeJointGizmos::drawAnchorB(const ImVec2 &anchorPosition)
 {
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
-	drawList->AddCircleFilled(anchorPosition, ANCHOR_RADIUS, ANCHOR_COLOR);
+
+	ImU32 color = m_AnchorBHovered ? CIRCLE_COLOR_HOVERED : ANCHOR_COLOR;
+	drawList->AddCircleFilled(anchorPosition, ANCHOR_RADIUS, color);
 }
 
 ImVec2 Survive::HingeJointGizmos::getAnchorPosition(entt::registry &registry, entt::entity body, const Camera &camera,
@@ -85,4 +94,21 @@ void Survive::HingeJointGizmos::drawAnchorConnector(const ImVec2 &anchorA, const
 {
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 	drawList->AddLine(anchorA, anchorB, ANCHOR_CONNECTOR_COLOR);
+}
+
+void Survive::HingeJointGizmos::mouseHoversAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB)
+{
+	if (!m_IsUsing && Util::mouseHoversPoint(anchorA, ANCHOR_RADIUS) && !m_AnchorBHovered)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+		m_AnchorAHovered = true;
+	} else if (!m_IsUsing && Util::mouseHoversPoint(anchorB, ANCHOR_RADIUS) && !m_AnchorAHovered)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+		m_AnchorBHovered = true;
+	} else if (!m_IsUsing)
+	{
+		ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
+		m_AnchorAHovered = m_AnchorBHovered = false;
+	}
 }
