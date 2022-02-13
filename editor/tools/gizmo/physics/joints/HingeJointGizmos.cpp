@@ -30,7 +30,7 @@ void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &cam
 
 bool Survive::HingeJointGizmos::isOver()
 {
-	return m_AnchorAHovered || m_AnchorAHovered;
+	return m_AnchorAHovered || m_AnchorBHovered;
 }
 
 void Survive::HingeJointGizmos::handleKeyEvents(const Survive::EventHandler &eventHandler)
