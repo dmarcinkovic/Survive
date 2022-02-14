@@ -2,7 +2,11 @@
 // Created by david on 14. 02. 2022..
 //
 
+#include <iostream>
+
 #include "DistanceJointGizmos.h"
+#include "Util.h"
+#include "Constants.h"
 
 bool Survive::DistanceJointGizmos::m_AnchorAHovered{};
 bool Survive::DistanceJointGizmos::m_AnchorBHovered{};
@@ -28,6 +32,7 @@ void Survive::DistanceJointGizmos::drawGizmos(entt::registry &registry, entt::en
 	updateAnchor(jointDef.localAnchorA, camera, modelMatrixA, positionA, angleA, m_AnchorAHovered);
 	updateAnchor(jointDef.localAnchorB, camera, modelMatrixB, positionB, angleB, m_AnchorBHovered);
 
+	drawLengthLimits(camera, modelMatrixA, anchorA, anchorB, jointDef.minLength, jointDef.maxLength);
 	drawAnchors(anchorA, anchorB, m_AnchorAHovered, m_AnchorBHovered);
 }
 
@@ -47,4 +52,55 @@ void Survive::DistanceJointGizmos::draw(entt::registry &registry, const Camera &
 			drawGizmos(registry, selectedEntity, camera);
 		}
 	}
+}
+
+void Survive::DistanceJointGizmos::drawLengthLimits(const Camera &camera, const glm::mat4 &modelMatrix,
+													const ImVec2 &anchorA, const ImVec2 &anchorB, float minLength,
+													float maxLength)
+{
+	float meterInScreenSpace = meterToPixelUnit(camera, modelMatrix, anchorA);
+
+	glm::vec2 direction{anchorA.x - anchorB.x, anchorA.y - anchorB.y};
+	direction = glm::normalize(direction);
+
+	glm::vec2 perpendicular = getPerpendicularVector(direction);
+
+	direction *= meterInScreenSpace;
+
+	glm::vec2 minLimit = glm::vec2{anchorB.x, anchorB.y} + direction * minLength;
+	glm::vec2 maxLimit = glm::vec2{anchorB.x, anchorB.y} + direction * maxLength;
+
+	drawPerpendicularVector(minLimit, perpendicular);
+	drawPerpendicularVector(maxLimit, perpendicular);
+}
+
+float Survive::DistanceJointGizmos::meterToPixelUnit(const Camera &camera, const glm::mat4 &modelMatrix,
+													 const ImVec2 &position)
+{
+	constexpr float scale = Constants::BOX2D_SCALE;
+	constexpr float unitLength = 1.0f / scale;
+
+	constexpr glm::vec2 unitVector{unitLength, 0.0f};
+	ImVec2 unitOffset = Util::getScreenPos(camera, modelMatrix, unitVector, m_X, m_Y, m_Width, m_Height);
+
+	return unitOffset.x - position.x;
+}
+
+glm::vec2 Survive::DistanceJointGizmos::getPerpendicularVector(const glm::vec2 &vector)
+{
+	return {vector.y, -vector.x};
+}
+
+void Survive::DistanceJointGizmos::drawPerpendicularVector(const glm::vec2 &point, const glm::vec2 &perpendicular)
+{
+	static constexpr ImU32 LINE_COLOR = IM_COL32(0, 255, 0, 255);
+
+	float size = ImGui::GetTextLineHeight();
+	glm::vec2 scaled = perpendicular * size;
+
+	ImVec2 p1{point.x + scaled.x, point.y + scaled.y};
+	ImVec2 p2{point.x - scaled.x, point.y - scaled.y};
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+	drawList->AddLine(p1, p2, LINE_COLOR, 2.0f);
 }
