@@ -34,6 +34,7 @@ namespace Survive
 			jointDef.maxMotorTorque = maxTorque;
 			jointDef.enableLimit = useLimits;
 			jointDef.lowerAngle = glm::radians(lowerAngle);
+			jointDef.upperAngle = glm::radians(upperAngle);
 		}
 	};
 }
