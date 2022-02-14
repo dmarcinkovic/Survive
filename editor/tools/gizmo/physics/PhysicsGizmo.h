@@ -11,6 +11,7 @@
 #include "PolygonGizmos.h"
 #include "EdgeGizmos.h"
 #include "HingeJointGizmos.h"
+#include "DistanceJointGizmos.h"
 #include "EventHandler.h"
 #include "Camera.h"
 
@@ -25,6 +26,7 @@ namespace Survive
 		PolygonGizmos m_PolygonGizmos;
 
 		HingeJointGizmos m_HingeGizmos;
+		DistanceJointGizmos m_DistanceJointGizmos;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
@@ -38,7 +40,9 @@ namespace Survive
 		[[nodiscard]] bool isEnabled() const;
 
 	private:
-		bool isColliderGizmosEnabled() const;
+		[[nodiscard]] bool isColliderGizmosEnabled() const;
+
+		[[nodiscard]] bool isJointGizmosEnabled() const;
 	};
 }
 

@@ -13,6 +13,7 @@ void Survive::PhysicsGizmo::draw(entt::registry &registry, const Camera &camera,
 	m_PolygonGizmos.draw(registry, camera, selectedEntity);
 
 	m_HingeGizmos.draw(registry, camera, selectedEntity);
+	m_DistanceJointGizmos.draw(registry, camera, selectedEntity);
 }
 
 void Survive::PhysicsGizmo::handleKeyEvents(const EventHandler &eventHandler)
@@ -20,9 +21,10 @@ void Survive::PhysicsGizmo::handleKeyEvents(const EventHandler &eventHandler)
 	if (!isColliderGizmosEnabled())
 	{
 		m_HingeGizmos.handleKeyEvents(eventHandler);
+		m_DistanceJointGizmos.handleKeyEvents(eventHandler);
 	}
 
-	if (!m_HingeGizmos.isEnabled())
+	if (!isJointGizmosEnabled())
 	{
 		m_BoxGizmos.handleKeyEvents(eventHandler);
 		m_CircleGizmos.handleKeyEvents(eventHandler);
@@ -39,21 +41,27 @@ void Survive::PhysicsGizmo::setRect(float x, float y, float width, float height)
 	m_PolygonGizmos.setRect(x, y, width, height);
 
 	m_HingeGizmos.setRect(x, y, width, height);
+	m_DistanceJointGizmos.setRect(x, y, width, height);
 }
 
 bool Survive::PhysicsGizmo::isOver()
 {
 	return BoxGizmos::isOver() || CircleGizmos::isOver() || EdgeGizmos::isOver() || PolygonGizmos::isOver() ||
-		   HingeJointGizmos::isOver();
+		   HingeJointGizmos::isOver() || DistanceJointGizmos::isOver();
 }
 
 bool Survive::PhysicsGizmo::isEnabled() const
 {
-	return isColliderGizmosEnabled() || m_HingeGizmos.isEnabled();
+	return isColliderGizmosEnabled() || isJointGizmosEnabled();
 }
 
 bool Survive::PhysicsGizmo::isColliderGizmosEnabled() const
 {
 	return m_BoxGizmos.isEnabled() || m_CircleGizmos.isEnabled() || m_EdgeGizmos.isEnabled() ||
 		   m_PolygonGizmos.isEnabled();
+}
+
+bool Survive::PhysicsGizmo::isJointGizmosEnabled() const
+{
+	return m_HingeGizmos.isEnabled() || m_DistanceJointGizmos.isEnabled();
 }
