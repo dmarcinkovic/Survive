@@ -22,8 +22,6 @@ namespace Survive
 		static constexpr ImU32 CIRCLE_COLOR_HOVERED = IM_COL32(255, 90, 0, 255);
 
 	public:
-		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
-
 		void handleKeyEvents(const EventHandler &eventHandler) override;
 
 	protected:

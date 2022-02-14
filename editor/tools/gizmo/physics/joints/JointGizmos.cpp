@@ -7,24 +7,6 @@
 #include "Util.h"
 #include "Constants.h"
 
-void Survive::JointGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
-{
-	if (selectedEntity == entt::null)
-	{
-		m_GizmoEnabled = false;
-	}
-
-	if (selectedEntity != entt::null && registry.all_of<HingeJoint2DComponent, Transform3DComponent>(selectedEntity))
-	{
-		if (m_GizmoEnabled)
-		{
-			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-			drawGizmos(registry, selectedEntity, camera);
-		}
-	}
-}
-
 void Survive::JointGizmos::handleKeyEvents(const EventHandler &eventHandler)
 {
 	if (eventHandler.isKeyPressed(Key::D))
@@ -80,7 +62,8 @@ void Survive::JointGizmos::drawAnchorConnector(const ImVec2 &anchorA, const ImVe
 	drawList->AddLine(anchorA, anchorB, ANCHOR_CONNECTOR_COLOR);
 }
 
-void Survive::JointGizmos::drawAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB, bool anchorAHovered, bool anchorBHovered)
+void Survive::JointGizmos::drawAnchors(const ImVec2 &anchorA, const ImVec2 &anchorB, bool anchorAHovered,
+									   bool anchorBHovered)
 {
 	drawAnchorConnector(anchorA, anchorB);
 

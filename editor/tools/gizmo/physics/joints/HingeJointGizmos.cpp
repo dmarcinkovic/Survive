@@ -8,7 +8,25 @@
 bool Survive::HingeJointGizmos::m_AnchorAHovered{};
 bool Survive::HingeJointGizmos::m_AnchorBHovered{};
 
-void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entity bodyA, const Survive::Camera &camera)
+void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
+{
+	if (selectedEntity == entt::null)
+	{
+		m_GizmoEnabled = false;
+	}
+
+	if (selectedEntity != entt::null && registry.all_of<HingeJoint2DComponent, Transform3DComponent>(selectedEntity))
+	{
+		if (m_GizmoEnabled)
+		{
+			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+			drawGizmos(registry, selectedEntity, camera);
+		}
+	}
+}
+
+void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entity bodyA, const Camera &camera)
 {
 	HingeJoint2DComponent &hingeComponent = registry.get<HingeJoint2DComponent>(bodyA);
 	b2RevoluteJointDef &jointDef = hingeComponent.jointDef;

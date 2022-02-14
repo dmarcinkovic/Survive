@@ -18,6 +18,8 @@ namespace Survive
 	public:
 		static bool isOver();
 
+		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;
+
 	protected:
 		void drawGizmos(entt::registry &registry, entt::entity bodyA, const Camera &camera) override;
 
