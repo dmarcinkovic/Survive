@@ -5,8 +5,6 @@
 #ifndef SURVIVE_HINGEJOINTGIZMOS_H
 #define SURVIVE_HINGEJOINTGIZMOS_H
 
-#include <tuple>
-
 #include "JointGizmos.h"
 
 namespace Survive
