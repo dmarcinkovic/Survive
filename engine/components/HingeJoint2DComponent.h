@@ -28,7 +28,6 @@ namespace Survive
 			jointDef.localAnchorA = anchor;
 			jointDef.localAnchorB = connectedAnchor;
 			jointDef.collideConnected = collideConnected;
-			jointDef.upperAngle = glm::radians(upperAngle);
 			jointDef.enableMotor = useMotor;
 			jointDef.motorSpeed = motorSpeed;
 			jointDef.maxMotorTorque = maxTorque;
