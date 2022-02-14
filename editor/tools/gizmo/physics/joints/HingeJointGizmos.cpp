@@ -60,6 +60,7 @@ void Survive::HingeJointGizmos::drawGizmos(entt::registry &registry, entt::entit
 	updateAnchor(jointDef.localAnchorA, camera, modelMatrixA, positionA, angleA, m_AnchorAHovered);
 	updateAnchor(jointDef.localAnchorB, camera, modelMatrixB, positionB, angleB, m_AnchorBHovered);
 
+	drawAngleLimitsGizmo(anchorB, jointDef);
 	drawAnchors(anchorA, anchorB);
 }
 
@@ -142,5 +143,28 @@ void Survive::HingeJointGizmos::updateAnchor(b2Vec2 &anchor, const Camera &camer
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 
 		anchor = b2Vec2(offset.x, offset.y);
+	}
+}
+
+void Survive::HingeJointGizmos::drawArc(float lowerAngle, float upperAngle, const ImVec2 &center)
+{
+	static constexpr ImU32 ARC_COLOR = IM_COL32(0, 255, 0, 60);
+
+	float textHeight = ImGui::GetTextLineHeight();
+	float radius = textHeight * 7.0f;
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+
+	drawList->PathLineTo(center);
+	drawList->PathArcTo(center, radius, lowerAngle, upperAngle);
+	drawList->PathLineTo(center);
+	drawList->PathFillConvex(ARC_COLOR);
+}
+
+void Survive::HingeJointGizmos::drawAngleLimitsGizmo(const ImVec2 &anchorB, const b2RevoluteJointDef &jointDef)
+{
+	if (jointDef.enableLimit)
+	{
+		drawArc(jointDef.lowerAngle, jointDef.upperAngle, anchorB);
 	}
 }
