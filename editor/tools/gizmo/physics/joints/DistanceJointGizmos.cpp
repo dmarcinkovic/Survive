@@ -72,6 +72,7 @@ void Survive::DistanceJointGizmos::drawLengthLimits(const Camera &camera, const 
 
 	drawPerpendicularVector(minLimit, perpendicular);
 	drawPerpendicularVector(maxLimit, perpendicular);
+	extendAnchorConnector(anchorA, ImVec2{maxLimit.x, maxLimit.y});
 }
 
 float Survive::DistanceJointGizmos::meterToPixelUnit(const Camera &camera, const glm::mat4 &modelMatrix,
@@ -103,4 +104,12 @@ void Survive::DistanceJointGizmos::drawPerpendicularVector(const glm::vec2 &poin
 
 	ImDrawList *drawList = ImGui::GetWindowDrawList();
 	drawList->AddLine(p1, p2, LINE_COLOR, 2.0f);
+}
+
+void Survive::DistanceJointGizmos::extendAnchorConnector(const ImVec2 &anchorA, const ImVec2 &maxLimit)
+{
+	static constexpr ImU32 CONNECTOR_COLOR = IM_COL32(0, 255, 0, 255);
+
+	ImDrawList *drawList = ImGui::GetWindowDrawList();
+	drawList->AddLine(anchorA, maxLimit, CONNECTOR_COLOR);
 }

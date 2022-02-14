@@ -32,6 +32,8 @@ namespace Survive
 		static glm::vec2 getPerpendicularVector(const glm::vec2 &vector);
 
 		static void drawPerpendicularVector(const glm::vec2 &point, const glm::vec2 &perpendicular);
+
+		static void extendAnchorConnector(const ImVec2 &anchorA, const ImVec2 &maxLimit);
 	};
 }
 
