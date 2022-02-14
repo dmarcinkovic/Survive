@@ -36,7 +36,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<RigidBody2DComponent>(ground, b2_staticBody);
 	m_Registry.emplace<BoxCollider2DComponent>(ground, 0.5f, 3, 1, 0.3, 0.5);
 
-	m_Registry.emplace<DistanceJoint2DComponent>(ground2, ground, b2Vec2(0, 0), b2Vec2(0, -5.7), 0.5f, 1.0f);
+	m_Registry.emplace<DistanceJoint2DComponent>(ground2, ground, b2Vec2(0, 0), b2Vec2(0, 0), 0, 6.0f);
 
 	m_Editor.addPlayButtonListener([this]() {
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
