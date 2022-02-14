@@ -24,10 +24,10 @@ namespace Survive
 		void drawGizmos(entt::registry &registry, entt::entity bodyA, const Camera &camera) override;
 
 	private:
-		void drawLengthLimits(const Camera &camera, const glm::mat4 &modelMatrix, const ImVec2 &anchorA,
-							  const ImVec2 &anchorB, float minLength, float maxLength);
+		void drawLengthLimits(const Camera &camera, const ImVec2 &anchorA, const ImVec2 &anchorB, float minLength,
+							  float maxLength);
 
-		float meterToPixelUnit(const Camera &camera, const glm::mat4 &modelMatrix, const ImVec2 &position);
+		float meterToPixelUnit(const Camera &camera);
 
 		static glm::vec2 getPerpendicularVector(const glm::vec2 &vector);
 

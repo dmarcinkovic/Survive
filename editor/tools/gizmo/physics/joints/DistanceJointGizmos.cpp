@@ -2,8 +2,6 @@
 // Created by david on 14. 02. 2022..
 //
 
-#include <iostream>
-
 #include "DistanceJointGizmos.h"
 #include "Util.h"
 #include "Constants.h"
@@ -32,7 +30,7 @@ void Survive::DistanceJointGizmos::drawGizmos(entt::registry &registry, entt::en
 	updateAnchor(jointDef.localAnchorA, camera, modelMatrixA, positionA, angleA, m_AnchorAHovered);
 	updateAnchor(jointDef.localAnchorB, camera, modelMatrixB, positionB, angleB, m_AnchorBHovered);
 
-	drawLengthLimits(camera, modelMatrixA, anchorA, anchorB, jointDef.minLength, jointDef.maxLength);
+	drawLengthLimits(camera, anchorA, anchorB, jointDef.minLength, jointDef.maxLength);
 	drawAnchors(anchorA, anchorB, m_AnchorAHovered, m_AnchorBHovered);
 }
 
@@ -54,11 +52,10 @@ void Survive::DistanceJointGizmos::draw(entt::registry &registry, const Camera &
 	}
 }
 
-void Survive::DistanceJointGizmos::drawLengthLimits(const Camera &camera, const glm::mat4 &modelMatrix,
-													const ImVec2 &anchorA, const ImVec2 &anchorB, float minLength,
-													float maxLength)
+void Survive::DistanceJointGizmos::drawLengthLimits(const Camera &camera, const ImVec2 &anchorA, const ImVec2 &anchorB,
+													float minLength, float maxLength)
 {
-	float meterInScreenSpace = meterToPixelUnit(camera, modelMatrix, anchorA);
+	float meterInScreenSpace = meterToPixelUnit(camera);
 
 	glm::vec2 direction{anchorA.x - anchorB.x, anchorA.y - anchorB.y};
 	direction = glm::normalize(direction);
@@ -75,16 +72,18 @@ void Survive::DistanceJointGizmos::drawLengthLimits(const Camera &camera, const 
 	extendAnchorConnector(anchorA, ImVec2{maxLimit.x, maxLimit.y});
 }
 
-float Survive::DistanceJointGizmos::meterToPixelUnit(const Camera &camera, const glm::mat4 &modelMatrix,
-													 const ImVec2 &position)
+float Survive::DistanceJointGizmos::meterToPixelUnit(const Camera &camera)
 {
 	constexpr float scale = Constants::BOX2D_SCALE;
 	constexpr float unitLength = 1.0f / scale;
 
 	constexpr glm::vec2 unitVector{unitLength, 0.0f};
-	ImVec2 unitOffset = Util::getScreenPos(camera, modelMatrix, unitVector, m_X, m_Y, m_Width, m_Height);
+	constexpr glm::mat4 transformationMatrix{1.0f};
 
-	return unitOffset.x - position.x;
+	ImVec2 unit = Util::getScreenPos(camera, transformationMatrix, unitVector, m_X, m_Y, m_Width, m_Height);
+	ImVec2 origin = Util::getScreenPos(camera, transformationMatrix, {0.0f, 0.0f}, m_X, m_Y, m_Width, m_Height);
+
+	return unit.x - origin.x;
 }
 
 glm::vec2 Survive::DistanceJointGizmos::getPerpendicularVector(const glm::vec2 &vector)
