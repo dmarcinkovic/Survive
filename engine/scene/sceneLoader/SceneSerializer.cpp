@@ -40,6 +40,8 @@ void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::st
 			writer << "end\n";
 		}
 	});
+
+	writer.close();
 }
 
 entt::entity Survive::SceneSerializer::createEntity(entt::registry &registry, const std::string &tag)
