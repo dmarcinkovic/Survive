@@ -22,6 +22,8 @@ void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::st
 			loadEntity(registry, reader, line);
 		}
 	}
+
+	reader.close();
 }
 
 void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::string &filename)
