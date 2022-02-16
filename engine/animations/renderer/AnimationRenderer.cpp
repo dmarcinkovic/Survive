@@ -27,7 +27,7 @@ void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texture, objects] : entities)
+	for (auto const&[texture, objects]: entities)
 	{
 		Renderer3DUtil::prepareEntity(texture);
 		renderScene(registry, objects, camera);
@@ -43,19 +43,13 @@ void
 Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 										const Camera &camera) const
 {
-	for (auto const &object : objects)
+	for (auto const &object: objects)
 	{
 		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(object);
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
-		bool isTransparent{};
-		if (registry.any_of<MaterialComponent>(object))
-		{
-			const MaterialComponent &materialComponent = registry.get<MaterialComponent>(object);
-			isTransparent = materialComponent.isTransparent;
-		}
-
+		bool isTransparent = getTransparencyProperty(registry, object);
 		Renderer3DUtil::addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -71,7 +65,7 @@ Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 	const auto &view = registry.view<Render3DComponent, Transform3DComponent, AnimationComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
 		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
 

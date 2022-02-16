@@ -46,6 +46,8 @@ namespace Survive
 
 		static void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
 
+		static bool getTransparencyProperty(const entt::registry &registry, entt::entity object);
+
 	private:
 		void renderScene(entt::registry &registry,
 						 const std::vector<entt::entity> &objects, const Camera &camera) const;

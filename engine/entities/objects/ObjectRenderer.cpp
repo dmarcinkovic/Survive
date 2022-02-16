@@ -50,13 +50,7 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
-		bool isTransparent{};
-		if (registry.any_of<MaterialComponent>(object))
-		{
-			const MaterialComponent &rigidBody = registry.get<MaterialComponent>(object);
-			isTransparent = rigidBody.isTransparent;
-		}
-
+		bool isTransparent = getTransparencyProperty(registry, object);
 		Renderer3DUtil::addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -216,4 +210,15 @@ void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, ent
 	{
 		shader.loadColor(defaultColor);
 	}
+}
+
+bool Survive::ObjectRenderer::getTransparencyProperty(const entt::registry &registry, entt::entity object)
+{
+	if (registry.any_of<MaterialComponent>(object))
+	{
+		const MaterialComponent &rigidBody = registry.get<MaterialComponent>(object);
+		return rigidBody.isTransparent;
+	}
+
+	return false;
 }
