@@ -97,7 +97,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "Render3DComponent")
 		{
 			ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);
-		} else if (componentType == "RigidBodyComponent")
+		} else if (componentType == "MaterialComponent")
 		{
 			ComponentLoader::loadRigidBodyComponent(registry, entity, reader);
 		} else if (componentType == "ShadowComponent")

@@ -49,7 +49,7 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
-		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
+		const MaterialComponent &rigidBody = registry.get<MaterialComponent>(object);
 		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
@@ -62,7 +62,7 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 {
-	const auto &view = registry.view<Render3DComponent, Transform3DComponent, RigidBodyComponent, AnimationComponent>();
+	const auto &view = registry.view<Render3DComponent, Transform3DComponent, MaterialComponent, AnimationComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)

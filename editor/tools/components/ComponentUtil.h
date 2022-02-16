@@ -28,10 +28,10 @@ namespace Survive
 		{
 			std::vector<const char *> components = {
 					"Animation component", "Bloom component", "Box Collider2D component", "Circle Collider2D component",
-					"Edge Collider2D component", "PolygonCollider2D component", "Reflection component",
-					"Refraction component", "Render2D Component", "Render3D component",
-					"RigidBody2D component", "Rigid body component", "Shadow component", "Sound component",
-					"Sprite component", "Sprite sheet component", "Text Component", "Transform3D component"
+					"Edge Collider2D component", "Material component", "PolygonCollider2D component",
+					"Reflection component", "Refraction component", "Render2D Component", "Render3D component",
+					"RigidBody2D component", "Shadow component", "Sound component", "Sprite component",
+					"Sprite sheet component", "Text Component", "Transform3D component"
 			};
 
 			return components;
@@ -44,13 +44,13 @@ namespace Survive
 			drawComponent<BoxCollider2DComponent>(registry, entity);
 			drawComponent<CircleCollider2DComponent>(registry, entity);
 			drawComponent<EdgeCollider2DComponent>(registry, entity);
+			drawComponent<MaterialComponent>(registry, entity);
 			drawComponent<PolygonCollider2DComponent>(registry, entity);
 			drawComponent<ReflectionComponent>(registry, entity);
 			drawComponent<RefractionComponent>(registry, entity);
 			drawComponent<Render2DComponent>(registry, entity);
 			drawComponent<Render3DComponent>(registry, entity);
 			drawComponent<RigidBody2DComponent>(registry, entity);
-			drawComponent<RigidBodyComponent>(registry, entity);
 			drawComponent<ShadowComponent>(registry, entity);
 			drawComponent<SoundComponent>(registry, entity);
 			drawComponent<SpriteComponent>(registry, entity);
@@ -74,19 +74,19 @@ namespace Survive
 				case 4:
 					return addComponent<EdgeCollider2DComponent>(registry, entity);
 				case 5:
-					return addComponent<PolygonCollider2DComponent>(registry, entity);
+					return addComponent<MaterialComponent>(registry, entity);
 				case 6:
-					return addComponent<ReflectionComponent>(registry, entity);
+					return addComponent<PolygonCollider2DComponent>(registry, entity);
 				case 7:
-					return addComponent<RefractionComponent>(registry, entity);
+					return addComponent<ReflectionComponent>(registry, entity);
 				case 8:
-					return addComponent<Render2DComponent>(registry, entity);
+					return addComponent<RefractionComponent>(registry, entity);
 				case 9:
-					return addComponent<Render3DComponent>(registry, entity);
+					return addComponent<Render2DComponent>(registry, entity);
 				case 10:
-					return addComponent<RigidBody2DComponent>(registry, entity);
+					return addComponent<Render3DComponent>(registry, entity);
 				case 11:
-					return addComponent<RigidBodyComponent>(registry, entity);
+					return addComponent<RigidBody2DComponent>(registry, entity);
 				case 12:
 					return addComponent<ShadowComponent>(registry, entity);
 				case 13:

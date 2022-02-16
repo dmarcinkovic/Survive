@@ -90,7 +90,7 @@ void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
 {
 	std::string isTransparent = parseLine(reader, "isTransparent");
 
-	registry.emplace<RigidBodyComponent>(entity, std::stoi(isTransparent));
+	registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));
 }
 
 void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,

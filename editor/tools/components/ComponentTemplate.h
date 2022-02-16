@@ -84,7 +84,7 @@ namespace Survive
 	}
 
 	template<>
-	inline void ComponentTemplate::drawComponent(RigidBodyComponent &component, bool *visible)
+	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
 		if (ImGui::CollapsingHeader("Rigid body", visible))
 		{
