@@ -86,7 +86,7 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Rigid body", visible))
+		if (ImGui::CollapsingHeader("Material", visible))
 		{
 			ImGui::Checkbox("Transparent", &component.isTransparent);
 		}
