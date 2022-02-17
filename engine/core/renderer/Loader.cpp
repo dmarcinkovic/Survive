@@ -185,7 +185,7 @@ std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(int numberOfVertice
 	reserveFloatDataInAttributeList(size, numberOfVertices);
 
 	GLuint vbo = m_Vbos.back();
-	GLsizeiptr vertexCount = numberOfVertices / size;
+	GLsizei vertexCount = numberOfVertices / size;
 
 	return {Model(vao, vertexCount), vbo};
 }
