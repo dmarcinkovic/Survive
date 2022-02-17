@@ -60,7 +60,7 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	std::iota(indices.begin(), indices.end(), 0);
 
 	reader.close();
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals, indices);
+	return loader.loadToVao(resultPoints, resultTextures, resultNormals, tangents, indices);
 }
 
 void Survive::ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
@@ -96,8 +96,8 @@ void Survive::ObjParser::processVertex(const std::vector<glm::vec3> &points, con
 	unsigned normalIndex = std::stoi(index[2]) - 1;
 
 	Vertex::processVertex(points, normals, textureCoordinates,
-						resultPoints, resultNormals, resultTextures,
-						vertexIndex, textureIndex, normalIndex);
+						  resultPoints, resultNormals, resultTextures,
+						  vertexIndex, textureIndex, normalIndex);
 }
 
 void Survive::ObjParser::calculateTangents(const std::vector<float> &points, const std::vector<float> &textures,
