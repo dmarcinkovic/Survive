@@ -68,18 +68,21 @@ namespace Survive
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
+			ImGui::PushID("Render3D component");
 			ImGui::Columns(2);
+
 			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 
+			ImGui::Columns();
+			ImGui::PopID();
+
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
 				changed = false;
 			}
-
-			ImGui::Columns();
 		}
 	}
 
@@ -96,10 +99,13 @@ namespace Survive
 
 			ImGui::Checkbox("Use normal mapping", &component.useNormalMapping);
 
+			ImGui::PushID("Material component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
 									 "Normal map: %s", "Load texture", changed);
+
 			ImGui::Columns();
+			ImGui::PopID();
 		}
 	}
 
@@ -129,10 +135,13 @@ namespace Survive
 			EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5, 0.1f);
 
 			ImGui::Separator();
+
+			ImGui::PushID("Bloom component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
+			ImGui::PopID();
 		}
 	}
 
@@ -169,12 +178,14 @@ namespace Survive
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
+			ImGui::PushID("Render 2D Component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 			ImGui::Columns();
+			ImGui::PopID();
 		}
 	}
 
