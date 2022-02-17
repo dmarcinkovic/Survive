@@ -108,6 +108,23 @@ void Survive::Loader::unbindVao()
 
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						   const std::vector<float> &normals, const std::vector<float> &tangents,
+						   const std::vector<unsigned int> &indices)
+{
+	GLuint vao = createVao();
+
+	createIndexBuffer(indices);
+	storeDataInAttributeList(0, vertices, 3);
+	storeDataInAttributeList(1, textureCoordinates, 2);
+	storeDataInAttributeList(2, normals, 3);
+	storeDataInAttributeList(3, tangents, 3);
+	unbindVao();
+
+	return {vao, static_cast<GLsizei>(indices.size())};
+}
+
+Survive::Model
+Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						   const std::vector<float> &normals, const std::vector<unsigned int> &indices)
 {
 	GLuint vao = createVao();
