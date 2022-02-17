@@ -5,14 +5,20 @@
 #ifndef SURVIVE_MATERIALCOMPONENT_H
 #define SURVIVE_MATERIALCOMPONENT_H
 
+#include "Texture.h"
+
 namespace Survive
 {
 	struct MaterialComponent
 	{
 		bool isTransparent{};
+		bool useNormalMapping{};
+		Texture normalMap{};
 
-		explicit MaterialComponent(bool isTransparent)
-				: isTransparent(isTransparent)
+		std::string normalMapPath{};
+
+		explicit MaterialComponent(bool isTransparent, bool useNormalMapping = false, Texture normalMap = Texture{})
+				: isTransparent(isTransparent), useNormalMapping(useNormalMapping), normalMap(normalMap)
 		{}
 
 		MaterialComponent() = default;
