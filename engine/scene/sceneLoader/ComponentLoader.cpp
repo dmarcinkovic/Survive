@@ -13,7 +13,8 @@ void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 
 }
 
-void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader)
+void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+												  Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
 	std::string bloomStrength = parseLine(reader, "bloomStrength");
@@ -85,12 +86,30 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	}
 }
 
-void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry,
-													 entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, entt::entity entity,
+													 std::ifstream &reader, Loader &loader)
 {
 	std::string isTransparent = parseLine(reader, "isTransparent");
+	std::string useNormalMapping = parseLine(reader, "useNormalMapping");
+	std::string normalMapPath = parseLine(reader, "normalMap");
 
-	registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));
+	bool enableNormalMapping = std::stoi(useNormalMapping);
+
+	if (enableNormalMapping)
+	{
+		Texture normalMap = loader.loadTexture(normalMapPath.c_str());
+
+		if (normalMap.isValidTexture())
+		{
+			MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
+			material.normalMapPath = normalMapPath;
+
+			registry.emplace<MaterialComponent>(entity, material);
+		}
+	} else
+	{
+		registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));
+	}
 }
 
 void Survive::ComponentLoader::loadShadowComponent(entt::registry &registry,
