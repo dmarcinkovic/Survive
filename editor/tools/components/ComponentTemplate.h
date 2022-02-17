@@ -86,9 +86,20 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
+		static bool changed = true;
+
 		if (ImGui::CollapsingHeader("Material", visible))
 		{
 			ImGui::Checkbox("Transparent", &component.isTransparent);
+
+			ImGui::Separator();
+
+			ImGui::Checkbox("Use normal mapping", &component.useNormalMapping);
+
+			ImGui::Columns(2);
+			m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
+									 "Normal map: %s", "Load texture", changed);
+			ImGui::Columns();
 		}
 	}
 
