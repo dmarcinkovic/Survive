@@ -44,7 +44,7 @@ namespace Survive
 
 		void renderRefraction(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
-		static void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
+		void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
 		static bool getTransparencyProperty(const entt::registry &registry, entt::entity object);
 

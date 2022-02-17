@@ -198,7 +198,7 @@ void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 }
 
 void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
-											 const ObjectShader &shader)
+											 const ObjectShader &shader) const
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
 
@@ -209,6 +209,18 @@ void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, ent
 	} else
 	{
 		shader.loadColor(defaultColor);
+	}
+
+	if (registry.any_of<MaterialComponent>(entity))
+	{
+		const MaterialComponent &materialComponent = registry.get<MaterialComponent>(entity);
+		shader.loadUseNormalMapping(materialComponent.useNormalMapping);
+
+		materialComponent.normalMap.bindTexture(3);
+	} else
+	{
+		m_DefaultTexture.bindTexture(3);
+		shader.loadUseNormalMapping(false);
 	}
 }
 
