@@ -31,7 +31,7 @@ namespace Survive
 		static void loadRender3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 										  Loader &loader);
 
-		static void loadRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+		static void loadMaterialComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 		static void loadShadowComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 

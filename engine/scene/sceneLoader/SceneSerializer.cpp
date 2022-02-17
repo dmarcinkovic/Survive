@@ -99,7 +99,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 			ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);
 		} else if (componentType == "MaterialComponent")
 		{
-			ComponentLoader::loadRigidBodyComponent(registry, entity, reader);
+			ComponentLoader::loadMaterialComponent(registry, entity, reader);
 		} else if (componentType == "ShadowComponent")
 		{
 			ComponentLoader::loadShadowComponent(registry, entity, reader);
@@ -131,7 +131,7 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveRefractionComponent(registry, entity, writer);
 	ComponentSerializer::saveRender2DComponent(registry, entity, writer);
 	ComponentSerializer::saveRender3DComponent(registry, entity, writer);
-	ComponentSerializer::saveRigidBodyComponent(registry, entity, writer);
+	ComponentSerializer::saveMaterialComponent(registry, entity, writer);
 	ComponentSerializer::saveShadowComponent(registry, entity, writer);
 	ComponentSerializer::saveSoundComponent(registry, entity, writer);
 	ComponentSerializer::saveSpriteComponent(registry, entity, writer);

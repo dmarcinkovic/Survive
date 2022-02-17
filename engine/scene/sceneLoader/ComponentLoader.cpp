@@ -85,8 +85,8 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	}
 }
 
-void Survive::ComponentLoader::loadRigidBodyComponent(entt::registry &registry,
-													  entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry,
+													 entt::entity entity, std::ifstream &reader)
 {
 	std::string isTransparent = parseLine(reader, "isTransparent");
 
