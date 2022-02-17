@@ -4,6 +4,8 @@ entity:dragon
 		textureName:assets/textures/lamp.jpg
 	component:MaterialComponent
 		isTransparent:0
+		useNormalMapping:0
+		normalMap:
 	component:ShadowComponent
 		loadShadow:1
 	component:Transform3DComponent
