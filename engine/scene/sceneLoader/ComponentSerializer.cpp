@@ -86,6 +86,8 @@ void Survive::ComponentSerializer::saveMaterialComponent(entt::registry &registr
 
 		writer << "\tcomponent:MaterialComponent\n";
 		writer << "\t\tisTransparent:" << rigidBodyComponent.isTransparent << '\n';
+		writer << "\t\tuseNormalMapping:" << rigidBodyComponent.useNormalMapping << '\n';
+		writer << "\t\tnormalMap:" << rigidBodyComponent.normalMapPath << '\n';
 	}
 }
 
