@@ -3,6 +3,9 @@
 in vec2 textCoords;
 in vec3 surfaceNormal;
 in vec3 worldPosition;
+in vec3 lightPos;
+in vec3 cameraPos;
+in vec3 tangentFragPos;
 
 uniform sampler2D objectTexture;
 uniform vec3 lightPosition;
@@ -27,6 +30,9 @@ uniform int addShadow;
 uniform int addBloom;
 uniform sampler2D bloomTexture;
 uniform float bloomStrength;
+
+uniform sampler2D normalMap;
+uniform int useNormalMap;
 
 uniform vec4 color;
 
@@ -62,19 +68,35 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
+    vec3 normal;
+    vec3 lightDirection;
+
+    vec3 toCameraVector;
+
+    if (useNormalMap == 1)
+    {
+        normal = texture(normalMap, textCoords).rgb;
+        normal = normalize(normal * 2.0 - 1.0);
+
+        lightDirection = normalize(lightPos - tangentFragPos);
+        toCameraVector = normalize(cameraPos - tangentFragPos);
+    } else
+    {
+        normal = surfaceNormal;
+        lightDirection = normalize(lightPosition - worldPosition);
+        toCameraVector = normalize(cameraPosition - worldPosition);
+    }
+
     vec4 textureColor = color + texture(objectTexture, textCoords);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPosition - worldPosition);
-
-    float diffuseFactor = max(dot(surfaceNormal, lightDirection), 0.0);
+    float diffuseFactor = max(dot(normal, lightDirection), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
 
-    vec3 toCameraVector = normalize(cameraPosition - worldPosition);
     vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
 
     float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
