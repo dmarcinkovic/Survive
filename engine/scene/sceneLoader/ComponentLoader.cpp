@@ -265,3 +265,45 @@ Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string
 
 	return {};
 }
+
+void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &registry, entt::entity entity,
+														  std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &registry, entt::entity entity,
+															 std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &registry, entt::entity entity,
+															  std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::entity &registry, entt::entity entity,
+														   std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
+														 std::ifstream &reader)
+{
+
+}
+
+void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &registry, entt::entity entity,
+															std::ifstream &reader)
+{
+
+}
+
+void
+Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+
+}
