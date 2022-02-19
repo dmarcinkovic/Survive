@@ -2,6 +2,8 @@
 // Created by david on 03. 07. 2021..
 //
 
+#include <box2d/box2d.h>
+
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
@@ -202,6 +204,16 @@ glm::vec3 Survive::ComponentLoader::parseVec3(const std::string &vec3)
 	return {x, y, z};
 }
 
+glm::vec2 Survive::ComponentLoader::parseVec2(const std::string &vec2)
+{
+	size_t start = vec2.find(',');
+
+	float x = std::stof(vec2.substr(0, start));
+	float y = std::stof(vec2.substr(start + 1));
+
+	return {x, y};
+}
+
 glm::vec4 Survive::ComponentLoader::parseVec4(const std::string &vec4)
 {
 	std::vector<std::string> numbers = Util::split(vec4, ',');
@@ -248,7 +260,18 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &registry, entt::entity entity,
 														  std::ifstream &reader)
 {
+	float width = std::stof(parseLine(reader, "width"));
+	float height = std::stof(parseLine(reader, "height"));
+	glm::vec2 center = parseVec2(parseLine(reader, "center"));
 
+	float mass = std::stof(parseLine(reader, "mass"));
+	float friction = std::stof(parseLine(reader, "friction"));
+	float elasticity = std::stof(parseLine(reader, "elasticity"));
+
+	BoxCollider2DComponent boxCollider(width, height, mass, friction, elasticity);
+	boxCollider.center = b2Vec2(center.x, center.y);
+
+	registry.emplace<BoxCollider2DComponent>(entity, boxCollider);
 }
 
 void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &registry, entt::entity entity,
