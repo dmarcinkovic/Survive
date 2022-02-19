@@ -56,7 +56,7 @@ namespace Survive
 		static void
 		loadPolygonCollider2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void loadEdgeCollider2DComponent(entt::entity &registry, entt::entity entity, std::ifstream &reader);
+		static void loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 		static void loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 

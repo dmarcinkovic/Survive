@@ -245,27 +245,6 @@ void Survive::ComponentLoader::loadTextComponent(entt::registry &registry, entt:
 	registry.emplace<TextComponent>(entity, textComponent);
 }
 
-std::optional<Survive::Font>
-Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader)
-{
-	Font font(textureAtlas.c_str(), loader);
-
-	if (fontFile.ends_with(".fnt"))
-	{
-		font.loadFontFromFntFile(fontFile);
-	} else if (fontFile.ends_with(".json"))
-	{
-		font.loadFontFromJsonFile(fontFile);
-	}
-
-	if (font.isFontLoaded() && font.isFontTextureValid())
-	{
-		return font;
-	}
-
-	return {};
-}
-
 void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &registry, entt::entity entity,
 														  std::ifstream &reader)
 {
@@ -284,7 +263,7 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 
 }
 
-void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::entity &registry, entt::entity entity,
+void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
 														   std::ifstream &reader)
 {
 
@@ -306,4 +285,25 @@ void
 Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
 
+}
+
+std::optional<Survive::Font>
+Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader)
+{
+	Font font(textureAtlas.c_str(), loader);
+
+	if (fontFile.ends_with(".fnt"))
+	{
+		font.loadFontFromFntFile(fontFile);
+	} else if (fontFile.ends_with(".json"))
+	{
+		font.loadFontFromJsonFile(fontFile);
+	}
+
+	if (font.isFontLoaded() && font.isFontTextureValid())
+	{
+		return font;
+	}
+
+	return {};
 }
