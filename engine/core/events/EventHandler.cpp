@@ -21,6 +21,11 @@ Survive::EventHandler::EventHandler()
 void Survive::EventHandler::addKeyboardListener()
 {
 	addKeyListener([this](int key, int action) {
+		if (key == GLFW_KEY_UNKNOWN)
+		{
+			return;
+		}
+
 		if (action == GLFW_PRESS)
 		{
 			m_Keys[key] = true;

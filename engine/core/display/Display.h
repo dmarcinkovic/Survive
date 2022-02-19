@@ -27,7 +27,7 @@ namespace Survive
 	public:
 		Display(int width, int height, const char *title);
 
-		explicit Display(const char* title);
+		explicit Display(const char *title);
 
 		~Display();
 
@@ -58,7 +58,7 @@ namespace Survive
 
 		void addCallbacks() const;
 
-		static void addListener() ;
+		static void addListener();
 
 		static void setViewport(int width, int height);
 

@@ -6,54 +6,19 @@
 
 #include "FileChooser.h"
 #include "Display.h"
+#include "EditorUtil.h"
+#include "Log.h"
 
 Survive::FileChooser::FileChooser()
-		: m_CurrentDirectory(std::filesystem::current_path().string()), m_Root(std::filesystem::current_path().root_path()),
+		: m_CurrentDirectory(std::filesystem::current_path()), m_Root(std::filesystem::current_path().root_path()),
 		  m_DirectoryContent(FileUtil::listCurrentDirectory())
 {
 	Texture folder = m_Loader.loadTexture("assets/textures/folder.png");
 	m_Icon = reinterpret_cast<ImTextureID>(folder.textureId());
 }
 
-void Survive::FileChooser::save(float windowWidth, float windowHeight, bool *open)
-{
-	constexpr bool openAction = false;
-	drawDialogHeader(windowWidth, windowHeight);
-
-	ImGui::OpenPopup("Save");
-	if (ImGui::BeginPopupModal("Save", open, ImGuiWindowFlags_NoDocking))
-	{
-		drawDialogBody(open, windowHeight, openAction);
-		drawSaveFilenameTextbox(open);
-
-		if (m_ConfirmWindow.draw(CONFIRM_WIDTH, CONFIRM_HEIGHT, windowWidth, windowHeight))
-		{
-			*open = false;
-			m_OpenedFile = true;
-		}
-
-		ImGui::EndPopup();
-	}
-
-	ImGui::PopStyleColor(7);
-}
-
 void Survive::FileChooser::open(float windowWidth, float windowHeight, bool *open)
 {
-	constexpr bool openAction = true;
-
-	drawDialogHeader(windowWidth, windowHeight);
-
-	ImGui::OpenPopup("Open");
-	if (ImGui::BeginPopupModal("Open", open, ImGuiWindowFlags_NoDocking))
-	{
-		drawDialogBody(open, windowHeight, openAction);
-		drawOpenFilenameTextbox(open);
-
-		ImGui::EndPopup();
-	}
-
-	ImGui::PopStyleColor(7);
 }
 
 void Survive::FileChooser::helpMarker(const char *description)
@@ -67,13 +32,6 @@ void Survive::FileChooser::helpMarker(const char *description)
 		ImGui::PopTextWrapPos();
 		ImGui::EndTooltip();
 	}
-}
-
-std::filesystem::path Survive::FileChooser::getParentPath(const std::string &currentDirectory)
-{
-	std::filesystem::path path(currentDirectory.c_str());
-
-	return path.parent_path();
 }
 
 void Survive::FileChooser::setupDarkStyleColors()
@@ -97,52 +55,67 @@ void Survive::FileChooser::drawNavigationArrows()
 
 void Survive::FileChooser::drawLeftArrow()
 {
+	bool disabled = EditorUtil::disableButton(m_Undo.empty());
+
 	if (ImGui::ArrowButton("left", ImGuiDir_Left))
 	{
 		m_Redo.push(m_CurrentDirectory);
-		if (!m_Undo.empty())
-		{
-			m_CurrentDirectory = m_Undo.top();
-			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			resetSelectedFile();
+		m_CurrentDirectory = m_Undo.top();
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
-			m_Undo.pop();
-		}
+		resetSelectedFile();
+
+		m_Undo.pop();
 	}
+
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawRightArrow()
 {
+	bool disabled = EditorUtil::disableButton(m_Redo.empty() || !std::filesystem::exists(m_Redo.top()));
+
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
 		m_Undo.push(m_CurrentDirectory);
-		if (!m_Redo.empty())
-		{
-			m_CurrentDirectory = m_Redo.top();
-			m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
 
-			resetSelectedFile();
+		m_CurrentDirectory = m_Redo.top();
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 
-			m_Redo.pop();
-		}
+		resetSelectedFile();
+
+		m_Redo.pop();
 	}
+
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 
 void Survive::FileChooser::drawUpArrow()
 {
-	if (ImGui::ArrowButton("up", ImGuiDir_Up) && m_CurrentDirectory != m_Root)
+	bool disabled = EditorUtil::disableButton(m_CurrentDirectory == m_Root);
+
+	if (ImGui::ArrowButton("up", ImGuiDir_Up))
 	{
-		m_Redo.push(m_CurrentDirectory);
+		const std::string &path = m_CurrentDirectory.parent_path().string();
 
-		m_CurrentDirectory = getParentPath(m_CurrentDirectory).string();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		try
+		{
+			m_DirectoryContent = FileUtil::listDirectory(path, m_Hidden);
 
-		resetSelectedFile();
+			m_Redo.push(m_CurrentDirectory);
+
+			m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			resetSelectedFile();
+		} catch (const std::filesystem::filesystem_error &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot enter " + path);
+		}
 	}
 
+	EditorUtil::enableButton(disabled);
 	ImGui::SameLine();
 }
 
@@ -152,7 +125,7 @@ void Survive::FileChooser::drawCheckbox()
 
 	if (m_Previous != m_Hidden)
 	{
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
 		resetSelectedFile();
 	}
 
@@ -160,48 +133,7 @@ void Survive::FileChooser::drawCheckbox()
 	ImGui::SameLine();
 }
 
-void Survive::FileChooser::drawSaveFilenameTextbox(bool *open)
-{
-	if (ImGui::BeginChild("save text box"))
-	{
-		char buffer[BUFFER_SIZE]{};
-
-		m_SelectedFile = -1;
-		if (!m_SelectedFileName.empty())
-		{
-			strcpy(buffer, m_SelectedFileName.c_str());
-		}
-
-		ImGui::InputText("", buffer, BUFFER_SIZE);
-		m_SelectedFileName = std::string(buffer);
-
-		drawCancelButton(open);
-		if (ImGui::Button("Save"))
-		{
-			savePressed(open);
-		}
-
-		ImGui::EndChild();
-	}
-}
-
-void Survive::FileChooser::drawOpenFilenameTextbox(bool *open)
-{
-	if (ImGui::BeginChild("open text box"))
-	{
-		ImGui::InputText("", m_SelectedFileName.data(), BUFFER_SIZE, ImGuiInputTextFlags_ReadOnly);
-
-		drawCancelButton(open);
-		if (ImGui::Button("Open"))
-		{
-			openPressed(open);
-		}
-
-		ImGui::EndChild();
-	}
-}
-
-void Survive::FileChooser::drawTable(float windowHeight, bool *open, bool openAction)
+void Survive::FileChooser::drawTable(float windowHeight, bool *open)
 {
 	if (ImGui::BeginChild("table_pane", ImVec2{0, windowHeight * 0.7f}))
 	{
@@ -214,7 +146,7 @@ void Survive::FileChooser::drawTable(float windowHeight, bool *open, bool openAc
 				File file = m_DirectoryContent[i];
 				ImGui::TableNextRow();
 
-				fillTableRow(file, i, open, openAction);
+				fillTableRow(file, i, open);
 			}
 			ImGui::EndTable();
 		}
@@ -255,7 +187,7 @@ std::filesystem::path Survive::FileChooser::getSelectedFile() const
 		return std::filesystem::path{};
 	}
 
-	std::filesystem::path path(m_CurrentDirectory);
+	std::filesystem::path path = m_CurrentDirectory;
 	return path.append(m_SelectedFileName);
 }
 
@@ -274,62 +206,11 @@ void Survive::FileChooser::resetSelectedFile()
 
 void Survive::FileChooser::drawIcon()
 {
-	ImVec2 uv0(0.0f, 1.0f);
-	ImVec2 uv1(1.0f, 0.0f);
+	static const ImVec2 uv0(0.0f, 1.0f);
+	static const ImVec2 uv1(1.0f, 0.0f);
 
 	ImGui::Image(m_Icon, ImVec2(20, 15), uv0, uv1);
 	ImGui::SameLine();
-}
-
-void Survive::FileChooser::fillTableRow(const File &file, int index, bool *open, bool openAction)
-{
-	ImGui::TableNextColumn();
-	drawIcon();
-
-	const std::string &filename = file.path.filename().string();
-
-	if (ImGui::Selectable(filename.c_str(), m_SelectedFile == index, ImGuiSelectableFlags_AllowDoubleClick))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-	{
-		if (openAction)
-		{
-			openPressed(open);
-		} else
-		{
-			savePressed(open);
-		}
-	}
-
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-
-	ImGui::TableNextColumn();
-	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
-	{
-		m_SelectedFile = index;
-		m_SelectedFileName = filename;
-	}
-}
-
-void Survive::FileChooser::openPressed(bool *open)
-{
-	if (directoryChosen())
-	{
-		buttonDoublePress();
-	} else
-	{
-		*open = false;
-		m_OpenedFile = true;
-	}
 }
 
 bool Survive::FileChooser::sortByFilename(const File &file1, const File &file2)
@@ -351,8 +232,7 @@ void Survive::FileChooser::sortDirectoryContent()
 	{
 		if (sortSpecs->SpecsDirty)
 		{
-			std::function<bool(const File &, const File &)> comparator =
-					sortSpecs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
+			auto comparator = sortSpecs->Specs->ColumnIndex == 0 ? sortByFilename : sortBySize;
 
 			if (sortSpecs->Specs->SortDirection == ImGuiSortDirection_Ascending)
 			{
@@ -389,51 +269,63 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 	m_OpenedFile = false;
 }
 
-void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight, bool openAction)
+void Survive::FileChooser::drawDialogBody(bool *open, float windowHeight)
 {
 	drawNavigationArrows();
-	ImGui::InputText("", m_CurrentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
+
+	std::string currentDirectory = m_CurrentDirectory.string();
+	ImGui::InputText("##InputText", currentDirectory.data(), 255, ImGuiInputTextFlags_ReadOnly);
 	ImGui::SameLine();
 
 	drawCheckbox();
 	helpMarker("Show hidden files");
 
-	drawTable(windowHeight, open, openAction);
-}
-
-void Survive::FileChooser::savePressed(bool *open)
-{
-	if (directoryChosen())
-	{
-		buttonDoublePress();
-		return;
-	}
-
-	std::filesystem::path path(m_CurrentDirectory);
-	std::string file = path.append(m_SelectedFileName).string();
-
-	if (std::filesystem::exists(file))
-	{
-		m_ConfirmWindow.openConfirmWindow();
-	} else
-	{
-		*open = false;
-		m_OpenedFile = true;
-	}
+	drawTable(windowHeight, open);
 }
 
 void Survive::FileChooser::buttonDoublePress()
 {
-	std::filesystem::path path(m_CurrentDirectory);
+	std::filesystem::path path = m_CurrentDirectory;
+	path.append(m_SelectedFileName);
 
-	m_Undo.push(m_CurrentDirectory);
-	m_CurrentDirectory = path.append(m_SelectedFileName).string();
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory, m_Hidden);
+	try
+	{
+		m_DirectoryContent = FileUtil::listDirectory(path.string(), m_Hidden);
 
-	resetSelectedFile();
+		m_Undo.push(m_CurrentDirectory);
+		m_CurrentDirectory = path;
+
+		resetSelectedFile();
+	} catch (const std::filesystem::filesystem_error &error)
+	{
+		Log::logWindow(LogType::ERROR, "Cannot enter directory: " + m_CurrentDirectory.string());
+	}
 }
 
 bool Survive::FileChooser::directoryChosen() const
 {
 	return m_SelectedFile >= 0 && m_DirectoryContent[m_SelectedFile].type == std::filesystem::file_type::directory;
+}
+
+void Survive::FileChooser::fillTableRow(const Survive::File &file, int index, bool *open)
+{
+}
+
+void Survive::FileChooser::drawTableColumns(const Survive::File &file, int index)
+{
+	const std::string &filename = file.path.filename().string();
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileSize(file.size, file.type).c_str(), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
+
+	ImGui::TableNextColumn();
+	if (ImGui::Selectable(FileUtil::getFileType(file.type), m_SelectedFile == index))
+	{
+		m_SelectedFile = index;
+		m_SelectedFileName = filename;
+	}
 }

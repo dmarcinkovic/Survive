@@ -8,7 +8,8 @@
 #include <functional>
 #include <vector>
 
-#include "FileChooser.h"
+#include "SaveDialog.h"
+#include "OpenDialog.h"
 #include "EntityManager.h"
 #include "SceneSerializer.h"
 #include "EventHandler.h"
@@ -20,8 +21,8 @@ namespace Survive
 	class Menu
 	{
 	private:
-		FileChooser m_OpenWindow;
-		FileChooser m_SaveWindow;
+		OpenDialog m_OpenWindow;
+		SaveDialog m_SaveWindow;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
 		bool m_SkyboxDialog = false;
@@ -41,6 +42,10 @@ namespace Survive
 		void renderSaveAsDialog(entt::registry &registry, std::string &savedFile);
 
 		void drawSkyboxWindow(entt::registry &registry, Renderer &renderer);
+
+	private:
+		static void loadScene(entt::registry &registry, SceneSerializer &sceneLoader, std::string &savedFile,
+							  const std::string &file);
 	};
 }
 

@@ -2,12 +2,13 @@
 // Created by david on 26. 08. 2021..
 //
 
-#include <iostream>
 #include "DirectoryTree.h"
+#include "Log.h"
+#include "EditorUtil.h"
 
 Survive::DirectoryTree::DirectoryTree(std::filesystem::path currentDirectory, std::vector<File> directoryContent)
 		: m_CurrentDirectory(std::move(currentDirectory)), m_DirectoryContent(std::move(directoryContent)),
-		  m_NestedDirectories(m_DirectoryContent.size())
+		  m_NestedDirectories(m_DirectoryContent.size()), m_IsCollapsed(m_DirectoryContent.size(), false)
 {
 
 }
@@ -47,30 +48,50 @@ void Survive::DirectoryTree::drawArrows()
 
 void Survive::DirectoryTree::drawLeftArrow()
 {
+	bool disabled = EditorUtil::disableButton(m_CurrentDirectory == m_CurrentDirectory.root_path());
+
 	if (ImGui::ArrowButton("Back arrow", ImGuiDir_Left))
 	{
-		m_RedoStack.push(m_CurrentDirectory);
+		const std::string &path = m_CurrentDirectory.parent_path().string();
 
-		m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
-		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+		try
+		{
+			m_DirectoryContent = FileUtil::listDirectory(path);
+			m_IsCollapsed = std::vector<bool>(m_DirectoryContent.size(), false);
 
-		informListeners();
+			m_RedoStack.push(m_CurrentDirectory);
+			m_CurrentDirectory = m_CurrentDirectory.parent_path();
+
+			m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+
+			informListeners();
+		} catch (const std::filesystem::filesystem_error &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot enter directory: " + path);
+		}
 	}
+
+	EditorUtil::enableButton(disabled);
 }
 
 void Survive::DirectoryTree::drawRightArrow()
 {
-	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right) && !m_RedoStack.empty())
+	bool disabled = EditorUtil::disableButton(m_RedoStack.empty() || !std::filesystem::exists(m_RedoStack.top()));
+
+	if (ImGui::ArrowButton("Forward arrow", ImGuiDir_Right))
 	{
 		m_CurrentDirectory = m_RedoStack.top();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
-		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 
+		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
+		m_IsCollapsed = std::vector<bool>(m_DirectoryContent.size(), false);
+
+		m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 		m_RedoStack.pop();
 
 		informListeners();
 	}
+
+	EditorUtil::enableButton(disabled);
 }
 
 ImGuiTreeNodeFlags Survive::DirectoryTree::getTreeFlags(std::filesystem::file_type type)
@@ -83,11 +104,18 @@ ImGuiTreeNodeFlags Survive::DirectoryTree::getTreeFlags(std::filesystem::file_ty
 	return ImGuiTreeNodeFlags_Leaf;
 }
 
-void Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, const Survive::File &file)
+void
+Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, const Survive::File &file, bool collapsed)
 {
-	if (content.empty())
+	if (content.empty() && !collapsed)
 	{
-		content = FileUtil::listDirectory(file.path.string());
+		try
+		{
+			content = FileUtil::listDirectory(file.path.string());
+		} catch (const std::filesystem::filesystem_error &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot collapse " + file.path.string());
+		}
 	}
 
 	for (const File &nestedFile: content)
@@ -102,10 +130,10 @@ void Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, c
 
 void Survive::DirectoryTree::drawDirectoryTree()
 {
-	ImGui::SetNextTreeNodeOpen(true, ImGuiCond_Once);
+	ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
-	std::string currentDirectory = m_CurrentDirectory.filename().string();
-	if (ImGui::TreeNode(currentDirectory.c_str()))
+	std::string directory = getCurrentDirectoryFilename();
+	if (ImGui::TreeNode(directory.c_str()))
 	{
 		for (int i = 0; i < m_DirectoryContent.size(); ++i)
 		{
@@ -117,10 +145,14 @@ void Survive::DirectoryTree::drawDirectoryTree()
 			{
 				if (file.type == std::filesystem::file_type::directory)
 				{
-					drawNestedDirectories(m_NestedDirectories[i], file);
+					drawNestedDirectories(m_NestedDirectories[i], file, m_IsCollapsed[i]);
+					m_IsCollapsed[i] = true;
 				}
 
 				ImGui::TreePop();
+			} else
+			{
+				m_IsCollapsed[i] = false;
 			}
 		}
 
@@ -133,12 +165,17 @@ const std::vector<Survive::File> &Survive::DirectoryTree::getDirectoryContent() 
 	return m_DirectoryContent;
 }
 
-void Survive::DirectoryTree::setCurrentDirectory(std::filesystem::path currentDirectory)
+void Survive::DirectoryTree::setCurrentDirectory(const std::filesystem::path &currentDirectory)
+try
 {
-	m_CurrentDirectory = std::move(currentDirectory);
-	m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string());
+	m_DirectoryContent = FileUtil::listDirectory(currentDirectory.string());
+	m_IsCollapsed = std::vector<bool>(m_DirectoryContent.size(), false);
+	m_CurrentDirectory = currentDirectory;
 
 	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
+} catch (const std::filesystem::filesystem_error &error)
+{
+	Log::logWindow(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
 }
 
 void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
@@ -152,4 +189,13 @@ void Survive::DirectoryTree::informListeners() const
 	{
 		listener(m_CurrentDirectory, m_DirectoryContent);
 	}
+}
+
+std::string Survive::DirectoryTree::getCurrentDirectoryFilename() const
+{
+	if (m_CurrentDirectory.has_filename())
+	{
+		return m_CurrentDirectory.filename().string();
+	}
+	return m_CurrentDirectory.string();
 }

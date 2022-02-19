@@ -3,11 +3,10 @@
 //
 
 #include <fstream>
-#include <iostream>
 #include <numeric>
 
-#include "Log.h"
 #include "ObjParser.h"
+#include "Vertex.h"
 #include "Util.h"
 
 Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &loader)
@@ -17,10 +16,7 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	if (!reader || !objFile.ends_with("obj"))
 	{
 		std::string message = "Could not load " + objFile;
-		Log::logWindow(LogType::ERROR, message);
-		std::cout << message << '\n';
-
-		return {};
+		throw std::runtime_error(message);
 	}
 
 	std::vector<glm::vec3> vertices;
@@ -30,6 +26,7 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	std::vector<float> resultPoints;
 	std::vector<float> resultNormals;
 	std::vector<float> resultTextures;
+	std::vector<float> tangents;
 
 	std::string line;
 	while (std::getline(reader, line))
@@ -55,7 +52,7 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 			vertices.emplace_back(x, y, z);
 		} else if (line.starts_with('f'))
 		{
-			processIndices(vertices, normals, textures, resultPoints, resultNormals, resultTextures, line);
+			processIndices(vertices, normals, textures, resultPoints, resultNormals, resultTextures, tangents, line);
 		}
 	}
 
@@ -63,32 +60,33 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	std::iota(indices.begin(), indices.end(), 0);
 
 	reader.close();
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals, indices);
+	return loader.loadToVao(resultPoints, resultTextures, resultNormals, tangents, indices);
 }
 
 void Survive::ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
 										const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
 										std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-										const std::string &line)
+										std::vector<float> &resultTangents, const std::string &line)
 {
 	auto numbers = Util::split(line, ' ');
 	processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[1]);
 	processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[2]);
 	processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[3]);
+	Vertex::calculateTangents(resultPoints, resultTextures, resultTangents);
 
 	if (numbers.size() == 5)
 	{
 		processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[1]);
 		processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[3]);
 		processVertex(vertices, normals, textures, resultPoints, resultNormals, resultTextures, numbers[4]);
+		Vertex::calculateTangents(resultPoints, resultTextures, resultTangents);
 	}
 }
 
 void Survive::ObjParser::processVertex(const std::vector<glm::vec3> &points, const std::vector<glm::vec3> &normals,
 									   const std::vector<glm::vec2> &textureCoordinates,
-									   std::vector<float> &resultPoints,
-									   std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-									   const std::string &line)
+									   std::vector<float> &resultPoints, std::vector<float> &resultNormals,
+									   std::vector<float> &resultTextures, const std::string &line)
 {
 	auto index = Util::split(line, '/');
 
@@ -96,7 +94,7 @@ void Survive::ObjParser::processVertex(const std::vector<glm::vec3> &points, con
 	unsigned textureIndex = std::stoi(index[1]) - 1;
 	unsigned normalIndex = std::stoi(index[2]) - 1;
 
-	Util::processVertex(points, normals, textureCoordinates,
-						resultPoints, resultNormals, resultTextures,
-						vertexIndex, textureIndex, normalIndex);
+	Vertex::processVertex(points, normals, textureCoordinates,
+						  resultPoints, resultNormals, resultTextures,
+						  vertexIndex, textureIndex, normalIndex);
 }

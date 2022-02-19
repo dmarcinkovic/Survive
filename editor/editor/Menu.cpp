@@ -70,7 +70,7 @@ void Survive::Menu::renderSaveAsDialog(entt::registry &registry, std::string &sa
 {
 	if (m_SaveAsDialog)
 	{
-		m_SaveWindow.save(600.0f, 400.0f, &m_SaveAsDialog);
+		m_SaveWindow.open(600.0f, 400.0f, &m_SaveAsDialog);
 
 		if (!m_SaveAsDialog)
 		{
@@ -88,7 +88,8 @@ void Survive::Menu::renderSaveAsDialog(entt::registry &registry, std::string &sa
 	}
 }
 
-void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &manager, SceneSerializer &sceneLoader, std::string &savedFile)
+void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &manager, SceneSerializer &sceneLoader,
+									 std::string &savedFile)
 {
 	if (m_OpenDialog)
 	{
@@ -102,8 +103,7 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 				if (file.ends_with(".survive"))
 				{
 					manager.setSelectedEntity(-1);
-					sceneLoader.loadScene(registry, file);
-					savedFile = file;
+					loadScene(registry, sceneLoader, savedFile, file);
 				} else
 				{
 					Log::logWindow(LogType::ERROR, "Cannot load scene from " + file);
@@ -116,4 +116,17 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 void Survive::Menu::drawSkyboxWindow(entt::registry &registry, Renderer &renderer)
 {
 	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
+}
+
+void Survive::Menu::loadScene(entt::registry &registry, Survive::SceneSerializer &sceneLoader, std::string &savedFile,
+							  const std::string &file)
+try
+{
+	sceneLoader.loadScene(registry, file);
+	savedFile = file;
+
+	Log::logWindow(LogType::INFO, "Successfully loaded the scene");
+} catch (const std::exception &exception)
+{
+	Log::logWindow(LogType::ERROR, "Failed to load the scene");
 }

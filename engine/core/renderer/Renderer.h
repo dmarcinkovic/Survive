@@ -16,6 +16,7 @@
 #include "MousePicking.h"
 #include "OutlineRenderer.h"
 #include "BloomRenderer.h"
+#include "WireframeRenderer.h"
 #include "Texture.h"
 
 namespace Survive
@@ -35,6 +36,7 @@ namespace Survive
 		SpritesRenderer m_SpriteRenderer{};
 		GuiRenderer m_GuiRenderer{};
 		TextRenderer m_TextRenderer{};
+		WireframeRenderer m_WireframeRenderer;
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;

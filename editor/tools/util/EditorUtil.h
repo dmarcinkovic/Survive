@@ -15,7 +15,7 @@
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
-#include "FileChooser.h"
+#include "OpenDialog.h"
 #include "Loader.h"
 
 namespace Survive
@@ -54,19 +54,19 @@ namespace Survive
 
 		static void drawTransform2DHeader();
 
-		void loadModel(FileChooser &fileChooser, Model &model, std::string &modelName, bool &changed);
+		void loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed);
 
-		void loadTexture(FileChooser &fileChooser, Texture &texture, std::string &textureName,
+		void loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
 						 const char *format, const char *label, bool &changed);
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
-		void loadSound(FileChooser &fileChooser, AudioMaster &audioMaster, ALint &sound,
+		void loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
 					   std::string &soundFile, bool &changed);
 
-		static void loadFont(FileChooser &fileChooser, Font &font, bool &open, std::string &file);
+		static void loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file);
 
-		static void loadFontTextureAtlas(FileChooser &fileChooser, Text &text, Font &font, Loader &loader, bool &open,
+		static void loadFontTextureAtlas(OpenDialog &fileChooser, Text &text, Font &font, Loader &loader, bool &open,
 										 std::string &file);
 
 		static void centerText(const std::string &text);
@@ -83,7 +83,7 @@ namespace Survive
 
 		static void loadFontBorder(bool &addBorder, float &borderWidth, glm::vec3 &borderColor);
 
-		void chooseFont(FileChooser &fileChooser, TextComponent &textComponent, Font &font);
+		void chooseFont(OpenDialog &fileChooser, TextComponent &textComponent, Font &font);
 
 		static void chooseFontSpacing(float &spacing, Text &text, Loader &loader);
 
@@ -114,15 +114,17 @@ namespace Survive
 
 		static void drawHingeAngleProperties(HingeJoint2DComponent &component);
 
+		static bool disableButton(bool condition);
+
+		static void enableButton(bool condition);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
-		std::optional<Model> getLoadedModel(const FileChooser &fileChooser);
-
-		static std::optional<Texture> getLoadedTexture(const FileChooser &fileChooser, Loader &loader);
+		std::optional<Model> getLoadedModel(const OpenDialog &fileChooser);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 

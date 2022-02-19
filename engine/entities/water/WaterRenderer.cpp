@@ -12,18 +12,19 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 
 	prepareRendering(camera);
-	waterTiles.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
-						MoveComponent &moveComponent) {
-		Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
+	waterTiles.each(
+			[&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
+				MoveComponent &moveComponent) {
+				Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
 
-		bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
-					 m_Fbo.getRefractionDepthBuffer());
+				bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
+							 m_Fbo.getRefractionDepthBuffer());
 
-		loadUniforms(camera, transform, moveComponent, light);
-		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+				loadUniforms(camera, transform, moveComponent, light);
+				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-		Renderer3DUtil::finishRenderingEntity();
-	});
+				Renderer3DUtil::finishRenderingEntity();
+			});
 
 	finishRendering();
 }

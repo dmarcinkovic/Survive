@@ -24,6 +24,7 @@ namespace Survive
 		std::filesystem::path m_CurrentDirectory;
 
 		std::vector<File> m_DirectoryContent;
+		std::vector<bool> m_IsCollapsed;
 		std::vector<std::vector<File>> m_NestedDirectories;
 		std::vector<DirectoryListener> m_Listeners;
 
@@ -36,7 +37,7 @@ namespace Survive
 
 		[[nodiscard]] const std::vector<File> &getDirectoryContent() const;
 
-		void setCurrentDirectory(std::filesystem::path currentDirectory);
+		void setCurrentDirectory(const std::filesystem::path &currentDirectory);
 
 	private:
 		static void setStyleColors();
@@ -51,9 +52,11 @@ namespace Survive
 
 		static ImGuiTreeNodeFlags getTreeFlags(std::filesystem::file_type type);
 
-		static void drawNestedDirectories(std::vector<File> &content, const File &file);
+		static void drawNestedDirectories(std::vector<File> &content, const File &file, bool collapsed);
 
 		void informListeners() const;
+
+		[[nodiscard]] std::string getCurrentDirectoryFilename() const;
 	};
 }
 

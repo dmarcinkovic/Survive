@@ -20,7 +20,7 @@ namespace Survive
 {
 	class FileChooser
 	{
-	private:
+	protected:
 		static constexpr ImGuiTableFlags tableFlags =
 				ImGuiTableFlags_BordersV | ImGuiTableFlags_BordersOuterH | ImGuiTableFlags_Resizable |
 				ImGuiTableFlags_Sortable |
@@ -33,7 +33,7 @@ namespace Survive
 
 		Loader m_Loader;
 
-		std::string m_CurrentDirectory;
+		std::filesystem::path m_CurrentDirectory;
 		const std::filesystem::path m_Root;
 
 		ImTextureID m_Icon{};
@@ -44,8 +44,8 @@ namespace Survive
 		bool m_Previous{};
 
 		std::string m_SelectedFileName;
-		std::stack<std::string> m_Undo;
-		std::stack<std::string> m_Redo;
+		std::stack<std::filesystem::path> m_Undo;
+		std::stack<std::filesystem::path> m_Redo;
 
 		bool m_OpenedFile{};
 		ConfirmWindow m_ConfirmWindow;
@@ -53,13 +53,28 @@ namespace Survive
 	public:
 		FileChooser();
 
-		void open(float windowWidth, float windowHeight, bool *open);
-
-		void save(float windowWidth, float windowHeight, bool *open);
+		virtual void open(float windowWidth, float windowHeight, bool *open);
 
 		[[nodiscard]] std::filesystem::path getSelectedFile() const;
 
 		[[nodiscard]] std::string getSelectedFilename() const;
+
+	protected:
+		void drawDialogHeader(float windowWidth, float windowHeight);
+
+		void drawDialogBody(bool *open, float windowHeight);
+
+		static void drawCancelButton(bool *open);
+
+		[[nodiscard]] bool directoryChosen() const;
+
+		void buttonDoublePress();
+
+		virtual void fillTableRow(const File &file, int index, bool *open);
+
+		void drawIcon();
+
+		void drawTableColumns(const File &file, int index);
 
 	private:
 		static void setupDarkStyleColors();
@@ -74,43 +89,19 @@ namespace Survive
 
 		void drawCheckbox();
 
-		void drawSaveFilenameTextbox(bool *open);
-
-		void drawOpenFilenameTextbox(bool *open);
-
-		void drawTable(float windowHeight, bool *open, bool openAction);
+		void drawTable(float windowHeight, bool *open);
 
 		void drawHeader();
 
-		static void drawCancelButton(bool *open);
-
 		static void helpMarker(const char *description);
 
-		static std::filesystem::path getParentPath(const std::string &currentDirectory);
-
 		void resetSelectedFile();
-
-		void drawIcon();
-
-		void fillTableRow(const File &file, int index, bool *open, bool openAction);
-
-		void openPressed(bool *open);
-
-		void savePressed(bool *open);
 
 		static bool sortByFilename(const File &file1, const File &file2);
 
 		static bool sortBySize(const File &file1, const File &file2);
 
 		void sortDirectoryContent();
-
-		void drawDialogHeader(float windowWidth, float windowHeight);
-
-		void drawDialogBody(bool *open, float windowHeight, bool openAction);
-
-		void buttonDoublePress();
-
-		[[nodiscard]] bool directoryChosen() const;
 	};
 }
 

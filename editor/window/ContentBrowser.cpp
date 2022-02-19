@@ -4,6 +4,7 @@
 
 #include "ContentBrowser.h"
 #include "Loader.h"
+#include "Log.h"
 
 Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()), m_Uv0(0, 1), m_Uv1(1, 0),
@@ -52,8 +53,9 @@ void Survive::ContentBrowser::draw()
 
 void Survive::ContentBrowser::setColors()
 {
+	ImVec4 windowBg = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.2f, 0.2f, 1));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.086f, 0.086f, 0.086f, 1));
+	ImGui::PushStyleColor(ImGuiCol_Button, windowBg);
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.02f, 0.02f, 0.02f, 1));
 }
 
@@ -100,27 +102,8 @@ void Survive::ContentBrowser::drawIcon(ImTextureID image, const std::filesystem:
 	ImGui::ImageButton(image, size, m_Uv0, m_Uv1);
 	ImGui::PopID();
 
-	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-	{
-		if (m_ImageIndex == IMAGE)
-		{
-			m_DrawImage = true;
-			std::string textureName = file.string();
-			m_Image = m_Loader.loadTexture(textureName.c_str());
-			m_ImageFilename = filename;
-		} else if (m_ImageIndex == FOLDER)
-		{
-			m_Tree.setCurrentDirectory(file);
-			m_ContentChanged = true;
-		}
-	}
-
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
-	{
-		m_StartedDragging = true;
-		m_DraggedFile = file;
-		ImGui::EndDragDropSource();
-	}
+	iconDoubleClicked(file);
+	startDraggingIcon(file);
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + TEXT_WIDTH);
 	ImGui::TextWrapped("%s", filename.c_str());
@@ -157,16 +140,21 @@ void Survive::ContentBrowser::drawDirectoryContent()
 			continue;
 		}
 
-		ImTextureID image = getIcon(file.path);
+		try
+		{
+			ImTextureID image = getIcon(file.path);
 
-		ImGui::BeginGroup();
+			ImGui::BeginGroup();
 
-		float availableRegion = ImGui::GetContentRegionAvail().x;
+			float availableRegion = ImGui::GetContentRegionAvail().x;
 
-		drawIcon(image, file.path);
-		ImGui::EndGroup();
+			drawIcon(image, file.path);
+			ImGui::EndGroup();
 
-		alignIcons(availableRegion);
+			alignIcons(availableRegion);
+		} catch(const std::filesystem::filesystem_error &ignorable)
+		{
+		}
 	}
 
 	ImGui::EndChild();
@@ -228,4 +216,40 @@ const std::filesystem::path &Survive::ContentBrowser::getDraggedFile() const
 bool Survive::ContentBrowser::isUsingKeyEvents() const
 {
 	return m_InputText;
+}
+
+void Survive::ContentBrowser::startDraggingIcon(const std::filesystem::path &file)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+	{
+		m_StartedDragging = true;
+		m_DraggedFile = file;
+		ImGui::EndDragDropSource();
+	}
+}
+
+void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &file)
+{
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+	{
+		if (m_ImageIndex == IMAGE)
+		{
+			m_DrawImage = true;
+
+			std::string textureName = file.string();
+
+			try
+			{
+				m_Image = m_Loader.loadTexture(textureName.c_str());
+				m_ImageFilename = file.filename().string();
+			} catch (const std::exception &exception)
+			{
+				Log::logWindow(LogType::ERROR, "Cannot load texture " + textureName);
+			}
+		} else if (m_ImageIndex == FOLDER)
+		{
+			m_Tree.setCurrentDirectory(file);
+			m_ContentChanged = true;
+		}
+	}
 }

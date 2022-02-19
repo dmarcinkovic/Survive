@@ -32,6 +32,7 @@ void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &ca
 	m_SpriteRenderer.render(registry, camera);
 
 	m_TextRenderer.renderText(registry, camera);
+	m_WireframeRenderer.render();
 }
 
 void Survive::Renderer::render(entt::registry &registry, Camera &camera) const

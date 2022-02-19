@@ -7,14 +7,13 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
-#include <iostream>
 
 #include "DaeParser.h"
 #include "AudioMaster.h"
 #include "ObjParser.h"
 #include "Components.h"
 #include "EditorUtil.h"
-#include "FileChooser.h"
+#include "OpenDialog.h"
 #include "Loader.h"
 #include "Log.h"
 
@@ -24,7 +23,7 @@ namespace Survive
 	{
 	private:
 		AudioMaster m_AudioMaster;
-		FileChooser m_FileChooser;
+		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
 		EditorUtil m_EditorUtil;
@@ -70,27 +69,44 @@ namespace Survive
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
+			ImGui::PushID("Render3D component");
 			ImGui::Columns(2);
-			m_EditorUtil.loadModel(m_FileChooser, texturedModel.getModel(), component.modelName, changed);
+
+			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
 			ImGui::NextColumn();
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
+
+			ImGui::Columns();
+			ImGui::PopID();
 
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
 				changed = false;
 			}
-
-			ImGui::Columns();
 		}
 	}
 
 	template<>
-	inline void ComponentTemplate::drawComponent(RigidBodyComponent &component, bool *visible)
+	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
-		if (ImGui::CollapsingHeader("Rigid body", visible))
+		static bool changed = true;
+
+		if (ImGui::CollapsingHeader("Material", visible))
 		{
 			ImGui::Checkbox("Transparent", &component.isTransparent);
+
+			ImGui::Separator();
+
+			ImGui::Checkbox("Use normal mapping", &component.useNormalMapping);
+
+			ImGui::PushID("Material component");
+			ImGui::Columns(2);
+			m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
+									 "Normal map: %s", "Load texture", changed);
+
+			ImGui::Columns();
+			ImGui::PopID();
 		}
 	}
 
@@ -120,10 +136,14 @@ namespace Survive
 			EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5, 0.1f);
 
 			ImGui::Separator();
+
+			ImGui::PushID("Bloom component");
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, component.emissiveTexture, component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			ImGui::Columns();
+			ImGui::PopID();
+
 		}
 	}
 
@@ -160,12 +180,14 @@ namespace Survive
 		{
 			TexturedModel &texturedModel = component.texturedModel;
 
+			ImGui::PushID("Render 2D Component");
 			ImGui::Columns(2);
-			m_EditorUtil.loadTexture(m_FileChooser, texturedModel.getTexture(), component.textureName,
+			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 									 "Texture: %s", "Load texture", changed);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 			ImGui::Columns();
+			ImGui::PopID();
 		}
 	}
 
@@ -191,7 +213,7 @@ namespace Survive
 			ImGui::Separator();
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadSound(m_FileChooser, m_AudioMaster, component.sound, component.soundFile, changed);
+			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed);
 			ImGui::Columns();
 		}
 	}
@@ -214,7 +236,7 @@ namespace Survive
 			Text &text = component.text;
 
 			m_IsUsingKeyEvents = EditorUtil::drawTextInput(text, text.m_Text, m_Loader);
-			m_EditorUtil.chooseFont(m_FileChooser, component, text.m_Font);
+			m_EditorUtil.chooseFont(m_OpenDialog, component, text.m_Font);
 
 			EditorUtil::chooseFontSpacing(text.m_LineSpacing, text, m_Loader);
 
@@ -369,22 +391,23 @@ namespace Survive
 		{
 			static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
 
-			int currentItem = component.bodyDefinition.type;
+			b2BodyDef &bodyDef = component.bodyDefinition;
+
+			int currentItem = bodyDef.type;
 			if (ImGui::Combo("Body type", &currentItem, bodyTypes, 3))
 			{
-				component.bodyDefinition.type = static_cast<b2BodyType>(currentItem);
+				bodyDef.type = static_cast<b2BodyType>(currentItem);
 			}
 
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", component.bodyDefinition.linearDamping);
-			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", component.bodyDefinition.angularDamping);
-			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", component.bodyDefinition.gravityScale);
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
+			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
-			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity",
-											 component.bodyDefinition.linearVelocity);
-			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", component.bodyDefinition.fixedRotation);
+			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
+			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", bodyDef.fixedRotation);
 
 			ImGui::Columns();
 		}
