@@ -49,6 +49,9 @@ void Survive::DistanceJointGizmos::draw(entt::registry &registry, const Camera &
 
 			drawGizmos(registry, selectedEntity, camera);
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 

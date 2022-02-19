@@ -23,6 +23,9 @@ void Survive::HingeJointGizmos::draw(entt::registry &registry, const Camera &cam
 
 			drawGizmos(registry, selectedEntity, camera);
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 

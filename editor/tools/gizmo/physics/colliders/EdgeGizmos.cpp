@@ -34,6 +34,9 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 			m_PointHovered = -1;
 
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 

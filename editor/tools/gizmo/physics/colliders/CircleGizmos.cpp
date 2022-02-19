@@ -35,6 +35,9 @@ void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera,
 			m_CenterHovered = false;
 			m_Hovered = false;
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 

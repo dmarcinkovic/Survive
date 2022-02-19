@@ -33,6 +33,9 @@ void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, en
 			m_HoveredLine = -1;
 			m_CenterHovered = false;
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 
