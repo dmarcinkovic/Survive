@@ -38,13 +38,15 @@ namespace Survive
 	protected:
 		static void drawOutline(const entt::registry &registry, entt::entity entity);
 
-		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) ;
+		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
 
 		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
 		void renderRefraction(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
-		static void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
+		void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
+
+		static bool getTransparencyProperty(const entt::registry &registry, entt::entity object);
 
 	private:
 		void renderScene(entt::registry &registry,

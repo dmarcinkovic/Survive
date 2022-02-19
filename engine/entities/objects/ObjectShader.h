@@ -47,6 +47,9 @@ namespace Survive
 		GLint m_LocationPlane{};
 		GLint m_LocationColor{};
 
+		GLint m_LocationNormalMap{};
+		GLint m_LocationUseNormalMap{};
+
 	public:
 		ObjectShader();
 
@@ -81,6 +84,8 @@ namespace Survive
 		void loadPlane(const glm::vec4 &plane) const;
 
 		void loadColor(const glm::vec4 &color) const;
+
+		void loadUseNormalMapping(bool useNormalMapping) const;
 
 	protected:
 		virtual void loadUniformLocations();

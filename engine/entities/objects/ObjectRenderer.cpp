@@ -40,9 +40,8 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 	glDisable(GL_STENCIL_TEST);
 }
 
-void
-Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
-									 const Camera &camera) const
+void Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+										  const Camera &camera) const
 {
 	for (auto const &object: objects)
 	{
@@ -50,12 +49,12 @@ Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector
 		loadObjectUniforms(registry, object, renderComponent.texturedModel.getTexture(), camera);
 		drawOutline(registry, object);
 
-		const RigidBodyComponent &rigidBody = registry.get<RigidBodyComponent>(object);
-		Renderer3DUtil::addTransparency(!rigidBody.isTransparent, !rigidBody.isTransparent);
+		bool isTransparent = getTransparencyProperty(registry, object);
+		Renderer3DUtil::addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-		Renderer3DUtil::addTransparency(rigidBody.isTransparent, rigidBody.isTransparent);
+		Renderer3DUtil::addTransparency(isTransparent, isTransparent);
 		Texture::unbindTexture();
 		Texture::unbindCubeTexture();
 	}
@@ -106,7 +105,7 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 {
-	auto const &view = registry.view<Render3DComponent, Transform3DComponent, RigidBodyComponent>(
+	auto const &view = registry.view<Render3DComponent, Transform3DComponent>(
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
@@ -198,7 +197,7 @@ void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
 }
 
 void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
-											 const ObjectShader &shader)
+											 const ObjectShader &shader) const
 {
 	static glm::vec4 defaultColor{0, 0, 0, 0};
 
@@ -210,4 +209,27 @@ void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, ent
 	{
 		shader.loadColor(defaultColor);
 	}
+
+	if (registry.any_of<MaterialComponent>(entity))
+	{
+		const MaterialComponent &materialComponent = registry.get<MaterialComponent>(entity);
+		shader.loadUseNormalMapping(materialComponent.useNormalMapping);
+
+		materialComponent.normalMap.bindTexture(4);
+	} else
+	{
+		m_DefaultTexture.bindTexture(4);
+		shader.loadUseNormalMapping(false);
+	}
+}
+
+bool Survive::ObjectRenderer::getTransparencyProperty(const entt::registry &registry, entt::entity object)
+{
+	if (registry.any_of<MaterialComponent>(object))
+	{
+		const MaterialComponent &rigidBody = registry.get<MaterialComponent>(object);
+		return rigidBody.isTransparent;
+	}
+
+	return false;
 }

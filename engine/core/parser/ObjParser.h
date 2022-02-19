@@ -24,7 +24,7 @@ namespace Survive
 		static void processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,
 								   const std::vector<glm::vec2> &textures, std::vector<float> &resultPoints,
 								   std::vector<float> &resultNormals, std::vector<float> &resultTextures,
-								   const std::string &line);
+								   std::vector<float> &resultTangents, const std::string &line);
 
 	public:
 		static Model loadObj(const std::string &objFile, Loader &loader);

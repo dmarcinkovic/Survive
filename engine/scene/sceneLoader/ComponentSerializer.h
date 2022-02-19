@@ -26,7 +26,7 @@ namespace Survive
 
 		static void saveRender3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		static void saveRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void saveMaterialComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveShadowComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 

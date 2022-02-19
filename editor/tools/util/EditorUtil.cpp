@@ -252,7 +252,7 @@ try
 		Render3DComponent renderComponent(TexturedModel(model, Texture()));
 		renderComponent.modelName = std::filesystem::relative(file).string();
 		registry.emplace<Render3DComponent>(entity, renderComponent);
-		registry.emplace<RigidBodyComponent>(entity, false);
+		registry.emplace<MaterialComponent>(entity, false);
 
 		constexpr float scale = 15.0f;
 		glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;

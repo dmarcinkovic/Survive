@@ -5,6 +5,7 @@ layout (location = 1) in vec2 textures;
 layout (location = 2) in vec3 normal;
 layout (location = 3) in vec3 jointWeight;
 layout (location = 4) in ivec3 jointID;
+layout (location = 5) in vec3 tangent;
 
 const int MAX_JOINTS = 50;
 const int MAX_WEIGHTS = 3;
@@ -23,7 +24,13 @@ out vec3 worldPosition;
 uniform mat4 lightProjectionMatrix;
 uniform mat4 lightViewMatrix;
 
+uniform int useNormalMap;
+uniform vec3 cameraPosition;
+uniform vec3 lightPosition;
+
 out vec4 fragmentPositionInLightSpace;
+out vec3 lightPos;
+out vec3 cameraPos;
 
 void main()
 {
@@ -52,9 +59,27 @@ void main()
 
     gl_Position = projectionMatrix * viewMatrix * transformationMatrix * totalLocalPos;
 
+    mat3 normalMatrix = transpose(inverse(mat3(transformationMatrix)));
+
     worldPosition = worldPos.xyz;
     texCoordinates = textures;
-    surfaceNormal = mat3(inverse(transpose(transformationMatrix))) * normal;
-//    surfaceNormal = totalNormal.xyz;
-    surfaceNormal = normalize(surfaceNormal);
+
+    if (useNormalMap == 1)
+    {
+        vec3 T = normalize(normalMatrix * tangent);
+        vec3 N = normalize(normalMatrix * normal);
+        vec3 B = cross(N, T);
+
+        mat3 TBN = transpose(mat3(T, B, N));
+        lightPos = TBN * lightPosition;
+        cameraPos = TBN * cameraPosition;
+        worldPosition = TBN * worldPosition;
+    } else
+    {
+        surfaceNormal = normalMatrix * normal;
+        surfaceNormal = normalize(surfaceNormal);
+
+        cameraPos = cameraPosition;
+        lightPos = lightPosition;
+    }
 }

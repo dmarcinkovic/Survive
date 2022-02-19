@@ -108,6 +108,23 @@ void Survive::Loader::unbindVao()
 
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						   const std::vector<float> &normals, const std::vector<float> &tangents,
+						   const std::vector<unsigned int> &indices)
+{
+	GLuint vao = createVao();
+
+	createIndexBuffer(indices);
+	storeDataInAttributeList(0, vertices, 3);
+	storeDataInAttributeList(1, textureCoordinates, 2);
+	storeDataInAttributeList(2, normals, 3);
+	storeDataInAttributeList(3, tangents, 3);
+	unbindVao();
+
+	return {vao, static_cast<GLsizei>(indices.size())};
+}
+
+Survive::Model
+Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						   const std::vector<float> &normals, const std::vector<unsigned int> &indices)
 {
 	GLuint vao = createVao();
@@ -123,7 +140,8 @@ Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector
 
 Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 										  const std::vector<float> &normals, const std::vector<float> &jointWeights,
-										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices)
+										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices,
+										  const std::vector<float> &tangents)
 {
 	GLuint vao = createVao();
 
@@ -133,6 +151,8 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(jointIds);
+	storeDataInAttributeList(5, tangents, 3);
+
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
@@ -168,7 +188,7 @@ std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(int numberOfVertice
 	reserveFloatDataInAttributeList(size, numberOfVertices);
 
 	GLuint vbo = m_Vbos.back();
-	GLsizeiptr vertexCount = numberOfVertices / size;
+	GLsizei vertexCount = numberOfVertices / size;
 
 	return {Model(vao, vertexCount), vbo};
 }

@@ -15,7 +15,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	auto sphere = m_Registry.create();
 	m_Registry.emplace<TagComponent>(sphere, "sphere");
 	m_Registry.emplace<Transform3DComponent>(sphere, glm::vec3{0, 2, -10}, glm::vec3{1.0f});
-	m_Registry.emplace<RigidBodyComponent>(sphere, false);
+	m_Registry.emplace<MaterialComponent>(sphere, false);
 	m_Registry.emplace<Render3DComponent>(sphere,
 										  TexturedModel(ObjParser::loadObj("assets/models/sphere.obj", m_Loader),
 														Texture()));
@@ -26,7 +26,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	auto sphere2 = m_Registry.create();
 	m_Registry.emplace<TagComponent>(sphere2, "sphere2");
 	m_Registry.emplace<Transform3DComponent>(sphere2, glm::vec3{1, 4, -10}, glm::vec3{1.0f});
-	m_Registry.emplace<RigidBodyComponent>(sphere2, false);
+	m_Registry.emplace<MaterialComponent>(sphere2, false);
 	m_Registry.emplace<Render3DComponent>(sphere2,
 										  TexturedModel(ObjParser::loadObj("assets/models/sphere.obj", m_Loader),
 														Texture()));
@@ -37,7 +37,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	auto ground = m_Registry.create();
 	m_Registry.emplace<TagComponent>(ground, "ground");
 	m_Registry.emplace<Transform3DComponent>(ground, glm::vec3{0, -2, -10}, glm::vec3{6, 0.5f, 8});
-	m_Registry.emplace<RigidBodyComponent>(ground, false);
+	m_Registry.emplace<MaterialComponent>(ground, false);
 	m_Registry.emplace<Render3DComponent>(ground, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader),
 																Texture()));
 	m_Registry.emplace<SpriteComponent>(ground, glm::vec4{0, 0.3f, 0.8f, 1.0f});

@@ -6,13 +6,14 @@
 #define SURVIVE_COMPONENTS_H
 
 #include "AnimationComponent.h"
-#include "BloomComponent.h"
 #include "BoxCollider2DComponent.h"
 #include "BoxCollider3DComponent.h"
+#include "BloomComponent.h"
 #include "CapsuleCollider3DComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "ConvexMeshCollider3DComponent.h"
 #include "EdgeCollider2DComponent.h"
+#include "MaterialComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
 #include "PolygonCollider2DComponent.h"
@@ -22,7 +23,6 @@
 #include "Render3DComponent.h"
 #include "RigidBody2DComponent.h"
 #include "RigidBody3DComponent.h"
-#include "RigidBodyComponent.h"
 #include "ShadowComponent.h"
 #include "SoundComponent.h"
 #include "SphereCollider3DComponent.h"

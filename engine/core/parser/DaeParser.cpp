@@ -134,6 +134,7 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 	std::vector<float> resultTextures;
 	std::vector<float> resultWeights;
 	std::vector<int> resultIds;
+	std::vector<float> tangents;
 
 	for (int i = 0; i < numbers.size(); i += m_VertexData.size)
 	{
@@ -145,13 +146,18 @@ Survive::Model Survive::DaeParser::parseIndices(Loader &loader)
 							  resultPoints, resultNormals, resultTextures,
 							  vertexIndex, textureIndex, normalIndex);
 
+		if ((i + 1) % 3 == 0)
+		{
+			Vertex::calculateTangents(resultPoints, resultTextures, tangents);
+		}
+
 		processJointsData(resultWeights, resultIds, vertexIndex);
 	}
 
 	std::vector<unsigned> indices(resultPoints.size() / 3);
 	std::iota(indices.begin(), indices.end(), 0);
 
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds, indices);
+	return loader.loadToVao(resultPoints, resultTextures, resultNormals, resultWeights, resultIds, indices, tangents);
 }
 
 void Survive::DaeParser::loadControllers(std::ifstream &reader, std::vector<std::string> &jointNames)

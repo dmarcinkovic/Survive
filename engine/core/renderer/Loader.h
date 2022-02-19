@@ -43,11 +43,16 @@ namespace Survive
 		static void unbindVao();
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						const std::vector<float> &normals, const std::vector<float> &tangents,
+						const std::vector<unsigned> &indices);
+
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						const std::vector<float> &normals, const std::vector<unsigned> &indices);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 						const std::vector<float> &normals, const std::vector<float> &jointWeights,
-						const std::vector<int> &jointIds, const std::vector<unsigned> &indices);
+						const std::vector<int> &jointIds, const std::vector<unsigned> &indices,
+						const std::vector<float> &tangents);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, GLsizei size);
 
