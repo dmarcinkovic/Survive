@@ -140,7 +140,8 @@ Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector
 
 Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 										  const std::vector<float> &normals, const std::vector<float> &jointWeights,
-										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices)
+										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices,
+										  const std::vector<float> &tangents)
 {
 	GLuint vao = createVao();
 
@@ -150,6 +151,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(jointIds);
+	storeDataInAttributeList(5, tangents, 3);
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
