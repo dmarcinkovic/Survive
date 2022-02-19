@@ -4,10 +4,11 @@ in vec3 surfaceNormal;
 in vec2 texCoordinates;
 in vec3 worldPosition;
 
+in vec3 lightPos;
+in vec3 cameraPos;
+
 uniform sampler2D objectTexture;
-uniform vec3 lightPosition;
 uniform vec3 lightColor;
-uniform vec3 cameraPosition;
 
 out vec4 outColor;
 
@@ -29,6 +30,9 @@ uniform vec4 color;
 
 in vec4 fragmentPositionInLightSpace;
 uniform sampler2D shadowMap;
+
+uniform int useNormalMap;
+uniform sampler2D normalMap;
 
 float shadowCalculation(vec4 lightSpacePosition)
 {
@@ -62,19 +66,30 @@ float shadowCalculation(vec4 lightSpacePosition)
 
 void main()
 {
+    vec3 normal;
+
+    if (useNormalMap == 1)
+    {
+        normal = texture(normalMap, texCoordinates).rgb;
+        normal = normalize(normal * 2.0 - 1.0);
+    } else
+    {
+        normal = surfaceNormal;
+    }
+    
     vec4 textureColor = color + texture(objectTexture, texCoordinates);
 
     const float ambientFactor = 0.2;
     vec3 ambient = lightColor * ambientFactor;
 
-    vec3 lightDirection = normalize(lightPosition - worldPosition);
-    const float diffuseFactor = max(dot(lightDirection, surfaceNormal), 0.0);
+    vec3 lightDirection = normalize(lightPos - worldPosition);
+    const float diffuseFactor = max(dot(lightDirection, normal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
 
-    vec3 toCameraVector = normalize(cameraPosition - worldPosition);
-    vec3 reflectedVector = reflect(-lightDirection, surfaceNormal);
+    vec3 toCameraVector = normalize(cameraPos - worldPosition);
+    vec3 reflectedVector = reflect(-lightDirection, normal);
 
     float specularFactor = max(dot(reflectedVector, toCameraVector), 0.0);
     specularFactor = pow(specularFactor, material);
@@ -83,17 +98,17 @@ void main()
     const float c1 = 0.0;
     const float c2 = 0.001;
 
-    float distance = length(lightPosition - worldPosition);
+    float distance = length(lightPos - worldPosition);
     float attenuation = c0 + distance * c1 + distance * distance * c2;
     vec3 specular = specularFactor * shineDamper * lightColor / attenuation;
 
     vec3 totalColor = (diffuse * (1- shadow) + ambient) * textureColor.rgb + specular;
 
-    vec3 R = reflect(toCameraVector, surfaceNormal);
+    vec3 R = reflect(toCameraVector, normal);
     vec3 reflectionColor = texture(skybox, R).rgb;
     outColor = vec4(mix(totalColor, reflectionColor, reflectiveFactor), 1.0);
 
-    vec3 refractionVector = refract(toCameraVector, surfaceNormal, refractionIndex);
+    vec3 refractionVector = refract(toCameraVector, normal, refractionIndex);
     vec3 refractionColor = texture(skybox, refractionVector).rgb;
 
     outColor = vec4(mix(outColor.rgb, refractionColor, refractionFactor), 1.0);

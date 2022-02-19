@@ -2,8 +2,10 @@ entity:dragon
 	component:Render3DComponent
 		modelName:assets/models/dragon.obj
 		textureName:assets/textures/lamp.jpg
-	component:RigidBodyComponent
+	component:MaterialComponent
 		isTransparent:0
+		useNormalMapping:0
+		normalMap:
 	component:ShadowComponent
 		loadShadow:1
 	component:Transform3DComponent

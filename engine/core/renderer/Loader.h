@@ -43,11 +43,16 @@ namespace Survive
 		static void unbindVao();
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						const std::vector<float> &normals, const std::vector<float> &tangents,
+						const std::vector<unsigned> &indices);
+
+		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						const std::vector<float> &normals, const std::vector<unsigned> &indices);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 						const std::vector<float> &normals, const std::vector<float> &jointWeights,
-						const std::vector<int> &jointIds, const std::vector<unsigned> &indices);
+						const std::vector<int> &jointIds, const std::vector<unsigned> &indices,
+						const std::vector<float> &tangents);
 
 		Model loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates, GLsizei size);
 
@@ -73,10 +78,14 @@ namespace Survive
 
 		void updateFloatData(const std::vector<float> &vertices, const std::vector<float> &textures, GLuint vaoId);
 
+		std::pair<Model, GLuint> loadToVao(int numberOfVertices, int size);
+
 	private:
 		void storeDataInAttributeList(GLuint attributeNumber, const std::vector<float> &vertices, GLint size);
 
 		void storeDataInAttributeList(const std::vector<int> &data);
+
+		void reserveFloatDataInAttributeList(GLint size, GLsizeiptr numberOfVertices);
 
 		void createIndexBuffer(const std::vector<unsigned> &indices);
 

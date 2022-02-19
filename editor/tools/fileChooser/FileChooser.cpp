@@ -75,7 +75,7 @@ void Survive::FileChooser::drawLeftArrow()
 
 void Survive::FileChooser::drawRightArrow()
 {
-	bool disabled = EditorUtil::disableButton(m_Redo.empty());
+	bool disabled = EditorUtil::disableButton(m_Redo.empty() || !std::filesystem::exists(m_Redo.top()));
 
 	if (ImGui::ArrowButton("right", ImGuiDir_Right))
 	{
@@ -99,12 +99,20 @@ void Survive::FileChooser::drawUpArrow()
 
 	if (ImGui::ArrowButton("up", ImGuiDir_Up))
 	{
-		m_Redo.push(m_CurrentDirectory);
+		const std::string &path = m_CurrentDirectory.parent_path().string();
 
-		m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		m_DirectoryContent = FileUtil::listDirectory(m_CurrentDirectory.string(), m_Hidden);
+		try
+		{
+			m_DirectoryContent = FileUtil::listDirectory(path, m_Hidden);
 
-		resetSelectedFile();
+			m_Redo.push(m_CurrentDirectory);
+
+			m_CurrentDirectory = m_CurrentDirectory.parent_path();
+			resetSelectedFile();
+		} catch (const std::filesystem::filesystem_error &exception)
+		{
+			Log::logWindow(LogType::ERROR, "Cannot enter " + path);
+		}
 	}
 
 	EditorUtil::enableButton(disabled);

@@ -19,7 +19,8 @@ namespace Survive
 	public:
 		static void loadAnimationComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
+		static void
+		loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
 
 		static void loadReflectionComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
@@ -31,7 +32,8 @@ namespace Survive
 		static void loadRender3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 										  Loader &loader);
 
-		static void loadRigidBodyComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+		static void loadMaterialComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+										  Loader &loader);
 
 		static void loadShadowComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
@@ -54,7 +56,8 @@ namespace Survive
 
 		static glm::vec4 parseVec4(const std::string &vec4);
 
-		static std::optional<Font> getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
+		static std::optional<Font>
+		getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
 	};
 }
 

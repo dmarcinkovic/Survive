@@ -63,6 +63,9 @@ void Survive::ObjectShader::loadUniformLocations()
 	m_LocationPlane = glGetUniformLocation(m_Program, "plane");
 
 	m_LocationColor = glGetUniformLocation(m_Program, "color");
+
+	m_LocationUseNormalMap = glGetUniformLocation(m_Program, "useNormalMap");
+	m_LocationNormalMap = glGetUniformLocation(m_Program, "normalMap");
 }
 
 void
@@ -96,6 +99,7 @@ void Survive::ObjectShader::loadTextures() const
 	loadInteger(m_LocationObjectTexture, 0);
 	loadInteger(m_LocationShadowMap, 1);
 	loadInteger(m_LocationSkybox, 2);
+	loadInteger(m_LocationNormalMap, 4);
 }
 
 void Survive::ObjectShader::loadReflectiveFactor(float reflectiveFactor) const
@@ -133,4 +137,9 @@ void Survive::ObjectShader::loadBloom(bool loadBloom) const
 void Survive::ObjectShader::loadColor(const glm::vec4 &color) const
 {
 	loadVector4(m_LocationColor, color);
+}
+
+void Survive::ObjectShader::loadUseNormalMapping(bool useNormalMapping) const
+{
+	loadInteger(m_LocationUseNormalMap, useNormalMapping);
 }

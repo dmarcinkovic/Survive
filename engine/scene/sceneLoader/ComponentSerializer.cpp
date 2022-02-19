@@ -77,15 +77,17 @@ void Survive::ComponentSerializer::saveRender3DComponent(entt::registry &registr
 	}
 }
 
-void Survive::ComponentSerializer::saveRigidBodyComponent(entt::registry &registry, entt::entity entity,
-														  std::ofstream &writer)
+void Survive::ComponentSerializer::saveMaterialComponent(entt::registry &registry, entt::entity entity,
+														 std::ofstream &writer)
 {
-	if (registry.any_of<RigidBodyComponent>(entity))
+	if (registry.any_of<MaterialComponent>(entity))
 	{
-		const RigidBodyComponent &rigidBodyComponent = registry.get<RigidBodyComponent>(entity);
+		const MaterialComponent &rigidBodyComponent = registry.get<MaterialComponent>(entity);
 
-		writer << "\tcomponent:RigidBodyComponent\n";
+		writer << "\tcomponent:MaterialComponent\n";
 		writer << "\t\tisTransparent:" << rigidBodyComponent.isTransparent << '\n';
+		writer << "\t\tuseNormalMapping:" << rigidBodyComponent.useNormalMapping << '\n';
+		writer << "\t\tnormalMap:" << rigidBodyComponent.normalMapPath << '\n';
 	}
 }
 

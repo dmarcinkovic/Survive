@@ -63,6 +63,22 @@ Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Survive::Loader::reserveFloatDataInAttributeList(GLint size, GLsizeiptr numberOfVertices)
+{
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	auto bufferSize = static_cast<GLsizeiptr>(numberOfVertices * sizeof(float));
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, nullptr, GL_STREAM_DRAW);
+
+	glVertexAttribPointer(0, size, GL_FLOAT, GL_FALSE, 0, nullptr);
+	m_Vbos.emplace_back(vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void Survive::Loader::createIndexBuffer(const std::vector<unsigned> &indices)
 {
 	GLuint indexBuffer;
@@ -92,6 +108,23 @@ void Survive::Loader::unbindVao()
 
 Survive::Model
 Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
+						   const std::vector<float> &normals, const std::vector<float> &tangents,
+						   const std::vector<unsigned int> &indices)
+{
+	GLuint vao = createVao();
+
+	createIndexBuffer(indices);
+	storeDataInAttributeList(0, vertices, 3);
+	storeDataInAttributeList(1, textureCoordinates, 2);
+	storeDataInAttributeList(2, normals, 3);
+	storeDataInAttributeList(3, tangents, 3);
+	unbindVao();
+
+	return {vao, static_cast<GLsizei>(indices.size())};
+}
+
+Survive::Model
+Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textureCoordinates,
 						   const std::vector<float> &normals, const std::vector<unsigned int> &indices)
 {
 	GLuint vao = createVao();
@@ -107,7 +140,8 @@ Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector
 
 Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, const std::vector<float> &textures,
 										  const std::vector<float> &normals, const std::vector<float> &jointWeights,
-										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices)
+										  const std::vector<int> &jointIds, const std::vector<unsigned> &indices,
+										  const std::vector<float> &tangents)
 {
 	GLuint vao = createVao();
 
@@ -117,6 +151,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(2, normals, 3);
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(jointIds);
+	storeDataInAttributeList(5, tangents, 3);
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
@@ -143,6 +178,18 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices,
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / size};
+}
+
+std::pair<Survive::Model, GLuint> Survive::Loader::loadToVao(int numberOfVertices, int size)
+{
+	GLuint vao = createVao();
+
+	reserveFloatDataInAttributeList(size, numberOfVertices);
+
+	GLuint vbo = m_Vbos.back();
+	GLsizei vertexCount = numberOfVertices / size;
+
+	return {Model(vao, vertexCount), vbo};
 }
 
 void Survive::Loader::addMipMap()
@@ -335,7 +382,6 @@ void Survive::Loader::updateVBO(GLuint vbo, const std::vector<float> &data, GLsi
 
 	GLsizeiptr dataSize = sizeOfData * static_cast<GLsizeiptr>(sizeof(float));
 	glBufferData(GL_ARRAY_BUFFER, dataSize, data.data(), GL_STREAM_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

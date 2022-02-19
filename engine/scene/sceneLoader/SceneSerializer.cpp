@@ -22,6 +22,8 @@ void Survive::SceneSerializer::loadScene(entt::registry &registry, const std::st
 			loadEntity(registry, reader, line);
 		}
 	}
+
+	reader.close();
 }
 
 void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::string &filename)
@@ -38,6 +40,8 @@ void Survive::SceneSerializer::saveScene(entt::registry &registry, const std::st
 			writer << "end\n";
 		}
 	});
+
+	writer.close();
 }
 
 entt::entity Survive::SceneSerializer::createEntity(entt::registry &registry, const std::string &tag)
@@ -93,9 +97,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "Render3DComponent")
 		{
 			ComponentLoader::loadRender3DComponent(registry, entity, reader, m_Loader);
-		} else if (componentType == "RigidBodyComponent")
+		} else if (componentType == "MaterialComponent")
 		{
-			ComponentLoader::loadRigidBodyComponent(registry, entity, reader);
+			ComponentLoader::loadMaterialComponent(registry, entity, reader, m_Loader);
 		} else if (componentType == "ShadowComponent")
 		{
 			ComponentLoader::loadShadowComponent(registry, entity, reader);
@@ -127,7 +131,7 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveRefractionComponent(registry, entity, writer);
 	ComponentSerializer::saveRender2DComponent(registry, entity, writer);
 	ComponentSerializer::saveRender3DComponent(registry, entity, writer);
-	ComponentSerializer::saveRigidBodyComponent(registry, entity, writer);
+	ComponentSerializer::saveMaterialComponent(registry, entity, writer);
 	ComponentSerializer::saveShadowComponent(registry, entity, writer);
 	ComponentSerializer::saveSoundComponent(registry, entity, writer);
 	ComponentSerializer::saveSpriteComponent(registry, entity, writer);
