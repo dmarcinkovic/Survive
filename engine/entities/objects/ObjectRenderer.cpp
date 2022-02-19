@@ -40,8 +40,7 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 	glDisable(GL_STENCIL_TEST);
 }
 
-void
-Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+void Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
 									 const Camera &camera) const
 {
 	for (auto const &object: objects)
@@ -216,10 +215,10 @@ void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, ent
 		const MaterialComponent &materialComponent = registry.get<MaterialComponent>(entity);
 		shader.loadUseNormalMapping(materialComponent.useNormalMapping);
 
-		materialComponent.normalMap.bindTexture(3);
+		materialComponent.normalMap.bindTexture(4);
 	} else
 	{
-		m_DefaultTexture.bindTexture(3);
+		m_DefaultTexture.bindTexture(4);
 		shader.loadUseNormalMapping(false);
 	}
 }
