@@ -159,4 +159,11 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveSpriteSheetComponent(registry, entity, writer);
 	ComponentSerializer::saveTransform3DComponent(registry, entity, writer);
 	ComponentSerializer::saveTextComponent(registry, entity, writer);
+	ComponentSerializer::saveBoxCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveCircleCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveEdgeCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::savePolygonCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveHingeJoint2DComponent(registry, entity, writer);
+	ComponentSerializer::saveDistanceJoint2DComponent(registry, entity, writer);
+	ComponentSerializer::saveRigidBody2DComponent(registry, entity, writer);
 }
