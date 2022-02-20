@@ -286,14 +286,27 @@ void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &reg
 
 	CircleCollider2DComponent circleCollider(radius, mass, friction, elasticity);
 	circleCollider.circleShape.m_p = b2Vec2(center.x, center.y);
-	
+
 	registry.emplace<CircleCollider2DComponent>(entity, circleCollider);
 }
 
 void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &registry, entt::entity entity,
 															  std::ifstream &reader)
 {
+	int numberOfPoints = std::stoi(parseLine(reader, "numberOfPoints"));
 
+	std::vector<b2Vec2> points;
+	for (int i = 0; i < numberOfPoints; ++i)
+	{
+		glm::vec2 point = parseVec2(parseLine(reader, "point"));
+		points.emplace_back(point.x, point.y);
+	}
+
+	float mass = std::stof(parseLine(reader, "mass"));
+	float friction = std::stof(parseLine(reader, "friction"));
+	float elasticity = std::stof(parseLine(reader, "elasticity"));
+
+	registry.emplace<PolygonCollider2DComponent>(entity, points, mass, friction, elasticity);
 }
 
 void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
