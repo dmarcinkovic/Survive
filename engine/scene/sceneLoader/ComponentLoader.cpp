@@ -319,7 +319,9 @@ void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &regis
 	float friction = std::stof(parseLine(reader, "friction"));
 	float elasticity = std::stof(parseLine(reader, "elasticity"));
 
-	registry.emplace<EdgeCollider2DComponent>(entity, point1, point2, mass, friction, elasticity);
+	b2Vec2 p1{point1.x, point1.y};
+	b2Vec2 p2{point2.x, point2.y};
+	registry.emplace<EdgeCollider2DComponent>(entity, p1, p2, mass, friction, elasticity);
 }
 
 void Survive::ComponentLoader::loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
