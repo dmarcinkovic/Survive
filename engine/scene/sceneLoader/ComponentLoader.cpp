@@ -292,7 +292,8 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 	std::vector<b2Vec2> points;
 	for (int i = 0; i < numberOfPoints; ++i)
 	{
-		b2Vec2 point = parseVec2(parseLine(reader, "point"));
+		std::string name = "point" + std::to_string(i + 1);
+		b2Vec2 point = parseVec2(parseLine(reader, name.c_str()));
 		points.emplace_back(point.x, point.y);
 	}
 
