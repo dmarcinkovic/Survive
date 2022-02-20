@@ -34,6 +34,8 @@ namespace Survive
 		static void initHingeJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
 
 		static void initDistanceJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
+
+		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
 	};
 }
 

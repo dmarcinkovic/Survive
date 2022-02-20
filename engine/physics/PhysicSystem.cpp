@@ -118,6 +118,11 @@ void Survive::PhysicSystem::initHingeJoint(entt::registry &registry, entt::entit
 		HingeJoint2DComponent &hingeJoint = registry.get<HingeJoint2DComponent>(entity);
 		hingeJoint.jointDef.bodyA = body;
 
+		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
+		{
+			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
+		}
+
 		if (hingeJoint.connectedBody == entt::null ||
 			!registry.any_of<RigidBody2DComponent>(hingeJoint.connectedBody))
 		{
@@ -142,6 +147,11 @@ Survive::PhysicSystem::initDistanceJoint(entt::registry &registry, entt::entity 
 		DistanceJoint2DComponent &distanceJoint = registry.get<DistanceJoint2DComponent>(entity);
 		distanceJoint.jointDef.bodyA = body;
 
+		if (distanceJoint.connectedBody == entt::null && distanceJoint.connectedBodyName != "none")
+		{
+			distanceJoint.connectedBody = findEntityWithTag(distanceJoint.connectedBodyName, registry);
+		}
+
 		if (distanceJoint.connectedBody == entt::null ||
 			!registry.any_of<RigidBody2DComponent>(distanceJoint.connectedBody))
 		{
@@ -156,4 +166,21 @@ Survive::PhysicSystem::initDistanceJoint(entt::registry &registry, entt::entity 
 
 		world->CreateJoint(&distanceJoint.jointDef);
 	}
+}
+
+entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, entt::registry &registry)
+{
+	auto view = registry.view<TagComponent>();
+
+	for (const auto &entity : view)
+	{
+		const TagComponent &tagComponent = view.get<TagComponent>(entity);
+
+		if (tagComponent.tag == tag)
+		{
+			return entity;
+		}
+	}
+
+	return entt::null;
 }
