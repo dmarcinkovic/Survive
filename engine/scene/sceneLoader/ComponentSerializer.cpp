@@ -164,6 +164,48 @@ void Survive::ComponentSerializer::saveTransform3DComponent(entt::registry &regi
 	}
 }
 
+void Survive::ComponentSerializer::saveBoxCollider2DComponent(entt::registry &registry, entt::entity entity,
+															  std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::saveCircleCollider2DComponent(entt::registry &registry, entt::entity entity,
+																 std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::saveEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
+															   std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::savePolygonCollider2DComponent(entt::registry &registry, entt::entity entity,
+																  std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::saveHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::saveDistanceJoint2DComponent(entt::registry &registry, entt::entity entity,
+																std::ofstream &writer)
+{
+
+}
+
+void Survive::ComponentSerializer::saveRigidBody2DComponent(entt::registry &registry, entt::entity entity,
+															std::ofstream &writer)
+{
+
+}
+
 void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
 {
 	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
