@@ -333,7 +333,7 @@ void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *
 
 void Survive::ComponentSerializer::printVec2(std::ofstream &writer, const char *label, const b2Vec2 &vec2)
 {
-	writer << "\t\t" << label << ':' << vec2.x << ' ' << vec2.y << '\n';
+	writer << "\t\t" << label << ':' << vec2.x << ',' << vec2.y << '\n';
 }
 
 void Survive::ComponentSerializer::saveCollider2DComponent(std::ofstream &writer,
