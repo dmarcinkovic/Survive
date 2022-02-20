@@ -46,7 +46,8 @@ namespace Survive
 
 		static void saveEdgeCollider2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
-		static void savePolygonCollider2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+		static void
+		savePolygonCollider2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveHingeJoint2DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
@@ -58,6 +59,10 @@ namespace Survive
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);
 
 		static void printVec4(std::ofstream &writer, const char *label, const glm::vec4 &vec4);
+
+		static void printVec2(std::ofstream &writer, const char *label, const b2Vec2 &vec2);
+
+		static void saveCollider2DComponent(std::ofstream &writer, const Collider2DComponent &colliderComponent);
 	};
 }
 
