@@ -367,7 +367,17 @@ void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &regi
 void
 Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
+	auto bodyType = static_cast<b2BodyType>(std::stoi(parseLine(reader, "bodyType")));
 
+	float linearDrag = std::stof(parseLine(reader, "linearDrag"));
+	b2Vec2 linearVelocity = parseVec2(parseLine(reader, "linearVelocity"));
+	float angularDrag = std::stof(parseLine(reader, "angularDrag"));
+
+	float gravityScale = std::stof(parseLine(reader, "gravityScale"));
+	bool fixedAngle = std::stoi(parseLine(reader, "fixedAngle"));
+
+	registry.emplace<RigidBody2DComponent>(entity, bodyType, linearDrag, linearVelocity, angularDrag, gravityScale,
+										   fixedAngle);
 }
 
 std::optional<Survive::Font>
