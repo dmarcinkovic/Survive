@@ -312,7 +312,14 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
 														   std::ifstream &reader)
 {
+	glm::vec2 point1 = parseVec2(parseLine(reader, "point1"));
+	glm::vec2 point2 = parseVec2(parseLine(reader, "point2"));
 
+	float mass = std::stof(parseLine(reader, "mass"));
+	float friction = std::stof(parseLine(reader, "friction"));
+	float elasticity = std::stof(parseLine(reader, "elasticity"));
+
+	registry.emplace<EdgeCollider2DComponent>(entity, point1, point2, mass, friction, elasticity);
 }
 
 void Survive::ComponentLoader::loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
