@@ -262,9 +262,7 @@ void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &regist
 	float height = std::stof(parseLine(reader, "height"));
 	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
-	float mass = std::stof(parseLine(reader, "mass"));
-	float friction = std::stof(parseLine(reader, "friction"));
-	float elasticity = std::stof(parseLine(reader, "elasticity"));
+	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	BoxCollider2DComponent boxCollider(width, height, mass, friction, elasticity);
 	boxCollider.center = center;
@@ -278,9 +276,7 @@ void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &reg
 	float radius = std::stof(parseLine(reader, "radius"));
 	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
-	float mass = std::stof(parseLine(reader, "mass"));
-	float friction = std::stof(parseLine(reader, "friction"));
-	float elasticity = std::stof(parseLine(reader, "elasticity"));
+	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	CircleCollider2DComponent circleCollider(radius, mass, friction, elasticity);
 	circleCollider.circleShape.m_p = center;
@@ -300,9 +296,7 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 		points.emplace_back(point.x, point.y);
 	}
 
-	float mass = std::stof(parseLine(reader, "mass"));
-	float friction = std::stof(parseLine(reader, "friction"));
-	float elasticity = std::stof(parseLine(reader, "elasticity"));
+	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	registry.emplace<PolygonCollider2DComponent>(entity, points, mass, friction, elasticity);
 }
@@ -313,9 +307,7 @@ void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &regis
 	b2Vec2 point1 = parseVec2(parseLine(reader, "point1"));
 	b2Vec2 point2 = parseVec2(parseLine(reader, "point2"));
 
-	float mass = std::stof(parseLine(reader, "mass"));
-	float friction = std::stof(parseLine(reader, "friction"));
-	float elasticity = std::stof(parseLine(reader, "elasticity"));
+	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	registry.emplace<EdgeCollider2DComponent>(entity, point1, point2, mass, friction, elasticity);
 }
@@ -399,4 +391,13 @@ Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string
 	}
 
 	return {};
+}
+
+std::tuple<float, float, float> Survive::ComponentLoader::loadCollider2DComponent(std::ifstream &reader)
+{
+	float mass = std::stof(parseLine(reader, "mass"));
+	float friction = std::stof(parseLine(reader, "friction"));
+	float elasticity = std::stof(parseLine(reader, "elasticity"));
+
+	return {mass, friction, elasticity};
 }

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <optional>
 #include <box2d/box2d.h>
+#include <tuple>
 
 #include "entt.hpp"
 #include "Font.h"
@@ -76,6 +77,8 @@ namespace Survive
 
 		static std::optional<Font>
 		getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
+
+		static std::tuple<float, float, float> loadCollider2DComponent(std::ifstream &reader);
 	};
 }
 
