@@ -348,7 +348,20 @@ void Survive::ComponentLoader::loadHingeJoint2DComponent(entt::registry &registr
 void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &registry, entt::entity entity,
 															std::ifstream &reader)
 {
+	std::string connectedBodyName = parseLine(reader, "connectedBody");
 
+	b2Vec2 anchorA = parseVec2(parseLine(reader, "anchorA"));
+	b2Vec2 anchorB = parseVec2(parseLine(reader, "anchorB"));
+
+	bool collideConnected = std::stoi(parseLine(reader, "collideConnected"));
+
+	float minLength = std::stof(parseLine(reader, "minLength"));
+	float maxLength = std::stof(parseLine(reader, "maxLength"));
+
+	DistanceJoint2DComponent distanceComponent{entt::null, anchorA, anchorB, minLength, maxLength, collideConnected};
+	distanceComponent.connectedBodyName = connectedBodyName;
+
+	registry.emplace<DistanceJoint2DComponent>(entity, distanceComponent);
 }
 
 void
