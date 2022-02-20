@@ -63,6 +63,8 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(Render3DComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool dialogTextureOpen = false;
+		static bool dialogModelOpen = false;
 
 		if (ImGui::CollapsingHeader("Render3D", visible))
 		{
@@ -71,10 +73,11 @@ namespace Survive
 			ImGui::PushID("Render3D component");
 			ImGui::Columns(2);
 
-			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
+			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed,
+								   dialogModelOpen);
 			ImGui::NextColumn();
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, dialogTextureOpen);
 
 			ImGui::Columns();
 			ImGui::PopID();
@@ -90,6 +93,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Material", visible))
 		{
@@ -102,7 +106,7 @@ namespace Survive
 			ImGui::PushID("Material component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
-									 "Normal map: %s", "Load texture", changed);
+									 "Normal map: %s", "Load texture", changed, open);
 
 			ImGui::Columns();
 			ImGui::PopID();
@@ -128,6 +132,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(BloomComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
@@ -139,7 +144,7 @@ namespace Survive
 			ImGui::PushID("Bloom component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, open);
 			ImGui::Columns();
 			ImGui::PopID();
 		}
@@ -173,6 +178,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(Render2DComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Render2D", visible))
 		{
@@ -181,7 +187,7 @@ namespace Survive
 			ImGui::PushID("Render 2D Component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, open);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 			ImGui::Columns();
@@ -193,6 +199,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Sound", visible))
 		{
@@ -211,7 +218,7 @@ namespace Survive
 			ImGui::Separator();
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed);
+			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed, open);
 			ImGui::Columns();
 		}
 	}

@@ -87,16 +87,17 @@ ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 			vec1.z + vec2.z, vec1.w + vec2.w};
 }
 
-void Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed)
+void
+Survive::EditorUtil::loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed, bool &open)
 {
-	showLoadedFile("Model: %s", modelName, "Load model", m_LoadModel);
+	showLoadedFile("Model: %s", modelName, "Load model", open);
 
-	if (m_LoadModel)
+	if (open)
 	{
-		fileChooser.open(600.0f, 400.0f, &m_LoadModel);
+		fileChooser.open(600.0f, 400.0f, &open);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!m_LoadModel && !selectedFilename.empty())
+		if (!open && !selectedFilename.empty())
 		{
 			std::optional<Model> loadedModel = getLoadedModel(fileChooser);
 
@@ -140,16 +141,16 @@ Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
 }
 
 void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
-									  const char *format, const char *label, bool &changed)
+									  const char *format, const char *label, bool &changed, bool &open)
 {
-	showLoadedFile(format, textureName, label, m_LoadTexture);
+	showLoadedFile(format, textureName, label, open);
 
-	if (m_LoadTexture)
+	if (open)
 	{
-		fileChooser.open(600.0f, 400.0f, &m_LoadTexture);
+		fileChooser.open(600.0f, 400.0f, &open);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!m_LoadTexture && !selectedFilename.empty())
+		if (!open && !selectedFilename.empty())
 		{
 			std::string selectedFile = fileChooser.getSelectedFile().string();
 
@@ -159,7 +160,7 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 
 				textureName = selectedFilename;
 				changed = true;
-			} catch(const std::exception &exception)
+			} catch (const std::exception &exception)
 			{
 				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
@@ -216,16 +217,16 @@ void Survive::EditorUtil::loadQuadModel(bool &changed, TexturedModel &texturedMo
 }
 
 void Survive::EditorUtil::loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
-									std::string &soundFile, bool &changed)
+									std::string &soundFile, bool &changed, bool &open)
 {
-	showLoadedFile("Sound: %s", soundFile, "Load sound", m_LoadSound);
+	showLoadedFile("Sound: %s", soundFile, "Load sound", open);
 
-	if (m_LoadSound)
+	if (open)
 	{
-		fileChooser.open(600.0f, 400.0f, &m_LoadSound);
+		fileChooser.open(600.0f, 400.0f, &open);
 
 		std::string selectedFilename = fileChooser.getSelectedFilename();
-		if (!m_LoadSound && !selectedFilename.empty())
+		if (!open && !selectedFilename.empty())
 		{
 			try
 			{
@@ -279,7 +280,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 			renderer.popMousePickingListener();
 			return;
 		}
-		
+
 		try
 		{
 			Texture texture = loader.loadTexture(filename.c_str());
@@ -299,7 +300,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
-		} catch(const std::exception &exception)
+		} catch (const std::exception &exception)
 		{
 			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
 		}

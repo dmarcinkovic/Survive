@@ -26,10 +26,6 @@ namespace Survive
 		DaeParser m_DaeParser;
 		Loader m_Loader;
 
-		bool m_LoadModel{};
-		bool m_LoadTexture{};
-		bool m_LoadSound{};
-
 		int m_SelectedItem = -1;
 		std::vector<Font> m_Fonts;
 
@@ -53,15 +49,15 @@ namespace Survive
 
 		static void drawTransform2DHeader();
 
-		void loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed);
+		void loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed, bool &open);
 
 		void loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
-						 const char *format, const char *label, bool &changed);
+						 const char *format, const char *label, bool &changed, bool &open);
 
 		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
 
 		void loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
-					   std::string &soundFile, bool &changed);
+					   std::string &soundFile, bool &changed, bool &open);
 
 		static void loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file);
 
