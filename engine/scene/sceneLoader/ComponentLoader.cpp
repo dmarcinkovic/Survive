@@ -2,8 +2,6 @@
 // Created by david on 03. 07. 2021..
 //
 
-#include <box2d/box2d.h>
-
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
@@ -204,7 +202,7 @@ glm::vec3 Survive::ComponentLoader::parseVec3(const std::string &vec3)
 	return {x, y, z};
 }
 
-glm::vec2 Survive::ComponentLoader::parseVec2(const std::string &vec2)
+b2Vec2 Survive::ComponentLoader::parseVec2(const std::string &vec2)
 {
 	size_t start = vec2.find(',');
 
@@ -262,14 +260,14 @@ void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &regist
 {
 	float width = std::stof(parseLine(reader, "width"));
 	float height = std::stof(parseLine(reader, "height"));
-	glm::vec2 center = parseVec2(parseLine(reader, "center"));
+	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
 	float mass = std::stof(parseLine(reader, "mass"));
 	float friction = std::stof(parseLine(reader, "friction"));
 	float elasticity = std::stof(parseLine(reader, "elasticity"));
 
 	BoxCollider2DComponent boxCollider(width, height, mass, friction, elasticity);
-	boxCollider.center = b2Vec2(center.x, center.y);
+	boxCollider.center = center;
 
 	registry.emplace<BoxCollider2DComponent>(entity, boxCollider);
 }
@@ -278,14 +276,14 @@ void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &reg
 															 std::ifstream &reader)
 {
 	float radius = std::stof(parseLine(reader, "radius"));
-	glm::vec2 center = parseVec2(parseLine(reader, "center"));
+	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
 	float mass = std::stof(parseLine(reader, "mass"));
 	float friction = std::stof(parseLine(reader, "friction"));
 	float elasticity = std::stof(parseLine(reader, "elasticity"));
 
 	CircleCollider2DComponent circleCollider(radius, mass, friction, elasticity);
-	circleCollider.circleShape.m_p = b2Vec2(center.x, center.y);
+	circleCollider.circleShape.m_p = center;
 
 	registry.emplace<CircleCollider2DComponent>(entity, circleCollider);
 }
@@ -298,7 +296,7 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 	std::vector<b2Vec2> points;
 	for (int i = 0; i < numberOfPoints; ++i)
 	{
-		glm::vec2 point = parseVec2(parseLine(reader, "point"));
+		b2Vec2 point = parseVec2(parseLine(reader, "point"));
 		points.emplace_back(point.x, point.y);
 	}
 
@@ -312,22 +310,39 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
 														   std::ifstream &reader)
 {
-	glm::vec2 point1 = parseVec2(parseLine(reader, "point1"));
-	glm::vec2 point2 = parseVec2(parseLine(reader, "point2"));
+	b2Vec2 point1 = parseVec2(parseLine(reader, "point1"));
+	b2Vec2 point2 = parseVec2(parseLine(reader, "point2"));
 
 	float mass = std::stof(parseLine(reader, "mass"));
 	float friction = std::stof(parseLine(reader, "friction"));
 	float elasticity = std::stof(parseLine(reader, "elasticity"));
 
-	b2Vec2 p1{point1.x, point1.y};
-	b2Vec2 p2{point2.x, point2.y};
-	registry.emplace<EdgeCollider2DComponent>(entity, p1, p2, mass, friction, elasticity);
+	registry.emplace<EdgeCollider2DComponent>(entity, point1, point2, mass, friction, elasticity);
 }
 
 void Survive::ComponentLoader::loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
 														 std::ifstream &reader)
 {
+	std::string connectedBodyName = parseLine(reader, "connectedBody");
 
+	b2Vec2 anchorA = parseVec2(parseLine(reader, "anchorA"));
+	b2Vec2 anchorB = parseVec2(parseLine(reader, "anchorB"));
+
+	bool collideConnected = std::stoi(parseLine(reader, "collideConnected"));
+
+	bool enabledMotor = std::stoi(parseLine(reader, "useMotor"));
+	float motorSpeed = std::stof(parseLine(reader, "motorSpeed"));
+	float maxTorque = std::stof(parseLine(reader, "maxTorque"));
+
+	bool enableLimit = std::stoi(parseLine(reader, "enableLimit"));
+	float lowerAngle = std::stof(parseLine(reader, "lowerAngle"));
+	float upperAngle = std::stof(parseLine(reader, "upperAngle"));
+
+	HingeJoint2DComponent hingeComponent{entt::null, anchorA, anchorB, collideConnected, enabledMotor, motorSpeed,
+										 maxTorque, enableLimit, lowerAngle, upperAngle};
+	hingeComponent.connectedBodyName = connectedBodyName;
+
+	registry.emplace<HingeJoint2DComponent>(entity, hingeComponent);
 }
 
 void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &registry, entt::entity entity,

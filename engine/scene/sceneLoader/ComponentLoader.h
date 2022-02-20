@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <optional>
+#include <box2d/box2d.h>
 
 #include "entt.hpp"
 #include "Font.h"
@@ -71,7 +72,7 @@ namespace Survive
 
 		static glm::vec4 parseVec4(const std::string &vec4);
 
-		static glm::vec2 parseVec2(const std::string &vec2);
+		static b2Vec2 parseVec2(const std::string &vec2);
 
 		static std::optional<Font>
 		getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
