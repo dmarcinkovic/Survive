@@ -402,7 +402,11 @@ namespace Survive
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping);
+			if (EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping))
+			{
+				bodyDef.linearDamping = std::max(0.0f, bodyDef.linearDamping);
+			}
+
 			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
 			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
