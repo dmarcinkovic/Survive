@@ -371,6 +371,11 @@ Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, ent
 	b2Vec2 linearVelocity = parseVec2(parseLine(reader, "linearVelocity"));
 	float angularDrag = std::stof(parseLine(reader, "angularDrag"));
 
+	if (linearDrag < 0 || angularDrag < 0)
+	{
+		return;
+	}
+
 	float gravityScale = std::stof(parseLine(reader, "gravityScale"));
 	bool fixedAngle = std::stoi(parseLine(reader, "fixedAngle"));
 
