@@ -407,7 +407,11 @@ namespace Survive
 				bodyDef.linearDamping = std::max(0.0f, bodyDef.linearDamping);
 			}
 
-			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
+			if (EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping))
+			{
+				bodyDef.angularDamping = std::max(0.0f, bodyDef.angularDamping);
+			}
+
 			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
 			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
