@@ -11,6 +11,7 @@
 #include "Maths.h"
 
 bool Survive::CircleGizmos::m_Hovered{};
+bool Survive::CircleGizmos::m_CenterHovered{};
 
 void Survive::CircleGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -168,5 +169,5 @@ void Survive::CircleGizmos::drawGizmos(const Transform3DComponent &transform,
 	updateCircleCenter(center, camera, modelMatrix, circleCollider, transform);
 
 	drawCircle(center, radius);
-	drawCenter(center);
+	drawCenter(center, m_CenterHovered);
 }

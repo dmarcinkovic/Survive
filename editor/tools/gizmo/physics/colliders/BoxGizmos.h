@@ -12,16 +12,16 @@
 #include "EventHandler.h"
 #include "Camera.h"
 #include "PolygonGizmos.h"
-#include "Centroid.h"
 
 namespace Survive
 {
-	class BoxGizmos : public PolygonGizmos, public Centroid
+	class BoxGizmos : public PolygonGizmos
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
 
 		static int m_HoveredLine;
+		static bool m_CenterHovered;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;

@@ -10,16 +10,16 @@
 #include "EventHandler.h"
 #include "CircleCollider2DComponent.h"
 #include "PhysicsGizmosBase.h"
-#include "Centroid.h"
 
 namespace Survive
 {
-	class CircleGizmos : public PhysicsGizmosBase, public Centroid
+	class CircleGizmos : public PhysicsGizmosBase
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
 
 		static bool m_Hovered;
+		static bool m_CenterHovered;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity) override;

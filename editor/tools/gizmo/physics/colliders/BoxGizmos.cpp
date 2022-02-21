@@ -9,6 +9,7 @@
 #include "EditorUtil.h"
 
 int Survive::BoxGizmos::m_HoveredLine = -1;
+bool Survive::BoxGizmos::m_CenterHovered{};
 
 void Survive::BoxGizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
 {
@@ -56,7 +57,7 @@ void Survive::BoxGizmos::drawBoxColliderGizmo(const Camera &camera, BoxCollider2
 
 	updateGizmos(camera, boxCollider, transform, modelMatrix, rectanglePoints, center);
 	drawRect(rectanglePoints, m_HoveredLine);
-	drawCenter(center);
+	drawCenter(center, m_CenterHovered);
 }
 
 void Survive::BoxGizmos::initializeBoxCollider(BoxCollider2DComponent &boxCollider,

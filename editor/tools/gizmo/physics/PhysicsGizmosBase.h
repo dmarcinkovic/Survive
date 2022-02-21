@@ -37,6 +37,11 @@ namespace Survive
 						const glm::mat4 &modelMatrix, float angle) const;
 
 		static glm::vec3 rotatePointAroundOrigin(float x, float y, float angle);
+
+		static void drawCenter(const ImVec2 &center, bool centerHovered);
+
+		static ImVec2 getCenter(const b2Vec2 &localCenter, const Camera &camera, const glm::vec3 &position,
+								const glm::mat4 &modelMatrix, float x, float y, float width, float height);
 	};
 }
 
