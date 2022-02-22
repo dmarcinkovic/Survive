@@ -292,12 +292,14 @@ namespace Survive
 
 			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width))
 			{
+				component.width = std::max(0.0f, component.width);
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
 			}
 
 			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height))
 			{
+				component.height = std::max(0.0f, component.height);
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
 			}
