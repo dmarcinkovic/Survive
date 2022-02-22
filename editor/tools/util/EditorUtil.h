@@ -34,6 +34,7 @@ namespace Survive
 
 		Texture m_FontIcon;
 		Texture m_TextureIcon;
+		Texture m_DeleteIcon;
 
 	public:
 		EditorUtil();
@@ -66,9 +67,8 @@ namespace Survive
 
 		static void centerText(const std::string &text);
 
-		void
-		loadDraggedModels(entt::registry &registry, const std::filesystem::path &file, const Camera &camera,
-						  float x, float y, float width, float height);
+		void loadDraggedModels(entt::registry &registry, const std::filesystem::path &file,
+							   const Camera &camera, float x, float y, float width, float height);
 
 		static void registerListener(entt::registry &registry, Renderer &renderer,
 									 const std::filesystem::path &file, Loader &loader);
@@ -87,18 +87,30 @@ namespace Survive
 
 		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
-		static bool drawColumnInputFloat(const char *text, const char *label, float &value);
+		static bool drawColumnInputFloat(const char *text, const char *label, float &value,
+										 float min = std::numeric_limits<float>::min(),
+										 float max = std::numeric_limits<float>::max());
 
 		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
-										float min, float max, float step = 1.0f);
+										float min = 0, float max = std::numeric_limits<float>::max(),
+										float step = 0.1f);
+
+		static void drawColumnInputText(const char *label, const char *text, std::string &buffer,
+										ImGuiInputTextFlags flags = ImGuiInputTextFlags_ReadOnly);
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
-		static void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape);
+		void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape) const;
 
 		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape);
 
 		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff);
+
+		static void initializeDragDropTarget(entt::entity &connectedBody, std::string &name);
+
+		static void drawHingeMotorProperties(HingeJoint2DComponent &component);
+
+		static void drawHingeAngleProperties(HingeJoint2DComponent &component);
 
 		static bool disableButton(bool condition);
 
@@ -113,6 +125,11 @@ namespace Survive
 		std::optional<Model> getLoadedModel(const OpenDialog &fileChooser);
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
+
+		static void drawPoint(int index, std::vector<b2Vec2> &points, b2PolygonShape &shape);
+
+		static int drawDeleteButton(int index, const Texture &deleteIcon,
+									const std::vector<b2Vec2> &points, b2PolygonShape &shape);
 	};
 }
 

@@ -28,6 +28,8 @@ Survive::EditorUtil::EditorUtil()
 	Font candara("assets/fonts/candara.png", m_Loader);
 	candara.loadFontFromFntFile("assets/fonts/candara.fnt");
 	m_Fonts.emplace_back(candara);
+
+	m_DeleteIcon = m_Loader.loadTexture("assets/textures/delete_icon.png");
 }
 
 void Survive::EditorUtil::setStyleColors()
@@ -516,13 +518,18 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 	ImGui::NextColumn();
 }
 
-bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value, float min, float max)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	bool result = ImGui::InputFloat(label, &value);
+	bool result;
+	if ((result = ImGui::InputFloat(label, &value)))
+	{
+		value = std::min(max, std::max(min, value));
+	}
+
 	ImGui::NextColumn();
 
 	return result;
@@ -535,7 +542,12 @@ bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *labe
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	bool result = ImGui::DragFloat(label, &value, step, min, max);
+	bool result;
+	if ((result = ImGui::DragFloat(label, &value, step, min, max)))
+	{
+		value = std::min(max, std::max(min, value));
+	}
+
 	ImGui::NextColumn();
 
 	return result;
@@ -559,19 +571,24 @@ bool Survive::EditorUtil::drawColumnDragFloat2(const char *text, const char *lab
 	return result;
 }
 
-void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+void Survive::EditorUtil::drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape) const
 {
+	int itemToDelete = -1;
+
 	for (int i = 0; i < points.size(); ++i)
 	{
-		b2Vec2 &point = points[i];
+		drawPoint(i, points, shape);
 
-		const std::string text = "Point" + std::to_string(i + 1);
-		const std::string label = "##Polygon p" + std::to_string(i + 1);
-
-		if (drawColumnDragFloat2(text.c_str(), label.c_str(), point))
+		int result;
+		if ((result = drawDeleteButton(i, m_DeleteIcon, points, shape)) != -1)
 		{
-			shape.Set(points.data(), static_cast<int>(points.size()));
+			itemToDelete = result;
 		}
+	}
+
+	if (itemToDelete != -1)
+	{
+		points.erase(points.begin() + itemToDelete);
 	}
 }
 
@@ -579,19 +596,16 @@ void Survive::EditorUtil::addPolygonPoint(std::vector<b2Vec2> &points, b2Polygon
 {
 	ImGui::TextUnformatted("Add new point");
 	ImGui::SameLine();
-	if (ImGui::Button(" + "))
+	if (ImGui::Button(" + ") && points.size() < b2_maxPolygonVertices)
 	{
 		points.emplace_back(0, 0);
-		shape.Set(points.data(), static_cast<int>(points.size()));
+		if (points.size() >= 3)
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
 	}
 
-	ImGui::TextUnformatted("Remove point");
-	ImGui::SameLine();
-	if (ImGui::Button(" - ") && !points.empty())
-	{
-		points.pop_back();
-		shape.Set(points.data(), static_cast<int>(points.size()));
-	}
+	ImGui::Separator();
 }
 
 void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
@@ -600,6 +614,153 @@ void Survive::EditorUtil::moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
 	points[1] += diff;
 	points[2] += diff;
 	points[3] += diff;
+}
+
+void Survive::EditorUtil::drawPoint(int index, std::vector<b2Vec2> &points, b2PolygonShape &shape)
+{
+	b2Vec2 &point = points[index];
+
+	const std::string text = "Point" + std::to_string(index + 1);
+	const std::string label = "##Polygon p" + std::to_string(index + 1);
+
+	ImGui::TextUnformatted(text.c_str());
+	ImGui::NextColumn();
+
+	glm::vec2 vec(points[index].x, points[index].y);
+
+	if (ImGui::DragFloat2(label.c_str(), glm::value_ptr(vec)))
+	{
+		points[index].x = vec.x;
+		points[index].y = vec.y;
+
+		if (points.size() >= 3)
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
+	}
+
+	ImGui::SameLine();
+}
+
+int Survive::EditorUtil::drawDeleteButton(int index, const Texture &deleteIcon, const std::vector<b2Vec2> &points,
+										  b2PolygonShape &shape)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+
+	int itemToDelete = -1;
+	ImGui::PushID(index);
+
+	auto icon = reinterpret_cast<ImTextureID>(deleteIcon.textureId());
+
+	ImVec4 windowBgColor = ImGui::GetStyleColorVec4(ImGuiCol_WindowBg);
+	ImGui::PushStyleColor(ImGuiCol_Button, windowBgColor);
+
+	float buttonSize = 1.4f * ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(icon, ImVec2(buttonSize, buttonSize), uv0, uv1))
+	{
+		itemToDelete = index;
+		if (points.size() >= 3)
+		{
+			shape.Set(points.data(), static_cast<int>(points.size()));
+		}
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted("Delete point");
+		ImGui::EndTooltip();
+	}
+
+	ImGui::PopStyleColor();
+
+	ImGui::PopID();
+	ImGui::NextColumn();
+
+	return itemToDelete;
+}
+
+void Survive::EditorUtil::drawColumnInputText(const char *label, const char *text, std::string &buffer,
+											  ImGuiInputTextFlags flags)
+{
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4{0.15f, 0.15f, 0.15f, 0.8f});
+
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+	ImGui::SetNextItemWidth(-1.0f);
+
+	ImGui::InputText(label, buffer.data(), buffer.capacity(), flags);
+
+	ImGui::PopStyleColor();
+}
+
+void Survive::EditorUtil::initializeDragDropTarget(entt::entity &connectedBody, std::string &name)
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Joint2D"))
+		{
+			auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
+
+			int bodyA = std::get<0>(*data);
+			int bodyB = std::get<1>(*data);
+
+			if (bodyA == bodyB)
+			{
+				Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
+			} else
+			{
+				connectedBody = static_cast<entt::entity>(bodyB);
+				name = std::get<2>(*data);
+			}
+		}
+
+		ImGui::EndDragDropTarget();
+	}
+}
+
+void Survive::EditorUtil::drawHingeMotorProperties(HingeJoint2DComponent &component)
+{
+	static constexpr float min = std::numeric_limits<float>::min();
+
+	b2RevoluteJointDef &jointDef = component.jointDef;
+
+	ImGui::TextUnformatted("Motor");
+	ImGui::NextColumn();
+	ImGui::NextColumn();
+
+	ImGui::Indent();
+	drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
+	drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
+	drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
+	ImGui::Unindent();
+}
+
+void Survive::EditorUtil::drawHingeAngleProperties(Survive::HingeJoint2DComponent &component)
+{
+	b2RevoluteJointDef &jointDef = component.jointDef;
+
+	ImGui::TextUnformatted("Angle limits");
+	ImGui::NextColumn();
+	ImGui::NextColumn();
+
+	ImGui::Indent();
+	drawColumnInputBool("Use limits", "##UseHingeLimits", jointDef.enableLimit);
+
+	float lowerAngle = glm::degrees(jointDef.lowerAngle);
+	if (drawColumnDragFloat("Lower angle", "##HingeLAngle", lowerAngle, -359, 359))
+	{
+		jointDef.lowerAngle = glm::radians(lowerAngle);
+	}
+
+	float upperAngle = glm::degrees(jointDef.upperAngle);
+	if (drawColumnDragFloat("Upper angle", "##HingeUAngle", upperAngle, -359, 359))
+	{
+		jointDef.upperAngle = glm::radians(upperAngle);
+	}
+
+	ImGui::Unindent();
 }
 
 bool Survive::EditorUtil::disableButton(bool condition)

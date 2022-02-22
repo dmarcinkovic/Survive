@@ -9,11 +9,11 @@
 #include "Components.h"
 #include "Camera.h"
 #include "EventHandler.h"
-#include "ColliderGizmos.h"
+#include "PolygonGizmos.h"
 
 namespace Survive
 {
-	class EdgeGizmos : public ColliderGizmos
+	class EdgeGizmos : public PolygonGizmos
 	{
 	private:
 		static constexpr float RADIUS = 5.0f;
@@ -29,16 +29,13 @@ namespace Survive
 		static void
 		initializeEdgeCollider(EdgeCollider2DComponent &edgeCollider, const Transform3DComponent &transform);
 
-		[[nodiscard]] ImVec2 getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-									  const glm::mat4 &modelMatrix) const;
-
 		static void drawGizmo(const ImVec2 &p1, const ImVec2 &p2);
 
-		void
-		moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position, b2Vec2 &vertex) const;
-
 		void updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-						 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2);
+						 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2, float angle);
+
+		void enableGizmos(EdgeCollider2DComponent &edgeCollider, const Transform3DComponent &transform,
+						  const Camera &camera);
 	};
 }
 

@@ -30,9 +30,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<EdgeCollider2DComponent>(ground, b2Vec2{-4, 0.5}, b2Vec2{4, 0.5}, 1.0f, 0.3, 0.5);
 
 	m_Editor.addPlayButtonListener([this]() {
-		PhysicSystem::init(m_Registry, m_World.get());
-
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
+		PhysicSystem::init(m_Registry, m_World.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {

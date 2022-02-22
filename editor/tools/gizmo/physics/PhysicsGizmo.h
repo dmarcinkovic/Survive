@@ -8,7 +8,10 @@
 #include "entt.hpp"
 #include "BoxGizmos.h"
 #include "CircleGizmos.h"
+#include "PolygonGizmos.h"
 #include "EdgeGizmos.h"
+#include "HingeJointGizmos.h"
+#include "DistanceJointGizmos.h"
 #include "EventHandler.h"
 #include "Camera.h"
 
@@ -20,6 +23,10 @@ namespace Survive
 		BoxGizmos m_BoxGizmos;
 		CircleGizmos m_CircleGizmos;
 		EdgeGizmos m_EdgeGizmos;
+		PolygonGizmos m_PolygonGizmos;
+
+		HingeJointGizmos m_HingeGizmos;
+		DistanceJointGizmos m_DistanceJointGizmos;
 
 	public:
 		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
@@ -31,6 +38,11 @@ namespace Survive
 		static bool isOver();
 
 		[[nodiscard]] bool isEnabled() const;
+
+	private:
+		[[nodiscard]] bool isColliderGizmosEnabled() const;
+
+		[[nodiscard]] bool isJointGizmosEnabled() const;
 	};
 }
 

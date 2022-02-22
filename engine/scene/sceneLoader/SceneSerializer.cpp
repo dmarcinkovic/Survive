@@ -118,6 +118,27 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "TextComponent")
 		{
 			ComponentLoader::loadTextComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "BoxCollider2DComponent")
+		{
+			ComponentLoader::loadBox2DColliderComponent(registry, entity, reader);
+		} else if (componentType == "CircleCollider2DComponent")
+		{
+			ComponentLoader::loadCircleCollider2DComponent(registry, entity, reader);
+		} else if (componentType == "EdgeCollider2DComponent")
+		{
+			ComponentLoader::loadEdgeCollider2DComponent(registry, entity, reader);
+		} else if (componentType == "PolygonCollider2DComponent")
+		{
+			ComponentLoader::loadPolygonCollider2DComponent(registry, entity, reader);
+		} else if (componentType == "HingeJoint2DComponent")
+		{
+			ComponentLoader::loadHingeJoint2DComponent(registry, entity, reader);
+		} else if (componentType == "DistanceJoint2DComponent")
+		{
+			ComponentLoader::loadDistanceJoint2DComponent(registry, entity, reader);
+		} else if (componentType == "RigidBody2DComponent")
+		{
+			ComponentLoader::loadRigidBody2DComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -138,4 +159,11 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveSpriteSheetComponent(registry, entity, writer);
 	ComponentSerializer::saveTransform3DComponent(registry, entity, writer);
 	ComponentSerializer::saveTextComponent(registry, entity, writer);
+	ComponentSerializer::saveBoxCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveCircleCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveEdgeCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::savePolygonCollider2DComponent(registry, entity, writer);
+	ComponentSerializer::saveHingeJoint2DComponent(registry, entity, writer);
+	ComponentSerializer::saveDistanceJoint2DComponent(registry, entity, writer);
+	ComponentSerializer::saveRigidBody2DComponent(registry, entity, writer);
 }

@@ -34,7 +34,7 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 {
 	auto view = registry.view<RigidBody2DComponent, Transform3DComponent>();
 
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
 		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
 		Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
@@ -47,6 +47,13 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
 		initFixture(registry, entity, rigidBody.body);
+	}
+
+	for (auto const &entity: view)
+	{
+		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
+		initHingeJoint(registry, entity, world, rigidBody.body);
+		initDistanceJoint(registry, entity, world, rigidBody.body);
 	}
 }
 
@@ -102,4 +109,78 @@ void Survive::PhysicSystem::updateWorld(b2World *world)
 {
 	float frameRate = ImGui::GetIO().Framerate;
 	world->Step(1.0f / frameRate, 5, 5);
+}
+
+void Survive::PhysicSystem::initHingeJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body)
+{
+	if (registry.any_of<HingeJoint2DComponent>(entity))
+	{
+		HingeJoint2DComponent &hingeJoint = registry.get<HingeJoint2DComponent>(entity);
+		hingeJoint.jointDef.bodyA = body;
+
+		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
+		{
+			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
+		}
+
+		if (hingeJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(hingeJoint.connectedBody))
+		{
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+			hingeJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(hingeJoint.connectedBody);
+			hingeJoint.jointDef.bodyB = bodyB.body;
+		}
+
+		world->CreateJoint(&hingeJoint.jointDef);
+	}
+}
+
+void
+Survive::PhysicSystem::initDistanceJoint(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body)
+{
+	if (registry.any_of<DistanceJoint2DComponent>(entity))
+	{
+		DistanceJoint2DComponent &distanceJoint = registry.get<DistanceJoint2DComponent>(entity);
+		distanceJoint.jointDef.bodyA = body;
+
+		if (distanceJoint.connectedBody == entt::null && distanceJoint.connectedBodyName != "none")
+		{
+			distanceJoint.connectedBody = findEntityWithTag(distanceJoint.connectedBodyName, registry);
+		}
+
+		if (distanceJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(distanceJoint.connectedBody))
+		{
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+			distanceJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(distanceJoint.connectedBody);
+			distanceJoint.jointDef.bodyB = bodyB.body;
+		}
+
+		world->CreateJoint(&distanceJoint.jointDef);
+	}
+}
+
+entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, entt::registry &registry)
+{
+	auto view = registry.view<TagComponent>();
+
+	for (const auto &entity : view)
+	{
+		const TagComponent &tagComponent = view.get<TagComponent>(entity);
+
+		if (tagComponent.tag == tag)
+		{
+			return entity;
+		}
+	}
+
+	return entt::null;
 }

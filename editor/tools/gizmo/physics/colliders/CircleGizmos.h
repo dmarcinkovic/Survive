@@ -9,11 +9,11 @@
 #include "Camera.h"
 #include "EventHandler.h"
 #include "CircleCollider2DComponent.h"
-#include "ColliderGizmos.h"
+#include "PhysicsGizmosBase.h"
 
 namespace Survive
 {
-	class CircleGizmos : public ColliderGizmos
+	class CircleGizmos : public PhysicsGizmosBase
 	{
 	private:
 		static constexpr float RADIUS = 4.0f;
@@ -44,8 +44,6 @@ namespace Survive
 
 		void updateCircleRadius(const ImVec2 &center, float radius, const Camera &camera, const glm::mat4 &modelMatrix,
 								CircleCollider2DComponent &circleCollider) const;
-
-		static void drawCenter(const ImVec2 &center);
 
 		void updateCircleCenter(const ImVec2 &center, const Camera &camera, const glm::mat4 &modelMatrix,
 								CircleCollider2DComponent &circleCollider, const Transform3DComponent &transform) const;

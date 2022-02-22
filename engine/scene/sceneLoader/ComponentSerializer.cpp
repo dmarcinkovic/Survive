@@ -164,14 +164,141 @@ void Survive::ComponentSerializer::saveTransform3DComponent(entt::registry &regi
 	}
 }
 
-void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
+void Survive::ComponentSerializer::saveBoxCollider2DComponent(entt::registry &registry, entt::entity entity,
+															  std::ofstream &writer)
 {
-	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
+	if (registry.any_of<BoxCollider2DComponent>(entity))
+	{
+		const BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(entity);
+
+		writer << "\tcomponent:BoxCollider2DComponent\n";
+		writer << "\t\twidth:" << boxCollider.width << '\n';
+		writer << "\t\theight:" << boxCollider.height << '\n';
+		printVec2(writer, "center", boxCollider.center);
+
+		saveCollider2DComponent(writer, boxCollider);
+	}
 }
 
-void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *label, const glm::vec4 &vec4)
+void Survive::ComponentSerializer::saveCircleCollider2DComponent(entt::registry &registry, entt::entity entity,
+																 std::ofstream &writer)
 {
-	writer << "\t\t" << label << ':' << vec4.x << ',' << vec4.y << ',' << vec4.z << ',' << vec4.w << '\n';
+	if (registry.any_of<CircleCollider2DComponent>(entity))
+	{
+		const CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
+
+		writer << "\tcomponent:CircleCollider2DComponent\n";
+		writer << "\t\tradius:" << circleCollider.circleShape.m_radius << '\n';
+		printVec2(writer, "center", circleCollider.circleShape.m_p);
+
+		saveCollider2DComponent(writer, circleCollider);
+	}
+}
+
+void Survive::ComponentSerializer::saveEdgeCollider2DComponent(entt::registry &registry, entt::entity entity,
+															   std::ofstream &writer)
+{
+	if (registry.any_of<EdgeCollider2DComponent>(entity))
+	{
+		const EdgeCollider2DComponent &edgeCollider = registry.get<EdgeCollider2DComponent>(entity);
+
+		writer << "\tcomponent:EdgeCollider2DComponent\n";
+		printVec2(writer, "point1", edgeCollider.edgeShape.m_vertex1);
+		printVec2(writer, "point2", edgeCollider.edgeShape.m_vertex2);
+
+		saveCollider2DComponent(writer, edgeCollider);
+	}
+}
+
+void Survive::ComponentSerializer::savePolygonCollider2DComponent(entt::registry &registry, entt::entity entity,
+																  std::ofstream &writer)
+{
+	if (registry.any_of<PolygonCollider2DComponent>(entity))
+	{
+		const PolygonCollider2DComponent &polygonCollider = registry.get<PolygonCollider2DComponent>(entity);
+
+		writer << "\tcomponent:PolygonCollider2DComponent\n";
+
+		const std::vector<b2Vec2> &points = polygonCollider.points;
+
+		writer << "\t\tnumberOfPoints:" << points.size() << '\n';
+
+		for (int i = 0; i < points.size(); ++i)
+		{
+			std::string name = "point" + std::to_string(i + 1);
+			printVec2(writer, name.c_str(), points[i]);
+		}
+
+		saveCollider2DComponent(writer, polygonCollider);
+	}
+}
+
+void Survive::ComponentSerializer::saveHingeJoint2DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+	if (registry.any_of<HingeJoint2DComponent>(entity))
+	{
+		const HingeJoint2DComponent &hingeComponent = registry.get<HingeJoint2DComponent>(entity);
+
+		writer << "\tcomponent:HingeJoint2DComponent\n";
+		writer << "\t\tconnectedBody:" << hingeComponent.connectedBodyName << '\n';
+
+		const b2RevoluteJointDef &jointDef = hingeComponent.jointDef;
+		printVec2(writer, "anchorA", jointDef.localAnchorA);
+		printVec2(writer, "anchorB", jointDef.localAnchorB);
+
+		writer << "\t\tcollideConnected:" << jointDef.collideConnected << '\n';
+
+		writer << "\t\tuseMotor:" << jointDef.enableMotor << '\n';
+		writer << "\t\tmotorSpeed:" << jointDef.motorSpeed << '\n';
+		writer << "\t\tmaxTorque:" << jointDef.maxMotorTorque << '\n';
+
+		writer << "\t\tenableLimit:" << jointDef.enableLimit << '\n';
+		writer << "\t\tlowerAngle:" << jointDef.lowerAngle << '\n';
+		writer << "\t\tupperAngle:" << jointDef.upperAngle << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveDistanceJoint2DComponent(entt::registry &registry, entt::entity entity,
+																std::ofstream &writer)
+{
+	if (registry.any_of<DistanceJoint2DComponent>(entity))
+	{
+		const DistanceJoint2DComponent &distanceJointComponent = registry.get<DistanceJoint2DComponent>(entity);
+
+		writer << "\tcomponent:DistanceJoint2DComponent\n";
+		writer << "\t\tconnectedBody:" << distanceJointComponent.connectedBodyName << '\n';
+
+		const b2DistanceJointDef &jointDef = distanceJointComponent.jointDef;
+		printVec2(writer, "anchorA", jointDef.localAnchorA);
+		printVec2(writer, "anchorB", jointDef.localAnchorB);
+
+		writer << "\t\tcollideConnected:" << jointDef.collideConnected << '\n';
+
+		writer << "\t\tminLength:" << jointDef.minLength << '\n';
+		writer << "\t\tmaxLength:" << jointDef.maxLength << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveRigidBody2DComponent(entt::registry &registry, entt::entity entity,
+															std::ofstream &writer)
+{
+	if (registry.any_of<RigidBody2DComponent>(entity))
+	{
+		const RigidBody2DComponent &rigidBody = registry.get<RigidBody2DComponent>(entity);
+
+		writer << "\tcomponent:RigidBody2DComponent\n";
+
+		const b2BodyDef &bodyDef = rigidBody.bodyDefinition;
+		writer << "\t\tbodyType:" << static_cast<int>(bodyDef.type) << '\n';
+
+		writer << "\t\tlinearDrag:" << bodyDef.linearDamping << '\n';
+		printVec2(writer, "linearVelocity", bodyDef.linearVelocity);
+		writer << "\t\tangularDrag:" << bodyDef.angularDamping << '\n';
+
+		writer << "\t\tgravityScale:" << bodyDef.gravityScale << '\n';
+		writer << "\t\tfixedAngle:" << bodyDef.fixedRotation << '\n';
+	}
 }
 
 void
@@ -192,4 +319,28 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 		writer << "\t\tborderWidth:" << text.m_BorderWidth << '\n';
 		printVec3(writer, "borderColor", text.m_BorderColor);
 	}
+}
+
+void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
+{
+	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
+}
+
+void Survive::ComponentSerializer::printVec4(std::ofstream &writer, const char *label, const glm::vec4 &vec4)
+{
+	writer << "\t\t" << label << ':' << vec4.x << ',' << vec4.y << ',' << vec4.z << ',' << vec4.w << '\n';
+}
+
+void Survive::ComponentSerializer::printVec2(std::ofstream &writer, const char *label, const b2Vec2 &vec2)
+{
+	writer << "\t\t" << label << ':' << vec2.x << ',' << vec2.y << '\n';
+}
+
+void Survive::ComponentSerializer::saveCollider2DComponent(std::ofstream &writer,
+														   const Collider2DComponent &colliderComponent)
+{
+	const b2FixtureDef &fixtureDef = colliderComponent.fixtureDef;
+	writer << "\t\tmass:" << fixtureDef.density << '\n';
+	writer << "\t\tfriction:" << fixtureDef.friction << '\n';
+	writer << "\t\telasticity:" << fixtureDef.restitution << '\n';
 }

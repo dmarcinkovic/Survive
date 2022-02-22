@@ -121,18 +121,6 @@ float Survive::Util::lineDistance(const ImVec2 &p1, const ImVec2 &p2)
 	return std::sqrt(dx * dx + dy * dy);
 }
 
-ImVec2 Survive::Util::getCenter(const b2Vec2 &localCenter, const Camera &camera,
-								const Transform3DComponent &transform, const glm::mat4 &modelMatrix,
-								float x, float y, float width, float height)
-{
-	float scale = Constants::BOX2D_SCALE;
-	glm::vec2 center{localCenter.x / scale, localCenter.y / scale};
-
-	glm::vec2 point{center.x + transform.position.x, center.y + transform.position.y};
-
-	return Util::getScreenPos(camera, modelMatrix, point, x, y, width, height);
-}
-
 glm::vec3 Survive::Util::getMouseRay(const Camera &camera, float x, float y, float width, float height)
 {
 	const glm::mat4 &projectionMatrix = camera.getProjectionMatrix();
