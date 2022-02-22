@@ -264,6 +264,11 @@ void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &regist
 
 	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
+	if (width < 0 || height < 0 || mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
+	{
+		return;
+	}
+
 	BoxCollider2DComponent boxCollider(width, height, mass, friction, elasticity);
 	boxCollider.center = center;
 
@@ -277,6 +282,11 @@ void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &reg
 	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
 	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+
+	if (radius < 0 || mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
+	{
+		return;
+	}
 
 	CircleCollider2DComponent circleCollider(radius, mass, friction, elasticity);
 	circleCollider.circleShape.m_p = center;
@@ -299,6 +309,11 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 
 	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
 
+	if (mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
+	{
+		return;
+	}
+
 	registry.emplace<PolygonCollider2DComponent>(entity, points, mass, friction, elasticity);
 }
 
@@ -309,6 +324,11 @@ void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &regis
 	b2Vec2 point2 = parseVec2(parseLine(reader, "point2"));
 
 	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+
+	if (mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
+	{
+		return;
+	}
 
 	registry.emplace<EdgeCollider2DComponent>(entity, point1, point2, mass, friction, elasticity);
 }
@@ -350,6 +370,11 @@ void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &regi
 
 	float minLength = std::stof(parseLine(reader, "minLength"));
 	float maxLength = std::stof(parseLine(reader, "maxLength"));
+
+	if (minLength < 0 || maxLength < 0)
+	{
+		return;
+	}
 
 	DistanceJoint2DComponent distanceComponent{entt::null, anchorA, anchorB, minLength, maxLength, collideConnected};
 	distanceComponent.connectedBodyName = connectedBodyName;
