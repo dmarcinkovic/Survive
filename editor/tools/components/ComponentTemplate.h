@@ -83,9 +83,6 @@ namespace Survive
 			ImGui::Columns();
 			ImGui::PopID();
 
-			ImGui::Columns();
-			ImGui::PopID();
-
 			if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 			{
 				changed = false;
