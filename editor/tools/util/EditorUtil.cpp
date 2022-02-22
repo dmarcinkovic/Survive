@@ -161,7 +161,7 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 
 				textureName = selectedFilename;
 				changed = true;
-			} catch(const std::exception &exception)
+			} catch (const std::exception &exception)
 			{
 				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
@@ -281,7 +281,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 			renderer.popMousePickingListener();
 			return;
 		}
-		
+
 		try
 		{
 			Texture texture = loader.loadTexture(filename.c_str());
@@ -301,7 +301,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 				renderComponent.texturedModel.setTexture(texture);
 				renderComponent.textureName = std::filesystem::relative(file).string();
 			}
-		} catch(const std::exception &exception)
+		} catch (const std::exception &exception)
 		{
 			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
 		}
@@ -517,13 +517,18 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 	ImGui::NextColumn();
 }
 
-bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value)
+bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value, float min, float max)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	bool result = ImGui::InputFloat(label, &value);
+	bool result;
+	if ((result = ImGui::InputFloat(label, &value)))
+	{
+		value = std::min(max, std::max(min, value));
+	}
+
 	ImGui::NextColumn();
 
 	return result;
@@ -536,7 +541,12 @@ bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *labe
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
-	bool result = ImGui::DragFloat(label, &value, step, min, max);
+	bool result;
+	if ((result = ImGui::DragFloat(label, &value, step, min, max)))
+	{
+		value = std::min(max, std::max(min, value));
+	}
+
 	ImGui::NextColumn();
 
 	return result;

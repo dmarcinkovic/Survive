@@ -278,9 +278,11 @@ namespace Survive
 	template<>
 	inline void ComponentTemplate::drawComponent(Collider2DComponent &component, bool *)
 	{
-		EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
-		EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
-		EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
+		b2FixtureDef &fixtureDef = component.fixtureDef;
+
+		EditorUtil::drawColumnInputFloat("Mass", "##Box mass", fixtureDef.density, 0.0f);
+		EditorUtil::drawColumnDragFloat("Friction", "##Box friction", fixtureDef.friction, 0, 1, 0.05f);
+		EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", fixtureDef.restitution, 0.0f, 1.0f);
 	}
 
 	template<>
@@ -292,14 +294,12 @@ namespace Survive
 
 			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width))
 			{
-				component.width = std::max(0.0f, component.width);
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
 			}
 
 			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height))
 			{
-				component.height = std::max(0.0f, component.height);
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
 				component.m_Initialized = true;
 			}
@@ -404,16 +404,8 @@ namespace Survive
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping))
-			{
-				bodyDef.linearDamping = std::max(0.0f, bodyDef.linearDamping);
-			}
-
-			if (EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping))
-			{
-				bodyDef.angularDamping = std::max(0.0f, bodyDef.angularDamping);
-			}
-
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping, 0.0f);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping, 0.0f);
 			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
 			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
