@@ -15,7 +15,7 @@
 
 namespace Survive
 {
-	class WaterRenderer
+	class WaterRenderer : public Renderer3D
 	{
 	private:
 		WaterShader m_Shader;

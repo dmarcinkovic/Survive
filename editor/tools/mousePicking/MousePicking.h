@@ -14,12 +14,13 @@
 #include "MousePickingShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
 	using MousePickingListener = std::function<void(int)>;
 
-	class MousePicking
+	class MousePicking : public Renderer3D
 	{
 	private:
 		static bool mousePressed;

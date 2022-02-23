@@ -9,10 +9,11 @@
 #include "TerrainShader.h"
 #include "Components.h"
 #include "Camera.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class TerrainRenderer
+	class TerrainRenderer : public Renderer3D
 	{
 	private:
 		TerrainShader m_Shader;

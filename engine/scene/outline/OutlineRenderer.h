@@ -13,10 +13,11 @@
 #include "Transform3DComponent.h"
 #include "Render3DComponent.h"
 #include "Camera.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class OutlineRenderer
+	class OutlineRenderer : public Renderer3D
 	{
 	private:
 		static constexpr float SCALE = 1.04f;
