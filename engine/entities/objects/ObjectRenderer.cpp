@@ -6,7 +6,6 @@
 #include "Components.h"
 #include "ShadowComponent.h"
 #include "Maths.h"
-#include "Renderer3D.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
@@ -24,19 +23,19 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 		return;
 	}
 
-	Renderer3D::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
 	for (auto const&[texturedModel, objects]: entities)
 	{
-		Renderer3D::prepareEntity(texturedModel);
+		prepareEntity(texturedModel);
 		renderScene(registry, objects, camera);
 
-		Renderer3D::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer3D::finishRendering();
+	finishRendering();
 	glDisable(GL_STENCIL_TEST);
 }
 
@@ -50,11 +49,11 @@ void Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::v
 		drawOutline(registry, object);
 
 		bool isTransparent = getTransparencyProperty(registry, object);
-		Renderer3D::addTransparency(!isTransparent, !isTransparent);
+		addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-		Renderer3D::addTransparency(isTransparent, isTransparent);
+		addTransparency(isTransparent, isTransparent);
 		Texture::unbindTexture();
 		Texture::unbindCubeTexture();
 	}

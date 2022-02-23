@@ -31,9 +31,9 @@ namespace Survive
 		[[nodiscard]] static bool shouldRender(entt::registry &registry);
 
 	private:
-		void prepareRendering(const Camera &camera) const;
+		void prepareRenderingWater(const Camera &camera) const;
 
-		static void finishRendering();
+		static void finishRenderingWater();
 
 		static void loadMoveFactor(const WaterShader &shader, MoveComponent &moveComponent);
 

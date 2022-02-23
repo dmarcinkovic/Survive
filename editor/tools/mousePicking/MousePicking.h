@@ -64,8 +64,6 @@ namespace Survive
 
 		static void setViewport();
 
-		void prepareRendering() const;
-
 		void informListeners(int entity) const;
 	};
 }

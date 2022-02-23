@@ -7,7 +7,6 @@
 #include "Components.h"
 #include "ShadowRenderer.h"
 #include "Maths.h"
-#include "Renderer3D.h"
 
 void Survive::ShadowRenderer::render(entt::registry &registry, const Light &light, const Camera &camera) const
 {
@@ -18,7 +17,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 		return;
 	}
 
-	Renderer3D::prepareRendering(m_ShadowShader);
+	prepareRendering(m_ShadowShader);
 
 	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
 	m_ShadowShader.loadProjectionMatrix(camera.getLightProjectionMatrix());
@@ -58,7 +57,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 		glDisableVertexAttribArray(0);
 	}
 
-	Renderer3D::finishRendering();
+	finishRendering();
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>

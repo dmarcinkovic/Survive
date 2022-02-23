@@ -16,22 +16,22 @@ void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &c
 		return;
 	}
 
-	Renderer2D::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const &text: texts)
 	{
 		const TexturedModel &model = texts.get<TextComponent>(text).text.getModel();
-		Renderer2D::prepareEntity(model);
+		prepareEntity(model);
 
 		loadUniforms(registry, text);
 
 		glDrawArrays(GL_TRIANGLES, 0, model.vertexCount());
 
-		Renderer2D::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2D::finishRendering();
+	finishRendering();
 }
 
 void Survive::TextRenderer::loadUniforms(entt::registry &registry, entt::entity entity) const

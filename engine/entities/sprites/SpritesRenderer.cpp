@@ -15,18 +15,18 @@ void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &ca
 		return;
 	}
 
-	Renderer2D::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, sprites] : entities)
 	{
-		Renderer2D::prepareEntity(texture);
+		prepareEntity(texture);
 		renderSprites(sprites, registry, texture);
 
-		Renderer2D::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2D::finishRendering();
+	finishRendering();
 }
 
 void

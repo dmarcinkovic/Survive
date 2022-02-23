@@ -12,7 +12,7 @@ namespace Survive
 {
 	class Renderer2D
 	{
-	public:
+	protected:
 		static void prepareRendering(const Shader &shader);
 
 		static void prepareEntity(const TexturedModel &texture, int numberOfVertexUnits = 2);

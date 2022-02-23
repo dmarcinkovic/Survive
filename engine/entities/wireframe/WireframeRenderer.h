@@ -32,7 +32,7 @@ namespace Survive
 		static void updateData(std::vector<float> vertices);
 
 	private:
-		void prepareRendering() const;
+		void prepare() const;
 
 		static void finish();
 	};

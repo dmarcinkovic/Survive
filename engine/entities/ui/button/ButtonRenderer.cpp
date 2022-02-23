@@ -13,12 +13,12 @@ void Survive::ButtonRenderer::render() const
 		return;
 	}
 
-	Renderer2D::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 
 	for (auto const &buttons : m_Buttons)
 	{
 		const Button &button = buttons.get();
-		Renderer2D::prepareEntity(button.m_Texture);
+		prepareEntity(button.m_Texture);
 
 		m_Shader.loadColor(button.m_Color);
 		m_Shader.loadTransformationMatrix(
@@ -27,10 +27,10 @@ void Survive::ButtonRenderer::render() const
 		m_Shader.loadIsLoadingImage(button.m_Texture.isValidTexture());
 
 		glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		Renderer2D::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2D::finishRendering();
+	finishRendering();
 }
 
 void Survive::ButtonRenderer::addButton(Button &button) noexcept

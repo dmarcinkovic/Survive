@@ -5,7 +5,6 @@
 #include "Components.h"
 #include "GuiRenderer.h"
 #include "Maths.h"
-#include "Renderer2D.h"
 
 void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera) const
 {
@@ -16,18 +15,18 @@ void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera
 		return;
 	}
 
-	Renderer2D::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, guis] : entities)
 	{
-		Renderer2D::prepareEntity(texture);
+		prepareEntity(texture);
 		renderGuis(guis, registry, texture);
 
-		Renderer2D::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2D::finishRendering();
+	finishRendering();
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>

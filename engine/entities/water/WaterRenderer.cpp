@@ -11,11 +11,11 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 {
 	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
 
-	prepareRendering(camera);
+	prepareRenderingWater(camera);
 	waterTiles.each(
 			[&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
 				MoveComponent &moveComponent) {
-				Renderer3D::prepareEntity(renderComponent.texturedModel);
+				prepareEntity(renderComponent.texturedModel);
 
 				bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
 							 m_Fbo.getRefractionDepthBuffer());
@@ -23,25 +23,25 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 				loadUniforms(camera, transform, moveComponent, light);
 				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-				Renderer3D::finishRenderingEntity();
+				finishRenderingEntity();
 			});
 
-	finishRendering();
+	finishRenderingWater();
 }
 
-void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
+void Survive::WaterRenderer::prepareRenderingWater(const Camera &camera) const
 {
-	Renderer3D::prepareRendering(m_Shader);
-	Renderer3D::addTransparency(false, true);
+	prepareRendering(m_Shader);
+	addTransparency(false, true);
 
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 }
 
-void Survive::WaterRenderer::finishRendering()
+void Survive::WaterRenderer::finishRenderingWater()
 {
-	Renderer3D::addTransparency(false, false);
-	Renderer3D::finishRendering();
+	addTransparency(false, false);
+	finishRendering();
 }
 
 bool Survive::WaterRenderer::shouldRender(entt::registry &registry)
@@ -79,6 +79,7 @@ void Survive::WaterRenderer::bindTextures(const TexturedComponent &textures, con
 {
 	reflectionTexture.bindTexture(0);
 	refractionTexture.bindTexture(1);
+
 	textures.textures[0].bindTexture(2);
 	textures.textures[1].bindTexture(3);
 	refractionDepthMap.bindTexture(4);
