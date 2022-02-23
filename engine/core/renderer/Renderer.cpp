@@ -32,6 +32,7 @@ void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &ca
 	m_SpriteRenderer.render(registry, camera);
 
 	m_TextRenderer.renderText(registry, camera);
+	m_ButtonRenderer.render();
 	m_WireframeRenderer.render();
 }
 
@@ -170,5 +171,10 @@ void Survive::Renderer::renderScene(entt::registry &registry, Camera &camera, bo
 
 	m_BloomRenderer.render(registry);
 	resetViewport();
+}
+
+void Survive::Renderer::addButton(Survive::Button &button)
+{
+	m_ButtonRenderer.addButton(button);
 }
 
