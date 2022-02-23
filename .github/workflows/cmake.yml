@@ -76,7 +76,7 @@ jobs:
           cd ${{github.workspace}}
           mkdir build
           cd build
-          conan install ..
+          conan install .. --build=missing
           cmake .. -G "Visual Studio 17" -D CONAN_DISABLE_CHECK_COMPILER=ON
           cmake --build . --config Release
           cmake --install . --prefix "${{github.workspace}}/build/Windows"
