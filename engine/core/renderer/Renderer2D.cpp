@@ -2,9 +2,9 @@
 // Created by david on 03. 05. 2020..
 //
 
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 
-void Survive::Renderer2DUtil::prepareRendering(const Shader &shader)
+void Survive::Renderer2D::prepareRendering(const Shader &shader)
 {
 	shader.start();
 	glEnable(GL_BLEND);
@@ -12,14 +12,14 @@ void Survive::Renderer2DUtil::prepareRendering(const Shader &shader)
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Survive::Renderer2DUtil::finishRendering()
+void Survive::Renderer2D::finishRendering()
 {
 	Shader::stop();
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 }
 
-void Survive::Renderer2DUtil::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
+void Survive::Renderer2D::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
 {
 	texture.bind();
 
@@ -29,7 +29,7 @@ void Survive::Renderer2DUtil::prepareEntity(const TexturedModel &texture, int nu
 	}
 }
 
-void Survive::Renderer2DUtil::finishRenderingEntity(int numberOfVertexUnits)
+void Survive::Renderer2D::finishRenderingEntity(int numberOfVertexUnits)
 {
 	TexturedModel::unbind();
 

@@ -5,7 +5,7 @@
 #include "TextRenderer.h"
 #include "Components.h"
 #include "Maths.h"
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 
 void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &camera) const
 {
@@ -16,22 +16,22 @@ void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &c
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	Renderer2D::prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const &text: texts)
 	{
 		const TexturedModel &model = texts.get<TextComponent>(text).text.getModel();
-		Renderer2DUtil::prepareEntity(model);
+		Renderer2D::prepareEntity(model);
 
 		loadUniforms(registry, text);
 
 		glDrawArrays(GL_TRIANGLES, 0, model.vertexCount());
 
-		Renderer2DUtil::finishRenderingEntity();
+		Renderer2D::finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	Renderer2D::finishRendering();
 }
 
 void Survive::TextRenderer::loadUniforms(entt::registry &registry, entt::entity entity) const

@@ -4,7 +4,7 @@
 
 #include "ButtonRenderer.h"
 #include "Maths.h"
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 
 void Survive::ButtonRenderer::render() const
 {
@@ -13,12 +13,12 @@ void Survive::ButtonRenderer::render() const
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	Renderer2D::prepareRendering(m_Shader);
 
 	for (auto const &buttons : m_Buttons)
 	{
 		const Button &button = buttons.get();
-		Renderer2DUtil::prepareEntity(button.m_Texture);
+		Renderer2D::prepareEntity(button.m_Texture);
 
 		m_Shader.loadColor(button.m_Color);
 		m_Shader.loadTransformationMatrix(
@@ -27,10 +27,10 @@ void Survive::ButtonRenderer::render() const
 		m_Shader.loadIsLoadingImage(button.m_Texture.isValidTexture());
 
 		glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		Renderer2DUtil::finishRenderingEntity();
+		Renderer2D::finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	Renderer2D::finishRendering();
 }
 
 void Survive::ButtonRenderer::addButton(Button &button) noexcept

@@ -3,7 +3,7 @@
 //
 
 #include "SpritesRenderer.h"
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 #include "Maths.h"
 
 void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &camera) const
@@ -15,18 +15,18 @@ void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &ca
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	Renderer2D::prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, sprites] : entities)
 	{
-		Renderer2DUtil::prepareEntity(texture);
+		Renderer2D::prepareEntity(texture);
 		renderSprites(sprites, registry, texture);
 
-		Renderer2DUtil::finishRenderingEntity();
+		Renderer2D::finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	Renderer2D::finishRendering();
 }
 
 void
