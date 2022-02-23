@@ -15,6 +15,7 @@
 #include "EditorUtil.h"
 #include "OpenDialog.h"
 #include "Loader.h"
+#include "Log.h"
 
 namespace Survive
 {
@@ -63,6 +64,8 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(Render3DComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool dialogTextureOpen = false;
+		static bool dialogModelOpen = false;
 
 		if (ImGui::CollapsingHeader("Render3D", visible))
 		{
@@ -71,10 +74,11 @@ namespace Survive
 			ImGui::PushID("Render3D component");
 			ImGui::Columns(2);
 
-			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed);
+			m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed,
+								   dialogModelOpen);
 			ImGui::NextColumn();
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, dialogTextureOpen);
 
 			ImGui::Columns();
 			ImGui::PopID();
@@ -90,6 +94,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(MaterialComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Material", visible))
 		{
@@ -102,7 +107,7 @@ namespace Survive
 			ImGui::PushID("Material component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
-									 "Normal map: %s", "Load texture", changed);
+									 "Normal map: %s", "Load texture", changed, open);
 
 			ImGui::Columns();
 			ImGui::PopID();
@@ -128,6 +133,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(BloomComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Bloom", visible))
 		{
@@ -139,7 +145,7 @@ namespace Survive
 			ImGui::PushID("Bloom component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, open);
 			ImGui::Columns();
 			ImGui::PopID();
 		}
@@ -173,6 +179,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(Render2DComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Render2D", visible))
 		{
@@ -181,7 +188,7 @@ namespace Survive
 			ImGui::PushID("Render 2D Component");
 			ImGui::Columns(2);
 			m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-									 "Texture: %s", "Load texture", changed);
+									 "Texture: %s", "Load texture", changed, open);
 			EditorUtil::loadQuadModel(changed, texturedModel, m_Loader);
 
 			ImGui::Columns();
@@ -193,6 +200,7 @@ namespace Survive
 	inline void ComponentTemplate::drawComponent(SoundComponent &component, bool *visible)
 	{
 		static bool changed = true;
+		static bool open = false;
 
 		if (ImGui::CollapsingHeader("Sound", visible))
 		{
@@ -211,7 +219,8 @@ namespace Survive
 			ImGui::Separator();
 
 			ImGui::Columns(2);
-			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed);
+
+			m_EditorUtil.loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed, open);
 			ImGui::Columns();
 		}
 	}
@@ -274,21 +283,32 @@ namespace Survive
 	}
 
 	template<>
+	inline void ComponentTemplate::drawComponent(Collider2DComponent &component, bool *)
+	{
+		b2FixtureDef &fixtureDef = component.fixtureDef;
+
+		EditorUtil::drawColumnInputFloat("Mass", "##Box mass", fixtureDef.density, 0.0f);
+		EditorUtil::drawColumnDragFloat("Friction", "##Box friction", fixtureDef.friction, 0, 1, 0.05f);
+		EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", fixtureDef.restitution, 0.0f, 1.0f);
+	}
+
+	template<>
 	inline void ComponentTemplate::drawComponent(BoxCollider2DComponent &component, bool *visible)
 	{
 		if (ImGui::CollapsingHeader("Box collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Width", "##Box width", component.width))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+				component.m_Initialized = true;
 			}
 
-			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height, 0, max))
+			if (EditorUtil::drawColumnDragFloat("Height", "##Box height", component.height))
 			{
 				component.boxShape.SetAsBox(component.width, component.height, component.center, 0);
+				component.m_Initialized = true;
 			}
 
 			b2Vec2 oldCenter = component.center;
@@ -297,9 +317,9 @@ namespace Survive
 				EditorUtil::moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
 			}
 
-			EditorUtil::drawColumnInputFloat("Mass", "##Box mass", component.fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Box friction", component.fixtureDef.friction, 0, 1, 0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Box restitution", component.fixtureDef.restitution);
+			ImGui::PushID("Box2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -310,16 +330,18 @@ namespace Survive
 	{
 		if (ImGui::CollapsingHeader("Circle collider 2D", visible))
 		{
-			static constexpr float max = std::numeric_limits<float>::max();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius, 0, max);
+			if (EditorUtil::drawColumnDragFloat("Radius", "##Cicle radius", component.circleShape.m_radius))
+			{
+				component.m_Initialized = true;
+			}
+
 			EditorUtil::drawColumnDragFloat2("Center", "##Circle center", component.circleShape.m_p);
 
-			b2FixtureDef &fixtureDef = component.fixtureDef;
-			EditorUtil::drawColumnInputFloat("Mass", "##Circle mass", fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Circle friction", fixtureDef.friction, 0, 1, 0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Circle restitution", fixtureDef.restitution);
+			ImGui::PushID("Circle2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -332,13 +354,19 @@ namespace Survive
 		{
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1);
-			EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2);
+			if (EditorUtil::drawColumnDragFloat2("First point", "##Edge p1", component.edgeShape.m_vertex1))
+			{
+				component.m_Initialized = true;
+			}
 
-			b2FixtureDef &fixtureDef = component.fixtureDef;
-			EditorUtil::drawColumnInputFloat("Mass", "##Edge mass", fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Edge friction", fixtureDef.friction, 0, 1, 0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Edge restitution", fixtureDef.restitution);
+			if (EditorUtil::drawColumnDragFloat2("Second point", "##Edge p2", component.edgeShape.m_vertex2))
+			{
+				component.m_Initialized = true;
+			}
+
+			ImGui::PushID("Edge2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -353,14 +381,13 @@ namespace Survive
 
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawPolygonPoints(component.points, component.polygonShape);
+			m_EditorUtil.drawPolygonPoints(component.points, component.polygonShape);
 
 			ImGui::Separator();
 
-			b2FixtureDef &fixtureDef = component.fixtureDef;
-			EditorUtil::drawColumnInputFloat("Mass", "##Polygon mass", fixtureDef.density);
-			EditorUtil::drawColumnDragFloat("Friction", "##Polygon friction", fixtureDef.friction, 0, 1, 0.05f);
-			EditorUtil::drawColumnInputFloat("Elasticity", "##Polygon restitution", fixtureDef.restitution);
+			ImGui::PushID("Polygon2D");
+			drawComponent<Collider2DComponent>(component, nullptr);
+			ImGui::PopID();
 
 			ImGui::Columns();
 		}
@@ -384,12 +411,67 @@ namespace Survive
 			ImGui::Separator();
 			ImGui::Columns(2, nullptr, false);
 
-			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping);
-			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping);
+			EditorUtil::drawColumnInputFloat("Linear drag", "##Linear drag", bodyDef.linearDamping, 0.0f);
+			EditorUtil::drawColumnInputFloat("Angular drag", "##Angular drag", bodyDef.angularDamping, 0.0f);
 			EditorUtil::drawColumnInputFloat("Gravity scale", "##Gravity scale", bodyDef.gravityScale);
 
 			EditorUtil::drawColumnDragFloat2("Linear velocity", "##Linear velocity", bodyDef.linearVelocity);
 			EditorUtil::drawColumnInputBool("Fixed angle", "##Fixed angle", bodyDef.fixedRotation);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(HingeJoint2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
+		{
+			ImGui::Columns(2, nullptr, false);
+
+			b2RevoluteJointDef &jointDef = component.jointDef;
+
+			EditorUtil::drawColumnInputText("##HingeBody", "Connected Rigid Body", component.connectedBodyName);
+			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
+
+			ImGui::NextColumn();
+
+			EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
+
+			ImGui::Separator();
+			EditorUtil::drawHingeMotorProperties(component);
+
+			ImGui::Separator();
+			EditorUtil::drawHingeAngleProperties(component);
+
+			ImGui::Columns();
+		}
+	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(DistanceJoint2DComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Distance joint 2D", visible))
+		{
+			ImGui::Columns(2, nullptr, false);
+
+			EditorUtil::drawColumnInputText("##DistanceBody", "Connected Rigid Body", component.connectedBodyName);
+			EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
+
+			ImGui::NextColumn();
+
+			b2DistanceJointDef &jointDef = component.jointDef;
+
+			EditorUtil::drawColumnDragFloat2("Anchor", "##DistanceAnchorA", jointDef.localAnchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##DistanceAnchorB", jointDef.localAnchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##DistanceCollide", jointDef.collideConnected);
+
+			ImGui::Separator();
+
+			EditorUtil::drawColumnDragFloat("Min length", "##DistanceJointMinLen", jointDef.minLength);
+			EditorUtil::drawColumnDragFloat("Max length", "##DistanceJointMaxLen", jointDef.maxLength);
 
 			ImGui::Columns();
 		}

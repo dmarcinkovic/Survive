@@ -117,7 +117,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	EditorUtil::resetStyleColors();
 }
 
-void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
+void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i)
 {
 	ImGui::PushID(i);
 	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
@@ -127,6 +127,9 @@ void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, en
 		m_Selected = i;
 		m_CurrentItem = -1;
 	}
+
+	initializeDragDropSource(selectedEntity, tag);
+
 	ImGui::PopID();
 }
 
@@ -219,4 +222,18 @@ void Survive::EntityManager::stopDrawing()
 {
 	m_AddNewComponent = false;
 	m_Selected = -1;
+}
+
+void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		auto id = static_cast<int>(selectedEntity);
+		const char *data = tag.tag.c_str();
+
+		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
+
+		ImGui::SetDragDropPayload("Joint2D", &payload, sizeof(payload));
+		ImGui::EndDragDropSource();
+	}
 }

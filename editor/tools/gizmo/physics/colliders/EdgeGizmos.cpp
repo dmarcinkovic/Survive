@@ -17,7 +17,7 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 	{
 		m_GizmoEnabled = false;
 	}
-	
+
 	if (selectedEntity != entt::null &&
 		registry.all_of<EdgeCollider2DComponent, Transform3DComponent>(selectedEntity))
 	{
@@ -28,16 +28,15 @@ void Survive::EdgeGizmos::draw(entt::registry &registry, const Camera &camera, e
 
 		if (m_GizmoEnabled)
 		{
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+			enableGizmos(edgeCollider, transform, camera);
+		} else
+		{
+			m_PointHovered = -1;
 
-			ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix);
-			ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix);
-
-			m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
-
-			updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2);
-			drawGizmo(p1, p2);
 		}
+	} else
+	{
+		m_GizmoEnabled = false;
 	}
 }
 
@@ -60,15 +59,6 @@ void Survive::EdgeGizmos::initializeEdgeCollider(EdgeCollider2DComponent &edgeCo
 	}
 }
 
-ImVec2 Survive::EdgeGizmos::getPoint(const glm::vec3 &globalPos, const b2Vec2 &vertex, const Camera &camera,
-									 const glm::mat4 &modelMatrix) const
-{
-	float scale = Constants::BOX2D_SCALE;
-
-	glm::vec3 point = globalPos + glm::vec3{vertex.x / scale, vertex.y / scale, 0};
-	return Util::getScreenPos(camera, modelMatrix, point, m_X, m_Y, m_Width, m_Height);
-}
-
 void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2)
 {
 	static constexpr ImU32 POINT_COLOR = IM_COL32(0, 0, 255, 255);
@@ -85,24 +75,9 @@ void Survive::EdgeGizmos::drawGizmo(const ImVec2 &p1, const ImVec2 &p2)
 	drawList->AddCircleFilled(p2, RADIUS, color2);
 }
 
-void Survive::EdgeGizmos::moveVertex(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-									 b2Vec2 &vertex) const
-{
-	ImVec2 mousePosition = ImGui::GetMousePos();
-
-	glm::vec3 localPos = Util::getLocalSpace(camera, modelMatrix, mousePosition, m_X, m_Y, m_Width,
-											 m_Height);
-
-	localPos *= Constants::BOX2D_SCALE;
-	glm::vec3 offset = position * Constants::BOX2D_SCALE;
-
-	glm::vec3 newPosition = localPos - offset;
-	vertex = b2Vec2(newPosition.x, newPosition.y);
-}
-
-void
-Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
-								 EdgeCollider2DComponent &edgeCollider, const ImVec2 &p1, const ImVec2 &p2)
+void Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMatrix, const glm::vec3 &position,
+									  EdgeCollider2DComponent &edgeCollider,
+									  const ImVec2 &p1, const ImVec2 &p2, float angle)
 {
 	if (!m_IsUsing && Util::mouseHoversPoint(p1, RADIUS))
 	{
@@ -121,10 +96,25 @@ Survive::EdgeGizmos::updateGizmo(const Camera &camera, const glm::mat4 &modelMat
 	if (m_IsUsing && m_PointHovered == 0)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex1);
+		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex1, angle);
 	} else if (m_IsUsing && m_PointHovered == 1)
 	{
 		ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
-		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2);
+		moveVertex(camera, modelMatrix, position, edgeCollider.edgeShape.m_vertex2, angle);
 	}
+}
+
+void Survive::EdgeGizmos::enableGizmos(EdgeCollider2DComponent &edgeCollider,
+									   const Transform3DComponent &transform, const Camera &camera)
+{
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position);
+
+	float angle = glm::radians(transform.rotation.z);
+	ImVec2 p1 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex1, camera, modelMatrix, angle);
+	ImVec2 p2 = getPoint(transform.position, edgeCollider.edgeShape.m_vertex2, camera, modelMatrix, angle);
+
+	m_IsUsing = ImGui::IsMouseDragging(ImGuiMouseButton_Left);
+
+	updateGizmo(camera, modelMatrix, transform.position, edgeCollider, p1, p2, angle);
+	drawGizmo(p1, p2);
 }
