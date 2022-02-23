@@ -43,8 +43,6 @@ namespace Survive
 
 		RegistryUtil m_RegistryUtil;
 
-		DaeParser m_DaeParser;
-
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
 
