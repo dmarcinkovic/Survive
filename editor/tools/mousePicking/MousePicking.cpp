@@ -9,7 +9,7 @@
 #include "Constants.h"
 #include "Components.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
 #include "Display.h"
 #include "PhysicsGizmo.h"
 
@@ -71,7 +71,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 
 	getRenderedObject();
 
-	Renderer3DUtil::finishRendering();
+	Renderer3D::finishRendering();
 
 	Display::clearWindow();
 	mousePressed = false;
@@ -194,7 +194,7 @@ bool Survive::MousePicking::isInsideWindow() const
 
 void Survive::MousePicking::prepareRendering() const
 {
-	Renderer3DUtil::prepareRendering(m_Shader);
+	Renderer3D::prepareRendering(m_Shader);
 }
 
 void Survive::MousePicking::setViewport()

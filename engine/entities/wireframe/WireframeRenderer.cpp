@@ -3,7 +3,7 @@
 //
 
 #include "WireframeRenderer.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
 #include <iostream>
 
 std::vector<float> Survive::WireframeRenderer::m_Vertices{};
@@ -35,7 +35,7 @@ void Survive::WireframeRenderer::prepareRendering() const
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	Renderer3DUtil::prepareRendering(m_Shader);
+	Renderer3D::prepareRendering(m_Shader);
 	glBindVertexArray(m_Model.m_Vao);
 	glEnableVertexAttribArray(0);
 }
@@ -44,7 +44,7 @@ void Survive::WireframeRenderer::finish()
 {
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-	Renderer3DUtil::finishRendering();
+	Renderer3D::finishRendering();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

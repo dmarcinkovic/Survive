@@ -5,7 +5,7 @@
 #include "WaterRenderer.h"
 #include "Display.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
@@ -15,7 +15,7 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 	waterTiles.each(
 			[&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
 				MoveComponent &moveComponent) {
-				Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
+				Renderer3D::prepareEntity(renderComponent.texturedModel);
 
 				bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
 							 m_Fbo.getRefractionDepthBuffer());
@@ -23,7 +23,7 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 				loadUniforms(camera, transform, moveComponent, light);
 				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-				Renderer3DUtil::finishRenderingEntity();
+				Renderer3D::finishRenderingEntity();
 			});
 
 	finishRendering();
@@ -31,8 +31,8 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 
 void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
 {
-	Renderer3DUtil::prepareRendering(m_Shader);
-	Renderer3DUtil::addTransparency(false, true);
+	Renderer3D::prepareRendering(m_Shader);
+	Renderer3D::addTransparency(false, true);
 
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
@@ -40,8 +40,8 @@ void Survive::WaterRenderer::prepareRendering(const Camera &camera) const
 
 void Survive::WaterRenderer::finishRendering()
 {
-	Renderer3DUtil::addTransparency(false, false);
-	Renderer3DUtil::finishRendering();
+	Renderer3D::addTransparency(false, false);
+	Renderer3D::finishRendering();
 }
 
 bool Survive::WaterRenderer::shouldRender(entt::registry &registry)

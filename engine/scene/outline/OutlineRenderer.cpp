@@ -5,7 +5,7 @@
 #include "OutlineRenderer.h"
 #include "OutlineComponent.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
 
 void Survive::OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
 {
@@ -14,7 +14,7 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 		return;
 	}
 
-	Renderer3DUtil::prepareRendering(m_Shader);
+	Renderer3D::prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
@@ -29,7 +29,7 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 	finishRenderingObject();
 
 	resetStencilFunctions();
-	Renderer3DUtil::finishRendering();
+	Renderer3D::finishRendering();
 	glDisable(GL_STENCIL_TEST);
 }
 

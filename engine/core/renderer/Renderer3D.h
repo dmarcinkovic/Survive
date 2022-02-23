@@ -2,8 +2,8 @@
 // Created by david on 17. 05. 2020..
 //
 
-#ifndef SURVIVE_RENDERER3DUTIL_H
-#define SURVIVE_RENDERER3DUTIL_H
+#ifndef SURVIVE_RENDERER3D_H
+#define SURVIVE_RENDERER3D_H
 
 
 #include "TexturedModel.h"
@@ -11,7 +11,7 @@
 
 namespace Survive
 {
-	class Renderer3DUtil
+	class Renderer3D
 	{
 	public:
 		static void prepareRendering(const Shader &shader);
@@ -26,4 +26,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_RENDERER3DUTIL_H
+#endif //SURVIVE_RENDERER3D_H

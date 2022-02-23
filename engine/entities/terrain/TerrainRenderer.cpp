@@ -4,7 +4,7 @@
 
 #include "TerrainRenderer.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
 
 void
 Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
@@ -16,7 +16,7 @@ Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera,
 		return;
 	}
 
-	Renderer3DUtil::prepareRendering(m_Shader);
+	Renderer3D::prepareRendering(m_Shader);
 	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures) {
 		prepareRendering(renderComponent, textures);
 		renderShadow(shadowMap, light);
@@ -28,7 +28,7 @@ Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera,
 		finishRendering();
 	});
 
-	Renderer3DUtil::finishRendering();
+	Renderer3D::finishRendering();
 }
 
 void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
@@ -42,8 +42,8 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 void
 Survive::TerrainRenderer::prepareRendering(const Render3DComponent &renderComponent, const TexturedComponent &textures)
 {
-	Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
-	Renderer3DUtil::addTransparency(false, true);
+	Renderer3D::prepareEntity(renderComponent.texturedModel);
+	Renderer3D::addTransparency(false, true);
 
 	for (int i = 1; i <= textures.textures.size(); ++i)
 	{
@@ -55,8 +55,8 @@ void Survive::TerrainRenderer::finishRendering()
 {
 	Texture::unbindTexture();
 
-	Renderer3DUtil::addTransparency(true, false);
-	Renderer3DUtil::finishRenderingEntity();
+	Renderer3D::addTransparency(true, false);
+	Renderer3D::finishRenderingEntity();
 }
 
 void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
