@@ -5,7 +5,6 @@
 #ifndef SURVIVE_RENDERER2D_H
 #define SURVIVE_RENDERER2D_H
 
-
 #include "TexturedModel.h"
 #include "Shader.h"
 

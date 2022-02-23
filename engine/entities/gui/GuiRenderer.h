@@ -12,10 +12,11 @@
 #include "entt.hpp"
 #include "Camera.h"
 #include "TexturedModel.h"
+#include "Renderer2D.h"
 
 namespace Survive
 {
-	class GuiRenderer
+	class GuiRenderer : public Renderer2D
 	{
 	private:
 		GuiShader m_Shader{};

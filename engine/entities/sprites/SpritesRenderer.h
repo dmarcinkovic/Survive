@@ -12,10 +12,11 @@
 #include "SpritesShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"
+#include "Renderer2D.h"
 
 namespace Survive
 {
-	class SpritesRenderer
+	class SpritesRenderer : public Renderer2D
 	{
 	private:
 		SpritesShader m_Shader{};
