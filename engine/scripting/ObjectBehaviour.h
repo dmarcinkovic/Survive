@@ -55,6 +55,12 @@ namespace Survive
 		}
 
 		template<typename ComponentType>
+		void removeComponent()
+		{
+			m_Registry->remove<ComponentType>(m_Entity);
+		}
+
+		template<typename ComponentType>
 		bool exists()
 		{
 			return m_Registry->any_of<ComponentType>(m_Entity);
