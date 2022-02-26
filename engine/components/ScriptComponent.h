@@ -13,11 +13,11 @@ namespace Survive
 {
 	struct ScriptComponent
 	{
-		std::unique_ptr<ObjectBehaviour> script;
+		std::shared_ptr<ObjectBehaviour> script;
 
 		ScriptComponent() = default;
 
-		explicit ScriptComponent(std::unique_ptr<ObjectBehaviour> objectBehaviour)
+		explicit ScriptComponent(std::shared_ptr<ObjectBehaviour> objectBehaviour)
 			: script(std::move(objectBehaviour))
 		{
 		}
