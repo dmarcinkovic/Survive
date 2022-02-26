@@ -13,7 +13,8 @@ namespace Survive
 	class RegistryUtil
 	{
 	private:
-		using Storage = std::tuple<Transform3DComponent, SpriteSheetComponent, RigidBody2DComponent, HingeJoint2DComponent>;
+		using Storage = std::tuple<Transform3DComponent, SpriteSheetComponent, RigidBody2DComponent,
+				HingeJoint2DComponent, DistanceJoint2DComponent>;
 
 		std::unordered_map<int, Storage> m_Components;
 
@@ -70,6 +71,7 @@ namespace Survive
 			save<SpriteSheetComponent>(registry, entity, storage);
 			save<RigidBody2DComponent>(registry, entity, storage);
 			save<HingeJoint2DComponent>(registry, entity, storage);
+			save<DistanceJoint2DComponent>(registry, entity, storage);
 		}
 
 		void restoreComponents(entt::entity entity, entt::registry &registry)
@@ -81,6 +83,7 @@ namespace Survive
 			replace<SpriteSheetComponent>(registry, entity, storage);
 			replace<RigidBody2DComponent>(registry, entity, storage);
 			replace<HingeJoint2DComponent>(registry, entity, storage);
+			replace<DistanceJoint2DComponent>(registry, entity, storage);
 
 			restoreSoundComponent(registry, entity);
 		}
