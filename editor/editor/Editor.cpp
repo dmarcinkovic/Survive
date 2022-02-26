@@ -136,10 +136,10 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 						m_SceneLoader.loadScene(registry, file.string());
 						m_SavedFile = file.string();
 
-						Log::logWindow(LogType::INFO, "Scene loaded successfully");
+						Log::logMessage(LogType::INFO, "Scene loaded successfully");
 					} catch (const std::exception &exception)
 					{
-						Log::logWindow(LogType::ERROR, "Failed to load the scene");
+						Log::logMessage(LogType::ERROR, "Failed to load the scene");
 					}
 				} else if (extension == ".obj" && file.has_stem())
 				{

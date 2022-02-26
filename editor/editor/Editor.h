@@ -13,7 +13,7 @@
 #include "ContentBrowser.h"
 #include "EventHandler.h"
 #include "EditorUtil.h"
-#include "Log.h"
+#include "LogEditor.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
 #include "Camera.h"
@@ -36,7 +36,7 @@ namespace Survive
 		EntityManager m_Manager{};
 		ContentBrowser m_ContentBrowser{};
 
-		Log m_Log;
+		LogEditor m_Log;
 		StatusBar m_StatusBar;
 
 		SceneSerializer m_SceneLoader;

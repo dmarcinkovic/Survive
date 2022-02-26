@@ -21,6 +21,7 @@
 #include "Render2DComponent.h"
 #include "Render3DComponent.h"
 #include "RigidBody2DComponent.h"
+#include "ScriptComponent.h"
 #include "ShadowComponent.h"
 #include "SoundComponent.h"
 #include "SpriteComponent.h"

@@ -131,13 +131,13 @@ Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
 			model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
 		} else
 		{
-			Log::logWindow(LogType::ERROR, "Unknown file type");
+			Log::logMessage(LogType::ERROR, "Unknown file type");
 		}
 
 		return model.isValidModel() ? model : std::optional<Survive::Model>{};
 	} catch (const std::exception &exception)
 	{
-		Log::logWindow(LogType::ERROR, "Could not load the model from " + selectedFile);
+		Log::logMessage(LogType::ERROR, "Could not load the model from " + selectedFile);
 		return {};
 	}
 }
@@ -164,7 +164,7 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 				changed = true;
 			} catch (const std::exception &exception)
 			{
-				Log::logWindow(LogType::ERROR, "Could not load texture " + selectedFile);
+				Log::logMessage(LogType::ERROR, "Could not load texture " + selectedFile);
 			}
 		}
 	}
@@ -267,7 +267,7 @@ try
 	}
 } catch (const std::exception &exception)
 {
-	Log::logWindow(LogType::ERROR, "Error while parsing .obj file");
+	Log::logMessage(LogType::ERROR, "Error while parsing .obj file");
 }
 
 void
@@ -304,7 +304,7 @@ Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &render
 			}
 		} catch (const std::exception &exception)
 		{
-			Log::logWindow(LogType::ERROR, "Cannot load texture " + filename);
+			Log::logMessage(LogType::ERROR, "Cannot load texture " + filename);
 		}
 
 		renderer.popMousePickingListener();
@@ -333,11 +333,11 @@ void Survive::EditorUtil::loadFont(OpenDialog &fileChooser, Font &font, bool &op
 				} else
 				{
 					std::string message = "Cannot load file with extension: " + selectedFile.extension().string();
-					Log::logWindow(LogType::ERROR, message);
+					Log::logMessage(LogType::ERROR, message);
 				}
 			} catch (const std::exception &ignorable)
 			{
-				Log::logWindow(LogType::ERROR, "Cannot load file: " + selectedFile.string());
+				Log::logMessage(LogType::ERROR, "Cannot load file: " + selectedFile.string());
 			}
 		}
 	}
@@ -362,7 +362,7 @@ void Survive::EditorUtil::loadFontTextureAtlas(OpenDialog &fileChooser, Text &te
 				file = textureName;
 			} catch (const std::exception &ignorable)
 			{
-				Log::logWindow(LogType::ERROR, "Cannot load " + selectedFile.filename().string());
+				Log::logMessage(LogType::ERROR, "Cannot load " + selectedFile.filename().string());
 			}
 		}
 	}
@@ -708,7 +708,7 @@ void Survive::EditorUtil::initializeDragDropTarget(entt::entity &connectedBody, 
 
 			if (bodyA == bodyB)
 			{
-				Log::logWindow(LogType::ERROR, "Body A should not be equal to body B");
+				Log::logMessage(LogType::ERROR, "Body A should not be equal to body B");
 			} else
 			{
 				connectedBody = static_cast<entt::entity>(bodyB);

@@ -4,7 +4,6 @@
 
 #include "Application.h"
 #include "System.h"
-#include "PhysicSystem.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
@@ -19,12 +18,13 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 
 	m_Editor.addPlayButtonListener([this]() {
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
-		PhysicSystem::init(m_Registry, m_World.get());
+		System::init(m_Registry, m_EventHandler, m_World.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
 		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
 		m_World = std::make_unique<b2World>(m_Gravity);
+		System::destroy(m_Registry);
 	});
 }
 
