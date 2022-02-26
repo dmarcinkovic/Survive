@@ -476,6 +476,15 @@ namespace Survive
 			ImGui::Columns();
 		}
 	}
+
+	template<>
+	inline void ComponentTemplate::drawComponent(ScriptComponent &component, bool *visible)
+	{
+		if (ImGui::CollapsingHeader("Script", visible))
+		{
+
+		}
+	}
 }
 
 #endif //SURVIVE_COMPONENTTEMPLATE_H

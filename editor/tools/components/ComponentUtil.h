@@ -30,9 +30,9 @@ namespace Survive
 					"Animation component", "Box Collider2D component", "Bloom component", "Circle Collider2D component",
 					"Distance Joint2D component", "Edge Collider2D component", "Hinge Joint2D component",
 					"Material component", "PolygonCollider2D component", "Reflection component", "Refraction component",
-					"Render2D Component", "Render3D component", "RigidBody2D component", "Shadow component",
-					"Sound component", "Sprite component", "Sprite sheet component", "Text Component",
-					"Transform3D component"
+					"Render2D Component", "Render3D component", "RigidBody2D component", "Script component",
+					"Shadow component", "Sound component", "Sprite component", "Sprite sheet component",
+					"Text Component", "Transform3D component"
 			};
 
 			return components;
@@ -54,6 +54,7 @@ namespace Survive
 			drawComponent<Render2DComponent>(registry, entity);
 			drawComponent<Render3DComponent>(registry, entity);
 			drawComponent<RigidBody2DComponent>(registry, entity);
+			drawComponent<ScriptComponent>(registry, entity);
 			drawComponent<ShadowComponent>(registry, entity);
 			drawComponent<SoundComponent>(registry, entity);
 			drawComponent<SpriteComponent>(registry, entity);
@@ -95,16 +96,18 @@ namespace Survive
 				case 13:
 					return addComponent<RigidBody2DComponent>(registry, entity);
 				case 14:
-					return addComponent<ShadowComponent>(registry, entity);
+					return addComponent<ScriptComponent>(registry, entity);
 				case 15:
-					return addComponent<SoundComponent>(registry, entity);
+					return addComponent<ShadowComponent>(registry, entity);
 				case 16:
-					return addComponent<SpriteComponent>(registry, entity);
+					return addComponent<SoundComponent>(registry, entity);
 				case 17:
-					return addComponent<SpriteSheetComponent>(registry, entity);
+					return addComponent<SpriteComponent>(registry, entity);
 				case 18:
-					return addComponent<TextComponent>(registry, entity);
+					return addComponent<SpriteSheetComponent>(registry, entity);
 				case 19:
+					return addComponent<TextComponent>(registry, entity);
+				case 20:
 					return addComponent<Transform3DComponent>(registry, entity);
 				default:
 					throw std::runtime_error("Selected item not implemented");
