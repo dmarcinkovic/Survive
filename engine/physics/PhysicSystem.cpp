@@ -46,8 +46,8 @@ void Survive::PhysicSystem::init(entt::registry &registry, b2World *world)
 		rigidBody.bodyDefinition.angle = glm::radians(transform.rotation.z);
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
-		auto userData = reinterpret_cast<void*>(entity);
-		rigidBody.body->SetUserData(userData);
+		auto userData = reinterpret_cast<uintptr_t>(&entity);
+		rigidBody.bodyDefinition.userData.pointer = userData;
 
 		initFixture(registry, entity, rigidBody.body);
 	}
