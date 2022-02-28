@@ -49,17 +49,22 @@ void Survive::ObjectBehaviour::onMouseClick()
 
 }
 
-void Survive::ObjectBehaviour::onCollision()
-{
-
-}
-
 void Survive::ObjectBehaviour::onDestroy()
 {
 
 }
 
 void Survive::ObjectBehaviour::onKeyboardPressed()
+{
+
+}
+
+void Survive::ObjectBehaviour::onCollisionEnter(entt::entity other)
+{
+
+}
+
+void Survive::ObjectBehaviour::onCollisionExit(entt::entity other)
 {
 
 }

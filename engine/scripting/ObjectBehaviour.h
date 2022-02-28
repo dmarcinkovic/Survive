@@ -35,7 +35,9 @@ namespace Survive
 
 		virtual void onMouseClick();
 
-		virtual void onCollision();
+		virtual void onCollisionEnter(entt::entity other);
+
+		virtual void onCollisionExit(entt::entity other);
 
 		virtual void onDestroy();
 
@@ -57,6 +59,7 @@ namespace Survive
 		template<typename ComponentType>
 		void removeComponent()
 		{
+			// TODO this component has to be restored somehow
 			m_Registry->remove<ComponentType>(m_Entity);
 		}
 
