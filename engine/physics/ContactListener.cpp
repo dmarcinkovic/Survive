@@ -25,6 +25,16 @@ void Survive::ContactListener::BeginContact(b2Contact *contact)
 			script.script->onCollisionEnter(entityB);
 		}
 	}
+
+	if (m_Registry.any_of<ScriptComponent>(entityB))
+	{
+		ScriptComponent &script = m_Registry.get<ScriptComponent>(entityB);
+
+		if (script.script != nullptr)
+		{
+			script.script->onCollisionEnter(entityA);
+		}
+	}
 }
 
 void Survive::ContactListener::EndContact(b2Contact *contact)
@@ -38,6 +48,16 @@ void Survive::ContactListener::EndContact(b2Contact *contact)
 		if (script.script != nullptr)
 		{
 			script.script->onCollisionExit(entityB);
+		}
+	}
+
+	if (m_Registry.any_of<ScriptComponent>(entityB))
+	{
+		ScriptComponent &script = m_Registry.get<ScriptComponent>(entityB);
+
+		if (script.script != nullptr)
+		{
+			script.script->onCollisionExit(entityA);
 		}
 	}
 }
