@@ -5,6 +5,7 @@
 #include <imgui.h>
 
 #include "ObjectBehaviour.h"
+#include "TagComponent.h"
 
 void Survive::ObjectBehaviour::init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler)
 {
@@ -32,6 +33,18 @@ std::pair<float, float> Survive::ObjectBehaviour::getMousePosition()
 float Survive::ObjectBehaviour::getDeltaTime()
 {
 	return static_cast<float>(Display::getFrameTime());
+}
+
+std::string Survive::ObjectBehaviour::getTag(entt::entity entity) const
+{
+	if (m_Registry->any_of<TagComponent>(entity))
+	{
+		const TagComponent &tag = m_Registry->get<TagComponent>(entity);
+
+		return tag.tag;
+	}
+
+	return "";
 }
 
 void Survive::ObjectBehaviour::start()

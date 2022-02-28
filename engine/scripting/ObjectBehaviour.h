@@ -102,6 +102,8 @@ namespace Survive
 
 		static float getDeltaTime();
 
+		[[nodiscard]] std::string getTag(entt::entity entity) const;
+
 	private:
 		template<typename T, typename... Args>
 		void print(std::ostringstream &ss, T &&t, Args &&... args)
