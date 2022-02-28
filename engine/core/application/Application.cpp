@@ -4,6 +4,7 @@
 
 #include "Application.h"
 #include "System.h"
+#include "ContactListener.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
@@ -16,9 +17,12 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 															  Texture()));
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
 
-	m_Editor.addPlayButtonListener([this]() {
+	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
+
+	m_Editor.addPlayButtonListener([&]() {
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World.get());
+		m_World->SetContactListener(m_ContactListener.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {

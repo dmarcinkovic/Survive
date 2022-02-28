@@ -43,6 +43,8 @@ namespace Survive
 
 		RegistryUtil m_RegistryUtil;
 
+		std::unique_ptr<b2ContactListener> m_ContactListener;
+
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
 
