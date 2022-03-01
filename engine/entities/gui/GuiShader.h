@@ -19,6 +19,7 @@ namespace Survive
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationProjectionMatrix{};
+		GLint m_LocationColor{};
 
 	public:
 		GuiShader();
@@ -26,6 +27,8 @@ namespace Survive
 		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+		void loadColor(const glm::vec4 &color) const;
 
 	private:
 		void getUniformLocations();

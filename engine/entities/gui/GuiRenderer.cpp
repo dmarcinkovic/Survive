@@ -56,6 +56,15 @@ void Survive::GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, con
 				Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
 												  transformComponent.rotation));
 
+		if (registry.any_of<SpriteComponent>(entity))
+		{
+			const SpriteComponent &sprite = registry.get<SpriteComponent>(entity);
+			m_Shader.loadColor(sprite.color);
+		} else
+		{
+			m_Shader.loadColor(glm::vec4{0.0f});
+		}
+
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}
 }
