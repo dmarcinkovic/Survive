@@ -55,9 +55,9 @@ namespace Survive
 		void loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
 						 const char *format, const char *label, bool &changed, bool &open);
 
-		static void loadQuadModel(bool &changed, TexturedModel &texturedModel, Loader &loader);
+		static void loadQuadModel(TexturedModel &texturedModel, Loader &loader);
 
-		void loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
+		static void loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
 					   std::string &soundFile, bool &changed, bool &open);
 
 		static void loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file);
