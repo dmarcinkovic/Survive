@@ -39,5 +39,10 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 {
 	registry.view<ScriptComponent>().each([](ScriptComponent &script) {
 		script.script->onDestroy();
+
+		if (script.script->m_NeedRestore)
+		{
+			script.script->restoreEntity();
+		}
 	});
 }
