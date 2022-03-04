@@ -65,6 +65,12 @@ namespace Survive
 		void storeComponents(entt::entity entity, entt::registry &registry)
 		{
 			auto index = static_cast<int>(entity);
+
+			if (m_Components.contains(index))
+			{
+				return;
+			}
+
 			Storage &storage = m_Components[index];
 
 			save<Transform3DComponent>(registry, entity, storage);
@@ -77,6 +83,12 @@ namespace Survive
 		void restoreComponents(entt::entity entity, entt::registry &registry)
 		{
 			auto index = static_cast<int>(entity);
+
+			if (m_Components.contains(index))
+			{
+				return;
+			}
+
 			const Storage &storage = m_Components[index];
 
 			replace<Transform3DComponent>(registry, entity, storage);
