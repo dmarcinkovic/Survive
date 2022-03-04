@@ -39,6 +39,17 @@ namespace Survive
 			}
 		}
 
+		static void copyEntity(entt::registry &registry, entt::entity source, entt::entity destination)
+		{
+			for (auto[id, storage]: registry.storage())
+			{
+				if (storage.contains(source))
+				{
+					storage.emplace(destination, storage.get(source));
+				}
+			}
+		}
+
 	private:
 		template<typename Component>
 		void storeComponent(entt::registry &registry)
