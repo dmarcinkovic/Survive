@@ -31,18 +31,24 @@ void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &even
 void Survive::ScriptingSystem::update(entt::registry &registry)
 {
 	registry.view<ScriptComponent>().each([](ScriptComponent &script) {
-		script.script->update();
+		if (script.script)
+		{
+			script.script->update();
+		}
 	});
 }
 
 void Survive::ScriptingSystem::destroy(entt::registry &registry)
 {
 	registry.view<ScriptComponent>().each([](ScriptComponent &script) {
-		script.script->onDestroy();
-
-		if (script.script->m_NeedRestore)
+		if (script.script)
 		{
-			script.script->restoreEntity();
+			script.script->onDestroy();
+
+			if (script.script->m_NeedRestore)
+			{
+				script.script->restoreEntity();
+			}
 		}
 	});
 }
