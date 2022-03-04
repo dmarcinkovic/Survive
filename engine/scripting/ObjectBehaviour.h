@@ -24,6 +24,9 @@ namespace Survive
 		entt::entity m_Entity = entt::null;
 		EventHandler *m_EventHandler{};
 
+		std::unordered_map<entt::entity, entt::entity> m_CopiedEntities;
+		bool m_NeedRestore{};
+
 		void init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler);
 
 	public:
@@ -59,7 +62,11 @@ namespace Survive
 		template<typename ComponentType>
 		void removeComponent()
 		{
-			// TODO this component has to be restored somehow
+			if (!m_NeedRestore)
+			{
+				storeEntity();
+			}
+
 			m_Registry->remove<ComponentType>(m_Entity);
 		}
 
@@ -115,6 +122,10 @@ namespace Survive
 				print(ss, std::forward<Args>(args)...);
 			}
 		}
+
+		void storeEntity();
+
+		void restoreEntity();
 	};
 }
 
