@@ -53,6 +53,10 @@ namespace Survive
 
 		static void addWindowResizeListener(const WindowListener &listener);
 
+		static void popKeyListener();
+
+		static void popMouseListener();
+
 	private:
 		void addKeyboardListener();
 
