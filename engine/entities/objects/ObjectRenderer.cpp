@@ -104,7 +104,7 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 {
-	auto const &view = registry.view<Render3DComponent, Transform3DComponent>(
+	auto const &view = registry.view<Render3DComponent, Transform3DComponent, TagComponent>(
 			entt::exclude<AnimationComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;

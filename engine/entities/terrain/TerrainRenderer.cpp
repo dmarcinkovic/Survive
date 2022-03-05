@@ -9,14 +9,16 @@ void
 Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
 								 const glm::vec4 &plane) const
 {
-	auto view = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent>(entt::exclude<MoveComponent>);
+	auto view = registry.view<Render3DComponent, Transform3DComponent,
+			TexturedComponent, TagComponent>(entt::exclude<MoveComponent>);
 	if (view.begin() == view.end())
 	{
 		return;
 	}
 
 	prepareRendering(m_Shader);
-	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures) {
+	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform,
+				  TexturedComponent &textures, TagComponent &) {
 		prepareRenderingTerrain(renderComponent, textures);
 		renderShadow(shadowMap, light);
 
@@ -39,7 +41,8 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 }
 
 void
-Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent, const TexturedComponent &textures)
+Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent,
+												  const TexturedComponent &textures)
 {
 	prepareEntity(renderComponent.texturedModel);
 	addTransparency(false, true);

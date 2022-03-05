@@ -9,12 +9,12 @@
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
-	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent>();
+	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent, TagComponent>();
 
 	prepareRenderingWater(camera);
 	waterTiles.each(
 			[&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
-				MoveComponent &moveComponent) {
+				MoveComponent &moveComponent, TagComponent &) {
 				prepareEntity(renderComponent.texturedModel);
 
 				bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),

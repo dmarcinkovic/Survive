@@ -62,7 +62,7 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 {
-	const auto &view = registry.view<Render3DComponent, Transform3DComponent, AnimationComponent>();
+	const auto &view = registry.view<Render3DComponent, Transform3DComponent, AnimationComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: view)

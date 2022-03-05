@@ -9,7 +9,7 @@
 
 void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &camera) const
 {
-	auto texts = registry.view<Transform3DComponent, TextComponent, SpriteComponent>();
+	auto texts = registry.view<Transform3DComponent, TextComponent, SpriteComponent, TagComponent>();
 
 	if (texts.begin() == texts.end())
 	{

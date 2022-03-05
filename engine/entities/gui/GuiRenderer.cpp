@@ -32,7 +32,7 @@ void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<Render2DComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
+	auto view = registry.view<Render2DComponent, Transform3DComponent, TagComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)

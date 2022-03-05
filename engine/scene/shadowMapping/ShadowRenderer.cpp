@@ -22,11 +22,11 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
 	m_ShadowShader.loadProjectionMatrix(camera.getLightProjectionMatrix());
 
-	for (auto const&[texture, objects] : entities)
+	for (auto const&[texture, objects]: entities)
 	{
 		texture.bind();
 		glEnableVertexAttribArray(0);
-		for (auto const &object : objects)
+		for (auto const &object: objects)
 		{
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_FRONT);
@@ -63,10 +63,10 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::ShadowRenderer::prepareEntities(entt::registry &registry)
 {
-	auto const &view = registry.view<ShadowComponent, Transform3DComponent, Render3DComponent>();
+	auto const &view = registry.view<ShadowComponent, Transform3DComponent, Render3DComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
-	for (auto const &entity : view)
+	for (auto const &entity: view)
 	{
 		Render3DComponent renderComponent = view.get<Render3DComponent>(entity);
 		ShadowComponent shadowComponent = view.get<ShadowComponent>(entity);
