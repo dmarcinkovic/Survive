@@ -79,6 +79,11 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
+	if (!registry.valid(m_SelectedEntity))
+	{
+		resetEntity();
+	}
+
 	if (m_AddNewComponent && m_SelectedEntity != entt::null)
 	{
 		addNewComponent(registry);
@@ -163,9 +168,7 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 void Survive::EntityManager::removeEntity(entt::registry &registry)
 {
 	registry.destroy(m_SelectedEntity);
-	m_SelectedEntity = entt::null;
-
-	m_Selected = m_CurrentItem = -1;
+	resetEntity();
 }
 
 void Survive::EntityManager::renameEntity(entt::registry &registry)
@@ -236,4 +239,10 @@ void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntit
 		ImGui::SetDragDropPayload("Joint2D", &payload, sizeof(payload));
 		ImGui::EndDragDropSource();
 	}
+}
+
+void Survive::EntityManager::resetEntity()
+{
+	m_SelectedEntity = entt::null;
+	m_Selected = m_CurrentItem = -1;
 }

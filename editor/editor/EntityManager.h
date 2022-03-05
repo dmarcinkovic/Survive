@@ -64,6 +64,8 @@ namespace Survive
 		void renameEntity(entt::registry &registry);
 
 		void initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag);
+
+		void resetEntity();
 	};
 }
 
