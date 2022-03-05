@@ -112,6 +112,8 @@ namespace Survive
 
 		[[nodiscard]] std::string getTag(entt::entity entity) const;
 
+		static bool isMouseInsideScene();
+
 	private:
 		template<typename T, typename... Args>
 		void print(std::ostringstream &ss, T &&t, Args &&... args)

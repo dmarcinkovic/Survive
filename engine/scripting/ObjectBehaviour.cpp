@@ -7,6 +7,7 @@
 #include "ObjectBehaviour.h"
 #include "TagComponent.h"
 #include "RegistryUtil.h"
+#include "Scene.h"
 
 void Survive::ObjectBehaviour::init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler)
 {
@@ -48,6 +49,11 @@ std::string Survive::ObjectBehaviour::getTag(entt::entity entity) const
 	}
 
 	return "";
+}
+
+bool Survive::ObjectBehaviour::isMouseInsideScene()
+{
+	return Scene::isInsideScene();
 }
 
 void Survive::ObjectBehaviour::start()
