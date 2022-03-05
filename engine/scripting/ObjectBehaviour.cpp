@@ -95,6 +95,8 @@ void Survive::ObjectBehaviour::storeEntity()
 	entt::entity destination = m_Registry->create();
 	RegistryUtil::copyEntity(*m_Registry, m_Entity, destination);
 
+	m_Name = m_Registry->get<TagComponent>(m_Entity).tag;
+
 	m_Registry->remove<TagComponent>(destination);
 	m_CopiedEntities[m_Entity] = destination;
 
@@ -108,9 +110,8 @@ void Survive::ObjectBehaviour::restoreEntity()
 		m_Registry->destroy(m_Entity);
 	}
 
-	const TagComponent &tag = m_Registry->get<TagComponent>(m_Entity);
 	entt::entity copy = m_CopiedEntities[m_Entity];
 
-	m_Registry->emplace<TagComponent>(copy, tag.tag);
+	m_Registry->emplace_or_replace<TagComponent>(copy, m_Name);
 	m_CopiedEntities.erase(m_Entity);
 }

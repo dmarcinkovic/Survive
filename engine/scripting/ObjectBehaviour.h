@@ -26,6 +26,7 @@ namespace Survive
 
 		std::unordered_map<entt::entity, entt::entity> m_CopiedEntities;
 		bool m_NeedRestore{};
+		std::string m_Name;
 
 		void init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler);
 
