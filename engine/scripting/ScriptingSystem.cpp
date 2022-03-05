@@ -2,7 +2,7 @@
 // Created by david on 26. 02. 2022..
 //
 
-#include "ScriptComponent.h"
+#include "Components.h"
 #include "ScriptingSystem.h"
 
 void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &eventHandler)
@@ -40,7 +40,7 @@ void Survive::ScriptingSystem::update(entt::registry &registry)
 
 void Survive::ScriptingSystem::destroy(entt::registry &registry)
 {
-	registry.view<ScriptComponent>().each([](ScriptComponent &script) {
+	registry.view<ScriptComponent, TagComponent>().each([](ScriptComponent &script, TagComponent &) {
 		if (script.script)
 		{
 			script.script->onDestroy();
@@ -49,6 +49,9 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 			{
 				script.script->restoreEntity();
 			}
+
+			EventHandler::popKeyListener();
+			EventHandler::popMouseListener();
 		}
 	});
 }
