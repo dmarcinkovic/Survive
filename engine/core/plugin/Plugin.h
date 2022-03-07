@@ -6,9 +6,10 @@
 #define SURVIVE_PLUGIN_H
 
 #include <memory>
+#include <iostream>
 
 #if defined(_WIN32) || defined(_WIN64)
-// TODO implement window
+// TODO implement for windows
 #else
 
 #include <dlfcn.h>
@@ -19,19 +20,35 @@ namespace Survive
 {
 	class Plugin
 	{
-		template<class T>
-		static std::shared_ptr<T> createInstance(const std::string &filename)
-		{
-			void *instance = dlopen(filename.c_str(), RTLD_LAZY);
-			std::shared_ptr<T> object = dlsym(instance, "create");
+	public:
+		using Function = ObjectBehaviour *(*)();
 
-			return object;
+		static void deleteInstance(const std::shared_ptr<ObjectBehaviour> &instance)
+		{
+//			dlclose(instance);
 		}
 
-		template<class T>
-		static void deleteInstance(const std::shared_ptr<T> &instance)
+		static std::shared_ptr<ObjectBehaviour> createInstance(const std::string &filename)
 		{
-			dlclose(instance);
+			void *instance = dlopen(filename.c_str(), RTLD_LAZY);
+
+			if (instance == nullptr)
+			{
+				std::cout << "Error: " << dlerror() << '\n';
+				Log::logMessage(LogType::ERROR, "Error while loading " + filename);
+				return nullptr;
+			}
+
+			auto createFunction = reinterpret_cast<Function>(dlsym(instance, "create"));
+
+			if (createFunction == nullptr)
+			{
+				Log::logMessage(LogType::ERROR, "Error while loading \"create()\" function");
+				return nullptr;
+			}
+
+			ObjectBehaviour *objectBehaviour = createFunction();
+			return std::shared_ptr<ObjectBehaviour>{objectBehaviour};
 		}
 	};
 }
