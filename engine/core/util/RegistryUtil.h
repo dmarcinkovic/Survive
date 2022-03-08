@@ -95,12 +95,13 @@ namespace Survive
 		{
 			auto index = static_cast<int>(entity);
 
-			if (m_Components.contains(index))
+			if (!m_Components.contains(index))
 			{
 				return;
 			}
 
 			const Storage &storage = m_Components[index];
+			m_Components.erase(index);
 
 			replace<Transform3DComponent>(registry, entity, storage);
 			replace<SpriteSheetComponent>(registry, entity, storage);
