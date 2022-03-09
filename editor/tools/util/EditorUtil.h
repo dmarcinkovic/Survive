@@ -58,7 +58,7 @@ namespace Survive
 		static void loadQuadModel(TexturedModel &texturedModel, Loader &loader);
 
 		static void loadSound(OpenDialog &fileChooser, AudioMaster &audioMaster, ALint &sound,
-					   std::string &soundFile, bool &changed, bool &open);
+							  std::string &soundFile, bool &changed, bool &open);
 
 		static void loadFont(OpenDialog &fileChooser, Font &font, bool &open, std::string &file);
 
@@ -116,6 +116,8 @@ namespace Survive
 
 		static void enableButton(bool condition);
 
+		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
@@ -123,8 +125,6 @@ namespace Survive
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
 		std::optional<Model> getLoadedModel(const OpenDialog &fileChooser);
-
-		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 
 		static void drawPoint(int index, std::vector<b2Vec2> &points, b2PolygonShape &shape);
 
