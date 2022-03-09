@@ -107,13 +107,13 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		EditorUtil m_EditorUtil;
 
+		bool m_Changed = true;
+		bool m_TextureDialogOpen = false;
+		bool m_ModelDialogOpen = false;
+
 	public:
 		void drawComponent(Render3DComponent &component, bool *visible)
 		{
-			static bool changed = true;
-			static bool dialogTextureOpen = false;
-			static bool dialogModelOpen = false;
-
 			if (ImGui::CollapsingHeader("Render3D", visible))
 			{
 				TexturedModel &texturedModel = component.texturedModel;
@@ -121,18 +121,18 @@ namespace Survive
 				ImGui::PushID("Render3D component");
 				ImGui::Columns(2);
 
-				m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, changed,
-									   dialogModelOpen);
+				m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, m_Changed,
+									   m_ModelDialogOpen);
 				ImGui::NextColumn();
 				m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-										 "Texture: %s", "Load texture", changed, dialogTextureOpen);
+										 "Texture: %s", "Load texture", m_Changed, m_TextureDialogOpen);
 
 				ImGui::Columns();
 				ImGui::PopID();
 
-				if (changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
+				if (m_Changed && texturedModel.isValidTexture() && texturedModel.isValidModel())
 				{
-					changed = false;
+					m_Changed = false;
 				}
 			}
 		}
