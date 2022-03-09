@@ -36,17 +36,67 @@ namespace Survive
 			if (ImGui::CollapsingHeader("Transform3D", visible))
 			{
 				ImGui::Columns(4);
-				EditorUtil::drawTransform3DHeader();
+				drawTransform3DHeader();
 
 				ImGui::Text("Position");
-				EditorUtil::drawTransform3DRow(component.position, "##PosX", "##PosY", "##PosZ");
+				drawTransform3DRow(component.position, "##PosX", "##PosY", "##PosZ");
 				ImGui::Text("Rotation");
-				EditorUtil::drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
+				drawTransform3DRow(component.rotation, "##RotX", "##RotY", "##RotZ");
 				ImGui::Text("Scale");
-				EditorUtil::drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ", 0.0f);
+				drawTransform3DRow(component.scale, "##ScX", "##ScY", "##ScZ", 0.0f);
 
 				ImGui::Columns();
 			}
+		}
+
+	private:
+		static void drawTransform3DHeader()
+		{
+			drawTransform2DHeader();
+			ImGui::Text("Z");
+			ImGui::NextColumn();
+		}
+
+		static void drawTransform2DHeader()
+		{
+			ImGui::NextColumn();
+			ImGui::Text("X");
+			ImGui::NextColumn();
+			ImGui::Text("Y");
+			ImGui::NextColumn();
+		}
+
+		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg,
+								 const ImVec4 &increment, float lowerBound = std::numeric_limits<float>::min())
+		{
+			constexpr float upperBound = std::numeric_limits<float>::max();
+
+			ImGui::NextColumn();
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, frameBg);
+
+			ImVec4 frameBgHovered = add(frameBg, increment);
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, frameBgHovered);
+
+			ImVec4 frameBgActive = add(frameBgHovered, increment);
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, frameBgActive);
+
+			ImGui::DragFloat(label, &value, 1.0f, lowerBound, upperBound);
+			ImGui::PopStyleColor(3);
+		}
+
+		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z,
+									   float lowerBound = std::numeric_limits<float>::lowest())
+		{
+			setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1), lowerBound);
+			setDragFloat(vec.y, y, ImVec4(0, 0.4f, 0, 1), ImVec4(0, 0.2f, 0, 1), lowerBound);
+			setDragFloat(vec.z, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1), lowerBound);
+
+			ImGui::NextColumn();
+		}
+
+		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2)
+		{
+			return {vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z, vec1.w + vec2.w};
 		}
 	};
 
@@ -155,7 +205,8 @@ namespace Survive
 			if (ImGui::CollapsingHeader("Bloom", visible))
 			{
 				ImGui::Columns(2, nullptr, false);
-				EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5, 0.1f);
+				EditorUtil::drawColumnDragFloat("Bloom strength", "##Bloom strength", component.bloomStrength, 0, 5,
+												0.1f);
 
 				ImGui::Separator();
 
@@ -195,7 +246,8 @@ namespace Survive
 			{
 				ImGui::Columns(2, nullptr, false);
 				EditorUtil::drawColumnDragFloat("Refraction index", "##RIndex", component.refractiveIndex, 0, 3, 0.1f);
-				EditorUtil::drawColumnDragFloat("Refraction factor", "##RFactor", component.refractiveFactor, 0, 1, 0.1f);
+				EditorUtil::drawColumnDragFloat("Refraction factor", "##RFactor", component.refractiveFactor, 0, 1,
+												0.1f);
 				ImGui::Columns();
 			}
 		}
