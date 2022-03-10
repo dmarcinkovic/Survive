@@ -3,7 +3,6 @@
 //
 
 #include "LogEditor.h"
-#include "Loader.h"
 
 Survive::LogEditor::LogEditor()
 {
