@@ -107,6 +107,9 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		EditorUtil m_EditorUtil;
 
+		Loader m_Loader;
+		DaeParser m_DaeParser;
+
 		bool m_Changed = true;
 		bool m_TextureDialogOpen = false;
 		bool m_ModelDialogOpen = false;
@@ -121,8 +124,7 @@ namespace Survive
 				ImGui::PushID("Render3D component");
 				ImGui::Columns(2);
 
-				m_EditorUtil.loadModel(m_OpenDialog, texturedModel.getModel(), component.modelName, m_Changed,
-									   m_ModelDialogOpen);
+				loadModel(texturedModel.getModel(), component.modelName);
 				ImGui::NextColumn();
 				m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
 										 "Texture: %s", "Load texture", m_Changed, m_TextureDialogOpen);
@@ -134,6 +136,58 @@ namespace Survive
 				{
 					m_Changed = false;
 				}
+			}
+		}
+
+	private:
+		void loadModel(Model &model, std::string &modelName)
+		{
+			EditorUtil::showLoadedFile("Model: %s", modelName, "Load model", m_ModelDialogOpen);
+
+			if (m_ModelDialogOpen)
+			{
+				m_OpenDialog.open(600.0f, 400.0f, &m_ModelDialogOpen);
+
+				std::string selectedFilename = m_OpenDialog.getSelectedFilename();
+				if (!m_ModelDialogOpen && !selectedFilename.empty())
+				{
+					std::optional<Model> loadedModel = getLoadedModel();
+
+					if (loadedModel.has_value())
+					{
+						modelName = selectedFilename;
+						model = Model(loadedModel.value());
+						m_Changed = true;
+					}
+				}
+			}
+		}
+
+		std::optional<Model> getLoadedModel()
+		{
+			std::string selectedFile;
+
+			try
+			{
+				selectedFile = m_OpenDialog.getSelectedFile().string();
+				Model model;
+
+				if (selectedFile.ends_with("obj"))
+				{
+					model = ObjParser::loadObj(selectedFile, m_Loader);
+				} else if (selectedFile.ends_with("dae"))
+				{
+					model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+				} else
+				{
+					Log::logMessage(LogType::ERROR, "Unknown file type");
+				}
+
+				return model.isValidModel() ? model : std::optional<Survive::Model>{};
+			} catch (const std::exception &exception)
+			{
+				Log::logMessage(LogType::ERROR, "Could not load the model from " + selectedFile);
+				return {};
 			}
 		}
 	};
