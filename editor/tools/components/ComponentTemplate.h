@@ -105,7 +105,6 @@ namespace Survive
 	{
 	private:
 		OpenDialog m_OpenDialog;
-		EditorUtil m_EditorUtil;
 
 		Loader m_Loader;
 		DaeParser m_DaeParser;
@@ -126,8 +125,8 @@ namespace Survive
 
 				loadModel(texturedModel.getModel(), component.modelName);
 				ImGui::NextColumn();
-				m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-										 "Texture: %s", "Load texture", m_Changed, m_TextureDialogOpen);
+				EditorUtil::loadTexture(m_OpenDialog, m_Loader, texturedModel.getTexture(), component.textureName,
+										"Texture: %s", "Load texture", m_Changed, m_TextureDialogOpen);
 
 				ImGui::Columns();
 				ImGui::PopID();
@@ -197,7 +196,7 @@ namespace Survive
 	{
 	private:
 		OpenDialog m_OpenDialog;
-		EditorUtil m_EditorUtil;
+		Loader m_Loader;
 
 	public:
 		void drawComponent(MaterialComponent &component, bool *visible)
@@ -215,8 +214,8 @@ namespace Survive
 
 				ImGui::PushID("Material component");
 				ImGui::Columns(2);
-				m_EditorUtil.loadTexture(m_OpenDialog, component.normalMap, component.normalMapPath,
-										 "Normal map: %s", "Load texture", changed, open);
+				EditorUtil::loadTexture(m_OpenDialog, m_Loader, component.normalMap, component.normalMapPath,
+										"Normal map: %s", "Load texture", changed, open);
 
 				ImGui::Columns();
 				ImGui::PopID();
@@ -248,7 +247,7 @@ namespace Survive
 	{
 	private:
 		OpenDialog m_OpenDialog;
-		EditorUtil m_EditorUtil;
+		Loader m_Loader;
 
 	public:
 		void drawComponent(BloomComponent &component, bool *visible)
@@ -266,8 +265,8 @@ namespace Survive
 
 				ImGui::PushID("Bloom component");
 				ImGui::Columns(2);
-				m_EditorUtil.loadTexture(m_OpenDialog, component.emissiveTexture, component.textureName,
-										 "Texture: %s", "Load texture", changed, open);
+				EditorUtil::loadTexture(m_OpenDialog, m_Loader, component.emissiveTexture, component.textureName,
+										"Texture: %s", "Load texture", changed, open);
 				ImGui::Columns();
 				ImGui::PopID();
 			}
@@ -312,7 +311,6 @@ namespace Survive
 	{
 	private:
 		OpenDialog m_OpenDialog;
-		EditorUtil m_EditorUtil;
 		Loader m_Loader;
 
 	public:
@@ -327,8 +325,8 @@ namespace Survive
 
 				ImGui::PushID("Render 2D Component");
 				ImGui::Columns(2);
-				m_EditorUtil.loadTexture(m_OpenDialog, texturedModel.getTexture(), component.textureName,
-										 "Texture: %s", "Load texture", changed, open);
+				EditorUtil::loadTexture(m_OpenDialog, m_Loader, texturedModel.getTexture(), component.textureName,
+										"Texture: %s", "Load texture", changed, open);
 				EditorUtil::loadQuadModel(texturedModel, m_Loader);
 
 				ImGui::Columns();

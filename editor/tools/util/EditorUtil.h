@@ -52,7 +52,7 @@ namespace Survive
 
 		void loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed, bool &open);
 
-		void loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
+		static void loadTexture(OpenDialog &fileChooser, Loader &loader, Texture &texture, std::string &textureName,
 						 const char *format, const char *label, bool &changed, bool &open);
 
 		static void loadQuadModel(TexturedModel &texturedModel, Loader &loader);

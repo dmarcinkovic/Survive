@@ -142,8 +142,9 @@ Survive::EditorUtil::getLoadedModel(const OpenDialog &fileChooser)
 	}
 }
 
-void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture, std::string &textureName,
-									  const char *format, const char *label, bool &changed, bool &open)
+void
+Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Loader &loader, Texture &texture, std::string &textureName,
+								 const char *format, const char *label, bool &changed, bool &open)
 {
 	showLoadedFile(format, textureName, label, open);
 
@@ -158,7 +159,7 @@ void Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Texture &texture,
 
 			try
 			{
-				texture = m_Loader.loadTexture(selectedFile.c_str());
+				texture = loader.loadTexture(selectedFile.c_str());
 
 				textureName = selectedFilename;
 				changed = true;
