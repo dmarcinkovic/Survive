@@ -249,12 +249,12 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
+		bool m_Changed = true;
+		bool m_Open{};
+
 	public:
 		void drawComponent(BloomComponent &component, bool *visible)
 		{
-			static bool changed = true;
-			static bool open = false;
-
 			if (ImGui::CollapsingHeader("Bloom", visible))
 			{
 				ImGui::Columns(2, nullptr, false);
@@ -266,7 +266,7 @@ namespace Survive
 				ImGui::PushID("Bloom component");
 				ImGui::Columns(2);
 				EditorUtil::loadTexture(m_OpenDialog, m_Loader, component.emissiveTexture, component.textureName,
-										"Texture: %s", "Load texture", changed, open);
+										"Texture: %s", "Load texture", m_Changed, m_Open);
 				ImGui::Columns();
 				ImGui::PopID();
 			}
@@ -313,12 +313,12 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
+		bool m_Changed = true;
+		bool m_Open = false;
+
 	public:
 		void drawComponent(Render2DComponent &component, bool *visible)
 		{
-			static bool changed = true;
-			static bool open = false;
-
 			if (ImGui::CollapsingHeader("Render2D", visible))
 			{
 				TexturedModel &texturedModel = component.texturedModel;
@@ -326,7 +326,7 @@ namespace Survive
 				ImGui::PushID("Render 2D Component");
 				ImGui::Columns(2);
 				EditorUtil::loadTexture(m_OpenDialog, m_Loader, texturedModel.getTexture(), component.textureName,
-										"Texture: %s", "Load texture", changed, open);
+										"Texture: %s", "Load texture", m_Changed, m_Open);
 				EditorUtil::loadQuadModel(texturedModel, m_Loader);
 
 				ImGui::Columns();
