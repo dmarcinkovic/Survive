@@ -142,7 +142,11 @@ Survive::BoxGizmos::moveCenter(const Camera &camera, BoxCollider2DComponent &box
 	b2Vec2 diff = b2Vec2(rotatedCenter.x, rotatedCenter.y) - center;
 	center = b2Vec2(rotatedCenter.x, rotatedCenter.y);
 
-	EditorUtil::moveBoxCenter(boxCollider.boxShape.m_vertices, diff);
+	constexpr int numberOfPoints = 4;
+	for (int i = 0; i < numberOfPoints; ++i)
+	{
+		boxCollider.boxShape.m_vertices[i] += diff;
+	}
 }
 
 void

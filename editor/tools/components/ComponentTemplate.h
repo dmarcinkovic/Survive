@@ -736,7 +736,7 @@ namespace Survive
 				b2Vec2 oldCenter = component.center;
 				if (EditorUtil::drawColumnDragFloat2("Center", "##Box center", component.center))
 				{
-					EditorUtil::moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
+					moveBoxCenter(component.boxShape.m_vertices, component.center - oldCenter);
 				}
 
 				ImGui::PushID("Box2D");
@@ -745,6 +745,15 @@ namespace Survive
 
 				ImGui::Columns();
 			}
+		}
+
+	private:
+		static void moveBoxCenter(b2Vec2 *points, const b2Vec2 &diff)
+		{
+			points[0] += diff;
+			points[1] += diff;
+			points[2] += diff;
+			points[3] += diff;
 		}
 	};
 
