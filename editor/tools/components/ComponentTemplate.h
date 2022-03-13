@@ -970,8 +970,52 @@ namespace Survive
 		}
 	};
 
+	class Joint2DComponentTemplate
+	{
+	private:
+		static void initializeDragDropTarget(entt::entity &connectedBody, std::string &name)
+		{
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Joint2D"))
+				{
+					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
+
+					int bodyA = std::get<0>(*data);
+					int bodyB = std::get<1>(*data);
+
+					if (bodyA == bodyB)
+					{
+						Log::logMessage(LogType::ERROR, "Body A should not be equal to body B");
+					} else
+					{
+						connectedBody = static_cast<entt::entity>(bodyB);
+						name = std::get<2>(*data);
+					}
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+		}
+
+	protected:
+		static void
+		drawJoint2DProperties(const char *label, std::string &connectedBodyName, entt::entity &connectedBody,
+							  b2Vec2 &anchorA, b2Vec2 &anchorB, bool &collideConnected)
+		{
+			EditorUtil::drawColumnInputText(label, "Connected Rigid Body", connectedBodyName);
+			initializeDragDropTarget(connectedBody, connectedBodyName);
+
+			ImGui::NextColumn();
+
+			EditorUtil::drawColumnDragFloat2("Anchor", "##DistanceAnchorA", anchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##DistanceAnchorB", anchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##DistanceCollide", collideConnected);
+		}
+	};
+
 	template<>
-	class ComponentTemplate<HingeJoint2DComponent>
+	class ComponentTemplate<HingeJoint2DComponent> : public Joint2DComponentTemplate
 	{
 	public:
 		void drawComponent(HingeJoint2DComponent &component, bool *visible)
@@ -982,28 +1026,67 @@ namespace Survive
 
 				b2RevoluteJointDef &jointDef = component.jointDef;
 
-				EditorUtil::drawColumnInputText("##HingeBody", "Connected Rigid Body", component.connectedBodyName);
-				EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
-
-				ImGui::NextColumn();
-
-				EditorUtil::drawColumnDragFloat2("Anchor", "##HingeAnchorA", jointDef.localAnchorA);
-				EditorUtil::drawColumnDragFloat2("Connected anchor", "##HingeAnchorB", jointDef.localAnchorB);
-				EditorUtil::drawColumnInputBool("Collide connected", "##HingeCollide", jointDef.collideConnected);
+				drawJoint2DProperties("##HingeBody", component.connectedBodyName, component.connectedBody,
+									  jointDef.localAnchorA, jointDef.localAnchorB, jointDef.collideConnected);
 
 				ImGui::Separator();
-				EditorUtil::drawHingeMotorProperties(component);
+				drawMotorProperties(component);
 
 				ImGui::Separator();
-				EditorUtil::drawHingeAngleProperties(component);
+				drawAngleProperties(component);
 
 				ImGui::Columns();
 			}
 		}
+
+	private:
+		static void drawMotorProperties(HingeJoint2DComponent &component)
+		{
+			static constexpr float min = std::numeric_limits<float>::min();
+
+			b2RevoluteJointDef &jointDef = component.jointDef;
+
+			ImGui::TextUnformatted("Motor");
+			ImGui::NextColumn();
+			ImGui::NextColumn();
+
+			ImGui::Indent();
+			EditorUtil::drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
+			EditorUtil::drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
+			EditorUtil::drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
+
+			ImGui::Unindent();
+		}
+
+		static void drawAngleProperties(Survive::HingeJoint2DComponent &component)
+		{
+			b2RevoluteJointDef &jointDef = component.jointDef;
+
+			ImGui::TextUnformatted("Angle limits");
+			ImGui::NextColumn();
+			ImGui::NextColumn();
+
+			ImGui::Indent();
+			EditorUtil::drawColumnInputBool("Use limits", "##UseHingeLimits", jointDef.enableLimit);
+
+			float lowerAngle = glm::degrees(jointDef.lowerAngle);
+			if (EditorUtil::drawColumnDragFloat("Lower angle", "##HingeLAngle", lowerAngle, -359, 359))
+			{
+				jointDef.lowerAngle = glm::radians(lowerAngle);
+			}
+
+			float upperAngle = glm::degrees(jointDef.upperAngle);
+			if (EditorUtil::drawColumnDragFloat("Upper angle", "##HingeUAngle", upperAngle, -359, 359))
+			{
+				jointDef.upperAngle = glm::radians(upperAngle);
+			}
+
+			ImGui::Unindent();
+		}
 	};
 
 	template<>
-	class ComponentTemplate<DistanceJoint2DComponent>
+	class ComponentTemplate<DistanceJoint2DComponent> : public Joint2DComponentTemplate
 	{
 	public:
 		void drawComponent(DistanceJoint2DComponent &component, bool *visible)
@@ -1012,16 +1095,10 @@ namespace Survive
 			{
 				ImGui::Columns(2, nullptr, false);
 
-				EditorUtil::drawColumnInputText("##DistanceBody", "Connected Rigid Body", component.connectedBodyName);
-				EditorUtil::initializeDragDropTarget(component.connectedBody, component.connectedBodyName);
-
-				ImGui::NextColumn();
-
 				b2DistanceJointDef &jointDef = component.jointDef;
 
-				EditorUtil::drawColumnDragFloat2("Anchor", "##DistanceAnchorA", jointDef.localAnchorA);
-				EditorUtil::drawColumnDragFloat2("Connected anchor", "##DistanceAnchorB", jointDef.localAnchorB);
-				EditorUtil::drawColumnInputBool("Collide connected", "##DistanceCollide", jointDef.collideConnected);
+				drawJoint2DProperties("##DistanceBody", component.connectedBodyName, component.connectedBody,
+									  jointDef.localAnchorA, jointDef.localAnchorB, jointDef.collideConnected);
 
 				ImGui::Separator();
 
