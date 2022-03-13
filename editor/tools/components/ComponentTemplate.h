@@ -31,7 +31,7 @@ namespace Survive
 	class ComponentTemplate<Transform3DComponent>
 	{
 	public:
-		void drawComponent(Transform3DComponent &component, bool *visible)
+		static void drawComponent(Transform3DComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Transform3D", visible))
 			{
@@ -227,7 +227,7 @@ namespace Survive
 	class ComponentTemplate<ShadowComponent>
 	{
 	public:
-		void drawComponent(ShadowComponent &component, bool *visible)
+		static void drawComponent(ShadowComponent &component, bool *visible)
 		{
 			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.65f, 0.6f, 0.6f, 1.0f));
 			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.55f, 0.5f, 1.0f));
@@ -277,7 +277,7 @@ namespace Survive
 	class ComponentTemplate<ReflectionComponent>
 	{
 	public:
-		void drawComponent(ReflectionComponent &component, bool *visible)
+		static void drawComponent(ReflectionComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Reflection", visible))
 			{
@@ -293,7 +293,7 @@ namespace Survive
 	class ComponentTemplate<RefractionComponent>
 	{
 	public:
-		void drawComponent(RefractionComponent &component, bool *visible)
+		static void drawComponent(RefractionComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Refraction", visible))
 			{
@@ -349,8 +349,6 @@ namespace Survive
 	{
 	private:
 		OpenDialog m_OpenDialog;
-		EditorUtil m_EditorUtil;
-
 		AudioMaster m_AudioMaster;
 
 		bool m_Changed = true;
@@ -410,7 +408,7 @@ namespace Survive
 	class ComponentTemplate<SpriteComponent>
 	{
 	public:
-		void drawComponent(SpriteComponent &component, bool *visible)
+		static void drawComponent(SpriteComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Sprite", visible))
 			{
@@ -674,7 +672,7 @@ namespace Survive
 	class ComponentTemplate<SpriteSheetComponent>
 	{
 	public:
-		void drawComponent(SpriteSheetComponent &component, bool *visible)
+		static void drawComponent(SpriteSheetComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Sprite sheet", visible))
 			{
@@ -701,7 +699,7 @@ namespace Survive
 	class ComponentTemplate<Collider2DComponent>
 	{
 	public:
-		void drawComponent(Collider2DComponent &component, bool *)
+		static void drawComponent(Collider2DComponent &component, bool *)
 		{
 			b2FixtureDef &fixtureDef = component.fixtureDef;
 
@@ -941,7 +939,7 @@ namespace Survive
 	class ComponentTemplate<RigidBody2DComponent>
 	{
 	public:
-		void drawComponent(RigidBody2DComponent &component, bool *visible)
+		static void drawComponent(RigidBody2DComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Rigid body 2D", visible))
 			{
@@ -1018,7 +1016,7 @@ namespace Survive
 	class ComponentTemplate<HingeJoint2DComponent> : public Joint2DComponentTemplate
 	{
 	public:
-		void drawComponent(HingeJoint2DComponent &component, bool *visible)
+		static void drawComponent(HingeJoint2DComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
 			{
@@ -1089,7 +1087,7 @@ namespace Survive
 	class ComponentTemplate<DistanceJoint2DComponent> : public Joint2DComponentTemplate
 	{
 	public:
-		void drawComponent(DistanceJoint2DComponent &component, bool *visible)
+		static void drawComponent(DistanceJoint2DComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Distance joint 2D", visible))
 			{
@@ -1114,7 +1112,7 @@ namespace Survive
 	class ComponentTemplate<ScriptComponent>
 	{
 	public:
-		void drawComponent(ScriptComponent &component, bool *visible)
+		static void drawComponent(ScriptComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Script", visible))
 			{
