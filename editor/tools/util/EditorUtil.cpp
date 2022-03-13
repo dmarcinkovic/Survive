@@ -782,3 +782,13 @@ void Survive::EditorUtil::enableButton(bool condition)
 		ImGui::PopStyleVar();
 	}
 }
+
+void Survive::EditorUtil::drawColumnColorEdit3(const char *text, const char *label, glm::vec3 &color)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	ImGui::SetNextItemWidth(-1);
+	ImGui::ColorEdit3(label, glm::value_ptr(color));
+	ImGui::NextColumn();
+}

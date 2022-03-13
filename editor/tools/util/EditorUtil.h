@@ -53,7 +53,7 @@ namespace Survive
 		void loadModel(OpenDialog &fileChooser, Model &model, std::string &modelName, bool &changed, bool &open);
 
 		static void loadTexture(OpenDialog &fileChooser, Loader &loader, Texture &texture, std::string &textureName,
-						 const char *format, const char *label, bool &changed, bool &open);
+								const char *format, const char *label, bool &changed, bool &open);
 
 		static void loadQuadModel(TexturedModel &texturedModel, Loader &loader);
 
@@ -99,6 +99,8 @@ namespace Survive
 										ImGuiInputTextFlags flags = ImGuiInputTextFlags_ReadOnly);
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
+
+		static void drawColumnColorEdit3(const char *text, const char *label, glm::vec3 &color);
 
 		void drawPolygonPoints(std::vector<b2Vec2> &points, b2PolygonShape &shape) const;
 
