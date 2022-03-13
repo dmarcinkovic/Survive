@@ -327,10 +327,18 @@ namespace Survive
 				ImGui::Columns(2);
 				EditorUtil::loadTexture(m_OpenDialog, m_Loader, texturedModel.getTexture(), component.textureName,
 										"Texture: %s", "Load texture", m_Changed, m_Open);
-				EditorUtil::loadQuadModel(texturedModel, m_Loader);
+				loadQuadModel(texturedModel);
 
 				ImGui::Columns();
 				ImGui::PopID();
+			}
+		}
+
+		void loadQuadModel(TexturedModel &texturedModel)
+		{
+			if (!texturedModel.isValidModel())
+			{
+				texturedModel.getModel() = m_Loader.renderQuad();
 			}
 		}
 	};
