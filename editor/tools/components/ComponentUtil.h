@@ -9,7 +9,7 @@
 
 #include "entt.hpp"
 #include "Components.h"
-#include "ComponentTemplate.h"
+#include "ComponentTemplates.h"
 
 namespace Survive
 {
