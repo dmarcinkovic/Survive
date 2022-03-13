@@ -34,7 +34,7 @@ namespace Survive
 		{
 			if (ImGui::CollapsingHeader("Polygon collider 2D", visible))
 			{
-				EditorUtil::addPolygonPoint(component.points, component.polygonShape);
+				addPolygonPoint(component.points, component.polygonShape);
 
 				ImGui::Columns(2, nullptr, false);
 				drawPolygonPoints(component.points, component.polygonShape);
@@ -135,6 +135,22 @@ namespace Survive
 				ImGui::TextUnformatted("Delete point");
 				ImGui::EndTooltip();
 			}
+		}
+
+		void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+		{
+			ImGui::TextUnformatted("Add new point");
+			ImGui::SameLine();
+			if (ImGui::Button(" + ") && points.size() < b2_maxPolygonVertices)
+			{
+				points.emplace_back(0, 0);
+				if (points.size() >= 3)
+				{
+					shape.Set(points.data(), static_cast<int>(points.size()));
+				}
+			}
+
+			ImGui::Separator();
 		}
 	};
 }

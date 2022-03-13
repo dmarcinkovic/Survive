@@ -66,6 +66,10 @@ namespace Survive
 		void initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag);
 
 		void resetEntity();
+
+		static void setStyleColors();
+
+		static void resetStyleColors();
 	};
 }
 

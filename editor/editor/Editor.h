@@ -12,7 +12,6 @@
 
 #include "ContentBrowser.h"
 #include "EventHandler.h"
-#include "EditorUtil.h"
 #include "LogEditor.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
@@ -40,7 +39,6 @@ namespace Survive
 		StatusBar m_StatusBar;
 
 		SceneSerializer m_SceneLoader;
-		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;

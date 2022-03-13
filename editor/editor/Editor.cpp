@@ -146,7 +146,7 @@ void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &re
 					auto[x, y] = Scene::getScenePosition();
 					float width = Scene::getSceneWidth();
 					float height = Scene::getSceneHeight();
-					m_EditorUtil.loadDraggedModels(registry, file, camera, x, y, width, height);
+					EditorUtil::loadDraggedModels(registry, m_Loader, file, camera, x, y, width, height);
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
