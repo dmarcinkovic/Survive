@@ -334,6 +334,7 @@ namespace Survive
 			}
 		}
 
+	private:
 		void loadQuadModel(TexturedModel &texturedModel)
 		{
 			if (!texturedModel.isValidModel())
@@ -352,12 +353,12 @@ namespace Survive
 
 		AudioMaster m_AudioMaster;
 
+		bool m_Changed = true;
+		bool m_Open = false;
+
 	public:
 		void drawComponent(SoundComponent &component, bool *visible)
 		{
-			static bool changed = true;
-			static bool open = false;
-
 			if (ImGui::CollapsingHeader("Sound", visible))
 			{
 				ImGui::Columns(2, nullptr, false);
@@ -376,8 +377,31 @@ namespace Survive
 
 				ImGui::Columns(2);
 
-				EditorUtil::loadSound(m_OpenDialog, m_AudioMaster, component.sound, component.soundFile, changed, open);
+				loadSound(component.sound, component.soundFile);
 				ImGui::Columns();
+			}
+		}
+
+	private:
+		void loadSound(ALint &sound, std::string &soundFile)
+		{
+			EditorUtil::showLoadedFile("Sound: %s", soundFile, "Load sound", m_Open);
+
+			if (m_Open)
+			{
+				m_OpenDialog.open(600.0f, 400.0f, &m_Open);
+
+				std::string selectedFilename = m_OpenDialog.getSelectedFilename();
+				if (!m_Open && !selectedFilename.empty())
+				{
+					try
+					{
+						sound = m_AudioMaster.loadSound(selectedFilename.c_str());
+						soundFile = selectedFilename;
+						m_Changed = true;
+					} catch (const std::exception &ignorable)
+					{}
+				}
 			}
 		}
 	};
