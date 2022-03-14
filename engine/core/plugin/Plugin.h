@@ -16,6 +16,8 @@
 
 #endif
 
+#include "ObjectBehaviour.h"
+
 namespace Survive
 {
 	class Plugin
