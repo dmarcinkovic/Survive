@@ -7,10 +7,6 @@
 #include <imgui_internal.h>
 
 #include "Log.h"
-#include "Loader.h"
-#include "ObjParser.h"
-#include "Components.h"
-#include "Util.h"
 #include "EditorUtil.h"
 
 void Survive::EditorUtil::drawTransform3DHeader()
@@ -102,76 +98,6 @@ void Survive::EditorUtil::showLoadedFile(const char *format, const std::string &
 	}
 
 	ImGui::PopStyleColor(3);
-}
-
-void Survive::EditorUtil::loadDraggedModels(entt::registry &registry, Loader &loader, const std::filesystem::path &file,
-											const Camera &camera, float x, float y, float width, float height)
-try
-{
-	Model model = ObjParser::loadObj(file.string(), loader);
-
-	if (model.isValidModel())
-	{
-		auto entity = registry.create();
-		registry.emplace<TagComponent>(entity, file.stem().string());
-
-		Render3DComponent renderComponent(TexturedModel(model, Texture()));
-		renderComponent.modelName = std::filesystem::relative(file).string();
-		registry.emplace<Render3DComponent>(entity, renderComponent);
-		registry.emplace<MaterialComponent>(entity, false);
-
-		constexpr float scale = 15.0f;
-		glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
-
-		glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
-		glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
-
-		registry.emplace<Transform3DComponent>(entity, position);
-	}
-} catch (const std::exception &exception)
-{
-	Log::logMessage(LogType::ERROR, "Error while parsing .obj file");
-}
-
-void
-Survive::EditorUtil::registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
-									  Loader &loader)
-{
-	std::string filename = file.string();
-
-	renderer.addMousePickingListener([=, &registry, &renderer, &loader](int selectedEntity) {
-		if (selectedEntity < 0)
-		{
-			renderer.popMousePickingListener();
-			return;
-		}
-
-		try
-		{
-			Texture texture = loader.loadTexture(filename.c_str());
-
-			auto entity = static_cast<entt::entity>(selectedEntity);
-
-			if (registry.any_of<Render3DComponent>(entity))
-			{
-				Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
-
-				renderComponent.texturedModel.setTexture(texture);
-				renderComponent.textureName = std::filesystem::relative(file).string();
-			} else if (registry.any_of<Render2DComponent>(entity))
-			{
-				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
-
-				renderComponent.texturedModel.setTexture(texture);
-				renderComponent.textureName = std::filesystem::relative(file).string();
-			}
-		} catch (const std::exception &exception)
-		{
-			Log::logMessage(LogType::ERROR, "Cannot load texture " + filename);
-		}
-
-		renderer.popMousePickingListener();
-	});
 }
 
 void Survive::EditorUtil::drawColumnInputInt(const char *text, const char *label, int &value)

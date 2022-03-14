@@ -28,14 +28,8 @@ namespace Survive
 		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z,
 									   float lowerBound = std::numeric_limits<float>::lowest());
 
-		static void loadDraggedModels(entt::registry &registry, Loader &loader, const std::filesystem::path &file,
-									  const Camera &camera, float x, float y, float width, float height);
-
 		static void loadTexture(OpenDialog &fileChooser, Loader &loader, Texture &texture, std::string &textureName,
 								const char *format, const char *label, bool &changed, bool &open);
-
-		static void registerListener(entt::registry &registry, Renderer &renderer,
-									 const std::filesystem::path &file, Loader &loader);
 
 		static void drawColumnInputInt(const char *text, const char *label, int &value);
 
