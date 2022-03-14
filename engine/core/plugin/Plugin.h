@@ -22,26 +22,43 @@ namespace Survive
 {
 	class Plugin
 	{
-	public:
-		using Function = ObjectBehaviour *(*)();
+	private:
+		void *m_Instance{};
 
-		static void deleteInstance(const std::shared_ptr<ObjectBehaviour> &instance)
+	public:
+		using CreateFunction = ObjectBehaviour *(*)();
+		using DestroyFunction = void (*)(ObjectBehaviour *);
+
+		void deleteInstance(const std::shared_ptr<ObjectBehaviour> &instance)
 		{
-//			dlclose(instance);
+			if (m_Instance == nullptr)
+			{
+				return;
+			}
+
+			auto destroyFunction = reinterpret_cast<DestroyFunction>(dlsym(m_Instance, "destroy"));
+			dlclose(m_Instance);
+
+			if (destroyFunction == nullptr)
+			{
+				Log::logMessage(LogType::ERROR, "Error while loading \"destroy()\" function");
+			} else
+			{
+				destroyFunction(instance.get());
+			}
 		}
 
-		static std::shared_ptr<ObjectBehaviour> createInstance(const std::string &filename)
+		std::shared_ptr<ObjectBehaviour> createInstance(const std::string &filename)
 		{
-			void *instance = dlopen(filename.c_str(), RTLD_LAZY);
+			m_Instance = dlopen(filename.c_str(), RTLD_LAZY);
 
-			if (instance == nullptr)
+			if (m_Instance == nullptr)
 			{
-				std::cout << "Error: " << dlerror() << '\n';
 				Log::logMessage(LogType::ERROR, "Error while loading " + filename);
 				return nullptr;
 			}
 
-			auto createFunction = reinterpret_cast<Function>(dlsym(instance, "create"));
+			auto createFunction = reinterpret_cast<CreateFunction>(dlsym(m_Instance, "create"));
 
 			if (createFunction == nullptr)
 			{
