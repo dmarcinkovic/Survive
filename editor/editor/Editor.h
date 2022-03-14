@@ -21,6 +21,7 @@
 #include "StatusBar.h"
 #include "PropertyWindow.h"
 #include "Menu.h"
+#include "EditorEventHandler.h"
 
 namespace Survive
 {
@@ -42,6 +43,8 @@ namespace Survive
 
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
+
+		EditorEventHandler m_EventHandler;
 
 	public:
 		explicit Editor(Renderer &renderer);
