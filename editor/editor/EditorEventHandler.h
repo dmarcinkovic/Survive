@@ -36,6 +36,15 @@ namespace Survive
 
 		static void
 		loadTexture(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file, Loader &loader);
+
+		static void addTransformComponentToModel(entt::registry &registry, entt::entity entity, const Camera &camera,
+												 float x, float y, float width, float height);
+
+		static void addRenderComponentToModel(entt::registry &registry, entt::entity entity,
+											  const std::filesystem::path &file, const Model &model);
+
+		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
+									 Loader &loader);
 	};
 }
 

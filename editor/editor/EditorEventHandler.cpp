@@ -4,6 +4,7 @@
 
 #include "EditorEventHandler.h"
 #include "Scene.h"
+#include "Util.h"
 
 Survive::EditorEventHandler::EditorEventHandler(ContentBrowser &contentBrowser, EntityManager &manager,
 												SceneSerializer &sceneLoader)
@@ -66,7 +67,22 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 	float width = Scene::getSceneWidth();
 	float height = Scene::getSceneHeight();
 
-	EditorUtil::loadDraggedModels(registry, loader, file, camera, x, y, width, height);
+	try
+	{
+		Model model = ObjParser::loadObj(file.string(), loader);
+
+		if (model.isValidModel())
+		{
+			auto entity = registry.create();
+			registry.emplace<TagComponent>(entity, file.stem().string());
+
+			addRenderComponentToModel(registry, entity, file, model);
+			addTransformComponentToModel(registry, entity, camera, x, y, width, height);
+		}
+	} catch (const std::exception &exception)
+	{
+		Log::logMessage(LogType::ERROR, "Error while parsing .obj file");
+	}
 }
 
 void Survive::EditorEventHandler::loadTexture(entt::registry &registry, Survive::Renderer &renderer,
@@ -75,5 +91,67 @@ void Survive::EditorEventHandler::loadTexture(entt::registry &registry, Survive:
 	ImVec2 mousePosition = ImGui::GetMousePos();
 	renderer.setMousePickingPosition(mousePosition.x, mousePosition.y);
 
-	EditorUtil::registerListener(registry, renderer, file, loader);
+	registerListener(registry, renderer, file, loader);
+}
+
+void Survive::EditorEventHandler::addTransformComponentToModel(entt::registry &registry, entt::entity entity,
+															   const Camera &camera, float x, float y,
+															   float width, float height)
+{
+	constexpr float scale = 15.0f;
+	glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
+
+	glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
+	glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
+
+	registry.emplace<Transform3DComponent>(entity, position);
+}
+
+void Survive::EditorEventHandler::addRenderComponentToModel(entt::registry &registry, entt::entity entity,
+															const std::filesystem::path &file, const Model &model)
+{
+	Render3DComponent renderComponent(TexturedModel(model, Texture()));
+	renderComponent.modelName = std::filesystem::relative(file).string();
+
+	registry.emplace<Render3DComponent>(entity, renderComponent);
+}
+
+void Survive::EditorEventHandler::registerListener(entt::registry &registry, Renderer &renderer,
+												   const std::filesystem::path &file, Loader &loader)
+{
+	std::string filename = file.string();
+
+	renderer.addMousePickingListener([=, &registry, &renderer, &loader](int selectedEntity) {
+		if (selectedEntity < 0)
+		{
+			renderer.popMousePickingListener();
+			return;
+		}
+
+		try
+		{
+			Texture texture = loader.loadTexture(filename.c_str());
+
+			auto entity = static_cast<entt::entity>(selectedEntity);
+
+			if (registry.any_of<Render3DComponent>(entity))
+			{
+				Render3DComponent &renderComponent = registry.get<Render3DComponent>(entity);
+
+				renderComponent.texturedModel.setTexture(texture);
+				renderComponent.textureName = std::filesystem::relative(file).string();
+			} else if (registry.any_of<Render2DComponent>(entity))
+			{
+				Render2DComponent &renderComponent = registry.get<Render2DComponent>(entity);
+
+				renderComponent.texturedModel.setTexture(texture);
+				renderComponent.textureName = std::filesystem::relative(file).string();
+			}
+		} catch (const std::exception &exception)
+		{
+			Log::logMessage(LogType::ERROR, "Cannot load texture " + filename);
+		}
+
+		renderer.popMousePickingListener();
+	});
 }
