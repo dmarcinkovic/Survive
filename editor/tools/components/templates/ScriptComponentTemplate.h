@@ -15,12 +15,38 @@ namespace Survive
 	template<>
 	class ComponentTemplate<ScriptComponent>
 	{
+	private:
+		bool m_Open{};
+
+		OpenDialog m_OpenDialog{};
+
 	public:
-		static void drawComponent(ScriptComponent &component, bool *visible)
+		void drawComponent(ScriptComponent &component, bool *visible)
 		{
 			if (ImGui::CollapsingHeader("Script", visible))
 			{
+				ImGui::Columns(2);
 
+				loadScript(component.m_PluginLocation);
+
+				ImGui::Columns();
+			}
+		}
+
+	private:
+		void loadScript(std::string &scriptPath)
+		{
+			EditorUtil::showLoadedFile("Script path: %s", scriptPath, "Load script", m_Open);
+
+			if (m_Open)
+			{
+				m_OpenDialog.open(600.0f, 400.0f, &m_Open);
+				std::string selectedFilename = m_OpenDialog.getSelectedFilename();
+
+				if (!m_Open && !selectedFilename.empty())
+				{
+					scriptPath = selectedFilename;
+				}
 			}
 		}
 	};
