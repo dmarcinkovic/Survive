@@ -16,6 +16,9 @@ namespace Survive
 	{
 		friend class ScriptingSystem;
 
+		template<typename ComponentType> friend
+		class ComponentTemplate;
+
 	public:
 		std::shared_ptr<ObjectBehaviour> script;
 
