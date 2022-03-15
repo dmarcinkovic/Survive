@@ -18,6 +18,10 @@ namespace Survive
 		static void update(entt::registry &registry);
 
 		static void destroy(entt::registry &registry);
+
+	private:
+		static void initializeScriptingEntity(std::shared_ptr<ObjectBehaviour> &script, entt::registry &registry,
+											  entt::entity entity, EventHandler &eventHandler);
 	};
 }
 

@@ -11,20 +11,16 @@ void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &even
 
 	for (entt::entity entity: view)
 	{
-		ScriptComponent &script = view.get<ScriptComponent>(entity);
+		ScriptComponent &scriptComponent = view.get<ScriptComponent>(entity);
 
-		if (script.script != nullptr)
+		auto &script = scriptComponent.script;
+
+		if (script == nullptr)
 		{
-			script.script->init(registry, entity, eventHandler);
-
-			script.script->start();
-			EventHandler::addMouseListener([&](int, int, double, double) {
-				script.script->onMouseClick();
-			});
-			EventHandler::addKeyListener([&](int, int) {
-				script.script->onKeyboardPressed();
-			});
+			script = scriptComponent.m_Plugin.createInstance(scriptComponent.m_PluginLocation);
 		}
+
+		initializeScriptingEntity(script, registry, entity, eventHandler);
 	}
 }
 
@@ -52,6 +48,26 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 
 			EventHandler::popKeyListener();
 			EventHandler::popMouseListener();
+
+			script.m_Plugin.deleteInstance(script.script);
 		}
 	});
+}
+
+void
+Survive::ScriptingSystem::initializeScriptingEntity(std::shared_ptr<ObjectBehaviour> &script, entt::registry &registry,
+													entt::entity entity, EventHandler &eventHandler)
+{
+	if (script != nullptr)
+	{
+		script->init(registry, entity, eventHandler);
+
+		script->start();
+		EventHandler::addMouseListener([&](int, int, double, double) {
+			script->onMouseClick();
+		});
+		EventHandler::addKeyListener([&](int, int) {
+			script->onKeyboardPressed();
+		});
+	}
 }
