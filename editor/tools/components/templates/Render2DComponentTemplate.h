@@ -11,8 +11,8 @@ namespace Survive
 	class ComponentTemplate<Render2DComponent>
 	{
 	private:
-		OpenDialog m_OpenDialog;
-		Loader m_Loader;
+		OpenDialog m_OpenDialog{};
+		Loader m_Loader{};
 
 		bool m_Changed = true;
 		bool m_Open = false;
