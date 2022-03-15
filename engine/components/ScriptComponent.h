@@ -8,17 +8,27 @@
 #include <memory>
 
 #include "ObjectBehaviour.h"
+#include "Plugin.h"
 
 namespace Survive
 {
 	struct ScriptComponent
 	{
+		friend class ScriptingSystem;
+
+	public:
 		std::shared_ptr<ObjectBehaviour> script;
 
+	private:
+		Plugin m_Plugin;
+
+		std::string m_PluginLocation;
+
+	public:
 		ScriptComponent() = default;
 
 		explicit ScriptComponent(std::shared_ptr<ObjectBehaviour> objectBehaviour)
-			: script(std::move(objectBehaviour))
+				: script(std::move(objectBehaviour))
 		{
 		}
 	};
