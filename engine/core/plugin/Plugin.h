@@ -29,7 +29,7 @@ namespace Survive
 		using CreateFunction = ObjectBehaviour *(*)();
 		using DestroyFunction = void (*)(ObjectBehaviour *);
 
-		void deleteInstance(const std::shared_ptr<ObjectBehaviour> &object)
+		void deleteInstance(ObjectBehaviour *object)
 		{
 			if (m_ClassInstance == nullptr)
 			{
@@ -37,18 +37,19 @@ namespace Survive
 			}
 
 			auto destroyFunction = reinterpret_cast<DestroyFunction>(dlsym(m_ClassInstance, "destroy"));
-			dlclose(m_ClassInstance);
 
 			if (destroyFunction == nullptr)
 			{
 				Log::logMessage(LogType::ERROR, "Error while loading \"destroy()\" function");
 			} else
 			{
-				destroyFunction(object.get());
+				destroyFunction(object);
 			}
+
+			dlclose(m_ClassInstance);
 		}
 
-		std::shared_ptr<ObjectBehaviour> createInstance(const std::string &filename)
+		ObjectBehaviour *createInstance(const std::string &filename)
 		{
 			m_ClassInstance = dlopen(filename.c_str(), RTLD_LAZY);
 
@@ -67,7 +68,7 @@ namespace Survive
 			}
 
 			ObjectBehaviour *objectBehaviour = createFunction();
-			return std::shared_ptr<ObjectBehaviour>{objectBehaviour};
+			return objectBehaviour;
 		}
 	};
 }
