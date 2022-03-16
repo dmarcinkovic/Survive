@@ -55,7 +55,7 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 }
 
 void
-Survive::ScriptingSystem::initializeScriptingEntity(std::shared_ptr<ObjectBehaviour> &script, entt::registry &registry,
+Survive::ScriptingSystem::initializeScriptingEntity(ObjectBehaviour *script, entt::registry &registry,
 													entt::entity entity, EventHandler &eventHandler)
 {
 	if (script != nullptr)
@@ -63,10 +63,10 @@ Survive::ScriptingSystem::initializeScriptingEntity(std::shared_ptr<ObjectBehavi
 		script->init(registry, entity, eventHandler);
 
 		script->start();
-		EventHandler::addMouseListener([&](int, int, double, double) {
+		EventHandler::addMouseListener([=](int, int, double, double) {
 			script->onMouseClick();
 		});
-		EventHandler::addKeyListener([&](int, int) {
+		EventHandler::addKeyListener([=](int, int) {
 			script->onKeyboardPressed();
 		});
 	}
