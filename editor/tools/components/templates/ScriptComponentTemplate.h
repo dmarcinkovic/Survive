@@ -41,10 +41,12 @@ namespace Survive
 			if (m_Open)
 			{
 				m_OpenDialog.open(600.0f, 400.0f, &m_Open);
-				std::string selectedFilename = m_OpenDialog.getSelectedFilename();
 
-				if (!m_Open && !selectedFilename.empty())
+				if (!m_Open && !m_OpenDialog.getSelectedFilename().empty())
 				{
+					std::filesystem::path file = m_OpenDialog.getSelectedFile();
+					std::string selectedFilename = std::filesystem::absolute(file).string();
+
 					scriptPath = selectedFilename;
 				}
 			}
