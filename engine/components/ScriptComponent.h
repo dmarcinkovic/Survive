@@ -20,7 +20,7 @@ namespace Survive
 		class ComponentTemplate;
 
 	public:
-		std::shared_ptr<ObjectBehaviour> script;
+		ObjectBehaviour *script{};
 
 	private:
 		Plugin m_Plugin;
@@ -30,8 +30,8 @@ namespace Survive
 	public:
 		ScriptComponent() = default;
 
-		explicit ScriptComponent(std::shared_ptr<ObjectBehaviour> objectBehaviour)
-				: script(std::move(objectBehaviour))
+		explicit ScriptComponent(ObjectBehaviour *objectBehaviour)
+				: script(objectBehaviour)
 		{
 		}
 	};
