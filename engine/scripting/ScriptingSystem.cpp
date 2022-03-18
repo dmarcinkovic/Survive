@@ -50,6 +50,7 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 			EventHandler::popMouseListener();
 
 			script.m_Plugin.deleteInstance(script.script);
+			script.script = nullptr;
 		}
 	});
 }
