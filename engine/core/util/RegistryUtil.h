@@ -101,15 +101,15 @@ namespace Survive
 			}
 
 			const Storage &storage = m_Components[index];
-			m_Components.erase(index);
 
 			replace<Transform3DComponent>(registry, entity, storage);
 			replace<SpriteSheetComponent>(registry, entity, storage);
 			replace<RigidBody2DComponent>(registry, entity, storage);
 			replace<HingeJoint2DComponent>(registry, entity, storage);
 			replace<DistanceJoint2DComponent>(registry, entity, storage);
-
 			restoreSoundComponent(registry, entity);
+
+			m_Components.erase(index);
 		}
 
 		template<typename Component>
