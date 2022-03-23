@@ -17,7 +17,7 @@ void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &even
 
 		if (script == nullptr)
 		{
-			script = scriptComponent.m_Plugin.createInstance(scriptComponent.m_PluginLocation);
+			script = scriptComponent.m_Plugin.createInstance(scriptComponent.pluginLocation);
 		}
 
 		initializeScriptingEntity(script, registry, entity, eventHandler);

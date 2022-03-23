@@ -27,7 +27,7 @@ namespace Survive
 			{
 				ImGui::Columns(2);
 
-				loadScript(component.m_PluginLocation);
+				loadScript(component.pluginLocation);
 
 				ImGui::Columns();
 			}

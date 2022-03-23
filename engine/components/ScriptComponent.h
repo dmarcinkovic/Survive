@@ -25,7 +25,7 @@ namespace Survive
 	private:
 		Plugin m_Plugin;
 
-		std::string m_PluginLocation;
+		std::string pluginLocation;
 
 	public:
 		ScriptComponent() = default;
