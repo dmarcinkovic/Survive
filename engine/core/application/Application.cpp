@@ -20,13 +20,13 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
 
 	m_Editor.addPlayButtonListener([&]() {
-		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
+		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent, ScriptComponent>(m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World.get());
 		m_World->SetContactListener(m_ContactListener.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
-		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
+		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, ScriptComponent>(m_Registry);
 		m_World = std::make_unique<b2World>(m_Gravity);
 		System::destroy(m_Registry);
 	});
