@@ -20,12 +20,11 @@ namespace Survive
 		class ComponentTemplate;
 
 	public:
+		std::string pluginLocation;
 		ObjectBehaviour *script{};
 
 	private:
 		Plugin m_Plugin;
-
-		std::string pluginLocation;
 
 	public:
 		ScriptComponent() = default;
