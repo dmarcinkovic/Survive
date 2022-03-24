@@ -408,6 +408,16 @@ Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, ent
 										   angularDrag, gravityScale, fixedAngle);
 }
 
+void Survive::ComponentLoader::loadScriptComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+	std::string pluginLocation = parseLine(reader, "pluginLocation");
+
+	ScriptComponent scriptComponent;
+	scriptComponent.pluginLocation = pluginLocation;
+
+	registry.emplace<ScriptComponent>(entity, scriptComponent);
+}
+
 std::optional<Survive::Font>
 Survive::ComponentLoader::getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader)
 {

@@ -321,6 +321,18 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 	}
 }
 
+void
+Survive::ComponentSerializer::saveScriptComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+{
+	if (registry.any_of<ScriptComponent>(entity))
+	{
+		const ScriptComponent &scriptComponent = registry.get<ScriptComponent>(entity);
+
+		writer << "\tcomponent:ScriptComponent\n";
+		writer << "\t\tpluginLocation:" << scriptComponent.pluginLocation << '\n';
+	}
+}
+
 void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
 {
 	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
