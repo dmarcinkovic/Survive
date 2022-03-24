@@ -6,7 +6,6 @@
 #include "System.h"
 #include "Animator.h"
 #include "TerrainGenerator.h"
-#include "ContactListener.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
