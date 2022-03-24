@@ -3,6 +3,7 @@
 //
 
 #include <stdexcept>
+#include <algorithm>
 
 #include "Loader.h"
 #include "stb_image.h"
