@@ -78,11 +78,15 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	Model model = ObjParser::loadObj(modelName, loader);
 	Texture texture = loader.loadTexture(textureName.c_str());
 
-	if (model.isValidModel() && texture.isValidTexture())
+	if (model.isValidModel())
 	{
 		Render3DComponent render3DComponent(TexturedModel(model, texture));
 
-		render3DComponent.textureName = textureName;
+		if (texture.isValidTexture())
+		{
+			render3DComponent.textureName = textureName;
+		}
+
 		render3DComponent.modelName = modelName;
 		registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
 	}
