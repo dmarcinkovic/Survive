@@ -3,7 +3,7 @@
 //
 
 #include "SpritesRenderer.h"
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 #include "Maths.h"
 
 void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &camera) const
@@ -15,18 +15,18 @@ void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &ca
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, sprites] : entities)
 	{
-		Renderer2DUtil::prepareEntity(texture);
+		prepareEntity(texture);
 		renderSprites(sprites, registry, texture);
 
-		Renderer2DUtil::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	finishRendering();
 }
 
 void
@@ -42,7 +42,7 @@ Survive::SpritesRenderer::loadUniforms(const Transform3DComponent &transform, co
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::SpritesRenderer::prepareEntities(entt::registry &registry)
 {
-	auto group = registry.view<Render2DComponent, Transform3DComponent, SpriteSheetComponent>();
+	auto group = registry.view<Render2DComponent, Transform3DComponent, SpriteSheetComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : group)

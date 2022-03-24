@@ -10,10 +10,11 @@
 
 #include "ButtonShader.h"
 #include "Button.h"
+#include "Renderer2D.h"
 
 namespace Survive
 {
-	class ButtonRenderer
+	class ButtonRenderer : public Renderer2D
 	{
 	private:
 		ButtonShader m_Shader{};

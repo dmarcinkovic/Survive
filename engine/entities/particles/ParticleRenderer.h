@@ -11,10 +11,11 @@
 #include "ParticleShader.h"
 #include "Particle.h"
 #include "ParticleModel.h"
+#include "Renderer2D.h"
 
 namespace Survive
 {
-	class ParticleRenderer
+	class ParticleRenderer : public Renderer2D
 	{
 	private:
 		constexpr static int MAX_INSTANCES = 10'000;

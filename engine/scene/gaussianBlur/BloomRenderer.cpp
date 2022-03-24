@@ -12,9 +12,9 @@ Survive::BloomRenderer::BloomRenderer(int width, int height)
 
 void Survive::BloomRenderer::render(entt::registry &registry) const
 {
-	auto const &view = registry.view<BloomComponent>();
+	auto const &view = registry.view<BloomComponent, TagComponent>();
 
-	if (view.empty())
+	if (view.begin() == view.end())
 	{
 		return;
 	}

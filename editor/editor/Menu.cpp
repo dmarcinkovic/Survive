@@ -106,7 +106,7 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 					loadScene(registry, sceneLoader, savedFile, file);
 				} else
 				{
-					Log::logWindow(LogType::ERROR, "Cannot load scene from " + file);
+					Log::logMessage(LogType::ERROR, "Cannot load scene from " + file);
 				}
 			}
 		}
@@ -125,8 +125,8 @@ try
 	sceneLoader.loadScene(registry, file);
 	savedFile = file;
 
-	Log::logWindow(LogType::INFO, "Successfully loaded the scene");
+	Log::logMessage(LogType::INFO, "Successfully loaded the scene");
 } catch (const std::exception &exception)
 {
-	Log::logWindow(LogType::ERROR, "Failed to load the scene");
+	Log::logMessage(LogType::ERROR, "Failed to load the scene");
 }

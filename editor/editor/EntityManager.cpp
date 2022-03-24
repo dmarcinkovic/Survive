@@ -6,7 +6,6 @@
 
 #include "ComponentUtil.h"
 #include "EntityManager.h"
-#include "EditorUtil.h"
 
 bool Survive::EntityManager::addEntity(entt::registry &registry)
 {
@@ -79,6 +78,11 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
 
+	if (!registry.valid(m_SelectedEntity))
+	{
+		resetEntity();
+	}
+
 	if (m_AddNewComponent && m_SelectedEntity != entt::null)
 	{
 		addNewComponent(registry);
@@ -92,9 +96,9 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	EditorUtil::setStyleColors();
+	setStyleColors();
 	m_Util.drawAllComponents(registry, m_SelectedEntity);
-	EditorUtil::resetStyleColors();
+	resetStyleColors();
 }
 
 void Survive::EntityManager::addNewComponent(entt::registry &registry)
@@ -102,7 +106,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	static std::vector<const char *> m_Components = ComponentUtil::getListOfComponents();
 	static int size = static_cast<int>(m_Components.size());
 
-	EditorUtil::setStyleColors();
+	setStyleColors();
 	ImGui::Combo("Component type", &m_CurrentItem, m_Components.data(), size);
 
 	if (m_CurrentItem >= 0)
@@ -114,7 +118,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 		}
 	}
 
-	EditorUtil::resetStyleColors();
+	resetStyleColors();
 }
 
 void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i)
@@ -163,9 +167,7 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 void Survive::EntityManager::removeEntity(entt::registry &registry)
 {
 	registry.destroy(m_SelectedEntity);
-	m_SelectedEntity = entt::null;
-
-	m_Selected = m_CurrentItem = -1;
+	resetEntity();
 }
 
 void Survive::EntityManager::renameEntity(entt::registry &registry)
@@ -236,4 +238,26 @@ void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntit
 		ImGui::SetDragDropPayload("Joint2D", &payload, sizeof(payload));
 		ImGui::EndDragDropSource();
 	}
+}
+
+void Survive::EntityManager::resetEntity()
+{
+	m_SelectedEntity = entt::null;
+	m_Selected = m_CurrentItem = -1;
+}
+
+void Survive::EntityManager::setStyleColors()
+{
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.4f, 0.4f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.4f, 0.4f, 0.5f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.25f, 0.25f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.3f, 0.3f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+}
+
+void Survive::EntityManager::resetStyleColors()
+{
+	ImGui::PopStyleColor(7);
 }

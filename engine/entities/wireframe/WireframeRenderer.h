@@ -7,10 +7,11 @@
 
 #include "WireframeShader.h"
 #include "Loader.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class WireframeRenderer
+	class WireframeRenderer : public Renderer3D
 	{
 	private:
 		static constexpr int MAX_VERTICES = 100'000;
@@ -31,7 +32,7 @@ namespace Survive
 		static void updateData(std::vector<float> vertices);
 
 	private:
-		void prepareRendering() const;
+		void prepare() const;
 
 		static void finish();
 	};

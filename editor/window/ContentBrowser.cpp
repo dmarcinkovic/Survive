@@ -3,7 +3,6 @@
 //
 
 #include "ContentBrowser.h"
-#include "Loader.h"
 #include "Log.h"
 
 Survive::ContentBrowser::ContentBrowser()
@@ -244,7 +243,7 @@ void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &fil
 				m_ImageFilename = file.filename().string();
 			} catch (const std::exception &exception)
 			{
-				Log::logWindow(LogType::ERROR, "Cannot load texture " + textureName);
+				Log::logMessage(LogType::ERROR, "Cannot load texture " + textureName);
 			}
 		} else if (m_ImageIndex == FOLDER)
 		{

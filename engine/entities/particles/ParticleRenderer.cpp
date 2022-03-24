@@ -6,7 +6,6 @@
 
 #include "ParticleRenderer.h"
 #include "Maths.h"
-#include "Renderer2DUtil.h"
 
 int Survive::ParticleRenderer::pointer = 0;
 
@@ -27,7 +26,7 @@ void Survive::ParticleRenderer::render(const Camera &camera) const
 			continue;
 		}
 
-		Renderer2DUtil::prepareEntity(particleModel.texturedModel, VAO_UNITS);
+		prepareEntity(particleModel.texturedModel, VAO_UNITS);
 
 		m_Shader.loadDimensions(particles.back().m_Rows, particles.back().m_Cols);
 
@@ -38,7 +37,7 @@ void Survive::ParticleRenderer::render(const Camera &camera) const
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(),
 							  static_cast<GLsizei>(particles.size()));
 
-		Renderer2DUtil::finishRenderingEntity(VAO_UNITS);
+		finishRenderingEntity(VAO_UNITS);
 	}
 
 	finish();

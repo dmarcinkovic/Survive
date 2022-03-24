@@ -52,19 +52,21 @@ void Survive::ComponentLoader::loadRefractionComponent(entt::registry &registry,
 	registry.emplace<RefractionComponent>(entity, index, factor);
 }
 
-void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry,
-													 entt::entity entity, std::ifstream &reader, Loader &loader)
+void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry, entt::entity entity,
+													 std::ifstream &reader, Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
 	Texture image = loader.loadTexture(textureName.c_str());
 
+	Model model = loader.renderQuad();
+	Render2DComponent render2DComponent(TexturedModel(model, image));
+
 	if (image.isValidTexture())
 	{
-		Render2DComponent render2DComponent(TexturedModel(loader.renderQuad(), image));
-
 		render2DComponent.textureName = textureName;
-		registry.emplace<Render2DComponent>(entity, std::move(render2DComponent));
 	}
+
+	registry.emplace<Render2DComponent>(entity, std::move(render2DComponent));
 }
 
 void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, entt::entity entity,
@@ -76,11 +78,15 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	Model model = ObjParser::loadObj(modelName, loader);
 	Texture texture = loader.loadTexture(textureName.c_str());
 
-	if (model.isValidModel() && texture.isValidTexture())
+	if (model.isValidModel())
 	{
 		Render3DComponent render3DComponent(TexturedModel(model, texture));
 
-		render3DComponent.textureName = textureName;
+		if (texture.isValidTexture())
+		{
+			render3DComponent.textureName = textureName;
+		}
+
 		render3DComponent.modelName = modelName;
 		registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
 	}

@@ -15,7 +15,8 @@ namespace Survive
 	{
 		friend class EdgeGizmos;
 
-		friend class ComponentTemplate;
+		template<typename ComponentType> friend
+		class ComponentTemplate;
 
 		b2EdgeShape edgeShape;
 

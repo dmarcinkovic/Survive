@@ -12,10 +12,11 @@
 #include "TextShader.h"
 #include "Text.h"
 #include "Camera.h"
+#include "Renderer2D.h"
 
 namespace Survive
 {
-	class TextRenderer
+	class TextRenderer : public Renderer2D
 	{
 	private:
 		TextShader m_Shader{};

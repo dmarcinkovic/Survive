@@ -1,5 +1,5 @@
 //
-// Created by david on 07. 03. 2021..
+// Created by david on 26. 02. 2022..
 //
 
 #ifndef SURVIVE_LOG_H
@@ -9,9 +9,6 @@
 #include <imgui.h>
 #include <utility>
 #include <vector>
-
-#include "Texture.h"
-#include "Loader.h"
 
 namespace Survive
 {
@@ -34,30 +31,14 @@ namespace Survive
 
 	class Log
 	{
-	private:
-		static constexpr int ITEMS_VISIBLE = 10;
-
+	protected:
 		static std::vector<LogInfo> m_Buffer;
-		Loader m_Loader;
-
-		Texture m_ErrorIcon;
-		Texture m_InfoIcon;
-		Texture m_WarnIcon;
-
-		static bool m_LogViewed;
+		static bool m_LogChanged;
 
 	public:
-		Log();
-
 		static void
-		logWindow(LogType logType, const std::string &message);
-
-		void drawLogWindow();
-
-	private:
-		void drawIcon(LogType logType) const;
+		logMessage(LogType logType, const std::string &message);
 	};
 }
-
 
 #endif //SURVIVE_LOG_H

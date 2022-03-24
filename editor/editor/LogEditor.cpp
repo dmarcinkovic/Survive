@@ -2,32 +2,23 @@
 // Created by david on 07. 03. 2021..
 //
 
-#include "Log.h"
+#include "LogEditor.h"
 #include "Loader.h"
 
-std::vector<Survive::LogInfo> Survive::Log::m_Buffer;
-bool Survive::Log::m_LogViewed = true;
-
-Survive::Log::Log()
+Survive::LogEditor::LogEditor()
 {
 	m_ErrorIcon = m_Loader.loadTexture("assets/textures/error.png");
 	m_InfoIcon = m_Loader.loadTexture("assets/textures/info.png");
 	m_WarnIcon = m_Loader.loadTexture("assets/textures/warn.png");
 }
 
-void Survive::Log::logWindow(LogType logType, const std::string &message)
+void Survive::LogEditor::drawLogWindow()
 {
-	m_Buffer.emplace_back(message, logType);
-	m_LogViewed = false;
-}
-
-void Survive::Log::drawLogWindow()
-{
-	ImGuiWindowFlags flags = m_LogViewed ? ImGuiWindowFlags_None : ImGuiWindowFlags_UnsavedDocument;
+	ImGuiWindowFlags flags = !m_LogChanged ? ImGuiWindowFlags_None : ImGuiWindowFlags_UnsavedDocument;
 
 	if (ImGui::Begin("Log window", nullptr, flags))
 	{
-		m_LogViewed = true;
+		m_LogChanged = false;
 
 		auto numberOfItems = static_cast<int>(m_Buffer.size());
 		int start = numberOfItems - ITEMS_VISIBLE;
@@ -50,7 +41,7 @@ void Survive::Log::drawLogWindow()
 	ImGui::End();
 }
 
-void Survive::Log::drawIcon(LogType logType) const
+void Survive::LogEditor::drawIcon(LogType logType) const
 {
 	float height = 1.5f * ImGui::GetTextLineHeight();
 	ImTextureID icon = nullptr;

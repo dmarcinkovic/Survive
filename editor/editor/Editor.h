@@ -12,8 +12,7 @@
 
 #include "ContentBrowser.h"
 #include "EventHandler.h"
-#include "EditorUtil.h"
-#include "Log.h"
+#include "LogEditor.h"
 #include "SceneSerializer.h"
 #include "EntityManager.h"
 #include "Camera.h"
@@ -22,6 +21,7 @@
 #include "StatusBar.h"
 #include "PropertyWindow.h"
 #include "Menu.h"
+#include "EditorEventHandler.h"
 
 namespace Survive
 {
@@ -36,14 +36,15 @@ namespace Survive
 		EntityManager m_Manager{};
 		ContentBrowser m_ContentBrowser{};
 
-		Log m_Log;
+		LogEditor m_Log;
 		StatusBar m_StatusBar;
 
 		SceneSerializer m_SceneLoader;
-		EditorUtil m_EditorUtil;
 
 		std::string m_SavedFile;
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
+
+		EditorEventHandler m_EventHandler;
 
 	public:
 		explicit Editor(Renderer &renderer);

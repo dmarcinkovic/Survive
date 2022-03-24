@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <imgui.h>
+#include <iostream>
 
 #include "PhysicSystem.h"
 #include "Components.h"
@@ -71,7 +72,9 @@ void Survive::PhysicSystem::addBoxCollider(entt::registry &registry, entt::entit
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(entity);
 		boxCollider.fixtureDef.shape = &boxCollider.boxShape;
-		body->CreateFixture(&boxCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&boxCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
@@ -81,7 +84,9 @@ void Survive::PhysicSystem::addEdgeCollider(entt::registry &registry, entt::enti
 	{
 		EdgeCollider2DComponent &edgeCollider = registry.get<EdgeCollider2DComponent>(entity);
 		edgeCollider.fixtureDef.shape = &edgeCollider.edgeShape;
-		body->CreateFixture(&edgeCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&edgeCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
@@ -91,7 +96,9 @@ void Survive::PhysicSystem::addCircleCollider(entt::registry &registry, entt::en
 	{
 		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
 		circleCollider.fixtureDef.shape = &circleCollider.circleShape;
-		body->CreateFixture(&circleCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&circleCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
@@ -101,7 +108,9 @@ void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::e
 	{
 		PolygonCollider2DComponent &polygonCollider = registry.get<PolygonCollider2DComponent>(entity);
 		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
-		body->CreateFixture(&polygonCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&polygonCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
@@ -172,7 +181,7 @@ entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, en
 {
 	auto view = registry.view<TagComponent>();
 
-	for (const auto &entity : view)
+	for (const auto &entity: view)
 	{
 		const TagComponent &tagComponent = view.get<TagComponent>(entity);
 

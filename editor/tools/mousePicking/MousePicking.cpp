@@ -9,7 +9,6 @@
 #include "Constants.h"
 #include "Components.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
 #include "Display.h"
 #include "PhysicsGizmo.h"
 
@@ -56,7 +55,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	auto entities = prepareEntities(registry);
 
 	setViewport();
-	prepareRendering();
+	prepareRendering(m_Shader);
 
 	for (auto const&[texturedModel, objects]: entities)
 	{
@@ -71,7 +70,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 
 	getRenderedObject();
 
-	Renderer3DUtil::finishRendering();
+	finishRendering();
 
 	Display::clearWindow();
 	mousePressed = false;
@@ -147,8 +146,8 @@ int Survive::MousePicking::getEntity(const std::uint8_t *data)
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
-	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent>();
-	const auto &entities2D = registry.view<Render2DComponent, Transform3DComponent>();
+	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent, TagComponent>();
+	const auto &entities2D = registry.view<Render2DComponent, Transform3DComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: entities2D)
@@ -190,11 +189,6 @@ bool Survive::MousePicking::isInsideWindow() const
 
 	return m_MousePosition.x > 0 && m_MousePosition.x <= width - regionX &&
 		   m_MousePosition.y >= regionY && m_MousePosition.y < height;
-}
-
-void Survive::MousePicking::prepareRendering() const
-{
-	Renderer3DUtil::prepareRendering(m_Shader);
 }
 
 void Survive::MousePicking::setViewport()

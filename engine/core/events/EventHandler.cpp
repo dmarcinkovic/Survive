@@ -78,7 +78,7 @@ void Survive::EventHandler::addWindowResizeListener(const Survive::WindowListene
 
 void Survive::EventHandler::windowResizeCallback(GLFWwindow *, int width, int height)
 {
-	for (auto const &listener : m_WindowListeners)
+	for (auto const &listener: m_WindowListeners)
 	{
 		listener(width, height);
 	}
@@ -86,7 +86,7 @@ void Survive::EventHandler::windowResizeCallback(GLFWwindow *, int width, int he
 
 void Survive::EventHandler::keyEventCallback(GLFWwindow *, int key, int, int action, int)
 {
-	for (auto const &listener : m_KeyEventListeners)
+	for (auto const &listener: m_KeyEventListeners)
 	{
 		listener(key, action);
 	}
@@ -97,7 +97,7 @@ void Survive::EventHandler::mouseEventCallback(GLFWwindow *window, int button, i
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 
-	for (auto const &listener : m_MouseEventListeners)
+	for (auto const &listener: m_MouseEventListeners)
 	{
 		listener(button, action, mouseX, mouseY);
 	}
@@ -105,7 +105,7 @@ void Survive::EventHandler::mouseEventCallback(GLFWwindow *window, int button, i
 
 void Survive::EventHandler::mousePositionCallback(GLFWwindow *, double mouseX, double mouseY)
 {
-	for (auto const &listener : m_MouseMoveListeners)
+	for (auto const &listener: m_MouseMoveListeners)
 	{
 		listener(mouseX, mouseY);
 	}
@@ -113,8 +113,18 @@ void Survive::EventHandler::mousePositionCallback(GLFWwindow *, double mouseX, d
 
 void Survive::EventHandler::scrollCallback(GLFWwindow *, double xOffset, double yOffset)
 {
-	for (auto const &listener : m_ScrollListeners)
+	for (auto const &listener: m_ScrollListeners)
 	{
 		listener(xOffset, yOffset);
 	}
+}
+
+void Survive::EventHandler::popKeyListener()
+{
+	m_KeyEventListeners.pop_back();
+}
+
+void Survive::EventHandler::popMouseListener()
+{
+	m_MouseEventListeners.pop_back();
 }

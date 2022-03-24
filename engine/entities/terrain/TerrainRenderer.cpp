@@ -4,31 +4,32 @@
 
 #include "TerrainRenderer.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
 
 void
 Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
 								 const glm::vec4 &plane) const
 {
-	auto view = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent>(entt::exclude<MoveComponent>);
+	auto view = registry.view<Render3DComponent, Transform3DComponent,
+			TexturedComponent, TagComponent>(entt::exclude<MoveComponent>);
 	if (view.begin() == view.end())
 	{
 		return;
 	}
 
-	Renderer3DUtil::prepareRendering(m_Shader);
-	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures) {
-		prepareRendering(renderComponent, textures);
+	prepareRendering(m_Shader);
+	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform,
+				  TexturedComponent &textures, TagComponent &) {
+		prepareRenderingTerrain(renderComponent, textures);
 		renderShadow(shadowMap, light);
 
 		loadUniforms(camera, light, plane, transform);
 		m_Shader.loadAddShadow(shadowMap != 0);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		finishRendering();
+		finishRenderingTerrain();
 	});
 
-	Renderer3DUtil::finishRendering();
+	finishRendering();
 }
 
 void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
@@ -40,10 +41,11 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 }
 
 void
-Survive::TerrainRenderer::prepareRendering(const Render3DComponent &renderComponent, const TexturedComponent &textures)
+Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent,
+												  const TexturedComponent &textures)
 {
-	Renderer3DUtil::prepareEntity(renderComponent.texturedModel);
-	Renderer3DUtil::addTransparency(false, true);
+	prepareEntity(renderComponent.texturedModel);
+	addTransparency(false, true);
 
 	for (int i = 1; i <= textures.textures.size(); ++i)
 	{
@@ -51,12 +53,12 @@ Survive::TerrainRenderer::prepareRendering(const Render3DComponent &renderCompon
 	}
 }
 
-void Survive::TerrainRenderer::finishRendering()
+void Survive::TerrainRenderer::finishRenderingTerrain()
 {
 	Texture::unbindTexture();
 
-	Renderer3DUtil::addTransparency(true, false);
-	Renderer3DUtil::finishRenderingEntity();
+	addTransparency(true, false);
+	finishRenderingEntity();
 }
 
 void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
