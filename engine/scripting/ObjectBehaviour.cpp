@@ -68,7 +68,7 @@ void Survive::ObjectBehaviour::update()
 
 }
 
-void Survive::ObjectBehaviour::onMouseClick()
+void Survive::ObjectBehaviour::onMouseClick(MouseButton mouseButton)
 {
 
 }

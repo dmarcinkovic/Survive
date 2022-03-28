@@ -65,8 +65,8 @@ void Survive::ScriptingSystem::initializeScriptingEntity(ObjectBehaviour *script
 		script->init(registry, entity, eventHandler, camera);
 
 		script->start();
-		EventHandler::addMouseListener([=](int, int, double, double) {
-			script->onMouseClick();
+		EventHandler::addMouseListener([=](int button, int, double, double) {
+			script->onMouseClick(static_cast<MouseButton>(button));
 		});
 
 		EventHandler::addKeyListener([=](int, int) {

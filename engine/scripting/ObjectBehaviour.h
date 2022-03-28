@@ -16,6 +16,12 @@
 
 namespace Survive
 {
+	enum MouseButton
+	{
+		LeftButton = 0,
+		RightButton = 1
+	};
+
 	class ObjectBehaviour
 	{
 	private:
@@ -40,7 +46,7 @@ namespace Survive
 
 		virtual void update();
 
-		virtual void onMouseClick();
+		virtual void onMouseClick(MouseButton mouseButton);
 
 		virtual void onCollisionEnter(entt::entity other);
 
