@@ -2,6 +2,8 @@
 // Created by david on 21. 08. 2021..
 //
 
+#include <sstream>
+
 #include "FileUtil.h"
 
 
