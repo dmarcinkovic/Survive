@@ -48,6 +48,8 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 
 			EventHandler::popKeyListener();
 			EventHandler::popMouseListener();
+			EventHandler::popScrollListener();
+			EventHandler::popMouseMovedListener();
 
 			script.m_Plugin.deleteInstance(script.script);
 			script.script = nullptr;
@@ -66,8 +68,17 @@ void Survive::ScriptingSystem::initializeScriptingEntity(ObjectBehaviour *script
 		EventHandler::addMouseListener([=](int, int, double, double) {
 			script->onMouseClick();
 		});
+
 		EventHandler::addKeyListener([=](int, int) {
 			script->onKeyboardPressed();
+		});
+
+		EventHandler::addScrollListener([=](double, double yOffset) {
+			script->onMouseScroll(static_cast<float>(yOffset));
+		});
+
+		EventHandler::addMouseMovedListener([=](double, double) {
+			script->onMouseMove();
 		});
 	}
 }

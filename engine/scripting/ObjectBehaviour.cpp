@@ -93,6 +93,16 @@ void Survive::ObjectBehaviour::onCollisionExit(entt::entity other)
 
 }
 
+void Survive::ObjectBehaviour::onMouseScroll(float offset)
+{
+
+}
+
+void Survive::ObjectBehaviour::onMouseMove()
+{
+
+}
+
 void Survive::ObjectBehaviour::storeEntity()
 {
 	if (!m_Registry->any_of<TagComponent>(m_Entity))

@@ -57,6 +57,10 @@ namespace Survive
 
 		static void popMouseListener();
 
+		static void popScrollListener();
+
+		static void popMouseMovedListener();
+
 	private:
 		void addKeyboardListener();
 

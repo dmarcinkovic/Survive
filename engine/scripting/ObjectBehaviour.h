@@ -50,6 +50,10 @@ namespace Survive
 
 		virtual void onKeyboardPressed();
 
+		virtual void onMouseScroll(float offset);
+
+		virtual void onMouseMove();
+
 	protected:
 		template<typename ComponentType>
 		decltype(auto) getComponent()

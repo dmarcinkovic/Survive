@@ -127,3 +127,13 @@ void Survive::EventHandler::popMouseListener()
 {
 	m_MouseEventListeners.pop_back();
 }
+
+void Survive::EventHandler::popScrollListener()
+{
+	m_ScrollListeners.pop_back();
+}
+
+void Survive::EventHandler::popMouseMovedListener()
+{
+	m_MouseMoveListeners.pop_back();
+}
