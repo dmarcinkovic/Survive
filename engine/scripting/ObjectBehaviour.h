@@ -12,6 +12,7 @@
 #include "Display.h"
 #include "EventHandler.h"
 #include "Log.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -28,7 +29,9 @@ namespace Survive
 		bool m_NeedRestore{};
 		std::string m_Name;
 
-		void init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler);
+		Camera *m_Camera{};
+
+		void init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler, Camera &camera);
 
 	public:
 		ObjectBehaviour() = default;
@@ -113,6 +116,8 @@ namespace Survive
 		[[nodiscard]] std::string getTag(entt::entity entity) const;
 
 		static bool isMouseInsideScene();
+
+		Camera &getCamera();
 
 	private:
 		template<typename T, typename... Args>

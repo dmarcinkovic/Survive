@@ -14,7 +14,7 @@ namespace Survive
 	class System
 	{
 	public:
-		static void init(entt::registry &registry, EventHandler &eventHandler, b2World *world);
+		static void init(entt::registry &registry, EventHandler &eventHandler, b2World *world, Camera &camera);
 
 		static void update(entt::registry &registry, b2World *world);
 

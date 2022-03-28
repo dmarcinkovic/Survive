@@ -9,11 +9,13 @@
 #include "RegistryUtil.h"
 #include "Scene.h"
 
-void Survive::ObjectBehaviour::init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler)
+void Survive::ObjectBehaviour::init(entt::registry &registry, entt::entity entity, EventHandler &eventHandler,
+									Camera &camera)
 {
 	m_Registry = &registry;
 	m_Entity = entity;
 	m_EventHandler = &eventHandler;
+	m_Camera = &camera;
 
 	m_NeedRestore = false;
 }
@@ -120,4 +122,9 @@ void Survive::ObjectBehaviour::restoreEntity()
 
 	m_Registry->emplace_or_replace<TagComponent>(copy, m_Name);
 	m_CopiedEntities.erase(m_Entity);
+}
+
+Survive::Camera &Survive::ObjectBehaviour::getCamera()
+{
+	return *m_Camera;
 }

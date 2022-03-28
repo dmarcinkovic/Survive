@@ -7,13 +7,14 @@
 
 #include "entt.hpp"
 #include "EventHandler.h"
+#include "Camera.h"
 
 namespace Survive
 {
 	class ScriptingSystem
 	{
 	public:
-		static void init(entt::registry &registry, EventHandler &eventHandler);
+		static void init(entt::registry &registry, EventHandler &eventHandler, Camera &camera);
 
 		static void update(entt::registry &registry);
 
@@ -21,7 +22,7 @@ namespace Survive
 
 	private:
 		static void initializeScriptingEntity(ObjectBehaviour *script, entt::registry &registry,
-											  entt::entity entity, EventHandler &eventHandler);
+											  entt::entity entity, EventHandler &eventHandler, Camera &camera);
 	};
 }
 

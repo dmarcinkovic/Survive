@@ -21,7 +21,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 
 	m_Editor.addPlayButtonListener([&]() {
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent, ScriptComponent>(m_Registry);
-		System::init(m_Registry, m_EventHandler, m_World.get());
+		System::init(m_Registry, m_EventHandler, m_World.get(), m_Camera);
 		m_World->SetContactListener(m_ContactListener.get());
 	});
 

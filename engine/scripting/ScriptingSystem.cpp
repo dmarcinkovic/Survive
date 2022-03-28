@@ -5,7 +5,7 @@
 #include "Components.h"
 #include "ScriptingSystem.h"
 
-void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &eventHandler)
+void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &eventHandler, Camera &camera)
 {
 	auto view = registry.view<ScriptComponent>();
 
@@ -20,7 +20,7 @@ void Survive::ScriptingSystem::init(entt::registry &registry, EventHandler &even
 			script = scriptComponent.m_Plugin.createInstance(scriptComponent.pluginLocation);
 		}
 
-		initializeScriptingEntity(script, registry, entity, eventHandler);
+		initializeScriptingEntity(script, registry, entity, eventHandler, camera);
 	}
 }
 
@@ -55,13 +55,12 @@ void Survive::ScriptingSystem::destroy(entt::registry &registry)
 	});
 }
 
-void
-Survive::ScriptingSystem::initializeScriptingEntity(ObjectBehaviour *script, entt::registry &registry,
-													entt::entity entity, EventHandler &eventHandler)
+void Survive::ScriptingSystem::initializeScriptingEntity(ObjectBehaviour *script, entt::registry &registry,
+													entt::entity entity, EventHandler &eventHandler, Camera &camera)
 {
 	if (script != nullptr)
 	{
-		script->init(registry, entity, eventHandler);
+		script->init(registry, entity, eventHandler, camera);
 
 		script->start();
 		EventHandler::addMouseListener([=](int, int, double, double) {

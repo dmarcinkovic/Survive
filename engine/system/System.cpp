@@ -21,10 +21,10 @@ void Survive::System::update(entt::registry &registry, b2World *world)
 	ScriptingSystem::update(registry);
 }
 
-void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world)
+void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world, Camera &camera)
 {
 	PhysicSystem::init(registry, world);
-	ScriptingSystem::init(registry, eventHandler);
+	ScriptingSystem::init(registry, eventHandler, camera);
 }
 
 void Survive::System::destroy(entt::registry &registry)
