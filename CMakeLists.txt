@@ -25,6 +25,9 @@ target_link_libraries(Survive ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLFW3_LIBR
 add_executable(Main main.cpp)
 target_link_libraries(Main Survive)
 
+add_library(ThirdCameraPerson SHARED assets/scripts/ThirdCameraPersonScript.cpp)
+target_link_libraries(ThirdCameraPerson Survive)
+
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/engine/core/shader/sources DESTINATION engine/core/shader)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets DESTINATION .)
 install(FILES ${CMAKE_SOURCE_DIR}/imgui.ini DESTINATION .)

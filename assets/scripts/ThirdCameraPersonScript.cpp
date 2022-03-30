@@ -16,9 +16,7 @@ namespace Survive
 		float m_CameraDistance = 10.0f;
 		float m_Angle = 0.0f;
 
-		float m_MouseY = 0.0f;
 		float m_MouseX = 0.0f;
-		bool m_MouseRightPressed{};
 		bool m_MouseLeftPressed{};
 
 	public:
@@ -42,53 +40,45 @@ namespace Survive
 
 		void onMouseScroll(float offset) override
 		{
-			m_CameraDistance += offset * 0.5f;
+			if (isMouseInsideScene())
+			{
+				m_CameraDistance += offset * 0.5f;
+			}
 		}
 
 		void onMouseClick(MouseButton mouseButton, MouseAction mouseAction) override
 		{
+			if (!isMouseInsideScene())
+			{
+				return;
+			}
+
 			m_MouseX = getMousePosition().first;
-			m_MouseY = getMousePosition().second;
 
 			if (mouseAction == MouseAction::MousePress)
 			{
-				if (mouseButton == MouseButton::RightButton)
-				{
-					m_MouseRightPressed = true;
-				} else if (mouseButton == MouseButton::LeftButton)
+				if (mouseButton == MouseButton::LeftButton)
 				{
 					m_MouseLeftPressed = true;
 				}
 			} else
 			{
-				m_MouseLeftPressed = m_MouseRightPressed = false;
+				m_MouseLeftPressed = false;
 			}
 		}
 
 		void onMouseMove() override
 		{
-			if (m_MouseRightPressed)
-			{
-				float currentMouseY = getMousePosition().second;
-				float mouseDy = currentMouseY - m_MouseY;
-
-				float pitchDelta = mouseDy * 0.05f;
-
-				Camera &camera = getCamera();
-				camera.pitch -= pitchDelta;
-			}
-
 			if (m_MouseLeftPressed)
 			{
 				float currentMouseX = getMousePosition().first;
 				float mouseDx = currentMouseX - m_MouseX;
 
-				float angleDelta = mouseDx * 0.05f;
+				float angleDelta = mouseDx * 0.4f;
 				m_Angle -= angleDelta;
 			}
 
 			m_MouseX = getMousePosition().first;
-			m_MouseY = getMousePosition().second;
 		}
 
 	private:
@@ -104,7 +94,7 @@ namespace Survive
 			camera.position.y = position.y + verticalDistance;
 			camera.position.z = position.z - offsetZ;
 
-			camera.yaw = 180 - rotation.y + m_Angle;
+			camera.yaw = 180 - rotation.y - m_Angle;
 		}
 	};
 }
