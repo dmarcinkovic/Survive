@@ -14,7 +14,7 @@ Survive::EditorEventHandler::EditorEventHandler(ContentBrowser &contentBrowser, 
 }
 
 void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, Renderer &renderer, Loader &loader,
-													  const Camera &camera, std::string &savedFile)
+													  const Camera &camera, std::string &savedFile, bool isScenePlaying)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -22,7 +22,11 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
-			if (file.has_extension())
+			if (isScenePlaying)
+			{
+				std::string message = "Dragging to the scene is not possible while the scene is playing";
+				Log::logMessage(LogType::WARN, message);
+			} else if (file.has_extension())
 			{
 				std::string extension = file.extension().string();
 

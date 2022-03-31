@@ -118,7 +118,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 
 void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
-	m_EventHandler.handleMouseDragging(registry, renderer, m_Loader, camera, m_SavedFile);
+	m_EventHandler.handleMouseDragging(registry, renderer, m_Loader, camera, m_SavedFile, isScenePlaying());
 }
 
 bool Survive::Editor::isScenePlaying() const
