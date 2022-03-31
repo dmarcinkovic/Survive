@@ -42,7 +42,7 @@ namespace Survive
 		{
 			if (isMouseInsideScene())
 			{
-				m_CameraDistance += offset * 0.5f;
+				m_CameraDistance -= offset * 0.5f;
 			}
 		}
 
