@@ -45,6 +45,7 @@ void Survive::EntityManager::createEntity(entt::registry &registry)
 	{
 		auto entity = registry.create();
 		registry.emplace<TagComponent>(entity, m_Buffer);
+		registry.emplace<OutlineComponent>(entity, false);
 		m_Selected = -1;
 
 		memset(m_Buffer, 0, BUFFER_SIZE);
