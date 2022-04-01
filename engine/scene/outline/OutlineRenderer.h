@@ -20,7 +20,7 @@ namespace Survive
 	class OutlineRenderer : public Renderer3D
 	{
 	private:
-		static constexpr float SCALE = 1.04f;
+		static constexpr float SCALE = 1.01f;
 
 		OutlineShader m_Shader;
 

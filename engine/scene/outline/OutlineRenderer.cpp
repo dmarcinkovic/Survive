@@ -71,6 +71,7 @@ void Survive::OutlineRenderer::prepareObject(const Render3DComponent &renderComp
 {
 	glBindVertexArray(renderComponent.texturedModel.vaoID());
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(2);
 }
 
 void Survive::OutlineRenderer::finishRenderingObject()
