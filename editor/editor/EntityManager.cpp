@@ -67,7 +67,7 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 			const TagComponent &tag = registry.get<TagComponent>(entity);
 			auto index = static_cast<int>(entity);
 
-			drawSelectable(tag, entity, index);
+			drawSelectable(registry, tag, entity, index);
 			drawPopupContext(registry, entity, index);
 		}
 	});
@@ -122,15 +122,20 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	resetStyleColors();
 }
 
-void Survive::EntityManager::drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i)
+void Survive::EntityManager::drawSelectable(entt::registry &registry, const TagComponent &tag,
+											entt::entity selectedEntity, int i)
 {
 	ImGui::PushID(i);
 	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
 	{
+		drawOutline(registry, m_SelectedEntity, false);
+
 		m_SelectedEntity = selectedEntity;
 		m_AddNewComponent = false;
 		m_Selected = i;
 		m_CurrentItem = -1;
+
+		drawOutline(registry, m_SelectedEntity, true);
 	}
 
 	initializeDragDropSource(selectedEntity, tag);
@@ -146,19 +151,25 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 
 		if (m_AddNewComponent)
 		{
+			drawOutline(registry, m_SelectedEntity, false);
 			m_CurrentItem = -1;
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
+			drawOutline(registry, m_SelectedEntity, true);
 		} else if (ImGui::Selectable("Remove entity"))
 		{
+			drawOutline(registry, m_SelectedEntity, false);
+
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
 			removeEntity(registry);
 		} else if (ImGui::Selectable("Rename entity"))
 		{
+			drawOutline(registry, m_SelectedEntity, false);
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
 			m_RenameEntity = true;
+			drawOutline(registry, m_SelectedEntity, true);
 		}
 
 		ImGui::EndPopup();
@@ -205,15 +216,19 @@ entt::entity Survive::EntityManager::getSelectedEntity() const
 	return m_SelectedEntity;
 }
 
-void Survive::EntityManager::setSelectedEntity(int selectedEntity)
+void Survive::EntityManager::setSelectedEntity(entt::registry &registry, int selectedEntity)
 {
 	if (selectedEntity == -2)
 	{
 		return;
 	}
 
+	drawOutline(registry, m_SelectedEntity, false);
+
 	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
 	m_Selected = selectedEntity;
+
+	drawOutline(registry, m_SelectedEntity, true);
 }
 
 bool Survive::EntityManager::isFocused() const
@@ -261,4 +276,18 @@ void Survive::EntityManager::setStyleColors()
 void Survive::EntityManager::resetStyleColors()
 {
 	ImGui::PopStyleColor(7);
+}
+
+void Survive::EntityManager::drawOutline(entt::registry &registry, entt::entity entity, bool draw)
+{
+	if (!draw && entity == entt::null)
+	{
+		return;
+	}
+
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		outline.drawOutline = draw;
+	}
 }

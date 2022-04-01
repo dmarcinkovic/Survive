@@ -8,7 +8,7 @@
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
-		  m_Renderer(m_Light), m_Editor(m_Renderer), m_World(std::make_unique<b2World>(m_Gravity))
+		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World(std::make_unique<b2World>(m_Gravity))
 {
 	auto cube = m_Registry.create();
 	m_Registry.emplace<TagComponent>(cube, "cube");
@@ -16,7 +16,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader),
 															  Texture()));
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
-	m_Registry.emplace<OutlineComponent>(cube, true);
+	m_Registry.emplace<OutlineComponent>(cube, false);
 
 	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
 

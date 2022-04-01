@@ -50,7 +50,7 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::string &savedFile,
 											const std::filesystem::path &file)
 {
-	m_Manager.setSelectedEntity(-1);
+	m_Manager.setSelectedEntity(registry, -1);
 
 	try
 	{

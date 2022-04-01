@@ -10,7 +10,7 @@
 #include "Editor.h"
 #include "CameraWindow.h"
 
-Survive::Editor::Editor(Renderer &renderer)
+Survive::Editor::Editor(Renderer &renderer, entt::registry &registry)
 		: m_Scene(renderer.getRenderedTexture()),
 		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader)
 {
@@ -19,8 +19,8 @@ Survive::Editor::Editor(Renderer &renderer)
 					 ImGuiWindowFlags_UnsavedDocument;
 
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
-	renderer.addMousePickingListener([this](int selectedEntity) {
-		m_Manager.setSelectedEntity(selectedEntity);
+	renderer.addMousePickingListener([this, &registry](int selectedEntity) {
+		m_Manager.setSelectedEntity(registry, selectedEntity);
 	});
 
 	setColorStyle();
