@@ -228,7 +228,10 @@ void Survive::EntityManager::setSelectedEntity(entt::registry &registry, int sel
 	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
 	m_Selected = selectedEntity;
 
-	drawOutline(registry, m_SelectedEntity, true);
+	if (m_SelectedEntity != entt::null)
+	{
+		drawOutline(registry, m_SelectedEntity, true);
+	}
 }
 
 bool Survive::EntityManager::isFocused() const
