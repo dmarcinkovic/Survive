@@ -6,9 +6,11 @@
 #include "OutlineComponent.h"
 #include "Maths.h"
 
-void Survive::OutlineRenderer::render(const entt::registry &registry, const Camera &camera) const
+void Survive::OutlineRenderer::render(entt::registry &registry, const Camera &camera) const
 {
-	if (!m_Render)
+	auto view = registry.view<OutlineComponent, Render3DComponent, Transform3DComponent>();
+
+	if (view.begin() == view.end())
 	{
 		return;
 	}
@@ -17,41 +19,23 @@ void Survive::OutlineRenderer::render(const entt::registry &registry, const Came
 	glEnable(GL_STENCIL_TEST);
 	setStencilFunctions();
 
-	const Render3DComponent &renderComponent = registry.get<Render3DComponent>(m_Entity);
-	const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Entity);
+	for (auto const &entity: view)
+	{
+		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
+		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
 
-	prepareObject(renderComponent);
-	loadUniforms(transform, camera);
+		prepareObject(renderComponent);
+		loadUniforms(transform, camera);
 
-	glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		GLsizei count = renderComponent.texturedModel.vertexCount();
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 
-	finishRenderingObject();
+		finishRenderingObject();
+	}
 
 	resetStencilFunctions();
 	finishRendering();
 	glDisable(GL_STENCIL_TEST);
-}
-
-void Survive::OutlineRenderer::add3DObject(entt::registry &registry, entt::entity entity)
-{
-	if (m_Render)
-	{
-		OutlineComponent &previousOutline = registry.get<OutlineComponent>(m_Entity);
-		previousOutline.drawOutline = false;
-	}
-
-	m_Entity = entity;
-
-	m_Render = true;
-	registry.emplace<OutlineComponent>(entity, true);
-}
-
-void Survive::OutlineRenderer::removeObject(entt::registry &registry)
-{
-	OutlineComponent &outline = registry.get<OutlineComponent>(m_Entity);
-	outline.drawOutline = false;
-
-	m_Render = false;
 }
 
 void Survive::OutlineRenderer::setStencilFunctions()
