@@ -79,6 +79,7 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 		{
 			auto entity = registry.create();
 			registry.emplace<TagComponent>(entity, file.stem().string());
+			registry.emplace<OutlineComponent>(entity, false);
 
 			addRenderComponentToModel(registry, entity, file, model);
 			addTransformComponentToModel(registry, entity, camera, x, y, width, height);
