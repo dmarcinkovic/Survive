@@ -21,6 +21,12 @@ void Survive::OutlineRenderer::render(entt::registry &registry, const Camera &ca
 
 	for (auto const &entity: view)
 	{
+		const OutlineComponent &outline = view.get<OutlineComponent>(entity);
+		if (!outline.drawOutline)
+		{
+			continue;
+		}
+
 		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
 		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
 
