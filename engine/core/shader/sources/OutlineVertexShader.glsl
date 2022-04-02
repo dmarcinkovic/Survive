@@ -10,5 +10,5 @@ uniform mat4 projectionMatrix;
 void main()
 {
     vec3 unitNormal = normalize(normal);
-    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position + unitNormal * 0.1, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * transformationMatrix * vec4(position + unitNormal * 0.04, 1.0);
 }
