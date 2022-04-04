@@ -83,7 +83,7 @@ void main()
     vec3 ambient = lightColor * ambientFactor;
 
     vec3 lightDirection = normalize(lightPos - worldPosition);
-    const float diffuseFactor = max(dot(lightDirection, normal), 0.0);
+    float diffuseFactor = max(dot(lightDirection, normal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 
     float shadow = addShadow == 1 ? shadowCalculation(fragmentPositionInLightSpace) : 0;
