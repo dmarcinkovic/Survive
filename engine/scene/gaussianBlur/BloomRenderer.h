@@ -30,6 +30,6 @@ namespace Survive
 
 		static void finishRendering();
 	};
-}
+}// namespace Survive
 
-#endif //SURVIVE_BLOOMRENDERER_H
+#endif//SURVIVE_BLOOMRENDERER_H
