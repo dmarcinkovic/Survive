@@ -26,7 +26,7 @@ jobs:
 
       - name: Install compiler
         run: |
-          sudo apt-get install g++-10
+          sudo apt-get install g++-11
 
       - name: Install conan
         run : |
@@ -47,7 +47,7 @@ jobs:
           mkdir build
           cd build
           conan install .. --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=enabled
-          cmake -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
+          cmake -D CMAKE_CXX_COMPILER=g++-11 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
           make DESTDIR=${{github.workspace}}/build/Linux install
 
