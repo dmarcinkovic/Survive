@@ -41,6 +41,10 @@ jobs:
         run : |
           sudo apt-get install libgl-dev libgl1-mesa-dev libglu1-mesa-dev
 
+      - name: Install xorg-dev
+        run: |
+          sudo apt-get install xorg-dev
+
       - name: Build executable
         run: |
           cd ${{github.workspace}}
