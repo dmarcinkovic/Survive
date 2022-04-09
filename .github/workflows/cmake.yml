@@ -41,9 +41,9 @@ jobs:
         run : |
           sudo apt-get install libgl-dev libgl1-mesa-dev libglu1-mesa-dev
 
-      - name: Install xorg-dev
+      - name: Install libx11-dev
         run: |
-          sudo apt-get install xorg-dev
+          sudo apt-get install libx11-dev
 
       - name: Build executable
         run: |
