@@ -6,8 +6,8 @@
 #define SURVIVE_RENDERER3D_H
 
 
-#include "TexturedModel.h"
 #include "Shader.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {
@@ -18,12 +18,12 @@ namespace Survive
 
 		static void finishRendering();
 
-		static void prepareEntity(const TexturedModel &texture);
+		static void prepareEntity(const TexturedModel &texture, int numberOfVaoUnits);
 
-		static void finishRenderingEntity();
+		static void finishRenderingEntity(int numberOfVaoUnits);
 
 		static void addTransparency(bool cullFace, bool blend);
 	};
-}
+}// namespace Survive
 
-#endif //SURVIVE_RENDERER3D_H
+#endif//SURVIVE_RENDERER3D_H

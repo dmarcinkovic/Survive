@@ -4,18 +4,18 @@
 
 #include "ObjectRenderer.h"
 #include "Components.h"
-#include "ShadowComponent.h"
 #include "Maths.h"
+#include "ShadowComponent.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
-		: m_Light(light)
+	: m_Light(light)
 {
 }
 
-void
-Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
-								const glm::vec4 &plane) const
+void Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
+									 const glm::vec4 &plane) const
 {
+	constexpr int numberOfVaoUnits = 4;
 	auto entities = prepareEntities(registry);
 
 	if (entities.empty())
@@ -27,12 +27,12 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texturedModel, objects]: entities)
+	for (auto const &[texturedModel, objects]: entities)
 	{
-		prepareEntity(texturedModel);
+		prepareEntity(texturedModel, numberOfVaoUnits);
 		renderScene(registry, objects, camera);
 
-		finishRenderingEntity();
+		finishRenderingEntity(numberOfVaoUnits);
 	}
 
 	finishRendering();
@@ -40,7 +40,7 @@ Survive::ObjectRenderer::render(entt::registry &registry, const Camera &camera, 
 }
 
 void Survive::ObjectRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
-									 const Camera &camera) const
+										  const Camera &camera) const
 {
 	for (auto const &object: objects)
 	{
