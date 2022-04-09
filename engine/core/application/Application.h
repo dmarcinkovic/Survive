@@ -43,7 +43,6 @@ namespace Survive
 
 		RegistryUtil m_RegistryUtil;
 
-		DaeParser m_DaeParser;
 		std::unique_ptr<b2ContactListener> m_ContactListener;
 
 	public:

@@ -4,53 +4,23 @@
 
 #include "Application.h"
 #include "System.h"
-#include "Animator.h"
-#include "TerrainGenerator.h"
+#include "ContactListener.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
-		  m_Renderer(m_Light), m_Editor(m_Renderer), m_World(std::make_unique<b2World>(m_Gravity))
+		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World(std::make_unique<b2World>(m_Gravity))
 {
-	auto character = m_Registry.create();
-	m_Registry.emplace<TagComponent>(character, "character");
-	m_Registry.emplace<Transform3DComponent>(character, glm::vec3{-6, -3, -15});
-	m_Registry.emplace<ShadowComponent>(character, true);
+	auto cube = m_Registry.create();
+	m_Registry.emplace<TagComponent>(cube, "cube");
+	m_Registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 0, -8}, glm::vec3{1}, glm::vec3{35, 40, 0});
+	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader),
+															  Texture()));
+	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
+	m_Registry.emplace<OutlineComponent>(cube, false);
 
-	m_Registry.emplace<Render3DComponent>(character,
-										  TexturedModel(m_DaeParser.loadDae("assets/models/character.dae", m_Loader),
-														m_Loader.loadTexture("assets/textures/character.png")));
+	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
 
-	auto[rootJoint, numberOfJoints] = m_DaeParser.getJointData();
-	m_Registry.emplace<AnimationComponent>(character, rootJoint, numberOfJoints);
-
-	auto lamp = m_Registry.create();
-	m_Registry.emplace<TagComponent>(lamp, "lamp");
-	m_Registry.emplace<Transform3DComponent>(lamp, glm::vec3{-1, -4.5, -15}, glm::vec3{0.05f}, glm::vec3{0, 45, 0});
-	m_Registry.emplace<Render3DComponent>(lamp,
-										  TexturedModel(ObjParser::loadObj("assets/models/lamp_bloom.obj", m_Loader),
-														m_Loader.loadTexture("assets/textures/lamp_bloom.png")));
-	m_Registry.emplace<BloomComponent>(lamp, m_Loader.loadTexture("assets/textures/lamp_bloom_emissive.png"), 3.0f);
-	m_Registry.emplace<ShadowComponent>(lamp, true);
-
-	auto soccer = m_Registry.create();
-	m_Registry.emplace<TagComponent>(soccer, "soccer");
-	m_Registry.emplace<Transform3DComponent>(soccer, glm::vec3{4, 2, -10});
-	m_Registry.emplace<Render3DComponent>(soccer,
-										  TexturedModel(ObjParser::loadObj("assets/models/soccer.obj", m_Loader),
-														m_Loader.loadTexture("assets/textures/ball.png")));
-	m_Registry.emplace<MaterialComponent>(soccer, false, true, m_Loader.loadTexture("assets/textures/ball_normal.png"));
-	m_Registry.emplace<ShadowComponent>(soccer, true);
-
-	auto skybox = m_Registry.create();
-	m_Registry.emplace<TagComponent>(skybox, "skybox");
-	std::vector<const char *> faces{"assets/skybox/right.png", "assets/skybox/left.png", "assets/skybox/top.png",
-									"assets/skybox/bottom.png", "assets/skybox/front.png", "assets/skybox/back.png"};
-	m_Registry.emplace<Render3DComponent>(skybox, TexturedModel(m_Loader.renderCube(), m_Loader.loadCubeMap(faces)));
-	m_Registry.emplace<Transform3DComponent>(skybox, glm::vec3{0}, glm::vec3{500});
-
-	m_Renderer.addSkyboxEntity(skybox);
-
-	m_Editor.addPlayButtonListener([this]() {
+	m_Editor.addPlayButtonListener([&]() {
 		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World.get());
 		m_World->SetContactListener(m_ContactListener.get());
@@ -65,8 +35,6 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 
 void Survive::Application::run()
 {
-	Animator animator(m_DaeParser.getAnimation());
-
 	while (m_Display.isRunning())
 	{
 		Display::clearWindow();
@@ -81,7 +49,6 @@ void Survive::Application::run()
 		if (m_Editor.isScenePlaying())
 		{
 			System::update(m_Registry, m_World.get());
-			animator.update(m_Registry);
 		}
 
 		m_Display.update();

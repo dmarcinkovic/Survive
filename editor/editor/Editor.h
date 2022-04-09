@@ -47,7 +47,7 @@ namespace Survive
 		EditorEventHandler m_EventHandler;
 
 	public:
-		explicit Editor(Renderer &renderer);
+		explicit Editor(Renderer &renderer, entt::registry &registry);
 
 		~Editor();
 

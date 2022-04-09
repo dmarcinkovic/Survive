@@ -60,16 +60,6 @@ void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 	m_AnimationRenderer.addSkybox(sky);
 }
 
-void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
-{
-	m_OutlineRenderer.add3DObject(registry, entity);
-}
-
-void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
-{
-	m_OutlineRenderer.removeObject(registry);
-}
-
 Survive::Texture Survive::Renderer::getRenderedTexture() const
 {
 	return Texture(m_Scene);

@@ -9,13 +9,14 @@
 
 void Survive::WaterRenderer::render(entt::registry &registry, const Camera &camera, const Light &light) const
 {
+	constexpr int numberOfVaoUnits = 1;
 	auto waterTiles = registry.view<Render3DComponent, Transform3DComponent, TexturedComponent, MoveComponent, TagComponent>();
 
 	prepareRenderingWater(camera);
 	waterTiles.each(
 			[&](Render3DComponent &renderComponent, Transform3DComponent &transform, TexturedComponent &textures,
 				MoveComponent &moveComponent, TagComponent &) {
-				prepareEntity(renderComponent.texturedModel);
+				prepareEntity(renderComponent.texturedModel, numberOfVaoUnits);
 
 				bindTextures(textures, m_Fbo.reflectionColorTexture(), m_Fbo.refractionColorTexture(),
 							 m_Fbo.getRefractionDepthBuffer());
@@ -23,7 +24,7 @@ void Survive::WaterRenderer::render(entt::registry &registry, const Camera &came
 				loadUniforms(camera, transform, moveComponent, light);
 				glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 
-				finishRenderingEntity();
+				finishRenderingEntity(numberOfVaoUnits);
 			});
 
 	finishRenderingWater();
@@ -59,9 +60,8 @@ void Survive::WaterRenderer::loadMoveFactor(const WaterShader &shader, MoveCompo
 	shader.loadMoveFactor(moveComponent.currentMoveValue);
 }
 
-void
-Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &transform,
-									 MoveComponent &moveComponent, const Light &light) const
+void Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3DComponent &transform,
+										  MoveComponent &moveComponent, const Light &light) const
 {
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);

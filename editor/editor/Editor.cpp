@@ -10,7 +10,7 @@
 #include "Editor.h"
 #include "CameraWindow.h"
 
-Survive::Editor::Editor(Renderer &renderer)
+Survive::Editor::Editor(Renderer &renderer, entt::registry &registry)
 		: m_Scene(renderer.getRenderedTexture()),
 		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader)
 {
@@ -19,8 +19,8 @@ Survive::Editor::Editor(Renderer &renderer)
 					 ImGuiWindowFlags_UnsavedDocument;
 
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
-	renderer.addMousePickingListener([this](int selectedEntity) {
-		m_Manager.setSelectedEntity(selectedEntity);
+	renderer.addMousePickingListener([this, &registry](int selectedEntity) {
+		m_Manager.setSelectedEntity(registry, selectedEntity);
 	});
 
 	setColorStyle();
@@ -36,9 +36,9 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderPropertyWindow(registry, camera);
 	m_Scene.renderSceneWindow(camera, renderer, registry,
 							  m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
-	m_StatusBar.draw();
-
 	drawMenu(registry, renderer);
+	
+	m_StatusBar.draw();
 
 	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
@@ -118,7 +118,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 
 void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
-	m_EventHandler.handleMouseDragging(registry, renderer, m_Loader, camera, m_SavedFile);
+	m_EventHandler.handleMouseDragging(registry, renderer, m_Loader, camera, m_SavedFile, isScenePlaying());
 }
 
 bool Survive::Editor::isScenePlaying() const

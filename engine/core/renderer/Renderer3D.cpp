@@ -16,26 +16,24 @@ void Survive::Renderer3D::finishRendering()
 	glDisable(GL_DEPTH_TEST);
 }
 
-void Survive::Renderer3D::prepareEntity(const TexturedModel &texture)
+void Survive::Renderer3D::prepareEntity(const TexturedModel &texture, int numberOfVaoUnits)
 {
 	texture.bind();
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glEnableVertexAttribArray(3);
-	glEnableVertexAttribArray(4);
+	for (int vaoUnit = 0; vaoUnit < numberOfVaoUnits; ++vaoUnit)
+	{
+		glEnableVertexAttribArray(vaoUnit);
+	}
 }
 
-void Survive::Renderer3D::finishRenderingEntity()
+void Survive::Renderer3D::finishRenderingEntity(int numberOfVaoUnits)
 {
 	TexturedModel::unbind();
 
-	glDisableVertexAttribArray(4);
-	glDisableVertexAttribArray(3);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
+	for (int vaoUnit = 0; vaoUnit < numberOfVaoUnits; ++vaoUnit)
+	{
+		glDisableVertexAttribArray(vaoUnit);
+	}
 
 	Loader::unbindVao();
 }

@@ -20,18 +20,10 @@ namespace Survive
 	class OutlineRenderer : public Renderer3D
 	{
 	private:
-		static constexpr float SCALE = 1.04f;
-
 		OutlineShader m_Shader;
-		entt::entity m_Entity{};
-		bool m_Render{};
 
 	public:
-		void render(const entt::registry &registry, const Camera &camera) const;
-
-		void add3DObject(entt::registry &registry, entt::entity entity);
-
-		void removeObject(entt::registry &registry);
+		void render(entt::registry &registry, const Camera &camera) const;
 
 	private:
 		static void setStencilFunctions();

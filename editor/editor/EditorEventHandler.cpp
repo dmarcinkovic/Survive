@@ -14,7 +14,7 @@ Survive::EditorEventHandler::EditorEventHandler(ContentBrowser &contentBrowser, 
 }
 
 void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, Renderer &renderer, Loader &loader,
-													  const Camera &camera, std::string &savedFile)
+													  const Camera &camera, std::string &savedFile, bool isScenePlaying)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -22,7 +22,11 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
-			if (file.has_extension())
+			if (isScenePlaying)
+			{
+				std::string message = "Dragging to the scene is not possible while the scene is playing";
+				Log::logMessage(LogType::WARN, message);
+			} else if (file.has_extension())
 			{
 				std::string extension = file.extension().string();
 
@@ -46,7 +50,7 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::string &savedFile,
 											const std::filesystem::path &file)
 {
-	m_Manager.setSelectedEntity(-1);
+	m_Manager.setSelectedEntity(registry, -1);
 
 	try
 	{
@@ -75,6 +79,7 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 		{
 			auto entity = registry.create();
 			registry.emplace<TagComponent>(entity, file.stem().string());
+			registry.emplace<OutlineComponent>(entity, false);
 
 			addRenderComponentToModel(registry, entity, file, model);
 			addTransformComponentToModel(registry, entity, camera, x, y, width, height);

@@ -5,12 +5,11 @@
 #include "TerrainRenderer.h"
 #include "Maths.h"
 
-void
-Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light, GLuint shadowMap,
-								 const glm::vec4 &plane) const
+void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light,
+									  GLuint shadowMap, const glm::vec4 &plane) const
 {
 	auto view = registry.view<Render3DComponent, Transform3DComponent,
-			TexturedComponent, TagComponent>(entt::exclude<MoveComponent>);
+							  TexturedComponent, TagComponent>(entt::exclude<MoveComponent>);
 	if (view.begin() == view.end())
 	{
 		return;
@@ -40,11 +39,11 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 	texture.bindTexture(5);
 }
 
-void
-Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent,
-												  const TexturedComponent &textures)
+void Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent,
+													   const TexturedComponent &textures)
 {
-	prepareEntity(renderComponent.texturedModel);
+	constexpr int numberOfVaoUnits = 3;
+	prepareEntity(renderComponent.texturedModel, numberOfVaoUnits);
 	addTransparency(false, true);
 
 	for (int i = 1; i <= textures.textures.size(); ++i)
@@ -55,10 +54,11 @@ Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &rende
 
 void Survive::TerrainRenderer::finishRenderingTerrain()
 {
+	constexpr int numberOfVaoUnits = 3;
 	Texture::unbindTexture();
 
 	addTransparency(true, false);
-	finishRenderingEntity();
+	finishRenderingEntity(numberOfVaoUnits);
 }
 
 void Survive::TerrainRenderer::loadUniforms(const Camera &camera, const Light &light, const glm::vec4 &plane,
