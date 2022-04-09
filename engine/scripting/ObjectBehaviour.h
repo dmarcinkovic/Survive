@@ -48,6 +48,8 @@ namespace Survive
 	public:
 		ObjectBehaviour() = default;
 
+		~ObjectBehaviour() = default;
+
 		virtual void start();
 
 		virtual void update();
