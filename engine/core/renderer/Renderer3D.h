@@ -24,6 +24,6 @@ namespace Survive
 
 		static void addTransparency(bool cullFace, bool blend);
 	};
-}// namespace Survive
+}
 
 #endif//SURVIVE_RENDERER3D_H
