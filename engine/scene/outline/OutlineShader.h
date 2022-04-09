@@ -19,6 +19,7 @@ namespace Survive
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationProjectionMatrix{};
 		GLint m_LocationViewMatrix{};
+		GLint m_LocationFactor{};
 
 	public:
 		OutlineShader();
@@ -28,6 +29,8 @@ namespace Survive
 		void loadViewMatrix(const glm::mat4 &viewMatrix) const;
 
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+		void loadFactor(float factor) const;
 
 	private:
 		void loadUniformLocations();

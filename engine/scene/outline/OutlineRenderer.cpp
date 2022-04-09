@@ -65,6 +65,14 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
+
+	float distanceFromCamera = glm::length(transform.position - camera.position);
+	float scale = std::min(transform.scale.x, std::min(transform.scale.y, transform.scale.z));
+
+	constexpr float constant = 4e-3;
+	float factor = constant * distanceFromCamera / scale;
+
+	m_Shader.loadFactor(factor);
 }
 
 void Survive::OutlineRenderer::prepareObject(const Render3DComponent &renderComponent)
