@@ -8,7 +8,7 @@
 #include "ShadowComponent.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
-	: m_Light(light)
+		: m_Light(light)
 {
 }
 
