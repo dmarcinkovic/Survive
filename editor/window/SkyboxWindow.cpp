@@ -94,7 +94,7 @@ void Survive::SkyboxWindow::drawOpenDialog()
 					m_TextureNames[m_CurrentImage] = filename;
 				} catch (const std::exception &exception)
 				{
-					Log::logWindow(LogType::ERROR, "Could not load " + filename);
+					Log::logMessage(LogType::ERROR, "Could not load " + filename);
 				}
 			}
 		}
@@ -116,7 +116,7 @@ void Survive::SkyboxWindow::drawAddSkyboxButton(entt::registry &registry, Render
 				registry.replace<Render3DComponent>(m_Sky, model);
 			} catch (const std::exception &exception)
 			{
-				Log::logWindow(LogType::ERROR, "Could not load cube map");
+				Log::logMessage(LogType::ERROR, "Could not load cube map");
 			}
 		} else
 		{
@@ -141,6 +141,6 @@ void Survive::SkyboxWindow::createSkybox(entt::registry &registry, Survive::Rend
 		renderer.addSkyboxEntity(m_Sky);
 	} catch (const std::exception &exception)
 	{
-		Log::logWindow(LogType::ERROR, "Could not create skybox");
+		Log::logMessage(LogType::ERROR, "Could not create skybox");
 	}
 }

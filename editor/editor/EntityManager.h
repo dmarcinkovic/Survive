@@ -40,7 +40,7 @@ namespace Survive
 
 		[[nodiscard]] entt::entity getSelectedEntity() const;
 
-		void setSelectedEntity(int selectedEntity);
+		void setSelectedEntity(entt::registry &registry, int selectedEntity);
 
 		[[nodiscard]] bool isFocused() const;
 
@@ -55,13 +55,24 @@ namespace Survive
 
 		void addNewComponent(entt::registry &registry);
 
-		inline void drawSelectable(const TagComponent &tag, entt::entity selectedEntity, int i);
+		inline void
+		drawSelectable(entt::registry &registry, const TagComponent &tag, entt::entity selectedEntity, int i);
 
 		inline void drawPopupContext(entt::registry &registry, entt::entity selectedEntity, int i);
 
 		void removeEntity(entt::registry &registry);
 
 		void renameEntity(entt::registry &registry);
+
+		void initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag);
+
+		void resetEntity();
+
+		static void setStyleColors();
+
+		static void resetStyleColors();
+
+		static void drawOutline(entt::registry &registry, entt::entity entity, bool draw);
 	};
 }
 

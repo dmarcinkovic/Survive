@@ -9,31 +9,56 @@
 
 #include "entt.hpp"
 #include "Components.h"
-#include "ComponentTemplate.h"
+#include "ComponentTemplates.h"
 
 namespace Survive
 {
 	class ComponentUtil
 	{
 	private:
-		ComponentTemplate m_ComponentTemplate;
+		ComponentTemplate<AnimationComponent> m_AnimationTemplate;
+		ComponentTemplate<BloomComponent> m_BloomTemplate;
+		ComponentTemplate<BoxCollider3DComponent> m_BoxCollider3DTemplate;
+		ComponentTemplate<BoxCollider2DComponent> m_BoxCollider2DTemplate;
+		ComponentTemplate<CapsuleCollider3DComponent> m_CapsuleCollider3DTemplate;
+		ComponentTemplate<CircleCollider2DComponent> m_CircleCollider2DTemplate;
+		ComponentTemplate<ConvexMeshCollider3DComponent> m_ConvexMesh3DTemplate;
+		ComponentTemplate<DistanceJoint2DComponent> m_DistanceJoint2DTemplate;
+		ComponentTemplate<EdgeCollider2DComponent> m_EdgeCollider2DTemplate;
+		ComponentTemplate<HingeJoint2DComponent> m_HingeJoint2DTemplate;
+		ComponentTemplate<MaterialComponent> m_MaterialTemplate;
+		ComponentTemplate<PolygonCollider2DComponent> m_PolygonCollider2DTemplate;
+		ComponentTemplate<ReflectionComponent> m_ReflectionTemplate;
+		ComponentTemplate<RefractionComponent> m_RefractionTemplate;
+		ComponentTemplate<Render2DComponent> m_Render2DTemplate;
+		ComponentTemplate<Render3DComponent> m_Render3dTemplate;
+		ComponentTemplate<RigidBody2DComponent> m_RigidBody2DTemplate;
+		ComponentTemplate<RigidBody3DComponent> m_RigidBody3DTemplate;
+		ComponentTemplate<ScriptComponent> m_ScriptTemplate;
+		ComponentTemplate<ShadowComponent> m_ShadowTemplate;
+		ComponentTemplate<SoundComponent> m_SoundTemplate;
+		ComponentTemplate<SphereCollider3DComponent> m_SphereCollider3DTemplate;
+		ComponentTemplate<SpriteComponent> m_SpriteTemplate;
+		ComponentTemplate<SpriteSheetComponent> m_SpriteSheetTemplate;
+		ComponentTemplate<TextComponent> m_TextTemplate;
+		ComponentTemplate<Transform3DComponent> m_TransformTemplate;
 
 	public:
 		[[nodiscard]] bool isUsingKeyEvents() const
 		{
-			return m_ComponentTemplate.isUsingKeyEvents();
+			return m_TextTemplate.isUsingKeyEvents();
 		}
 
 		static std::vector<const char *> getListOfComponents()
 		{
 			std::vector<const char *> components = {
-					"Animation component", "Box Collider2D component", "Box Collider3D component", "Bloom component",
-					"Capsule Collider3D component", "Circle Collider2D component", "ConvexMesh Collider 3D component",
-					"Edge Collider2D component", "Material component", "Polygon Collider2D component",
-					"Reflection component", "Refraction component", "Render2D Component", "Render3D component",
-					"RigidBody2D component", "RigidBody3D component", "Shadow component", "Sound component",
-					"Sphere Collider3D component", "Sprite component", "Sprite sheet component", "Text Component",
-					"Transform3D component"
+					"Animation component", "Bloom component", "Box Collider2D component", "Box Collider3D component",
+					"Capsule Collider3D component", "Circle Collider2D component", "ConvexMesh Collider3D component",
+					"Distance Joint2D component", "Edge Collider2D component", "Hinge Joint2D component",
+					"Material component", "PolygonCollider2D component", "Reflection component", "Refraction component",
+					"Render2D Component", "Render3D component", "RigidBody2D component", "RigidBody3D component",
+					"Script component", "Shadow component", "Sound component", "Sphere Collider3D component",
+					"Sprite component", "Sprite sheet component", "Text Component", "Transform3D component"
 			};
 
 			return components;
@@ -41,29 +66,32 @@ namespace Survive
 
 		void drawAllComponents(entt::registry &registry, entt::entity entity)
 		{
-			drawComponent<AnimationComponent>(registry, entity);
-			drawComponent<BoxCollider2DComponent>(registry, entity);
-			drawComponent<BoxCollider3DComponent>(registry, entity);
-			drawComponent<BloomComponent>(registry, entity);
-			drawComponent<CapsuleCollider3DComponent>(registry, entity);
-			drawComponent<CircleCollider2DComponent>(registry, entity);
-			drawComponent<ConvexMeshCollider3DComponent>(registry, entity);
-			drawComponent<EdgeCollider2DComponent>(registry, entity);
-			drawComponent<MaterialComponent>(registry, entity);
-			drawComponent<PolygonCollider2DComponent>(registry, entity);
-			drawComponent<ReflectionComponent>(registry, entity);
-			drawComponent<RefractionComponent>(registry, entity);
-			drawComponent<Render2DComponent>(registry, entity);
-			drawComponent<Render3DComponent>(registry, entity);
-			drawComponent<RigidBody2DComponent>(registry, entity);
-			drawComponent<RigidBody3DComponent>(registry, entity);
-			drawComponent<ShadowComponent>(registry, entity);
-			drawComponent<SoundComponent>(registry, entity);
-			drawComponent<SphereCollider3DComponent>(registry, entity);
-			drawComponent<SpriteComponent>(registry, entity);
-			drawComponent<SpriteSheetComponent>(registry, entity);
-			drawComponent<TextComponent>(registry, entity);
-			drawComponent<Transform3DComponent>(registry, entity);
+			drawComponent(registry, entity, m_AnimationTemplate);
+			drawComponent(registry, entity, m_BloomTemplate);
+			drawComponent(registry, entity, m_BoxCollider2DTemplate);
+			drawComponent(registry, entity, m_BoxCollider3DTemplate);
+			drawComponent(registry, entity, m_CapsuleCollider3DTemplate);
+			drawComponent(registry, entity, m_CircleCollider2DTemplate);
+			drawComponent(registry, entity, m_ConvexMesh3DTemplate);
+			drawComponent(registry, entity, m_DistanceJoint2DTemplate);
+			drawComponent(registry, entity, m_EdgeCollider2DTemplate);
+			drawComponent(registry, entity, m_HingeJoint2DTemplate);
+			drawComponent(registry, entity, m_MaterialTemplate);
+			drawComponent(registry, entity, m_PolygonCollider2DTemplate);
+			drawComponent(registry, entity, m_ReflectionTemplate);
+			drawComponent(registry, entity, m_RefractionTemplate);
+			drawComponent(registry, entity, m_Render2DTemplate);
+			drawComponent(registry, entity, m_Render3dTemplate);
+			drawComponent(registry, entity, m_RigidBody2DTemplate);
+			drawComponent(registry, entity, m_RigidBody3DTemplate);
+			drawComponent(registry, entity, m_ScriptTemplate);
+			drawComponent(registry, entity, m_ShadowTemplate);
+			drawComponent(registry, entity, m_SoundTemplate);
+			drawComponent(registry, entity, m_SphereCollider3DTemplate);
+			drawComponent(registry, entity, m_SpriteTemplate);
+			drawComponent(registry, entity, m_SpriteSheetTemplate);
+			drawComponent(registry, entity, m_TextTemplate);
+			drawComponent(registry, entity, m_TransformTemplate);
 		}
 
 		bool addComponent(entt::registry &registry, entt::entity entity, int selectedItem)
@@ -71,51 +99,57 @@ namespace Survive
 			switch (selectedItem)
 			{
 				case 0:
-					return addComponent<AnimationComponent>(registry, entity);
+					return addComponent(registry, entity, m_AnimationTemplate);
 				case 1:
-					return addComponent<BoxCollider2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_BloomTemplate);
 				case 2:
-					return addComponent<BoxCollider3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_BoxCollider2DTemplate);
 				case 3:
-					return addComponent<BloomComponent>(registry, entity);
+					return addComponent(registry, entity, m_BoxCollider3DTemplate);
 				case 4:
-					return addComponent<CapsuleCollider3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_CapsuleCollider3DTemplate);
 				case 5:
-					return addComponent<CircleCollider2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_CircleCollider2DTemplate);
 				case 6:
-					return addComponent<ConvexMeshCollider3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_ConvexMesh3DTemplate);
 				case 7:
-					return addComponent<EdgeCollider2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_DistanceJoint2DTemplate);
 				case 8:
-					return addComponent<MaterialComponent>(registry, entity);
+					return addComponent(registry, entity, m_EdgeCollider2DTemplate);
 				case 9:
-					return addComponent<PolygonCollider2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_HingeJoint2DTemplate);
 				case 10:
-					return addComponent<ReflectionComponent>(registry, entity);
+					return addComponent(registry, entity, m_MaterialTemplate);
 				case 11:
-					return addComponent<RefractionComponent>(registry, entity);
+					return addComponent(registry, entity, m_PolygonCollider2DTemplate);
 				case 12:
-					return addComponent<Render2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_ReflectionTemplate);
 				case 13:
-					return addComponent<Render3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_RefractionTemplate);
 				case 14:
-					return addComponent<RigidBody2DComponent>(registry, entity);
+					return addComponent(registry, entity, m_Render2DTemplate);
 				case 15:
-					return addComponent<RigidBody3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_Render3dTemplate);
 				case 16:
-					return addComponent<ShadowComponent>(registry, entity);
+					return addComponent(registry, entity, m_RigidBody2DTemplate);
 				case 17:
-					return addComponent<SoundComponent>(registry, entity);
+					return addComponent(registry, entity, m_RigidBody3DTemplate);
 				case 18:
-					return addComponent<SphereCollider3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_ScriptTemplate);
 				case 19:
-					return addComponent<SpriteComponent>(registry, entity);
+					return addComponent(registry, entity, m_ShadowTemplate);
 				case 20:
-					return addComponent<SpriteSheetComponent>(registry, entity);
+					return addComponent(registry, entity, m_SoundTemplate);
 				case 21:
-					return addComponent<TextComponent>(registry, entity);
+					return addComponent(registry, entity, m_SphereCollider3DTemplate);
 				case 22:
-					return addComponent<Transform3DComponent>(registry, entity);
+					return addComponent(registry, entity, m_SpriteTemplate);
+				case 23:
+					return addComponent(registry, entity, m_SpriteSheetTemplate);
+				case 24:
+					return addComponent(registry, entity, m_TextTemplate);
+				case 25:
+					return addComponent(registry, entity, m_TransformTemplate);
 				default:
 					throw std::runtime_error("Selected item not implemented");
 			}
@@ -123,16 +157,17 @@ namespace Survive
 
 	private:
 		template<typename Component>
-		bool addComponent(entt::registry &registry, entt::entity entity)
+		static bool addComponent(entt::registry &registry, entt::entity entity,
+						  ComponentTemplate<Component> &componentTemplate)
 		{
 			static Component component;
 
 			if (registry.any_of<Component>(entity))
 			{
-				m_ComponentTemplate.drawComponent(registry.get<Component>(entity));
+				componentTemplate.drawComponent(registry.get<Component>(entity), nullptr);
 			} else
 			{
-				m_ComponentTemplate.drawComponent(component);
+				componentTemplate.drawComponent(component, nullptr);
 			}
 
 			if (drawAddButton(registry, entity, component))
@@ -164,12 +199,13 @@ namespace Survive
 		}
 
 		template<typename Component>
-		void drawComponent(entt::registry &registry, entt::entity entity)
+		static void drawComponent(entt::registry &registry, entt::entity entity,
+						   ComponentTemplate<Component> &componentTemplate)
 		{
 			if (registry.any_of<Component>(entity))
 			{
 				bool visible = true;
-				m_ComponentTemplate.drawComponent(registry.get<Component>(entity), &visible);
+				componentTemplate.drawComponent(registry.get<Component>(entity), &visible);
 
 				if (!visible)
 				{

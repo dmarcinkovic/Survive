@@ -1,30 +1,25 @@
 //
-// Created by david on 27. 03. 2020..
+// Created by david on 03. 05. 2020..
 //
 
 #ifndef SURVIVE_RENDERER2D_H
 #define SURVIVE_RENDERER2D_H
 
-#include <vector>
-
-#include "entt.hpp"
-#include "button/ButtonRenderer.h"
+#include "TexturedModel.h"
+#include "Shader.h"
 
 namespace Survive
 {
 	class Renderer2D
 	{
-	private:
-		Loader &m_Loader;
+	protected:
+		static void prepareRendering(const Shader &shader);
 
-		ButtonRenderer m_ButtonRenderer{};
+		static void prepareEntity(const TexturedModel &texture, int numberOfVertexUnits = 2);
 
-	public:
-		explicit Renderer2D(Loader &loader);
+		static void finishRenderingEntity(int numberOfVertexUnits = 2);
 
-		void render(entt::registry &registry) const;
-
-		void addButton(Button &button) noexcept;
+		static void finishRendering();
 	};
 }
 

@@ -18,6 +18,7 @@
 #include "BloomRenderer.h"
 #include "WireframeRenderer.h"
 #include "Texture.h"
+#include "ButtonRenderer.h"
 
 namespace Survive
 {
@@ -37,6 +38,7 @@ namespace Survive
 		GuiRenderer m_GuiRenderer{};
 		TextRenderer m_TextRenderer{};
 		WireframeRenderer m_WireframeRenderer;
+		ButtonRenderer m_ButtonRenderer;
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;
@@ -58,11 +60,9 @@ namespace Survive
 
 		void removeSkyboxEntity();
 
-		void addOutlineToObject(entt::registry &registry, entt::entity entity);
+		void addButton(Button &button);
 
 		[[nodiscard]] Texture getRenderedTexture() const;
-
-		void removeOutlineToObject(entt::registry &registry);
 
 		void render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 

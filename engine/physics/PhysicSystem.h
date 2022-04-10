@@ -19,13 +19,15 @@ namespace Survive
 	public:
 		static void update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D);
 
-		static void init(entt::registry &registry, b2World *world2D, rp3d::PhysicsCommon &physicsCommon,
-						 rp3d::PhysicsWorld *world3D);
+		static void init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D,
+						 rp3d::PhysicsCommon &physicsCommon);
 
 	private:
 		static void update3DPhysics(entt::registry &registry);
 
 		static void update2DPhysics(entt::registry &registry);
+
+		static void updateWorld(b2World *world2D, rp3d::PhysicsWorld *world3D);
 
 		static void init2DPhysics(entt::registry &registry, b2World *world);
 
@@ -34,34 +36,39 @@ namespace Survive
 
 		static void initColliders2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
-		static void addBoxCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+		static void addBoxCollider2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
-		static void addEdgeCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+		static void addEdgeCollider2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
-		static void addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+		static void addCircleCollider2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
-		static void addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body);
+		static void addPolygonCollider2D(entt::registry &registry, entt::entity entity, b2Body *body);
 
 		static void initializeRigidBody3D(RigidBody3DComponent &rigidBody);
 
 		static void initColliders3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
 									rp3d::RigidBody *body);
 
-		static void initBox3DCollider(entt::registry &registry, entt::entity entity,
+		static void initBoxCollider3D(entt::registry &registry, entt::entity entity,
 									  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
 
-		static void updateWorld(b2World *world2D, rp3d::PhysicsWorld *world3D);
+		static void initSphereCollider3D(entt::registry &registry, entt::entity entity,
+										 rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
 
-		static void initSphereCollider(entt::registry &registry, entt::entity entity,
-									   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
-
-		static void initCapsuleCollider(entt::registry &registry, entt::entity entity,
-										rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
+		static void initCapsuleCollider3D(entt::registry &registry, entt::entity entity,
+										  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body);
 
 		static void initCollider3DMaterial(rp3d::Material &material, const Collider3DComponent &collider3D);
 
-		static void initMeshCollider(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
-									 rp3d::RigidBody *body);
+		static void
+		initMeshCollider3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsCommon &physicsCommon,
+						   rp3d::RigidBody *body);
+
+		static void initHingeJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
+
+		static void initDistanceJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
+
+		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
 	};
 }
 

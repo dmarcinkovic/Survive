@@ -5,33 +5,33 @@
 #include "TextRenderer.h"
 #include "Components.h"
 #include "Maths.h"
-#include "Renderer2DUtil.h"
+#include "Renderer2D.h"
 
 void Survive::TextRenderer::renderText(entt::registry &registry, const Camera &camera) const
 {
-	auto texts = registry.view<Transform3DComponent, TextComponent, SpriteComponent>();
+	auto texts = registry.view<Transform3DComponent, TextComponent, SpriteComponent, TagComponent>();
 
 	if (texts.begin() == texts.end())
 	{
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const &text: texts)
 	{
 		const TexturedModel &model = texts.get<TextComponent>(text).text.getModel();
-		Renderer2DUtil::prepareEntity(model);
+		prepareEntity(model);
 
 		loadUniforms(registry, text);
 
 		glDrawArrays(GL_TRIANGLES, 0, model.vertexCount());
 
-		Renderer2DUtil::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	finishRendering();
 }
 
 void Survive::TextRenderer::loadUniforms(entt::registry &registry, entt::entity entity) const

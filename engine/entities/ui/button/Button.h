@@ -15,8 +15,6 @@
 
 namespace Survive
 {
-	class Renderer2D;
-
 	struct Button : public Entity
 	{
 	private:

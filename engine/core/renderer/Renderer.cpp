@@ -32,6 +32,7 @@ void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &ca
 	m_SpriteRenderer.render(registry, camera);
 
 	m_TextRenderer.renderText(registry, camera);
+	m_ButtonRenderer.render();
 	m_WireframeRenderer.render();
 }
 
@@ -57,16 +58,6 @@ void Survive::Renderer::addSkyboxEntity(entt::entity sky)
 	m_SkyRenderer.addSkyEntity(sky);
 	m_ObjectRenderer.addSkybox(sky);
 	m_AnimationRenderer.addSkybox(sky);
-}
-
-void Survive::Renderer::addOutlineToObject(entt::registry &registry, entt::entity entity)
-{
-	m_OutlineRenderer.add3DObject(registry, entity);
-}
-
-void Survive::Renderer::removeOutlineToObject(entt::registry &registry)
-{
-	m_OutlineRenderer.removeObject(registry);
 }
 
 Survive::Texture Survive::Renderer::getRenderedTexture() const
@@ -170,5 +161,10 @@ void Survive::Renderer::renderScene(entt::registry &registry, Camera &camera, bo
 
 	m_BloomRenderer.render(registry);
 	resetViewport();
+}
+
+void Survive::Renderer::addButton(Survive::Button &button)
+{
+	m_ButtonRenderer.addButton(button);
 }
 

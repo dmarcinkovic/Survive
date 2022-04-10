@@ -67,7 +67,7 @@ void Survive::DirectoryTree::drawLeftArrow()
 			informListeners();
 		} catch (const std::filesystem::filesystem_error &exception)
 		{
-			Log::logWindow(LogType::ERROR, "Cannot enter directory: " + path);
+			Log::logMessage(LogType::ERROR, "Cannot enter directory: " + path);
 		}
 	}
 
@@ -114,7 +114,7 @@ Survive::DirectoryTree::drawNestedDirectories(std::vector<File> &content, const 
 			content = FileUtil::listDirectory(file.path.string());
 		} catch (const std::filesystem::filesystem_error &exception)
 		{
-			Log::logWindow(LogType::ERROR, "Cannot collapse " + file.path.string());
+			Log::logMessage(LogType::ERROR, "Cannot collapse " + file.path.string());
 		}
 	}
 
@@ -175,7 +175,7 @@ try
 	m_NestedDirectories = std::vector<std::vector<File>>(m_DirectoryContent.size());
 } catch (const std::filesystem::filesystem_error &error)
 {
-	Log::logWindow(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
+	Log::logMessage(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
 }
 
 

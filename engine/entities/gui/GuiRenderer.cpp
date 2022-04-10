@@ -5,7 +5,6 @@
 #include "Components.h"
 #include "GuiRenderer.h"
 #include "Maths.h"
-#include "Renderer2DUtil.h"
 
 void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera) const
 {
@@ -16,24 +15,24 @@ void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera
 		return;
 	}
 
-	Renderer2DUtil::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	m_Shader.loadProjectionMatrix(camera.getOrthographicProjectionMatrix());
 
 	for (auto const&[texture, guis] : entities)
 	{
-		Renderer2DUtil::prepareEntity(texture);
+		prepareEntity(texture);
 		renderGuis(guis, registry, texture);
 
-		Renderer2DUtil::finishRenderingEntity();
+		finishRenderingEntity();
 	}
 
-	Renderer2DUtil::finishRendering();
+	finishRendering();
 }
 
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::GuiRenderer::prepareEntities(entt::registry &registry)
 {
-	auto view = registry.view<Render2DComponent, Transform3DComponent>(entt::exclude<SpriteSheetComponent>);
+	auto view = registry.view<Render2DComponent, Transform3DComponent, TagComponent>(entt::exclude<SpriteSheetComponent>);
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity : view)
@@ -56,6 +55,15 @@ void Survive::GuiRenderer::renderGuis(const std::vector<entt::entity> &guis, con
 		m_Shader.loadTransformationMatrix(
 				Maths::createTransformationMatrix(transformComponent.position, transformComponent.scale,
 												  transformComponent.rotation));
+
+		if (registry.any_of<SpriteComponent>(entity))
+		{
+			const SpriteComponent &sprite = registry.get<SpriteComponent>(entity);
+			m_Shader.loadColor(sprite.color);
+		} else
+		{
+			m_Shader.loadColor(glm::vec4{0.0f});
+		}
 
 		glDrawElements(GL_TRIANGLES, texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 	}

@@ -10,16 +10,17 @@
 #include "Editor.h"
 #include "CameraWindow.h"
 
-Survive::Editor::Editor(Renderer &renderer)
-		: m_Scene(renderer.getRenderedTexture())
+Survive::Editor::Editor(Renderer &renderer, entt::registry &registry)
+		: m_Scene(renderer.getRenderedTexture()),
+		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader)
 {
 	ImGuiIO &io = ImGui::GetIO();
 	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
 					 ImGuiWindowFlags_UnsavedDocument;
 
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
-	renderer.addMousePickingListener([this](int selectedEntity) {
-		m_Manager.setSelectedEntity(selectedEntity);
+	renderer.addMousePickingListener([this, &registry](int selectedEntity) {
+		m_Manager.setSelectedEntity(registry, selectedEntity);
 	});
 
 	setColorStyle();
@@ -35,9 +36,10 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 	renderPropertyWindow(registry, camera);
 	m_Scene.renderSceneWindow(camera, renderer, registry,
 							  m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
-	m_StatusBar.draw();
 
 	drawMenu(registry, renderer);
+	
+	m_StatusBar.draw();
 
 	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
@@ -117,46 +119,7 @@ void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 
 void Survive::Editor::handleMouseDragging(entt::registry &registry, Renderer &renderer, const Camera &camera)
 {
-	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
-	{
-		if (Scene::isInsideScene())
-		{
-			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
-
-			if (file.has_extension())
-			{
-				std::string extension = file.extension().string();
-
-				if (extension == ".survive")
-				{
-					m_Manager.setSelectedEntity(-1);
-
-					try
-					{
-						m_SceneLoader.loadScene(registry, file.string());
-						m_SavedFile = file.string();
-
-						Log::logWindow(LogType::INFO, "Scene loaded successfully");
-					} catch (const std::exception &exception)
-					{
-						Log::logWindow(LogType::ERROR, "Failed to load the scene");
-					}
-				} else if (extension == ".obj" && file.has_stem())
-				{
-					auto[x, y] = Scene::getScenePosition();
-					float width = Scene::getSceneWidth();
-					float height = Scene::getSceneHeight();
-					m_EditorUtil.loadDraggedModels(registry, file, camera, x, y, width, height);
-				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
-				{
-					renderer.setMousePickingPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-					EditorUtil::registerListener(registry, renderer, file, m_Loader);
-				}
-			}
-		}
-
-		m_ContentBrowser.stopDragging();
-	}
+	m_EventHandler.handleMouseDragging(registry, renderer, m_Loader, camera, m_SavedFile, isScenePlaying());
 }
 
 bool Survive::Editor::isScenePlaying() const

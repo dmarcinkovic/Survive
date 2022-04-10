@@ -13,10 +13,11 @@
 #include "Camera.h"
 #include "Light.h"
 #include "TexturedModel.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class ObjectRenderer
+	class ObjectRenderer : public Renderer3D
 	{
 	private:
 		ObjectShader m_Shader;

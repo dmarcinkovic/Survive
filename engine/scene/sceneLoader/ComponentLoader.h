@@ -7,6 +7,8 @@
 
 #include <fstream>
 #include <optional>
+#include <box2d/box2d.h>
+#include <tuple>
 
 #include "entt.hpp"
 #include "Font.h"
@@ -49,6 +51,21 @@ namespace Survive
 		static void
 		loadTextComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
 
+		static void loadBox2DColliderComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadCircleCollider2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void
+		loadPolygonCollider2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadEdgeCollider2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadHingeJoint2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadDistanceJoint2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
@@ -56,8 +73,12 @@ namespace Survive
 
 		static glm::vec4 parseVec4(const std::string &vec4);
 
+		static b2Vec2 parseVec2(const std::string &vec2);
+
 		static std::optional<Font>
 		getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
+
+		static std::tuple<float, float, float> loadCollider2DComponent(std::ifstream &reader);
 	};
 }
 

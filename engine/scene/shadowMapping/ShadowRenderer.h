@@ -14,10 +14,11 @@
 #include "TexturedModel.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class ShadowRenderer
+	class ShadowRenderer : public Renderer3D
 	{
 	private:
 		ShadowShader m_ShadowShader{};

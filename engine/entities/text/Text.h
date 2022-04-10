@@ -35,8 +35,10 @@ namespace Survive
 		float m_LineSpacing = 1.0f;
 
 	public:
-		friend class ComponentTemplate;
 		friend class ComponentSerializer;
+
+		template<typename ComponentType> friend
+		class ComponentTemplate;
 
 		Text(std::string text, Font font);
 

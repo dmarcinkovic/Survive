@@ -3,10 +3,10 @@
 //
 
 
-#include "ShadowComponent.h"
 #include "AnimationRenderer.h"
 #include "Maths.h"
-#include "Renderer3DUtil.h"
+#include "Renderer3D.h"
+#include "ShadowComponent.h"
 
 Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 		: ObjectRenderer(light)
@@ -16,6 +16,8 @@ Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const Camera &camera,
 												 GLuint shadowMap, const glm::vec4 &plane) const
 {
+	constexpr int numberOfVaoUnits = 6;
+
 	auto entities = prepareEntities(registry);
 
 	if (entities.empty())
@@ -23,25 +25,24 @@ void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const
 		return;
 	}
 
-	Renderer3DUtil::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texture, objects]: entities)
+	for (auto const &[texture, objects]: entities)
 	{
-		Renderer3DUtil::prepareEntity(texture);
+		prepareEntity(texture, numberOfVaoUnits);
 		renderScene(registry, objects, camera);
 
-		Renderer3DUtil::finishRenderingEntity();
+		finishRenderingEntity(numberOfVaoUnits);
 	}
 
-	Renderer3DUtil::finishRendering();
+	finishRendering();
 	glDisable(GL_STENCIL_TEST);
 }
 
-void
-Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
-										const Camera &camera) const
+void Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+											 const Camera &camera) const
 {
 	for (auto const &object: objects)
 	{
@@ -50,11 +51,11 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 		drawOutline(registry, object);
 
 		bool isTransparent = getTransparencyProperty(registry, object);
-		Renderer3DUtil::addTransparency(!isTransparent, !isTransparent);
+		addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		addTransparency(isTransparent, isTransparent);
 
-		Renderer3DUtil::addTransparency(isTransparent, isTransparent);
 		Texture::unbindTexture();
 	}
 }
@@ -62,7 +63,7 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::AnimationRenderer::prepareEntities(entt::registry &registry)
 {
-	const auto &view = registry.view<Render3DComponent, Transform3DComponent, AnimationComponent>();
+	const auto &view = registry.view<Render3DComponent, Transform3DComponent, AnimationComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: view)

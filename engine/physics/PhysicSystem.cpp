@@ -59,8 +59,8 @@ void Survive::PhysicSystem::update3DPhysics(entt::registry &registry)
 	}
 }
 
-void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsCommon &physicsCommon,
-								 rp3d::PhysicsWorld *world3D)
+void Survive::PhysicSystem::init(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D,
+								 rp3d::PhysicsCommon &physicsCommon)
 {
 	init2DPhysics(registry, world2D);
 	init3DPhysics(registry, physicsCommon, world3D);
@@ -83,6 +83,13 @@ void Survive::PhysicSystem::init2DPhysics(entt::registry &registry, b2World *wor
 		rigidBody.body = world->CreateBody(&rigidBody.bodyDefinition);
 
 		initColliders2D(registry, entity, rigidBody.body);
+	}
+
+	for (auto const &entity: view)
+	{
+		RigidBody2DComponent &rigidBody = view.get<RigidBody2DComponent>(entity);
+		initHingeJoint2D(registry, entity, world, rigidBody.body);
+		initDistanceJoint2D(registry, entity, world, rigidBody.body);
 	}
 }
 
@@ -109,49 +116,115 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 
 void Survive::PhysicSystem::initColliders2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
-	addBoxCollider(registry, entity, body);
-	addEdgeCollider(registry, entity, body);
-	addCircleCollider(registry, entity, body);
-	addPolygonCollider(registry, entity, body);
+	addBoxCollider2D(registry, entity, body);
+	addEdgeCollider2D(registry, entity, body);
+	addCircleCollider2D(registry, entity, body);
+	addPolygonCollider2D(registry, entity, body);
 }
 
-void Survive::PhysicSystem::addBoxCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+void Survive::PhysicSystem::addBoxCollider2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
 	if (registry.any_of<BoxCollider2DComponent>(entity))
 	{
 		BoxCollider2DComponent &boxCollider = registry.get<BoxCollider2DComponent>(entity);
 		boxCollider.fixtureDef.shape = &boxCollider.boxShape;
-		body->CreateFixture(&boxCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&boxCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
-void Survive::PhysicSystem::addEdgeCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+void Survive::PhysicSystem::addEdgeCollider2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
 	if (registry.any_of<EdgeCollider2DComponent>(entity))
 	{
 		EdgeCollider2DComponent &edgeCollider = registry.get<EdgeCollider2DComponent>(entity);
 		edgeCollider.fixtureDef.shape = &edgeCollider.edgeShape;
-		body->CreateFixture(&edgeCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&edgeCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
-void Survive::PhysicSystem::addCircleCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+void Survive::PhysicSystem::addCircleCollider2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
 	if (registry.any_of<CircleCollider2DComponent>(entity))
 	{
 		CircleCollider2DComponent &circleCollider = registry.get<CircleCollider2DComponent>(entity);
 		circleCollider.fixtureDef.shape = &circleCollider.circleShape;
-		body->CreateFixture(&circleCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&circleCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
 	}
 }
 
-void Survive::PhysicSystem::addPolygonCollider(entt::registry &registry, entt::entity entity, b2Body *body)
+void Survive::PhysicSystem::addPolygonCollider2D(entt::registry &registry, entt::entity entity, b2Body *body)
 {
 	if (registry.any_of<PolygonCollider2DComponent>(entity))
 	{
 		PolygonCollider2DComponent &polygonCollider = registry.get<PolygonCollider2DComponent>(entity);
 		polygonCollider.fixtureDef.shape = &polygonCollider.polygonShape;
-		body->CreateFixture(&polygonCollider.fixtureDef);
+		b2Fixture *fixture = body->CreateFixture(&polygonCollider.fixtureDef);
+
+		fixture->GetUserData().pointer = static_cast<uintptr_t>(entity);
+	}
+}
+
+void
+Survive::PhysicSystem::initHingeJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body)
+{
+	if (registry.any_of<HingeJoint2DComponent>(entity))
+	{
+		HingeJoint2DComponent &hingeJoint = registry.get<HingeJoint2DComponent>(entity);
+		hingeJoint.jointDef.bodyA = body;
+
+		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
+		{
+			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
+		}
+
+		if (hingeJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(hingeJoint.connectedBody))
+		{
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+			hingeJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(hingeJoint.connectedBody);
+			hingeJoint.jointDef.bodyB = bodyB.body;
+		}
+
+		world->CreateJoint(&hingeJoint.jointDef);
+	}
+}
+
+void
+Survive::PhysicSystem::initDistanceJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body)
+{
+	if (registry.any_of<DistanceJoint2DComponent>(entity))
+	{
+		DistanceJoint2DComponent &distanceJoint = registry.get<DistanceJoint2DComponent>(entity);
+		distanceJoint.jointDef.bodyA = body;
+
+		if (distanceJoint.connectedBody == entt::null && distanceJoint.connectedBodyName != "none")
+		{
+			distanceJoint.connectedBody = findEntityWithTag(distanceJoint.connectedBodyName, registry);
+		}
+
+		if (distanceJoint.connectedBody == entt::null ||
+			!registry.any_of<RigidBody2DComponent>(distanceJoint.connectedBody))
+		{
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+			distanceJoint.jointDef.bodyB = world->CreateBody(&bodyDef);
+		} else
+		{
+			RigidBody2DComponent &bodyB = registry.get<RigidBody2DComponent>(distanceJoint.connectedBody);
+			distanceJoint.jointDef.bodyB = bodyB.body;
+		}
+
+		world->CreateJoint(&distanceJoint.jointDef);
 	}
 }
 
@@ -168,12 +241,13 @@ void Survive::PhysicSystem::initializeRigidBody3D(RigidBody3DComponent &rigidBod
 void Survive::PhysicSystem::initColliders3D(entt::registry &registry, entt::entity entity,
 											rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
-	initBox3DCollider(registry, entity, physicsCommon, body);
-	initSphereCollider(registry, entity, physicsCommon, body);
-	initCapsuleCollider(registry, entity, physicsCommon, body);
+	initBoxCollider3D(registry, entity, physicsCommon, body);
+	initSphereCollider3D(registry, entity, physicsCommon, body);
+	initCapsuleCollider3D(registry, entity, physicsCommon, body);
+	initMeshCollider3D(registry, entity, physicsCommon, body);
 }
 
-void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::entity entity,
+void Survive::PhysicSystem::initBoxCollider3D(entt::registry &registry, entt::entity entity,
 											  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	if (registry.any_of<BoxCollider3DComponent>(entity))
@@ -189,8 +263,8 @@ void Survive::PhysicSystem::initBox3DCollider(entt::registry &registry, entt::en
 	}
 }
 
-void Survive::PhysicSystem::initSphereCollider(entt::registry &registry, entt::entity entity,
-											   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+void Survive::PhysicSystem::initSphereCollider3D(entt::registry &registry, entt::entity entity,
+												 rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	if (registry.any_of<SphereCollider3DComponent>(entity))
 	{
@@ -219,8 +293,8 @@ void Survive::PhysicSystem::initCollider3DMaterial(rp3d::Material &material, con
 	material.setFrictionCoefficient(collider3D.friction);
 }
 
-void Survive::PhysicSystem::initCapsuleCollider(entt::registry &registry, entt::entity entity,
-												rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+void Survive::PhysicSystem::initCapsuleCollider3D(entt::registry &registry, entt::entity entity,
+												  rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	if (registry.any_of<CapsuleCollider3DComponent>(entity))
 	{
@@ -238,8 +312,8 @@ void Survive::PhysicSystem::initCapsuleCollider(entt::registry &registry, entt::
 	}
 }
 
-void Survive::PhysicSystem::initMeshCollider(entt::registry &registry, entt::entity entity,
-											 rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
+void Survive::PhysicSystem::initMeshCollider3D(entt::registry &registry, entt::entity entity,
+											   rp3d::PhysicsCommon &physicsCommon, rp3d::RigidBody *body)
 {
 	if (registry.any_of<ConvexMeshCollider3DComponent>(entity))
 	{
@@ -253,4 +327,21 @@ void Survive::PhysicSystem::initMeshCollider(entt::registry &registry, entt::ent
 
 		initCollider3DMaterial(collider->getMaterial(), meshCollider);
 	}
+}
+
+entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, entt::registry &registry)
+{
+	auto view = registry.view<TagComponent>();
+
+	for (const auto &entity: view)
+	{
+		const TagComponent &tagComponent = view.get<TagComponent>(entity);
+
+		if (tagComponent.tag == tag)
+		{
+			return entity;
+		}
+	}
+
+	return entt::null;
 }

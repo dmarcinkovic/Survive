@@ -1,29 +1,42 @@
 //
-// Created by david on 27. 03. 2020..
+// Created by david on 03. 05. 2020..
 //
 
-#include "Display.h"
 #include "Renderer2D.h"
 
-Survive::Renderer2D::Renderer2D(Loader &loader)
-		: m_Loader(loader)
+void Survive::Renderer2D::prepareRendering(const Shader &shader)
 {
-
+	shader.start();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
 }
 
-void Survive::Renderer2D::render(entt::registry &registry) const
+void Survive::Renderer2D::finishRendering()
 {
-	auto[width, height] = Display::getWindowSize<int>();
+	Shader::stop();
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+}
 
-	if (width == 0 || height == 0)
+void Survive::Renderer2D::prepareEntity(const TexturedModel &texture, int numberOfVertexUnits)
+{
+	texture.bind();
+
+	for (int vaoUnit = 0; vaoUnit < numberOfVertexUnits; ++vaoUnit)
 	{
-		return;
+		glEnableVertexAttribArray(vaoUnit);
+	}
+}
+
+void Survive::Renderer2D::finishRenderingEntity(int numberOfVertexUnits)
+{
+	TexturedModel::unbind();
+
+	for (int vaoUnit = numberOfVertexUnits - 1; vaoUnit >= 0; --vaoUnit)
+	{
+		glDisableVertexAttribArray(vaoUnit);
 	}
 
-	m_ButtonRenderer.render();
-}
-
-void Survive::Renderer2D::addButton(Button &button) noexcept
-{
-	m_ButtonRenderer.addButton(button);
+	Loader::unbindVao();
 }

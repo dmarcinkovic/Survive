@@ -47,6 +47,8 @@ namespace Survive
 		rp3d::PhysicsCommon m_PhysicsCommon;
 		rp3d::PhysicsWorld *m_World3D;
 
+		std::unique_ptr<b2ContactListener> m_ContactListener;
+
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
 

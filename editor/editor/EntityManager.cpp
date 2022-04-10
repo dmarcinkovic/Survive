@@ -6,7 +6,6 @@
 
 #include "ComponentUtil.h"
 #include "EntityManager.h"
-#include "EditorUtil.h"
 
 bool Survive::EntityManager::addEntity(entt::registry &registry)
 {
@@ -46,6 +45,7 @@ void Survive::EntityManager::createEntity(entt::registry &registry)
 	{
 		auto entity = registry.create();
 		registry.emplace<TagComponent>(entity, m_Buffer);
+		registry.emplace<OutlineComponent>(entity, false);
 		m_Selected = -1;
 
 		memset(m_Buffer, 0, BUFFER_SIZE);
@@ -67,7 +67,7 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 			const TagComponent &tag = registry.get<TagComponent>(entity);
 			auto index = static_cast<int>(entity);
 
-			drawSelectable(tag, entity, index);
+			drawSelectable(registry, tag, entity, index);
 			drawPopupContext(registry, entity, index);
 		}
 	});
@@ -78,6 +78,11 @@ void Survive::EntityManager::listEntities(entt::registry &registry)
 void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+
+	if (!registry.valid(m_SelectedEntity))
+	{
+		resetEntity();
+	}
 
 	if (m_AddNewComponent && m_SelectedEntity != entt::null)
 	{
@@ -92,9 +97,9 @@ void Survive::EntityManager::drawPropertyPanel(entt::registry &registry)
 
 void Survive::EntityManager::listComponents(entt::registry &registry)
 {
-	EditorUtil::setStyleColors();
+	setStyleColors();
 	m_Util.drawAllComponents(registry, m_SelectedEntity);
-	EditorUtil::resetStyleColors();
+	resetStyleColors();
 }
 
 void Survive::EntityManager::addNewComponent(entt::registry &registry)
@@ -102,7 +107,7 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 	static std::vector<const char *> m_Components = ComponentUtil::getListOfComponents();
 	static int size = static_cast<int>(m_Components.size());
 
-	EditorUtil::setStyleColors();
+	setStyleColors();
 	ImGui::Combo("Component type", &m_CurrentItem, m_Components.data(), size);
 
 	if (m_CurrentItem >= 0)
@@ -114,19 +119,27 @@ void Survive::EntityManager::addNewComponent(entt::registry &registry)
 		}
 	}
 
-	EditorUtil::resetStyleColors();
+	resetStyleColors();
 }
 
-void Survive::EntityManager::drawSelectable(const Survive::TagComponent &tag, entt::entity selectedEntity, int i)
+void Survive::EntityManager::drawSelectable(entt::registry &registry, const TagComponent &tag,
+											entt::entity selectedEntity, int i)
 {
 	ImGui::PushID(i);
 	if (ImGui::Selectable(tag.tag.c_str(), m_Selected == i))
 	{
+		drawOutline(registry, m_SelectedEntity, false);
+
 		m_SelectedEntity = selectedEntity;
 		m_AddNewComponent = false;
 		m_Selected = i;
 		m_CurrentItem = -1;
+
+		drawOutline(registry, m_SelectedEntity, true);
 	}
+
+	initializeDragDropSource(selectedEntity, tag);
+
 	ImGui::PopID();
 }
 
@@ -138,19 +151,25 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 
 		if (m_AddNewComponent)
 		{
+			drawOutline(registry, m_SelectedEntity, false);
 			m_CurrentItem = -1;
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
+			drawOutline(registry, m_SelectedEntity, true);
 		} else if (ImGui::Selectable("Remove entity"))
 		{
+			drawOutline(registry, m_SelectedEntity, false);
+
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
 			removeEntity(registry);
 		} else if (ImGui::Selectable("Rename entity"))
 		{
+			drawOutline(registry, m_SelectedEntity, false);
 			m_Selected = i;
 			m_SelectedEntity = selectedEntity;
 			m_RenameEntity = true;
+			drawOutline(registry, m_SelectedEntity, true);
 		}
 
 		ImGui::EndPopup();
@@ -160,9 +179,7 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 void Survive::EntityManager::removeEntity(entt::registry &registry)
 {
 	registry.destroy(m_SelectedEntity);
-	m_SelectedEntity = entt::null;
-
-	m_Selected = m_CurrentItem = -1;
+	resetEntity();
 }
 
 void Survive::EntityManager::renameEntity(entt::registry &registry)
@@ -199,15 +216,22 @@ entt::entity Survive::EntityManager::getSelectedEntity() const
 	return m_SelectedEntity;
 }
 
-void Survive::EntityManager::setSelectedEntity(int selectedEntity)
+void Survive::EntityManager::setSelectedEntity(entt::registry &registry, int selectedEntity)
 {
 	if (selectedEntity == -2)
 	{
 		return;
 	}
 
+	drawOutline(registry, m_SelectedEntity, false);
+
 	m_SelectedEntity = selectedEntity == -1 ? entt::null : entt::entity(selectedEntity);
 	m_Selected = selectedEntity;
+
+	if (m_SelectedEntity != entt::null)
+	{
+		drawOutline(registry, m_SelectedEntity, true);
+	}
 }
 
 bool Survive::EntityManager::isFocused() const
@@ -219,4 +243,54 @@ void Survive::EntityManager::stopDrawing()
 {
 	m_AddNewComponent = false;
 	m_Selected = -1;
+}
+
+void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntity, const TagComponent &tag)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		auto id = static_cast<int>(selectedEntity);
+		const char *data = tag.tag.c_str();
+
+		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
+
+		ImGui::SetDragDropPayload("Joint2D", &payload, sizeof(payload));
+		ImGui::EndDragDropSource();
+	}
+}
+
+void Survive::EntityManager::resetEntity()
+{
+	m_SelectedEntity = entt::null;
+	m_Selected = m_CurrentItem = -1;
+}
+
+void Survive::EntityManager::setStyleColors()
+{
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.3f, 0.3f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.4f, 0.4f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.4f, 0.4f, 0.5f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.25f, 0.25f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.3f, 0.3f, 0.35f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
+}
+
+void Survive::EntityManager::resetStyleColors()
+{
+	ImGui::PopStyleColor(7);
+}
+
+void Survive::EntityManager::drawOutline(entt::registry &registry, entt::entity entity, bool draw)
+{
+	if (!draw && entity == entt::null)
+	{
+		return;
+	}
+
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		outline.drawOutline = draw;
+	}
 }

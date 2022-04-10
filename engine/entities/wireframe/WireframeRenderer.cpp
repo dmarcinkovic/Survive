@@ -3,8 +3,7 @@
 //
 
 #include "WireframeRenderer.h"
-#include "Renderer3DUtil.h"
-#include <iostream>
+#include "Renderer3D.h"
 
 std::vector<float> Survive::WireframeRenderer::m_Vertices{};
 GLuint Survive::WireframeRenderer::m_Vbo{};
@@ -24,18 +23,18 @@ void Survive::WireframeRenderer::render() const
 		return;
 	}
 
-	prepareRendering();
+	prepare();
 
 	glDrawArrays(GL_TRIANGLES, 0, m_Model.m_VertexCount);
 
 	finish();
 }
 
-void Survive::WireframeRenderer::prepareRendering() const
+void Survive::WireframeRenderer::prepare() const
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	Renderer3DUtil::prepareRendering(m_Shader);
+	prepareRendering(m_Shader);
 	glBindVertexArray(m_Model.m_Vao);
 	glEnableVertexAttribArray(0);
 }
@@ -44,7 +43,7 @@ void Survive::WireframeRenderer::finish()
 {
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-	Renderer3DUtil::finishRendering();
+	finishRendering();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

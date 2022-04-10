@@ -25,7 +25,6 @@ namespace Survive
 
 		static void calculateTangents(const std::vector<float> &points, const std::vector<float> &textures,
 									  std::vector<float> &resultTangents);
-
 	};
 }
 
