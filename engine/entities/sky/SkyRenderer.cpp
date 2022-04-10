@@ -59,16 +59,6 @@ void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Tr
 	viewMatrix[3][1] = 0;
 	viewMatrix[3][2] = 0;
 
-	float skyRotation = 0.0f;
-
-	if (registry.any_of<MoveComponent>(m_Sky))
-	{
-		const MoveComponent &moveComponent = registry.get<MoveComponent>(m_Sky);
-		skyRotation = moveComponent.currentMoveValue;
-	}
-
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(skyRotation), glm::vec3{0, 1, 0});
-
 	m_Shader.loadViewAndProjectionMatrices(viewMatrix, camera.getProjectionMatrix());
 
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);

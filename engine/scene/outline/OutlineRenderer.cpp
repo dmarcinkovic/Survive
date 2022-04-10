@@ -65,6 +65,13 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
+
+	float distanceFromCamera = glm::length(transform.position - camera.position);
+
+	constexpr float constant = 4e-3;
+	glm::vec3 factor = constant * distanceFromCamera / transform.scale;
+
+	m_Shader.loadFactor(factor);
 }
 
 void Survive::OutlineRenderer::prepareObject(const Render3DComponent &renderComponent)
@@ -78,4 +85,5 @@ void Survive::OutlineRenderer::finishRenderingObject()
 {
 	glBindVertexArray(0);
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(2);
 }
