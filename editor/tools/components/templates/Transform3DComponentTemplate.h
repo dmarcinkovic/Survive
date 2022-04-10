@@ -13,6 +13,8 @@ namespace Survive
 	public:
 		static void drawComponent(Transform3DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Transform3D", visible))
 			{
 				ImGui::Columns(4);

@@ -11,8 +11,8 @@ namespace Survive
 	class ComponentTemplate<TextComponent>
 	{
 	private:
-		OpenDialog m_OpenDialog;
-		Loader m_Loader;
+		OpenDialog m_OpenDialog{};
+		Loader m_Loader{};
 
 		bool m_IsUsingKeyEvents{};
 
@@ -20,13 +20,13 @@ namespace Survive
 		bool m_LoadTextureAtlas{};
 
 		int m_SelectedItem = -1;
-		std::vector<Font> m_Fonts;
+		std::vector<Font> m_Fonts{};
 
-		std::vector<const char *> m_Items;
+		std::vector<const char *> m_Items{};
 		std::vector<std::pair<const char *, const char *>> m_FontInfo;
 
-		Texture m_FontIcon;
-		Texture m_TextureIcon;
+		Texture m_FontIcon{};
+		Texture m_TextureIcon{};
 
 	public:
 		ComponentTemplate<TextComponent>()
@@ -48,6 +48,8 @@ namespace Survive
 
 		void drawComponent(TextComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Text", visible))
 			{
 				ImGui::Text("Text");

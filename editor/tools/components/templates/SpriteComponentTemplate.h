@@ -13,6 +13,8 @@ namespace Survive
 	public:
 		static void drawComponent(SpriteComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Sprite", visible))
 			{
 				ImGui::ColorEdit4("Color", glm::value_ptr(component.color));

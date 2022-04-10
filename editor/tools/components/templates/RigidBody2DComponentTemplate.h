@@ -20,6 +20,8 @@ namespace Survive
 	public:
 		static void drawComponent(RigidBody2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Rigid body 2D", visible))
 			{
 				static const char *bodyTypes[] = {"Static", "Kinematic", "Dynamic"};
