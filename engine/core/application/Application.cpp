@@ -48,6 +48,73 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<BoxCollider3DComponent>(ground, rp3d::Vector3{6, 0.5f, 8});
 	m_Registry.emplace<OutlineComponent>(ground, false);
 
+	auto box = m_Registry.create();
+	m_Registry.emplace<TagComponent>(box, "box");
+	m_Registry.emplace<Transform3DComponent>(box, glm::vec3{-3, 3, -10});
+	m_Registry.emplace<MaterialComponent>(box, false);
+	m_Registry.emplace<Render3DComponent>(box, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader),
+															 Texture()));
+	m_Registry.emplace<SpriteComponent>(box, glm::vec4{0.4f, 0.1f, 0.3f, 1.0f});
+	m_Registry.emplace<RigidBody3DComponent>(box, rp3d::BodyType::DYNAMIC, 1.0f);
+	m_Registry.emplace<OutlineComponent>(box, false);
+
+	std::vector<float> vertices(24);
+	vertices[0] = -1;
+	vertices[1] = -1;
+	vertices[2] = 1;
+	vertices[3] = 1;
+	vertices[4] = -1;
+	vertices[5] = 1;
+	vertices[6] = 1;
+	vertices[7] = -1;
+	vertices[8] = -1;
+	vertices[9] = -1;
+	vertices[10] = -1;
+	vertices[11] = -1;
+	vertices[12] = -1;
+	vertices[13] = 1;
+	vertices[14] = 1;
+	vertices[15] = 1;
+	vertices[16] = 1;
+	vertices[17] = 1;
+	vertices[18] = 1;
+	vertices[19] = 1;
+	vertices[20] = -1;
+	vertices[21] = -1;
+	vertices[22] = 1;
+	vertices[23] = -1;
+
+	std::vector<int> indices(24);
+	indices[0] = 0;
+	indices[1] = 3;
+	indices[2] = 2;
+	indices[3] = 1;
+	indices[4] = 4;
+	indices[5] = 5;
+	indices[6] = 6;
+	indices[7] = 7;
+	indices[8] = 0;
+	indices[9] = 1;
+	indices[10] = 5;
+	indices[11] = 4;
+	indices[12] = 1;
+	indices[13] = 2;
+	indices[14] = 6;
+	indices[15] = 5;
+	indices[16] = 2;
+	indices[17] = 3;
+	indices[18] = 7;
+	indices[19] = 6;
+	indices[20] = 0;
+	indices[21] = 4;
+	indices[22] = 7;
+	indices[23] = 3;
+
+	const int numberOfFaces = 6;
+	const int numberOfVertices = 8;
+
+	m_Registry.emplace<ConvexMeshCollider3DComponent>(box, vertices, indices, numberOfFaces, numberOfVertices);
+
 	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
 
 	m_Editor.addPlayButtonListener([this]() {
