@@ -34,7 +34,7 @@ void Survive::OutlineShader::loadUniformLocations()
 	m_LocationFactor = glGetUniformLocation(m_Program, "factor");
 }
 
-void Survive::OutlineShader::loadFactor(float factor) const
+void Survive::OutlineShader::loadFactor(const glm::vec3 &factor) const
 {
-	loadFloat(m_LocationFactor, factor);
+	loadVector3(m_LocationFactor, factor);
 }

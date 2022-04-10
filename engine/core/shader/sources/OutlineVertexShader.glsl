@@ -7,7 +7,7 @@ uniform mat4 transformationMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform float factor;
+uniform vec3 factor;
 
 void main()
 {
