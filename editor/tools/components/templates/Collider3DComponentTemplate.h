@@ -24,7 +24,10 @@ namespace Survive
 
 			ImGui::Columns(2, nullptr, false);
 
+			ImGui::Bullet();
 			EditorUtil::drawColumnDragFloat("Bounciness", "##Box3DBounciness", component.bounciness, 0, 1, 0.01f);
+
+			ImGui::Bullet();
 			EditorUtil::drawColumnDragFloat("Friction", "##Box3DFriction", component.friction, 0, 1, 0.01f);
 
 			ImGui::Unindent();
