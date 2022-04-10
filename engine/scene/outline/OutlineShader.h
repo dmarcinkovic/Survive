@@ -5,6 +5,7 @@
 #ifndef SURVIVE_OUTLINESHADER_H
 #define SURVIVE_OUTLINESHADER_H
 
+#include <glm/glm.hpp>
 
 #include "Shader.h"
 
@@ -30,7 +31,7 @@ namespace Survive
 
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
 
-		void loadFactor(float factor) const;
+		void loadFactor(const glm::vec3 &factor) const;
 
 	private:
 		void loadUniformLocations();
