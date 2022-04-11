@@ -8,6 +8,7 @@
 
 void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &camera) const
 {
+	constexpr int numberOfVertexUnits = 1;
 	auto entities = prepareEntities(registry);
 
 	if (entities.empty())
@@ -20,10 +21,10 @@ void Survive::SpritesRenderer::render(entt::registry &registry, const Camera &ca
 
 	for (auto const&[texture, sprites] : entities)
 	{
-		prepareEntity(texture);
+		prepareEntity(texture, numberOfVertexUnits);
 		renderSprites(sprites, registry, texture);
 
-		finishRenderingEntity();
+		finishRenderingEntity(numberOfVertexUnits);
 	}
 
 	finishRendering();

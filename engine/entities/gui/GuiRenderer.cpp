@@ -8,6 +8,7 @@
 
 void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera) const
 {
+	constexpr int numberOfVao = 1;
 	auto entities = prepareEntities(registry);
 
 	if (entities.empty())
@@ -20,10 +21,10 @@ void Survive::GuiRenderer::render(entt::registry &registry, const Camera &camera
 
 	for (auto const&[texture, guis] : entities)
 	{
-		prepareEntity(texture);
+		prepareEntity(texture, numberOfVao);
 		renderGuis(guis, registry, texture);
 
-		finishRenderingEntity();
+		finishRenderingEntity(numberOfVao);
 	}
 
 	finishRendering();
