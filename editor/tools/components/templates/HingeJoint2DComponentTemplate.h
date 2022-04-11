@@ -19,6 +19,8 @@ namespace Survive
 	public:
 		static void drawComponent(HingeJoint2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Hinge joint 2D", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

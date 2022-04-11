@@ -13,6 +13,8 @@ namespace Survive
 	public:
 		static void drawComponent(RefractionComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Refraction", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

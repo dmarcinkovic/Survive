@@ -29,6 +29,8 @@ namespace Survive
 	public:
 		void drawComponent(Render3DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Render3D", visible))
 			{
 				TexturedModel &texturedModel = component.texturedModel;

@@ -17,6 +17,8 @@ namespace Survive
 	public:
 		void drawComponent(CircleCollider2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Circle collider 2D", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

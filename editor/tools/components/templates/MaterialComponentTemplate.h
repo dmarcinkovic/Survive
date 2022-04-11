@@ -14,11 +14,13 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 
+		bool m_Changed = true;
+		bool m_Open = false;
+
 	public:
 		void drawComponent(MaterialComponent &component, bool *visible)
 		{
-			static bool changed = true;
-			static bool open = false;
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
 			if (ImGui::CollapsingHeader("Material", visible))
 			{
@@ -31,7 +33,7 @@ namespace Survive
 				ImGui::PushID("Material component");
 				ImGui::Columns(2);
 				EditorUtil::loadTexture(m_OpenDialog, m_Loader, component.normalMap, component.normalMapPath,
-										"Normal map: %s", "Load texture", changed, open);
+										"Normal map: %s", "Load texture", m_Changed, m_Open);
 
 				ImGui::Columns();
 				ImGui::PopID();
