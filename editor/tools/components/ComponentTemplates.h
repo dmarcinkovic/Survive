@@ -12,6 +12,7 @@
 #include "CircleCollider2DComponentTemplate.h"
 #include "Collider2DComponentTemplate.h"
 #include "Collider3DComponentTemplate.h"
+#include "ConvexMeshCollider3DComponentTemplate.h"
 #include "DistanceJoint2DComponentTemplate.h"
 #include "EdgeCollider2DComponentTemplate.h"
 #include "HingeJoint2DComponentTemplate.h"
