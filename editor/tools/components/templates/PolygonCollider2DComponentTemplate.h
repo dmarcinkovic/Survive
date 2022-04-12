@@ -137,7 +137,7 @@ namespace Survive
 			}
 		}
 
-		void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape)
+		static void addPolygonPoint(std::vector<b2Vec2> &points, b2PolygonShape &shape)
 		{
 			ImGui::TextUnformatted("Add new point");
 			ImGui::SameLine();
