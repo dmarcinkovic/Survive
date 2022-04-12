@@ -27,7 +27,8 @@ namespace Survive
 
 				ImGui::Columns(2, nullptr, false);
 
-				
+				EditorUtil::drawColumnInputInt("Number of vertices", "##MeshNVertices", component.numberOfVertices);
+				EditorUtil::drawColumnInputInt("Number of faces", "##MeshFaces", component.numberOfFaces);
 
 				ImGui::Columns();
 			}

@@ -319,6 +319,8 @@ void Survive::PhysicSystem::initMeshCollider3D(entt::registry &registry, entt::e
 	{
 		ConvexMeshCollider3DComponent &meshCollider = registry.get<ConvexMeshCollider3DComponent>(entity);
 
+		initConvexMeshComponent(meshCollider);
+
 		meshCollider.polyhedronMesh = physicsCommon.createPolyhedronMesh(meshCollider.polygonVertexArray);
 		meshCollider.meshShape = physicsCommon.createConvexMeshShape(meshCollider.polyhedronMesh);
 
@@ -344,4 +346,28 @@ entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, en
 	}
 
 	return entt::null;
+}
+
+void Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3DComponent &meshCollider)
+{
+	int numberOfFaces = meshCollider.numberOfFaces;
+	meshCollider.polygonFaces = std::vector<rp3d::PolygonVertexArray::PolygonFace>(numberOfFaces);
+
+	int numberOfVerticesInFace = static_cast<int>(meshCollider.indices.size()) / numberOfFaces;
+	int numberOfVertices = meshCollider.numberOfVertices;
+
+	for (int face = 0; face < numberOfFaces; ++face)
+	{
+		meshCollider.polygonFaces[face].indexBase = face * numberOfVerticesInFace;
+		meshCollider.polygonFaces[face].nbVertices = numberOfVerticesInFace;
+	}
+
+	auto vertexDataType = ConvexMeshCollider3DComponent::VERTEX_TYPE;
+	auto indexDataType = ConvexMeshCollider3DComponent::INDEX_TYPE;
+
+	std::size_t verticesStride = (meshCollider.vertices.size() / numberOfVertices) * sizeof(float);
+	meshCollider.polygonVertexArray = new rp3d::PolygonVertexArray(numberOfVertices, meshCollider.vertices.data(),
+																   static_cast<int>(verticesStride), meshCollider.indices.data(),
+																   sizeof(int), numberOfFaces, meshCollider.polygonFaces.data(),
+																   vertexDataType, indexDataType);
 }

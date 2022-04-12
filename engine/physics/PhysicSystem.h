@@ -11,6 +11,7 @@
 #include "entt.hpp"
 #include "RigidBody3DComponent.h"
 #include "Collider3DComponent.h"
+#include "ConvexMeshCollider3DComponent.h"
 
 namespace Survive
 {
@@ -69,6 +70,8 @@ namespace Survive
 		static void initDistanceJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
 
 		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
+
+		static void initConvexMeshComponent(ConvexMeshCollider3DComponent &meshCollider);
 	};
 }
 
