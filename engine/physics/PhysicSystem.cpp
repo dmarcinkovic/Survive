@@ -367,7 +367,9 @@ void Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3
 
 	std::size_t verticesStride = (meshCollider.vertices.size() / numberOfVertices) * sizeof(float);
 	meshCollider.polygonVertexArray = new rp3d::PolygonVertexArray(numberOfVertices, meshCollider.vertices.data(),
-																   static_cast<int>(verticesStride), meshCollider.indices.data(),
-																   sizeof(int), numberOfFaces, meshCollider.polygonFaces.data(),
+																   static_cast<int>(verticesStride),
+																   meshCollider.indices.data(),
+																   sizeof(int), numberOfFaces,
+																   meshCollider.polygonFaces.data(),
 																   vertexDataType, indexDataType);
 }
