@@ -111,9 +111,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	indices[23] = 3;
 
 	const int numberOfFaces = 6;
-	const int numberOfVertices = 8;
 
-	m_Registry.emplace<ConvexMeshCollider3DComponent>(box, vertices, indices, numberOfFaces, numberOfVertices);
+	m_Registry.emplace<ConvexMeshCollider3DComponent>(box, vertices, indices, numberOfFaces);
 
 	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
 

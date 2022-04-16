@@ -18,7 +18,6 @@ namespace Survive
 		std::vector<float> vertices;
 		std::vector<int> indices;
 
-		int numberOfVertices{};
 		int numberOfFaces{};
 
 	private:
@@ -39,10 +38,9 @@ namespace Survive
 	public:
 		ConvexMeshCollider3DComponent() = default;
 
-		ConvexMeshCollider3DComponent(std::vector<float> meshVertices, std::vector<int> meshIndices, int numberOfFaces,
-									  int numberOfVertices)
+		ConvexMeshCollider3DComponent(std::vector<float> meshVertices, std::vector<int> meshIndices, int numberOfFaces)
 				: vertices(std::move(meshVertices)), indices(std::move(meshIndices)),
-				  numberOfVertices(numberOfVertices), numberOfFaces(numberOfFaces)
+				  numberOfFaces(numberOfFaces)
 		{
 		}
 	};

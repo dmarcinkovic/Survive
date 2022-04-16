@@ -350,11 +350,12 @@ entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, en
 
 void Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3DComponent &meshCollider)
 {
+	constexpr int VERTICES_DIMENSION = 3;
 	int numberOfFaces = meshCollider.numberOfFaces;
 	meshCollider.polygonFaces = std::vector<rp3d::PolygonVertexArray::PolygonFace>(numberOfFaces);
 
 	int numberOfVerticesInFace = static_cast<int>(meshCollider.indices.size()) / numberOfFaces;
-	int numberOfVertices = meshCollider.numberOfVertices;
+	int numberOfVertices = meshCollider.vertices.size() / VERTICES_DIMENSION;
 
 	for (int face = 0; face < numberOfFaces; ++face)
 	{
@@ -365,7 +366,7 @@ void Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3
 	auto vertexDataType = ConvexMeshCollider3DComponent::VERTEX_TYPE;
 	auto indexDataType = ConvexMeshCollider3DComponent::INDEX_TYPE;
 
-	std::size_t verticesStride = (meshCollider.vertices.size() / numberOfVertices) * sizeof(float);
+	std::size_t verticesStride = VERTICES_DIMENSION * sizeof(float);
 	meshCollider.polygonVertexArray = new rp3d::PolygonVertexArray(numberOfVertices, meshCollider.vertices.data(),
 																   static_cast<int>(verticesStride),
 																   meshCollider.indices.data(),
