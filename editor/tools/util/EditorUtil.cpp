@@ -241,3 +241,37 @@ bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *lab
 
 	return result;
 }
+
+int Survive::EditorUtil::drawDeleteButton(int index, const Texture &deleteButton, const char *tooltipText)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+
+	int itemToDelete = -1;
+	auto icon = reinterpret_cast<ImTextureID>(deleteButton.textureId());
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_WindowBg));
+
+	float buttonSize = 1.4f * ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(icon, ImVec2(buttonSize, buttonSize), uv0, uv1))
+	{
+		itemToDelete = index;
+	}
+
+	drawTooltip(tooltipText);
+
+	ImGui::PopStyleColor();
+	ImGui::NextColumn();
+
+	return itemToDelete;
+}
+
+void Survive::EditorUtil::drawTooltip(const char *text)
+{
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted(text);
+		ImGui::EndTooltip();
+	}
+}

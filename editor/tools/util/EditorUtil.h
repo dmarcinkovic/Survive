@@ -59,11 +59,15 @@ namespace Survive
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 
+		static int drawDeleteButton(int index, const Texture &deleteButton, const char *tooltipText);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
+
+		static void drawTooltip(const char *text);
 	};
 }
 
