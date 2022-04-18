@@ -114,7 +114,7 @@ namespace Survive
 			ImGui::SameLine();
 		}
 
-		static void drawIndices(std::vector<int> &indices)
+		void drawIndices(std::vector<int> &indices)
 		{
 			setHeaderColorStyle();
 			addNewIndex(indices);
@@ -124,12 +124,13 @@ namespace Survive
 				ImGui::Columns(2, nullptr, false);
 				ImGui::Indent();
 
-				for (int i = 0; i < indices.size(); ++i)
-				{
-					std::string text = "Index " + std::to_string(i + 1);
-					std::string label = "##MeshIndex" + std::to_string(i + 1);
+				int itemToDelete = -1;
 
-					EditorUtil::drawColumnInputInt(text.c_str(), label.c_str(), indices[i]);
+				drawMeshIndices(indices, itemToDelete);
+
+				if (itemToDelete != -1)
+				{
+					indices.erase(indices.begin() + itemToDelete);
 				}
 
 				ImGui::Unindent();
@@ -137,6 +138,31 @@ namespace Survive
 			}
 
 			resetHeaderColorStyle();
+		}
+
+		void drawMeshIndices(std::vector<int> &indices, int &itemToDelete)
+		{
+			for (int i = 0; i < indices.size(); ++i)
+			{
+				std::string text = "Index " + std::to_string(i + 1);
+				std::string label = "##MeshIndex" + std::to_string(i + 1);
+
+				ImGui::TextUnformatted(text.c_str());
+				ImGui::NextColumn();
+				ImGui::DragInt(label.c_str(), &indices[i]);
+
+				ImGui::SameLine();
+
+				ImGui::PushID(i);
+
+				int result = EditorUtil::drawDeleteButton(i, m_DeleteIcon, "Delete index");
+				if (result != -1)
+				{
+					itemToDelete = result;
+				}
+
+				ImGui::PopID();
+			}
 		}
 
 		static void setHeaderColorStyle()
