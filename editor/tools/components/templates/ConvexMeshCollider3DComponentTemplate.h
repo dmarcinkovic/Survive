@@ -52,8 +52,9 @@ namespace Survive
 			setHeaderColorStyle();
 			addNewVertex(vertices);
 
-			if (ImGui::CollapsingHeader("Vertices")) {
-				ImGui::Columns(3, nullptr, false);
+			if (ImGui::CollapsingHeader("Vertices"))
+			{
+				ImGui::Columns(2, nullptr, false);
 				ImGui::Indent();
 
 				int vertexToDelete = -1;
@@ -97,15 +98,17 @@ namespace Survive
 
 		static void drawVertex(std::vector<float> &vertices, int index, const char *text, const char *label)
 		{
-			rp3d::Vector3 vec{vertices[index], vertices[index + 1], vertices[index + 2]};
-
 			// TODO check for PolyhedronMesh.cpp. 127: Assertion:
 
-			if (EditorUtil::drawColumnDragFloat3(text, label, vec))
+			ImGui::TextUnformatted(text);
+			ImGui::NextColumn();
+
+			float value[] = {vertices[index], vertices[index + 1], vertices[index + 2]};
+			if (ImGui::DragFloat3(label, value))
 			{
-				vertices[index] = vec.x;
-				vertices[index + 1] = vec.y;
-				vertices[index + 2] = vec.z;
+				vertices[index] = value[0];
+				vertices[index + 1] = value[1];
+				vertices[index + 2] = value[2];
 			}
 
 			ImGui::SameLine();
@@ -116,7 +119,8 @@ namespace Survive
 			setHeaderColorStyle();
 			addNewIndex(indices);
 
-			if (ImGui::CollapsingHeader("Indices")) {
+			if (ImGui::CollapsingHeader("Indices"))
+			{
 				ImGui::Columns(2, nullptr, false);
 				ImGui::Indent();
 
