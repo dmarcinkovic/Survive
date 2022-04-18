@@ -268,7 +268,7 @@ void Survive::ComponentLoader::loadBox2DColliderComponent(entt::registry &regist
 	float height = std::stof(parseLine(reader, "height"));
 	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
-	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+	auto [mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	if (width < 0 || height < 0 || mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
 	{
@@ -287,7 +287,7 @@ void Survive::ComponentLoader::loadCircleCollider2DComponent(entt::registry &reg
 	float radius = std::stof(parseLine(reader, "radius"));
 	b2Vec2 center = parseVec2(parseLine(reader, "center"));
 
-	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+	auto [mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	if (radius < 0 || mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
 	{
@@ -313,7 +313,7 @@ void Survive::ComponentLoader::loadPolygonCollider2DComponent(entt::registry &re
 		points.emplace_back(point.x, point.y);
 	}
 
-	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+	auto [mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	if (mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
 	{
@@ -329,7 +329,7 @@ void Survive::ComponentLoader::loadEdgeCollider2DComponent(entt::registry &regis
 	b2Vec2 point1 = parseVec2(parseLine(reader, "point1"));
 	b2Vec2 point2 = parseVec2(parseLine(reader, "point2"));
 
-	auto[mass, friction, elasticity] = loadCollider2DComponent(reader);
+	auto [mass, friction, elasticity] = loadCollider2DComponent(reader);
 
 	if (mass < 0 || friction < 0 || friction > 1 || elasticity < 0 || elasticity > 1)
 	{
@@ -442,4 +442,189 @@ std::tuple<float, float, float> Survive::ComponentLoader::loadCollider2DComponen
 	float elasticity = std::stof(parseLine(reader, "elasticity"));
 
 	return {mass, friction, elasticity};
+}
+
+void
+Survive::ComponentLoader::loadRigidBody3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+	int bodyType = std::stoi(parseLine(reader, "bodyType"));
+
+	if (bodyType < 0 || bodyType > 2)
+	{
+		return;
+	}
+
+	auto type = static_cast<rp3d::BodyType>(bodyType);
+	float mass = std::stof(parseLine(reader, "mass"));
+
+	if (mass < 0.0f)
+	{
+		return;
+	}
+
+	bool useGravity = std::stoi(parseLine(reader, "useGravity"));
+	float linearDamping = std::stof(parseLine(reader, "linearDamping"));
+	glm::vec3 linearVelocity = parseVec3(parseLine(reader, "linearVelocity"));
+	float angularDrag = std::stof(parseLine(reader, "angularDrag"));
+
+	rp3d::Vector3 velocity{linearVelocity.x, linearVelocity.y, linearVelocity.z};
+	registry.emplace<RigidBody3DComponent>(entity, type, mass, useGravity, linearDamping, velocity, angularDrag);
+}
+
+void Survive::ComponentLoader::loadBoxCollider3DComponent(entt::registry &registry, entt::entity entity,
+														  std::ifstream &reader)
+{
+	glm::vec3 position = parseVec3(parseLine(reader, "position"));
+	glm::vec3 center = parseVec3(parseLine(reader, "center"));
+
+	auto [bounciness, friction] = loadCollider3DComponent(reader);
+
+	if (bounciness < 0.0f || bounciness > 1.0f || friction < 0.0f || friction > 1.0f)
+	{
+		return;
+	}
+
+	rp3d::Vector3 boxPosition{position.x, position.y, position.z};
+	rp3d::Vector3 boxCenter{center.x, center.y, center.z};
+
+	BoxCollider3DComponent boxCollider{boxPosition, boxCenter};
+	boxCollider.bounciness = bounciness;
+	boxCollider.friction = friction;
+
+	registry.emplace<BoxCollider3DComponent>(entity, boxCollider);
+}
+
+void Survive::ComponentLoader::loadSphereCollider3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ifstream &reader)
+{
+	float radius = std::stof(parseLine(reader, "radius"));
+
+	if (radius < 0.0f)
+	{
+		return;
+	}
+
+	glm::vec3 offset = parseVec3(parseLine(reader, "offset"));
+
+	auto [bounciness, friction] = loadCollider3DComponent(reader);
+
+	if (bounciness < 0.0f || bounciness > 1.0f || friction < 0.0f || friction > 1.0f)
+	{
+		return;
+	}
+
+	rp3d::Vector3 sphereOffset{offset.x, offset.y, offset.z};
+
+	SphereCollider3DComponent sphereCollider{radius, sphereOffset};
+	sphereCollider.bounciness = bounciness;
+	sphereCollider.friction = friction;
+
+	registry.emplace<SphereCollider3DComponent>(entity, sphereCollider);
+}
+
+void Survive::ComponentLoader::loadCapsuleCollider3DComponent(entt::registry &registry, entt::entity entity,
+															  std::ifstream &reader)
+{
+	glm::vec3 center = parseVec3(parseLine(reader, "center"));
+	float radius = std::stof(parseLine(reader, "radius"));
+	float height = std::stof(parseLine(reader, "height"));
+
+	auto [bounciness, friction] = loadCollider3DComponent(reader);
+
+	if (bounciness < 0.0f || bounciness > 1.0f || friction < 0.0f ||
+		friction > 1.0f || radius < 0.0f || height < 0.0f)
+	{
+		return;
+	}
+
+	rp3d::Vector3 capsuleCenter{center.x, center.y, center.z};
+
+	CapsuleCollider3DComponent capsuleCollider{radius, height, capsuleCenter};
+	capsuleCollider.bounciness = bounciness;
+	capsuleCollider.friction = friction;
+
+	registry.emplace<CapsuleCollider3DComponent>(entity, capsuleCollider);
+}
+
+void Survive::ComponentLoader::loadConvexMeshCollider3DComponent(entt::registry &registry, entt::entity entity,
+																 std::ifstream &reader)
+{
+	int numberOfFaces = std::stoi(parseLine(reader, "numberOfFaces"));
+	if (numberOfFaces < 0)
+	{
+		return;
+	}
+
+	std::vector<float> vertices;
+	if (!loadConvexMeshVertices(reader, vertices))
+	{
+		return;
+	}
+
+	std::vector<int> indices;
+	if (!loadConvexMeshIndices(reader, indices))
+	{
+		return;
+	}
+
+	auto [bounciness, friction] = loadCollider3DComponent(reader);
+
+	if (bounciness < 0.0f || bounciness > 1.0f || friction < 0.0f || friction > 1.0f)
+	{
+		return;
+	}
+
+	ConvexMeshCollider3DComponent convexMesh{vertices, indices, numberOfFaces};
+	convexMesh.bounciness = bounciness;
+	convexMesh.friction = friction;
+
+	registry.emplace<ConvexMeshCollider3DComponent>(entity, convexMesh);
+}
+
+std::pair<float, float> Survive::ComponentLoader::loadCollider3DComponent(std::ifstream &reader)
+{
+	float bounciness = std::stof(parseLine(reader, "bounciness"));
+	float friction = std::stof(parseLine(reader, "friction"));
+
+	return {bounciness, friction};
+}
+
+bool Survive::ComponentLoader::loadConvexMeshIndices(std::ifstream &reader, std::vector<int> &indices)
+{
+	int numberOfIndices = std::stoi(parseLine(reader, "numberOfIndices"));
+	if (numberOfIndices < 0)
+	{
+		return false;
+	}
+
+	indices.reserve(numberOfIndices);
+	for (int i = 0; i < numberOfIndices; ++i)
+	{
+		std::string label = "index" + std::to_string(i+1);
+		int index = std::stoi(parseLine(reader, label.c_str()));
+
+		indices.emplace_back(index);
+	}
+
+	return true;
+}
+
+bool Survive::ComponentLoader::loadConvexMeshVertices(std::ifstream &reader, std::vector<float> &vertices)
+{
+	int numberOfVertices = std::stoi(parseLine(reader, "numberOfVertices"));
+	if (numberOfVertices < 0)
+	{
+		return false;
+	}
+
+	vertices.reserve(numberOfVertices);
+	for (int i = 0; i < numberOfVertices; ++i)
+	{
+		std::string label = "vertex" + std::to_string(i + 1);
+		float vertex = std::stof(parseLine(reader, label.c_str()));
+
+		vertices.emplace_back(vertex);
+	}
+
+	return true;
 }

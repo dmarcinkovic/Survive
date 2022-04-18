@@ -139,6 +139,21 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "RigidBody2DComponent")
 		{
 			ComponentLoader::loadRigidBody2DComponent(registry, entity, reader);
+		} else if (componentType == "RigidBody3DComponent")
+		{
+			ComponentLoader::loadRigidBody3DComponent(registry, entity, reader);
+		} else if (componentType == "BoxCollider3DComponent")
+		{
+			ComponentLoader::loadBoxCollider3DComponent(registry, entity, reader);
+		} else if (componentType == "CapsuleCollider3DComponent")
+		{
+			ComponentLoader::loadCapsuleCollider3DComponent(registry, entity, reader);
+		} else if (componentType == "SphereCollider3DComponent")
+		{
+			ComponentLoader::loadSphereCollider3DComponent(registry, entity, reader);
+		} else if (componentType == "ConvexMeshCollider3DComponent")
+		{
+			ComponentLoader::loadConvexMeshCollider3DComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -166,4 +181,9 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveHingeJoint2DComponent(registry, entity, writer);
 	ComponentSerializer::saveDistanceJoint2DComponent(registry, entity, writer);
 	ComponentSerializer::saveRigidBody2DComponent(registry, entity, writer);
+	ComponentSerializer::saveRigidBody3DComponent(registry, entity, writer);
+	ComponentSerializer::saveBoxCollider3DComponent(registry, entity, writer);
+	ComponentSerializer::saveSphereCollider3DComponent(registry, entity, writer);
+	ComponentSerializer::saveCapsuleCollider3DComponent(registry, entity, writer);
+	ComponentSerializer::saveConvexMeshCollider3DComponent(registry, entity, writer);
 }

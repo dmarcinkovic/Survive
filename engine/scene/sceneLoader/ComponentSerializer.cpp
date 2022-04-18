@@ -321,6 +321,101 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 	}
 }
 
+void Survive::ComponentSerializer::saveRigidBody3DComponent(entt::registry &registry, entt::entity entity,
+															std::ofstream &writer)
+{
+	if (registry.any_of<RigidBody3DComponent>(entity))
+	{
+		const RigidBody3DComponent &rigidBody = registry.get<RigidBody3DComponent>(entity);
+		writer << "\tcomponent:RigidBody3DComponent\n";
+
+		writer << "\t\tbodyType:" << static_cast<int>(rigidBody.bodyType) << '\n';
+		writer << "\t\tmass:" << rigidBody.mass << '\n';
+		writer << "\t\tuseGravity:" << rigidBody.useGravity << '\n';
+		writer << "\t\tlinearDamping:" << rigidBody.linearDamping << '\n';
+		printVec3(writer, "linearVelocity", rigidBody.linearVelocity);
+		writer << "\t\tangularDrag:" << rigidBody.angularDrag << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveBoxCollider3DComponent(entt::registry &registry, entt::entity entity,
+															  std::ofstream &writer)
+{
+	if (registry.any_of<BoxCollider3DComponent>(entity))
+	{
+		const BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
+		writer << "\tcomponent:BoxCollider3DComponent\n";
+
+		printVec3(writer, "position", boxCollider.position);
+		printVec3(writer, "center", boxCollider.center);
+		writer << "\t\tbounciness:" << boxCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << boxCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveCapsuleCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																  std::ofstream &writer)
+{
+	if (registry.any_of<CapsuleCollider3DComponent>(entity))
+	{
+		const CapsuleCollider3DComponent &capsuleCollider = registry.get<CapsuleCollider3DComponent>(entity);
+		writer << "\tcomponent:CapsuleCollider3DComponent\n";
+
+		printVec3(writer, "center", capsuleCollider.center);
+		writer << "\t\tradius:" << capsuleCollider.radius << '\n';
+		writer << "\t\theight:" << capsuleCollider.height << '\n';
+		writer << "\t\tbounciness:" << capsuleCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << capsuleCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveSphereCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																 std::ofstream &writer)
+{
+	if (registry.any_of<SphereCollider3DComponent>(entity))
+	{
+		const SphereCollider3DComponent &sphereCollider = registry.get<SphereCollider3DComponent>(entity);
+		writer << "\tcomponent:SphereCollider3DComponent\n";
+
+		writer << "\t\tradius:" << sphereCollider.radius << '\n';
+		printVec3(writer, "offset", sphereCollider.offset);
+		writer << "\t\tbounciness:" << sphereCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << sphereCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveConvexMeshCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																	 std::ofstream &writer)
+{
+	if (registry.any_of<ConvexMeshCollider3DComponent>(entity))
+	{
+		const ConvexMeshCollider3DComponent &convexMesh = registry.get<ConvexMeshCollider3DComponent>(entity);
+		writer << "\tcomponent:ConvexMeshCollider3DComponent\n";
+		writer << "\t\tnumberOfFaces:" << convexMesh.numberOfFaces << '\n';
+
+		const std::vector<float> &vertices = convexMesh.vertices;
+		writer << "\t\tnumberOfVertices:" << vertices.size() << '\n';
+
+		for (int i = 0; i < vertices.size(); ++i)
+		{
+			std::string label = "\t\tvertex" + std::to_string(i + 1);
+			writer << label << ':' << vertices[i] << '\n';
+		}
+
+		const std::vector<int> &indices = convexMesh.indices;
+		writer << "\t\tnumberOfIndices:" << indices.size() << '\n';
+
+		for (int i = 0; i < indices.size(); ++i)
+		{
+			std::string label = "\t\tindex" + std::to_string(i + 1);
+			writer << label << ':' << indices[i] << '\n';
+		}
+
+		writer << "\t\tbounciness:" << convexMesh.bounciness << '\n';
+		writer << "\t\tfriction:" << convexMesh.friction << '\n';
+	}
+}
+
 void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3)
 {
 	writer << "\t\t" << label << ':' << vec3.x << ',' << vec3.y << ',' << vec3.z << '\n';
@@ -343,4 +438,10 @@ void Survive::ComponentSerializer::saveCollider2DComponent(std::ofstream &writer
 	writer << "\t\tmass:" << fixtureDef.density << '\n';
 	writer << "\t\tfriction:" << fixtureDef.friction << '\n';
 	writer << "\t\telasticity:" << fixtureDef.restitution << '\n';
+}
+
+void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const rp3d::Vector3 &vec3)
+{
+	glm::vec3 vec{vec3.x, vec3.y, vec3.z};
+	printVec3(writer, label, vec);
 }

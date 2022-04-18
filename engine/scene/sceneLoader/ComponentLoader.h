@@ -66,6 +66,18 @@ namespace Survive
 
 		static void loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
+		static void loadRigidBody3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadBoxCollider3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadSphereCollider3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void
+		loadCapsuleCollider3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void
+		loadConvexMeshCollider3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
@@ -79,6 +91,12 @@ namespace Survive
 		getFont(const std::string &fontFile, const std::string &textureAtlas, Loader &loader);
 
 		static std::tuple<float, float, float> loadCollider2DComponent(std::ifstream &reader);
+
+		static std::pair<float, float> loadCollider3DComponent(std::ifstream &reader);
+
+		static bool loadConvexMeshIndices(std::ifstream &reader, std::vector<int> &indices);
+
+		static bool loadConvexMeshVertices(std::ifstream &reader, std::vector<float> &vertices);
 	};
 }
 
