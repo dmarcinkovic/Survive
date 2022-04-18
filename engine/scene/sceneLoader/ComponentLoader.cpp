@@ -467,6 +467,11 @@ Survive::ComponentLoader::loadRigidBody3DComponent(entt::registry &registry, ent
 	glm::vec3 linearVelocity = parseVec3(parseLine(reader, "linearVelocity"));
 	float angularDrag = std::stof(parseLine(reader, "angularDrag"));
 
+	if (linearDamping < 0.0f || angularDrag < 0.0f)
+	{
+		return;
+	}
+
 	rp3d::Vector3 velocity{linearVelocity.x, linearVelocity.y, linearVelocity.z};
 	registry.emplace<RigidBody3DComponent>(entity, type, mass, useGravity, linearDamping, velocity, angularDrag);
 }
