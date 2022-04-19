@@ -39,7 +39,7 @@ namespace Survive
 	protected:
 		static void drawOutline(const entt::registry &registry, entt::entity entity);
 
-		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) ;
+		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
 
 		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
