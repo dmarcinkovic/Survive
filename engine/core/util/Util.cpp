@@ -138,3 +138,4 @@ glm::vec3 Survive::Util::getMouseRay(const Camera &camera, float x, float y, flo
 	glm::vec3 worldSpace = glm::normalize(glm::vec3{glm::inverse(viewMatrix) * eyeSpace});
 	return worldSpace;
 }
+

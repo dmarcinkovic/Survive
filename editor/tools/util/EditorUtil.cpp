@@ -72,6 +72,7 @@ Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Loader &loader, Textur
 			try
 			{
 				texture = loader.loadTexture(selectedFile.c_str());
+
 				textureName = selectedFilename;
 				changed = true;
 			} catch (const std::exception &exception)

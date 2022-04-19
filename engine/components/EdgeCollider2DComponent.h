@@ -31,9 +31,6 @@ namespace Survive
 				: Collider2DComponent(density, friction, elasticity)
 		{
 			edgeShape.SetTwoSided(point1, point2);
-			fixtureDef.density = density;
-			fixtureDef.friction = friction;
-			fixtureDef.restitution = elasticity;
 		}
 	};
 }

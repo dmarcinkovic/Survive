@@ -13,6 +13,8 @@ namespace Survive
 	public:
 		static void drawComponent(ReflectionComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Reflection", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

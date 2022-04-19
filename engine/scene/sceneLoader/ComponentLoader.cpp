@@ -56,16 +56,18 @@ void Survive::ComponentLoader::loadRender2DComponent(entt::registry &registry, e
 													 std::ifstream &reader, Loader &loader)
 {
 	std::string textureName = parseLine(reader, "textureName");
-	Texture image = loader.loadTexture(textureName.c_str());
-
 	Model model = loader.renderQuad();
+
+	Texture image;
+	try
+	{
+		image = loader.loadTexture(textureName.c_str());
+	} catch (const std::runtime_error &error)
+	{}
+
 	Render2DComponent render2DComponent(TexturedModel(model, image));
 
-	if (image.isValidTexture())
-	{
-		render2DComponent.textureName = textureName;
-	}
-
+	render2DComponent.textureName = textureName;
 	registry.emplace<Render2DComponent>(entity, std::move(render2DComponent));
 }
 
@@ -76,20 +78,23 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	std::string textureName = parseLine(reader, "textureName");
 
 	Model model = ObjParser::loadObj(modelName, loader);
-	Texture texture = loader.loadTexture(textureName.c_str());
 
-	if (model.isValidModel())
+	Texture texture;
+	try
 	{
-		Render3DComponent render3DComponent(TexturedModel(model, texture));
+		texture = loader.loadTexture(textureName.c_str());
+	} catch (const std::runtime_error &error)
+	{}
 
-		if (texture.isValidTexture())
-		{
-			render3DComponent.textureName = textureName;
-		}
+	Render3DComponent render3DComponent(TexturedModel(model, texture));
 
-		render3DComponent.modelName = modelName;
-		registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
+	if (texture.isValidTexture())
+	{
+		render3DComponent.textureName = textureName;
 	}
+
+	render3DComponent.modelName = modelName;
+	registry.emplace<Render3DComponent>(entity, std::move(render3DComponent));
 }
 
 void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, entt::entity entity,
@@ -105,13 +110,10 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 	{
 		Texture normalMap = loader.loadTexture(normalMapPath.c_str());
 
-		if (normalMap.isValidTexture())
-		{
-			MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
-			material.normalMapPath = normalMapPath;
+		MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
+		material.normalMapPath = normalMapPath;
 
-			registry.emplace<MaterialComponent>(entity, material);
-		}
+		registry.emplace<MaterialComponent>(entity, material);
 	} else
 	{
 		registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));

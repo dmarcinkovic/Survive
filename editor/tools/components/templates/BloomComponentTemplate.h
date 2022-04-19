@@ -25,6 +25,8 @@ namespace Survive
 	public:
 		void drawComponent(BloomComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Bloom", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

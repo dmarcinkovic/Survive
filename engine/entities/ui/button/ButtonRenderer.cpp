@@ -8,6 +8,8 @@
 
 void Survive::ButtonRenderer::render() const
 {
+	constexpr int numberOfVao = 1;
+
 	if (m_Buttons.empty())
 	{
 		return;
@@ -18,7 +20,8 @@ void Survive::ButtonRenderer::render() const
 	for (auto const &buttons : m_Buttons)
 	{
 		const Button &button = buttons.get();
-		prepareEntity(button.m_Texture);
+
+		prepareEntity(button.m_Texture, numberOfVao);
 
 		m_Shader.loadColor(button.m_Color);
 		m_Shader.loadTransformationMatrix(
@@ -27,7 +30,8 @@ void Survive::ButtonRenderer::render() const
 		m_Shader.loadIsLoadingImage(button.m_Texture.isValidTexture());
 
 		glDrawElements(GL_TRIANGLES, button.m_Texture.vertexCount(), GL_UNSIGNED_INT, nullptr);
-		finishRenderingEntity();
+
+		finishRenderingEntity(numberOfVao);
 	}
 
 	finishRendering();

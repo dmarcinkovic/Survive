@@ -19,6 +19,8 @@ namespace Survive
 	public:
 		void drawComponent(EdgeCollider2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Edge collider 2D", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

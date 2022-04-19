@@ -11,8 +11,8 @@ namespace Survive
 	class ComponentTemplate<SoundComponent>
 	{
 	private:
-		OpenDialog m_OpenDialog;
-		AudioMaster m_AudioMaster;
+		OpenDialog m_OpenDialog{};
+		AudioMaster m_AudioMaster{};
 
 		bool m_Changed = true;
 		bool m_Open = false;
@@ -20,6 +20,8 @@ namespace Survive
 	public:
 		void drawComponent(SoundComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Sound", visible))
 			{
 				ImGui::Columns(2, nullptr, false);
