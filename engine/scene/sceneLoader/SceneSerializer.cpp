@@ -154,6 +154,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "ConvexMeshCollider3DComponent")
 		{
 			ComponentLoader::loadConvexMeshCollider3DComponent(registry, entity, reader);
+		} else if (componentType == "OutlineComponent")
+		{
+			ComponentLoader::loadOutlineComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -181,6 +184,7 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveHingeJoint2DComponent(registry, entity, writer);
 	ComponentSerializer::saveDistanceJoint2DComponent(registry, entity, writer);
 	ComponentSerializer::saveRigidBody2DComponent(registry, entity, writer);
+	ComponentSerializer::saveOutlineComponent(registry, entity, writer);
 	ComponentSerializer::saveRigidBody3DComponent(registry, entity, writer);
 	ComponentSerializer::saveBoxCollider3DComponent(registry, entity, writer);
 	ComponentSerializer::saveSphereCollider3DComponent(registry, entity, writer);

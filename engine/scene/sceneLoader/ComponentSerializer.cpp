@@ -301,8 +301,8 @@ void Survive::ComponentSerializer::saveRigidBody2DComponent(entt::registry &regi
 	}
 }
 
-void
-Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+void Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity,
+													 std::ofstream &writer)
 {
 	if (registry.any_of<TextComponent>(entity))
 	{
@@ -413,6 +413,16 @@ void Survive::ComponentSerializer::saveConvexMeshCollider3DComponent(entt::regis
 
 		writer << "\t\tbounciness:" << convexMesh.bounciness << '\n';
 		writer << "\t\tfriction:" << convexMesh.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveOutlineComponent(entt::registry &registry, entt::entity entity,
+														std::ofstream &writer)
+{
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		writer << "\tcomponent:OutlineComponent\n";
+		writer << "\t\tdrawOutline:0\n";
 	}
 }
 

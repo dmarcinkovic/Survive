@@ -390,8 +390,8 @@ void Survive::ComponentLoader::loadDistanceJoint2DComponent(entt::registry &regi
 	registry.emplace<DistanceJoint2DComponent>(entity, distanceComponent);
 }
 
-void
-Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+void Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, entt::entity entity,
+														std::ifstream &reader)
 {
 	int bodyType = std::stoi(parseLine(reader, "bodyType"));
 
@@ -414,6 +414,14 @@ Survive::ComponentLoader::loadRigidBody2DComponent(entt::registry &registry, ent
 
 	registry.emplace<RigidBody2DComponent>(entity, static_cast<b2BodyType>(bodyType), linearDrag, linearVelocity,
 										   angularDrag, gravityScale, fixedAngle);
+}
+
+void Survive::ComponentLoader::loadOutlineComponent(entt::registry &registry, entt::entity entity,
+													std::ifstream &reader)
+{
+	bool drawOutline = std::stoi(parseLine(reader, "drawOutline"));
+
+	registry.emplace<OutlineComponent>(entity, drawOutline);
 }
 
 std::optional<Survive::Font>

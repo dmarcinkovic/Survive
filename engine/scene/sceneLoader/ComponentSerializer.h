@@ -69,6 +69,8 @@ namespace Survive
 		static void
 		saveConvexMeshCollider3DComponent(entt::registry &registry, entt::entity &entity, std::ofstream &writer);
 
+		static void saveOutlineComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
 	private:
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);
 
