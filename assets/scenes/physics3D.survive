@@ -12,6 +12,8 @@ entity:box
 		position:-3,3,-10
 		scale:1,1,1
 		rotation:0,0,0
+	component:OutlineComponent
+		drawOutline:0
 	component:RigidBody3DComponent
 		bodyType:2
 		mass:1
@@ -88,6 +90,8 @@ entity:ground
 		position:0,-2,-10
 		scale:6,0.5,8
 		rotation:0,0,0
+	component:OutlineComponent
+		drawOutline:0
 	component:RigidBody3DComponent
 		bodyType:0
 		mass:1
@@ -115,6 +119,8 @@ entity:sphere2
 		position:1,4,-10
 		scale:1,1,1
 		rotation:0,0,0
+	component:OutlineComponent
+		drawOutline:0
 	component:RigidBody3DComponent
 		bodyType:2
 		mass:1
@@ -142,6 +148,8 @@ entity:sphere
 		position:0,2,-10
 		scale:1,1,1
 		rotation:0,0,0
+	component:OutlineComponent
+		drawOutline:0
 	component:RigidBody3DComponent
 		bodyType:2
 		mass:1
