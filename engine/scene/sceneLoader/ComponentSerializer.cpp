@@ -301,8 +301,8 @@ void Survive::ComponentSerializer::saveRigidBody2DComponent(entt::registry &regi
 	}
 }
 
-void
-Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+void Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity,
+													 std::ofstream &writer)
 {
 	if (registry.any_of<TextComponent>(entity))
 	{
@@ -318,6 +318,16 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 		writer << "\t\taddBorder:" << text.m_AddBorder << '\n';
 		writer << "\t\tborderWidth:" << text.m_BorderWidth << '\n';
 		printVec3(writer, "borderColor", text.m_BorderColor);
+	}
+}
+
+void Survive::ComponentSerializer::saveOutlineComponent(entt::registry &registry, entt::entity entity,
+														std::ofstream &writer)
+{
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		writer << "\tcomponent:OutlineComponent\n";
+		writer << "\t\tdrawOutline:0\n";
 	}
 }
 
