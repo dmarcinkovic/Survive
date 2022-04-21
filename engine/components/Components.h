@@ -15,6 +15,7 @@
 #include "DistanceJoint2DComponent.h"
 #include "EdgeCollider2DComponent.h"
 #include "HingeJoint2DComponent.h"
+#include "HingeJoint3DComponent.h"
 #include "MaterialComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
