@@ -21,6 +21,8 @@ namespace Survive
 	public:
 		static void drawComponent(SphereCollider3DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Sphere collider", visible))
 			{
 				ImGui::PushID("Sphere3D");

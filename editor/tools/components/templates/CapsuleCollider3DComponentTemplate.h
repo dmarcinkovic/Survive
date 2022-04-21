@@ -21,6 +21,8 @@ namespace Survive
 	public:
 		static void drawComponent(CapsuleCollider3DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Capsule collider 3D", visible))
 			{
 				ImGui::PushID("Capsule3D");
