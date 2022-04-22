@@ -16,6 +16,7 @@
 #include "DistanceJoint2DComponentTemplate.h"
 #include "EdgeCollider2DComponentTemplate.h"
 #include "HingeJoint2DComponentTemplate.h"
+#include "HingeJoint3DComponentTemplate.h"
 #include "Joint2DComponentTemplate.h"
 #include "MaterialComponentTemplate.h"
 #include "PolygonCollider2DComponentTemplate.h"
