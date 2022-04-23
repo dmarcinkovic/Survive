@@ -21,6 +21,8 @@ namespace Survive
 	public:
 		static void drawComponent(BoxCollider3DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Box collider 3D", visible))
 			{
 				ImGui::PushID("Box3D");
