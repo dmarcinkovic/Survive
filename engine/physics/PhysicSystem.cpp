@@ -112,6 +112,12 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 		initColliders3D(registry, entity, physicsCommon, rigidBody.body);
 		initializeRigidBody3D(rigidBody);
 	}
+
+	for (auto const &entity: view)
+	{
+		RigidBody3DComponent &rigidBody = view.get<RigidBody3DComponent>(entity);
+		initHingeJoint3D(registry, entity, world, rigidBody.body);
+	}
 }
 
 void Survive::PhysicSystem::initColliders2D(entt::registry &registry, entt::entity entity, b2Body *body)
@@ -386,4 +392,28 @@ bool Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3
 																   vertexDataType, indexDataType);
 
 	return true;
+}
+
+void Survive::PhysicSystem::initHingeJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
+											 rp3d::RigidBody *body)
+{
+	if (registry.any_of<HingeJoint3DComponent>(entity))
+	{
+		HingeJoint3DComponent &hingeJoint = registry.get<HingeJoint3DComponent>(entity);
+		hingeJoint.jointInfo.body1 = body;
+
+		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
+		{
+			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
+		}
+
+		if (hingeJoint.connectedBody != entt::null &&
+			registry.any_of<RigidBody3DComponent>(hingeJoint.connectedBody))
+		{
+			RigidBody3DComponent &body2 = registry.get<RigidBody3DComponent>(hingeJoint.connectedBody);
+			hingeJoint.jointInfo.body2 = body2.body;
+		}
+
+		world->createJoint(hingeJoint.jointInfo);
+	}
 }

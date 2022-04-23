@@ -72,6 +72,9 @@ namespace Survive
 		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
 
 		static bool initConvexMeshComponent(ConvexMeshCollider3DComponent &meshCollider);
+
+		static void initHingeJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
+									 rp3d::RigidBody *body);
 	};
 }
 
