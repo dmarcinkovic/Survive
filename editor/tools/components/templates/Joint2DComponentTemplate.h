@@ -22,16 +22,19 @@ namespace Survive
 		drawJoint2DProperties(const char *label, std::string &connectedBodyName, entt::entity &connectedBody,
 							  b2Vec2 &anchorA, b2Vec2 &anchorB, bool &collideConnected)
 		{
-			// TODO push ID
 			EditorUtil::drawColumnInputText(label, "Connected Rigid Body", connectedBodyName);
 			initializeDragDropTarget(connectedBody, connectedBodyName);
 
 			ImGui::NextColumn();
 
-			// TODO this label should not be distance
-			EditorUtil::drawColumnDragFloat2("Anchor", "##DistanceAnchorA", anchorA);
-			EditorUtil::drawColumnDragFloat2("Connected anchor", "##DistanceAnchorB", anchorB);
-			EditorUtil::drawColumnInputBool("Collide connected", "##DistanceCollide", collideConnected);
+			std::string id = std::string(label) + "Anchors";
+			ImGui::PushID(id.c_str());
+
+			EditorUtil::drawColumnDragFloat2("Anchor", "##AnchorA", anchorA);
+			EditorUtil::drawColumnDragFloat2("Connected anchor", "##AnchorB", anchorB);
+			EditorUtil::drawColumnInputBool("Collide connected", "##Collide", collideConnected);
+
+			ImGui::PopID();
 		}
 	};
 }
