@@ -7,11 +7,40 @@ entity:box
 		useNormalMapping:0
 		normalMap:
 	component:SpriteComponent
+		color:0.1,0.5,0.8,1
+	component:Transform3DComponent
+		position:-1.43944,5.56425,-10
+		scale:1,1,1
+		rotation:0,-0,0
+	component:OutlineComponent
+		drawOutline:0
+	component:RigidBody3DComponent
+		bodyType:2
+		mass:1
+		useGravity:1
+		linearDamping:0
+		linearVelocity:0,0,0
+		angularDrag:0
+	component:BoxCollider3DComponent
+		position:1,1,1
+		center:0,0,0
+		bounciness:0.5
+		friction:0.3
+end
+entity:convex
+	component:Render3DComponent
+		modelName:assets/models/cube.obj
+		textureName:
+	component:MaterialComponent
+		isTransparent:0
+		useNormalMapping:0
+		normalMap:
+	component:SpriteComponent
 		color:0.4,0.1,0.3,1
 	component:Transform3DComponent
-		position:-3,3,-10
+		position:-2.25608,3,-10
 		scale:1,1,1
-		rotation:0,0,0
+		rotation:0,-0,0
 	component:OutlineComponent
 		drawOutline:0
 	component:RigidBody3DComponent
@@ -105,18 +134,14 @@ entity:ground
 		bounciness:0.5
 		friction:0.3
 end
-entity:sphere2
+entity:capsule
 	component:Render3DComponent
-		modelName:assets/models/sphere.obj
+		modelName:assets/models/capsule.obj
 		textureName:
-	component:MaterialComponent
-		isTransparent:0
-		useNormalMapping:0
-		normalMap:
 	component:SpriteComponent
-		color:0.8,0.3,0.1,1
+		color:0.6,0.3,0.7,1
 	component:Transform3DComponent
-		position:1,4,-10
+		position:1,5,-10
 		scale:1,1,1
 		rotation:0,0,0
 	component:OutlineComponent
@@ -128,9 +153,10 @@ entity:sphere2
 		linearDamping:0
 		linearVelocity:0,0,0
 		angularDrag:0
-	component:SphereCollider3DComponent
+	component:CapsuleCollider3DComponent
+		center:0,0,0
 		radius:1
-		offset:0,0,0
+		height:1
 		bounciness:0.5
 		friction:0.3
 end
