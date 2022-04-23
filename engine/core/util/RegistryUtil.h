@@ -14,7 +14,7 @@ namespace Survive
 	{
 	private:
 		using Storage = std::tuple<Transform3DComponent, SpriteSheetComponent, RigidBody2DComponent,
-				HingeJoint2DComponent, DistanceJoint2DComponent>;
+				HingeJoint2DComponent, DistanceJoint2DComponent, RigidBody3DComponent, HingeJoint3DComponent>;
 
 		std::unordered_map<int, Storage> m_Components;
 
@@ -89,6 +89,8 @@ namespace Survive
 			save<RigidBody2DComponent>(registry, entity, storage);
 			save<HingeJoint2DComponent>(registry, entity, storage);
 			save<DistanceJoint2DComponent>(registry, entity, storage);
+			save<HingeJoint3DComponent>(registry, entity, storage);
+			save<RigidBody3DComponent>(registry, entity, storage);
 		}
 
 		void restoreComponents(entt::entity entity, entt::registry &registry)
@@ -107,6 +109,8 @@ namespace Survive
 			replace<RigidBody2DComponent>(registry, entity, storage);
 			replace<HingeJoint2DComponent>(registry, entity, storage);
 			replace<DistanceJoint2DComponent>(registry, entity, storage);
+			replace<RigidBody3DComponent>(registry, entity, storage);
+			replace<HingeJoint3DComponent>(registry, entity, storage);
 			restoreSoundComponent(registry, entity);
 
 			m_Components.erase(index);
