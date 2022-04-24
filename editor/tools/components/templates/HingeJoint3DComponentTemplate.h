@@ -62,8 +62,9 @@ namespace Survive
 			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Hinge3DConfigure",
 											jointInfo.isUsingLocalSpaceAnchors);
 
-			EditorUtil::drawColumnDragFloat3("Local Anchor", "##Hinge3DAnchor", jointInfo.anchorPointBody1LocalSpace);
-			EditorUtil::drawColumnDragFloat3("Local Axis", "##Hinge3DAxis", jointInfo.rotationAxisBody1Local);
+			EditorUtil::drawColumnDragFloat3("Local Anchor", "##Hinge3LocalDAnchor",
+											 jointInfo.anchorPointBody1LocalSpace);
+			EditorUtil::drawColumnDragFloat3("Local Axis", "##Hinge3DLocalAxis", jointInfo.rotationAxisBody1Local);
 			EditorUtil::drawColumnDragFloat3("Connected Anchor", "##Hinge3DCAnchor",
 											 jointInfo.anchorPointBody2LocalSpace);
 		}
