@@ -414,6 +414,34 @@ void Survive::PhysicSystem::initHingeJoint3D(entt::registry &registry, entt::ent
 			hingeJoint.jointInfo.body2 = body2.body;
 		}
 
+		if (!verifyHingeJoint3d(hingeJoint.jointInfo))
+		{
+			return;
+		}
+
 		world->createJoint(hingeJoint.jointInfo);
 	}
+}
+
+bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::HingeJointInfo &info)
+{
+	static constexpr float epsilon = std::numeric_limits<float>::epsilon();
+
+	if (info.body2 == nullptr)
+	{
+		Log::logMessage(LogType::ERROR, "Body 2 in hinge joint is not initialized");
+		return false;
+	}
+
+	const rp3d::Quaternion &orientationBody2 = info.body2->getTransform().getOrientation();
+	rp3d::Vector3 a2 = orientationBody2 * info.rotationAxisBody1Local;
+	a2.normalize();
+
+	if (a2.length() <= epsilon)
+	{
+		Log::logMessage(LogType::ERROR, "Cannot initialize hinge joint.");
+		return false;
+	}
+
+	return true;
 }

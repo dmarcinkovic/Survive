@@ -75,6 +75,8 @@ namespace Survive
 
 		static void initHingeJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
 									 rp3d::RigidBody *body);
+
+		static bool verifyHingeJoint3d(rp3d::HingeJointInfo &info);
 	};
 }
 
