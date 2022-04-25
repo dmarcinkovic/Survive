@@ -434,7 +434,8 @@ bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::HingeJointInfo &info)
 	}
 
 	const rp3d::Quaternion &orientationBody2 = info.body2->getTransform().getOrientation();
-	rp3d::Vector3 a2 = orientationBody2 * info.rotationAxisBody1Local;
+	const rp3d::Vector3 &axis = info.isUsingLocalSpaceAnchors ? info.rotationAxisBody2Local : info.rotationAxisWorld;
+	rp3d::Vector3 a2 = orientationBody2 * axis;
 	a2.normalize();
 
 	if (a2.length() <= epsilon)

@@ -53,20 +53,27 @@ namespace Survive
 
 		static void drawFirstBodyInfo(rp3d::HingeJointInfo &jointInfo)
 		{
-			EditorUtil::drawColumnDragFloat3("Anchor", "##Hinge3DAnchor", jointInfo.anchorPointWorldSpace);
-			EditorUtil::drawColumnDragFloat3("Axis", "##Hinge3DAxis", jointInfo.rotationAxisWorld);
+			if (jointInfo.isUsingLocalSpaceAnchors)
+			{
+				EditorUtil::drawColumnDragFloat3("Local Anchor", "##Hinge3LocalAnchor",
+												 jointInfo.anchorPointBody1LocalSpace);
+				EditorUtil::drawColumnDragFloat3("Local Axis", "##Hinge3DLocalAxis", jointInfo.rotationAxisBody1Local);
+			} else
+			{
+				EditorUtil::drawColumnDragFloat3("Anchor", "##Hinge3DAnchor", jointInfo.anchorPointWorldSpace);
+				EditorUtil::drawColumnDragFloat3("Axis", "##Hinge3DAxis", jointInfo.rotationAxisWorld);
+			}
+
+			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Hinge3DConfigure",
+											jointInfo.isUsingLocalSpaceAnchors);
 		}
 
 		static void drawSecondBodyInfo(rp3d::HingeJointInfo &jointInfo)
 		{
-			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Hinge3DConfigure",
-											jointInfo.isUsingLocalSpaceAnchors);
-
-			EditorUtil::drawColumnDragFloat3("Local Anchor", "##Hinge3LocalDAnchor",
-											 jointInfo.anchorPointBody1LocalSpace);
-			EditorUtil::drawColumnDragFloat3("Local Axis", "##Hinge3DLocalAxis", jointInfo.rotationAxisBody1Local);
-			EditorUtil::drawColumnDragFloat3("Connected Anchor", "##Hinge3DCAnchor",
+			EditorUtil::drawColumnDragFloat3("Connected Body Anchor", "##Hinge3DConnectedAnchor",
 											 jointInfo.anchorPointBody2LocalSpace);
+			EditorUtil::drawColumnDragFloat3("Connected Body Axis", "##Hinge3DConnectedAxis",
+											 jointInfo.rotationAxisBody2Local);
 		}
 
 		static void drawMotorProperties(rp3d::HingeJointInfo &jointInfo)
