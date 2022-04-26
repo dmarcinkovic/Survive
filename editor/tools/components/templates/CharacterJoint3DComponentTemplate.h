@@ -25,8 +25,33 @@ namespace Survive
 
 				drawConnectedBodyUI(component);
 
+				rp3d::BallAndSocketJointInfo &info = component.jointInfo;
+				drawFirstBodyInfo(info);
+
+				EditorUtil::drawColumnDragFloat3("Connected Body Anchor", "##CharacterCBodyAnchor",
+												 info.anchorPointBody2LocalSpace);
+
+				EditorUtil::drawColumnInputBool("Enable Collision", "##Character3DCollision", info.isCollisionEnabled);
+
 				ImGui::Columns();
 			}
+		}
+
+	private:
+		static void drawFirstBodyInfo(rp3d::BallAndSocketJointInfo &info)
+		{
+			if (info.isUsingLocalSpaceAnchors)
+			{
+				EditorUtil::drawColumnDragFloat3("Anchor", "##CharacterJAnchor", info.anchorPointWorldSpace);
+			} else
+			{
+				EditorUtil::drawColumnDragFloat3("Local Anchor", "##LocalCharacterAnchor",
+												 info.anchorPointBody1LocalSpace);
+			}
+
+			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Character3DUseLocal",
+											info.isUsingLocalSpaceAnchors);
+
 		}
 	};
 }
