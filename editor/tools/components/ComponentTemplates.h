@@ -9,6 +9,7 @@
 #include "BoxCollider2DComponentTemplate.h"
 #include "BoxCollider3DComponentTemplate.h"
 #include "CapsuleCollider3DComponentTemplate.h"
+#include "CharacterJoint3DComponentTemplate.h"
 #include "CircleCollider2DComponentTemplate.h"
 #include "Collider2DComponentTemplate.h"
 #include "Collider3DComponentTemplate.h"

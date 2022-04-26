@@ -9,12 +9,12 @@
 
 #include "Components.h"
 #include "ComponentTemplate.h"
-#include "JointComponentTemplate.h"
+#include "Joint3DComponentTemplate.h"
 
 namespace Survive
 {
 	template<>
-	class ComponentTemplate<HingeJoint3DComponent> : public JointComponentTemplate
+	class ComponentTemplate<HingeJoint3DComponent> : public Joint3DComponentTemplate
 	{
 	public:
 		static void drawComponent(HingeJoint3DComponent &component, bool *visible)
@@ -42,15 +42,6 @@ namespace Survive
 		}
 
 	private:
-		static void drawConnectedBodyUI(HingeJoint3DComponent &component)
-		{
-			std::string &connectedBodyName = component.connectedBodyName;
-			EditorUtil::drawColumnInputText("##Hinge3DJoint", "Connected Rigid Body", connectedBodyName);
-			initializeDragDropTarget(component.connectedBody, connectedBodyName);
-
-			ImGui::NextColumn();
-		}
-
 		static void drawFirstBodyInfo(rp3d::HingeJointInfo &jointInfo)
 		{
 			if (jointInfo.isUsingLocalSpaceAnchors)
