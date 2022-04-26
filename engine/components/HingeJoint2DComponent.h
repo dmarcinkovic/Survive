@@ -9,21 +9,20 @@
 #include <glm/glm.hpp>
 
 #include "entt.hpp"
+#include "JointComponent.h"
 
 namespace Survive
 {
-	struct HingeJoint2DComponent
+	struct HingeJoint2DComponent : public JointComponent
 	{
 		b2RevoluteJointDef jointDef{};
-		entt::entity connectedBody = entt::null;
-		std::string connectedBodyName = "none";
 
 		HingeJoint2DComponent() = default;
 
 		HingeJoint2DComponent(entt::entity connectedBody, const b2Vec2 &anchor, const b2Vec2 &connectedAnchor,
 							  bool collideConnected = false, bool useMotor = false, float motorSpeed = 0,
 							  float maxTorque = 0, bool useLimits = false, float lowerAngle = 0, float upperAngle = 0)
-				: connectedBody(connectedBody)
+				: JointComponent(connectedBody)
 		{
 			jointDef.localAnchorA = anchor;
 			jointDef.localAnchorB = connectedAnchor;

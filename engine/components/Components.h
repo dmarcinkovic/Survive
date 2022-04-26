@@ -10,6 +10,7 @@
 #include "BoxCollider3DComponent.h"
 #include "BloomComponent.h"
 #include "CapsuleCollider3DComponent.h"
+#include "CharacterJoint3DComponent.h"
 #include "CircleCollider2DComponent.h"
 #include "ConvexMeshCollider3DComponent.h"
 #include "DistanceJoint2DComponent.h"

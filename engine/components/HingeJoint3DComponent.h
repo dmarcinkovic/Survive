@@ -8,17 +8,16 @@
 #include <reactphysics3d/reactphysics3d.h>
 
 #include "entt.hpp"
+#include "JointComponent.h"
 
 namespace Survive
 {
-	struct HingeJoint3DComponent
+	struct HingeJoint3DComponent : public JointComponent
 	{
 		rp3d::HingeJointInfo jointInfo;
-		entt::entity connectedBody = entt::null;
-		std::string connectedBodyName = "none";
 
 		HingeJoint3DComponent()
-			: jointInfo(nullptr, nullptr, rp3d::Vector3{}, rp3d::Vector3{})
+				: jointInfo(nullptr, nullptr, rp3d::Vector3{}, rp3d::Vector3{})
 		{}
 	};
 }
