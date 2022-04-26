@@ -15,6 +15,7 @@
 #include "ConvexMeshCollider3DComponent.h"
 #include "DistanceJoint2DComponent.h"
 #include "EdgeCollider2DComponent.h"
+#include "FixedJoint3DComponent.h"
 #include "HingeJoint2DComponent.h"
 #include "HingeJoint3DComponent.h"
 #include "MaterialComponent.h"
