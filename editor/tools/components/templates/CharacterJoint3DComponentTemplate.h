@@ -51,7 +51,6 @@ namespace Survive
 
 			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Character3DUseLocal",
 											info.isUsingLocalSpaceAnchors);
-
 		}
 	};
 }

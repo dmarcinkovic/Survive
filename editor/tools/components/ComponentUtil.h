@@ -26,6 +26,7 @@ namespace Survive
 		ComponentTemplate<ConvexMeshCollider3DComponent> m_ConvexMesh3DTemplate;
 		ComponentTemplate<DistanceJoint2DComponent> m_DistanceJoint2DTemplate;
 		ComponentTemplate<EdgeCollider2DComponent> m_EdgeCollider2DTemplate;
+		ComponentTemplate<FixedJoint3DComponent> m_FixedJoint3DTemplate;
 		ComponentTemplate<HingeJoint2DComponent> m_HingeJoint2DTemplate;
 		ComponentTemplate<HingeJoint3DComponent> m_HingeJoint3DTemplate;
 		ComponentTemplate<MaterialComponent> m_MaterialTemplate;
@@ -57,7 +58,7 @@ namespace Survive
 					"Animation component", "Bloom component", "Box Collider2D component", "Box Collider3D component",
 					"Capsule Collider3D component", "Character Joint3D component", "Circle Collider2D component",
 					"ConvexMesh Collider3D component", "Distance Joint2D component", "Edge Collider2D component",
-					"Hinge Joint2D component", "Hinge Joint3D component", "Material component",
+					"Fixed Joint3D component", "Hinge Joint2D component", "Hinge Joint3D component", "Material component",
 					"PolygonCollider2D component", "Reflection component", "Refraction component", "Render2D Component",
 					"Render3D component", "RigidBody2D component", "RigidBody3D component", "Script component",
 					"Shadow component", "Sound component", "Sphere Collider3D component", "Sprite component",
@@ -79,6 +80,7 @@ namespace Survive
 			drawComponent(registry, entity, m_ConvexMesh3DTemplate);
 			drawComponent(registry, entity, m_DistanceJoint2DTemplate);
 			drawComponent(registry, entity, m_EdgeCollider2DTemplate);
+			drawComponent(registry, entity, m_FixedJoint3DTemplate);
 			drawComponent(registry, entity, m_HingeJoint2DTemplate);
 			drawComponent(registry, entity, m_HingeJoint3DTemplate);
 			drawComponent(registry, entity, m_MaterialTemplate);
@@ -124,40 +126,42 @@ namespace Survive
 				case 9:
 					return addComponent(registry, entity, m_EdgeCollider2DTemplate);
 				case 10:
-					return addComponent(registry, entity, m_HingeJoint2DTemplate);
+					return addComponent(registry, entity, m_FixedJoint3DTemplate);
 				case 11:
-					return addComponent(registry, entity, m_HingeJoint3DTemplate);
+					return addComponent(registry, entity, m_HingeJoint2DTemplate);
 				case 12:
-					return addComponent(registry, entity, m_MaterialTemplate);
+					return addComponent(registry, entity, m_HingeJoint3DTemplate);
 				case 13:
-					return addComponent(registry, entity, m_PolygonCollider2DTemplate);
+					return addComponent(registry, entity, m_MaterialTemplate);
 				case 14:
-					return addComponent(registry, entity, m_ReflectionTemplate);
+					return addComponent(registry, entity, m_PolygonCollider2DTemplate);
 				case 15:
-					return addComponent(registry, entity, m_RefractionTemplate);
+					return addComponent(registry, entity, m_ReflectionTemplate);
 				case 16:
-					return addComponent(registry, entity, m_Render2DTemplate);
+					return addComponent(registry, entity, m_RefractionTemplate);
 				case 17:
-					return addComponent(registry, entity, m_Render3dTemplate);
+					return addComponent(registry, entity, m_Render2DTemplate);
 				case 18:
-					return addComponent(registry, entity, m_RigidBody2DTemplate);
+					return addComponent(registry, entity, m_Render3dTemplate);
 				case 19:
-					return addComponent(registry, entity, m_RigidBody3DTemplate);
+					return addComponent(registry, entity, m_RigidBody2DTemplate);
 				case 20:
-					return addComponent(registry, entity, m_ScriptTemplate);
+					return addComponent(registry, entity, m_RigidBody3DTemplate);
 				case 21:
-					return addComponent(registry, entity, m_ShadowTemplate);
+					return addComponent(registry, entity, m_ScriptTemplate);
 				case 22:
-					return addComponent(registry, entity, m_SoundTemplate);
+					return addComponent(registry, entity, m_ShadowTemplate);
 				case 23:
-					return addComponent(registry, entity, m_SphereCollider3DTemplate);
+					return addComponent(registry, entity, m_SoundTemplate);
 				case 24:
-					return addComponent(registry, entity, m_SpriteTemplate);
+					return addComponent(registry, entity, m_SphereCollider3DTemplate);
 				case 25:
-					return addComponent(registry, entity, m_SpriteSheetTemplate);
+					return addComponent(registry, entity, m_SpriteTemplate);
 				case 26:
-					return addComponent(registry, entity, m_TextTemplate);
+					return addComponent(registry, entity, m_SpriteSheetTemplate);
 				case 27:
+					return addComponent(registry, entity, m_TextTemplate);
+				case 28:
 					return addComponent(registry, entity, m_TransformTemplate);
 				default:
 					throw std::runtime_error("Selected item not implemented");
