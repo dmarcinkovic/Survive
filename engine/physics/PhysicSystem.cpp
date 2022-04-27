@@ -116,7 +116,10 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 	for (auto const &entity: view)
 	{
 		RigidBody3DComponent &rigidBody = view.get<RigidBody3DComponent>(entity);
+
 		initHingeJoint3D(registry, entity, world, rigidBody.body);
+		initFixedJoint3D(registry, entity, world, rigidBody.body);
+		initCharacterJoint3D(registry, entity, world, rigidBody.body);
 	}
 }
 
@@ -400,21 +403,13 @@ void Survive::PhysicSystem::initHingeJoint3D(entt::registry &registry, entt::ent
 	if (registry.any_of<HingeJoint3DComponent>(entity))
 	{
 		HingeJoint3DComponent &hingeJoint = registry.get<HingeJoint3DComponent>(entity);
-		hingeJoint.jointInfo.body1 = body;
+		rp3d::HingeJointInfo &info = hingeJoint.jointInfo;
+		info.body1 = body;
 
-		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
-		{
-			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
-		}
+		initJoint3D(registry, hingeJoint, info, info.body2);
 
-		if (hingeJoint.connectedBody != entt::null &&
-			registry.any_of<RigidBody3DComponent>(hingeJoint.connectedBody))
-		{
-			RigidBody3DComponent &body2 = registry.get<RigidBody3DComponent>(hingeJoint.connectedBody);
-			hingeJoint.jointInfo.body2 = body2.body;
-		}
-
-		if (!verifyHingeJoint3d(hingeJoint.jointInfo))
+		if (!verifyHingeJoint3d(info.body2, info.isUsingLocalSpaceAnchors, info.rotationAxisWorld,
+								info.rotationAxisBody2Local))
 		{
 			return;
 		}
@@ -423,18 +418,77 @@ void Survive::PhysicSystem::initHingeJoint3D(entt::registry &registry, entt::ent
 	}
 }
 
-bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::HingeJointInfo &info)
+void Survive::PhysicSystem::initFixedJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
+											 rp3d::RigidBody *body)
+{
+	if (registry.any_of<FixedJoint3DComponent>(entity))
+	{
+		FixedJoint3DComponent &fixedJoint3DComponent = registry.get<FixedJoint3DComponent>(entity);
+		rp3d::FixedJointInfo &info = fixedJoint3DComponent.jointInfo;
+		info.body1 = body;
+
+		initJoint3D(registry, fixedJoint3DComponent, info, info.body2);
+
+		if (info.body2 == nullptr)
+		{
+			Log::logMessage(LogType::ERROR, "Body 2 in fixed joint is not initialized");
+			return;
+		}
+
+		world->createJoint(fixedJoint3DComponent.jointInfo);
+	}
+}
+
+void Survive::PhysicSystem::initCharacterJoint3D(entt::registry &registry, entt::entity entity,
+												 rp3d::PhysicsWorld *world, rp3d::RigidBody *body)
+{
+	if (registry.any_of<CharacterJoint3DComponent>(entity))
+	{
+		CharacterJoint3DComponent &characterJoint3DComponent = registry.get<CharacterJoint3DComponent>(entity);
+		rp3d::BallAndSocketJointInfo &info = characterJoint3DComponent.jointInfo;
+		info.body1 = body;
+
+		initJoint3D(registry, characterJoint3DComponent, info, info.body2);
+
+		if (info.body2 == nullptr)
+		{
+			Log::logMessage(LogType::ERROR, "Body 2 in character joint is not initialized");
+			return;
+		}
+
+		world->createJoint(characterJoint3DComponent.jointInfo);
+	}
+}
+
+void Survive::PhysicSystem::initJoint3D(entt::registry &registry, JointComponent &component, rp3d::JointInfo &jointInfo,
+										rp3d::RigidBody *rigidBody2)
+{
+	if (component.connectedBody == entt::null && component.connectedBodyName != "none")
+	{
+		component.connectedBody = findEntityWithTag(component.connectedBodyName, registry);
+	}
+
+	if (component.connectedBody != entt::null && registry.any_of<RigidBody3DComponent>(component.connectedBody))
+	{
+		RigidBody3DComponent &body2 = registry.get<RigidBody3DComponent>(component.connectedBody);
+		rigidBody2 = body2.body;
+	}
+}
+
+bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::RigidBody *body2, bool isUsingLocalSpaceAnchors,
+											   const rp3d::Vector3 &rotationAxisWorld,
+											   const rp3d::Vector3 &rotationAxisBody2Local)
 {
 	static constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
-	if (info.body2 == nullptr)
+	if (body2 == nullptr)
 	{
 		Log::logMessage(LogType::ERROR, "Body 2 in hinge joint is not initialized");
 		return false;
 	}
 
-	const rp3d::Quaternion &orientationBody2 = info.body2->getTransform().getOrientation();
-	const rp3d::Vector3 &axis = info.isUsingLocalSpaceAnchors ? info.rotationAxisBody2Local : info.rotationAxisWorld;
+	const rp3d::Quaternion &orientationBody2 = body2->getTransform().getOrientation();
+	const rp3d::Vector3 &axis = isUsingLocalSpaceAnchors ? rotationAxisBody2Local : rotationAxisWorld;
 	rp3d::Vector3 a2 = orientationBody2 * axis;
 	a2.normalize();
 

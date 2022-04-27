@@ -12,6 +12,7 @@
 #include "RigidBody3DComponent.h"
 #include "Collider3DComponent.h"
 #include "ConvexMeshCollider3DComponent.h"
+#include "JointComponent.h"
 
 namespace Survive
 {
@@ -76,7 +77,18 @@ namespace Survive
 		static void initHingeJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
 									 rp3d::RigidBody *body);
 
-		static bool verifyHingeJoint3d(rp3d::HingeJointInfo &info);
+		static void initFixedJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
+									 rp3d::RigidBody *body);
+
+		static void initCharacterJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,
+										 rp3d::RigidBody *body);
+
+		static void initJoint3D(entt::registry &registry, JointComponent &component, rp3d::JointInfo &jointInfo,
+								rp3d::RigidBody *rigidBody2);
+
+		static bool verifyHingeJoint3d(rp3d::RigidBody *body2, bool isUsingLocalSpaceAnchors,
+									   const rp3d::Vector3 &rotationAxisWorld,
+									   const rp3d::Vector3 &rotationAxisBody2Local);
 	};
 }
 
