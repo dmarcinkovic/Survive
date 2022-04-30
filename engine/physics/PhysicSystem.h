@@ -84,7 +84,7 @@ namespace Survive
 										 rp3d::RigidBody *body);
 
 		static void initJoint3D(entt::registry &registry, JointComponent &component, rp3d::JointInfo &jointInfo,
-								rp3d::RigidBody *rigidBody2);
+								rp3d::RigidBody **rigidBody2);
 
 		static bool verifyHingeJoint3d(rp3d::RigidBody *body2, bool isUsingLocalSpaceAnchors,
 									   const rp3d::Vector3 &rotationAxisWorld,

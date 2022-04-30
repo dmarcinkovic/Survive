@@ -406,7 +406,7 @@ void Survive::PhysicSystem::initHingeJoint3D(entt::registry &registry, entt::ent
 		rp3d::HingeJointInfo &info = hingeJoint.jointInfo;
 		info.body1 = body;
 
-		initJoint3D(registry, hingeJoint, info, info.body2);
+		initJoint3D(registry, hingeJoint, info, &info.body2);
 
 		if (!verifyHingeJoint3d(info.body2, info.isUsingLocalSpaceAnchors, info.rotationAxisWorld,
 								info.rotationAxisBody2Local))
@@ -427,7 +427,7 @@ void Survive::PhysicSystem::initFixedJoint3D(entt::registry &registry, entt::ent
 		rp3d::FixedJointInfo &info = fixedJoint3DComponent.jointInfo;
 		info.body1 = body;
 
-		initJoint3D(registry, fixedJoint3DComponent, info, info.body2);
+		initJoint3D(registry, fixedJoint3DComponent, info, &info.body2);
 
 		if (info.body2 == nullptr)
 		{
@@ -448,7 +448,7 @@ void Survive::PhysicSystem::initCharacterJoint3D(entt::registry &registry, entt:
 		rp3d::BallAndSocketJointInfo &info = characterJoint3DComponent.jointInfo;
 		info.body1 = body;
 
-		initJoint3D(registry, characterJoint3DComponent, info, info.body2);
+		initJoint3D(registry, characterJoint3DComponent, info, &info.body2);
 
 		if (info.body2 == nullptr)
 		{
@@ -461,7 +461,7 @@ void Survive::PhysicSystem::initCharacterJoint3D(entt::registry &registry, entt:
 }
 
 void Survive::PhysicSystem::initJoint3D(entt::registry &registry, JointComponent &component, rp3d::JointInfo &jointInfo,
-										rp3d::RigidBody *rigidBody2)
+										rp3d::RigidBody **rigidBody2)
 {
 	if (component.connectedBody == entt::null && component.connectedBodyName != "none")
 	{
@@ -471,7 +471,7 @@ void Survive::PhysicSystem::initJoint3D(entt::registry &registry, JointComponent
 	if (component.connectedBody != entt::null && registry.any_of<RigidBody3DComponent>(component.connectedBody))
 	{
 		RigidBody3DComponent &body2 = registry.get<RigidBody3DComponent>(component.connectedBody);
-		rigidBody2 = body2.body;
+		*rigidBody2 = body2.body;
 	}
 }
 
