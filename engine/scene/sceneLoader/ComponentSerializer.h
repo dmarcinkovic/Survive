@@ -71,6 +71,12 @@ namespace Survive
 
 		static void saveOutlineComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
+		static void saveHingeJoint3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveCharacterJoint3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveFixedJoint3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
 	private:
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);
 
@@ -81,6 +87,10 @@ namespace Survive
 		static void printVec2(std::ofstream &writer, const char *label, const b2Vec2 &vec2);
 
 		static void saveCollider2DComponent(std::ofstream &writer, const Collider2DComponent &colliderComponent);
+
+		static void saveJoint3DComponent(std::ofstream &writer, const std::string &connectedBodyName,
+										 bool enableCollision, bool isUsingLocalSpace, const rp3d::Vector3 &anchor,
+										 const rp3d::Vector3 &localAnchor, const rp3d::Vector3 &anchorBody2);
 	};
 }
 

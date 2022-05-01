@@ -455,3 +455,73 @@ void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *
 	glm::vec3 vec{vec3.x, vec3.y, vec3.z};
 	printVec3(writer, label, vec);
 }
+
+void Survive::ComponentSerializer::saveHingeJoint3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+	if (registry.any_of<HingeJoint3DComponent>(entity))
+	{
+		HingeJoint3DComponent &hingeJoint = registry.get<HingeJoint3DComponent>(entity);
+		writer << "\tcomponent:HingeJoint3DComponent\n";
+
+		rp3d::HingeJointInfo &info = hingeJoint.jointInfo;
+		saveJoint3DComponent(writer, hingeJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+
+		printVec3(writer, "axis", info.rotationAxisWorld);
+		printVec3(writer, "localAxis", info.rotationAxisBody1Local);
+		printVec3(writer, "axisBody2", info.rotationAxisBody2Local);
+
+		writer << "\t\tuseMotor:" << info.isMotorEnabled << '\n';
+		writer << "\t\tmotorSpeed:" << info.motorSpeed << '\n';
+		writer << "\t\tmaxTorque:" << info.maxMotorTorque << '\n';
+
+		writer << "\t\tuseLimits:" << info.isLimitEnabled << '\n';
+		writer << "\t\tminAngle:" << info.minAngleLimit << '\n';
+		writer << "\t\tmaxAngle:" << info.maxAngleLimit << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveCharacterJoint3DComponent(entt::registry &registry, entt::entity entity,
+																 std::ofstream &writer)
+{
+	if (registry.any_of<CharacterJoint3DComponent>(entity))
+	{
+		CharacterJoint3DComponent &characterJoint = registry.get<CharacterJoint3DComponent>(entity);
+		writer << "\tcomponent:CharacterJoint3DComponent\n";
+
+		rp3d::BallAndSocketJointInfo &info = characterJoint.jointInfo;
+		saveJoint3DComponent(writer, characterJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+	}
+}
+
+void Survive::ComponentSerializer::saveFixedJoint3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+	if (registry.any_of<FixedJoint3DComponent>(entity))
+	{
+		FixedJoint3DComponent &fixedJoint = registry.get<FixedJoint3DComponent>(entity);
+		writer << "\tcomponent:FixedJoint3DComponent\n";
+
+		rp3d::FixedJointInfo &info = fixedJoint.jointInfo;
+		saveJoint3DComponent(writer, fixedJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+	}
+}
+
+void Survive::ComponentSerializer::saveJoint3DComponent(std::ofstream &writer, const std::string &connectedBodyName,
+														bool enableCollision, bool isUsingLocalSpace,
+														const rp3d::Vector3 &anchor, const rp3d::Vector3 &localAnchor,
+														const rp3d::Vector3 &anchorBody2)
+{
+	writer << "\t\tconnectedBody:" << connectedBodyName << '\n';
+	writer << "\t\tenableCollision:" << enableCollision << '\n';
+	writer << "\t\tisUsingLocalSpace:" << isUsingLocalSpace << '\n';
+	printVec3(writer, "anchor", anchor);
+	printVec3(writer, "localAnchor", localAnchor);
+	printVec3(writer, "anchorBody2", anchorBody2);
+}

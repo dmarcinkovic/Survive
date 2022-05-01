@@ -21,6 +21,10 @@ namespace Survive
 		explicit JointComponent(entt::entity connectedBody)
 				: connectedBody(connectedBody)
 		{}
+
+		explicit JointComponent(std::string connectedBodyName)
+				: connectedBodyName(std::move(connectedBodyName))
+		{}
 	};
 }
 

@@ -42,11 +42,11 @@ namespace Survive
 		{
 			if (info.isUsingLocalSpaceAnchors)
 			{
-				EditorUtil::drawColumnDragFloat3("Anchor", "##CharacterJAnchor", info.anchorPointWorldSpace);
-			} else
-			{
 				EditorUtil::drawColumnDragFloat3("Local Anchor", "##LocalCharacterAnchor",
 												 info.anchorPointBody1LocalSpace);
+			} else
+			{
+				EditorUtil::drawColumnDragFloat3("Anchor", "##CharacterJAnchor", info.anchorPointWorldSpace);
 			}
 
 			EditorUtil::drawColumnInputBool("Use Local Space Anchors", "##Character3DUseLocal",

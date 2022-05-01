@@ -9,6 +9,7 @@
 #include <optional>
 #include <box2d/box2d.h>
 #include <tuple>
+#include <reactphysics3d/reactphysics3d.h>
 
 #include "entt.hpp"
 #include "Font.h"
@@ -78,12 +79,20 @@ namespace Survive
 		static void
 		loadConvexMeshCollider3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
+		static void loadHingeJoint3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadCharacterJoint3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
+		static void loadFixedJoint3DComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 		static void loadOutlineComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
 		static glm::vec3 parseVec3(const std::string &vec3);
+
+		static rp3d::Vector3 parseVector3(const std::string &vec3);
 
 		static glm::vec4 parseVec4(const std::string &vec4);
 
@@ -99,6 +108,9 @@ namespace Survive
 		static bool loadConvexMeshIndices(std::ifstream &reader, std::vector<int> &indices);
 
 		static bool loadConvexMeshVertices(std::ifstream &reader, std::vector<float> &vertices);
+
+		static std::tuple<std::string, bool, bool, rp3d::Vector3, rp3d::Vector3, rp3d::Vector3>
+		loadJoint3DComponent(std::ifstream &reader);
 	};
 }
 

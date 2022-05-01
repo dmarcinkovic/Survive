@@ -157,6 +157,15 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "OutlineComponent")
 		{
 			ComponentLoader::loadOutlineComponent(registry, entity, reader);
+		} else if (componentType == "HingeJoint3DComponent")
+		{
+			ComponentLoader::loadHingeJoint3DComponent(registry, entity, reader);
+		} else if (componentType == "FixedJoint3DComponent")
+		{
+			ComponentLoader::loadFixedJoint3DComponent(registry, entity, reader);
+		} else if (componentType == "CharacterJoint3DComponent")
+		{
+			ComponentLoader::loadCharacterJoint3DComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -190,4 +199,7 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveSphereCollider3DComponent(registry, entity, writer);
 	ComponentSerializer::saveCapsuleCollider3DComponent(registry, entity, writer);
 	ComponentSerializer::saveConvexMeshCollider3DComponent(registry, entity, writer);
+	ComponentSerializer::saveHingeJoint3DComponent(registry, entity, writer);
+	ComponentSerializer::saveFixedJoint3DComponent(registry, entity, writer);
+	ComponentSerializer::saveCharacterJoint3DComponent(registry, entity, writer);
 }

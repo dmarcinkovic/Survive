@@ -615,7 +615,7 @@ bool Survive::ComponentLoader::loadConvexMeshIndices(std::ifstream &reader, std:
 	indices.reserve(numberOfIndices);
 	for (int i = 0; i < numberOfIndices; ++i)
 	{
-		std::string label = "index" + std::to_string(i+1);
+		std::string label = "index" + std::to_string(i + 1);
 		int index = std::stoi(parseLine(reader, label.c_str()));
 
 		indices.emplace_back(index);
@@ -642,4 +642,74 @@ bool Survive::ComponentLoader::loadConvexMeshVertices(std::ifstream &reader, std
 	}
 
 	return true;
+}
+
+void Survive::ComponentLoader::loadHingeJoint3DComponent(entt::registry &registry, entt::entity entity,
+														 std::ifstream &reader)
+{
+	auto [bodyName, enableCollision, localSpace, anchor, localAnchor, anchorBody2] = loadJoint3DComponent(reader);
+
+	rp3d::Vector3 axis = parseVector3(parseLine(reader, "axis"));
+	rp3d::Vector3 localAxis = parseVector3(parseLine(reader, "localAxis"));
+	rp3d::Vector3 axisBody2 = parseVector3(parseLine(reader, "axisBody2"));
+
+	bool useMotor = std::stoi(parseLine(reader, "useMotor"));
+	float motorSpeed = std::stof(parseLine(reader, "motorSpeed"));
+	float maxTorque = std::stof(parseLine(reader, "maxTorque"));
+
+	if (maxTorque < 0)
+	{
+		return;
+	}
+
+	bool useLimits = std::stoi(parseLine(reader, "useLimits"));
+	float minAngle = std::stof(parseLine(reader, "minAngle"));
+	float maxAngle = std::stof(parseLine(reader, "maxAngle"));
+
+	if (minAngle > 0 || maxAngle < 0)
+	{
+		return;
+	}
+
+	registry.emplace<HingeJoint3DComponent>(entity, bodyName, anchor, axis, localAnchor, localAxis,
+											anchorBody2, axisBody2, useMotor, motorSpeed,
+											maxTorque, useLimits, minAngle, maxAngle, enableCollision,
+											localSpace);
+}
+
+void Survive::ComponentLoader::loadCharacterJoint3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ifstream &reader)
+{
+	auto [bodyName, enableCollision, localSpace, anchor, localAnchor, anchorBody2] = loadJoint3DComponent(reader);
+
+	registry.emplace<CharacterJoint3DComponent>(entity, bodyName, anchor, localAnchor, anchorBody2,
+												enableCollision, localSpace);
+}
+
+void Survive::ComponentLoader::loadFixedJoint3DComponent(entt::registry &registry, entt::entity entity,
+														 std::ifstream &reader)
+{
+	auto [bodyName, enableCollision, localSpace, anchor, localAnchor, anchorBody2] = loadJoint3DComponent(reader);
+	registry.emplace<FixedJoint3DComponent>(entity, bodyName, anchor, localAnchor, anchorBody2,
+											enableCollision, localSpace);
+}
+
+rp3d::Vector3 Survive::ComponentLoader::parseVector3(const std::string &vec3)
+{
+	glm::vec3 result = parseVec3(vec3);
+	return {result.x, result.y, result.z};
+}
+
+std::tuple<std::string, bool, bool, rp3d::Vector3, rp3d::Vector3, rp3d::Vector3>
+Survive::ComponentLoader::loadJoint3DComponent(std::ifstream &reader)
+{
+	std::string connectedBodyName = parseLine(reader, "connectedBody");
+	bool enableCollision = std::stoi(parseLine(reader, "enableCollision"));
+	bool isUsingLocalSpace = std::stoi(parseLine(reader, "isUsingLocalSpace"));
+
+	rp3d::Vector3 anchor = parseVector3(parseLine(reader, "anchor"));
+	rp3d::Vector3 localAnchor = parseVector3(parseLine(reader, "localAnchor"));
+	rp3d::Vector3 anchorBody2 = parseVector3(parseLine(reader, "anchorBody2"));
+
+	return {connectedBodyName, enableCollision, isUsingLocalSpace, anchor, localAnchor, anchorBody2};
 }
