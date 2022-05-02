@@ -66,7 +66,7 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 
-	float distanceFromCamera = glm::length(transform.position - camera.position);
+	float distanceFromCamera = glm::length(transform.position - camera.getPosition());
 
 	constexpr float constant = 4e-3;
 	glm::vec3 factor = constant * distanceFromCamera / transform.scale;

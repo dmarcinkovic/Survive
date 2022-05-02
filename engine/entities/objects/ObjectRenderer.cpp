@@ -72,7 +72,7 @@ void Survive::ObjectRenderer::loadUniforms(const Camera &camera, GLuint shadowMa
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
 
-	m_Shader.loadCameraPosition(camera.position);
+	m_Shader.loadCameraPosition(camera.getPosition());
 }
 
 void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,

@@ -9,10 +9,11 @@
 #include "Render3DComponent.h"
 #include "TextComponent.h"
 #include "Gizmos.h"
+#include "Scene.h"
 
 bool Survive::Gizmos::validOperation = false;
 
-void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity)
+void Survive::Gizmos::draw(entt::registry &registry, Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity == entt::null)
 	{
@@ -23,13 +24,15 @@ void Survive::Gizmos::draw(entt::registry &registry, const Camera &camera, entt:
 	{
 		if (registry.any_of<Render3DComponent>(selectedEntity))
 		{
-			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), camera, registry, selectedEntity);
+			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), registry, selectedEntity);
 		} else if (registry.any_of<Render2DComponent>(selectedEntity) || registry.any_of<TextComponent>(selectedEntity))
 		{
-			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, camera, registry,
+			drawGizmos(true, camera.getOrthographicProjectionMatrix(), glm::mat4{1.0f}, registry,
 					   selectedEntity);
 		}
 	}
+
+	drawViewGizmos(camera);
 
 	m_Gizmos.draw(registry, camera, selectedEntity);
 }
@@ -99,7 +102,7 @@ bool Survive::Gizmos::isValidOperation()
 }
 
 void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
-								 const Camera &camera, entt::registry &registry, entt::entity entity) const
+								 entt::registry &registry, entt::entity entity) const
 {
 	ImGuizmo::SetOrthographic(isOrthographic);
 
@@ -114,4 +117,37 @@ void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectio
 						 m_Operation, ImGuizmo::LOCAL, matrix);
 
 	useGizmo(transformComponent, transform);
+}
+
+void Survive::Gizmos::drawViewGizmos(Camera &camera) const
+{
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
+
+	const float cameraDistance = 8.0f;
+
+	float textHeight = ImGui::GetTextLineHeight();
+	ImVec2 size{10.0f * textHeight, 10.0f * textHeight};
+	ImU32 backgroundColor = 0x10101010;
+
+	auto [sceneX, sceneY] = Scene::getScenePosition();
+	float sceneWidth = Scene::getSceneWidth();
+	ImVec2 position{sceneX + sceneWidth - size.x, sceneY};
+
+	glm::mat4 &viewMatrix = camera.getViewMatrix();
+	ImGuizmo::ViewManipulate(glm::value_ptr(viewMatrix), cameraDistance, position, size, backgroundColor);
+
+	decomposeViewMatrix(camera, viewMatrix);
+}
+
+void Survive::Gizmos::decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix)
+{
+	glm::mat4 inverseViewMatrix = glm::inverse(viewMatrix);
+	const glm::vec3 direction = glm::vec3{inverseViewMatrix[2]};
+
+	float pitch = glm::degrees(glm::asin(direction.y));
+	float yaw = 90.0f - glm::degrees(glm::atan(direction.z, direction.x));
+	glm::vec3 cameraPosition = glm::vec3{inverseViewMatrix[3]};
+
+	camera.setCameraProperties(pitch, yaw, cameraPosition);
 }

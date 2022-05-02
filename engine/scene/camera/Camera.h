@@ -16,16 +16,18 @@ namespace Survive
 		glm::mat4 m_ProjectionMatrix{};
 		glm::mat4 m_LightProjectionMatrix{};
 
+		glm::mat4 m_ViewMatrix{};
+
+		float m_Pitch{};
+		float m_Yaw{};
+		glm::vec3 m_Position{};
+
 	public:
-		float pitch{};
-		float yaw{};
 		float near = 0.1f;
-
 		float far = 1000.0f;
-		float fieldOfView = 50.0f;
 
+		float fieldOfView = 50.0f;
 		glm::vec3 rotation{};
-		glm::vec3 position{};
 
 		Camera();
 
@@ -41,7 +43,26 @@ namespace Survive
 
 		[[nodiscard]] glm::mat4 getViewMatrix() const;
 
+		glm::mat4 &getViewMatrix();
+
 		void recalculateProjectionMatrix(float width, float height);
+
+		[[nodiscard]] float getPitch() const;
+
+		[[nodiscard]] float getYaw() const;
+
+		[[nodiscard]] const glm::vec3 &getPosition() const;
+
+		void setPitch(float pitch);
+
+		void setYaw(float yaw);
+
+		void setPosition(const glm::vec3 &position);
+
+		void setCameraProperties(float pitch, float yaw, const glm::vec3 &position);
+
+	private:
+		void recalculateViewMatrix();
 	};
 }
 

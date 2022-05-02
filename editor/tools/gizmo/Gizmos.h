@@ -28,7 +28,7 @@ namespace Survive
 		PhysicsGizmo m_Gizmos;
 
 	public:
-		void draw(entt::registry &registry, const Camera &camera, entt::entity selectedEntity);
+		void draw(entt::registry &registry, Camera &camera, entt::entity selectedEntity);
 
 		static void newFrame();
 
@@ -44,7 +44,11 @@ namespace Survive
 		static void useGizmo(Transform3DComponent &transformComponent, glm::mat4 &transform);
 
 		void drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
-						const Camera &camera, entt::registry &registry, entt::entity entity) const;
+						entt::registry &registry, entt::entity entity) const;
+
+		void drawViewGizmos(Camera &camera) const;
+
+		static void decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix);
 	};
 }
 

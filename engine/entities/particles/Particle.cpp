@@ -24,7 +24,7 @@ bool Survive::Particle::update(const Camera &camera)
 	change *= Display::getFrameTime();
 
 	m_Position += change;
-	m_Distance = glm::length(camera.position - m_Position);
+	m_Distance = glm::length(camera.getPosition() - m_Position);
 
 	updateTextureCoordInfo();
 	updateTimeElapsed();

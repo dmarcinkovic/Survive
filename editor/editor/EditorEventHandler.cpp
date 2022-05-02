@@ -106,7 +106,7 @@ void Survive::EditorEventHandler::addTransformComponentToModel(entt::registry &r
 	constexpr float scale = 15.0f;
 	glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
 
-	glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
+	glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.getPosition());
 	glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
 
 	registry.emplace<Transform3DComponent>(entity, position);
