@@ -19,12 +19,13 @@ namespace Survive
 	class Gizmos
 	{
 	private:
-		static bool validOperation;
+		static bool m_ViewGizmosEnabled;
+		static bool m_ValidOperation;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
-
 		ImGuizmo::OPERATION m_Operation{};
 
+		ImVec2 m_LastMouseClickPos{-1, -1};
 		PhysicsGizmo m_Gizmos;
 
 	public:
@@ -38,6 +39,10 @@ namespace Survive
 
 		static bool isValidOperation();
 
+		static bool isViewGizmoEnabled();
+
+		static bool isInsideViewGizmo();
+
 	private:
 		static glm::mat4 getTransform(const Transform3DComponent &transform);
 
@@ -49,6 +54,8 @@ namespace Survive
 		void drawViewGizmos(Camera &camera) const;
 
 		static void decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix);
+
+		static std::pair<ImVec2, ImVec2> getViewGizmoRect();
 	};
 }
 

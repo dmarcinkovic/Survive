@@ -11,16 +11,17 @@
 #include "Gizmos.h"
 #include "Scene.h"
 
-bool Survive::Gizmos::validOperation = false;
+bool Survive::Gizmos::m_ValidOperation = false;
+bool Survive::Gizmos::m_ViewGizmosEnabled = false;
 
 void Survive::Gizmos::draw(entt::registry &registry, Camera &camera, entt::entity selectedEntity)
 {
 	if (selectedEntity == entt::null)
 	{
-		validOperation = false;
+		m_ValidOperation = false;
 	}
 
-	if (validOperation && registry.any_of<Transform3DComponent>(selectedEntity))
+	if (m_ValidOperation && registry.any_of<Transform3DComponent>(selectedEntity))
 	{
 		if (registry.any_of<Render3DComponent>(selectedEntity))
 		{
@@ -49,22 +50,28 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 		if (eventHandler.isKeyPressed(Key::W))
 		{
 			m_Operation = ImGuizmo::OPERATION::TRANSLATE;
-			validOperation = true;
+			m_ValidOperation = true;
 		} else if (eventHandler.isKeyPressed(Key::E))
 		{
 			m_Operation = ImGuizmo::OPERATION::ROTATE;
-			validOperation = true;
+			m_ValidOperation = true;
 		} else if (eventHandler.isKeyPressed(Key::R))
 		{
 			m_Operation = ImGuizmo::OPERATION::SCALE;
-			validOperation = true;
+			m_ValidOperation = true;
 		} else if (eventHandler.isKeyPressed(Key::ESCAPE))
 		{
-			validOperation = false;
+			m_ValidOperation = false;
+			m_ViewGizmosEnabled = false;
 		}
-	}
 
-	if (!validOperation)
+		if (eventHandler.isKeyPressed(Key::Q))
+		{
+			m_ViewGizmosEnabled = true;
+		}
+ 	}
+
+	if (!m_ValidOperation && !m_ViewGizmosEnabled)
 	{
 		m_Gizmos.handleKeyEvents(eventHandler);
 	}
@@ -98,7 +105,7 @@ void Survive::Gizmos::useGizmo(Survive::Transform3DComponent &transformComponent
 
 bool Survive::Gizmos::isValidOperation()
 {
-	return validOperation;
+	return m_ValidOperation;
 }
 
 void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectionMatrix, const glm::mat4 &viewMatrix,
@@ -121,23 +128,23 @@ void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectio
 
 void Survive::Gizmos::drawViewGizmos(Camera &camera) const
 {
+	if (!m_ViewGizmosEnabled)
+	{
+		return;
+	}
+
+	constexpr ImU32 backgroundColor = 0x10101010;
+	constexpr float cameraDistance = 8.0f;
+
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
 
-	const float cameraDistance = 8.0f;
+	auto[viewGizmosPosition, viewGizmosSize] = getViewGizmoRect();
 
-	float textHeight = ImGui::GetTextLineHeight();
-	ImVec2 size{10.0f * textHeight, 10.0f * textHeight};
-	ImU32 backgroundColor = 0x10101010;
+	float *viewMatrix = glm::value_ptr(camera.getViewMatrix());
+	ImGuizmo::ViewManipulate(viewMatrix, cameraDistance, viewGizmosPosition, viewGizmosSize, backgroundColor);
 
-	auto [sceneX, sceneY] = Scene::getScenePosition();
-	float sceneWidth = Scene::getSceneWidth();
-	ImVec2 position{sceneX + sceneWidth - size.x, sceneY};
-
-	glm::mat4 &viewMatrix = camera.getViewMatrix();
-	ImGuizmo::ViewManipulate(glm::value_ptr(viewMatrix), cameraDistance, position, size, backgroundColor);
-
-	decomposeViewMatrix(camera, viewMatrix);
+	decomposeViewMatrix(camera, camera.getViewMatrix());
 }
 
 void Survive::Gizmos::decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix)
@@ -150,4 +157,29 @@ void Survive::Gizmos::decomposeViewMatrix(Camera &camera, const glm::mat4 &viewM
 	glm::vec3 cameraPosition = glm::vec3{inverseViewMatrix[3]};
 
 	camera.setCameraProperties(pitch, yaw, cameraPosition);
+}
+
+bool Survive::Gizmos::isViewGizmoEnabled()
+{
+	return m_ViewGizmosEnabled;
+}
+
+bool Survive::Gizmos::isInsideViewGizmo()
+{
+	ImVec2 position = ImGui::GetMousePos();
+	auto[rectUpperLeft, rectSize] = getViewGizmoRect();
+
+	return position.x >= rectUpperLeft.x && position.y >= rectUpperLeft.y &&
+		   position.x <= rectUpperLeft.x + rectSize.x && position.y <= rectUpperLeft.y + rectSize.y;
+}
+
+std::pair<ImVec2, ImVec2> Survive::Gizmos::getViewGizmoRect()
+{
+	float textHeight = ImGui::GetTextLineHeight();
+	ImVec2 viewGizmosSize{10.0f * textHeight, 10.0f * textHeight};
+
+	auto [sceneX, sceneY] = Scene::getScenePosition();
+	ImVec2 viewGizmosPosition{sceneX + Scene::getSceneWidth() - viewGizmosSize.x, sceneY};
+
+	return {viewGizmosPosition, viewGizmosSize};
 }
