@@ -179,7 +179,8 @@ std::pair<ImVec2, ImVec2> Survive::Gizmos::getViewGizmoRect()
 	ImVec2 viewGizmosSize{size, size};
 
 	auto [sceneX, sceneY] = Scene::getScenePosition();
-	ImVec2 viewGizmosPosition{sceneX + Scene::getSceneWidth() - viewGizmosSize.x, sceneY};
+	float padding = Scene::getSceneRegionMin().first;
+	ImVec2 viewGizmosPosition{sceneX - padding + Scene::getSceneWidth() - viewGizmosSize.x, sceneY};
 
 	return {viewGizmosPosition, viewGizmosSize};
 }
