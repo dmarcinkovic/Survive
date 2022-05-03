@@ -175,8 +175,8 @@ bool Survive::Gizmos::isInsideViewGizmo()
 
 std::pair<ImVec2, ImVec2> Survive::Gizmos::getViewGizmoRect()
 {
-	float textHeight = ImGui::GetTextLineHeight();
-	ImVec2 viewGizmosSize{10.0f * textHeight, 10.0f * textHeight};
+	float size = 0.2f * std::min(Scene::getSceneWidth(), Scene::getSceneHeight());
+	ImVec2 viewGizmosSize{size, size};
 
 	auto [sceneX, sceneY] = Scene::getScenePosition();
 	ImVec2 viewGizmosPosition{sceneX + Scene::getSceneWidth() - viewGizmosSize.x, sceneY};
