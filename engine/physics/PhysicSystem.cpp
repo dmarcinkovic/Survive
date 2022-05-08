@@ -109,6 +109,7 @@ void Survive::PhysicSystem::init3DPhysics(entt::registry &registry, rp3d::Physic
 		rp3d::Quaternion orientation = rp3d::Quaternion::fromEulerAngles(rotation.x, rotation.y, rotation.z);
 
 		rigidBody.body = world->createRigidBody({position, orientation});
+		rigidBody.body->setUserData(reinterpret_cast<void *>(entity));
 		initColliders3D(registry, entity, physicsCommon, rigidBody.body);
 		initializeRigidBody3D(rigidBody);
 	}

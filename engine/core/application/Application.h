@@ -40,14 +40,13 @@ namespace Survive
 		std::unique_ptr<b2World> m_World2D;
 		entt::registry m_Registry;
 
-		bool m_PlayScene{};
-
 		RegistryUtil m_RegistryUtil;
 
 		rp3d::PhysicsCommon m_PhysicsCommon;
 		rp3d::PhysicsWorld *m_World3D;
 
-		std::unique_ptr<b2ContactListener> m_ContactListener;
+		std::unique_ptr<b2ContactListener> m_ContactPhysics2DListener;
+		std::unique_ptr<rp3d::EventListener> m_ContactPhysics3DListener;
 
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);

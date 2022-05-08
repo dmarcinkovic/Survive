@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "System.h"
 #include "ContactPhysics2DListener.h"
+#include "ContactPhysics3DListener.h"
 #include "PhysicSystem.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
@@ -42,13 +43,15 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	hinge.jointInfo.isMotorEnabled = true;
 	m_Registry.emplace<HingeJoint3DComponent>(box1, hinge);
 
-	m_ContactListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
+	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
+	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
 	m_Editor.addPlayButtonListener([this]() {
 		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent>(m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World2D.get(), m_World3D, m_PhysicsCommon);
 
-		m_World2D->SetContactListener(m_ContactListener.get());
+		m_World2D->SetContactListener(m_ContactPhysics2DListener.get());
+		m_World3D->setEventListener(m_ContactPhysics3DListener.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
