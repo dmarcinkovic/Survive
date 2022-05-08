@@ -2,8 +2,8 @@
 // Created by david on 27. 02. 2022..
 //
 
-#ifndef SURVIVE_CONTACTLISTENER_H
-#define SURVIVE_CONTACTLISTENER_H
+#ifndef SURVIVE_CONTACTPHYSICS2DLISTENER_H
+#define SURVIVE_CONTACTPHYSICS2DLISTENER_H
 
 #include <box2d/box2d.h>
 #include <functional>
@@ -12,13 +12,13 @@
 
 namespace Survive
 {
-	class ContactListener : public b2ContactListener
+	class ContactPhysics2DListener : public b2ContactListener
 	{
 	private:
 		entt::registry &m_Registry;
 
 	public:
-		explicit ContactListener(entt::registry &registry);
+		explicit ContactPhysics2DListener(entt::registry &registry);
 
 		void BeginContact(b2Contact *contact) override;
 
@@ -29,4 +29,4 @@ namespace Survive
 	};
 }
 
-#endif //SURVIVE_CONTACTLISTENER_H
+#endif //SURVIVE_CONTACTPHYSICS2DLISTENER_H
