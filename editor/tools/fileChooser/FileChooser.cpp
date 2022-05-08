@@ -262,7 +262,7 @@ void Survive::FileChooser::drawDialogHeader(float windowWidth, float windowHeigh
 {
 	setupDarkStyleColors();
 
-	auto[width, height] = Display::getWindowSize<float>();
+	auto [width, height] = Display::getWindowSize<float>();
 
 	ImGui::SetNextWindowSize(ImVec2{windowWidth, windowHeight}, ImGuiCond_Once);
 	ImGui::SetNextWindowPos(ImVec2{width / 4.0f, height / 4.0f}, ImGuiCond_Once);

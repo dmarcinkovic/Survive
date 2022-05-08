@@ -54,15 +54,15 @@ namespace Survive
 
 		static std::vector<const char *> getListOfComponents()
 		{
-			std::vector<const char *> components {
+			std::vector<const char *> components{
 					"Animation component", "Bloom component", "Box Collider2D component", "Box Collider3D component",
 					"Capsule Collider3D component", "Character Joint3D component", "Circle Collider2D component",
 					"ConvexMesh Collider3D component", "Distance Joint2D component", "Edge Collider2D component",
-					"Fixed Joint3D component", "Hinge Joint2D component", "Hinge Joint3D component", "Material component",
-					"PolygonCollider2D component", "Reflection component", "Refraction component", "Render2D Component",
-					"Render3D component", "RigidBody2D component", "RigidBody3D component", "Script component",
-					"Shadow component", "Sound component", "Sphere Collider3D component", "Sprite component",
-					"Sprite sheet component", "Text Component", "Transform3D component"
+					"Fixed Joint3D component", "Hinge Joint2D component", "Hinge Joint3D component",
+					"Material component", "PolygonCollider2D component", "Reflection component", "Refraction component",
+					"Render2D Component", "Render3D component", "RigidBody2D component", "RigidBody3D component",
+					"Script component", "Shadow component", "Sound component", "Sphere Collider3D component",
+					"Sprite component", "Sprite sheet component", "Text Component", "Transform3D component"
 			};
 
 			return components;
@@ -171,7 +171,7 @@ namespace Survive
 	private:
 		template<typename Component>
 		static bool addComponent(entt::registry &registry, entt::entity entity,
-						  ComponentTemplate<Component> &componentTemplate)
+								 ComponentTemplate<Component> &componentTemplate)
 		{
 			static Component component;
 
@@ -213,7 +213,7 @@ namespace Survive
 
 		template<typename Component>
 		static void drawComponent(entt::registry &registry, entt::entity entity,
-						   ComponentTemplate<Component> &componentTemplate)
+								  ComponentTemplate<Component> &componentTemplate)
 		{
 			if (registry.any_of<Component>(entity))
 			{

@@ -38,7 +38,7 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 							  m_Manager.getSelectedEntity(), m_StatusBar.isScenePlaying());
 
 	drawMenu(registry, renderer);
-	
+
 	m_StatusBar.draw();
 
 	m_Log.drawLogWindow();

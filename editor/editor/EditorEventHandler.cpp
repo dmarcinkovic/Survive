@@ -67,7 +67,7 @@ void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::strin
 void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &loader,
 											const std::filesystem::path &file, const Camera &camera)
 {
-	auto[x, y] = Scene::getScenePosition();
+	auto [x, y] = Scene::getScenePosition();
 	float width = Scene::getSceneWidth();
 	float height = Scene::getSceneHeight();
 
