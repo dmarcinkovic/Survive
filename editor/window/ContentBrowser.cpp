@@ -151,7 +151,7 @@ void Survive::ContentBrowser::drawDirectoryContent()
 			ImGui::EndGroup();
 
 			alignIcons(availableRegion);
-		} catch(const std::filesystem::filesystem_error &ignorable)
+		} catch (const std::filesystem::filesystem_error &ignorable)
 		{
 		}
 	}

@@ -219,3 +219,60 @@ void Survive::EditorUtil::drawColumnColorEdit3(const char *text, const char *lab
 	ImGui::ColorEdit3(label, glm::value_ptr(color));
 	ImGui::NextColumn();
 }
+
+bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed,
+											   float min, float max)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+
+	glm::vec3 vec(value.x, value.y, value.z);
+	bool result;
+
+	ImGui::SetNextItemWidth(-1);
+
+	if ((result = ImGui::DragFloat3(label, glm::value_ptr(vec), speed, min, max)))
+	{
+		value.x = vec.x;
+		value.y = vec.y;
+		value.z = vec.z;
+	}
+
+	ImGui::NextColumn();
+
+	return result;
+}
+
+int Survive::EditorUtil::drawDeleteButton(int index, const Texture &deleteButton, const char *tooltipText)
+{
+	static const ImVec2 uv0(0, 1);
+	static const ImVec2 uv1(1, 0);
+
+	int itemToDelete = -1;
+	auto icon = reinterpret_cast<ImTextureID>(deleteButton.textureId());
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_WindowBg));
+
+	float buttonSize = 1.4f * ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(icon, ImVec2(buttonSize, buttonSize), uv0, uv1))
+	{
+		itemToDelete = index;
+	}
+
+	drawTooltip(tooltipText);
+
+	ImGui::PopStyleColor();
+	ImGui::NextColumn();
+
+	return itemToDelete;
+}
+
+void Survive::EditorUtil::drawTooltip(const char *text)
+{
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::TextUnformatted(text);
+		ImGui::EndTooltip();
+	}
+}

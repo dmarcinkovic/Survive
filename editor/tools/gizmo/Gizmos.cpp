@@ -69,7 +69,7 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 		{
 			m_ViewGizmosEnabled = true;
 		}
- 	}
+	}
 
 	if (!m_ValidOperation && !m_ViewGizmosEnabled)
 	{
@@ -139,7 +139,7 @@ void Survive::Gizmos::drawViewGizmos(Camera &camera) const
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(m_X, m_Y, m_Width, m_Height);
 
-	auto[viewGizmosPosition, viewGizmosSize] = getViewGizmoRect();
+	auto [viewGizmosPosition, viewGizmosSize] = getViewGizmoRect();
 
 	float *viewMatrix = glm::value_ptr(camera.getViewMatrix());
 	ImGuizmo::ViewManipulate(viewMatrix, cameraDistance, viewGizmosPosition, viewGizmosSize, backgroundColor);
@@ -167,7 +167,7 @@ bool Survive::Gizmos::isViewGizmoEnabled()
 bool Survive::Gizmos::isInsideViewGizmo()
 {
 	ImVec2 position = ImGui::GetMousePos();
-	auto[rectUpperLeft, rectSize] = getViewGizmoRect();
+	auto [rectUpperLeft, rectSize] = getViewGizmoRect();
 
 	return position.x >= rectUpperLeft.x && position.y >= rectUpperLeft.y &&
 		   position.x <= rectUpperLeft.x + rectSize.x && position.y <= rectUpperLeft.y + rectSize.y;

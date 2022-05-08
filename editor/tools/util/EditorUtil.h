@@ -48,6 +48,9 @@ namespace Survive
 
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
+		static bool drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed = 1.0f,
+										 float min = 0.0f, float max = 0.0f);
+
 		static void drawColumnColorEdit3(const char *text, const char *label, glm::vec3 &color);
 
 		static bool disableButton(bool condition);
@@ -56,11 +59,15 @@ namespace Survive
 
 		static void showLoadedFile(const char *format, const std::string &name, const char *label, bool &load);
 
+		static int drawDeleteButton(int index, const Texture &deleteButton, const char *tooltipText);
+
 	private:
 		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
 								 float lowerBound = std::numeric_limits<float>::min());
 
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
+
+		static void drawTooltip(const char *text);
 	};
 }
 

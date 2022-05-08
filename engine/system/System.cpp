@@ -9,18 +9,19 @@
 #include "ScriptingSystem.h"
 #include "System.h"
 
-void Survive::System::update(entt::registry &registry, b2World *world)
+void Survive::System::update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
 {
-	PhysicSystem::update(registry, world);
+	PhysicSystem::update(registry, world2D, world3D);
 	AudioSystem::update(registry);
 	AnimationSystem::update(registry);
 	SpriteUpdate::update(registry);
 	ScriptingSystem::update(registry);
 }
 
-void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world)
+void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world2D,
+						   rp3d::PhysicsWorld *world3D, rp3d::PhysicsCommon &physicsCommon)
 {
-	PhysicSystem::init(registry, world);
+	PhysicSystem::init(registry, world2D, world3D, physicsCommon);
 	ScriptingSystem::init(registry, eventHandler);
 }
 
