@@ -153,6 +153,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(jointIds);
 	storeDataInAttributeList(5, tangents, 3);
+
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};

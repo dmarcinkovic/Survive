@@ -6,7 +6,6 @@
 
 #include "FileUtil.h"
 
-
 std::vector<Survive::File> Survive::FileUtil::listCurrentDirectory()
 {
 	auto workingDirectory = std::filesystem::current_path();

@@ -9,7 +9,7 @@
 #include "ShadowComponent.h"
 
 Survive::AnimationRenderer::AnimationRenderer(const Light &light)
-	: ObjectRenderer(light)
+		: ObjectRenderer(light)
 {
 }
 
@@ -54,8 +54,8 @@ void Survive::AnimationRenderer::renderScene(entt::registry &registry, const std
 		addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
-
 		addTransparency(isTransparent, isTransparent);
+
 		Texture::unbindTexture();
 	}
 }
@@ -92,7 +92,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
 
-	m_Shader.loadCameraPosition(camera.position);
+	m_Shader.loadCameraPosition(camera.getPosition());
 }
 
 void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,

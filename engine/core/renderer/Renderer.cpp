@@ -88,7 +88,7 @@ void Survive::Renderer::renderWaterReflection(entt::registry &registry, Camera &
 {
 	m_WaterRenderer.bindReflectionFrameBuffer();
 
-	float distance = 2.0f * (camera.position.y - Constants::WATER_HEIGHT);
+	float distance = 2.0f * (camera.getPosition().y - Constants::WATER_HEIGHT);
 
 	camera.moveCameraInYDirection(-distance);
 	camera.invertPitch();

@@ -4,11 +4,13 @@
 
 #include "Application.h"
 #include "System.h"
-#include "ContactListener.h"
+#include "ContactPhysics2DListener.h"
+#include "ContactPhysics3DListener.h"
+#include "PhysicSystem.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
-		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World(std::make_unique<b2World>(m_Gravity))
+		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World2D(std::make_unique<b2World>(m_Gravity))
 {
 	auto cube = m_Registry.create();
 	m_Registry.emplace<TagComponent>(cube, "cube");
@@ -18,19 +20,29 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
 	m_Registry.emplace<OutlineComponent>(cube, false);
 
-	m_ContactListener = std::make_unique<ContactListener>(m_Registry);
+	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
+	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
-	m_Editor.addPlayButtonListener([&]() {
-		m_RegistryUtil.store<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
-		System::init(m_Registry, m_EventHandler, m_World.get());
-		m_World->SetContactListener(m_ContactListener.get());
+	m_Editor.addPlayButtonListener([this]() {
+		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent>(m_Registry);
+		System::init(m_Registry, m_EventHandler, m_World2D.get(), m_World3D, m_PhysicsCommon);
+
+		m_World2D->SetContactListener(m_ContactPhysics2DListener.get());
+		m_World3D->setEventListener(m_ContactPhysics3DListener.get());
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
-		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent>(m_Registry);
-		m_World = std::make_unique<b2World>(m_Gravity);
+		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent>(m_Registry);
+
+		m_World2D = std::make_unique<b2World>(m_Gravity);
+
+		m_PhysicsCommon.destroyPhysicsWorld(m_World3D);
+		m_World3D = m_PhysicsCommon.createPhysicsWorld();
+
 		System::destroy(m_Registry);
 	});
+
+	m_World3D = m_PhysicsCommon.createPhysicsWorld();
 }
 
 void Survive::Application::run()
@@ -48,7 +60,7 @@ void Survive::Application::run()
 
 		if (m_Editor.isScenePlaying())
 		{
-			System::update(m_Registry, m_World.get());
+			System::update(m_Registry, m_World2D.get(), m_World3D);
 		}
 
 		m_Display.update();

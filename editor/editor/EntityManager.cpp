@@ -252,9 +252,9 @@ void Survive::EntityManager::initializeDragDropSource(entt::entity selectedEntit
 		auto id = static_cast<int>(selectedEntity);
 		const char *data = tag.tag.c_str();
 
-		std::tuple<int, int, const char*> payload = std::make_tuple(m_Selected, id, data);
+		std::tuple<int, int, const char *> payload = std::make_tuple(m_Selected, id, data);
 
-		ImGui::SetDragDropPayload("Joint2D", &payload, sizeof(payload));
+		ImGui::SetDragDropPayload("Joint", &payload, sizeof(payload));
 		ImGui::EndDragDropSource();
 	}
 }

@@ -178,6 +178,7 @@ try
 	Log::logMessage(LogType::ERROR, "Cannot enter directory: " + currentDirectory.string());
 }
 
+
 void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
 {
 	m_Listeners.emplace_back(listener);

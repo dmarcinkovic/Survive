@@ -83,6 +83,7 @@ void main()
     vec3 ambient = lightColor * ambientFactor;
 
     vec3 lightDirection = normalize(lightPos - worldPosition);
+
     float diffuseFactor = max(dot(lightDirection, normal), 0.0);
     vec3 diffuse = lightColor * diffuseFactor;
 

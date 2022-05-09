@@ -301,8 +301,8 @@ void Survive::ComponentSerializer::saveRigidBody2DComponent(entt::registry &regi
 	}
 }
 
-void
-Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
+void Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::entity entity,
+													 std::ofstream &writer)
 {
 	if (registry.any_of<TextComponent>(entity))
 	{
@@ -318,6 +318,111 @@ Survive::ComponentSerializer::saveTextComponent(entt::registry &registry, entt::
 		writer << "\t\taddBorder:" << text.m_AddBorder << '\n';
 		writer << "\t\tborderWidth:" << text.m_BorderWidth << '\n';
 		printVec3(writer, "borderColor", text.m_BorderColor);
+	}
+}
+
+void Survive::ComponentSerializer::saveRigidBody3DComponent(entt::registry &registry, entt::entity entity,
+															std::ofstream &writer)
+{
+	if (registry.any_of<RigidBody3DComponent>(entity))
+	{
+		const RigidBody3DComponent &rigidBody = registry.get<RigidBody3DComponent>(entity);
+		writer << "\tcomponent:RigidBody3DComponent\n";
+
+		writer << "\t\tbodyType:" << static_cast<int>(rigidBody.bodyType) << '\n';
+		writer << "\t\tmass:" << rigidBody.mass << '\n';
+		writer << "\t\tuseGravity:" << rigidBody.useGravity << '\n';
+		writer << "\t\tlinearDamping:" << rigidBody.linearDamping << '\n';
+		printVec3(writer, "linearVelocity", rigidBody.linearVelocity);
+		writer << "\t\tangularDrag:" << rigidBody.angularDrag << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveBoxCollider3DComponent(entt::registry &registry, entt::entity entity,
+															  std::ofstream &writer)
+{
+	if (registry.any_of<BoxCollider3DComponent>(entity))
+	{
+		const BoxCollider3DComponent &boxCollider = registry.get<BoxCollider3DComponent>(entity);
+		writer << "\tcomponent:BoxCollider3DComponent\n";
+
+		printVec3(writer, "position", boxCollider.position);
+		printVec3(writer, "center", boxCollider.center);
+		writer << "\t\tbounciness:" << boxCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << boxCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveCapsuleCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																  std::ofstream &writer)
+{
+	if (registry.any_of<CapsuleCollider3DComponent>(entity))
+	{
+		const CapsuleCollider3DComponent &capsuleCollider = registry.get<CapsuleCollider3DComponent>(entity);
+		writer << "\tcomponent:CapsuleCollider3DComponent\n";
+
+		printVec3(writer, "center", capsuleCollider.center);
+		writer << "\t\tradius:" << capsuleCollider.radius << '\n';
+		writer << "\t\theight:" << capsuleCollider.height << '\n';
+		writer << "\t\tbounciness:" << capsuleCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << capsuleCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveSphereCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																 std::ofstream &writer)
+{
+	if (registry.any_of<SphereCollider3DComponent>(entity))
+	{
+		const SphereCollider3DComponent &sphereCollider = registry.get<SphereCollider3DComponent>(entity);
+		writer << "\tcomponent:SphereCollider3DComponent\n";
+
+		writer << "\t\tradius:" << sphereCollider.radius << '\n';
+		printVec3(writer, "offset", sphereCollider.offset);
+		writer << "\t\tbounciness:" << sphereCollider.bounciness << '\n';
+		writer << "\t\tfriction:" << sphereCollider.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveConvexMeshCollider3DComponent(entt::registry &registry, entt::entity &entity,
+																	 std::ofstream &writer)
+{
+	if (registry.any_of<ConvexMeshCollider3DComponent>(entity))
+	{
+		const ConvexMeshCollider3DComponent &convexMesh = registry.get<ConvexMeshCollider3DComponent>(entity);
+		writer << "\tcomponent:ConvexMeshCollider3DComponent\n";
+		writer << "\t\tnumberOfFaces:" << convexMesh.numberOfFaces << '\n';
+
+		const std::vector<float> &vertices = convexMesh.vertices;
+		writer << "\t\tnumberOfVertices:" << vertices.size() << '\n';
+
+		for (int i = 0; i < vertices.size(); ++i)
+		{
+			std::string label = "\t\tvertex" + std::to_string(i + 1);
+			writer << label << ':' << vertices[i] << '\n';
+		}
+
+		const std::vector<int> &indices = convexMesh.indices;
+		writer << "\t\tnumberOfIndices:" << indices.size() << '\n';
+
+		for (int i = 0; i < indices.size(); ++i)
+		{
+			std::string label = "\t\tindex" + std::to_string(i + 1);
+			writer << label << ':' << indices[i] << '\n';
+		}
+
+		writer << "\t\tbounciness:" << convexMesh.bounciness << '\n';
+		writer << "\t\tfriction:" << convexMesh.friction << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveOutlineComponent(entt::registry &registry, entt::entity entity,
+														std::ofstream &writer)
+{
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		writer << "\tcomponent:OutlineComponent\n";
+		writer << "\t\tdrawOutline:0\n";
 	}
 }
 
@@ -343,4 +448,80 @@ void Survive::ComponentSerializer::saveCollider2DComponent(std::ofstream &writer
 	writer << "\t\tmass:" << fixtureDef.density << '\n';
 	writer << "\t\tfriction:" << fixtureDef.friction << '\n';
 	writer << "\t\telasticity:" << fixtureDef.restitution << '\n';
+}
+
+void Survive::ComponentSerializer::printVec3(std::ofstream &writer, const char *label, const rp3d::Vector3 &vec3)
+{
+	glm::vec3 vec{vec3.x, vec3.y, vec3.z};
+	printVec3(writer, label, vec);
+}
+
+void Survive::ComponentSerializer::saveHingeJoint3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+	if (registry.any_of<HingeJoint3DComponent>(entity))
+	{
+		HingeJoint3DComponent &hingeJoint = registry.get<HingeJoint3DComponent>(entity);
+		writer << "\tcomponent:HingeJoint3DComponent\n";
+
+		rp3d::HingeJointInfo &info = hingeJoint.jointInfo;
+		saveJoint3DComponent(writer, hingeJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+
+		printVec3(writer, "axis", info.rotationAxisWorld);
+		printVec3(writer, "localAxis", info.rotationAxisBody1Local);
+		printVec3(writer, "axisBody2", info.rotationAxisBody2Local);
+
+		writer << "\t\tuseMotor:" << info.isMotorEnabled << '\n';
+		writer << "\t\tmotorSpeed:" << info.motorSpeed << '\n';
+		writer << "\t\tmaxTorque:" << info.maxMotorTorque << '\n';
+
+		writer << "\t\tuseLimits:" << info.isLimitEnabled << '\n';
+		writer << "\t\tminAngle:" << info.minAngleLimit << '\n';
+		writer << "\t\tmaxAngle:" << info.maxAngleLimit << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveCharacterJoint3DComponent(entt::registry &registry, entt::entity entity,
+																 std::ofstream &writer)
+{
+	if (registry.any_of<CharacterJoint3DComponent>(entity))
+	{
+		CharacterJoint3DComponent &characterJoint = registry.get<CharacterJoint3DComponent>(entity);
+		writer << "\tcomponent:CharacterJoint3DComponent\n";
+
+		rp3d::BallAndSocketJointInfo &info = characterJoint.jointInfo;
+		saveJoint3DComponent(writer, characterJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+	}
+}
+
+void Survive::ComponentSerializer::saveFixedJoint3DComponent(entt::registry &registry, entt::entity entity,
+															 std::ofstream &writer)
+{
+	if (registry.any_of<FixedJoint3DComponent>(entity))
+	{
+		FixedJoint3DComponent &fixedJoint = registry.get<FixedJoint3DComponent>(entity);
+		writer << "\tcomponent:FixedJoint3DComponent\n";
+
+		rp3d::FixedJointInfo &info = fixedJoint.jointInfo;
+		saveJoint3DComponent(writer, fixedJoint.connectedBodyName, info.isCollisionEnabled,
+							 info.isUsingLocalSpaceAnchors, info.anchorPointWorldSpace, info.anchorPointBody1LocalSpace,
+							 info.anchorPointBody2LocalSpace);
+	}
+}
+
+void Survive::ComponentSerializer::saveJoint3DComponent(std::ofstream &writer, const std::string &connectedBodyName,
+														bool enableCollision, bool isUsingLocalSpace,
+														const rp3d::Vector3 &anchor, const rp3d::Vector3 &localAnchor,
+														const rp3d::Vector3 &anchorBody2)
+{
+	writer << "\t\tconnectedBody:" << connectedBodyName << '\n';
+	writer << "\t\tenableCollision:" << enableCollision << '\n';
+	writer << "\t\tisUsingLocalSpace:" << isUsingLocalSpace << '\n';
+	printVec3(writer, "anchor", anchor);
+	printVec3(writer, "localAnchor", localAnchor);
+	printVec3(writer, "anchorBody2", anchorBody2);
 }

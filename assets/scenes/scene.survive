@@ -12,4 +12,6 @@ entity:dragon
 		position:-5,-10,-40
 		scale:1,1,1
 		rotation:0,0,0
+	component:OutlineComponent
+	    drawOutline:0
 end

@@ -67,7 +67,7 @@ void Survive::WaterRenderer::loadUniforms(const Camera &camera, const Transform3
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 
 	m_Shader.loadTextures();
-	m_Shader.loadCameraPosition(camera.position);
+	m_Shader.loadCameraPosition(camera.getPosition());
 	loadMoveFactor(m_Shader, moveComponent);
 
 	m_Shader.loadNearAndFar(camera.near, camera.far);
