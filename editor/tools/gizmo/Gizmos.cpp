@@ -12,7 +12,6 @@
 #include "Scene.h"
 
 bool Survive::Gizmos::m_ValidOperation = false;
-bool Survive::Gizmos::m_ViewGizmosEnabled = false;
 
 void Survive::Gizmos::draw(entt::registry &registry, Camera &camera, entt::entity selectedEntity)
 {
@@ -62,16 +61,10 @@ void Survive::Gizmos::handleKeyEvents(const EventHandler &eventHandler)
 		} else if (eventHandler.isKeyPressed(Key::ESCAPE))
 		{
 			m_ValidOperation = false;
-			m_ViewGizmosEnabled = false;
-		}
-
-		if (eventHandler.isKeyPressed(Key::Q))
-		{
-			m_ViewGizmosEnabled = true;
 		}
 	}
 
-	if (!m_ValidOperation && !m_ViewGizmosEnabled)
+	if (!m_ValidOperation)
 	{
 		m_Gizmos.handleKeyEvents(eventHandler);
 	}
@@ -128,11 +121,6 @@ void Survive::Gizmos::drawGizmos(bool isOrthographic, const glm::mat4 &projectio
 
 void Survive::Gizmos::drawViewGizmos(Camera &camera) const
 {
-	if (!m_ViewGizmosEnabled)
-	{
-		return;
-	}
-
 	constexpr ImU32 backgroundColor = 0x10101010;
 	constexpr float cameraDistance = 8.0f;
 
@@ -157,11 +145,6 @@ void Survive::Gizmos::decomposeViewMatrix(Camera &camera, const glm::mat4 &viewM
 	glm::vec3 cameraPosition = glm::vec3{inverseViewMatrix[3]};
 
 	camera.setCameraProperties(pitch, yaw, cameraPosition);
-}
-
-bool Survive::Gizmos::isViewGizmoEnabled()
-{
-	return m_ViewGizmosEnabled;
 }
 
 bool Survive::Gizmos::isInsideViewGizmo()

@@ -19,13 +19,11 @@ namespace Survive
 	class Gizmos
 	{
 	private:
-		static bool m_ViewGizmosEnabled;
 		static bool m_ValidOperation;
 
 		float m_X{}, m_Y{}, m_Width{}, m_Height{};
 		ImGuizmo::OPERATION m_Operation{};
 
-		ImVec2 m_LastMouseClickPos{-1, -1};
 		PhysicsGizmo m_Gizmos;
 
 	public:
@@ -38,8 +36,6 @@ namespace Survive
 		void handleKeyEvents(const EventHandler &eventHandler);
 
 		static bool isValidOperation();
-
-		static bool isViewGizmoEnabled();
 
 		static bool isInsideViewGizmo();
 

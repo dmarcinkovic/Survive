@@ -26,7 +26,7 @@ void Survive::MousePicking::mousePressedHandler()
 		if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			if ((Gizmos::isValidOperation() && ImGuizmo::IsOver()) || PhysicsGizmo::isOver() ||
-				!Scene::isSceneFocused() || (Gizmos::isViewGizmoEnabled() && Gizmos::isInsideViewGizmo()))
+				!Scene::isSceneFocused() || Gizmos::isInsideViewGizmo())
 			{
 				return;
 			}
