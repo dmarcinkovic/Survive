@@ -27,8 +27,15 @@ void Survive::ContactPhysics3DListener::onContact(const rp3d::CollisionCallback:
 			entt::entity entity1 = *reinterpret_cast<entt::entity*>(&body1UserData);
 			entt::entity entity2 = *reinterpret_cast<entt::entity*>(&body2UserData);
 
-			onCollisionEnter(entity1, entity2);
-			onCollisionEnter(entity2, entity1);
+			if (contact.getEventType() == rp3d::CollisionCallback::ContactPair::EventType::ContactStart)
+			{
+				onCollisionEnter(entity1, entity2);
+				onCollisionEnter(entity2, entity1);
+ 			} else if (contact.getEventType() == rp3d::CollisionCallback::ContactPair::EventType::ContactExit)
+			{
+				onCollisionExit(entity1, entity2);
+				onCollisionExit(entity2, entity1);
+			}
 		}
 	}
 }
@@ -42,6 +49,19 @@ void Survive::ContactPhysics3DListener::onCollisionEnter(entt::entity entity1, e
 		if (script.script != nullptr)
 		{
 			script.script->onCollisionEnter(entity2);
+		}
+	}
+}
+
+void Survive::ContactPhysics3DListener::onCollisionExit(entt::entity entity1, entt::entity entity2) const
+{
+	if (m_Registry.any_of<ScriptComponent>(entity1))
+	{
+		ScriptComponent &script = m_Registry.get<ScriptComponent>(entity1);
+
+		if (script.script != nullptr)
+		{
+			script.script->onCollisionExit(entity2);
 		}
 	}
 }

@@ -22,6 +22,8 @@ namespace Survive
 
 	private:
 		void onCollisionEnter(entt::entity entity1, entt::entity entity2) const;
+
+		void onCollisionExit(entt::entity entity1, entt::entity entity2) const;
 	};
 }
 
