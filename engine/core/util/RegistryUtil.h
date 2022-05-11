@@ -141,7 +141,7 @@ namespace Survive
 			{
 				SoundComponent &soundComponent = registry.get<SoundComponent>(entity);
 				soundComponent.audioSource.setOnLoop(false);
-				soundComponent.play = true;
+				soundComponent.play = false;
 			}
 		}
 	};
