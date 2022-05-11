@@ -23,7 +23,7 @@ uniform vec4 plane;
 
 void main()
 {
-    const mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+    mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
     vec4 pos = transformationMatrix * vec4(position, 1.0);
     fragmentPositionInLightSpace = lightSpaceMatrix * pos;
 

@@ -3,10 +3,10 @@
 //
 
 
-#include "ShadowComponent.h"
 #include "AnimationRenderer.h"
 #include "Maths.h"
 #include "Renderer3D.h"
+#include "ShadowComponent.h"
 
 Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 		: ObjectRenderer(light)
@@ -16,6 +16,8 @@ Survive::AnimationRenderer::AnimationRenderer(const Light &light)
 void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const Camera &camera,
 												 GLuint shadowMap, const glm::vec4 &plane) const
 {
+	constexpr int numberOfVaoUnits = 6;
+
 	auto entities = prepareEntities(registry);
 
 	if (entities.empty())
@@ -27,21 +29,20 @@ void Survive::AnimationRenderer::renderAnimation(entt::registry &registry, const
 	glEnable(GL_STENCIL_TEST);
 	loadUniforms(camera, shadowMap, plane);
 
-	for (auto const&[texture, objects]: entities)
+	for (auto const &[texture, objects]: entities)
 	{
-		prepareEntity(texture);
+		prepareEntity(texture, numberOfVaoUnits);
 		renderScene(registry, objects, camera);
 
-		finishRenderingEntity();
+		finishRenderingEntity(numberOfVaoUnits);
 	}
 
 	finishRendering();
 	glDisable(GL_STENCIL_TEST);
 }
 
-void
-Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
-										const Camera &camera) const
+void Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vector<entt::entity> &objects,
+											 const Camera &camera) const
 {
 	for (auto const &object: objects)
 	{
@@ -53,8 +54,8 @@ Survive::AnimationRenderer::renderScene(entt::registry &registry, const std::vec
 		addTransparency(!isTransparent, !isTransparent);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
-
 		addTransparency(isTransparent, isTransparent);
+
 		Texture::unbindTexture();
 	}
 }
@@ -91,7 +92,7 @@ void Survive::AnimationRenderer::loadUniforms(const Camera &camera, GLuint shado
 	Texture texture(shadowMap);
 	texture.bindTexture(1);
 
-	m_Shader.loadCameraPosition(camera.position);
+	m_Shader.loadCameraPosition(camera.getPosition());
 }
 
 void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, entt::entity entity,

@@ -16,7 +16,7 @@ float Survive::Scene::m_SceneRegionY{};
 bool Survive::Scene::m_SceneFocused{};
 
 Survive::Scene::Scene(const Texture &scene)
-	: m_Scene(scene)
+		: m_Scene(scene)
 {
 
 }

@@ -26,7 +26,7 @@ namespace Survive
 		EditorEventHandler(ContentBrowser &contentBrowser, EntityManager &manager, SceneSerializer &sceneLoader);
 
 		void handleMouseDragging(entt::registry &registry, Renderer &renderer, Loader &loader, const Camera &camera,
-								 std::string &savedFile);
+								 std::string &savedFile, bool isScenePlaying);
 
 	private:
 		void loadScene(entt::registry &registry, std::string &savedFile, const std::filesystem::path &file);

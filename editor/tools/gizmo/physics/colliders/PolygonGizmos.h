@@ -6,6 +6,7 @@
 #define SURVIVE_POLYGONGIZMOS_H
 
 #include <vector>
+#include <glm/glm.hpp>
 
 #include "entt.hpp"
 #include "Components.h"

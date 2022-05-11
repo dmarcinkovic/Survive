@@ -2,7 +2,8 @@
 // Created by david on 24. 03. 2020..
 //
 
-#include <execution>
+#include <stdexcept>
+#include <algorithm>
 
 #include "Loader.h"
 #include "stb_image.h"
@@ -152,6 +153,7 @@ Survive::Model Survive::Loader::loadToVao(const std::vector<float> &vertices, co
 	storeDataInAttributeList(3, jointWeights, 3);
 	storeDataInAttributeList(jointIds);
 	storeDataInAttributeList(5, tangents, 3);
+
 	unbindVao();
 
 	return {vao, static_cast<GLsizei>(vertices.size()) / 3};
@@ -277,7 +279,7 @@ Survive::Loader::loadImages(const std::vector<const char *> &textures)
 {
 	std::unordered_map<const char *, std::tuple<std::uint8_t *, int, int>> images;
 
-	std::for_each(std::execution::seq, textures.begin(), textures.end(), [&](const char *filename) {
+	std::for_each(textures.begin(), textures.end(), [&](const char *filename) {
 		int width, height, BPP;
 		std::uint8_t *image = stbi_load(filename, &width, &height, &BPP, 4);
 

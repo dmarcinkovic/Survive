@@ -17,6 +17,8 @@ namespace Survive
 	public:
 		static void drawComponent(BoxCollider2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Box collider 2D", visible))
 			{
 				ImGui::Columns(2, nullptr, false);

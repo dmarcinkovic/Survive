@@ -14,7 +14,7 @@ Survive::EditorEventHandler::EditorEventHandler(ContentBrowser &contentBrowser, 
 }
 
 void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, Renderer &renderer, Loader &loader,
-													  const Camera &camera, std::string &savedFile)
+													  const Camera &camera, std::string &savedFile, bool isScenePlaying)
 {
 	if (!ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_ContentBrowser.startedDragging())
 	{
@@ -22,7 +22,11 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 		{
 			std::filesystem::path file = m_ContentBrowser.getDraggedFile();
 
-			if (file.has_extension())
+			if (isScenePlaying)
+			{
+				std::string message = "Dragging to the scene is not possible while the scene is playing";
+				Log::logMessage(LogType::WARN, message);
+			} else if (file.has_extension())
 			{
 				std::string extension = file.extension().string();
 
@@ -46,7 +50,7 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::string &savedFile,
 											const std::filesystem::path &file)
 {
-	m_Manager.setSelectedEntity(-1);
+	m_Manager.setSelectedEntity(registry, -1);
 
 	try
 	{
@@ -63,7 +67,7 @@ void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::strin
 void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &loader,
 											const std::filesystem::path &file, const Camera &camera)
 {
-	auto[x, y] = Scene::getScenePosition();
+	auto [x, y] = Scene::getScenePosition();
 	float width = Scene::getSceneWidth();
 	float height = Scene::getSceneHeight();
 
@@ -75,6 +79,7 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 		{
 			auto entity = registry.create();
 			registry.emplace<TagComponent>(entity, file.stem().string());
+			registry.emplace<OutlineComponent>(entity, false);
 
 			addRenderComponentToModel(registry, entity, file, model);
 			addTransformComponentToModel(registry, entity, camera, x, y, width, height);
@@ -101,7 +106,7 @@ void Survive::EditorEventHandler::addTransformComponentToModel(entt::registry &r
 	constexpr float scale = 15.0f;
 	glm::vec3 worldSpace = Util::getMouseRay(camera, x, y, width, height) * scale;
 
-	glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.position);
+	glm::mat4 translate = glm::translate(glm::mat4{1.0f}, camera.getPosition());
 	glm::vec3 position = translate * glm::vec4{worldSpace, 1.0f};
 
 	registry.emplace<Transform3DComponent>(entity, position);

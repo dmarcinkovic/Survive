@@ -102,7 +102,7 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 			{
 				if (file.ends_with(".survive"))
 				{
-					manager.setSelectedEntity(-1);
+					manager.setSelectedEntity(registry, -1);
 					loadScene(registry, sceneLoader, savedFile, file);
 				} else
 				{

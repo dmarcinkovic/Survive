@@ -5,25 +5,23 @@
 #include "PhysicSystem.h"
 #include "AudioSystem.h"
 #include "AnimationSystem.h"
-#include "SkyRotateSystem.h"
 #include "SpriteUpdate.h"
 #include "ScriptingSystem.h"
 #include "System.h"
 
-void Survive::System::update(entt::registry &registry, b2World *world)
+void Survive::System::update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
 {
-	PhysicSystem::update(registry, world);
+	PhysicSystem::update(registry, world2D, world3D);
 	AudioSystem::update(registry);
 	AnimationSystem::update(registry);
-	// TODO change this
-//	SkyRotateSystem::rotateSky(registry, sky);
 	SpriteUpdate::update(registry);
 	ScriptingSystem::update(registry);
 }
 
-void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world, Camera &camera)
+void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world2D,
+						   rp3d::PhysicsWorld *world3D, rp3d::PhysicsCommon &physicsCommon, Camera &camera)
 {
-	PhysicSystem::init(registry, world);
+	PhysicSystem::init(registry, world2D, world3D, physicsCommon);
 	ScriptingSystem::init(registry, eventHandler, camera);
 }
 

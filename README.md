@@ -28,7 +28,6 @@
 * `C++` compiler that supports c++20 standard
 * `openAL`: Cross-platform 3D audio API.
 * `glm`: C++ library for OpenGL GLSL type-base mathematics
-* `libtbb`: Parallelism library for C++ 
 * `Box2D`: A 2D physics engine for games. Make sure to use version 2.4.1 or higher. 
 
 ## Linux
@@ -45,7 +44,6 @@
         * ` $ apt install libclang-dev clang` or ` $ apt install g++`
         * ` $ apt install libalut-dev`
         * ` $ apt install libglm-dev`
-        * ` $ apt install libtbb-dev`
         * ` $ apt install libbox2d-dev`
 
     - ##### Gentoo
@@ -58,7 +56,6 @@
         * ` $ emerge sys-devel/llvm sys-devel/clang` or ` $ emerge sys-devel/gcc`
         * ` $ emerge media-libs/freealut`
         * ` $ emerge media-libs/glm`
-        * ` $ emerge dev-cpp/tbb`
         * ` $ emerge games-engines/box2d`
 
     - ##### Archlinux
@@ -71,7 +68,6 @@
         * ` $ pacman -S llvm clang` or ` $ pacman -S gcc`
         * ` $ pacman -S freealut`
         * ` $ pacman -S glm`
-        * ` $ pacman -S tbb`
         * ` $ pacman -S box2d`
 
     - ##### Fedora
@@ -84,7 +80,6 @@
         * ` $ dnf install llvm clang` or ` $ dnf install gcc-c++`
         * ` $ dnf install freealut-devel`
         * ` $ dnf install glm-devel`
-        * ` $ dnf install tbb-devel`
         * ` $ dnf install Box2D-devel`
 
 ### Build and run

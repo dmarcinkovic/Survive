@@ -36,8 +36,8 @@ void Survive::CameraWindow::drawCameraTransform(Camera &camera)
 	ImGui::Columns(4);
 	EditorUtil::drawTransform3DHeader();
 
-	ImGui::Text("Position");
-	EditorUtil::drawTransform3DRow(camera.position, "##CPosX", "##CPosY", "##CPosZ");
+//	ImGui::Text("Position");
+//	EditorUtil::drawTransform3DRow(camera.getPosition(), "##CPosX", "##CPosY", "##CPosZ");
 	ImGui::Text("Rotation");
 	EditorUtil::drawTransform3DRow(camera.rotation, "##CRotX", "##CRotY", "##CRotZ");
 
@@ -82,8 +82,17 @@ void Survive::CameraWindow::showCameraProperties(Survive::Camera &camera)
 	ImGui::NextColumn();
 	ImGui::Indent();
 
-	EditorUtil::drawColumnDragFloat("Pitch", "##Camera pitch", camera.pitch, -90.0f, 90.0f);
-	EditorUtil::drawColumnDragFloat("Yaw", "##Camera yaw", camera.yaw, -90.0f, 90.0f);
+	float pitch = camera.getPitch();
+	if (EditorUtil::drawColumnInputFloat("Pitch", "##Camera pitch", pitch, -90, 90))
+	{
+		camera.setPitch(pitch);
+	}
+
+	float yaw = camera.getYaw();
+	if (EditorUtil::drawColumnInputFloat("Yaw", "##Camera yaw", yaw, -90, 90))
+	{
+		camera.setYaw(yaw);
+	}
 
 	ImGui::Unindent();
 }

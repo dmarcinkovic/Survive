@@ -32,6 +32,8 @@ namespace Survive
 
 		void drawComponent(PolygonCollider2DComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Polygon collider 2D", visible))
 			{
 				addPolygonPoint(component.points, component.polygonShape);

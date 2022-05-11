@@ -30,4 +30,11 @@ void Survive::OutlineShader::loadUniformLocations()
 	m_LocationTransformationMatrix = glGetUniformLocation(m_Program, "transformationMatrix");
 	m_LocationViewMatrix = glGetUniformLocation(m_Program, "viewMatrix");
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
+
+	m_LocationFactor = glGetUniformLocation(m_Program, "factor");
+}
+
+void Survive::OutlineShader::loadFactor(const glm::vec3 &factor) const
+{
+	loadVector3(m_LocationFactor, factor);
 }

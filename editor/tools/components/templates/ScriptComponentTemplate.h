@@ -23,6 +23,8 @@ namespace Survive
 	public:
 		void drawComponent(ScriptComponent &component, bool *visible)
 		{
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+
 			if (ImGui::CollapsingHeader("Script", visible))
 			{
 				ImGui::Columns(2);

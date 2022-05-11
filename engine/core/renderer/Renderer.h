@@ -60,13 +60,9 @@ namespace Survive
 
 		void removeSkyboxEntity();
 
-		void addOutlineToObject(entt::registry &registry, entt::entity entity);
-
 		void addButton(Button &button);
 
 		[[nodiscard]] Texture getRenderedTexture() const;
-
-		void removeOutlineToObject(entt::registry &registry);
 
 		void render3DScene(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 

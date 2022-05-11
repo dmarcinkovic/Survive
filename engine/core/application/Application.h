@@ -6,6 +6,7 @@
 #define SURVIVE_APPLICATION_H
 
 #include <memory>
+#include <reactphysics3d/reactphysics3d.h>
 #include <box2d/box2d.h>
 
 #include "entt.hpp"
@@ -36,14 +37,16 @@ namespace Survive
 		Editor m_Editor;
 		EventHandler m_EventHandler;
 
-		std::unique_ptr<b2World> m_World;
+		std::unique_ptr<b2World> m_World2D;
 		entt::registry m_Registry;
-
-		bool m_PlayScene{};
 
 		RegistryUtil m_RegistryUtil;
 
-		std::unique_ptr<b2ContactListener> m_ContactListener;
+		rp3d::PhysicsCommon m_PhysicsCommon;
+		rp3d::PhysicsWorld *m_World3D;
+
+		std::unique_ptr<b2ContactListener> m_ContactPhysics2DListener;
+		std::unique_ptr<rp3d::EventListener> m_ContactPhysics3DListener;
 
 	public:
 		Application(int windowWidth, int windowHeight, const char *title);
