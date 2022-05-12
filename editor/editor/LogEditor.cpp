@@ -35,6 +35,16 @@ void Survive::LogEditor::drawLogWindow()
 
 			ImGui::EndTable();
 		}
+
+		if (ImGui::BeginPopupContextWindow("##LogWindowMenu"))
+		{
+			if (ImGui::Selectable("Clear All"))
+			{
+				m_Buffer.clear();
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 
 	ImGui::End();
