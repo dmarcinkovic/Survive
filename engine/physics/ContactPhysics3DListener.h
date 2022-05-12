@@ -5,7 +5,7 @@
 #ifndef SURVIVE_CONTACTPHYSICS3DLISTENER_H
 #define SURVIVE_CONTACTPHYSICS3DLISTENER_H
 
-#include "reactphysics3d/include/reactphysics3d/reactphysics3d.h"
+#include <reactphysics3d/reactphysics3d.h>
 #include "entt.hpp"
 
 namespace Survive
