@@ -3,7 +3,6 @@
 //
 
 #include "LogEditor.h"
-#include "Loader.h"
 
 Survive::LogEditor::LogEditor()
 {
@@ -35,6 +34,16 @@ void Survive::LogEditor::drawLogWindow()
 			}
 
 			ImGui::EndTable();
+		}
+
+		if (ImGui::BeginPopupContextWindow("##LogWindowMenu"))
+		{
+			if (ImGui::Selectable("Clear All"))
+			{
+				m_Buffer.clear();
+			}
+
+			ImGui::EndPopup();
 		}
 	}
 
