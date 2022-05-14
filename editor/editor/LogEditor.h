@@ -34,6 +34,8 @@ namespace Survive
 
 	private:
 		void drawIcon(LogType logType) const;
+
+		static void clearLogs();
 	};
 }
 
