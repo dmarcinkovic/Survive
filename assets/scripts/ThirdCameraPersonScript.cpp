@@ -30,7 +30,7 @@ namespace Survive
 			Transform3DComponent &transform = getComponent<Transform3DComponent>();
 			Camera &camera = getCamera();
 
-			float pitch = glm::radians(camera.pitch);
+			float pitch = glm::radians(camera.getPitch());
 
 			float verticalDistance = m_CameraDistance * std::sin(pitch);
 			float horizontalDistance = m_CameraDistance * std::cos(pitch);
@@ -90,11 +90,8 @@ namespace Survive
 			float offsetX = horizontalDistance * std::sin(theta);
 			float offsetZ = horizontalDistance * std::cos(theta);
 
-			camera.position.x = position.x - offsetX;
-			camera.position.y = position.y + verticalDistance;
-			camera.position.z = position.z - offsetZ;
-
-			camera.yaw = 180 - rotation.y - m_Angle;
+			camera.setPosition(glm::vec3{position.x - offsetX, position.y + verticalDistance, position.z - offsetZ});
+			camera.setYaw(180 - rotation.y - m_Angle);
 		}
 	};
 }
