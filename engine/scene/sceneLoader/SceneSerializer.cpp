@@ -166,6 +166,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "CharacterJoint3DComponent")
 		{
 			ComponentLoader::loadCharacterJoint3DComponent(registry, entity, reader);
+		} else if (componentType == "ScriptComponent")
+		{
+			ComponentLoader::loadScriptComponent(registry, entity, reader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -202,4 +205,5 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveHingeJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveFixedJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveCharacterJoint3DComponent(registry, entity, writer);
+	ComponentSerializer::saveScriptComponent(registry, entity, writer);
 }

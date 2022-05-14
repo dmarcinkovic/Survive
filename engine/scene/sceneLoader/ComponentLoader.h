@@ -87,6 +87,8 @@ namespace Survive
 
 		static void loadOutlineComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
+		static void loadScriptComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
+
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 

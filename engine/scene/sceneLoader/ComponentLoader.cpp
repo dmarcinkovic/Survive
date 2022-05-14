@@ -713,3 +713,12 @@ Survive::ComponentLoader::loadJoint3DComponent(std::ifstream &reader)
 
 	return {connectedBodyName, enableCollision, isUsingLocalSpace, anchor, localAnchor, anchorBody2};
 }
+
+void Survive::ComponentLoader::loadScriptComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
+{
+	std::string scriptPath = parseLine(reader, "pluginLocation");
+
+	ScriptComponent script;
+	script.pluginLocation = scriptPath;
+	registry.emplace<ScriptComponent>(entity, script);
+}

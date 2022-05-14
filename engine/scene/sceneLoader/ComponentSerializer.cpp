@@ -525,3 +525,15 @@ void Survive::ComponentSerializer::saveJoint3DComponent(std::ofstream &writer, c
 	printVec3(writer, "localAnchor", localAnchor);
 	printVec3(writer, "anchorBody2", anchorBody2);
 }
+
+void Survive::ComponentSerializer::saveScriptComponent(entt::registry &registry, entt::entity entity,
+												  std::ofstream &writer)
+{
+	if (registry.any_of<ScriptComponent>(entity))
+	{
+		writer << "\tcomponent:ScriptComponent\n";
+
+		const ScriptComponent &script = registry.get<ScriptComponent>(entity);
+		writer << "\t\tpluginLocation:" << script.pluginLocation << '\n';
+	}
+}
