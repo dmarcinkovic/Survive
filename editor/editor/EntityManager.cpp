@@ -6,6 +6,7 @@
 
 #include "ComponentUtil.h"
 #include "EntityManager.h"
+#include "RegistryUtil.h"
 
 bool Survive::EntityManager::addEntity(entt::registry &registry)
 {
@@ -170,6 +171,9 @@ void Survive::EntityManager::drawPopupContext(entt::registry &registry, entt::en
 			m_SelectedEntity = selectedEntity;
 			m_RenameEntity = true;
 			drawOutline(registry, m_SelectedEntity, true);
+		} else if (ImGui::Selectable("Copy entity"))
+		{
+			copyEntity(registry, selectedEntity, i);
 		}
 
 		ImGui::EndPopup();
@@ -293,4 +297,19 @@ void Survive::EntityManager::drawOutline(entt::registry &registry, entt::entity 
 		OutlineComponent &outline = registry.get<OutlineComponent>(entity);
 		outline.drawOutline = draw;
 	}
+}
+
+void Survive::EntityManager::copyEntity(entt::registry &registry, entt::entity selectedEntity, int i)
+{
+	drawOutline(registry, m_SelectedEntity, false);
+
+	entt::entity copy = registry.create();
+	m_Selected = i;
+	m_SelectedEntity = selectedEntity;
+	RegistryUtil::copyEntity(registry, m_SelectedEntity, copy);
+
+	TagComponent &tag = registry.get<TagComponent>(copy);
+	tag.tag += "_2";
+
+	drawOutline(registry, m_SelectedEntity, true);
 }

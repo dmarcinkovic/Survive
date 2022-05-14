@@ -73,6 +73,8 @@ namespace Survive
 		static void resetStyleColors();
 
 		static void drawOutline(entt::registry &registry, entt::entity entity, bool draw);
+
+		void copyEntity(entt::registry &registry, entt::entity selectedEntity, int i);
 	};
 }
 
