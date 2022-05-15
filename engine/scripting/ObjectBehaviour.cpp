@@ -138,3 +138,18 @@ Survive::Camera &Survive::ObjectBehaviour::getCamera()
 {
 	return *m_Camera;
 }
+
+entt::entity Survive::ObjectBehaviour::getEntity(const std::string &entityName) const
+{
+	auto view = m_Registry->view<TagComponent>();
+	for (entt::entity entity: view)
+	{
+		const TagComponent &tag = view.get<TagComponent>(entity);
+		if (tag.tag == entityName)
+		{
+			return entity;
+		}
+	}
+
+	return entt::null;
+}

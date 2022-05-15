@@ -137,6 +137,8 @@ namespace Survive
 
 		Camera &getCamera();
 
+		entt::entity getEntity(const std::string &entityName) const;
+
 	private:
 		template<typename T, typename... Args>
 		void print(std::ostringstream &ss, T &&t, Args &&... args)
