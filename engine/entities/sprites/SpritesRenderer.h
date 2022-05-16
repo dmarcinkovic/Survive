@@ -13,6 +13,8 @@
 #include "TexturedModel.h"
 #include "Camera.h"
 #include "Renderer2D.h"
+#include "Transform3DComponent.h"
+#include "SpriteSheetComponent.h"
 
 namespace Survive
 {
