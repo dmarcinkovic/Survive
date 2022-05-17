@@ -88,7 +88,7 @@ namespace Survive
 		void loadUseNormalMapping(bool useNormalMapping) const;
 
 	protected:
-		virtual void loadUniformLocations();
+		void loadUniformLocations();
 	};
 }
 
