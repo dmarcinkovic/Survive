@@ -99,9 +99,7 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 													const Texture &texture, const Camera &camera) const
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
-	glm::vec3 rotation = camera.rotation + transform.rotation;
-
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
 	m_Shader.loadTransformationMatrix(modelMatrix);
 	m_Shader.loadTextures();
 

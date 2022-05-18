@@ -60,9 +60,7 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 {
 	m_Shader.loadViewMatrix(camera.getViewMatrix());
 	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-
-	glm::vec3 rotation = transform.rotation + camera.rotation;
-	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+	glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, transform.rotation);
 
 	m_Shader.loadTransformationMatrix(modelMatrix);
 

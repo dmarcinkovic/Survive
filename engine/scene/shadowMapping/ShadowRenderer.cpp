@@ -22,7 +22,7 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 	m_ShadowShader.loadViewMatrix(light.getViewMatrix());
 	m_ShadowShader.loadProjectionMatrix(camera.getLightProjectionMatrix());
 
-	for (auto const&[texture, objects]: entities)
+	for (auto const &[texture, objects]: entities)
 	{
 		texture.bind();
 		glEnableVertexAttribArray(0);
@@ -32,9 +32,8 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 			glCullFace(GL_FRONT);
 
 			const Transform3DComponent &transform = registry.get<Transform3DComponent>(object);
-
-			glm::vec3 rotation = transform.rotation + camera.rotation;
-			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+			glm::mat4 modelMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
+																	  transform.rotation);
 
 			m_ShadowShader.loadTransformationMatrix(modelMatrix);
 

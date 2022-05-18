@@ -25,9 +25,7 @@ namespace Survive
 	public:
 		float near = 0.1f;
 		float far = 1000.0f;
-
 		float fieldOfView = 50.0f;
-		glm::vec3 rotation{};
 
 		Camera();
 

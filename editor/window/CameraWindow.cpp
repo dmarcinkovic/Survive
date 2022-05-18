@@ -38,8 +38,6 @@ void Survive::CameraWindow::drawCameraTransform(Camera &camera)
 
 //	ImGui::Text("Position");
 //	EditorUtil::drawTransform3DRow(camera.getPosition(), "##CPosX", "##CPosY", "##CPosZ");
-	ImGui::Text("Rotation");
-	EditorUtil::drawTransform3DRow(camera.rotation, "##CRotX", "##CRotY", "##CRotZ");
 
 	ImGui::Columns();
 }
