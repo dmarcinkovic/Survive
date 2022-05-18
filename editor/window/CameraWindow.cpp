@@ -31,15 +31,11 @@ void Survive::CameraWindow::drawHeader()
 
 void Survive::CameraWindow::drawCameraTransform(Camera &camera)
 {
-	ImGui::Separator();
-
-	ImGui::Columns(4);
-	EditorUtil::drawTransform3DHeader();
-
-//	ImGui::Text("Position");
-//	EditorUtil::drawTransform3DRow(camera.getPosition(), "##CPosX", "##CPosY", "##CPosZ");
-
-	ImGui::Columns();
+	glm::vec3 cameraPosition = camera.getPosition();
+	if (EditorUtil::drawColumnDragFloat3("Camera position", "##CameraPosition", cameraPosition))
+	{
+		camera.setPosition(cameraPosition);
+	}
 }
 
 void Survive::CameraWindow::drawCameraProperties(Camera &camera)
