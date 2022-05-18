@@ -23,11 +23,6 @@ namespace Survive
 	class EditorUtil
 	{
 	public:
-		static void drawTransform3DHeader();
-
-		static void drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y, const char *z,
-									   float lowerBound = std::numeric_limits<float>::lowest());
-
 		static void loadTexture(OpenDialog &fileChooser, Loader &loader, Texture &texture, std::string &textureName,
 								const char *format, const char *label, bool &changed, bool &open);
 
@@ -51,6 +46,9 @@ namespace Survive
 		static bool drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed = 1.0f,
 										 float min = 0.0f, float max = 0.0f);
 
+		static bool drawColumnDragFloat3(const char *text, const char *label, glm::vec3 &value, float speed = 1.0f,
+										 float min = 0.0f, float max = 0.0f);
+
 		static void drawColumnColorEdit3(const char *text, const char *label, glm::vec3 &color);
 
 		static bool disableButton(bool condition);
@@ -62,9 +60,6 @@ namespace Survive
 		static int drawDeleteButton(int index, const Texture &deleteButton, const char *tooltipText);
 
 	private:
-		static void setDragFloat(float &value, const char *label, const ImVec4 &frameBg, const ImVec4 &increment,
-								 float lowerBound = std::numeric_limits<float>::min());
-
 		static ImVec4 add(const ImVec4 &vec1, const ImVec4 &vec2);
 
 		static void drawTooltip(const char *text);
