@@ -130,9 +130,17 @@ void Survive::Gizmos::drawViewGizmos(Camera &camera) const
 	auto [viewGizmosPosition, viewGizmosSize] = getViewGizmoRect();
 
 	float *viewMatrix = glm::value_ptr(camera.getViewMatrix());
+	glm::mat4 oldViewMatrix = glm::mat4{camera.getViewMatrix()};
+
 	ImGuizmo::ViewManipulate(viewMatrix, cameraDistance, viewGizmosPosition, viewGizmosSize, backgroundColor);
 
-	decomposeViewMatrix(camera, camera.getViewMatrix());
+	glm::mat4 newViewMatrix = camera.getViewMatrix();
+
+	if (viewMatrixChanged(oldViewMatrix, newViewMatrix))
+	{
+		std::cout << "Changed\n";
+		decomposeViewMatrix(camera, camera.getViewMatrix());
+	}
 }
 
 void Survive::Gizmos::decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix)
@@ -166,4 +174,20 @@ std::pair<ImVec2, ImVec2> Survive::Gizmos::getViewGizmoRect()
 	ImVec2 viewGizmosPosition{sceneX - padding + Scene::getSceneWidth() - viewGizmosSize.x, sceneY};
 
 	return {viewGizmosPosition, viewGizmosSize};
+}
+
+bool Survive::Gizmos::viewMatrixChanged(const glm::mat4 &oldViewMatrix, const glm::mat4 &newViewMatrix)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			if (newViewMatrix[i][j] != oldViewMatrix[i][j])
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

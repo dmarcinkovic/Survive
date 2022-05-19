@@ -33,13 +33,13 @@ namespace Survive
 
 		void moveCameraInYDirection(float yDistance);
 
-		[[nodiscard]] glm::mat4 getProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getOrthographicProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getOrthographicProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getLightProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getLightProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getViewMatrix() const;
+		[[nodiscard]] const glm::mat4 &getViewMatrix() const;
 
 		glm::mat4 &getViewMatrix();
 
