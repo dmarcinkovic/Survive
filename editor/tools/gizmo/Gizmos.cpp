@@ -138,7 +138,6 @@ void Survive::Gizmos::drawViewGizmos(Camera &camera) const
 
 	if (viewMatrixChanged(oldViewMatrix, newViewMatrix))
 	{
-		std::cout << "Changed\n";
 		decomposeViewMatrix(camera, camera.getViewMatrix());
 	}
 }
