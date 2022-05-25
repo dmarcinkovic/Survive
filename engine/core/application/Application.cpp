@@ -20,6 +20,14 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
 	m_Registry.emplace<OutlineComponent>(cube, false);
 
+	auto particle = m_Registry.create();
+	m_Registry.emplace<TagComponent>(particle, "particle");
+	m_Registry.emplace<Transform3DComponent>(particle, glm::vec3{0, 0, -5});
+	m_Registry.emplace<SpriteSheetComponent>(particle);
+	TexturedModel model(m_Loader.renderQuad(), Texture());
+	GLuint vbo = m_Loader.createEmptyVBO(ParticleUpdate::getVertexCount());
+	m_Registry.emplace<ParticleComponent>(particle, model, vbo, 20, 1, 5, 5);
+
 	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
 	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
