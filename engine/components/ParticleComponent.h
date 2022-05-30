@@ -29,6 +29,14 @@ namespace Survive
 		float gravity{};
 		float lifeLength{};
 
+		float speedError{};
+		float lifeError{};
+		float scaleError{};
+
+		float directionDeviation{1.0f};
+
+		bool useAdditiveBlending{};
+
 		ParticleComponent() = default;
 
 		ParticleComponent(const TexturedModel &model, GLuint vbo, float particlesPerSecond,

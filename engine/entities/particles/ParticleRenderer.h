@@ -38,11 +38,12 @@ namespace Survive
 
 		void loadObjectUniforms(const entt::registry &registry, entt::entity entity) const;
 
-		static void
-		renderParticle(const entt::registry &registry, entt::entity entity, ParticleComponent &particleComponent,
-					   const Camera &camera);
+		static void renderParticle(const entt::registry &registry, entt::entity entity,
+					   ParticleComponent &particleComponent, const Camera &camera);
 
 		static int getSpriteIndex(const entt::registry &registry, entt::entity entity);
+
+		static void setBlendFunction(bool useAdditiveBlending);
 	};
 }
 

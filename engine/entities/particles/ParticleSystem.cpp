@@ -17,27 +17,30 @@ void Survive::ParticleSystem::update(entt::registry &registry)
 		const Transform3DComponent &transform = entities.get<Transform3DComponent>(entity);
 
 		generateParticles(transform.position, transform.scale, particleComponent);
-		updateParticles(particleComponent.m_Particles, particleComponent.gravity, particleComponent.lifeLength);
+
+		float gravity = particleComponent.gravity;
+		float lifeLength = particleComponent.lifeLength;
+		float lifeError = Util::getRandom(-particleComponent.lifeError, particleComponent.lifeError);
+		updateParticles(particleComponent.m_Particles, gravity, lifeLength, lifeError);
 	}
 }
 
 void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const glm::vec3 &scale,
 										   ParticleComponent &particleComponent)
 {
-	// TODO: do not hardcode these values
-	float dirX = Util::getRandom(0, 2.0f) - 1.0f;
-	float dirZ = Util::getRandom(0, 2.0f) - 1.0f;
+	float deviation = particleComponent.directionDeviation;
+	float dirX = Util::getRandom(-deviation, deviation);
+	float dirZ = Util::getRandom(-deviation, deviation);
 
 	glm::vec3 velocity{dirX, 1, dirZ};
-	velocity = glm::normalize(velocity) * particleComponent.speed;
+	float speedError = Util::getRandom(-particleComponent.speedError, particleComponent.speedError);
+	velocity = glm::normalize(velocity) * (particleComponent.speed + speedError);
 
 	Particle particle{};
 	particle.position = center;
 	particle.velocity = velocity;
-	// TODO: make scale equal to transform3Dcomponent scale
-	particle.scale = scale;
+	particle.scale = scale + Util::getRandom(-particleComponent.scaleError, particleComponent.scaleError);
 
-	// TODO: update this when particle system get more complicated: e.g. scale, scale error, etc.
 	particleComponent.m_Particles.emplace_back(particle);
 }
 
@@ -60,7 +63,7 @@ void Survive::ParticleSystem::generateParticles(const glm::vec3 &center, const g
 	}
 }
 
-bool Survive::ParticleSystem::updateParticle(Particle &particle, float gravity, float lifeLength)
+bool Survive::ParticleSystem::updateParticle(Particle &particle, float gravity, float lifeLength, float lifeError)
 {
 	auto frameTime = static_cast<float>(Display::getFrameTime());
 
@@ -68,12 +71,13 @@ bool Survive::ParticleSystem::updateParticle(Particle &particle, float gravity, 
 	particle.position += frameTime * particle.velocity;
 	particle.elapsedTime += frameTime;
 
-	return particle.elapsedTime < lifeLength;
+	return particle.elapsedTime < lifeLength + lifeError;
 }
 
-void Survive::ParticleSystem::updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength)
+void Survive::ParticleSystem::updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength,
+											  float lifeError)
 {
 	particles.erase(std::remove_if(particles.begin(), particles.end(), [&](Particle &particle) {
-		return !updateParticle(particle, gravity, lifeLength);
+		return !updateParticle(particle, gravity, lifeLength, lifeError);
 	}), particles.end());
 }

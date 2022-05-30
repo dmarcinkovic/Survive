@@ -24,9 +24,9 @@ namespace Survive
 		static void generateParticles(const glm::vec3 &center, const glm::vec3 &scale,
 									  ParticleComponent &particleComponent);
 
-		static bool updateParticle(Particle &particle, float gravity, float lifeLength);
+		static bool updateParticle(Particle &particle, float gravity, float lifeLength, float lifeError);
 
-		static void updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength);
+		static void updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength, float lifeError);
 	};
 }
 

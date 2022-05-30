@@ -28,6 +28,7 @@ void Survive::ParticleRenderer::render(entt::registry &registry, const Camera &c
 		ParticleComponent &particleComponent = entities.get<ParticleComponent>(entity);
 		prepareEntity(particleComponent.m_Model, numberOfVaoUnits);
 
+		setBlendFunction(particleComponent.useAdditiveBlending);
 		loadObjectUniforms(registry, entity);
 		renderParticle(registry, entity, particleComponent, camera);
 
@@ -154,4 +155,15 @@ int Survive::ParticleRenderer::getSpriteIndex(const entt::registry &registry, en
 	}
 
 	return 0;
+}
+
+void Survive::ParticleRenderer::setBlendFunction(bool useAdditiveBlending)
+{
+	if (useAdditiveBlending)
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	} else
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
 }
