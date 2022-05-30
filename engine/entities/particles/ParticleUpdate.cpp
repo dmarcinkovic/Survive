@@ -11,9 +11,8 @@
 
 void Survive::ParticleUpdate::render(entt::registry &registry, const Camera &camera) const
 {
-	constexpr int numberOfVaoUnits = 7;
-	auto entities = registry.view<SpriteSheetComponent, ParticleComponent, TagComponent>();
-	// TODO consider entities with Render2DComponent and SpriteComponent
+	constexpr int numberOfVaoUnits = 6;
+	auto entities = registry.view<ParticleComponent, TagComponent>();
 
 	if (entities.begin() == entities.end())
 	{
@@ -29,15 +28,31 @@ void Survive::ParticleUpdate::render(entt::registry &registry, const Camera &cam
 		ParticleComponent &particleComponent = entities.get<ParticleComponent>(entity);
 		prepareEntity(particleComponent.m_Model, numberOfVaoUnits);
 
-		m_Shader.loadDimensions(1, 1);
+		int spriteIndex = 0;
+		if (registry.any_of<SpriteSheetComponent>(entity))
+		{
+			const SpriteSheetComponent &spriteSheet = registry.get<SpriteSheetComponent>(entity);
+			m_Shader.loadDimensions(spriteSheet.row, spriteSheet.col);
+			spriteIndex = spriteSheet.currentFrameIndex;
+		} else
+		{
+			m_Shader.loadDimensions(1, 1);
+		}
 
-		std::vector<Particle2> &particles = particleComponent.m_Particles;
-		std::vector<float> data = updateParticles(particles, camera.getViewMatrix());
+		if (registry.any_of<SpriteComponent>(entity))
+		{
+			const SpriteComponent &sprite = registry.get<SpriteComponent>(entity);
+			m_Shader.loadColor(sprite.color);
+		} else
+		{
+			m_Shader.loadColor(glm::vec4{0.0f});
+		}
+
+		std::vector<Particle> &particles = particleComponent.m_Particles;
+		std::vector<float> data = updateParticles(particles, camera.getViewMatrix(), spriteIndex);
 
 		auto sizeOfData = static_cast<GLsizeiptr>(particles.size() * Constants::PARTICLE_DATA_LENGTH);
 		Loader::updateVBO(particleComponent.m_Vbo, data, sizeOfData);
-		// TODO maybe not needed
-//		SpriteSheetComponent &sprite = entities.get<SpriteSheetComponent>(entity);
 
 		auto numberOfParticles = static_cast<GLsizei>(particles.size());
 		glDrawElementsInstanced(GL_TRIANGLES, particleComponent.m_Model.vertexCount(), GL_UNSIGNED_INT, nullptr, numberOfParticles);
@@ -47,16 +62,17 @@ void Survive::ParticleUpdate::render(entt::registry &registry, const Camera &cam
 	finishRendering();
 }
 
-std::vector<float> Survive::ParticleUpdate::updateParticles(const std::vector<Particle2> &particles,
-															const glm::mat4 &viewMatrix)
+std::vector<float> Survive::ParticleUpdate::updateParticles(const std::vector<Particle> &particles,
+															const glm::mat4 &viewMatrix, int index)
 {
 	std::vector<float> data(particles.size() * Constants::PARTICLE_DATA_LENGTH);
 	std::uint64_t dataPointer = 0;
+	constexpr glm::vec3 rotation{0.0f};
 
 	for (auto const &particle: particles)
 	{
-		updateModelViewMatrix(particle.position, glm::vec3{0.0f}, glm::vec3{0.5f}, viewMatrix, data, dataPointer);
-		updateTextureCoordinates(particle, data, dataPointer);
+		updateModelViewMatrix(particle.position, rotation, particle.scale, viewMatrix, data, dataPointer);
+		updateSpriteIndex(data, dataPointer, index);
 	}
 
 	return data;
@@ -108,14 +124,9 @@ void Survive::ParticleUpdate::storeMatrixData(const glm::mat4 &matrix, std::vect
 	data[dataPointer++] = matrix[3][3];
 }
 
-void Survive::ParticleUpdate::updateTextureCoordinates(const Particle2 &particle, std::vector<float> &data,
-													   std::uint64_t &dataPointer)
+void Survive::ParticleUpdate::updateSpriteIndex(std::vector<float> &data, std::uint64_t &dataPointer, int index)
 {
-	data[dataPointer++] = 0.0f;
-	data[dataPointer++] = 0.0f;
-	data[dataPointer++] = 0.0f;
-	data[dataPointer++] = 0.0f;
-	data[dataPointer++] = 0.0f;
+	data[dataPointer++] = static_cast<float>(index);
 }
 
 GLsizeiptr Survive::ParticleUpdate::getVertexCount()

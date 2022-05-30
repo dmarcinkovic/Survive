@@ -20,12 +20,16 @@ namespace Survive
 		GLint m_LocationNumberOfCols{};
 		GLint m_LocationProjectionMatrix{};
 
+		GLint m_LocationColor{};
+
 	public:
 		ParticleShader();
 
 		void loadDimensions(unsigned rows, unsigned cols) const;
 
 		void loadProjectionMatrix(const glm::mat4 &projectionMatrix) const;
+
+		void loadColor(const glm::vec4 &color) const;
 
 	private:
 		void getUniformLocations();

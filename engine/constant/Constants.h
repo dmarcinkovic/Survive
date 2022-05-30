@@ -24,7 +24,7 @@ namespace Survive
 		constexpr static int BLOOM_HEIGHT = 100;
 		constexpr static float BOX2D_SCALE = 10.0f;
 		constexpr static size_t MAX_PARTICLE_INSTANCES = 10'000;
-		constexpr static size_t PARTICLE_DATA_LENGTH = 21;
+		constexpr static size_t PARTICLE_DATA_LENGTH = 17;
 	};
 }
 

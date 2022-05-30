@@ -9,7 +9,7 @@
 #include "Camera.h"
 #include "ParticleShader.h"
 #include "Renderer2D.h"
-#include "Particle2.h"
+#include "Particle.h"
 
 // TODO rename this to ParticleRenderer when done
 namespace Survive
@@ -25,7 +25,8 @@ namespace Survive
 		static GLsizeiptr getVertexCount();
 
 	private:
-		static std::vector<float> updateParticles(const std::vector<Particle2> &particles, const glm::mat4 &viewMatrix);
+		static std::vector<float> updateParticles(const std::vector<Particle> &particles,
+												  const glm::mat4 &viewMatrix, int index);
 
 		static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
 										  const glm::vec3 &scale, const glm::mat4 &viewMatrix,
@@ -33,8 +34,7 @@ namespace Survive
 
 		static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data, std::uint64_t &dataPointer);
 
-		static void updateTextureCoordinates(const Particle2 &particle, std::vector<float> &data,
-											 std::uint64_t &dataPointer);
+		static void updateSpriteIndex(std::vector<float> &data, std::uint64_t &dataPointer, int index);
 	};
 }
 

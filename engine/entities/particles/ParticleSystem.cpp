@@ -1,161 +1,79 @@
 //
-// Created by david on 13. 02. 2021..
+// Created by david on 25.05.22..
 //
 
-#include <glm/ext/matrix_transform.hpp>
-
 #include "ParticleSystem.h"
-#include "Display.h"
 #include "Util.h"
+#include "Transform3DComponent.h"
+#include "Display.h"
 
-Survive::ParticleSystem::ParticleSystem(float particlesPerSecond, float speed, float gravity, float lifeLength,
-										float scale)
-		: m_ParticlesPerSecond(particlesPerSecond), m_Speed(speed), m_Gravity(gravity), m_LifeLength(lifeLength),
-		  m_AverageScale(scale)
+void Survive::ParticleSystem::update(entt::registry &registry)
 {
+	auto entities = registry.view<ParticleComponent, Transform3DComponent>();
 
-}
-
-void Survive::ParticleSystem::generateParticles(const glm::vec3 &systemCenter, const ParticleModel &particleModel,
-												ParticleRenderer &particleRenderer, const Camera &camera)
-{
-	std::vector<Particle> &particles = particleRenderer.getParticles(particleModel);
-
-	auto deltaTime = static_cast<float>(Display::getFrameTime());
-	float particlesToCreate = m_ParticlesPerSecond * deltaTime;
-
-	int count = static_cast<int>(std::round(particlesToCreate));
-	count = updateParticles(particles, camera, count);
-
-	for (int i = 0; i < count && m_EmitParticles; ++i)
+	for (auto const &entity: entities)
 	{
-		emitParticle(systemCenter, particleModel, particles);
+		ParticleComponent &particleComponent = entities.get<ParticleComponent>(entity);
+		const Transform3DComponent &transform = entities.get<Transform3DComponent>(entity);
+
+		generateParticles(transform.position, transform.scale, particleComponent);
+		updateParticles(particleComponent.m_Particles, particleComponent.gravity, particleComponent.lifeLength);
 	}
 }
 
-void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const ParticleModel &particleModel,
-										   std::vector<Particle> &particles) const
+void Survive::ParticleSystem::emitParticle(const glm::vec3 &center, const glm::vec3 &scale,
+										   ParticleComponent &particleComponent)
 {
-	float dirX = Util::getRandom() * 1.2f - 1.0f;
-	float dirZ = Util::getRandom() * 1.2f - 1.0f;
+	// TODO: do not hardcode these values
+	float dirX = Util::getRandom(0, 2.0f) - 1.0f;
+	float dirZ = Util::getRandom(0, 2.0f) - 1.0f;
 
-	glm::vec3 velocity{dirX, 1.0f, dirZ};
-	velocity = glm::normalize(velocity) * m_Speed;
+	glm::vec3 velocity{dirX, 1, dirZ};
+	velocity = glm::normalize(velocity) * particleComponent.speed;
 
-	particles.emplace_back(particleModel, center, velocity, m_Gravity, m_LifeLength);
+	Particle particle{};
+	particle.position = center;
+	particle.velocity = velocity;
+	// TODO: make scale equal to transform3Dcomponent scale
+	particle.scale = scale;
+
+	// TODO: update this when particle system get more complicated: e.g. scale, scale error, etc.
+	particleComponent.m_Particles.emplace_back(particle);
 }
 
-void Survive::ParticleSystem::setDirection(const glm::vec3 &direction, float deviation)
+void Survive::ParticleSystem::generateParticles(const glm::vec3 &center, const glm::vec3 &scale,
+												ParticleComponent &particleComponent)
 {
-	m_Direction = direction;
-	m_DirectionDeviation = deviation;
-}
+	auto frameTime = static_cast<float>(Display::getFrameTime());
+	float particlesToCreate = particleComponent.particlesPerSecond * frameTime;
+	int count = std::floor(particlesToCreate);
 
-void Survive::ParticleSystem::randomizeRotation()
-{
-	m_RandomRotation = true;
-}
-
-void Survive::ParticleSystem::setSpeedError(float speedError)
-{
-	m_SpeedError = speedError;
-}
-
-void Survive::ParticleSystem::setLifeError(float lifeError)
-{
-	m_LifeError = lifeError;
-}
-
-float Survive::ParticleSystem::generateValue(float average, float errorMargin)
-{
-	float offset = (Util::getRandom() - 0.5f) * 2.0f * errorMargin;
-
-	return average + offset;
-}
-
-float Survive::ParticleSystem::generateRotation() const
-{
-	if (m_RandomRotation)
+	for (int i = 0; i < count; ++i)
 	{
-		return Util::getRandom() * 360.0f;
+		emitParticle(center, scale, particleComponent);
 	}
 
-	return 0;
-}
-
-glm::vec3 Survive::ParticleSystem::generateRandomUnitVectorWithinCone(const glm::vec3 &coneDirection, float angle)
-{
-	glm::vec4 direction = getDirection(angle);
-
-	if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1))
+	float partialParticle = std::fmod(particlesToCreate, 1.0f);
+	if (Util::getRandom(0.0f, 1.0f) < partialParticle)
 	{
-		direction = rotateDirection(coneDirection, direction);
-	} else if (coneDirection.z == -1)
-	{
-		direction.z *= -1;
+		emitParticle(center, scale, particleComponent);
 	}
-
-	return {direction};
 }
 
-glm::vec3 Survive::ParticleSystem::generateRandomUnitVector()
+bool Survive::ParticleSystem::updateParticle(Particle &particle, float gravity, float lifeLength)
 {
-	float theta = Util::getRandom() * 2.0f * std::numbers::pi_v<float>;
-	float z = Util::getRandom() * 2.0f - 1;
+	auto frameTime = static_cast<float>(Display::getFrameTime());
 
-	return getDirection(z, theta);
+	particle.velocity.y += frameTime * gravity;
+	particle.position += frameTime * particle.velocity;
+	particle.elapsedTime += frameTime;
+
+	return particle.elapsedTime < lifeLength;
 }
 
-void Survive::ParticleSystem::setScaleError(float scaleError)
+void Survive::ParticleSystem::updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength)
 {
-	m_ScaleError = scaleError;
-}
-
-glm::vec4 Survive::ParticleSystem::getDirection(float angle)
-{
-	float cosAngle = std::cos(angle);
-	float theta = Util::getRandom() * 2.0f * std::numbers::pi_v<float>;
-
-	float z = cosAngle + Util::getRandom() * (1 - cosAngle);
-	return glm::vec4{getDirection(z, theta), 1.0f};
-}
-
-glm::vec4 Survive::ParticleSystem::rotateDirection(const glm::vec3 &coneDirection, const glm::vec4 &direction)
-{
-	glm::vec3 rotateAxis = glm::cross(coneDirection, glm::vec3{0, 0, 1});
-	rotateAxis = glm::normalize(rotateAxis);
-
-	float rotateAngle = std::acos(glm::dot(coneDirection, glm::vec3{0, 0, 1}));
-
-	glm::mat4 rotationMatrix = glm::rotate(glm::mat4{1.0f}, -rotateAngle, rotateAxis);
-
-	return rotationMatrix * direction;
-}
-
-glm::vec3 Survive::ParticleSystem::getDirection(float z, float theta)
-{
-	float k = std::sqrt(1 - z * z);
-	float x = k * std::cos(theta);
-	float y = k * std::sin(theta);
-
-	return glm::vec3{x, y, z};
-}
-
-int Survive::ParticleSystem::updateParticles(std::vector<Particle> &particles, const Camera &camera, int count)
-{
-	for (Particle &particle : particles)
-	{
-		if (!particle.update(camera))
-		{
-			--count;
-			particle.reset();
-		}
-	}
-
-	if (count < 0)
-	{
-		m_EmitParticles = false;
-	}
-
-	return count;
+	particles.erase(std::remove_if(particles.begin(), particles.end(), [&](Particle &particle) {
+		return !updateParticle(particle, gravity, lifeLength);
+	}), particles.end());
 }

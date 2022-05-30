@@ -15,6 +15,8 @@ void Survive::ParticleShader::getUniformLocations()
 	m_LocationNumberOfRows = glGetUniformLocation(m_Program, "numberOfRows");
 	m_LocationNumberOfCols = glGetUniformLocation(m_Program, "numberOfCols");
 	m_LocationProjectionMatrix = glGetUniformLocation(m_Program, "projectionMatrix");
+
+	m_LocationColor = glGetUniformLocation(m_Program, "color");
 }
 
 void Survive::ParticleShader::loadProjectionMatrix(const glm::mat4 &projectionMatrix) const
@@ -26,4 +28,9 @@ void Survive::ParticleShader::loadDimensions(unsigned int rows, unsigned int col
 {
 	loadUnsigned(m_LocationNumberOfRows, rows);
 	loadUnsigned(m_LocationNumberOfCols, cols);
+}
+
+void Survive::ParticleShader::loadColor(const glm::vec4 &color) const
+{
+	loadVector4(m_LocationColor, color);
 }

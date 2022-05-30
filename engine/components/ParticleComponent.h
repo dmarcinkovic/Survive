@@ -6,7 +6,7 @@
 #define SURVIVE_PARTICLECOMPONENT_H
 
 #include "TexturedModel.h"
-#include "Particle2.h"
+#include "Particle.h"
 #include "Constants.h"
 
 namespace Survive
@@ -17,12 +17,12 @@ namespace Survive
 		// TODO: change this when you rename it
 		friend class ParticleUpdate;
 
-		friend class ParticleSystem2;
+		friend class ParticleSystem;
 
 		TexturedModel m_Model{};
 		GLuint m_Vbo{};
 
-		std::vector<Particle2> m_Particles;
+		std::vector<Particle> m_Particles;
 
 	public:
 		float particlesPerSecond{};
@@ -43,8 +43,7 @@ namespace Survive
 			Loader::addInstancedAttribute(model.vaoID(), vbo, 2, 4, instancedDataLength, 4);
 			Loader::addInstancedAttribute(model.vaoID(), vbo, 3, 4, instancedDataLength, 8);
 			Loader::addInstancedAttribute(model.vaoID(), vbo, 4, 4, instancedDataLength, 12);
-			Loader::addInstancedAttribute(model.vaoID(), vbo, 5, 4, instancedDataLength, 16);
-			Loader::addInstancedAttribute(model.vaoID(), vbo, 6, 1, instancedDataLength, 20);
+			Loader::addInstancedAttribute(model.vaoID(), vbo, 5, 1, instancedDataLength, 16);
 		}
 	};
 }

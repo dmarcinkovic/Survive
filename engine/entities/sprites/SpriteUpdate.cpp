@@ -28,7 +28,7 @@ void Survive::SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 		sprite.currentFrameIndex = startIndex + frameIndex;
 	} else if (sprite.m_CurrentEpoch < epochs)
 	{
-		const static int size = sprite.row * sprite.col;
+		const int size = sprite.row * sprite.col;
 		sprite.currentFrameIndex = startIndex + frameIndex;
 
 		if (sprite.m_PreviousFrameIndex != sprite.currentFrameIndex &&
