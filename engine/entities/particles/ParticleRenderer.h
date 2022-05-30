@@ -2,19 +2,19 @@
 // Created by david on 21.05.22..
 //
 
-#ifndef SURVIVE_PARTICLEUPDATE_H
-#define SURVIVE_PARTICLEUPDATE_H
+#ifndef SURVIVE_PARTICLERENDERER_H
+#define SURVIVE_PARTICLERENDERER_H
 
 #include "entt.hpp"
 #include "Camera.h"
 #include "ParticleShader.h"
 #include "Renderer2D.h"
 #include "Particle.h"
+#include "ParticleComponent.h"
 
-// TODO rename this to ParticleRenderer when done
 namespace Survive
 {
-	class ParticleUpdate : public Renderer2D
+	class ParticleRenderer : public Renderer2D
 	{
 	private:
 		ParticleShader m_Shader;
@@ -35,7 +35,14 @@ namespace Survive
 		static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data, std::uint64_t &dataPointer);
 
 		static void updateSpriteIndex(std::vector<float> &data, std::uint64_t &dataPointer, int index);
+
+		void loadObjectUniforms(const entt::registry &registry, entt::entity entity) const;
+
+		static void renderParticle(const entt::registry &registry, entt::entity entity, ParticleComponent &particleComponent,
+							const Camera &camera) ;
+
+		static int getSpriteIndex(const entt::registry &registry, entt::entity entity);
 	};
 }
 
-#endif //SURVIVE_PARTICLEUPDATE_H
+#endif //SURVIVE_PARTICLERENDERER_H

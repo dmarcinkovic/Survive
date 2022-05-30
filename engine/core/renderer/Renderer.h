@@ -19,7 +19,7 @@
 #include "WireframeRenderer.h"
 #include "Texture.h"
 #include "ButtonRenderer.h"
-#include "ParticleUpdate.h"
+#include "ParticleRenderer.h"
 
 namespace Survive
 {
@@ -40,7 +40,7 @@ namespace Survive
 		TextRenderer m_TextRenderer{};
 		WireframeRenderer m_WireframeRenderer;
 		ButtonRenderer m_ButtonRenderer;
-		ParticleUpdate m_ParticleRenderer;
+		ParticleRenderer m_ParticleRenderer;
 
 		const Light &m_Light;
 		FrameBuffer m_ShadowFrameBuffer;

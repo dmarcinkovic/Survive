@@ -24,7 +24,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<TagComponent>(particle, "particle");
 	m_Registry.emplace<Transform3DComponent>(particle, glm::vec3{0, 0, -5}, glm::vec3{0.1f});
 	TexturedModel model(m_Loader.renderQuad(), m_Loader.loadTexture("assets/textures/particleAtlas.png"));
-	GLuint vbo = m_Loader.createEmptyVBO(ParticleUpdate::getVertexCount());
+	GLuint vbo = m_Loader.createEmptyVBO(ParticleRenderer::getVertexCount());
 	m_Registry.emplace<ParticleComponent>(particle, model, vbo, 100, 3, -10, 4);
 	m_Registry.emplace<SpriteSheetComponent>(particle, 4, 4, 4);
 

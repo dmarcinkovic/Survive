@@ -14,8 +14,7 @@ namespace Survive
 	struct ParticleComponent
 	{
 	private:
-		// TODO: change this when you rename it
-		friend class ParticleUpdate;
+		friend class ParticleRenderer;
 
 		friend class ParticleSystem;
 
