@@ -31,8 +31,7 @@ namespace Survive
 		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
 		static bool drawColumnInputFloat(const char *text, const char *label, float &value,
-										 float min = std::numeric_limits<float>::min(),
-										 float max = std::numeric_limits<float>::max());
+										 float min = 0, float max = std::numeric_limits<float>::max());
 
 		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
 										float min = 0, float max = std::numeric_limits<float>::max(),

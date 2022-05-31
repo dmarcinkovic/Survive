@@ -21,6 +21,7 @@
 #include "HingeJoint3DComponentTemplate.h"
 #include "Joint2DComponentTemplate.h"
 #include "MaterialComponentTemplate.h"
+#include "ParticleComponentTemplate.h"
 #include "PolygonCollider2DComponentTemplate.h"
 #include "ReflectionComponentTemplate.h"
 #include "RefractionComponentTemplate.h"

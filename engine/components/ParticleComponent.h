@@ -18,7 +18,12 @@ namespace Survive
 
 		friend class ParticleSystem;
 
+		template<typename ComponentType> friend
+		class ComponentTemplate;
+
 		TexturedModel m_Model{};
+		std::string m_TexturePath;
+
 		GLuint m_Vbo{};
 
 		std::vector<Particle> m_Particles;
