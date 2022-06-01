@@ -19,14 +19,20 @@ namespace Survive
 		static void update(entt::registry &registry);
 
 	private:
-		static void emitParticle(const glm::vec3 &center, const glm::vec3 &scale, ParticleComponent &particleComponent);
+		static void emitParticle(const entt::registry &registry, entt::entity entity, const glm::vec3 &center,
+								 const glm::vec3 &scale, ParticleComponent &particleComponent);
 
-		static void generateParticles(const glm::vec3 &center, const glm::vec3 &scale,
-									  ParticleComponent &particleComponent);
+		static void generateParticles(const entt::registry &registry, entt::entity entity, const glm::vec3 &center,
+									  const glm::vec3 &scale, ParticleComponent &particleComponent);
 
 		static bool updateParticle(Particle &particle, float gravity, float lifeLength, float lifeError);
 
 		static void updateParticles(std::vector<Particle> &particles, float gravity, float lifeLength, float lifeError);
+
+		static void updateParticleSprite(const entt::registry &registry, entt::entity entity,
+										 std::vector<Particle> &particles);
+
+		static void initializeParticleSprite(const entt::registry &registry, entt::entity entity, Particle &particle);
 	};
 }
 

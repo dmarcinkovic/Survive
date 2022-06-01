@@ -7,6 +7,8 @@
 
 #include <glm/glm.hpp>
 
+#include "SpriteSheetComponent.h"
+
 namespace Survive
 {
 	struct Particle
@@ -16,6 +18,7 @@ namespace Survive
 		glm::vec3 velocity{};
 
 		float elapsedTime{};
+		SpriteSheetComponent sprite;
 	};
 }
 

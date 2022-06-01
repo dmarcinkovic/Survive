@@ -48,3 +48,10 @@ int Survive::SpriteUpdate::calcFrameIndex(SpriteSheetComponent &sprite, int star
 
 	return std::floor(sprite.m_Time);
 }
+
+void Survive::SpriteUpdate::init(entt::registry &registry)
+{
+	registry.view<SpriteSheetComponent>().each([](SpriteSheetComponent &sprite) {
+		sprite.m_InitialFrameIndex = sprite.currentFrameIndex;
+	});
+}

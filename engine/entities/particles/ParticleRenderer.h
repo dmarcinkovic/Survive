@@ -25,8 +25,7 @@ namespace Survive
 		static GLsizeiptr getVertexCount();
 
 	private:
-		static std::vector<float> updateParticles(const std::vector<Particle> &particles,
-												  const glm::mat4 &viewMatrix, int index);
+		static std::vector<float> updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix);
 
 		static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
 										  const glm::vec3 &scale, const glm::mat4 &viewMatrix,
@@ -38,10 +37,7 @@ namespace Survive
 
 		void loadObjectUniforms(const entt::registry &registry, entt::entity entity) const;
 
-		static void renderParticle(const entt::registry &registry, entt::entity entity,
-					   ParticleComponent &particleComponent, const Camera &camera);
-
-		static int getSpriteIndex(const entt::registry &registry, entt::entity entity);
+		static void renderParticle(ParticleComponent &particleComponent, const Camera &camera);
 
 		static void setBlendFunction(bool useAdditiveBlending);
 	};

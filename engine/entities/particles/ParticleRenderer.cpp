@@ -30,7 +30,7 @@ void Survive::ParticleRenderer::render(entt::registry &registry, const Camera &c
 
 		setBlendFunction(particleComponent.useAdditiveBlending);
 		loadObjectUniforms(registry, entity);
-		renderParticle(registry, entity, particleComponent, camera);
+		renderParticle(particleComponent, camera);
 
 		finishRenderingEntity(numberOfVaoUnits);
 	}
@@ -39,7 +39,7 @@ void Survive::ParticleRenderer::render(entt::registry &registry, const Camera &c
 }
 
 std::vector<float> Survive::ParticleRenderer::updateParticles(const std::vector<Particle> &particles,
-															  const glm::mat4 &viewMatrix, int index)
+															  const glm::mat4 &viewMatrix)
 {
 	std::vector<float> data(particles.size() * Constants::PARTICLE_DATA_LENGTH);
 	std::uint64_t dataPointer = 0;
@@ -48,7 +48,7 @@ std::vector<float> Survive::ParticleRenderer::updateParticles(const std::vector<
 	for (auto const &particle: particles)
 	{
 		updateModelViewMatrix(particle.position, rotation, particle.scale, viewMatrix, data, dataPointer);
-		updateSpriteIndex(data, dataPointer, index);
+		updateSpriteIndex(data, dataPointer, particle.sprite.currentFrameIndex);
 	}
 
 	return data;
@@ -131,12 +131,10 @@ void Survive::ParticleRenderer::loadObjectUniforms(const entt::registry &registr
 	}
 }
 
-void Survive::ParticleRenderer::renderParticle(const entt::registry &registry, entt::entity entity,
-											   ParticleComponent &particleComponent, const Camera &camera)
+void Survive::ParticleRenderer::renderParticle(ParticleComponent &particleComponent, const Camera &camera)
 {
 	std::vector<Particle> &particles = particleComponent.m_Particles;
-	int index = getSpriteIndex(registry, entity);
-	std::vector<float> data = updateParticles(particles, camera.getViewMatrix(), index);
+	std::vector<float> data = updateParticles(particles, camera.getViewMatrix());
 
 	auto sizeOfData = static_cast<GLsizeiptr>(particles.size() * Constants::PARTICLE_DATA_LENGTH);
 	Loader::updateVBO(particleComponent.m_Vbo, data, sizeOfData);
@@ -144,17 +142,6 @@ void Survive::ParticleRenderer::renderParticle(const entt::registry &registry, e
 	auto numberOfParticles = static_cast<GLsizei>(particles.size());
 	glDrawElementsInstanced(GL_TRIANGLES, particleComponent.m_Model.vertexCount(), GL_UNSIGNED_INT, nullptr,
 							numberOfParticles);
-}
-
-int Survive::ParticleRenderer::getSpriteIndex(const entt::registry &registry, entt::entity entity)
-{
-	if (registry.any_of<SpriteSheetComponent>(entity))
-	{
-		const SpriteSheetComponent &sprite = registry.get<SpriteSheetComponent>(entity);
-		return sprite.currentFrameIndex;
-	}
-
-	return 0;
 }
 
 void Survive::ParticleRenderer::setBlendFunction(bool useAdditiveBlending)

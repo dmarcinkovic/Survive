@@ -15,9 +15,11 @@ namespace Survive
 	public:
 		static void update(entt::registry &registry);
 
-	private:
 		static void updateSprite(SpriteSheetComponent &sprite);
 
+		static void init(entt::registry &registry);
+
+	private:
 		static int calcFrameIndex(SpriteSheetComponent &sprite, int startIndex, int endIndex);
 	};
 }

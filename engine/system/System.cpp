@@ -23,6 +23,7 @@ void Survive::System::update(entt::registry &registry, b2World *world2D, rp3d::P
 void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world2D,
 						   rp3d::PhysicsWorld *world3D, rp3d::PhysicsCommon &physicsCommon)
 {
+	SpriteUpdate::init(registry);
 	PhysicSystem::init(registry, world2D, world3D, physicsCommon);
 	ScriptingSystem::init(registry, eventHandler);
 }
