@@ -1,0 +1,25 @@
+entity:particle
+	component:SpriteSheetComponent
+		rows:8
+		cols:8
+		startIndex:0
+		endIndex:63
+		spritesInSecond:16
+		numberOfEpochs:-1
+		animate:1
+	component:Transform3DComponent
+		position:0,-1,-5
+		scale:0.3,0.3,0.3
+		rotation:0,0,0
+	component:ParticleComponent
+		texturePath:assets/particles/smoke.png
+		particlesPerSecond:100
+		speed:1
+		gravity:-0.1
+		lifeLength:4
+		speedError:0.5
+		lifeError:0.5
+		scaleError:0.2
+		directionDeviation:0.3
+		useAdditiveBlending:0
+end
