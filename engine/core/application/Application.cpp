@@ -17,11 +17,7 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_Registry.emplace<Transform3DComponent>(particle, glm::vec3{0, -1, -5}, glm::vec3{0.3f});
 	TexturedModel model(m_Loader.renderQuad(), m_Loader.loadTexture("assets/particles/smoke.png"));
 	GLuint vbo = m_Loader.createEmptyVBO(ParticleRenderer::getVertexCount());
-	ParticleComponent particleComponent(model, vbo, 100, 1, -0.1, 4);
-	particleComponent.speedError = 0.5f;
-	particleComponent.lifeError = 0.5f;
-	particleComponent.scaleError = 0.2f;
-	particleComponent.directionDeviation = 0.3f;
+	ParticleComponent particleComponent(model, vbo, 100, 1, -0.1, 4, 0.5f, 0.5f, 0.2f, 0.3f);
 	m_Registry.emplace<ParticleComponent>(particle, particleComponent);
 	m_Registry.emplace<SpriteSheetComponent>(particle, 8, 8, 16);
 

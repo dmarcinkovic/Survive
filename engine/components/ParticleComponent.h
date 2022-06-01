@@ -22,8 +22,6 @@ namespace Survive
 		class ComponentTemplate;
 
 		TexturedModel m_Model{};
-		std::string m_TexturePath;
-
 		GLuint m_Vbo{};
 
 		std::vector<Particle> m_Particles;
@@ -33,21 +31,23 @@ namespace Survive
 		float speed{};
 		float gravity{};
 		float lifeLength{};
-
 		float speedError{};
+
 		float lifeError{};
 		float scaleError{};
-
 		float directionDeviation{1.0f};
 
 		bool useAdditiveBlending{};
+		std::string texturePath;
 
 		ParticleComponent() = default;
 
-		ParticleComponent(const TexturedModel &model, GLuint vbo, float particlesPerSecond,
-						  float speed, float gravity, float lifeLength)
-				: m_Model(model), m_Vbo(vbo), particlesPerSecond{particlesPerSecond},
-				  speed{speed}, gravity{gravity}, lifeLength{lifeLength}
+		ParticleComponent(const TexturedModel &model, GLuint vbo, float particlesPerSecond, float speed, float gravity,
+						  float lifeLength, float speedError = 0.0f, float lifeError = 0.0f, float scaleError = 0.f,
+						  float directionDeviation = 1.0f, bool useAdditiveBlending = false)
+				: m_Model(model), m_Vbo(vbo), particlesPerSecond(particlesPerSecond), speed(speed), gravity(gravity),
+				  lifeLength(lifeLength), speedError(speedError), lifeError(lifeError), scaleError(scaleError),
+				  directionDeviation(directionDeviation), useAdditiveBlending(useAdditiveBlending)
 		{
 			constexpr int instancedDataLength = Constants::PARTICLE_DATA_LENGTH;
 

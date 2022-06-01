@@ -33,7 +33,7 @@ namespace Survive
 			{
 				ImGui::Columns(2, nullptr, false);
 
-				loadTexture(component.m_Model, component.m_TexturePath);
+				loadTexture(component.m_Model, component.texturePath);
 				loadModel(component);
 
 				drawProperties(component);
