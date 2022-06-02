@@ -28,7 +28,7 @@ void Survive::SpriteUpdate::updateSprite(SpriteSheetComponent &sprite)
 		sprite.currentFrameIndex = startIndex + frameIndex;
 	} else if (sprite.m_CurrentEpoch < epochs)
 	{
-		const static int size = sprite.row * sprite.col;
+		const int size = sprite.row * sprite.col;
 		sprite.currentFrameIndex = startIndex + frameIndex;
 
 		if (sprite.m_PreviousFrameIndex != sprite.currentFrameIndex &&
@@ -47,4 +47,11 @@ int Survive::SpriteUpdate::calcFrameIndex(SpriteSheetComponent &sprite, int star
 	sprite.m_Time = std::fmod(sprite.m_Time, endIndex - startIndex + 1);
 
 	return std::floor(sprite.m_Time);
+}
+
+void Survive::SpriteUpdate::init(entt::registry &registry)
+{
+	registry.view<SpriteSheetComponent>().each([](SpriteSheetComponent &sprite) {
+		sprite.m_InitialFrameIndex = sprite.currentFrameIndex;
+	});
 }

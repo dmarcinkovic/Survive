@@ -21,6 +21,7 @@
 #include "MaterialComponent.h"
 #include "MoveComponent.h"
 #include "OutlineComponent.h"
+#include "ParticleComponent.h"
 #include "PolygonCollider2DComponent.h"
 #include "ReflectionComponent.h"
 #include "RefractionComponent.h"

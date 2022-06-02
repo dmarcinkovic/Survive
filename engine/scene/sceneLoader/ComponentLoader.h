@@ -14,6 +14,7 @@
 #include "entt.hpp"
 #include "Font.h"
 #include "AudioMaster.h"
+#include "TexturedModel.h"
 
 namespace Survive
 {
@@ -87,6 +88,9 @@ namespace Survive
 
 		static void loadOutlineComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
+		static void
+		loadParticleComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
+
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
 
@@ -111,6 +115,8 @@ namespace Survive
 
 		static std::tuple<std::string, bool, bool, rp3d::Vector3, rp3d::Vector3, rp3d::Vector3>
 		loadJoint3DComponent(std::ifstream &reader);
+
+		static TexturedModel loadRender2DModel(const std::string &texturePath, Loader &loader);
 	};
 }
 

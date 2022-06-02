@@ -12,19 +12,21 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World2D(std::make_unique<b2World>(m_Gravity))
 {
-	auto cube = m_Registry.create();
-	m_Registry.emplace<TagComponent>(cube, "cube");
-	m_Registry.emplace<Transform3DComponent>(cube, glm::vec3{0, 0, -8}, glm::vec3{1}, glm::vec3{35, 40, 0});
-	m_Registry.emplace<Render3DComponent>(cube, TexturedModel(ObjParser::loadObj("assets/models/cube.obj", m_Loader),
-															  Texture()));
-	m_Registry.emplace<SpriteComponent>(cube, glm::vec4{0.5f, 0.5f, 0.8f, 1.0f});
-	m_Registry.emplace<OutlineComponent>(cube, false);
+	auto particle = m_Registry.create();
+	m_Registry.emplace<TagComponent>(particle, "particle");
+	m_Registry.emplace<Transform3DComponent>(particle, glm::vec3{0, -1, -5}, glm::vec3{0.3f});
+	TexturedModel model(m_Loader.renderQuad(), m_Loader.loadTexture("assets/particles/smoke.png"));
+	GLuint vbo = m_Loader.createEmptyVBO(ParticleRenderer::getVertexCount());
+	ParticleComponent particleComponent(model, vbo, 100, 1, -0.1, 4, 0.5f, 0.5f, 0.2f, 0.3f);
+	m_Registry.emplace<ParticleComponent>(particle, particleComponent);
+	m_Registry.emplace<SpriteSheetComponent>(particle, 8, 8, 16);
 
 	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
 	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
 	m_Editor.addPlayButtonListener([this]() {
-		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent>(m_Registry);
+		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent, ParticleComponent>(
+				m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World2D.get(), m_World3D, m_PhysicsCommon);
 
 		m_World2D->SetContactListener(m_ContactPhysics2DListener.get());
@@ -32,7 +34,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
-		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent>(m_Registry);
+		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent, ParticleComponent>(
+				m_Registry);
 
 		m_World2D = std::make_unique<b2World>(m_Gravity);
 

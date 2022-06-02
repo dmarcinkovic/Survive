@@ -25,7 +25,7 @@ namespace Survive
 	public:
 		Shader(const char *vertexShaderFile, const char *fragmentShaderFile);
 
-		~Shader();
+		virtual ~Shader();
 
 		void start() const;
 

@@ -25,9 +25,7 @@ namespace Survive
 	public:
 		float near = 0.1f;
 		float far = 1000.0f;
-
 		float fieldOfView = 50.0f;
-		glm::vec3 rotation{};
 
 		Camera();
 
@@ -35,13 +33,13 @@ namespace Survive
 
 		void moveCameraInYDirection(float yDistance);
 
-		[[nodiscard]] glm::mat4 getProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getOrthographicProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getOrthographicProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getLightProjectionMatrix() const;
+		[[nodiscard]] const glm::mat4 &getLightProjectionMatrix() const;
 
-		[[nodiscard]] glm::mat4 getViewMatrix() const;
+		[[nodiscard]] const glm::mat4 &getViewMatrix() const;
 
 		glm::mat4 &getViewMatrix();
 

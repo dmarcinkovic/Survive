@@ -7,6 +7,7 @@
 #include "AnimationSystem.h"
 #include "SpriteUpdate.h"
 #include "ScriptingSystem.h"
+#include "ParticleSystem.h"
 #include "System.h"
 
 void Survive::System::update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
@@ -15,12 +16,14 @@ void Survive::System::update(entt::registry &registry, b2World *world2D, rp3d::P
 	AudioSystem::update(registry);
 	AnimationSystem::update(registry);
 	SpriteUpdate::update(registry);
+	ParticleSystem::update(registry);
 	ScriptingSystem::update(registry);
 }
 
 void Survive::System::init(entt::registry &registry, EventHandler &eventHandler, b2World *world2D,
 						   rp3d::PhysicsWorld *world3D, rp3d::PhysicsCommon &physicsCommon)
 {
+	SpriteUpdate::init(registry);
 	PhysicSystem::init(registry, world2D, world3D, physicsCommon);
 	ScriptingSystem::init(registry, eventHandler);
 }

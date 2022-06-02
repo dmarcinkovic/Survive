@@ -52,6 +52,8 @@ namespace Survive
 		static void decomposeViewMatrix(Camera &camera, const glm::mat4 &viewMatrix);
 
 		static std::pair<ImVec2, ImVec2> getViewGizmoRect();
+
+		static bool viewMatrixChanged(const glm::mat4 &oldViewMatrix, const glm::mat4 &newViewMatrix);
 	};
 }
 

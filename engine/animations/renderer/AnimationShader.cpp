@@ -9,7 +9,7 @@
 Survive::AnimationShader::AnimationShader()
 		: ObjectShader(VERTEX_SHADER, FRAGMENT_SHADER)
 {
-	loadUniformLocations();
+	AnimationShader::loadUniformLocations();
 }
 
 void Survive::AnimationShader::loadUniformLocations()
