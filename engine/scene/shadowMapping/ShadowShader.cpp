@@ -7,7 +7,7 @@
 #include "ShadowShader.h"
 
 Survive::ShadowShader::ShadowShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

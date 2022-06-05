@@ -5,7 +5,7 @@
 #include "WireframeShader.h"
 
 Survive::WireframeShader::WireframeShader()
-	: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+	: Shader(vertexShaderSource, fragmentShaderSource)
 {
 
 }

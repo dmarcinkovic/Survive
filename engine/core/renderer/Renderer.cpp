@@ -34,6 +34,7 @@ void Survive::Renderer::render2DScene(entt::registry &registry, const Camera &ca
 	m_TextRenderer.renderText(registry, camera);
 	m_ButtonRenderer.render();
 	m_WireframeRenderer.render();
+	m_ParticleRenderer.render(registry, camera);
 }
 
 void Survive::Renderer::render(entt::registry &registry, Camera &camera) const
@@ -157,6 +158,7 @@ void Survive::Renderer::renderScene(entt::registry &registry, Camera &camera, bo
 	}
 
 	render2DScene(registry, camera);
+
 	FrameBuffer::unbindFrameBuffer();
 
 	m_BloomRenderer.render(registry);

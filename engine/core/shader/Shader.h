@@ -18,14 +18,14 @@ namespace Survive
 		GLuint m_Program;
 
 	private:
-		static GLuint loadShader(const char *filename, GLenum type);
+		static GLuint loadShader(const char *source, GLenum type);
 
-		static void debug(GLuint shaderId, const char *filename);
+		static void debug(GLuint shaderId);
 
 	public:
-		Shader(const char *vertexShaderFile, const char *fragmentShaderFile);
+		Shader(const char *vertexSource, const char *fragmentSource);
 
-		~Shader();
+		virtual ~Shader();
 
 		void start() const;
 

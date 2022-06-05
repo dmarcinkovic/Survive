@@ -5,7 +5,7 @@
 #include "SpritesShader.h"
 
 Survive::SpritesShader::SpritesShader()
-		: Shader(VERTEX_FILE, FRAGMENT_FILE)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

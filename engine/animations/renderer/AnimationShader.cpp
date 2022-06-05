@@ -7,9 +7,9 @@
 #include "AnimationShader.h"
 
 Survive::AnimationShader::AnimationShader()
-		: ObjectShader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: ObjectShader(vertexShaderSource, fragmentShaderSource)
 {
-	loadUniformLocations();
+	AnimationShader::loadUniformLocations();
 }
 
 void Survive::AnimationShader::loadUniformLocations()

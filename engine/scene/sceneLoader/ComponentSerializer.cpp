@@ -537,3 +537,25 @@ void Survive::ComponentSerializer::saveScriptComponent(entt::registry &registry,
 		writer << "\t\tpluginLocation:" << script.pluginLocation << '\n';
 	}
 }
+
+void Survive::ComponentSerializer::saveParticleComponent(entt::registry &registry, entt::entity entity,
+														 std::ofstream &writer)
+{
+	if (registry.any_of<ParticleComponent>(entity))
+	{
+		const ParticleComponent &particle = registry.get<ParticleComponent>(entity);
+		writer << "\tcomponent:ParticleComponent\n";
+
+		writer << "\t\ttexturePath:" << particle.texturePath << '\n';
+		writer << "\t\tparticlesPerSecond:" << particle.particlesPerSecond << '\n';
+		writer << "\t\tspeed:" << particle.speed << '\n';
+		writer << "\t\tgravity:" << particle.gravity << '\n';
+		writer << "\t\tlifeLength:" << particle.lifeLength << '\n';
+
+		writer << "\t\tspeedError:" << particle.speedError << '\n';
+		writer << "\t\tlifeError:" << particle.lifeError << '\n';
+		writer << "\t\tscaleError:" << particle.scaleError << '\n';
+		writer << "\t\tdirectionDeviation:" << particle.directionDeviation << '\n';
+		writer << "\t\tuseAdditiveBlending:" << particle.useAdditiveBlending << '\n';
+	}
+}

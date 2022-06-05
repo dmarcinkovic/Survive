@@ -13,8 +13,12 @@ namespace Survive
 	class TerrainShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/TerrainVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/TerrainFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "TerrainVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "TerrainFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationProjectionMatrix{};

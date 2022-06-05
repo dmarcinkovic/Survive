@@ -5,7 +5,6 @@
 #ifndef SURVIVE_TEXTSHADER_H
 #define SURVIVE_TEXTSHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive
@@ -13,8 +12,12 @@ namespace Survive
 	class TextShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/TextVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/TextFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "TextVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "TextFragmentShader.glsl"
+		;
 
 		GLint m_LocationColor{};
 		GLint m_LocationBorderWidth{};

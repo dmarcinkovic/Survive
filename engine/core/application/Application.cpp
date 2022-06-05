@@ -24,7 +24,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
 	m_Editor.addPlayButtonListener([this]() {
-		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent>(m_Registry);
+		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent, ParticleComponent>(
+				m_Registry);
 		System::init(m_Registry, m_EventHandler, m_World2D.get(), m_World3D, m_PhysicsCommon, m_Camera);
 
 		m_World2D->SetContactListener(m_ContactPhysics2DListener.get());
@@ -32,7 +33,8 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 	});
 
 	m_Editor.addReloadButtonListener([this]() {
-		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent>(m_Registry);
+		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent, ParticleComponent>(
+				m_Registry);
 
 		m_World2D = std::make_unique<b2World>(m_Gravity);
 

@@ -14,8 +14,12 @@ namespace Survive
 	class OutlineShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_SHADER = "engine/core/shader/sources/OutlineVertexShader.glsl";
-		constexpr static const char *FRAGMENT_SHADER = "engine/core/shader/sources/OutlineFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "OutlineVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "OutlineFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationProjectionMatrix{};

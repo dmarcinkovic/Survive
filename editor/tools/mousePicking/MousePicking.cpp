@@ -57,7 +57,7 @@ void Survive::MousePicking::render(entt::registry &registry, const Camera &camer
 	setViewport();
 	prepareRendering(m_Shader);
 
-	for (auto const&[texturedModel, objects]: entities)
+	for (auto const &[texturedModel, objects]: entities)
 	{
 		glBindVertexArray(texturedModel.vaoID());
 		glEnableVertexAttribArray(0);
@@ -174,9 +174,8 @@ void Survive::MousePicking::loadTransformationMatrix(const Camera &camera,
 {
 	const Transform3DComponent &transform = registry.get<Transform3DComponent>(entity);
 
-	glm::vec3 rotation = camera.rotation + transform.rotation;
-
-	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale, rotation);
+	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale,
+																	   transform.rotation);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 }
 
@@ -185,7 +184,7 @@ bool Survive::MousePicking::isInsideWindow() const
 	float width = Scene::getSceneWidth();
 	float height = Scene::getSceneHeight();
 
-	auto[regionX, regionY] = Scene::getSceneRegionMin();
+	auto [regionX, regionY] = Scene::getSceneRegionMin();
 
 	return m_MousePosition.x > 0 && m_MousePosition.x <= width - regionX &&
 		   m_MousePosition.y >= regionY && m_MousePosition.y < height;
@@ -202,7 +201,7 @@ void Survive::MousePicking::setViewport()
 void Survive::MousePicking::setMousePosition(float mouseX, float mouseY)
 {
 	float height = Scene::getSceneHeight();
-	auto[x, y] = Scene::getScenePosition();
+	auto [x, y] = Scene::getScenePosition();
 	m_MousePosition = glm::vec2{mouseX - x, height - mouseY + y};
 
 	if (isInsideWindow())

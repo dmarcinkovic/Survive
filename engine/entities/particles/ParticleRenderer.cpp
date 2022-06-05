@@ -1,93 +1,62 @@
 //
-// Created by david on 11. 02. 2021..
+// Created by david on 21.05.22..
 //
 
+#include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
 #include "ParticleRenderer.h"
-#include "Maths.h"
+#include "Components.h"
+#include "Constants.h"
 
-int Survive::ParticleRenderer::pointer = 0;
-
-Survive::ParticleRenderer::ParticleRenderer()
-		: m_Vbo(m_Loader.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES))
+void Survive::ParticleRenderer::render(entt::registry &registry, const Camera &camera) const
 {
-}
+	constexpr int numberOfVaoUnits = 6;
+	auto entities = registry.view<ParticleComponent, TagComponent>();
 
-void Survive::ParticleRenderer::render(const Camera &camera) const
-{
-	prepare(camera);
-	glm::mat4 viewMatrix = camera.getViewMatrix();
-
-	for (auto const&[particleModel, particles] : m_Particles)
+	if (entities.begin() == entities.end())
 	{
-		if (particles.empty())
-		{
-			continue;
-		}
-
-		prepareEntity(particleModel.texturedModel, VAO_UNITS);
-
-		m_Shader.loadDimensions(particles.back().m_Rows, particles.back().m_Cols);
-
-		std::vector<float> data = updateParticles(particles, viewMatrix);
-
-		auto sizeOfData = static_cast<GLsizeiptr>(particles.size() * INSTANCE_DATA_LENGTH);
-		Loader::updateVBO(m_Vbo, data, sizeOfData);
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, particleModel.texturedModel.vertexCount(),
-							  static_cast<GLsizei>(particles.size()));
-
-		finishRenderingEntity(VAO_UNITS);
+		return;
 	}
 
-	finish();
+	prepareRendering(m_Shader);
+	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
+
+	for (auto const entity: entities)
+	{
+		const TagComponent &tag = entities.get<TagComponent>(entity);
+		ParticleComponent &particleComponent = entities.get<ParticleComponent>(entity);
+		prepareEntity(particleComponent.m_Model, numberOfVaoUnits);
+
+		setBlendFunction(particleComponent.useAdditiveBlending);
+		loadObjectUniforms(registry, entity);
+		renderParticle(particleComponent, camera);
+
+		finishRenderingEntity(numberOfVaoUnits);
+	}
+
+	finishRendering();
 }
 
-std::vector<float>
-Survive::ParticleRenderer::updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix)
+std::vector<float> Survive::ParticleRenderer::updateParticles(const std::vector<Particle> &particles,
+															  const glm::mat4 &viewMatrix)
 {
-	pointer = 0;
-	std::vector<float> data(particles.size() * INSTANCE_DATA_LENGTH);
+	std::vector<float> data(particles.size() * Constants::PARTICLE_DATA_LENGTH);
+	std::uint64_t dataPointer = 0;
+	constexpr glm::vec3 rotation{0.0f};
 
-	for (auto const &particle : particles)
+	for (auto const &particle: particles)
 	{
-		updateModelViewMatrix(particle.m_Position, particle.m_Rotation, particle.m_Scale, viewMatrix, data);
-		updateTextureCoordinates(particle, data);
+		updateModelViewMatrix(particle.position, rotation, particle.scale, viewMatrix, data, dataPointer);
+		updateSpriteIndex(data, dataPointer, particle.sprite.currentFrameIndex);
 	}
 
 	return data;
 }
 
-void Survive::ParticleRenderer::prepare(const Camera &camera) const
-{
-	m_Shader.start();
-
-	m_Shader.loadProjectionMatrix(camera.getProjectionMatrix());
-	glEnable(GL_DEPTH_TEST);
-
-	enableBlending();
-}
-
-void Survive::ParticleRenderer::finish()
-{
-	Shader::stop();
-
-	glDisable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthMask(true);
-}
-
-void Survive::ParticleRenderer::enableBlending()
-{
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	glDepthMask(false);
-}
-
-void
-Survive::ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
-												 const glm::vec3 &scale,
-												 const glm::mat4 &viewMatrix, std::vector<float> &data)
+void Survive::ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
+													  const glm::vec3 &scale, const glm::mat4 &viewMatrix,
+													  std::vector<float> &data, std::uint64_t &dataPointer)
 {
 	glm::mat4 modelMatrix{1};
 
@@ -107,56 +76,81 @@ Survive::ParticleRenderer::updateModelViewMatrix(const glm::vec3 &position, cons
 	modelMatrix = glm::scale(modelMatrix, scale);
 
 	glm::mat4 modelViewMatrix = viewMatrix * modelMatrix;
-	storeMatrixData(modelViewMatrix, data);
+	storeMatrixData(modelViewMatrix, data, dataPointer);
 }
 
-void Survive::ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data)
+void Survive::ParticleRenderer::storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data,
+												std::uint64_t &dataPointer)
 {
-	data[pointer++] = matrix[0][0];
-	data[pointer++] = matrix[0][1];
-	data[pointer++] = matrix[0][2];
-	data[pointer++] = matrix[0][3];
-	data[pointer++] = matrix[1][0];
-	data[pointer++] = matrix[1][1];
-	data[pointer++] = matrix[1][2];
-	data[pointer++] = matrix[1][3];
-	data[pointer++] = matrix[2][0];
-	data[pointer++] = matrix[2][1];
-	data[pointer++] = matrix[2][2];
-	data[pointer++] = matrix[2][3];
-	data[pointer++] = matrix[3][0];
-	data[pointer++] = matrix[3][1];
-	data[pointer++] = matrix[3][2];
-	data[pointer++] = matrix[3][3];
+	data[dataPointer++] = matrix[0][0];
+	data[dataPointer++] = matrix[0][1];
+	data[dataPointer++] = matrix[0][2];
+	data[dataPointer++] = matrix[0][3];
+	data[dataPointer++] = matrix[1][0];
+	data[dataPointer++] = matrix[1][1];
+	data[dataPointer++] = matrix[1][2];
+	data[dataPointer++] = matrix[1][3];
+	data[dataPointer++] = matrix[2][0];
+	data[dataPointer++] = matrix[2][1];
+	data[dataPointer++] = matrix[2][2];
+	data[dataPointer++] = matrix[2][3];
+	data[dataPointer++] = matrix[3][0];
+	data[dataPointer++] = matrix[3][1];
+	data[dataPointer++] = matrix[3][2];
+	data[dataPointer++] = matrix[3][3];
 }
 
-void Survive::ParticleRenderer::updateTextureCoordinates(const Particle &particle, std::vector<float> &data)
+void Survive::ParticleRenderer::updateSpriteIndex(std::vector<float> &data, std::uint64_t &dataPointer, int index)
 {
-	data[pointer++] = particle.m_TextureOffset1.x;
-	data[pointer++] = particle.m_TextureOffset1.y;
-	data[pointer++] = particle.m_TextureOffset2.x;
-	data[pointer++] = particle.m_TextureOffset2.y;
-	data[pointer++] = particle.m_BlendFactor;
+	data[dataPointer++] = static_cast<float>(index);
 }
 
-void Survive::ParticleRenderer::addInstanceAttributes(const TexturedModel &model) const
+GLsizeiptr Survive::ParticleRenderer::getVertexCount()
 {
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
-	Loader::addInstancedAttribute(model.vaoID(), m_Vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
+	return static_cast<GLsizeiptr>(Constants::MAX_PARTICLE_INSTANCES * Constants::PARTICLE_DATA_LENGTH);
 }
 
-std::vector<Survive::Particle> &Survive::ParticleRenderer::getParticles(const ParticleModel &model)
+void Survive::ParticleRenderer::loadObjectUniforms(const entt::registry &registry, entt::entity entity) const
 {
-	std::vector<Particle> &particles = m_Particles[model];
-
-	if (particles.empty())
+	if (registry.any_of<SpriteSheetComponent>(entity))
 	{
-		addInstanceAttributes(model.texturedModel);
+		const SpriteSheetComponent &spriteSheet = registry.get<SpriteSheetComponent>(entity);
+		m_Shader.loadDimensions(spriteSheet.row, spriteSheet.col);
+	} else
+	{
+		m_Shader.loadDimensions(1, 1);
 	}
 
-	return particles;
+	if (registry.any_of<SpriteComponent>(entity))
+	{
+		const SpriteComponent &sprite = registry.get<SpriteComponent>(entity);
+		m_Shader.loadColor(sprite.color);
+	} else
+	{
+		m_Shader.loadColor(glm::vec4{0.0f});
+	}
+}
+
+void Survive::ParticleRenderer::renderParticle(ParticleComponent &particleComponent, const Camera &camera)
+{
+	std::vector<Particle> &particles = particleComponent.m_Particles;
+	std::vector<float> data = updateParticles(particles, camera.getViewMatrix());
+
+	auto sizeOfData = static_cast<GLsizeiptr>(particles.size() * Constants::PARTICLE_DATA_LENGTH);
+	Loader::updateVBO(particleComponent.m_Vbo, data, sizeOfData);
+
+	auto numberOfParticles = static_cast<GLsizei>(particles.size());
+	glDrawElementsInstanced(GL_TRIANGLES, particleComponent.m_Model.vertexCount(), GL_UNSIGNED_INT, nullptr,
+							numberOfParticles);
+}
+
+void Survive::ParticleRenderer::setBlendFunction(bool useAdditiveBlending)
+{
+	if (useAdditiveBlending)
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	} else
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
 }

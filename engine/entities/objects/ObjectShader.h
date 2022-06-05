@@ -5,7 +5,6 @@
 #ifndef SURVIVE_OBJECTSHADER_H
 #define SURVIVE_OBJECTSHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive
@@ -13,8 +12,12 @@ namespace Survive
 	class ObjectShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_SHADER = "engine/core/shader/sources/ObjectVertexShader.glsl";
-		constexpr static const char *FRAGMENT_SHADER = "engine/core/shader/sources/ObjectFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "ObjectVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "ObjectFragmentShader.glsl"
+		;
 
 	protected:
 		GLint m_LocationTransformationMatrix{};
@@ -53,7 +56,7 @@ namespace Survive
 	public:
 		ObjectShader();
 
-		ObjectShader(const char *vertexShaderFile, const char *fragmentShaderFile);
+		ObjectShader(const char *vertexSource, const char *fragmentSource);
 
 		void loadTransformationMatrix(const glm::mat4 &transformationMatrix) const;
 

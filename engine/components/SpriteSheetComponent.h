@@ -25,6 +25,8 @@ namespace Survive
 		int m_CurrentEpoch{};
 		int m_PreviousFrameIndex{};
 
+		int m_InitialFrameIndex{};
+
 	public:
 		SpriteSheetComponent()
 				: row(1), col(1), currentFrameIndex(0), animating(true)
@@ -35,7 +37,7 @@ namespace Survive
 				: row(row), col(col), animating(true), spritesInSecond(spritesInSecond),
 				  numberOfEpochs(numberOfEpochs),
 				  currentFrameIndex(startRow * col + startCol), endIndex(row * col - 1),
-				  startIndex(currentFrameIndex)
+				  startIndex(currentFrameIndex), m_InitialFrameIndex(currentFrameIndex)
 		{}
 
 		SpriteSheetComponent(int row, int col, int spritesInSecond, int startRow, int startCol,
@@ -43,16 +45,19 @@ namespace Survive
 				: row(row), col(col), animating(true), spritesInSecond(spritesInSecond),
 				  numberOfEpochs(numberOfEpochs),
 				  currentFrameIndex(startRow * col + startCol), endIndex(endRow * col + endCol),
-				  startIndex(currentFrameIndex)
+				  startIndex(currentFrameIndex), m_InitialFrameIndex(currentFrameIndex)
 		{}
 
 		SpriteSheetComponent(int row, int col, int spritesInSecond, int startIndex, int endIndex, int numberOfEpochs,
 							 bool animate)
 				: row(row), col(col), spritesInSecond(spritesInSecond), startIndex(startIndex), endIndex(endIndex),
-				  numberOfEpochs(numberOfEpochs), animating(animate), currentFrameIndex(startIndex)
+				  numberOfEpochs(numberOfEpochs), animating(animate), currentFrameIndex(startIndex),
+				  m_InitialFrameIndex(currentFrameIndex)
 		{}
 
 		friend class SpriteUpdate;
+
+		friend class ParticleSystem;
 	};
 }
 

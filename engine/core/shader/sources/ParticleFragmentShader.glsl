@@ -2,16 +2,14 @@
 
 out vec4 outColor;
 
-in vec2 textureCoordinates1;
-in vec2 textureCoordinates2;
-in float blend;
+in vec2 textureCoordinates;
 
 uniform sampler2D particleTexture;
+uniform vec4 color;
 
 void main()
 {
-    vec4 color1 = texture(particleTexture, textureCoordinates1);
-    vec4 color2 = texture(particleTexture, textureCoordinates2);
+    vec4 textureColor = texture(particleTexture, textureCoordinates);
 
-    outColor = mix(color1, color2, blend);
+    outColor = color + textureColor;
 }

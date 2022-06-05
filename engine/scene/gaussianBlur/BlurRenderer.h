@@ -8,12 +8,12 @@
 #include <functional>
 #include <unordered_map>
 
-#include "AnimationRenderer.h"
-#include "HorizontalBlurRenderer.h"
-#include "ObjectRenderer.h"
-#include "TerrainRenderer.h"
-#include "VerticalBlurRenderer.h"
 #include "entt.hpp"
+#include "AnimationRenderer.h"
+#include "TerrainRenderer.h"
+#include "ObjectRenderer.h"
+#include "VerticalBlurRenderer.h"
+#include "HorizontalBlurRenderer.h"
 
 namespace Survive
 {
@@ -51,7 +51,7 @@ namespace Survive
 
 		static void finishRendering();
 	};
-}// namespace Survive
+}
 
 
-#endif//SURVIVE_BLURRENDERER_H
+#endif //SURVIVE_BLURRENDERER_H

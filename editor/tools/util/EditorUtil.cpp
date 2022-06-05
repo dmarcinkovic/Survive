@@ -9,45 +9,6 @@
 #include "Log.h"
 #include "EditorUtil.h"
 
-void Survive::EditorUtil::drawTransform3DHeader()
-{
-	ImGui::NextColumn();
-	ImGui::Text("X");
-	ImGui::NextColumn();
-	ImGui::Text("Y");
-	ImGui::NextColumn();
-	ImGui::Text("Z");
-	ImGui::NextColumn();
-}
-
-void Survive::EditorUtil::drawTransform3DRow(glm::vec3 &vec, const char *x, const char *y,
-											 const char *z, float lowerBound)
-{
-	setDragFloat(vec.x, x, ImVec4(0.5f, 0, 0, 1), ImVec4(0.25f, 0, 0, 1), lowerBound);
-	setDragFloat(vec.y, y, ImVec4(0, 0.4f, 0, 1), ImVec4(0, 0.2f, 0, 1), lowerBound);
-	setDragFloat(vec.z, z, ImVec4(0, 0, 0.5f, 1), ImVec4(0, 0, 0.25f, 1), lowerBound);
-
-	ImGui::NextColumn();
-}
-
-void Survive::EditorUtil::setDragFloat(float &value, const char *label, const ImVec4 &frameBg,
-									   const ImVec4 &increment, float lowerBound)
-{
-	float upperBound = std::numeric_limits<float>::max();
-
-	ImGui::NextColumn();
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, frameBg);
-
-	ImVec4 frameBgHovered = add(frameBg, increment);
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, frameBgHovered);
-
-	ImVec4 frameBgActive = add(frameBgHovered, increment);
-	ImGui::PushStyleColor(ImGuiCol_FrameBgActive, frameBgActive);
-
-	ImGui::DragFloat(label, &value, 1.0f, lowerBound, upperBound);
-	ImGui::PopStyleColor(3);
-}
-
 ImVec4 Survive::EditorUtil::add(const ImVec4 &vec1, const ImVec4 &vec2)
 {
 	return {vec1.x + vec2.x, vec1.y + vec2.y,
@@ -223,22 +184,17 @@ void Survive::EditorUtil::drawColumnColorEdit3(const char *text, const char *lab
 bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed,
 											   float min, float max)
 {
-	ImGui::TextUnformatted(text);
-	ImGui::NextColumn();
+	glm::vec3 vec{value.x, value.y, value.z};
 
-	glm::vec3 vec(value.x, value.y, value.z);
-	bool result;
-
-	ImGui::SetNextItemWidth(-1);
-
-	if ((result = ImGui::DragFloat3(label, glm::value_ptr(vec), speed, min, max)))
+	bool result{};
+	if (drawColumnDragFloat3(text, label, vec, speed, min, max))
 	{
 		value.x = vec.x;
 		value.y = vec.y;
 		value.z = vec.z;
-	}
 
-	ImGui::NextColumn();
+		result = true;
+	}
 
 	return result;
 }
@@ -275,4 +231,18 @@ void Survive::EditorUtil::drawTooltip(const char *text)
 		ImGui::TextUnformatted(text);
 		ImGui::EndTooltip();
 	}
+}
+
+bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, glm::vec3 &value, float speed,
+											   float min, float max)
+{
+	ImGui::TextUnformatted(text);
+	ImGui::NextColumn();
+	ImGui::SetNextItemWidth(-1);
+
+	bool result = ImGui::DragFloat3(label, glm::value_ptr(value), speed, min, max);
+
+	ImGui::NextColumn();
+
+	return result;
 }

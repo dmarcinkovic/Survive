@@ -5,7 +5,6 @@
 #ifndef SURVIVE_WATERSHADER_H
 #define SURVIVE_WATERSHADER_H
 
-
 #include "Shader.h"
 #include "Light.h"
 
@@ -14,8 +13,12 @@ namespace Survive
 	class WaterShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/WaterVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/WaterFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "WaterVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "WaterFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationViewMatrix{};

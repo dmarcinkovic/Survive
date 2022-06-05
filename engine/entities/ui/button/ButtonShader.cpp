@@ -5,7 +5,7 @@
 #include "ButtonShader.h"
 
 Survive::ButtonShader::ButtonShader()
-		: Shader(VERTEX_FILE, FRAGMENT_FILE)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

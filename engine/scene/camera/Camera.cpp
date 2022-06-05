@@ -27,12 +27,12 @@ void Survive::Camera::moveCameraInYDirection(float yDistance)
 	m_Position.y += yDistance;
 }
 
-glm::mat4 Survive::Camera::getProjectionMatrix() const
+const glm::mat4 &Survive::Camera::getProjectionMatrix() const
 {
 	return m_ProjectionMatrix;
 }
 
-glm::mat4 Survive::Camera::getViewMatrix() const
+const glm::mat4 &Survive::Camera::getViewMatrix() const
 {
 	return m_ViewMatrix;
 }
@@ -48,12 +48,12 @@ void Survive::Camera::recalculateProjectionMatrix(float width, float height)
 	m_OrthographicProjectionMatrix = Maths::createOrthographicProjectionMatrix(width / height, 1.0f);
 }
 
-glm::mat4 Survive::Camera::getOrthographicProjectionMatrix() const
+const glm::mat4 &Survive::Camera::getOrthographicProjectionMatrix() const
 {
 	return m_OrthographicProjectionMatrix;
 }
 
-glm::mat4 Survive::Camera::getLightProjectionMatrix() const
+const glm::mat4 &Survive::Camera::getLightProjectionMatrix() const
 {
 	return m_LightProjectionMatrix;
 }

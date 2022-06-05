@@ -1,61 +1,46 @@
 //
-// Created by david on 11. 02. 2021..
+// Created by david on 21.05.22..
 //
 
 #ifndef SURVIVE_PARTICLERENDERER_H
 #define SURVIVE_PARTICLERENDERER_H
 
-
-#include <unordered_map>
-
+#include "entt.hpp"
+#include "Camera.h"
 #include "ParticleShader.h"
-#include "Particle.h"
-#include "ParticleModel.h"
 #include "Renderer2D.h"
+#include "Particle.h"
+#include "ParticleComponent.h"
 
 namespace Survive
 {
 	class ParticleRenderer : public Renderer2D
 	{
 	private:
-		constexpr static int MAX_INSTANCES = 10'000;
-		constexpr static size_t INSTANCE_DATA_LENGTH = 21;
-		constexpr static int VAO_UNITS = 7;
-
-		static int pointer;
-		Loader m_Loader;
-		GLuint m_Vbo{};
-
-		std::unordered_map<ParticleModel, std::vector<Particle>, ParticleHash> m_Particles{};
-
 		ParticleShader m_Shader;
 
 	public:
-		ParticleRenderer();
+		void render(entt::registry &registry, const Camera &camera) const;
 
-		void render(const Camera &camera) const;
-
-		std::vector<Particle> &getParticles(const ParticleModel &model);
+		static GLsizeiptr getVertexCount();
 
 	private:
-		void prepare(const Camera &camera) const;
-
-		static void finish();
-
-		static void enableBlending();
-
 		static std::vector<float> updateParticles(const std::vector<Particle> &particles, const glm::mat4 &viewMatrix);
 
-		static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale,
-										  const glm::mat4 &viewMatrix, std::vector<float> &data);
+		static void updateModelViewMatrix(const glm::vec3 &position, const glm::vec3 &rotation,
+										  const glm::vec3 &scale, const glm::mat4 &viewMatrix,
+										  std::vector<float> &data, std::uint64_t &dataPointer);
 
-		static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data);
+		static void storeMatrixData(const glm::mat4 &matrix, std::vector<float> &data, std::uint64_t &dataPointer);
 
-		static void updateTextureCoordinates(const Particle &particle, std::vector<float> &data);
+		static void updateSpriteIndex(std::vector<float> &data, std::uint64_t &dataPointer, int index);
 
-		void addInstanceAttributes(const TexturedModel &model) const;
+		void loadObjectUniforms(const entt::registry &registry, entt::entity entity) const;
+
+		static void renderParticle(ParticleComponent &particleComponent, const Camera &camera);
+
+		static void setBlendFunction(bool useAdditiveBlending);
 	};
 }
-
 
 #endif //SURVIVE_PARTICLERENDERER_H

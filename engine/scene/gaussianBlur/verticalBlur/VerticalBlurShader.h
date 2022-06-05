@@ -13,8 +13,12 @@ namespace Survive
 	class VerticalBlurShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/VerticalBlurVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/BlurFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "VerticalBlurVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "BlurFragmentShader.glsl"
+		;
 
 		GLint m_LocationTargetHeight{};
 

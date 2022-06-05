@@ -6,6 +6,7 @@
 #include "ComponentLoader.h"
 #include "Components.h"
 #include "Util.h"
+#include "ParticleRenderer.h"
 
 void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
@@ -721,4 +722,41 @@ void Survive::ComponentLoader::loadScriptComponent(entt::registry &registry, ent
 	ScriptComponent script;
 	script.pluginLocation = scriptPath;
 	registry.emplace<ScriptComponent>(entity, script);
+}
+
+void Survive::ComponentLoader::loadParticleComponent(entt::registry &registry, entt::entity entity,
+													 std::ifstream &reader, Loader &loader)
+{
+	std::string texturePath = parseLine(reader, "texturePath");
+	TexturedModel model = loadRender2DModel(texturePath, loader);
+
+	float particlesPerSecond = std::stof(parseLine(reader, "particlesPerSecond"));
+	float speed = std::stof(parseLine(reader, "speed"));
+	float gravity = std::stof(parseLine(reader, "gravity"));
+	float lifeLength = std::stof(parseLine(reader, "lifeLength"));
+
+	float speedError = std::stof(parseLine(reader, "speedError"));
+	float lifeError = std::stof(parseLine(reader, "lifeError"));
+	float scaleError = std::stof(parseLine(reader, "scaleError"));
+	float directionDeviation = std::stof(parseLine(reader, "directionDeviation"));
+
+	bool useAdditiveBlending = std::stoi(parseLine(reader, "useAdditiveBlending"));
+
+	GLuint vbo = loader.createEmptyVBO(ParticleRenderer::getVertexCount());
+
+	ParticleComponent particleComponent(model, vbo, particlesPerSecond, speed, gravity, lifeLength,
+										speedError, lifeError, scaleError, directionDeviation, useAdditiveBlending);
+	particleComponent.texturePath = std::move(texturePath);
+	registry.emplace<ParticleComponent>(entity, particleComponent);
+}
+
+Survive::TexturedModel Survive::ComponentLoader::loadRender2DModel(const std::string &texturePath, Loader &loader)
+try
+{
+	Model model = loader.renderQuad();
+	Texture texture = loader.loadTexture(texturePath.c_str());
+	return {model, texture};
+} catch (const std::exception &ex)
+{
+	return {};
 }

@@ -389,8 +389,7 @@ void Survive::Loader::updateVBO(GLuint vbo, const std::vector<float> &data, GLsi
 }
 
 void Survive::Loader::addInstancedAttribute(GLuint vao, GLuint vbo, GLuint attribute, int vertexCount,
-											GLsizei instancedDataLength,
-											int offset)
+											GLsizei instancedDataLength, int offset)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindVertexArray(vao);
