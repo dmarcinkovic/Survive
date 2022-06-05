@@ -7,7 +7,7 @@
 Survive::ObjectShader::ObjectShader()
 		: Shader(vertexShaderSource, fragmentShaderSource)
 {
-	loadUniformLocations();
+	ObjectShader::loadUniformLocations();
 }
 
 Survive::ObjectShader::ObjectShader(const char *vertexSource, const char *fragmentSource)

@@ -31,7 +31,7 @@ namespace Survive
 		void loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const;
 
 	private:
-		void loadUniformLocations();
+		void loadUniformLocations() override;
 	};
 }
 
