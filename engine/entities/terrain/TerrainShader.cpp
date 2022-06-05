@@ -5,7 +5,7 @@
 #include "TerrainShader.h"
 
 Survive::TerrainShader::TerrainShader()
-		: Shader(VERTEX_FILE, FRAGMENT_FILE)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

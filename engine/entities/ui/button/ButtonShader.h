@@ -5,7 +5,6 @@
 #ifndef SURVIVE_BUTTONSHADER_H
 #define SURVIVE_BUTTONSHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive
@@ -13,8 +12,12 @@ namespace Survive
 	class ButtonShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/ButtonVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/ButtonFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "ButtonVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "ButtonFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationColor{};

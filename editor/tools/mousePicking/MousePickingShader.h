@@ -13,8 +13,12 @@ namespace Survive
 	class MousePickingShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/MousePickingVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/MousePickingFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "MousePickingVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "MousePickingFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationViewMatrix{};

@@ -5,13 +5,13 @@
 #include "ObjectShader.h"
 
 Survive::ObjectShader::ObjectShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	loadUniformLocations();
 }
 
-Survive::ObjectShader::ObjectShader(const char *vertexShaderFile, const char *fragmentShaderFile)
-		: Shader(vertexShaderFile, fragmentShaderFile)
+Survive::ObjectShader::ObjectShader(const char *vertexSource, const char *fragmentSource)
+		: Shader(vertexSource, fragmentSource)
 {
 
 }
@@ -68,8 +68,7 @@ void Survive::ObjectShader::loadUniformLocations()
 	m_LocationNormalMap = glGetUniformLocation(m_Program, "normalMap");
 }
 
-void
-Survive::ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper,
+void Survive::ObjectShader::loadLight(const glm::vec3 &lightPos, const glm::vec3 &lightColor, float shineDamper,
 								 int material) const
 {
 	loadVector3(m_LocationLightPos, lightPos);

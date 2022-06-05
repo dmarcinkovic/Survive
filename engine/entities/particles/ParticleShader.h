@@ -5,7 +5,6 @@
 #ifndef SURVIVE_PARTICLESHADER_H
 #define SURVIVE_PARTICLESHADER_H
 
-
 #include "Shader.h"
 
 namespace Survive
@@ -13,8 +12,12 @@ namespace Survive
 	class ParticleShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ParticleVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ParticleFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "ParticleVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "ParticleFragmentShader.glsl"
+		;
 
 		GLint m_LocationNumberOfRows{};
 		GLint m_LocationNumberOfCols{};

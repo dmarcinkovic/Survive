@@ -5,7 +5,7 @@
 #include "VerticalBlurShader.h"
 
 Survive::VerticalBlurShader::VerticalBlurShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	loadUniformLocations();
 }

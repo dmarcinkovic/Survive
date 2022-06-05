@@ -15,8 +15,12 @@ namespace Survive
 	class SpritesShader : public Shader
 	{
 	private:
-		constexpr static const char *VERTEX_FILE = "engine/core/shader/sources/SpriteVertexShader.glsl";
-		constexpr static const char *FRAGMENT_FILE = "engine/core/shader/sources/SpriteFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "SpriteVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "SpriteFragmentShader.glsl"
+		;
 
 		GLint m_LocationTransformationMatrix{};
 		GLint m_LocationRow{};

@@ -3,14 +3,13 @@
 //
 
 #include <iostream>
-#include <fstream>
 
 #include "Shader.h"
 
-Survive::Shader::Shader(const char *vertexShaderFile, const char *fragmentShaderFile)
+Survive::Shader::Shader(const char *vertexSource, const char *fragmentSource)
 {
-	m_VertexShader = loadShader(vertexShaderFile, GL_VERTEX_SHADER);
-	m_FragmentShader = loadShader(fragmentShaderFile, GL_FRAGMENT_SHADER);
+	m_VertexShader = loadShader(vertexSource, GL_VERTEX_SHADER);
+	m_FragmentShader = loadShader(fragmentSource, GL_FRAGMENT_SHADER);
 
 	m_Program = glCreateProgram();
 	glAttachShader(m_Program, m_VertexShader);
@@ -40,25 +39,19 @@ void Survive::Shader::stop()
 	glUseProgram(0);
 }
 
-GLuint Survive::Shader::loadShader(const char *filename, GLenum type)
+GLuint Survive::Shader::loadShader(const char *source, GLenum type)
 {
-	std::ifstream reader(filename);
-	std::string source((std::istreambuf_iterator<char>(reader)),
-					   std::istreambuf_iterator<char>());
-
 	GLuint shader = glCreateShader(type);
 
-	const char *shaderSource = source.c_str();
-	glShaderSource(shader, 1, &shaderSource, nullptr);
+	glShaderSource(shader, 1, &source, nullptr);
 	glCompileShader(shader);
 
-	debug(shader, filename);
+	debug(shader);
 
-	reader.close();
 	return shader;
 }
 
-void Survive::Shader::debug(GLuint shaderId, const char *filename)
+void Survive::Shader::debug(GLuint shaderId)
 {
 	int result;
 	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
@@ -71,7 +64,7 @@ void Survive::Shader::debug(GLuint shaderId, const char *filename)
 
 		glGetShaderInfoLog(shaderId, length, &length, message);
 
-		std::cout << "Error while compiling " << filename << " shader: " << message << "\n";
+		std::cout << "Error while compiling shader: " << message << "\n";
 		glDeleteShader(shaderId);
 	}
 }

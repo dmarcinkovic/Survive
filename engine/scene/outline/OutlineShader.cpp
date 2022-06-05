@@ -5,7 +5,7 @@
 #include "OutlineShader.h"
 
 Survive::OutlineShader::OutlineShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	loadUniformLocations();
 }
