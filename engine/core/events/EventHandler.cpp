@@ -15,10 +15,10 @@ std::vector<Survive::ScrollListener> Survive::EventHandler::m_ScrollListeners;
 
 Survive::EventHandler::EventHandler()
 {
-	addKeyboardListener();
+	registerKeyboardListener();
 }
 
-void Survive::EventHandler::addKeyboardListener()
+void Survive::EventHandler::registerKeyboardListener()
 {
 	addKeyListener([this](int key, int action) {
 		if (key == GLFW_KEY_UNKNOWN)
