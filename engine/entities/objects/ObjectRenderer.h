@@ -37,8 +37,6 @@ namespace Survive
 		void addSkybox(entt::entity skybox);
 
 	protected:
-		static void drawOutline(const entt::registry &registry, entt::entity entity);
-
 		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
 
 		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;

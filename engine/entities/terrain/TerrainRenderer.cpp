@@ -16,19 +16,26 @@ void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &ca
 	}
 
 	prepareRendering(m_Shader);
-	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform,
-				  TexturedComponent &textures, TagComponent &) {
+	glEnable(GL_STENCIL_TEST);
+	for (auto const &entity: view)
+	{
+		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
+		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
+		const TexturedComponent &textures = view.get<TexturedComponent>(entity);
+
 		prepareRenderingTerrain(renderComponent, textures);
 		renderShadow(shadowMap, light);
 
 		loadUniforms(camera, light, plane, transform);
+		drawOutline(registry, entity);
 		m_Shader.loadAddShadow(shadowMap != 0);
 
 		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 		finishRenderingTerrain();
-	});
+	}
 
 	finishRendering();
+	glDisable(GL_STENCIL_TEST);
 }
 
 void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const

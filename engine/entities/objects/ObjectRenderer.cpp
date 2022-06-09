@@ -118,22 +118,6 @@ Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 	return entities;
 }
 
-void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
-{
-	if (registry.any_of<OutlineComponent>(entity))
-	{
-		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
-		if (outline.drawOutline)
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-		}
-	} else
-	{
-		glStencilMask(0x00);
-	}
-}
-
 void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity,
 										  const ObjectShader &shader)
 {
