@@ -2,8 +2,6 @@
 // Created by david on 17. 02. 2021..
 //
 
-#include <iostream>
-
 #include "TerrainGenerator.h"
 #include "stb_image.h"
 
@@ -11,6 +9,11 @@ Survive::Model Survive::TerrainGenerator::generateTerrain(Loader &loader, const 
 {
 	int width, height;
 	std::uint8_t *image = loadHeightMap(heightMap, width, height);
+
+	if (!image)
+	{
+		return {};
+	}
 
 	std::vector<float> vertices, normals, textureCoordinates;
 
@@ -44,7 +47,7 @@ void Survive::TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices
 			auto y = static_cast<float>(j);
 
 			setVertices(vertices, x, y, terrainHeight[j][i], imageWidth, imageHeight);
-			setNormals(normals, y, x, width, height, terrainHeight);
+			setNormals(normals, x, y, width, height, terrainHeight);
 			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
 	}
@@ -86,8 +89,8 @@ Survive::TerrainGenerator::setVertices(std::vector<float> &vertices, float x, fl
 void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, float x, float y, int width, int height,
 										   const std::vector<std::vector<float>> &terrainHeight)
 {
-	auto i = static_cast<int>(x);
-	auto j = static_cast<int>(y);
+	auto i = static_cast<int>(y);
+	auto j = static_cast<int>(x);
 
 	glm::vec3 normal = calculateNormal(i, j, width, height, terrainHeight);
 	normals.emplace_back(normal.x);
@@ -112,7 +115,6 @@ std::uint8_t *Survive::TerrainGenerator::loadHeightMap(const char *heightMap, in
 
 	if (!image)
 	{
-		std::cout << "Error while loading image " << height << '\n';
 		return nullptr;
 	}
 
