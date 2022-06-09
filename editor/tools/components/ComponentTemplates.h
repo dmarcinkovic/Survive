@@ -35,6 +35,7 @@
 #include "SphereCollider3DComponentTemplate.h"
 #include "SpriteComponentTemplate.h"
 #include "SpriteSheetComponentTemplate.h"
+#include "TerrainComponentTemplate.h"
 #include "TextComponentTemplate.h"
 #include "Transform3DComponentTemplate.h"
 
