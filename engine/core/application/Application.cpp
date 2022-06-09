@@ -15,14 +15,12 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 {
 	auto terrain = m_Registry.create();
 	m_Registry.emplace<TagComponent>(terrain, "terrain");
-	m_Registry.emplace<Render3DComponent>(terrain, TexturedModel(
-			TerrainGenerator::generateTerrain(m_Loader, "assets/textures/heightmap.png"),
-			m_Loader.loadTexture("assets/textures/blendMap.png")));
-
 	m_Registry.emplace<Transform3DComponent>(terrain, glm::vec3{-200, -10, -200}, glm::vec3{1, 1, 1});
-	m_Registry.emplace<TexturedComponent>(terrain, m_Loader.loadAllTextures(
-			{"assets/textures/dirt.png", "assets/textures/grass.jpeg", "assets/textures/rock.png",
-			 "assets/textures/flowers.png"}));
+	TexturedModel terrainModel(TerrainGenerator::generateTerrain(m_Loader, "assets/textures/heightmap.png"),
+			m_Loader.loadTexture("assets/textures/blendMap.png"));
+	std::vector<Texture> terrainTextures = m_Loader.loadAllTextures( {"assets/textures/dirt.png", "assets/textures/grass.jpeg", "assets/textures/rock.png", "assets/textures/flowers.png"});
+	m_Registry.emplace<TerrainComponent>(terrain, terrainModel, terrainTextures);
+
 	m_Registry.emplace<OutlineComponent>(terrain, false);
 
 	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);

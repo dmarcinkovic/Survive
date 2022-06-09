@@ -32,9 +32,11 @@ namespace Survive
 
 		void loadUniforms(const Transform3DComponent &transform, const Camera &camera) const;
 
-		static void prepareObject(const Render3DComponent &renderComponent);
+		static void prepareObject(const TexturedModel &model);
 
 		static void finishRenderingObject();
+
+		static TexturedModel getModel(const entt::registry &registry, entt::entity entity);
 	};
 }
 
