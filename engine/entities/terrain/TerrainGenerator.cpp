@@ -26,8 +26,7 @@ Survive::Model Survive::TerrainGenerator::generateTerrain(Loader &loader, const 
 
 void Survive::TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices, std::vector<float> &normals,
 													std::vector<float> &textureCoordinates, const std::uint8_t *image,
-													int width,
-													int height)
+													int width, int height)
 {
 	int numberOfVertices = width * height;
 	auto imageWidth = static_cast<float>(width);
@@ -46,8 +45,11 @@ void Survive::TerrainGenerator::calculateVertexInfo(std::vector<float> &vertices
 			auto x = static_cast<float>(i);
 			auto y = static_cast<float>(j);
 
-			setVertices(vertices, x, y, terrainHeight[j][i], imageWidth, imageHeight);
-			setNormals(normals, x, y, width, height, terrainHeight);
+			float vertexX = x - static_cast<float>(width) / 2.0f;
+			float vertexY = y - static_cast<float>(height) / 2.0f;
+
+			setVertices(vertices, vertexX, vertexY, terrainHeight[j][i], imageWidth, imageHeight);
+			setNormals(normals, i, j, width, height, terrainHeight);
 			setTextureCoordinates(textureCoordinates, x, y, imageWidth, imageHeight);
 		}
 	}
@@ -77,30 +79,26 @@ std::vector<unsigned> Survive::TerrainGenerator::generateIndices(int width, int 
 	return indices;
 }
 
-void
-Survive::TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width,
-									   float height)
+void Survive::TerrainGenerator::setVertices(std::vector<float> &vertices, float x, float y,
+											float terrainHeight, float width, float height)
 {
 	vertices.emplace_back(y / (height - 1) * SIZE);
 	vertices.emplace_back(terrainHeight);
 	vertices.emplace_back(x / (width - 1) * SIZE);
 }
 
-void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, float x, float y, int width, int height,
+void Survive::TerrainGenerator::setNormals(std::vector<float> &normals, int i, int j, int width, int height,
 										   const std::vector<std::vector<float>> &terrainHeight)
 {
-	auto i = static_cast<int>(y);
-	auto j = static_cast<int>(x);
+	glm::vec3 normal = calculateNormal(j, i, width, height, terrainHeight);
 
-	glm::vec3 normal = calculateNormal(i, j, width, height, terrainHeight);
 	normals.emplace_back(normal.x);
 	normals.emplace_back(normal.y);
 	normals.emplace_back(normal.z);
 }
 
-void
-Survive::TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y, float width,
-												 float height)
+void Survive::TerrainGenerator::setTextureCoordinates(std::vector<float> &textureCoordinates, float x, float y,
+													  float width, float height)
 {
 	textureCoordinates.emplace_back(y / (height - 1));
 	textureCoordinates.emplace_back(x / (width - 1));
@@ -164,8 +162,8 @@ glm::vec3 Survive::TerrainGenerator::calculateNormal(int x, int y, int width, in
 	return glm::normalize(normal);
 }
 
-float Survive::TerrainGenerator::getPreprocessedValue(int i, int j,
-													  int rows, int cols, const std::vector<std::vector<float>> &matrix)
+float Survive::TerrainGenerator::getPreprocessedValue(int i, int j, int rows, int cols,
+													  const std::vector<std::vector<float>> &matrix)
 {
 	if (i < 0 || i >= cols || j < 0 || j >= rows)
 	{
