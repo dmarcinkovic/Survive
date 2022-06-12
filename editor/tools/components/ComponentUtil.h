@@ -46,6 +46,7 @@ namespace Survive
 		ComponentTemplate<TextComponent> m_TextTemplate;
 		ComponentTemplate<Transform3DComponent> m_TransformTemplate;
 		ComponentTemplate<ParticleComponent> m_ParticleTemplate;
+		ComponentTemplate<TerrainComponent> m_TerrainTemplate;
 
 	public:
 		[[nodiscard]] bool isUsingKeyEvents() const
@@ -63,8 +64,8 @@ namespace Survive
 					"Material component", "Particle component","PolygonCollider2D component", "Reflection component",
 					"Refraction component", "Render2D Component", "Render3D component", "RigidBody2D component",
 					"RigidBody3D component", "Script component", "Shadow component", "Sound component",
-					"Sphere Collider3D component", "Sprite component", "Sprite sheet component", "Text Component",
-					"Transform3D component"
+					"Sphere Collider3D component", "Sprite component", "Sprite sheet component", "Terrain component",
+					"Text component", "Transform3D component"
 			};
 
 			return components;
@@ -100,6 +101,7 @@ namespace Survive
 			drawComponent(registry, entity, m_SphereCollider3DTemplate);
 			drawComponent(registry, entity, m_SpriteTemplate);
 			drawComponent(registry, entity, m_SpriteSheetTemplate);
+			drawComponent(registry, entity, m_TerrainTemplate);
 			drawComponent(registry, entity, m_TextTemplate);
 			drawComponent(registry, entity, m_TransformTemplate);
 		}
@@ -165,8 +167,10 @@ namespace Survive
 				case 27:
 					return addComponent(registry, entity, m_SpriteSheetTemplate);
 				case 28:
-					return addComponent(registry, entity, m_TextTemplate);
+					return addComponent(registry, entity, m_TerrainTemplate);
 				case 29:
+					return addComponent(registry, entity, m_TextTemplate);
+				case 30:
 					return addComponent(registry, entity, m_TransformTemplate);
 				default:
 					throw std::runtime_error("Selected item not implemented");

@@ -21,10 +21,12 @@ namespace Survive
 		std::vector<std::string> texturePaths;
 		std::vector<Texture> textures;
 
-		TerrainComponent() = default;
+		TerrainComponent()
+				: texturePaths(4), textures(4)
+		{}
 
 		TerrainComponent(const TexturedModel &model, std::vector<Texture> textures)
-				: terrainModel(model), textures(std::move(textures))
+				: terrainModel(model), textures(std::move(textures)), texturePaths(4)
 		{}
 	};
 }
