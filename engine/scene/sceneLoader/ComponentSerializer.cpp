@@ -547,3 +547,20 @@ void Survive::ComponentSerializer::saveParticleComponent(entt::registry &registr
 		writer << "\t\tuseAdditiveBlending:" << particle.useAdditiveBlending << '\n';
 	}
 }
+
+void Survive::ComponentSerializer::saveTerrainComponent(entt::registry &registry,
+												   entt::entity entity, std::ofstream &writer)
+{
+	if (registry.any_of<TerrainComponent>(entity))
+	{
+		const TerrainComponent &terrain = registry.get<TerrainComponent>(entity);
+		writer << "\tcomponent:TerrainComponent\n";
+
+		writer << "\t\theightMapPath:" << terrain.heightMapPath << '\n';
+		writer << "\t\tblendMapPath:" << terrain.blendMapPath << "\n";
+		for (int i = 0; i < terrain.texturePaths.size(); ++i)
+		{
+			writer << "\t\ttexture" << (i + 1) << ":" << terrain.texturePaths[i] << '\n';
+		}
+	}
+}

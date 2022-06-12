@@ -7,6 +7,7 @@
 #include "Components.h"
 #include "Util.h"
 #include "ParticleRenderer.h"
+#include "TerrainGenerator.h"
 
 void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
@@ -750,5 +751,66 @@ try
 } catch (const std::exception &ex)
 {
 	return {};
+}
+
+void
+Survive::ComponentLoader::loadTerrainComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+											   Loader &loader)
+{
+	std::string heightMapPath = parseLine(reader, "heightMapPath");
+	Model model = TerrainGenerator::generateTerrain(loader, heightMapPath.c_str());
+
+	if (!model.isValidModel())
+	{
+		return;
+	}
+
+	std::string blendMapPath = parseLine(reader, "blendMapPath");
+	Texture blendMap;
+	try
+	{
+		blendMap = loader.loadTexture(blendMapPath.c_str());
+	} catch (const std::runtime_error &error)
+	{
+		return;
+	}
+
+	std::vector<std::string> texturePaths;
+	std::vector<Texture> textures;
+	loadTerrainTextures(texturePaths, textures, loader, reader);
+
+	if (textures.size() != 4)
+	{
+		return;
+	}
+
+	TerrainComponent terrain(TexturedModel(model, blendMap), std::move(textures));
+	terrain.texturePaths = std::move(texturePaths);
+	terrain.blendMapPath = std::move(blendMapPath);
+	terrain.heightMapPath = std::move(heightMapPath);
+
+	registry.emplace<TerrainComponent>(entity, std::move(terrain));
+}
+
+void Survive::ComponentLoader::loadTerrainTextures(std::vector<std::string> &texturePaths,
+												   std::vector<Texture> &textures, Loader &loader, std::ifstream &reader)
+{
+	constexpr int numberOfTextures = 4;
+	for (int i = 0; i < numberOfTextures; ++i)
+	{
+		Texture texture;
+		std::string name = "texture" + std::to_string(i + 1);
+		std::string path = parseLine(reader, name.c_str());
+		try
+		{
+			texture = loader.loadTexture(path.c_str());
+		} catch (const std::runtime_error &error)
+		{
+			break;
+		}
+
+		texturePaths.emplace_back(path);
+		textures.emplace_back(texture);
+	}
 }
 

@@ -169,6 +169,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "ParticleComponent")
 		{
 			ComponentLoader::loadParticleComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "TerrainComponent")
+		{
+			ComponentLoader::loadTerrainComponent(registry, entity, reader, m_Loader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -206,4 +209,5 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveFixedJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveCharacterJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveParticleComponent(registry, entity, writer);
+	ComponentSerializer::saveTerrainComponent(registry, entity, writer);
 }
