@@ -25,6 +25,7 @@ namespace Survive
 		constexpr static float BOX2D_SCALE = 10.0f;
 		constexpr static size_t MAX_PARTICLE_INSTANCES = 10'000;
 		constexpr static size_t PARTICLE_DATA_LENGTH = 17;
+		constexpr static int NUMBER_OF_FACES = 6;
 	};
 }
 

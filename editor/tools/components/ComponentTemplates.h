@@ -31,6 +31,7 @@
 #include "RigidBody3DComponentTemplate.h"
 #include "ScriptComponentTemplate.h"
 #include "ShadowComponentTemplate.h"
+#include "SkyboxComponentTemplate.h"
 #include "SoundComponentTemplate.h"
 #include "SphereCollider3DComponentTemplate.h"
 #include "SpriteComponentTemplate.h"
