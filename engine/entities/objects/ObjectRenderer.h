@@ -7,8 +7,8 @@
 
 #include <unordered_map>
 #include <functional>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "ObjectShader.h"
 #include "Camera.h"
 #include "Light.h"

@@ -7,8 +7,8 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "ShadowRenderer.h"
 
 namespace Survive

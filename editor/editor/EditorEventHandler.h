@@ -5,7 +5,8 @@
 #ifndef SURVIVE_EDITOREVENTHANDLER_H
 #define SURVIVE_EDITOREVENTHANDLER_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "Camera.h"
 #include "Renderer.h"
 #include "ContentBrowser.h"

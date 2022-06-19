@@ -7,8 +7,8 @@
 
 #include <functional>
 #include <unordered_map>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "OutlineShader.h"
 #include "Transform3DComponent.h"
 #include "Render3DComponent.h"

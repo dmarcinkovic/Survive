@@ -7,8 +7,8 @@
 
 #include <box2d/box2d.h>
 #include <glm/glm.hpp>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "JointComponent.h"
 
 namespace Survive

@@ -5,9 +5,10 @@
 #ifndef SURVIVE_RENDERER3D_H
 #define SURVIVE_RENDERER3D_H
 
+#include <entt.hpp>
+
 #include "Shader.h"
 #include "TexturedModel.h"
-#include "entt.hpp"
 
 namespace Survive
 {

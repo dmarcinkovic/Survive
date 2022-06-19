@@ -6,8 +6,8 @@
 #define SURVIVE_COMPONENTUTIL_H
 
 #include <string>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Components.h"
 #include "ComponentTemplates.h"
 

@@ -7,8 +7,8 @@
 
 #include <unordered_map>
 #include <functional>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Joint.h"
 #include "AnimationShader.h"
 #include "TexturedModel.h"

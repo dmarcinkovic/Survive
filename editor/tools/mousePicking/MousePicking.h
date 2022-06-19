@@ -9,8 +9,8 @@
 #include <unordered_map>
 #include <functional>
 #include <vector>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "MousePickingShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"

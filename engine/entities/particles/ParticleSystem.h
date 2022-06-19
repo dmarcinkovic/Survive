@@ -6,8 +6,8 @@
 #define SURVIVE_PARTICLESYSTEM_H
 
 #include <glm/glm.hpp>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Particle.h"
 #include "ParticleComponent.h"
 

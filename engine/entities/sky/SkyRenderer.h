@@ -5,9 +5,9 @@
 #ifndef SURVIVE_SKYRENDERER_H
 #define SURVIVE_SKYRENDERER_H
 
+#include <entt.hpp>
 
 #include "SkyShader.h"
-#include "entt.hpp"
 #include "Components.h"
 #include "Camera.h"
 #include "Renderer3D.h"

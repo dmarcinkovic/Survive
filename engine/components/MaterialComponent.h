@@ -5,8 +5,9 @@
 #ifndef SURVIVE_MATERIALCOMPONENT_H
 #define SURVIVE_MATERIALCOMPONENT_H
 
+#include <entt.hpp>
+
 #include "Texture.h"
-#include "entt.hpp"
 
 namespace Survive
 {

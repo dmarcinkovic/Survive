@@ -7,8 +7,8 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Components.h"
 #include "Camera.h"
 #include "EventHandler.h"

@@ -5,7 +5,8 @@
 #ifndef SURVIVE_PHYSICSGIZMO_H
 #define SURVIVE_PHYSICSGIZMO_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "BoxGizmos.h"
 #include "CircleGizmos.h"
 #include "PolygonGizmos.h"

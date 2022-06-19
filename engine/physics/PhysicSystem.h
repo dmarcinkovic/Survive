@@ -7,8 +7,8 @@
 
 #include <reactphysics3d/reactphysics3d.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "RigidBody3DComponent.h"
 #include "Collider3DComponent.h"
 #include "ConvexMeshCollider3DComponent.h"

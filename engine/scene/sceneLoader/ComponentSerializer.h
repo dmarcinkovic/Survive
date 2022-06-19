@@ -7,8 +7,7 @@
 
 #include <fstream>
 #include <reactphysics3d/reactphysics3d.h>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {

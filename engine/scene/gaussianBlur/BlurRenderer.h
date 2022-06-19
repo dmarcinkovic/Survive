@@ -7,8 +7,8 @@
 
 #include <functional>
 #include <unordered_map>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "AnimationRenderer.h"
 #include "TerrainRenderer.h"
 #include "ObjectRenderer.h"

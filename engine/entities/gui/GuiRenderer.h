@@ -7,9 +7,9 @@
 
 #include <functional>
 #include <unordered_map>
+#include <entt.hpp>
 
 #include "GuiShader.h"
-#include "entt.hpp"
 #include "Camera.h"
 #include "TexturedModel.h"
 #include "Renderer2D.h"

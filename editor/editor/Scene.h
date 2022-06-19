@@ -6,8 +6,8 @@
 #define SURVIVE_SCENE_H
 
 #include <utility>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Camera.h"
 #include "Renderer.h"
 #include "Gizmos.h"

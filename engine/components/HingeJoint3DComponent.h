@@ -6,8 +6,8 @@
 #define SURVIVE_HINGEJOINT3DCOMPONENT_H
 
 #include <reactphysics3d/reactphysics3d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "JointComponent.h"
 
 namespace Survive

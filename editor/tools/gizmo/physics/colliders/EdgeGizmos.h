@@ -5,7 +5,8 @@
 #ifndef SURVIVE_EDGEGIZMOS_H
 #define SURVIVE_EDGEGIZMOS_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "Components.h"
 #include "Camera.h"
 #include "EventHandler.h"

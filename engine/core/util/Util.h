@@ -12,11 +12,11 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
 #include "Character.h"
 #include "Camera.h"
 #include "Transform3DComponent.h"
-#include "entt.hpp"
 
 namespace Survive
 {
