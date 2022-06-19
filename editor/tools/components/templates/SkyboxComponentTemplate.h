@@ -6,7 +6,6 @@
 #define SURVIVE_SKYBOXCOMPONENTTEMPLATE_H
 
 #include <array>
-#include <bitset>
 
 #include "ComponentTemplate.h"
 #include "SkyboxComponent.h"
@@ -25,9 +24,6 @@ namespace Survive
 		OpenDialog m_OpenDialog;
 		Loader m_Loader;
 		std::array<bool, Constants::NUMBER_OF_FACES> m_Open{};
-		std::bitset<Constants::NUMBER_OF_FACES> m_LoadedTextures{};
-
-		bool m_ModelLoaded{};
 
 	public:
 		void drawComponent(SkyboxComponent &component, bool *visible)
@@ -71,8 +67,8 @@ namespace Survive
 				if (!m_Open[index] && !selectedFilename.empty())
 				{
 					component.faces[index] = m_OpenDialog.getSelectedFile().string();
-					m_ModelLoaded = false;
-					m_LoadedTextures[index] = true;
+					component.m_ModelLoaded = false;
+					component.m_LoadedTextures[index] = true;
 				}
 			}
 		}
@@ -81,14 +77,14 @@ namespace Survive
 		{
 			const std::vector<std::string> &faces = component.faces;
 
-			if (!m_ModelLoaded && m_LoadedTextures.all())
+			if (!component.m_ModelLoaded && component.m_LoadedTextures.all())
 			{
 				try
 				{
 					Texture cubeMap = m_Loader.loadCubeMap(component.faces);
 					Model model = m_Loader.renderCube();
 					component.skyboxModel = TexturedModel(model, cubeMap);
-					m_ModelLoaded = true;
+					component.m_ModelLoaded = true;
 				} catch (const std::runtime_error &error)
 				{}
 			}

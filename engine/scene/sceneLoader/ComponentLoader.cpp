@@ -8,6 +8,7 @@
 #include "Util.h"
 #include "ParticleRenderer.h"
 #include "TerrainGenerator.h"
+#include "Constants.h"
 
 void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
 													  entt::entity entity, std::ifstream &reader)
@@ -120,7 +121,10 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 		registry.emplace<MaterialComponent>(entity, material);
 	} else
 	{
-		registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));
+		MaterialComponent material(std::stoi(isTransparent));
+		material.skyboxEntityName = skyboxName;
+
+		registry.emplace<MaterialComponent>(entity, material);
 	}
 }
 
@@ -817,3 +821,26 @@ void Survive::ComponentLoader::loadTerrainTextures(std::vector<std::string> &tex
 	}
 }
 
+void Survive::ComponentLoader::loadSkyboxComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader)
+{
+	std::vector<std::string> faces;
+	for (int i = 0; i < Constants::NUMBER_OF_FACES; ++i)
+	{
+		std::string face = "face" + std::to_string(i + 1);
+		faces.emplace_back(parseLine(reader, face.c_str()));
+	}
+
+	try
+	{
+		Texture cubeMap = loader.loadCubeMap(faces);
+		Model skyboxModel = loader.renderCube();
+
+		SkyboxComponent skyboxComponent(std::move(faces));
+		skyboxComponent.skyboxModel = TexturedModel(skyboxModel, cubeMap);
+		skyboxComponent.m_LoadedTextures.flip();
+		skyboxComponent.m_ModelLoaded = true;
+
+		registry.emplace<SkyboxComponent>(entity, skyboxComponent);
+	} catch(const std::exception &ignorable)
+	{}
+}

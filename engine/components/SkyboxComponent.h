@@ -10,11 +10,23 @@
 
 #include <vector>
 #include <string>
+#include <bitset>
 
 namespace Survive
 {
 	struct SkyboxComponent
 	{
+	private:
+		friend class ComponentLoader;
+
+		template<typename ComponentType> friend
+		class ComponentTemplate;
+
+		bool m_ModelLoaded{};
+		std::bitset<Constants::NUMBER_OF_FACES> m_LoadedTextures{};
+
+	public:
+
 		TexturedModel skyboxModel;
 		std::vector<std::string> faces;
 

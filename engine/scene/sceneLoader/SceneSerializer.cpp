@@ -172,6 +172,9 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "TerrainComponent")
 		{
 			ComponentLoader::loadTerrainComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "SkyboxComponent")
+		{
+			ComponentLoader::loadSkyboxComponent(registry, entity, reader, m_Loader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -210,4 +213,5 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveCharacterJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveParticleComponent(registry, entity, writer);
 	ComponentSerializer::saveTerrainComponent(registry, entity, writer);
+	ComponentSerializer::saveSkyboxComponent(registry, entity, writer);
 }

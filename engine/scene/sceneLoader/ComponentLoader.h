@@ -88,11 +88,14 @@ namespace Survive
 
 		static void loadOutlineComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void
-		loadParticleComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
+		static void loadParticleComponent(entt::registry &registry, entt::entity entity,
+										  std::ifstream &reader, Loader &loader);
 
 		static void loadTerrainComponent(entt::registry &registry, entt::entity entity,
 										 std::ifstream &reader, Loader &loader);
+
+		static void loadSkyboxComponent(entt::registry &registry, entt::entity entity,
+										std::ifstream &reader, Loader &loader);
 
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);

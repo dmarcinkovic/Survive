@@ -565,3 +565,18 @@ void Survive::ComponentSerializer::saveTerrainComponent(entt::registry &registry
 		}
 	}
 }
+
+void Survive::ComponentSerializer::saveSkyboxComponent(entt::registry &registry, entt::entity entity,
+													   std::ofstream &writer)
+{
+	if (registry.any_of<SkyboxComponent>(entity))
+	{
+		const SkyboxComponent &skybox = registry.get<SkyboxComponent>(entity);
+		writer << "\tcomponent:SkyboxComponent\n";
+
+		for (int i = 0; i < skybox.faces.size(); ++i)
+		{
+			writer << "\t\tface" + std::to_string(i + 1) + ':' << skybox.faces[i] << '\n';
+		}
+	}
+}
