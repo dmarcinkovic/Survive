@@ -23,7 +23,6 @@ namespace Survive
 		ObjectShader m_Shader;
 
 		Texture m_DefaultTexture{};
-		entt::entity m_SkyBox = entt::null;
 
 	protected:
 		const Light &m_Light;
@@ -34,18 +33,20 @@ namespace Survive
 		void render(entt::registry &registry, const Camera &camera, GLuint shadowMap,
 					const glm::vec4 &plane = glm::vec4{}) const;
 
-		void addSkybox(entt::entity skybox);
-
 	protected:
 		static void renderBloom(const entt::registry &registry, entt::entity entity, const ObjectShader &shader);
 
-		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
+		void renderReflection(entt::registry &registry, entt::entity entity, const ObjectShader &shader,
+							  entt::entity skyboxEntity) const;
 
-		void renderRefraction(entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
+		void renderRefraction(entt::registry &registry, entt::entity entity, const ObjectShader &shader,
+							  entt::entity skyboxEntity) const;
 
 		void renderMaterial(const entt::registry &registry, entt::entity entity, const ObjectShader &shader) const;
 
 		static bool getTransparencyProperty(const entt::registry &registry, entt::entity object);
+
+		static entt::entity getSkyboxEntity(const entt::registry &registry, entt::entity entity);
 
 	private:
 		void renderScene(entt::registry &registry,

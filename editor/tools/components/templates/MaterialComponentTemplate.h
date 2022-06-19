@@ -24,11 +24,12 @@ namespace Survive
 
 			if (ImGui::CollapsingHeader("Material", visible))
 			{
-				ImGui::Checkbox("Transparent", &component.isTransparent);
+				ImGui::Columns(2, nullptr, false);
+				drawSkyboxEntityDropTarget(component);
 
-				ImGui::Separator();
+				EditorUtil::drawColumnInputBool("Transparent", "##MaterialTransparent", component.isTransparent);
 
-				ImGui::Checkbox("Use normal mapping", &component.useNormalMapping);
+				EditorUtil::drawColumnInputBool("Use normal mapping", "##MaterialNormals", component.useNormalMapping);
 
 				ImGui::PushID("Material component");
 				ImGui::Columns(2);
@@ -36,7 +37,39 @@ namespace Survive
 										"Normal map: %s", "Load texture", m_Changed, m_Open);
 
 				ImGui::Columns();
+
 				ImGui::PopID();
+			}
+		}
+
+	private:
+		static void drawSkyboxEntityDropTarget(MaterialComponent &component)
+		{
+			std::string &skyboxName = component.skyboxEntityName;
+			EditorUtil::drawColumnInputText("##MaterialSkybox", "Sky entity", skyboxName);
+			initializeDragDropTarget(component);
+
+			ImGui::NextColumn();
+		}
+
+		static void initializeDragDropTarget(MaterialComponent &component)
+		{
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Entity"))
+				{
+					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
+					if (std::get<0>(*data) == std::get<1>(*data))
+					{
+						Log::logMessage(LogType::ERROR, "Body A cannot be equal to body B");
+					} else
+					{
+						component.skyboxEntity = static_cast<entt::entity>(std::get<1>(*data));
+						component.skyboxEntityName = std::get<2>(*data);
+					}
+				}
+
+				ImGui::EndDragDropTarget();
 			}
 		}
 	};

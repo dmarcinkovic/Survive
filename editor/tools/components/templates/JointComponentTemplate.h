@@ -20,7 +20,7 @@ namespace Survive
 		{
 			if (ImGui::BeginDragDropTarget())
 			{
-				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Joint"))
+				if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("Entity"))
 				{
 					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
 

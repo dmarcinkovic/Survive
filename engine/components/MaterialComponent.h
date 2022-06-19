@@ -6,6 +6,7 @@
 #define SURVIVE_MATERIALCOMPONENT_H
 
 #include "Texture.h"
+#include "entt.hpp"
 
 namespace Survive
 {
@@ -14,6 +15,9 @@ namespace Survive
 		bool isTransparent{};
 		bool useNormalMapping{};
 		Texture normalMap{};
+
+		entt::entity skyboxEntity = entt::null;
+		std::string skyboxEntityName = "none";
 
 		std::string normalMapPath{};
 

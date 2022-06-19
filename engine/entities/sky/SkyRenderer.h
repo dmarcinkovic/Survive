@@ -10,28 +10,22 @@
 #include "entt.hpp"
 #include "Components.h"
 #include "Camera.h"
+#include "Renderer3D.h"
 
 namespace Survive
 {
-	class SkyRenderer
+	class SkyRenderer : public Renderer3D
 	{
 	private:
 		SkyShader m_Shader;
-		entt::entity m_Sky{};
-
-		bool m_ShouldRender = false;
 
 	public:
-		void render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
-
-		void addSkyEntity(entt::entity sky);
-
-		void removeSkyEntity();
+		void render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane = glm::vec4{}) const;
 
 	private:
-		void prepareRendering(const Render3DComponent &renderComponent) const;
+		static void prepareRenderingSky(const SkyboxComponent &skyComponent) ;
 
-		static void finishRendering();
+		static void finishRenderingSky();
 
 		void loadUniforms(const entt::registry &registry, const Transform3DComponent &transform, const Camera &camera,
 						  const glm::vec4 &plane) const;
