@@ -32,18 +32,6 @@ void Survive::SkyRenderer::render(entt::registry &registry, const Camera &camera
 	}
 	glDepthFunc(GL_LESS);
 	finishRendering();
-//	if (m_ShouldRender)
-//	{
-//		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(m_Sky);
-//		const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Sky);
-//
-//		prepareRendering(renderComponent);
-//		loadUniforms(registry, transform, camera, plane);
-//
-//		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
-//
-//		finishRendering();
-//	}
 }
 
 void Survive::SkyRenderer::prepareRenderingSky(const SkyboxComponent &skyComponent)
