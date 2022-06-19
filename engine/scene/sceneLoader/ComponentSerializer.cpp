@@ -82,17 +82,18 @@ void Survive::ComponentSerializer::saveMaterialComponent(entt::registry &registr
 {
 	if (registry.any_of<MaterialComponent>(entity))
 	{
-		const MaterialComponent &rigidBodyComponent = registry.get<MaterialComponent>(entity);
+		const MaterialComponent &materialComponent = registry.get<MaterialComponent>(entity);
 
 		writer << "\tcomponent:MaterialComponent\n";
-		writer << "\t\tisTransparent:" << rigidBodyComponent.isTransparent << '\n';
-		writer << "\t\tuseNormalMapping:" << rigidBodyComponent.useNormalMapping << '\n';
-		writer << "\t\tnormalMap:" << rigidBodyComponent.normalMapPath << '\n';
+		writer << "\t\tisTransparent:" << materialComponent.isTransparent << '\n';
+		writer << "\t\tuseNormalMapping:" << materialComponent.useNormalMapping << '\n';
+		writer << "\t\tnormalMap:" << materialComponent.normalMapPath << '\n';
+		writer << "\t\tskyboxEntityName:" << materialComponent.skyboxEntityName << '\n';
 	}
 }
 
-void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry,
-													   entt::entity entity, std::ofstream &writer)
+void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry, entt::entity entity,
+													   std::ofstream &writer)
 {
 	if (registry.any_of<ShadowComponent>(entity))
 	{
@@ -549,7 +550,7 @@ void Survive::ComponentSerializer::saveParticleComponent(entt::registry &registr
 }
 
 void Survive::ComponentSerializer::saveTerrainComponent(entt::registry &registry,
-												   entt::entity entity, std::ofstream &writer)
+														entt::entity entity, std::ofstream &writer)
 {
 	if (registry.any_of<TerrainComponent>(entity))
 	{

@@ -46,7 +46,7 @@ namespace Survive
 
 		static bool getTransparencyProperty(const entt::registry &registry, entt::entity object);
 
-		static entt::entity getSkyboxEntity(const entt::registry &registry, entt::entity entity);
+		static entt::entity getSkyboxEntity(entt::registry &registry, entt::entity entity);
 
 	private:
 		void renderScene(entt::registry &registry,

@@ -9,6 +9,7 @@
 #include "PhysicSystem.h"
 #include "Components.h"
 #include "Constants.h"
+#include "Util.h"
 
 void Survive::PhysicSystem::update(entt::registry &registry, b2World *world2D, rp3d::PhysicsWorld *world3D)
 {
@@ -190,7 +191,7 @@ Survive::PhysicSystem::initHingeJoint2D(entt::registry &registry, entt::entity e
 
 		if (hingeJoint.connectedBody == entt::null && hingeJoint.connectedBodyName != "none")
 		{
-			hingeJoint.connectedBody = findEntityWithTag(hingeJoint.connectedBodyName, registry);
+			hingeJoint.connectedBody = Util::findEntityWithTag(hingeJoint.connectedBodyName, registry);
 		}
 
 		if (hingeJoint.connectedBody == entt::null ||
@@ -219,7 +220,7 @@ Survive::PhysicSystem::initDistanceJoint2D(entt::registry &registry, entt::entit
 
 		if (distanceJoint.connectedBody == entt::null && distanceJoint.connectedBodyName != "none")
 		{
-			distanceJoint.connectedBody = findEntityWithTag(distanceJoint.connectedBodyName, registry);
+			distanceJoint.connectedBody = Util::findEntityWithTag(distanceJoint.connectedBodyName, registry);
 		}
 
 		if (distanceJoint.connectedBody == entt::null ||
@@ -344,23 +345,6 @@ void Survive::PhysicSystem::initMeshCollider3D(entt::registry &registry, entt::e
 	}
 }
 
-entt::entity Survive::PhysicSystem::findEntityWithTag(const std::string &tag, entt::registry &registry)
-{
-	auto view = registry.view<TagComponent>();
-
-	for (const auto &entity: view)
-	{
-		const TagComponent &tagComponent = view.get<TagComponent>(entity);
-
-		if (tagComponent.tag == tag)
-		{
-			return entity;
-		}
-	}
-
-	return entt::null;
-}
-
 bool Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3DComponent &meshCollider)
 {
 	constexpr int VERTICES_DIMENSION = 3;
@@ -466,7 +450,7 @@ void Survive::PhysicSystem::initJoint3D(entt::registry &registry, JointComponent
 {
 	if (component.connectedBody == entt::null && component.connectedBodyName != "none")
 	{
-		component.connectedBody = findEntityWithTag(component.connectedBodyName, registry);
+		component.connectedBody = Util::findEntityWithTag(component.connectedBodyName, registry);
 	}
 
 	if (component.connectedBody != entt::null && registry.any_of<RigidBody3DComponent>(component.connectedBody))

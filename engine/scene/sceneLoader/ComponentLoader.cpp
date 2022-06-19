@@ -105,6 +105,7 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 	std::string isTransparent = parseLine(reader, "isTransparent");
 	std::string useNormalMapping = parseLine(reader, "useNormalMapping");
 	std::string normalMapPath = parseLine(reader, "normalMap");
+	std::string skyboxName = parseLine(reader, "skyboxEntityName");
 
 	bool enableNormalMapping = std::stoi(useNormalMapping);
 
@@ -114,6 +115,7 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 
 		MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
 		material.normalMapPath = normalMapPath;
+		material.skyboxEntityName = skyboxName;
 
 		registry.emplace<MaterialComponent>(entity, material);
 	} else
@@ -793,7 +795,8 @@ Survive::ComponentLoader::loadTerrainComponent(entt::registry &registry, entt::e
 }
 
 void Survive::ComponentLoader::loadTerrainTextures(std::vector<std::string> &texturePaths,
-												   std::vector<Texture> &textures, Loader &loader, std::ifstream &reader)
+												   std::vector<Texture> &textures, Loader &loader,
+												   std::ifstream &reader)
 {
 	constexpr int numberOfTextures = 4;
 	for (int i = 0; i < numberOfTextures; ++i)

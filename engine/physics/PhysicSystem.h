@@ -70,8 +70,6 @@ namespace Survive
 
 		static void initDistanceJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
 
-		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
-
 		static bool initConvexMeshComponent(ConvexMeshCollider3DComponent &meshCollider);
 
 		static void initHingeJoint3D(entt::registry &registry, entt::entity entity, rp3d::PhysicsWorld *world,

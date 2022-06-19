@@ -6,6 +6,7 @@
 #include "Components.h"
 #include "Maths.h"
 #include "ShadowComponent.h"
+#include "Util.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
@@ -213,11 +214,22 @@ bool Survive::ObjectRenderer::getTransparencyProperty(const entt::registry &regi
 	return false;
 }
 
-entt::entity Survive::ObjectRenderer::getSkyboxEntity(const entt::registry &registry, entt::entity entity)
+entt::entity Survive::ObjectRenderer::getSkyboxEntity(entt::registry &registry, entt::entity entity)
 {
 	if (registry.any_of<MaterialComponent>(entity))
 	{
-		const MaterialComponent &material = registry.get<MaterialComponent>(entity);
+		MaterialComponent &material = registry.get<MaterialComponent>(entity);
+
+		if (material.skyboxEntityName != "none" && material.skyboxEntity == entt::null)
+		{
+			material.skyboxEntity = Util::findEntityWithTag(material.skyboxEntityName, registry);
+		}
+
+		if (material.skyboxEntity == entt::null)
+		{
+			return entt::null;
+		}
+
 		if (registry.all_of<SkyboxComponent>(material.skyboxEntity))
 		{
 			return material.skyboxEntity;
