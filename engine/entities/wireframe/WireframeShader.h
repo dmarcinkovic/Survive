@@ -12,8 +12,12 @@ namespace Survive
 	class WireframeShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/WireVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/WireFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "WireVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "WireFragmentShader.glsl"
+		;
 
 	public:
 		WireframeShader();

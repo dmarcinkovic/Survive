@@ -8,9 +8,16 @@
 #include "ObjParser.h"
 #include "Vertex.h"
 #include "Util.h"
+#include "ResourceStorage.h"
 
 Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &loader)
 {
+	ResourceStorage &resourceStorage = ResourceStorage::get();
+	if (resourceStorage.isModelAlreadyLoaded(objFile))
+	{
+		return resourceStorage.getModel(objFile);
+	}
+
 	std::ifstream reader(objFile);
 
 	if (!reader || !objFile.ends_with("obj"))
@@ -60,7 +67,10 @@ Survive::Model Survive::ObjParser::loadObj(const std::string &objFile, Loader &l
 	std::iota(indices.begin(), indices.end(), 0);
 
 	reader.close();
-	return loader.loadToVao(resultPoints, resultTextures, resultNormals, tangents, indices);
+	Model model = loader.loadToVao(resultPoints, resultTextures, resultNormals, tangents, indices);
+	resourceStorage.setModel(objFile, model);
+
+	return model;
 }
 
 void Survive::ObjParser::processIndices(const std::vector<glm::vec3> &vertices, const std::vector<glm::vec3> &normals,

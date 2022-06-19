@@ -5,7 +5,8 @@
 #ifndef SURVIVE_REGISTRYUTIL_H
 #define SURVIVE_REGISTRYUTIL_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "Components.h"
 
 namespace Survive

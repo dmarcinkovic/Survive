@@ -10,8 +10,8 @@
 #include <box2d/box2d.h>
 #include <tuple>
 #include <reactphysics3d/reactphysics3d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Font.h"
 #include "AudioMaster.h"
 #include "TexturedModel.h"
@@ -88,8 +88,14 @@ namespace Survive
 
 		static void loadOutlineComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
 
-		static void
-		loadParticleComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
+		static void loadParticleComponent(entt::registry &registry, entt::entity entity,
+										  std::ifstream &reader, Loader &loader);
+
+		static void loadTerrainComponent(entt::registry &registry, entt::entity entity,
+										 std::ifstream &reader, Loader &loader);
+
+		static void loadSkyboxComponent(entt::registry &registry, entt::entity entity,
+										std::ifstream &reader, Loader &loader);
 
 	private:
 		static std::string parseLine(std::ifstream &reader, const char *text);
@@ -117,6 +123,9 @@ namespace Survive
 		loadJoint3DComponent(std::ifstream &reader);
 
 		static TexturedModel loadRender2DModel(const std::string &texturePath, Loader &loader);
+
+		static void loadTerrainTextures(std::vector<std::string> &texturesPath, std::vector<Texture> &textures,
+										Loader &loader, std::ifstream &reader);
 	};
 }
 

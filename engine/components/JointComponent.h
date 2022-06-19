@@ -6,8 +6,7 @@
 #define SURVIVE_JOINTCOMPONENT_H
 
 #include <string>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {

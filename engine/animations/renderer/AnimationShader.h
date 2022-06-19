@@ -15,8 +15,12 @@ namespace Survive
 	class AnimationShader : public ObjectShader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/AnimationVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/AnimationFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "AnimationVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "AnimationFragmentShader.glsl"
+		;
 		static constexpr int MAX_JOINTS = 50;
 
 		GLint m_LocationJointTransforms[MAX_JOINTS]{};
@@ -27,7 +31,7 @@ namespace Survive
 		void loadJointTransforms(const std::vector<glm::mat4> &jointTransforms) const;
 
 	private:
-		void loadUniformLocations();
+		void loadUniformLocations() override;
 	};
 }
 

@@ -5,7 +5,7 @@
 #include "ParticleShader.h"
 
 Survive::ParticleShader::ParticleShader()
-		: Shader(VERTEX_SHADER, FRAGMENT_SHADER)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

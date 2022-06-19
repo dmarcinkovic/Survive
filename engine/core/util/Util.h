@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 #include <imgui.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
 #include "Character.h"
 #include "Camera.h"
@@ -31,17 +32,14 @@ namespace Survive
 
 		static float getRandom(float first = 0.0f, float second = 1.0f);
 
-		static ImVec2
-		getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix, const glm::vec3 &point, float x,
-					 float y, float width, float height);
+		static ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix, const glm::vec3 &point,
+								   float x, float y, float width, float height);
 
-		static ImVec2
-		getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix, const glm::vec2 &point, float x,
-					 float y, float width, float height);
+		static ImVec2 getScreenPos(const Camera &camera, const glm::mat4 &transformationMatrix, const glm::vec2 &point,
+								   float x, float y, float width, float height);
 
-		static glm::vec3
-		getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point, float x,
-					  float y, float width, float height);
+		static glm::vec3 getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point,
+									   float x, float y, float width, float height);
 
 		static bool mouseHoversPoint(const ImVec2 &point, float radius);
 
@@ -50,6 +48,8 @@ namespace Survive
 		static float lineDistance(const ImVec2 &p1, const ImVec2 &p2);
 
 		static glm::vec3 getMouseRay(const Camera &camera, float x, float y, float width, float height);
+
+		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
 	};
 }
 

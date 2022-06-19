@@ -148,21 +148,24 @@ Survive::MousePicking::prepareEntities(entt::registry &registry)
 {
 	const auto &entities3D = registry.view<Render3DComponent, Transform3DComponent, TagComponent>();
 	const auto &entities2D = registry.view<Render2DComponent, Transform3DComponent, TagComponent>();
+	const auto &terrains = registry.view<TerrainComponent, Transform3DComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: entities2D)
 	{
-		const Render2DComponent &renderComponent = entities2D.get<Render2DComponent>(entity);
-
-		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+		std::vector<entt::entity> &batch = entities[entities2D.get<Render2DComponent>(entity).texturedModel];
 		batch.emplace_back(entity);
 	}
 
 	for (auto const &entity: entities3D)
 	{
-		const Render3DComponent &renderComponent = entities3D.get<Render3DComponent>(entity);
+		std::vector<entt::entity> &batch = entities[entities3D.get<Render3DComponent>(entity).texturedModel];
+		batch.emplace_back(entity);
+	}
 
-		std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+	for (auto const &entity: terrains)
+	{
+		std::vector<entt::entity> &batch = entities[terrains.get<TerrainComponent>(entity).terrainModel];
 		batch.emplace_back(entity);
 	}
 

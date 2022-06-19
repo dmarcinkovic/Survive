@@ -9,9 +9,16 @@
 #include "DaeParser.h"
 #include "Vertex.h"
 #include "Util.h"
+#include "ResourceStorage.h"
 
 Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 {
+	ResourceStorage &resourceStorage = ResourceStorage::get();
+	if (resourceStorage.isModelAlreadyLoaded(daeFile))
+	{
+		return resourceStorage.getModel(daeFile);
+	}
+
 	std::ifstream reader(daeFile);
 	std::vector<std::string> jointNames;
 	std::vector<AnimationData> animationData;
@@ -44,7 +51,10 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 	}
 
 	reader.close();
-	return parseIndices(loader);
+	Model model = parseIndices(loader);
+	resourceStorage.setModel(daeFile, model);
+
+	return model;
 }
 
 Survive::Animation Survive::DaeParser::getAnimation() const

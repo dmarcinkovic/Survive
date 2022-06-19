@@ -6,8 +6,8 @@
 #define SURVIVE_COMPONENTUTIL_H
 
 #include <string>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Components.h"
 #include "ComponentTemplates.h"
 
@@ -39,6 +39,7 @@ namespace Survive
 		ComponentTemplate<RigidBody3DComponent> m_RigidBody3DTemplate;
 		ComponentTemplate<ScriptComponent> m_ScriptTemplate;
 		ComponentTemplate<ShadowComponent> m_ShadowTemplate;
+		ComponentTemplate<SkyboxComponent> m_SkyboxTemplate;
 		ComponentTemplate<SoundComponent> m_SoundTemplate;
 		ComponentTemplate<SphereCollider3DComponent> m_SphereCollider3DTemplate;
 		ComponentTemplate<SpriteComponent> m_SpriteTemplate;
@@ -46,6 +47,7 @@ namespace Survive
 		ComponentTemplate<TextComponent> m_TextTemplate;
 		ComponentTemplate<Transform3DComponent> m_TransformTemplate;
 		ComponentTemplate<ParticleComponent> m_ParticleTemplate;
+		ComponentTemplate<TerrainComponent> m_TerrainTemplate;
 
 	public:
 		[[nodiscard]] bool isUsingKeyEvents() const
@@ -55,16 +57,16 @@ namespace Survive
 
 		static std::vector<const char *> getListOfComponents()
 		{
-			std::vector<const char *> components{
+			std::vector<const char *> components {
 					"Animation component", "Bloom component", "Box Collider2D component", "Box Collider3D component",
 					"Capsule Collider3D component", "Character Joint3D component", "Circle Collider2D component",
 					"ConvexMesh Collider3D component", "Distance Joint2D component", "Edge Collider2D component",
 					"Fixed Joint3D component", "Hinge Joint2D component", "Hinge Joint3D component",
 					"Material component", "Particle component","PolygonCollider2D component", "Reflection component",
 					"Refraction component", "Render2D Component", "Render3D component", "RigidBody2D component",
-					"RigidBody3D component", "Script component", "Shadow component", "Sound component",
-					"Sphere Collider3D component", "Sprite component", "Sprite sheet component", "Text Component",
-					"Transform3D component"
+					"RigidBody3D component", "Script component", "Shadow component", "Skybox component",
+					"Sound component", "Sphere Collider3D component", "Sprite component", "Sprite sheet component",
+					"Terrain component", "Text component", "Transform3D component"
 			};
 
 			return components;
@@ -96,10 +98,12 @@ namespace Survive
 			drawComponent(registry, entity, m_RigidBody3DTemplate);
 			drawComponent(registry, entity, m_ScriptTemplate);
 			drawComponent(registry, entity, m_ShadowTemplate);
+			drawComponent(registry, entity, m_SkyboxTemplate);
 			drawComponent(registry, entity, m_SoundTemplate);
 			drawComponent(registry, entity, m_SphereCollider3DTemplate);
 			drawComponent(registry, entity, m_SpriteTemplate);
 			drawComponent(registry, entity, m_SpriteSheetTemplate);
+			drawComponent(registry, entity, m_TerrainTemplate);
 			drawComponent(registry, entity, m_TextTemplate);
 			drawComponent(registry, entity, m_TransformTemplate);
 		}
@@ -157,16 +161,20 @@ namespace Survive
 				case 23:
 					return addComponent(registry, entity, m_ShadowTemplate);
 				case 24:
-					return addComponent(registry, entity, m_SoundTemplate);
+					return addComponent(registry, entity, m_SkyboxTemplate);
 				case 25:
-					return addComponent(registry, entity, m_SphereCollider3DTemplate);
+					return addComponent(registry, entity, m_SoundTemplate);
 				case 26:
-					return addComponent(registry, entity, m_SpriteTemplate);
+					return addComponent(registry, entity, m_SphereCollider3DTemplate);
 				case 27:
-					return addComponent(registry, entity, m_SpriteSheetTemplate);
+					return addComponent(registry, entity, m_SpriteTemplate);
 				case 28:
-					return addComponent(registry, entity, m_TextTemplate);
+					return addComponent(registry, entity, m_SpriteSheetTemplate);
 				case 29:
+					return addComponent(registry, entity, m_TerrainTemplate);
+				case 30:
+					return addComponent(registry, entity, m_TextTemplate);
+				case 31:
 					return addComponent(registry, entity, m_TransformTemplate);
 				default:
 					throw std::runtime_error("Selected item not implemented");

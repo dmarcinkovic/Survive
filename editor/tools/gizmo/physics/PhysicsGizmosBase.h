@@ -6,8 +6,8 @@
 #define SURVIVE_PHYSICSGIZMOSBASE_H
 
 #include <imgui.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Components.h"
 #include "EventHandler.h"
 #include "Camera.h"

@@ -32,7 +32,7 @@ namespace Survive
 		static void
 		setVertices(std::vector<float> &vertices, float x, float y, float terrainHeight, float width, float height);
 
-		static void setNormals(std::vector<float> &normals, float x, float y, int width, int height,
+		static void setNormals(std::vector<float> &normals, int i, int j, int width, int height,
 							   const std::vector<std::vector<float>> &terrainHeight);
 
 		static void

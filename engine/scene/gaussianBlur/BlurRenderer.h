@@ -7,13 +7,13 @@
 
 #include <functional>
 #include <unordered_map>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "AnimationRenderer.h"
 #include "TerrainRenderer.h"
 #include "ObjectRenderer.h"
-#include "verticalBlur/VerticalBlurRenderer.h"
-#include "horizontalBlur/HorizontalBlurRenderer.h"
+#include "VerticalBlurRenderer.h"
+#include "HorizontalBlurRenderer.h"
 
 namespace Survive
 {

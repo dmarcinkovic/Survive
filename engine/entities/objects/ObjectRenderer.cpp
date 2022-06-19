@@ -6,6 +6,7 @@
 #include "Components.h"
 #include "Maths.h"
 #include "ShadowComponent.h"
+#include "Util.h"
 
 Survive::ObjectRenderer::ObjectRenderer(const Light &light)
 		: m_Light(light)
@@ -95,8 +96,10 @@ void Survive::ObjectRenderer::loadObjectUniforms(entt::registry &registry, entt:
 
 	renderMaterial(registry, entity, m_Shader);
 
-	renderReflection(registry, entity, m_Shader);
-	renderRefraction(registry, entity, m_Shader);
+	entt::entity skyboxEntity = getSkyboxEntity(registry, entity);
+
+	renderReflection(registry, entity, m_Shader, skyboxEntity);
+	renderRefraction(registry, entity, m_Shader, skyboxEntity);
 	renderBloom(registry, entity, m_Shader);
 }
 
@@ -116,22 +119,6 @@ Survive::ObjectRenderer::prepareEntities(entt::registry &registry)
 	}
 
 	return entities;
-}
-
-void Survive::ObjectRenderer::drawOutline(const entt::registry &registry, entt::entity entity)
-{
-	if (registry.any_of<OutlineComponent>(entity))
-	{
-		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
-		if (outline.drawOutline)
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-		}
-	} else
-	{
-		glStencilMask(0x00);
-	}
 }
 
 void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::entity entity,
@@ -154,16 +141,16 @@ void Survive::ObjectRenderer::renderBloom(const entt::registry &registry, entt::
 }
 
 void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::entity entity,
-											   const ObjectShader &shader) const
+											   const ObjectShader &shader, entt::entity skyboxEntity) const
 {
 	m_DefaultTexture.bindTexture(2);
 
-	if (registry.any_of<ReflectionComponent>(entity) && m_SkyBox != entt::null)
+	if (registry.any_of<ReflectionComponent>(entity) && skyboxEntity != entt::null)
 	{
 		const ReflectionComponent &reflection = registry.get<ReflectionComponent>(entity);
-		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
+		SkyboxComponent &skybox = registry.get<SkyboxComponent>(skyboxEntity);
 
-		skybox.texturedModel.getTexture().bindCubeTexture(2);
+		skybox.skyboxModel.getTexture().bindCubeTexture(2);
 		shader.loadReflectiveFactor(reflection.reflectionFactor);
 	} else
 	{
@@ -172,26 +159,21 @@ void Survive::ObjectRenderer::renderReflection(entt::registry &registry, entt::e
 }
 
 void Survive::ObjectRenderer::renderRefraction(entt::registry &registry, entt::entity entity,
-											   const ObjectShader &shader) const
+											   const ObjectShader &shader, entt::entity skyboxEntity) const
 {
 	m_DefaultTexture.bindTexture(2);
 
-	if (registry.any_of<RefractionComponent>(entity) && m_SkyBox != entt::null)
+	if (registry.any_of<RefractionComponent>(entity) && skyboxEntity != entt::null)
 	{
 		const RefractionComponent &refraction = registry.get<RefractionComponent>(entity);
-		Render3DComponent &skybox = registry.get<Render3DComponent>(m_SkyBox);
+		SkyboxComponent &skybox = registry.get<SkyboxComponent>(skyboxEntity);
 
-		skybox.texturedModel.getTexture().bindCubeTexture(2);
+		skybox.skyboxModel.getTexture().bindCubeTexture(2);
 		shader.loadRefractionData(refraction.refractiveIndex, refraction.refractiveFactor);
 	} else
 	{
 		shader.loadRefractionData(0.0f, 0.0f);
 	}
-}
-
-void Survive::ObjectRenderer::addSkybox(entt::entity skybox)
-{
-	m_SkyBox = skybox;
 }
 
 void Survive::ObjectRenderer::renderMaterial(const entt::registry &registry, entt::entity entity,
@@ -230,4 +212,29 @@ bool Survive::ObjectRenderer::getTransparencyProperty(const entt::registry &regi
 	}
 
 	return false;
+}
+
+entt::entity Survive::ObjectRenderer::getSkyboxEntity(entt::registry &registry, entt::entity entity)
+{
+	if (registry.any_of<MaterialComponent>(entity))
+	{
+		MaterialComponent &material = registry.get<MaterialComponent>(entity);
+
+		if (material.skyboxEntityName != "none" && material.skyboxEntity == entt::null)
+		{
+			material.skyboxEntity = Util::findEntityWithTag(material.skyboxEntityName, registry);
+		}
+
+		if (material.skyboxEntity == entt::null)
+		{
+			return entt::null;
+		}
+
+		if (registry.all_of<SkyboxComponent>(material.skyboxEntity))
+		{
+			return material.skyboxEntity;
+		}
+	}
+
+	return entt::null;
 }

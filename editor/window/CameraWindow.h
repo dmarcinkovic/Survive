@@ -28,6 +28,8 @@ namespace Survive
 		static void drawClipPlanes(Camera &camera);
 
 		static void showCameraProperties(Camera &camera);
+
+		static float clampAngle(float angle);
 	};
 }
 

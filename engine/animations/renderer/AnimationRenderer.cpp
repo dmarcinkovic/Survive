@@ -117,7 +117,9 @@ void Survive::AnimationRenderer::loadObjectUniforms(entt::registry &registry, en
 
 	renderMaterial(registry, entity, m_Shader);
 
-	renderReflection(registry, entity, m_Shader);
-	renderRefraction(registry, entity, m_Shader);
+	entt::entity skyboxEntity = getSkyboxEntity(registry, entity);
+
+	renderReflection(registry, entity, m_Shader, skyboxEntity);
+	renderRefraction(registry, entity, m_Shader, skyboxEntity);
 	renderBloom(registry, entity, m_Shader);
 }

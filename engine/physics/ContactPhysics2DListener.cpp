@@ -2,9 +2,10 @@
 // Created by david on 27. 02. 2022..
 //
 
+#include <entt.hpp>
+
 #include "ContactPhysics2DListener.h"
 #include "Components.h"
-#include "entt.hpp"
 
 Survive::ContactPhysics2DListener::ContactPhysics2DListener(entt::registry &registry)
 	: m_Registry(registry)

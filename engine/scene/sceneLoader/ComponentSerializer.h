@@ -7,8 +7,7 @@
 
 #include <fstream>
 #include <reactphysics3d/reactphysics3d.h>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {
@@ -78,6 +77,10 @@ namespace Survive
 		static void saveFixedJoint3DComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveParticleComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveTerrainComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveSkyboxComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 	private:
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);

@@ -6,8 +6,8 @@
 #define SURVIVE_SYSTEM_H
 
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "EventHandler.h"
 
 namespace Survive

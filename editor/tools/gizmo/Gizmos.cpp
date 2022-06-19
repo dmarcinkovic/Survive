@@ -5,9 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Maths.h"
-#include "Render2DComponent.h"
-#include "Render3DComponent.h"
-#include "TextComponent.h"
+#include "Components.h"
 #include "Gizmos.h"
 #include "Scene.h"
 
@@ -22,7 +20,7 @@ void Survive::Gizmos::draw(entt::registry &registry, Camera &camera, entt::entit
 
 	if (m_ValidOperation && registry.any_of<Transform3DComponent>(selectedEntity))
 	{
-		if (registry.any_of<Render3DComponent>(selectedEntity))
+		if (registry.any_of<Render3DComponent, TerrainComponent>(selectedEntity))
 		{
 			drawGizmos(false, camera.getProjectionMatrix(), camera.getViewMatrix(), registry, selectedEntity);
 		} else if (registry.any_of<Render2DComponent>(selectedEntity) || registry.any_of<TextComponent>(selectedEntity))

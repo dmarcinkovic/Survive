@@ -5,7 +5,7 @@
 #include "GuiShader.h"
 
 Survive::GuiShader::GuiShader()
-		: Shader(VERTEX_FILE, FRAGMENT_FILE)
+		: Shader(vertexShaderSource, fragmentShaderSource)
 {
 	getUniformLocations();
 }

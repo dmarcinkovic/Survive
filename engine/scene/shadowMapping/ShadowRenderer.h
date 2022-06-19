@@ -8,8 +8,8 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "ShadowShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"

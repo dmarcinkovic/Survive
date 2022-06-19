@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <algorithm>
 
+#include "ResourceStorage.h"
 #include "Loader.h"
 #include "stb_image.h"
 
@@ -45,8 +46,7 @@ void Survive::Loader::storeDataInAttributeList(GLuint attributeNumber, const std
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void
-Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
+void Survive::Loader::storeDataInAttributeList(const std::vector<int> &data)
 {
 	constexpr GLint size = 3;
 	constexpr GLuint attributeNumber = 4;
@@ -203,6 +203,12 @@ void Survive::Loader::addMipMap()
 
 Survive::Texture Survive::Loader::loadTexture(const char *texture)
 {
+	ResourceStorage &resourceStorage = ResourceStorage::get();
+	if (resourceStorage.isTextureAlreadyLoaded(texture))
+	{
+		return resourceStorage.getTexture(texture);
+	}
+
 	GLuint textureId;
 	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
@@ -216,7 +222,10 @@ Survive::Texture Survive::Loader::loadTexture(const char *texture)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	m_Textures.emplace_back(textureId);
-	return Texture(textureId);
+	Texture loadedTexture(textureId);
+	resourceStorage.setTexture(texture, loadedTexture);
+
+	return loadedTexture;
 }
 
 void Survive::Loader::loadImage(const char *texture)
@@ -245,10 +254,8 @@ std::vector<Survive::Texture> Survive::Loader::loadAllTextures(const std::vector
 	for (auto const &filename: textures)
 	{
 		auto const &imageData = images[filename];
-
 		result.emplace_back(loadTexture(imageData));
 	}
-
 	return result;
 }
 

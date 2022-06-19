@@ -82,17 +82,18 @@ void Survive::ComponentSerializer::saveMaterialComponent(entt::registry &registr
 {
 	if (registry.any_of<MaterialComponent>(entity))
 	{
-		const MaterialComponent &rigidBodyComponent = registry.get<MaterialComponent>(entity);
+		const MaterialComponent &materialComponent = registry.get<MaterialComponent>(entity);
 
 		writer << "\tcomponent:MaterialComponent\n";
-		writer << "\t\tisTransparent:" << rigidBodyComponent.isTransparent << '\n';
-		writer << "\t\tuseNormalMapping:" << rigidBodyComponent.useNormalMapping << '\n';
-		writer << "\t\tnormalMap:" << rigidBodyComponent.normalMapPath << '\n';
+		writer << "\t\tisTransparent:" << materialComponent.isTransparent << '\n';
+		writer << "\t\tuseNormalMapping:" << materialComponent.useNormalMapping << '\n';
+		writer << "\t\tnormalMap:" << materialComponent.normalMapPath << '\n';
+		writer << "\t\tskyboxEntityName:" << materialComponent.skyboxEntityName << '\n';
 	}
 }
 
-void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry,
-													   entt::entity entity, std::ofstream &writer)
+void Survive::ComponentSerializer::saveShadowComponent(entt::registry &registry, entt::entity entity,
+													   std::ofstream &writer)
 {
 	if (registry.any_of<ShadowComponent>(entity))
 	{
@@ -545,5 +546,37 @@ void Survive::ComponentSerializer::saveParticleComponent(entt::registry &registr
 		writer << "\t\tscaleError:" << particle.scaleError << '\n';
 		writer << "\t\tdirectionDeviation:" << particle.directionDeviation << '\n';
 		writer << "\t\tuseAdditiveBlending:" << particle.useAdditiveBlending << '\n';
+	}
+}
+
+void Survive::ComponentSerializer::saveTerrainComponent(entt::registry &registry,
+														entt::entity entity, std::ofstream &writer)
+{
+	if (registry.any_of<TerrainComponent>(entity))
+	{
+		const TerrainComponent &terrain = registry.get<TerrainComponent>(entity);
+		writer << "\tcomponent:TerrainComponent\n";
+
+		writer << "\t\theightMapPath:" << terrain.heightMapPath << '\n';
+		writer << "\t\tblendMapPath:" << terrain.blendMapPath << "\n";
+		for (int i = 0; i < terrain.texturePaths.size(); ++i)
+		{
+			writer << "\t\ttexture" << (i + 1) << ":" << terrain.texturePaths[i] << '\n';
+		}
+	}
+}
+
+void Survive::ComponentSerializer::saveSkyboxComponent(entt::registry &registry, entt::entity entity,
+													   std::ofstream &writer)
+{
+	if (registry.any_of<SkyboxComponent>(entity))
+	{
+		const SkyboxComponent &skybox = registry.get<SkyboxComponent>(entity);
+		writer << "\tcomponent:SkyboxComponent\n";
+
+		for (int i = 0; i < skybox.faces.size(); ++i)
+		{
+			writer << "\t\tface" + std::to_string(i + 1) + ':' << skybox.faces[i] << '\n';
+		}
 	}
 }

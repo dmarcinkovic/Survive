@@ -14,8 +14,12 @@ namespace Survive
 	class ShadowShader : public Shader
 	{
 	private:
-		static constexpr const char *VERTEX_SHADER = "engine/core/shader/sources/ShadowVertexShader.glsl";
-		static constexpr const char *FRAGMENT_SHADER = "engine/core/shader/sources/ShadowFragmentShader.glsl";
+		static inline const char *vertexShaderSource =
+#include "ShadowVertexShader.glsl"
+		;
+		static inline const char *fragmentShaderSource =
+#include "ShadowFragmentShader.glsl"
+		;
 		static constexpr int MAX_JOINTS = 50;
 
 		GLint m_LocationTransformationMatrix{};

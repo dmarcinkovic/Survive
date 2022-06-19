@@ -144,8 +144,6 @@ void Survive::Editor::drawMenu(entt::registry &registry, Renderer &renderer)
 	m_Menu.renderOpenDialog(registry, m_Manager, m_SceneLoader, m_SavedFile);
 	m_Menu.renderSaveAsDialog(registry, m_SavedFile);
 	m_Menu.renderSaveDialog(registry, m_SavedFile);
-
-	m_Menu.drawSkyboxWindow(registry, renderer);
 }
 
 void Survive::Editor::renderDebugWindow()

@@ -7,20 +7,12 @@
 #include "ContactPhysics2DListener.h"
 #include "ContactPhysics3DListener.h"
 #include "PhysicSystem.h"
+#include "TerrainGenerator.h"
 
 Survive::Application::Application(int windowWidth, int windowHeight, const char *title)
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World2D(std::make_unique<b2World>(m_Gravity))
 {
-	auto particle = m_Registry.create();
-	m_Registry.emplace<TagComponent>(particle, "particle");
-	m_Registry.emplace<Transform3DComponent>(particle, glm::vec3{0, -1, -5}, glm::vec3{0.3f});
-	TexturedModel model(m_Loader.renderQuad(), m_Loader.loadTexture("assets/particles/smoke.png"));
-	GLuint vbo = m_Loader.createEmptyVBO(ParticleRenderer::getVertexCount());
-	ParticleComponent particleComponent(model, vbo, 100, 1, -0.1, 4, 0.5f, 0.5f, 0.2f, 0.3f);
-	m_Registry.emplace<ParticleComponent>(particle, particleComponent);
-	m_Registry.emplace<SpriteSheetComponent>(particle, 8, 8, 16);
-
 	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
 	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 

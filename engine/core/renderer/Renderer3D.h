@@ -5,6 +5,7 @@
 #ifndef SURVIVE_RENDERER3D_H
 #define SURVIVE_RENDERER3D_H
 
+#include <entt.hpp>
 
 #include "Shader.h"
 #include "TexturedModel.h"
@@ -23,6 +24,8 @@ namespace Survive
 		static void finishRenderingEntity(int numberOfVaoUnits);
 
 		static void addTransparency(bool cullFace, bool blend);
+
+		static void drawOutline(const entt::registry &registry, entt::entity entity);
 	};
 }
 

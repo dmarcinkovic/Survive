@@ -3,12 +3,12 @@
 //
 
 #include "OutlineRenderer.h"
-#include "OutlineComponent.h"
+#include "Components.h"
 #include "Maths.h"
 
 void Survive::OutlineRenderer::render(entt::registry &registry, const Camera &camera) const
 {
-	auto view = registry.view<OutlineComponent, Render3DComponent, Transform3DComponent>();
+	auto view = registry.view<OutlineComponent, Transform3DComponent>();
 
 	if (view.begin() == view.end())
 	{
@@ -22,18 +22,18 @@ void Survive::OutlineRenderer::render(entt::registry &registry, const Camera &ca
 	for (auto const &entity: view)
 	{
 		const OutlineComponent &outline = view.get<OutlineComponent>(entity);
-		if (!outline.drawOutline)
+		if (!outline.drawOutline || !registry.any_of<Render3DComponent, TerrainComponent>(entity))
 		{
 			continue;
 		}
 
-		const Render3DComponent &renderComponent = view.get<Render3DComponent>(entity);
-		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
+		TexturedModel model = getModel(registry, entity);
+		prepareObject(model);
 
-		prepareObject(renderComponent);
+		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
 		loadUniforms(transform, camera);
 
-		GLsizei count = renderComponent.texturedModel.vertexCount();
+		GLsizei count = model.vertexCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 
 		finishRenderingObject();
@@ -72,9 +72,9 @@ void Survive::OutlineRenderer::loadUniforms(const Transform3DComponent &transfor
 	m_Shader.loadFactor(factor);
 }
 
-void Survive::OutlineRenderer::prepareObject(const Render3DComponent &renderComponent)
+void Survive::OutlineRenderer::prepareObject(const TexturedModel &model)
 {
-	glBindVertexArray(renderComponent.texturedModel.vaoID());
+	glBindVertexArray(model.vaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(2);
 }
@@ -84,4 +84,17 @@ void Survive::OutlineRenderer::finishRenderingObject()
 	glBindVertexArray(0);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(2);
+}
+
+Survive::TexturedModel Survive::OutlineRenderer::getModel(const entt::registry &registry, entt::entity entity)
+{
+	if (registry.any_of<Render3DComponent>(entity))
+	{
+		return registry.get<Render3DComponent>(entity).texturedModel;
+	} else if (registry.any_of<TerrainComponent>(entity))
+	{
+		return registry.get<TerrainComponent>(entity).terrainModel;
+	}
+
+	return {};
 }

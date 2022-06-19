@@ -9,8 +9,8 @@
 #include <glm/vec3.hpp>
 #include <AL/al.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Renderer.h"
 #include "DaeParser.h"
 #include "AudioMaster.h"

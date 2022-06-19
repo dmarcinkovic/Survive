@@ -3,6 +3,7 @@
 //
 
 #include "Renderer3D.h"
+#include "OutlineComponent.h"
 
 void Survive::Renderer3D::prepareRendering(const Shader &shader)
 {
@@ -56,5 +57,21 @@ void Survive::Renderer3D::addTransparency(bool cullFace, bool blend)
 	} else
 	{
 		glDisable(GL_BLEND);
+	}
+}
+
+void Survive::Renderer3D::drawOutline(const entt::registry &registry, entt::entity entity)
+{
+	if (registry.any_of<OutlineComponent>(entity))
+	{
+		const OutlineComponent &outline = registry.get<OutlineComponent>(entity);
+		if (outline.drawOutline)
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+	} else
+	{
+		glStencilMask(0x00);
 	}
 }
