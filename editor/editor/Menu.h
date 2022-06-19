@@ -14,7 +14,6 @@
 #include "SceneSerializer.h"
 #include "EventHandler.h"
 #include "PropertyWindow.h"
-#include "SkyboxWindow.h"
 
 namespace Survive
 {
@@ -25,9 +24,6 @@ namespace Survive
 		SaveDialog m_SaveWindow;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
-		bool m_SkyboxDialog = false;
-
-		SkyboxWindow m_SkyWindow;
 
 	public:
 		void renderMenu(EntityManager &manager, PropertyWindow &drawingWindow);
@@ -40,8 +36,6 @@ namespace Survive
 		void renderSaveDialog(entt::registry &registry, std::string &savedFile);
 
 		void renderSaveAsDialog(entt::registry &registry, std::string &savedFile);
-
-		void drawSkyboxWindow(entt::registry &registry, Renderer &renderer);
 
 	private:
 		static void loadScene(entt::registry &registry, SceneSerializer &sceneLoader, std::string &savedFile,

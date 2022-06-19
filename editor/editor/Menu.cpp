@@ -19,8 +19,6 @@ void Survive::Menu::renderMenu(EntityManager &manager, PropertyWindow &drawingWi
 
 		if (ImGui::BeginMenu("Window"))
 		{
-			ImGui::MenuItem("Skybox", "", &m_SkyboxDialog);
-
 			if (ImGui::MenuItem("Camera", "", nullptr))
 			{
 				drawingWindow = PropertyWindow::CAMERA;
@@ -111,11 +109,6 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 			}
 		}
 	}
-}
-
-void Survive::Menu::drawSkyboxWindow(entt::registry &registry, Renderer &renderer)
-{
-	m_SkyWindow.draw(registry, renderer, m_SkyboxDialog);
 }
 
 void Survive::Menu::loadScene(entt::registry &registry, Survive::SceneSerializer &sceneLoader, std::string &savedFile,
