@@ -29,7 +29,7 @@ namespace Survive
 		Texture m_TextureIcon{};
 
 	public:
-		ComponentTemplate<TextComponent>()
+		ComponentTemplate()
 				: m_Items{"Arial", "Candara"},
 				  m_FontInfo{{"assets/fonts/arial.png",   "assets/fonts/arial.fnt"},
 							 {"assets/fonts/candara.png", "assets/fonts/candara.fnt"}}
