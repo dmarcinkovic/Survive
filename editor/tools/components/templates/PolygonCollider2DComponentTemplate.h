@@ -24,7 +24,7 @@ namespace Survive
 		const ImVec2 m_Uv1;
 
 	public:
-		ComponentTemplate<PolygonCollider2DComponent>()
+		ComponentTemplate()
 				: m_Uv0(0, 1), m_Uv1(1, 0)
 		{
 			m_DeleteIcon = m_Loader.loadTexture("assets/textures/delete_icon.png");
