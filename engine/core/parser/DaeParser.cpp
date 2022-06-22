@@ -11,7 +11,7 @@
 #include "Util.h"
 #include "ResourceStorage.h"
 
-Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
+Survive::Model Survive::DaeParser::loadDae(const std::string &daeFile, Loader &loader)
 {
 	ResourceStorage &resourceStorage = ResourceStorage::get();
 	if (resourceStorage.isModelAlreadyLoaded(daeFile))

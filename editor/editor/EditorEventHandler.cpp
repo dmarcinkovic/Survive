@@ -5,6 +5,7 @@
 #include "EditorEventHandler.h"
 #include "Scene.h"
 #include "Util.h"
+#include "ObjParser.h"
 
 Survive::EditorEventHandler::EditorEventHandler(ContentBrowser &contentBrowser, EntityManager &manager,
 												SceneSerializer &sceneLoader)
@@ -36,6 +37,9 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 				} else if (extension == ".obj" && file.has_stem())
 				{
 					loadModel(registry, loader, file, camera);
+				} else if (extension == ".dae" && file.has_stem())
+				{
+					loadModel(registry, loader, file, camera, true);
 				} else if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 				{
 					loadTexture(registry, renderer, file, loader);
@@ -65,7 +69,7 @@ void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::strin
 }
 
 void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &loader,
-											const std::filesystem::path &file, const Camera &camera)
+											const std::filesystem::path &file, const Camera &camera, bool isAnimated)
 {
 	auto [x, y] = Scene::getScenePosition();
 	float width = Scene::getSceneWidth();
@@ -73,13 +77,27 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 
 	try
 	{
-		Model model = ObjParser::loadObj(file.string(), loader);
+		DaeParser daeParser;
+
+		Model model;
+		if (isAnimated)
+		{
+			model = daeParser.loadDae(file.string(), loader);
+		} else
+		{
+			model = ObjParser::loadObj(file.string(), loader);
+		}
 
 		if (model.isValidModel())
 		{
 			auto entity = registry.create();
 			registry.emplace<TagComponent>(entity, file.stem().string());
 			registry.emplace<OutlineComponent>(entity, false);
+
+			if (isAnimated)
+			{
+				addAnimationComponentToModel(registry, entity, daeParser);
+			}
 
 			addRenderComponentToModel(registry, entity, file, model);
 			addTransformComponentToModel(registry, entity, camera, x, y, width, height);
@@ -90,8 +108,8 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 	}
 }
 
-void Survive::EditorEventHandler::loadTexture(entt::registry &registry, Survive::Renderer &renderer,
-											  const std::filesystem::path &file, Survive::Loader &loader)
+void Survive::EditorEventHandler::loadTexture(entt::registry &registry, Renderer &renderer,
+											  const std::filesystem::path &file, Loader &loader)
 {
 	ImVec2 mousePosition = ImGui::GetMousePos();
 	renderer.setMousePickingPosition(mousePosition.x, mousePosition.y);
@@ -159,4 +177,15 @@ void Survive::EditorEventHandler::registerListener(entt::registry &registry, Ren
 
 		renderer.popMousePickingListener();
 	});
+}
+
+void Survive::EditorEventHandler::addAnimationComponentToModel(entt::registry &registry, entt::entity entity,
+															   const DaeParser &parser)
+{
+	auto[rootJoint, numberOfJoints] = parser.getJointData();
+	if (numberOfJoints > 0)
+	{
+		Animator animator(parser.getAnimation());
+		registry.emplace<AnimationComponent>(entity, std::move(animator), rootJoint, numberOfJoints);
+	}
 }
