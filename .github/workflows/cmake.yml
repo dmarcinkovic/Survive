@@ -112,7 +112,7 @@ jobs:
           mkdir build
           cd build
           conan install .. --build=missing
-          cmake .. -D CMAKE_CXX_COMPILER=g++-10 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
+          cmake .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
           make DESTDIR=${{github.workspace}}/build/MacOS install
 
