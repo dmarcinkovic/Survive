@@ -12,7 +12,7 @@ env:
 jobs:
   Linux:
     name: Linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -48,10 +48,10 @@ jobs:
       - name: Build executable
         run: |
           cd ${{github.workspace}}
-          export CONAN_SYSREQUIRES_MODE=disabled
+          export CONAN_SYSREQUIRES_MODE=enabled
           mkdir build
           cd build
-          conan install .. --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=disabled
+          conan install .. --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=enabled
           cmake -D CMAKE_CXX_COMPILER=g++-11 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
           make DESTDIR=${{github.workspace}}/build/Linux install
@@ -94,7 +94,7 @@ jobs:
 
   MacOS:
     name: MacOS
-    runs-on: macos-11
+    runs-on: macos-12
 
     steps:
       - name: Checkout
