@@ -39,3 +39,36 @@ const Survive::Model &Survive::ResourceStorage::getModel(const std::string &mode
 {
 	return m_Models.at(modelPath);
 }
+
+void Survive::ResourceStorage::setAnimation(const std::string &modelPath, float lengthInSeconds,
+											const std::vector<KeyFrame> &keyFrames)
+{
+	m_Animations[modelPath] = std::make_pair(lengthInSeconds, keyFrames);
+}
+
+const Survive::ResourceStorage::AnimationData &
+Survive::ResourceStorage::getAnimation(const std::string &modelPath) const
+{
+	return m_Animations.at(modelPath);
+}
+
+bool Survive::ResourceStorage::isAnimationAlreadyLoaded(const std::string &modelPath) const
+{
+	return m_Animations.contains(modelPath);
+}
+
+bool Survive::ResourceStorage::isJointDataAlreadyLoaded(const std::string &modelPath) const
+{
+	return m_JointsData.contains(modelPath);
+}
+
+const Survive::ResourceStorage::JointData &Survive::ResourceStorage::getJointData(const std::string &modelPath) const
+{
+	return m_JointsData.at(modelPath);
+}
+
+void Survive::ResourceStorage::setJointData(const std::string &modelPath, const Survive::Joint &rootJoint,
+											int numberOfJoints)
+{
+	m_JointsData[modelPath] = std::make_pair(rootJoint, numberOfJoints);
+}
