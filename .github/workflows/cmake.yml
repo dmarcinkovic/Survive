@@ -48,9 +48,10 @@ jobs:
       - name: Build executable
         run: |
           cd ${{github.workspace}}
+          export CONAN_SYSREQUIRES_MODE=disabled
           mkdir build
           cd build
-          conan install .. --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=enabled
+          conan install .. --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=disabled
           cmake -D CMAKE_CXX_COMPILER=g++-11 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
           make
           make DESTDIR=${{github.workspace}}/build/Linux install
