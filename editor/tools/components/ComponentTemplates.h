@@ -5,6 +5,7 @@
 #ifndef SURVIVE_COMPONENTTEMPLATES_H
 #define SURVIVE_COMPONENTTEMPLATES_H
 
+#include "AnimationComponentTemplate.h"
 #include "BloomComponentTemplate.h"
 #include "BoxCollider2DComponentTemplate.h"
 #include "BoxCollider3DComponentTemplate.h"
