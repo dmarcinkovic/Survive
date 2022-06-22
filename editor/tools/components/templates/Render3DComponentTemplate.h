@@ -91,7 +91,7 @@ namespace Survive
 					model = ObjParser::loadObj(selectedFile, m_Loader);
 				} else if (selectedFile.ends_with("dae"))
 				{
-					model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+					model = m_DaeParser.loadDae(selectedFile, m_Loader);
 				} else
 				{
 					Log::logMessage(LogType::ERROR, "Unknown file type");
