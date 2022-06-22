@@ -6,6 +6,7 @@
 #define SURVIVE_RENDER3DCOMPONENTTEMPLATE_H
 
 #include <imgui.h>
+#include <optional>
 
 #include "ComponentTemplate.h"
 #include "OpenDialog.h"
