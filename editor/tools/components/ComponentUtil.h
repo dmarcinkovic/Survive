@@ -58,7 +58,7 @@ namespace Survive
 		static std::vector<const char *> getListOfComponents()
 		{
 			std::vector<const char *> components {
-					"Animation component", "Bloom component", "Box Collider2D component", "Box Collider3D component",
+					"Bloom component", "Box Collider2D component", "Box Collider3D component",
 					"Capsule Collider3D component", "Character Joint3D component", "Circle Collider2D component",
 					"ConvexMesh Collider3D component", "Distance Joint2D component", "Edge Collider2D component",
 					"Fixed Joint3D component", "Hinge Joint2D component", "Hinge Joint3D component",
