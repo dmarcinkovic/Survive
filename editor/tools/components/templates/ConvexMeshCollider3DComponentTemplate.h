@@ -19,7 +19,7 @@ namespace Survive
 		Loader m_Loader;
 
 	public:
-		ComponentTemplate<ConvexMeshCollider3DComponent>()
+		ComponentTemplate()
 		{
 			m_DeleteIcon = m_Loader.loadTexture("assets/textures/delete_icon.png");
 		}
