@@ -12,6 +12,7 @@ void Survive::AnimationSystem::update(entt::registry &registry)
 	{
 		AnimationComponent &animationComponent = view.get<AnimationComponent>(entity);
 		calculateJointTransforms(animationComponent);
+		animationComponent.animator.update(animationComponent.rootJoint);
 	}
 }
 

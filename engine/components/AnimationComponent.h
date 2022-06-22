@@ -6,6 +6,7 @@
 #define SURVIVE_ANIMATIONCOMPONENT_H
 
 #include "Joint.h"
+#include "Animator.h"
 
 namespace Survive
 {
@@ -13,13 +14,16 @@ namespace Survive
 	{
 		Joint rootJoint;
 		int numberOfJoints{};
+		Animator animator;
 
 		std::vector<glm::mat4> jointTransforms;
 
-		AnimationComponent() = default;
+		AnimationComponent()
+				: animator(Animation(0, {}))
+		{}
 
-		AnimationComponent(Joint rootJoint, int numberOfJoints)
-				: rootJoint(std::move(rootJoint)), numberOfJoints(numberOfJoints)
+		AnimationComponent(Animator animator, Joint rootJoint, int numberOfJoints)
+				: animator(std::move(animator)), rootJoint(std::move(rootJoint)), numberOfJoints(numberOfJoints)
 		{}
 	};
 }
