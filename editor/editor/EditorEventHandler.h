@@ -12,6 +12,7 @@
 #include "ContentBrowser.h"
 #include "EntityManager.h"
 #include "SceneSerializer.h"
+#include "DaeParser.h"
 
 namespace Survive
 {
@@ -32,11 +33,11 @@ namespace Survive
 	private:
 		void loadScene(entt::registry &registry, std::string &savedFile, const std::filesystem::path &file);
 
-		static void
-		loadModel(entt::registry &registry, Loader &loader, const std::filesystem::path &file, const Camera &camera);
+		static void loadModel(entt::registry &registry, Loader &loader, const std::filesystem::path &file,
+							  const Camera &camera, bool isAnimated = false);
 
-		static void
-		loadTexture(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file, Loader &loader);
+		static void loadTexture(entt::registry &registry, Renderer &renderer,
+								const std::filesystem::path &file, Loader &loader);
 
 		static void addTransformComponentToModel(entt::registry &registry, entt::entity entity, const Camera &camera,
 												 float x, float y, float width, float height);
@@ -46,6 +47,9 @@ namespace Survive
 
 		static void registerListener(entt::registry &registry, Renderer &renderer, const std::filesystem::path &file,
 									 Loader &loader);
+
+		static void addAnimationComponentToModel(entt::registry &registry, entt::entity entity,
+												 const DaeParser &parser);
 	};
 }
 

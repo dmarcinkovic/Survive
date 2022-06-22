@@ -79,10 +79,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 	try
 	{
-		if (componentType == "AnimationComponent")
-		{
-
-		} else if (componentType == "BloomComponent")
+		if (componentType == "BloomComponent")
 		{
 			ComponentLoader::loadBloomComponent(registry, entity, reader, m_Loader);
 		} else if (componentType == "ReflectionComponent")
@@ -182,7 +179,6 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-	ComponentSerializer::saveAnimationComponent(registry, entity, writer);
 	ComponentSerializer::saveBloomComponent(registry, entity, writer);
 	ComponentSerializer::saveReflectionComponent(registry, entity, writer);
 	ComponentSerializer::saveRefractionComponent(registry, entity, writer);

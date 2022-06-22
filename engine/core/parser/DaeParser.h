@@ -53,7 +53,7 @@ namespace Survive
 		float m_LengthInSeconds;
 
 	public:
-		Model loadDae(const char *daeFile, Loader &loader);
+		Model loadDae(const std::string &daeFile, Loader &loader);
 
 		[[nodiscard]] Animation getAnimation() const;
 

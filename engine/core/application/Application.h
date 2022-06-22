@@ -52,6 +52,11 @@ namespace Survive
 		Application(int windowWidth, int windowHeight, const char *title);
 
 		void run();
+
+	private:
+		void registerPlaySceneListener();
+
+		void registerReloadSceneListener();
 	};
 }
 

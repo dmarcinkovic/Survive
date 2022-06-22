@@ -14,8 +14,6 @@ namespace Survive
 	class ComponentSerializer
 	{
 	public:
-		static void saveAnimationComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
-
 		static void saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveReflectionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);

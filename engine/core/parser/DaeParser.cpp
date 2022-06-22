@@ -11,11 +11,18 @@
 #include "Util.h"
 #include "ResourceStorage.h"
 
-Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
+Survive::Model Survive::DaeParser::loadDae(const std::string &daeFile, Loader &loader)
 {
 	ResourceStorage &resourceStorage = ResourceStorage::get();
-	if (resourceStorage.isModelAlreadyLoaded(daeFile))
+	if (resourceStorage.isModelAlreadyLoaded(daeFile) && resourceStorage.isAnimationAlreadyLoaded(daeFile) &&
+		resourceStorage.isJointDataAlreadyLoaded(daeFile))
 	{
+		m_LengthInSeconds = resourceStorage.getAnimation(daeFile).first;
+		m_KeyFrames = resourceStorage.getAnimation(daeFile).second;
+
+		m_JointData.rootJoint = resourceStorage.getJointData(daeFile).first;
+		m_JointData.numberOfJoints = resourceStorage.getJointData(daeFile).second;
+
 		return resourceStorage.getModel(daeFile);
 	}
 
@@ -52,7 +59,10 @@ Survive::Model Survive::DaeParser::loadDae(const char *daeFile, Loader &loader)
 
 	reader.close();
 	Model model = parseIndices(loader);
+
 	resourceStorage.setModel(daeFile, model);
+	resourceStorage.setJointData(daeFile, m_JointData.rootJoint, static_cast<int>(m_JointData.numberOfJoints));
+	resourceStorage.setAnimation(daeFile, m_LengthInSeconds, m_KeyFrames);
 
 	return model;
 }
