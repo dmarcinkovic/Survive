@@ -5,15 +5,6 @@
 #include "Components.h"
 #include "ComponentSerializer.h"
 
-void Survive::ComponentSerializer::saveAnimationComponent(entt::registry &registry, entt::entity entity,
-														  std::ofstream &writer)
-{
-	if (registry.any_of<AnimationComponent>(entity))
-	{
-		writer << "\tcomponent:AnimationComponent\n";
-	}
-}
-
 void
 Survive::ComponentSerializer::saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {

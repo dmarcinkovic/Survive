@@ -9,12 +9,7 @@
 #include "ParticleRenderer.h"
 #include "TerrainGenerator.h"
 #include "Constants.h"
-
-void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
-													  entt::entity entity, std::ifstream &reader)
-{
-
-}
+#include "DaeParser.h"
 
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 												  Loader &loader)
@@ -80,7 +75,14 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	std::string modelName = parseLine(reader, "modelName");
 	std::string textureName = parseLine(reader, "textureName");
 
-	Model model = ObjParser::loadObj(modelName, loader);
+	Model model;
+	if (modelName.ends_with(".obj"))
+	{
+		model = ObjParser::loadObj(modelName, loader);
+	} else if (modelName.ends_with(".dae"))
+	{
+		model = loadAnimatedModel(registry, entity, loader, modelName);
+	}
 
 	Texture texture;
 	try
@@ -821,7 +823,8 @@ void Survive::ComponentLoader::loadTerrainTextures(std::vector<std::string> &tex
 	}
 }
 
-void Survive::ComponentLoader::loadSkyboxComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader)
+void Survive::ComponentLoader::loadSkyboxComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+												   Loader &loader)
 {
 	std::vector<std::string> faces;
 	for (int i = 0; i < Constants::NUMBER_OF_FACES; ++i)
@@ -841,6 +844,27 @@ void Survive::ComponentLoader::loadSkyboxComponent(entt::registry &registry, ent
 		skyboxComponent.m_ModelLoaded = true;
 
 		registry.emplace<SkyboxComponent>(entity, skyboxComponent);
-	} catch(const std::exception &ignorable)
+	} catch (const std::exception &ignorable)
 	{}
 }
+
+Survive::Model Survive::ComponentLoader::loadAnimatedModel(entt::registry &registry, entt::entity entity,
+														   Loader &loader, const std::string &modelName)
+try
+{
+	DaeParser parser;
+	Model model = parser.loadDae(modelName, loader);
+	auto [rootJoint, numberOfJoints] = parser.getJointData();
+
+	if (numberOfJoints > 0)
+	{
+		Animator animator(parser.getAnimation());
+		registry.emplace<AnimationComponent>(entity, std::move(animator), rootJoint, numberOfJoints);
+	}
+
+	return model;
+} catch (const std::exception &ex)
+{
+	return {};
+}
+

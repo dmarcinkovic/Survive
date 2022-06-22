@@ -21,8 +21,6 @@ namespace Survive
 	class ComponentLoader
 	{
 	public:
-		static void loadAnimationComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader);
-
 		static void
 		loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader, Loader &loader);
 
@@ -126,6 +124,9 @@ namespace Survive
 
 		static void loadTerrainTextures(std::vector<std::string> &texturesPath, std::vector<Texture> &textures,
 										Loader &loader, std::ifstream &reader);
+
+		static Model loadAnimatedModel(entt::registry &registry, entt::entity entity,
+									   Loader &loader, const std::string &modelName);
 	};
 }
 
