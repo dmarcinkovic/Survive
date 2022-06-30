@@ -9,6 +9,7 @@
 
 #include "Components.h"
 #include "ComponentTemplate.h"
+#include "ScriptUtil.h"
 
 namespace Survive
 {
@@ -46,10 +47,15 @@ namespace Survive
 
 				if (!m_Open && !m_OpenDialog.getSelectedFilename().empty())
 				{
-					std::filesystem::path file = m_OpenDialog.getSelectedFile();
-					std::string selectedFilename = std::filesystem::absolute(file).string();
+					std::filesystem::path selectedFile = m_OpenDialog.getSelectedFile();
+					std::filesystem::path destination = std::filesystem::temp_directory_path();
 
-					scriptPath = selectedFilename;
+					// TODO: change this
+					std::filesystem::path libraryLocation(std::filesystem::path("cmake-build-debug") / "lib");
+					std::filesystem::path includeDirectory(std::filesystem::path("cmake-build-debug") / "include");
+
+					scriptPath = ScriptUtil::compileScript(selectedFile, destination, libraryLocation,
+														   includeDirectory);
 				}
 			}
 		}
