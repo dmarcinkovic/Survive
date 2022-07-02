@@ -30,6 +30,7 @@ Survive::ScriptUtil::compileScript(const std::filesystem::path &path, const std:
 	if (!executeCmakeCommand(destination, buildDirectory, projectName, scriptPath))
 	{
 		Log::logMessage(LogType::ERROR, "Error while compiling script");
+		return "";
 	}
 
 	Log::logMessage(LogType::INFO, "Successfully compiled script");
