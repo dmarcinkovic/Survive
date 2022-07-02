@@ -17,8 +17,7 @@ Survive::ContentBrowser::ContentBrowser()
 
 	m_Lupa = m_Loader.loadTexture("assets/textures/lupa.png");
 
-	m_Tree.addListener([this](auto currentDirectory, auto directoryContent) {
-		m_CurrentDirectory = std::move(currentDirectory);
+	m_Tree.addListener([this](auto directoryContent) {
 		m_DirectoryContent = std::move(directoryContent);
 	});
 }

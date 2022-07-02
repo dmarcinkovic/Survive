@@ -15,7 +15,7 @@
 
 namespace Survive
 {
-	using DirectoryListener = std::function<void(std::filesystem::path, std::vector<File>)>;
+	using DirectoryListener = std::function<void(std::vector<File>)>;
 
 	class DirectoryTree
 	{
