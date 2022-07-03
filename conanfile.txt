@@ -1,0 +1,10 @@
+[requires]
+glfw/3.3.6
+glew/2.2.0
+glm/0.9.9.8
+openal/1.21.1
+opengl/system
+box2d/2.4.1
+
+[generators]
+cmake
