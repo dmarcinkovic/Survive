@@ -37,6 +37,8 @@ namespace Survive
 	public:
 		EventHandler();
 
+		EventHandler(const EventHandler &eventHandler) = delete;
+
 		[[nodiscard]] bool isKeyPressed(Key key) const;
 
 		[[nodiscard]] bool isKeyControlPressed() const;
@@ -62,7 +64,7 @@ namespace Survive
 		static void popMouseMovedListener();
 
 	private:
-		void addKeyboardListener();
+		void registerKeyboardListener();
 
 		static void windowResizeCallback(GLFWwindow *window, int width, int height);
 

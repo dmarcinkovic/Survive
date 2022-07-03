@@ -5,7 +5,8 @@
 #ifndef SURVIVE_SCRIPTINGSYSTEM_H
 #define SURVIVE_SCRIPTINGSYSTEM_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "EventHandler.h"
 #include "Camera.h"
 

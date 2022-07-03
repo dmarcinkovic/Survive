@@ -79,10 +79,7 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 	try
 	{
-		if (componentType == "AnimationComponent")
-		{
-
-		} else if (componentType == "BloomComponent")
+		if (componentType == "BloomComponent")
 		{
 			ComponentLoader::loadBloomComponent(registry, entity, reader, m_Loader);
 		} else if (componentType == "ReflectionComponent")
@@ -172,6 +169,12 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 		} else if (componentType == "ParticleComponent")
 		{
 			ComponentLoader::loadParticleComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "TerrainComponent")
+		{
+			ComponentLoader::loadTerrainComponent(registry, entity, reader, m_Loader);
+		} else if (componentType == "SkyboxComponent")
+		{
+			ComponentLoader::loadSkyboxComponent(registry, entity, reader, m_Loader);
 		}
 	} catch (const std::exception &ignorable)
 	{}
@@ -179,7 +182,6 @@ void Survive::SceneSerializer::loadComponent(entt::registry &registry, entt::ent
 
 void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::entity entity, std::ofstream &writer)
 {
-	ComponentSerializer::saveAnimationComponent(registry, entity, writer);
 	ComponentSerializer::saveBloomComponent(registry, entity, writer);
 	ComponentSerializer::saveReflectionComponent(registry, entity, writer);
 	ComponentSerializer::saveRefractionComponent(registry, entity, writer);
@@ -210,4 +212,6 @@ void Survive::SceneSerializer::saveComponents(entt::registry &registry, entt::en
 	ComponentSerializer::saveCharacterJoint3DComponent(registry, entity, writer);
 	ComponentSerializer::saveScriptComponent(registry, entity, writer);
 	ComponentSerializer::saveParticleComponent(registry, entity, writer);
+	ComponentSerializer::saveTerrainComponent(registry, entity, writer);
+	ComponentSerializer::saveSkyboxComponent(registry, entity, writer);
 }

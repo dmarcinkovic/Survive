@@ -71,22 +71,39 @@ void Survive::CameraWindow::drawClipPlanes(Camera &camera)
 
 void Survive::CameraWindow::showCameraProperties(Survive::Camera &camera)
 {
+	constexpr float min = std::numeric_limits<float>::lowest();
 	ImGui::TextUnformatted("Camera properties");
 	ImGui::NextColumn();
 	ImGui::NextColumn();
 	ImGui::Indent();
 
 	float pitch = camera.getPitch();
-	if (EditorUtil::drawColumnInputFloat("Pitch", "##Camera pitch", pitch, -90, 90))
+	if (EditorUtil::drawColumnInputFloat("Pitch", "##Camera pitch", pitch, min))
 	{
+		if (pitch < -360 || pitch > 360)
+		{
+			pitch = clampAngle(pitch);
+		}
+
 		camera.setPitch(pitch);
 	}
 
 	float yaw = camera.getYaw();
-	if (EditorUtil::drawColumnInputFloat("Yaw", "##Camera yaw", yaw, -90, 90))
+	if (EditorUtil::drawColumnInputFloat("Yaw", "##Camera yaw", yaw, min))
 	{
+		if (yaw < -360 || yaw > 360)
+		{
+			yaw = clampAngle(yaw);
+		}
+
 		camera.setYaw(yaw);
 	}
 
 	ImGui::Unindent();
+}
+
+float Survive::CameraWindow::clampAngle(float angle)
+{
+	float factor = std::floor(angle / 360);
+	return angle - factor * 360;
 }

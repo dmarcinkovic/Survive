@@ -6,8 +6,8 @@
 #define SURVIVE_ANIMATIONSYSTEM_H
 
 #include <vector>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "AnimationComponent.h"
 #include "Joint.h"
 

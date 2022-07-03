@@ -6,8 +6,7 @@
 #define SURVIVE_CONTACTPHYSICS3DLISTENER_H
 
 #include <reactphysics3d/reactphysics3d.h>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {
@@ -23,8 +22,6 @@ namespace Survive
 
 	private:
 		void onCollisionEnter(entt::entity entity1, entt::entity entity2) const;
-
-		void onCollisionExit(entt::entity entity1, entt::entity entity2) const;
 	};
 }
 

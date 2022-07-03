@@ -7,8 +7,7 @@
 
 #include <box2d/box2d.h>
 #include <functional>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {

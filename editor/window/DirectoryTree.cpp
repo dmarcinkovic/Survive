@@ -179,7 +179,7 @@ try
 }
 
 
-void Survive::DirectoryTree::addListener(const Survive::DirectoryListener &listener)
+void Survive::DirectoryTree::addListener(const DirectoryListener &listener)
 {
 	m_Listeners.emplace_back(listener);
 }
@@ -188,7 +188,7 @@ void Survive::DirectoryTree::informListeners() const
 {
 	for (const DirectoryListener &listener: m_Listeners)
 	{
-		listener(m_CurrentDirectory, m_DirectoryContent);
+		listener(m_DirectoryContent);
 	}
 }
 

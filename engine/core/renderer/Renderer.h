@@ -58,10 +58,6 @@ namespace Survive
 
 		void render(entt::registry &registry, Camera &camera) const;
 
-		void addSkyboxEntity(entt::entity sky);
-
-		void removeSkyboxEntity();
-
 		void addButton(Button &button);
 
 		[[nodiscard]] Texture getRenderedTexture() const;

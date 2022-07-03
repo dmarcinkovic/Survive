@@ -7,12 +7,9 @@
 #include "Components.h"
 #include "Util.h"
 #include "ParticleRenderer.h"
-
-void Survive::ComponentLoader::loadAnimationComponent(entt::registry &registry,
-													  entt::entity entity, std::ifstream &reader)
-{
-
-}
+#include "TerrainGenerator.h"
+#include "Constants.h"
+#include "DaeParser.h"
 
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 												  Loader &loader)
@@ -78,7 +75,14 @@ void Survive::ComponentLoader::loadRender3DComponent(entt::registry &registry, e
 	std::string modelName = parseLine(reader, "modelName");
 	std::string textureName = parseLine(reader, "textureName");
 
-	Model model = ObjParser::loadObj(modelName, loader);
+	Model model;
+	if (modelName.ends_with(".obj"))
+	{
+		model = ObjParser::loadObj(modelName, loader);
+	} else if (modelName.ends_with(".dae"))
+	{
+		model = loadAnimatedModel(registry, entity, loader, modelName);
+	}
 
 	Texture texture;
 	try
@@ -104,6 +108,7 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 	std::string isTransparent = parseLine(reader, "isTransparent");
 	std::string useNormalMapping = parseLine(reader, "useNormalMapping");
 	std::string normalMapPath = parseLine(reader, "normalMap");
+	std::string skyboxName = parseLine(reader, "skyboxEntityName");
 
 	bool enableNormalMapping = std::stoi(useNormalMapping);
 
@@ -114,10 +119,14 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 		MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
 		material.normalMapPath = normalMapPath;
 
+		material.skyboxEntityName = skyboxName;
 		registry.emplace<MaterialComponent>(entity, material);
 	} else
 	{
-		registry.emplace<MaterialComponent>(entity, std::stoi(isTransparent));
+		MaterialComponent material(std::stoi(isTransparent));
+		material.skyboxEntityName = skyboxName;
+
+		registry.emplace<MaterialComponent>(entity, material);
 	}
 }
 
@@ -756,6 +765,113 @@ try
 	Model model = loader.renderQuad();
 	Texture texture = loader.loadTexture(texturePath.c_str());
 	return {model, texture};
+} catch (const std::exception &ex)
+{
+	return {};
+}
+
+void
+Survive::ComponentLoader::loadTerrainComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+											   Loader &loader)
+{
+	std::string heightMapPath = parseLine(reader, "heightMapPath");
+	Model model = TerrainGenerator::generateTerrain(loader, heightMapPath.c_str());
+
+	if (!model.isValidModel())
+	{
+		return;
+	}
+
+	std::string blendMapPath = parseLine(reader, "blendMapPath");
+	Texture blendMap;
+	try
+	{
+		blendMap = loader.loadTexture(blendMapPath.c_str());
+	} catch (const std::runtime_error &error)
+	{
+		return;
+	}
+
+	std::vector<std::string> texturePaths;
+	std::vector<Texture> textures;
+	loadTerrainTextures(texturePaths, textures, loader, reader);
+
+	if (textures.size() != 4)
+	{
+		return;
+	}
+
+	TerrainComponent terrain(TexturedModel(model, blendMap), std::move(textures));
+	terrain.texturePaths = std::move(texturePaths);
+	terrain.blendMapPath = std::move(blendMapPath);
+	terrain.heightMapPath = std::move(heightMapPath);
+
+	registry.emplace<TerrainComponent>(entity, std::move(terrain));
+}
+
+void Survive::ComponentLoader::loadTerrainTextures(std::vector<std::string> &texturePaths,
+												   std::vector<Texture> &textures, Loader &loader,
+												   std::ifstream &reader)
+{
+	constexpr int numberOfTextures = 4;
+	for (int i = 0; i < numberOfTextures; ++i)
+	{
+		Texture texture;
+		std::string name = "texture" + std::to_string(i + 1);
+		std::string path = parseLine(reader, name.c_str());
+		try
+		{
+			texture = loader.loadTexture(path.c_str());
+		} catch (const std::runtime_error &error)
+		{
+			break;
+		}
+
+		texturePaths.emplace_back(path);
+		textures.emplace_back(texture);
+	}
+}
+
+void Survive::ComponentLoader::loadSkyboxComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
+												   Loader &loader)
+{
+	std::vector<std::string> faces;
+	for (int i = 0; i < Constants::NUMBER_OF_FACES; ++i)
+	{
+		std::string face = "face" + std::to_string(i + 1);
+		faces.emplace_back(parseLine(reader, face.c_str()));
+	}
+
+	try
+	{
+		Texture cubeMap = loader.loadCubeMap(faces);
+		Model skyboxModel = loader.renderCube();
+
+		SkyboxComponent skyboxComponent(std::move(faces));
+		skyboxComponent.skyboxModel = TexturedModel(skyboxModel, cubeMap);
+		skyboxComponent.m_LoadedTextures.flip();
+		skyboxComponent.m_ModelLoaded = true;
+
+		registry.emplace<SkyboxComponent>(entity, skyboxComponent);
+	} catch (const std::exception &ignorable)
+	{}
+}
+
+Survive::Model Survive::ComponentLoader::loadAnimatedModel(entt::registry &registry, entt::entity entity,
+														   Loader &loader, const std::string &modelName)
+try
+{
+	DaeParser parser;
+	Model model = parser.loadDae(modelName, loader);
+	auto [rootJoint, numberOfJoints] = parser.getJointData();
+
+	if (numberOfJoints > 0)
+	{
+		Animator animator(parser.getAnimation());
+		registry.emplace<AnimationComponent>(entity, std::move(animator), rootJoint, numberOfJoints);
+	}
+
+	return model;
 } catch (const std::exception &ex)
 {
 	return {};

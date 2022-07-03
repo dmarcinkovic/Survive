@@ -6,6 +6,7 @@
 #define SURVIVE_RENDER3DCOMPONENTTEMPLATE_H
 
 #include <imgui.h>
+#include <optional>
 
 #include "ComponentTemplate.h"
 #include "OpenDialog.h"
@@ -23,8 +24,8 @@ namespace Survive
 		DaeParser m_DaeParser;
 
 		bool m_Changed = true;
-		bool m_TextureDialogOpen = false;
-		bool m_ModelDialogOpen = false;
+		bool m_HeightMapDialogOpen = false;
+		bool m_BlendMapDialogOpen = false;
 
 	public:
 		void drawComponent(Render3DComponent &component, bool *visible)
@@ -41,7 +42,7 @@ namespace Survive
 				loadModel(texturedModel.getModel(), component.modelName);
 				ImGui::NextColumn();
 				EditorUtil::loadTexture(m_OpenDialog, m_Loader, texturedModel.getTexture(), component.textureName,
-										"Texture: %s", "Load texture", m_Changed, m_TextureDialogOpen);
+										"Texture: %s", "Load texture", m_Changed, m_HeightMapDialogOpen);
 
 				ImGui::Columns();
 				ImGui::PopID();
@@ -56,14 +57,14 @@ namespace Survive
 	private:
 		void loadModel(Model &model, std::string &modelName)
 		{
-			EditorUtil::showLoadedFile("Model: %s", modelName, "Load model", m_ModelDialogOpen);
+			EditorUtil::showLoadedFile("Model: %s", modelName, "Load model", m_BlendMapDialogOpen);
 
-			if (m_ModelDialogOpen)
+			if (m_BlendMapDialogOpen)
 			{
-				m_OpenDialog.open(600.0f, 400.0f, &m_ModelDialogOpen);
+				m_OpenDialog.open(600.0f, 400.0f, &m_BlendMapDialogOpen);
 
 				std::string selectedFilename = m_OpenDialog.getSelectedFilename();
-				if (!m_ModelDialogOpen && !selectedFilename.empty())
+				if (!m_BlendMapDialogOpen && !selectedFilename.empty())
 				{
 					std::optional<Model> loadedModel = getLoadedModel();
 
@@ -91,7 +92,7 @@ namespace Survive
 					model = ObjParser::loadObj(selectedFile, m_Loader);
 				} else if (selectedFile.ends_with("dae"))
 				{
-					model = m_DaeParser.loadDae(selectedFile.c_str(), m_Loader);
+					model = m_DaeParser.loadDae(selectedFile, m_Loader);
 				} else
 				{
 					Log::logMessage(LogType::ERROR, "Unknown file type");

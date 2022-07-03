@@ -7,9 +7,9 @@
 
 #include <imgui.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
 #include "JointComponentTemplate.h"
-#include "entt.hpp"
 #include "EditorUtil.h"
 #include "Log.h"
 

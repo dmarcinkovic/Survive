@@ -7,8 +7,8 @@
 
 #include <reactphysics3d/reactphysics3d.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "RigidBody3DComponent.h"
 #include "Collider3DComponent.h"
 #include "ConvexMeshCollider3DComponent.h"
@@ -69,8 +69,6 @@ namespace Survive
 		static void initHingeJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
 
 		static void initDistanceJoint2D(entt::registry &registry, entt::entity entity, b2World *world, b2Body *body);
-
-		static entt::entity findEntityWithTag(const std::string &tag, entt::registry &registry);
 
 		static bool initConvexMeshComponent(ConvexMeshCollider3DComponent &meshCollider);
 

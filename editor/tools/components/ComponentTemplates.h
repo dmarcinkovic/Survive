@@ -5,6 +5,7 @@
 #ifndef SURVIVE_COMPONENTTEMPLATES_H
 #define SURVIVE_COMPONENTTEMPLATES_H
 
+#include "AnimationComponentTemplate.h"
 #include "BloomComponentTemplate.h"
 #include "BoxCollider2DComponentTemplate.h"
 #include "BoxCollider3DComponentTemplate.h"
@@ -31,10 +32,12 @@
 #include "RigidBody3DComponentTemplate.h"
 #include "ScriptComponentTemplate.h"
 #include "ShadowComponentTemplate.h"
+#include "SkyboxComponentTemplate.h"
 #include "SoundComponentTemplate.h"
 #include "SphereCollider3DComponentTemplate.h"
 #include "SpriteComponentTemplate.h"
 #include "SpriteSheetComponentTemplate.h"
+#include "TerrainComponentTemplate.h"
 #include "TextComponentTemplate.h"
 #include "Transform3DComponentTemplate.h"
 

@@ -7,8 +7,8 @@
 
 #include <functional>
 #include <unordered_set>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "TextShader.h"
 #include "Text.h"
 #include "Camera.h"

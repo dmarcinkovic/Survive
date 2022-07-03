@@ -6,8 +6,8 @@
 #define SURVIVE_OBJECTBEHAVIOUR_H
 
 #include <sstream>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Key.h"
 #include "Display.h"
 #include "EventHandler.h"

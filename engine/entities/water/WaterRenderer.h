@@ -6,8 +6,8 @@
 #define SURVIVE_WATERRENDERER_H
 
 #include <functional>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "WaterShader.h"
 #include "WaterFbo.h"
 #include "Components.h"

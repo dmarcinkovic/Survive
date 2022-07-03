@@ -3,52 +3,51 @@
 //
 
 #include "SkyRenderer.h"
+#include "Transform3DComponent.h"
+#include "SkyboxComponent.h"
 #include "Maths.h"
 
-void Survive::SkyRenderer::render(const entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
+void Survive::SkyRenderer::render(entt::registry &registry, const Camera &camera, const glm::vec4 &plane) const
 {
-	if (m_ShouldRender)
+	auto entities = registry.view<SkyboxComponent, Transform3DComponent>();
+
+	if (entities.begin() == entities.end())
 	{
-		const Render3DComponent &renderComponent = registry.get<Render3DComponent>(m_Sky);
-		const Transform3DComponent &transform = registry.get<Transform3DComponent>(m_Sky);
-
-		prepareRendering(renderComponent);
-		loadUniforms(registry, transform, camera, plane);
-
-		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
-
-		finishRendering();
+		return;
 	}
-}
 
-void Survive::SkyRenderer::addSkyEntity(entt::entity sky)
-{
-	m_Sky = sky;
-	m_ShouldRender = true;
-}
-
-void Survive::SkyRenderer::prepareRendering(const Render3DComponent &renderComponent) const
-{
-	m_Shader.start();
-	glEnable(GL_DEPTH_TEST);
+	prepareRendering(m_Shader);
 	glDepthFunc(GL_LEQUAL);
+	for (auto const &entity: entities)
+	{
+		const SkyboxComponent &skybox = entities.get<SkyboxComponent>(entity);
+		const Transform3DComponent &transform = entities.get<Transform3DComponent>(entity);
 
-	glBindVertexArray(renderComponent.texturedModel.vaoID());
+		prepareRenderingSky(skybox);
+
+		loadUniforms(registry, transform, camera, plane);
+		glDrawElements(GL_TRIANGLES, skybox.skyboxModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+
+		finishRenderingSky();
+	}
+	glDepthFunc(GL_LESS);
+	finishRendering();
+}
+
+void Survive::SkyRenderer::prepareRenderingSky(const SkyboxComponent &skyComponent)
+{
+	glBindVertexArray(skyComponent.skyboxModel.vaoID());
 	glEnableVertexAttribArray(0);
 
-	renderComponent.texturedModel.bindCubeTexture(0);
+	skyComponent.skyboxModel.bindCubeTexture(0);
 }
 
-void Survive::SkyRenderer::finishRendering()
+void Survive::SkyRenderer::finishRenderingSky()
 {
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 
 	Texture::unbindCubeTexture();
-
-	glDepthFunc(GL_LESS);
-	glDisable(GL_DEPTH_TEST);
-	SkyShader::stop();
 }
 
 void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Transform3DComponent &transform,
@@ -64,10 +63,4 @@ void Survive::SkyRenderer::loadUniforms(const entt::registry &registry, const Tr
 	auto transformationMatrix = Maths::createTransformationMatrix(transform.position, transform.scale);
 	m_Shader.loadTransformationMatrix(transformationMatrix);
 	m_Shader.loadPlane(plane);
-}
-
-void Survive::SkyRenderer::removeSkyEntity()
-{
-	m_Sky = entt::null;
-	m_ShouldRender = false;
 }

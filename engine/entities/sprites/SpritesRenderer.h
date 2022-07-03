@@ -6,9 +6,9 @@
 #define SURVIVE_SPRITESRENDERER_H
 
 #include <functional>
+#include <entt.hpp>
 
 #include "Components.h"
-#include "entt.hpp"
 #include "SpritesShader.h"
 #include "TexturedModel.h"
 #include "Camera.h"

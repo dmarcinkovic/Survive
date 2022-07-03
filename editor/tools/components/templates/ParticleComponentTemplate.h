@@ -45,8 +45,10 @@ namespace Survive
 	private:
 		void loadTexture(TexturedModel &model, std::string &path)
 		{
+			ImGui::PushID("Particle component");
 			EditorUtil::loadTexture(m_OpenDialog, m_Loader, model.getTexture(), path, "Particle Texture: %s",
 									"Load texture", m_Changed, m_Open);
+			ImGui::PopID();
 			ImGui::NextColumn();
 			ImGui::Separator();
 		}

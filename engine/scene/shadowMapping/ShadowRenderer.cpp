@@ -62,17 +62,28 @@ void Survive::ShadowRenderer::render(entt::registry &registry, const Light &ligh
 std::unordered_map<Survive::TexturedModel, std::vector<entt::entity>, Survive::TextureHash>
 Survive::ShadowRenderer::prepareEntities(entt::registry &registry)
 {
-	auto const &view = registry.view<ShadowComponent, Transform3DComponent, Render3DComponent, TagComponent>();
+	auto const &view = registry.view<ShadowComponent, Transform3DComponent, TagComponent>();
 
 	std::unordered_map<TexturedModel, std::vector<entt::entity>, TextureHash> entities;
 	for (auto const &entity: view)
 	{
-		Render3DComponent renderComponent = view.get<Render3DComponent>(entity);
-		ShadowComponent shadowComponent = view.get<ShadowComponent>(entity);
+		TexturedModel model;
+		if (registry.any_of<Render3DComponent>(entity))
+		{
+			model = registry.get<Render3DComponent>(entity).texturedModel;
+		} else if (registry.any_of<TerrainComponent>(entity))
+		{
+			model = registry.get<TerrainComponent>(entity).terrainModel;
+		} else
+		{
+			continue;
+		}
+
+		const ShadowComponent &shadowComponent = view.get<ShadowComponent>(entity);
 
 		if (shadowComponent.loadShadow)
 		{
-			std::vector<entt::entity> &batch = entities[renderComponent.texturedModel];
+			std::vector<entt::entity> &batch = entities[model];
 			batch.emplace_back(entity);
 		}
 	}

@@ -5,7 +5,7 @@
 #ifndef SURVIVE_AUDIOSYSTEM_H
 #define SURVIVE_AUDIOSYSTEM_H
 
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {

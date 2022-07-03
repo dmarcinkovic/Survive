@@ -13,12 +13,11 @@ Survive::ContentBrowser::ContentBrowser()
 	m_Icons = m_Loader.loadAllTextures(
 			{"assets/textures/grey_folder.png", "assets/textures/txt_file.png", "assets/textures/cpp_icon.png",
 			 "assets/textures/readme_icon.png", "assets/textures/image_icon.png", "assets/textures/obj_icon.png",
-			 "assets/textures/unknown_icon.png", "assets/textures/survive_icon.png"});
+			 "assets/textures/unknown_icon.png", "assets/textures/survive_icon.png", "assets/textures/dae_icon.png"});
 
 	m_Lupa = m_Loader.loadTexture("assets/textures/lupa.png");
 
-	m_Tree.addListener([this](auto currentDirectory, auto directoryContent) {
-		m_CurrentDirectory = std::move(currentDirectory);
+	m_Tree.addListener([this](auto directoryContent) {
 		m_DirectoryContent = std::move(directoryContent);
 	});
 }
@@ -86,6 +85,9 @@ ImTextureID Survive::ContentBrowser::getIcon(const std::filesystem::path &file)
 		} else if (extension == ".survive")
 		{
 			m_ImageIndex = SURVIVE;
+		} else if (extension == ".dae")
+		{
+			m_ImageIndex = DAE;
 		}
 	}
 

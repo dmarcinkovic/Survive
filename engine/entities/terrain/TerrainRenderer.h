@@ -5,7 +5,8 @@
 #ifndef SURVIVE_TERRAINRENDERER_H
 #define SURVIVE_TERRAINRENDERER_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "TerrainShader.h"
 #include "Components.h"
 #include "Camera.h"
@@ -23,7 +24,7 @@ namespace Survive
 					const glm::vec4 &plane = glm::vec4{}) const;
 
 	private:
-		static void prepareRenderingTerrain(const Render3DComponent &renderComponent, const TexturedComponent &textures);
+		static void prepareRenderingTerrain(const TexturedModel &model, const std::vector<Texture> &textures);
 
 		static void finishRenderingTerrain();
 

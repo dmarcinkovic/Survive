@@ -5,7 +5,8 @@
 #ifndef SURVIVE_ENTITYMANAGER_H
 #define SURVIVE_ENTITYMANAGER_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "EventHandler.h"
 #include "Components.h"
 #include "ComponentUtil.h"

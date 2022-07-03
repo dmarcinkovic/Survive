@@ -5,8 +5,10 @@
 #ifndef SURVIVE_REGISTRYUTIL_H
 #define SURVIVE_REGISTRYUTIL_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "Components.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -14,12 +16,23 @@ namespace Survive
 	{
 	private:
 		using Storage = std::tuple<Transform3DComponent, SpriteSheetComponent, RigidBody2DComponent,
-				HingeJoint2DComponent, DistanceJoint2DComponent,
-				RigidBody3DComponent, HingeJoint3DComponent, ParticleComponent>;
+				HingeJoint2DComponent, DistanceJoint2DComponent, RigidBody3DComponent,
+				HingeJoint3DComponent, ParticleComponent, AnimationComponent>;
 
 		std::unordered_map<int, Storage> m_Components;
+		Camera m_Camera;
 
 	public:
+		void storeCamera(const Camera &camera)
+		{
+			m_Camera = camera;
+		}
+
+		void restoreCamera(Camera &camera)
+		{
+			camera = m_Camera;
+		}
+
 		template<typename Component, typename... Components>
 		void store(entt::registry &registry)
 		{
@@ -93,6 +106,7 @@ namespace Survive
 			save<HingeJoint3DComponent>(registry, entity, storage);
 			save<RigidBody3DComponent>(registry, entity, storage);
 			save<ParticleComponent>(registry, entity, storage);
+			save<AnimationComponent>(registry, entity, storage);
 		}
 
 		void restoreComponents(entt::entity entity, entt::registry &registry)
@@ -114,7 +128,7 @@ namespace Survive
 			replace<RigidBody3DComponent>(registry, entity, storage);
 			replace<HingeJoint3DComponent>(registry, entity, storage);
 			replace<ParticleComponent>(registry, entity, storage);
-
+			replace<AnimationComponent>(registry, entity, storage);
 			restoreSoundComponent(registry, entity);
 
 			m_Components.erase(index);
@@ -145,7 +159,7 @@ namespace Survive
 			{
 				SoundComponent &soundComponent = registry.get<SoundComponent>(entity);
 				soundComponent.audioSource.setOnLoop(false);
-				soundComponent.play = false;
+				soundComponent.play = true;
 			}
 		}
 	};

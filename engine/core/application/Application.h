@@ -8,8 +8,8 @@
 #include <memory>
 #include <reactphysics3d/reactphysics3d.h>
 #include <box2d/box2d.h>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Editor.h"
 #include "EventHandler.h"
 #include "Loader.h"
@@ -52,6 +52,11 @@ namespace Survive
 		Application(int windowWidth, int windowHeight, const char *title);
 
 		void run();
+
+	private:
+		void registerPlaySceneListener();
+
+		void registerReloadSceneListener();
 	};
 }
 

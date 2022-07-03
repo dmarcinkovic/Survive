@@ -8,6 +8,7 @@
 
 #include "Util.h"
 #include "Constants.h"
+#include "TagComponent.h"
 
 std::vector<std::string> Survive::Util::splitByRegex(const std::string &string)
 {
@@ -77,7 +78,7 @@ ImVec2 Survive::Util::getScreenPos(const Camera &camera, const glm::mat4 &transf
 }
 
 glm::vec3
-Survive::Util::getLocalSpace(const Survive::Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point,
+Survive::Util::getLocalSpace(const Camera &camera, const glm::mat4 &transformationMatrix, const ImVec2 &point,
 							 float x, float y, float width, float height)
 {
 	glm::mat4 projectionMatrix = camera.getOrthographicProjectionMatrix();
@@ -137,5 +138,22 @@ glm::vec3 Survive::Util::getMouseRay(const Camera &camera, float x, float y, flo
 
 	glm::vec3 worldSpace = glm::normalize(glm::vec3{glm::inverse(viewMatrix) * eyeSpace});
 	return worldSpace;
+}
+
+entt::entity Survive::Util::findEntityWithTag(const std::string &tag, entt::registry &registry)
+{
+	auto view = registry.view<TagComponent>();
+
+	for (const auto &entity: view)
+	{
+		const TagComponent &tagComponent = view.get<TagComponent>(entity);
+
+		if (tagComponent.tag == tag)
+		{
+			return entity;
+		}
+	}
+
+	return entt::null;
 }
 

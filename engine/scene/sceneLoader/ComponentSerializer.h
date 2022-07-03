@@ -7,16 +7,13 @@
 
 #include <fstream>
 #include <reactphysics3d/reactphysics3d.h>
-
-#include "entt.hpp"
+#include <entt.hpp>
 
 namespace Survive
 {
 	class ComponentSerializer
 	{
 	public:
-		static void saveAnimationComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
-
 		static void saveBloomComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveReflectionComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
@@ -80,6 +77,10 @@ namespace Survive
 		static void saveScriptComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 		static void saveParticleComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveTerrainComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
+
+		static void saveSkyboxComponent(entt::registry &registry, entt::entity entity, std::ofstream &writer);
 
 	private:
 		static void printVec3(std::ofstream &writer, const char *label, const glm::vec3 &vec3);

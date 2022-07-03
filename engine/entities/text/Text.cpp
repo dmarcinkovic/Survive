@@ -17,7 +17,7 @@ Survive::Text::Text()
 	m_Text.reserve(512);
 }
 
-Survive::Text::Text(std::string text, Survive::Font font, float lineSpacing, bool centerText, bool addBorder,
+Survive::Text::Text(std::string text, Font font, float lineSpacing, bool centerText, bool addBorder,
 					float borderWidth, glm::vec3 borderColor)
 		: m_Text(std::move(text)), m_Font(std::move(font)), m_LineSpacing(lineSpacing), m_Centered(centerText),
 		  m_AddBorder(addBorder), m_BorderWidth(borderWidth), m_BorderColor(borderColor)
@@ -128,7 +128,7 @@ void Survive::Text::alignText()
 	float startX = m_Vertices.front();
 	float endX = m_Vertices[m_Vertices.size() - 4];
 
-	auto[startY, endY] = minMax();
+	auto [startY, endY] = minMax();
 
 	float middleX = (endX - startX) / 2;
 	float middleY = (endY - startY) / 2;

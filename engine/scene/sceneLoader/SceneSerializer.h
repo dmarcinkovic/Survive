@@ -6,8 +6,8 @@
 #define SURVIVE_SCENESERIALIZER_H
 
 #include <fstream>
+#include <entt.hpp>
 
-#include "entt.hpp"
 #include "Components.h"
 #include "AudioMaster.h"
 

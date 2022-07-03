@@ -5,7 +5,8 @@
 #ifndef SURVIVE_PARTICLERENDERER_H
 #define SURVIVE_PARTICLERENDERER_H
 
-#include "entt.hpp"
+#include <entt.hpp>
+
 #include "Camera.h"
 #include "ParticleShader.h"
 #include "Renderer2D.h"

@@ -9,7 +9,6 @@
 #include "Animation.h"
 #include "Joint.h"
 #include "KeyFrame.h"
-#include "AnimationRenderer.h"
 
 namespace Survive
 {
@@ -22,7 +21,7 @@ namespace Survive
 	public:
 		explicit Animator(Animation animation);
 
-		void update(entt::registry &registry);
+		void update(Joint &rootJoint);
 
 	private:
 		[[nodiscard]] std::unordered_map<std::string, glm::mat4> calculatePose() const;

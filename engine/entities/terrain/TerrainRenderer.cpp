@@ -8,27 +8,32 @@
 void Survive::TerrainRenderer::render(entt::registry &registry, const Camera &camera, const Light &light,
 									  GLuint shadowMap, const glm::vec4 &plane) const
 {
-	auto view = registry.view<Render3DComponent, Transform3DComponent,
-							  TexturedComponent, TagComponent>(entt::exclude<MoveComponent>);
+	auto view = registry.view<Transform3DComponent, TerrainComponent, TagComponent>();
 	if (view.begin() == view.end())
 	{
 		return;
 	}
 
 	prepareRendering(m_Shader);
-	view.each([&](Render3DComponent &renderComponent, Transform3DComponent &transform,
-				  TexturedComponent &textures, TagComponent &) {
-		prepareRenderingTerrain(renderComponent, textures);
+	glEnable(GL_STENCIL_TEST);
+	for (auto const &entity: view)
+	{
+		const TerrainComponent &terrain = view.get<TerrainComponent>(entity);
+		const Transform3DComponent &transform = view.get<Transform3DComponent>(entity);
+
+		prepareRenderingTerrain(terrain.terrainModel, terrain.textures);
 		renderShadow(shadowMap, light);
 
 		loadUniforms(camera, light, plane, transform);
+		drawOutline(registry, entity);
 		m_Shader.loadAddShadow(shadowMap != 0);
 
-		glDrawElements(GL_TRIANGLES, renderComponent.texturedModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, terrain.terrainModel.vertexCount(), GL_UNSIGNED_INT, nullptr);
 		finishRenderingTerrain();
-	});
+	}
 
 	finishRendering();
+	glDisable(GL_STENCIL_TEST);
 }
 
 void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light) const
@@ -39,16 +44,15 @@ void Survive::TerrainRenderer::renderShadow(GLuint shadowMap, const Light &light
 	texture.bindTexture(5);
 }
 
-void Survive::TerrainRenderer::prepareRenderingTerrain(const Render3DComponent &renderComponent,
-													   const TexturedComponent &textures)
+void Survive::TerrainRenderer::prepareRenderingTerrain(const TexturedModel &model, const std::vector<Texture> &textures)
 {
 	constexpr int numberOfVaoUnits = 3;
-	prepareEntity(renderComponent.texturedModel, numberOfVaoUnits);
+	prepareEntity(model, numberOfVaoUnits);
 	addTransparency(false, true);
 
-	for (int i = 1; i <= textures.textures.size(); ++i)
+	for (int i = 1; i <= textures.size(); ++i)
 	{
-		textures.textures[i - 1].bindTexture(i);
+		textures[i - 1].bindTexture(i);
 	}
 }
 
