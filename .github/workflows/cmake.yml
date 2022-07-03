@@ -3,8 +3,7 @@ name: CMake
 on:
   push:
     branches:
-      - master
-      - conan
+      - main
 
 env:
   BUILD_TYPE: Release
