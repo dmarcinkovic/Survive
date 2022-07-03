@@ -519,7 +519,7 @@ void Survive::ComponentSerializer::saveJoint3DComponent(std::ofstream &writer, c
 }
 
 void Survive::ComponentSerializer::saveScriptComponent(entt::registry &registry, entt::entity entity,
-												  std::ofstream &writer)
+													   std::ofstream &writer)
 {
 	if (registry.any_of<ScriptComponent>(entity))
 	{

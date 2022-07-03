@@ -118,8 +118,8 @@ void Survive::ComponentLoader::loadMaterialComponent(entt::registry &registry, e
 
 		MaterialComponent material(std::stoi(isTransparent), enableNormalMapping, normalMap);
 		material.normalMapPath = normalMapPath;
-
 		material.skyboxEntityName = skyboxName;
+
 		registry.emplace<MaterialComponent>(entity, material);
 	} else
 	{

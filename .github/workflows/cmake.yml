@@ -3,22 +3,21 @@ name: CMake
 on:
   push:
     branches:
-      - master
-      - editor
+      - main
 
 env:
   BUILD_TYPE: Release
 
 jobs:
   Linux:
-    name: Survive
-    runs-on: ubuntu-20.04
+    name: Linux
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
         with:
-            submodules: recursive
+          submodules: recursive
 
       - name: Update packages
         run: |
@@ -26,30 +25,98 @@ jobs:
 
       - name: Install compiler
         run: |
-          sudo apt-get install g++-10
+          sudo apt-get install g++-11
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get install pkg-config libglfw3-dev libglew-dev libalut-dev libglm-dev libtbb-dev
+      - name: Install conan
+        run : |
+          sudo pip install conan
 
-      - name: Install box2d
+      - name : Set conan profile
+        run : |
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name : Install libgl
+        run : |
+          sudo apt-get install libgl-dev libgl1-mesa-dev libglu1-mesa-dev
+
+      - name: Install libx11-dev
         run: |
-          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d-dev_2.4.1-2_amd64.deb
-          wget http://ftp.de.debian.org/debian/pool/main/b/box2d/libbox2d2_2.4.1-2_amd64.deb
-          sudo dpkg -i libbox2d2_2.4.1-2_amd64.deb
-          sudo dpkg -i libbox2d-dev_2.4.1-2_amd64.deb
+          sudo apt-get install libx11-dev libx11-xcb-dev
+
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          export CONAN_SYSREQUIRES_MODE=enabled
+          mkdir build
+          cd build
+          conan install .. --build=missing --settings compiler="gcc" -e CONAN_SYSREQUIRES_MODE=enabled
+          cmake -D CMAKE_CXX_COMPILER=g++-11 .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
+          make
+          make DESTDIR=${{github.workspace}}/build/Linux install
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Linux
+          path: ${{github.workspace}}/build/Linux
+
+  Windows:
+    name: Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Install conan
+        run: |
+          pip install conan
 
       - name: Build executable
         run: |
           cd ${{github.workspace}}
           mkdir build
           cd build
-          cmake -D CMAKE_CXX_COMPILER=g++-10 -D CMAKE_INSTALL_PREFIX="" ..
-          make
-          make DESTDIR=${{github.workspace}}/build/artifact install
+          conan install .. --build=missing
+          cmake .. -G "Visual Studio 17" -D CONAN_DISABLE_CHECK_COMPILER=ON
+          cmake --build . --config Release
+          cmake --install . --prefix "${{github.workspace}}/build/Windows"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Artifact
-          path: ${{github.workspace}}/build/artifact
+          name: Windows
+          path: ${{github.workspace}}/build/Windows
+
+  MacOS:
+    name: MacOS
+    runs-on: macos-12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Install conan
+        run: |
+          pip3 install conan
+
+      - name: Build executable
+        run: |
+          cd ${{github.workspace}}
+          mkdir build
+          cd build
+          conan install .. --build=missing
+          cmake .. -D CONAN_DISABLE_CHECK_COMPILER=ON -D CMAKE_INSTALL_PREFIX=""
+          make
+          make DESTDIR=${{github.workspace}}/build/MacOS install
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: MacOS
+          path: ${{github.workspace}}/build/MacOS
