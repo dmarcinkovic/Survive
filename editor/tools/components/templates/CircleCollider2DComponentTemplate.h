@@ -15,7 +15,7 @@ namespace Survive
 	class ComponentTemplate<CircleCollider2DComponent> : public ComponentTemplate<Collider2DComponent>
 	{
 	public:
-		void drawComponent(CircleCollider2DComponent &component, bool *visible)
+		static void drawComponent(CircleCollider2DComponent &component, bool *visible)
 		{
 			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
