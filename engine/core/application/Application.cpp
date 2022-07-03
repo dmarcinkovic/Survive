@@ -14,19 +14,6 @@ Survive::Application::Application(int windowWidth, int windowHeight, const char 
 		: m_Display(windowWidth, windowHeight, title), m_Light(glm::vec3{100.0f}, glm::vec3{1.0f}),
 		  m_Renderer(m_Light), m_Editor(m_Renderer, m_Registry), m_World2D(std::make_unique<b2World>(m_Gravity))
 {
-	entt::entity character = m_Registry.create();
-	m_Registry.emplace<TagComponent>(character, "character");
-	m_Registry.emplace<OutlineComponent>(character, false);
-	DaeParser parser;
-	Model animatedModel = parser.loadDae("assets/models/character.dae", m_Loader);
-	Texture modelTexture = m_Loader.loadTexture("assets/textures/character.png");
-	m_Registry.emplace<Render3DComponent>(character, TexturedModel(animatedModel, modelTexture));
-	Animation animation = parser.getAnimation();
-	auto [rootJoint, numberOfJoints] = parser.getJointData();
-	Animator animator(std::move(animation));
-	m_Registry.emplace<AnimationComponent>(character, std::move(animator), rootJoint, numberOfJoints);
-	m_Registry.emplace<Transform3DComponent>(character, glm::vec3{0, -3, -15});
-
 	m_ContactPhysics2DListener = std::make_unique<ContactPhysics2DListener>(m_Registry);
 	m_ContactPhysics3DListener = std::make_unique<ContactPhysics3DListener>(m_Registry);
 
@@ -63,6 +50,8 @@ void Survive::Application::registerPlaySceneListener()
 	m_Editor.addPlayButtonListener([this]() {
 		m_RegistryUtil.store<RigidBody2DComponent, RigidBody3DComponent, SpriteSheetComponent, ParticleComponent,
 				AnimationComponent>(m_Registry);
+		m_RegistryUtil.storeCamera(m_Camera);
+
 		System::init(m_Registry, m_EventHandler, m_World2D.get(), m_World3D, m_PhysicsCommon);
 
 		m_World2D->SetContactListener(m_ContactPhysics2DListener.get());
@@ -75,6 +64,7 @@ void Survive::Application::registerReloadSceneListener()
 	m_Editor.addReloadButtonListener([this]() {
 		m_RegistryUtil.restore<RigidBody2DComponent, SpriteSheetComponent, RigidBody3DComponent, ParticleComponent,
 				AnimationComponent>(m_Registry);
+		m_RegistryUtil.restoreCamera(m_Camera);
 
 		m_World2D = std::make_unique<b2World>(m_Gravity);
 

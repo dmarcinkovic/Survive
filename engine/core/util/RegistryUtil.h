@@ -8,6 +8,7 @@
 #include <entt.hpp>
 
 #include "Components.h"
+#include "Camera.h"
 
 namespace Survive
 {
@@ -19,8 +20,19 @@ namespace Survive
 				HingeJoint3DComponent, ParticleComponent, AnimationComponent>;
 
 		std::unordered_map<int, Storage> m_Components;
+		Camera m_Camera;
 
 	public:
+		void storeCamera(const Camera &camera)
+		{
+			m_Camera = camera;
+		}
+
+		void restoreCamera(Camera &camera)
+		{
+			camera = m_Camera;
+		}
+
 		template<typename Component, typename... Components>
 		void store(entt::registry &registry)
 		{

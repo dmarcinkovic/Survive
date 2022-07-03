@@ -29,8 +29,6 @@ namespace Survive
 
 		Camera();
 
-		Camera(const Camera &camera) = delete;
-
 		void invertPitch();
 
 		void moveCameraInYDirection(float yDistance);
