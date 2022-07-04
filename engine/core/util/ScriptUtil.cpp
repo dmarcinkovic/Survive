@@ -47,11 +47,10 @@ Survive::ScriptUtil::getCmakeFileContent(const std::string &projectName, const s
 	ss << "cmake_minimum_required(VERSION 3.22)\n";
 	ss << "project(" << projectName << ")\n";
 	ss << "set(CMAKE_CXX_STANDARD 20)\n";
-	ss << "find_package(box2d REQUIRED)\n";
 	ss << "find_library(SURVIVE_LIBRARY NAMES Survive HINTS " << absolute(libraryLocation).string() << ")\n";
 	ss << "add_library(" << projectName << " SHARED " << absolute(scriptPath).string() << ")\n";
 	ss << "target_include_directories(" << projectName << " PRIVATE " << absolute(includeDirectory).string() << ")\n";
-	ss << "target_link_libraries(" << projectName << " PRIVATE box2d ${SURVIVE_LIBRARY})\n";
+	ss << "target_link_libraries(" << projectName << " PRIVATE ${SURVIVE_LIBRARY})\n";
 
 	return ss.str();
 }
