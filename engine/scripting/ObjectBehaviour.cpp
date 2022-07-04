@@ -153,3 +153,14 @@ entt::entity Survive::ObjectBehaviour::getEntity(const std::string &entityName) 
 
 	return entt::null;
 }
+
+std::string Survive::ObjectBehaviour::getName(entt::entity entity) const
+{
+	if (m_Registry->any_of<TagComponent>(entity))
+	{
+		const TagComponent &tag = m_Registry->get<TagComponent>(entity);
+		return tag.tag;
+	}
+
+	return {};
+}

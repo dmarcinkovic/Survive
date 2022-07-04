@@ -139,6 +139,8 @@ namespace Survive
 
 		entt::entity getEntity(const std::string &entityName) const;
 
+		std::string getName(entt::entity entity) const;
+
 	private:
 		template<typename T, typename... Args>
 		void print(std::ostringstream &ss, T &&t, Args &&... args)
