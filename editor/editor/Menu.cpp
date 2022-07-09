@@ -39,12 +39,10 @@ void Survive::Menu::handleKeyEvents(const EventHandler &eventHandler)
 	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
 		m_OpenDialog = true;
-	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   sKeyReleased)
+	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() && sKeyReleased)
 	{
 		m_SaveAsDialog = true;
-	} else if (eventHandler.isKeyControlPressed() &&
-			   sKeyReleased)
+	} else if (eventHandler.isKeyControlPressed() && sKeyReleased)
 	{
 		m_SaveDialog = true;
 	}
