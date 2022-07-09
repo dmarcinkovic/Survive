@@ -7,3 +7,6 @@
 [submodule "engine/physics/reactphysics3d"]
 	path = engine/physics/reactphysics3d
 	url = https://github.com/DanielChappuis/reactphysics3d.git
+[submodule "editor/ImGuiColorTextEdit"]
+	path = editor/ImGuiColorTextEdit
+	url = https://github.com/BalazsJako/ImGuiColorTextEdit.git
