@@ -33,6 +33,7 @@ namespace Survive
 		static std::vector<ScrollListener> m_ScrollListeners;
 
 		std::array<bool, NUMBER_OF_KEYS> m_Keys{};
+		std::array<bool, NUMBER_OF_KEYS> m_KeysReleased{};
 
 	public:
 		EventHandler();
@@ -40,6 +41,8 @@ namespace Survive
 		EventHandler(const EventHandler &eventHandler) = delete;
 
 		[[nodiscard]] bool isKeyPressed(Key key) const;
+
+		[[nodiscard]] bool isKeyReleased(Key key) const;
 
 		[[nodiscard]] bool isKeyControlPressed() const;
 

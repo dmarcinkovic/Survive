@@ -28,9 +28,11 @@ void Survive::EventHandler::registerKeyboardListener()
 		if (action == GLFW_PRESS)
 		{
 			m_Keys[key] = true;
+			m_KeysReleased[key] = false;
 		} else if (action == GLFW_RELEASE)
 		{
 			m_Keys[key] = false;
+			m_KeysReleased[key] = true;
 		}
 	});
 }
@@ -136,4 +138,9 @@ void Survive::EventHandler::popScrollListener()
 void Survive::EventHandler::popMouseMovedListener()
 {
 	m_MouseMoveListeners.pop_back();
+}
+
+bool Survive::EventHandler::isKeyReleased(Key key) const
+{
+	return m_KeysReleased[key];
 }

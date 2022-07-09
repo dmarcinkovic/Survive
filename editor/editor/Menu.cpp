@@ -34,18 +34,22 @@ void Survive::Menu::renderMenu(EntityManager &manager, PropertyWindow &drawingWi
 
 void Survive::Menu::handleKeyEvents(const EventHandler &eventHandler)
 {
+	bool sKeyReleased = m_SKeyWasPressed && !eventHandler.isKeyPressed(Key::S);
+
 	if (eventHandler.isKeyControlPressed() && eventHandler.isKeyPressed(Key::O))
 	{
 		m_OpenDialog = true;
 	} else if (eventHandler.isShiftKeyPressed() && eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
+			   sKeyReleased)
 	{
 		m_SaveAsDialog = true;
 	} else if (eventHandler.isKeyControlPressed() &&
-			   eventHandler.isKeyPressed(Key::S))
+			   sKeyReleased)
 	{
 		m_SaveDialog = true;
 	}
+
+	m_SKeyWasPressed = eventHandler.isKeyPressed(Key::S);
 }
 
 void Survive::Menu::renderSaveDialog(entt::registry &registry, std::string &savedFile)
@@ -58,6 +62,7 @@ void Survive::Menu::renderSaveDialog(entt::registry &registry, std::string &save
 		} else
 		{
 			SceneSerializer::saveScene(registry, savedFile);
+			Log::logMessage(LogType::INFO, "Scene saved successfully");
 		}
 
 		m_SaveDialog = false;
@@ -81,6 +86,7 @@ void Survive::Menu::renderSaveAsDialog(entt::registry &registry, std::string &sa
 			if (!savedFile.empty())
 			{
 				SceneSerializer::saveScene(registry, savedFile);
+				Log::logMessage(LogType::INFO, "Scene saved successfully");
 			}
 		}
 	}

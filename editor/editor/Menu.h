@@ -24,6 +24,7 @@ namespace Survive
 		SaveDialog m_SaveWindow;
 
 		bool m_OpenDialog{}, m_SaveDialog{}, m_SaveAsDialog{};
+		bool m_SKeyWasPressed{};
 
 	public:
 		void renderMenu(EntityManager &manager, PropertyWindow &drawingWindow);

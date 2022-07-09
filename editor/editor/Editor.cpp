@@ -15,8 +15,7 @@ Survive::Editor::Editor(Renderer &renderer, entt::registry &registry)
 		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader)
 {
 	ImGuiIO &io = ImGui::GetIO();
-	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable |
-					 ImGuiWindowFlags_UnsavedDocument;
+	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable | ImGuiWindowFlags_UnsavedDocument;
 
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
 	renderer.addMousePickingListener([this, &registry](int selectedEntity) {
