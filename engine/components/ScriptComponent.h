@@ -16,15 +16,18 @@ namespace Survive
 	{
 		friend class ScriptingSystem;
 
+		friend class ComponentLoader;
+
 		template<typename ComponentType> friend
 		class ComponentTemplate;
 
 	public:
-		std::string pluginLocation;
+		std::string scriptPath;
 		ObjectBehaviour *script{};
 
 	private:
 		Plugin m_Plugin;
+		std::string m_PluginLocation;
 
 	public:
 		ScriptComponent() = default;

@@ -2,6 +2,8 @@
 // Created by david on 03. 07. 2021..
 //
 
+#include <filesystem>
+
 #include "ObjParser.h"
 #include "ComponentLoader.h"
 #include "Components.h"
@@ -10,6 +12,7 @@
 #include "TerrainGenerator.h"
 #include "Constants.h"
 #include "DaeParser.h"
+#include "ScriptUtil.h"
 
 void Survive::ComponentLoader::loadBloomComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader,
 												  Loader &loader)
@@ -726,11 +729,22 @@ Survive::ComponentLoader::loadJoint3DComponent(std::ifstream &reader)
 
 void Survive::ComponentLoader::loadScriptComponent(entt::registry &registry, entt::entity entity, std::ifstream &reader)
 {
-	std::string scriptPath = parseLine(reader, "pluginLocation");
+	std::string scriptPath = parseLine(reader, "scriptPath");
+
+	std::filesystem::path destination = std::filesystem::temp_directory_path();
+
+	// TODO: change this
+	std::filesystem::path libraryLocation(std::filesystem::path("cmake-build-debug") / "lib");
+	std::filesystem::path includeDirectory(std::filesystem::path("cmake-build-debug") / "include");
 
 	ScriptComponent script;
-	script.pluginLocation = scriptPath;
-	registry.emplace<ScriptComponent>(entity, script);
+	script.m_PluginLocation = ScriptUtil::compileScript(scriptPath, destination, libraryLocation, includeDirectory);
+
+	if (!script.m_PluginLocation.empty())
+	{
+		script.scriptPath = scriptPath;
+		registry.emplace<ScriptComponent>(entity, script);
+	}
 }
 
 void Survive::ComponentLoader::loadParticleComponent(entt::registry &registry, entt::entity entity,

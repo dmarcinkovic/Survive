@@ -526,7 +526,7 @@ void Survive::ComponentSerializer::saveScriptComponent(entt::registry &registry,
 		writer << "\tcomponent:ScriptComponent\n";
 
 		const ScriptComponent &script = registry.get<ScriptComponent>(entity);
-		writer << "\t\tpluginLocation:" << script.pluginLocation << '\n';
+		writer << "\t\tscriptPath:" << script.scriptPath << '\n';
 	}
 }
 

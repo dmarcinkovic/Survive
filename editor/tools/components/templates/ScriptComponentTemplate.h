@@ -30,14 +30,14 @@ namespace Survive
 			{
 				ImGui::Columns(2);
 
-				loadScript(component.pluginLocation);
+				loadScript(component.scriptPath, component.m_PluginLocation);
 
 				ImGui::Columns();
 			}
 		}
 
 	private:
-		void loadScript(std::string &scriptPath)
+		void loadScript(std::string &scriptPath, std::string &pluginLocation)
 		{
 			EditorUtil::showLoadedFile("Script path: %s", scriptPath, "Load script", m_Open);
 
@@ -54,8 +54,12 @@ namespace Survive
 					std::filesystem::path libraryLocation(std::filesystem::path("cmake-build-debug") / "lib");
 					std::filesystem::path includeDirectory(std::filesystem::path("cmake-build-debug") / "include");
 
-					scriptPath = ScriptUtil::compileScript(selectedFile, destination, libraryLocation,
+					pluginLocation = ScriptUtil::compileScript(selectedFile, destination, libraryLocation,
 														   includeDirectory);
+					if (!pluginLocation.empty())
+					{
+						scriptPath = absolute(selectedFile);
+					}
 				}
 			}
 		}
