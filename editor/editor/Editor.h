@@ -22,6 +22,7 @@
 #include "PropertyWindow.h"
 #include "Menu.h"
 #include "EditorEventHandler.h"
+#include "ScriptEditor.h"
 
 namespace Survive
 {
@@ -45,9 +46,12 @@ namespace Survive
 		PropertyWindow m_DrawingWindow = PropertyWindow::NONE;
 
 		EditorEventHandler m_EventHandler;
+		ScriptEditor &m_ScriptEditor;
 
 	public:
 		explicit Editor(Renderer &renderer, entt::registry &registry);
+
+		Editor(const Editor &) = delete;
 
 		~Editor();
 

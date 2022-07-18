@@ -2,7 +2,6 @@
 // Created by david on 31. 12. 2020..
 //
 
-
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_internal.h>
@@ -12,7 +11,7 @@
 
 Survive::Editor::Editor(Renderer &renderer, entt::registry &registry)
 		: m_Scene(renderer.getRenderedTexture()),
-		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader)
+		  m_EventHandler(m_ContentBrowser, m_Manager, m_SceneLoader), m_ScriptEditor(ScriptEditor::getInstance())
 {
 	ImGuiIO &io = ImGui::GetIO();
 	io.ConfigFlags = io.ConfigFlags | ImGuiConfigFlags_DockingEnable | ImGuiWindowFlags_UnsavedDocument;
@@ -42,6 +41,8 @@ void Survive::Editor::render(entt::registry &registry, Renderer &renderer, Camer
 
 	m_Log.drawLogWindow();
 	m_ContentBrowser.draw();
+
+	m_ScriptEditor.render();
 
 	renderDebugWindow();
 

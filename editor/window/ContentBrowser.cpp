@@ -4,6 +4,7 @@
 
 #include "ContentBrowser.h"
 #include "Log.h"
+#include "ScriptEditor.h"
 
 Survive::ContentBrowser::ContentBrowser()
 		: m_DirectoryContent(FileUtil::listCurrentDirectory()), m_Uv0(0, 1), m_Uv1(1, 0),
@@ -251,6 +252,9 @@ void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &fil
 		{
 			m_Tree.setCurrentDirectory(file);
 			m_ContentChanged = true;
+		} else if (m_ImageIndex == CPP)
+		{
+			ScriptEditor::getInstance().createScript(file);
 		}
 	}
 }
