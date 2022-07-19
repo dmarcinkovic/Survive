@@ -58,7 +58,7 @@ namespace Survive
 														   includeDirectory);
 					if (!pluginLocation.empty())
 					{
-						scriptPath = absolute(selectedFile);
+						scriptPath = absolute(selectedFile).string();
 					}
 				}
 			}
