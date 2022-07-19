@@ -59,7 +59,7 @@ void Survive::ScriptEditor::handleKeyEvents(const EventHandler &eventHandler)
 
 	if (m_WindowHasFocus && eventHandler.isKeyControlPressed() && sKeyReleased && selectedTabValid)
 	{
-		const TextEditor &textEditor = m_Scripts[m_CurrentTab].textEditor;
+		TextEditor &textEditor = m_Scripts[m_CurrentTab].textEditor;
 
 		if (textEditor.CanUndo())
 		{
@@ -68,6 +68,7 @@ void Survive::ScriptEditor::handleKeyEvents(const EventHandler &eventHandler)
 			if (writer)
 			{
 				writer << textEditor.GetText();
+				textEditor.SetText(textEditor.GetText());
 				writer.close();
 			}
 		}
