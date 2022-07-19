@@ -36,7 +36,7 @@ namespace Survive
 				return;
 			}
 
-			auto destroyFunction = reinterpret_cast<DestroyFunction>(dlsym(m_ClassInstance, "destroy"));
+			auto destroyFunction = reinterpret_cast<DestroyFunction>(getFunctionAddress(m_ClassInstance, "destroy"));
 
 			if (destroyFunction == nullptr)
 			{
@@ -46,12 +46,12 @@ namespace Survive
 				destroyFunction(object);
 			}
 
-			dlclose(m_ClassInstance);
+			closeInstance(m_ClassInstance);
 		}
 
 		ObjectBehaviour *createInstance(const std::string &filename)
 		{
-			m_ClassInstance = dlopen(filename.c_str(), RTLD_LAZY);
+			m_ClassInstance = openLibrary(filename);
 
 			if (m_ClassInstance == nullptr)
 			{
@@ -59,7 +59,7 @@ namespace Survive
 				return nullptr;
 			}
 
-			auto createFunction = reinterpret_cast<CreateFunction>(dlsym(m_ClassInstance, "create"));
+			auto createFunction = reinterpret_cast<CreateFunction>(getFunctionAddress(m_ClassInstance, "create"));
 
 			if (createFunction == nullptr)
 			{
@@ -69,6 +69,36 @@ namespace Survive
 
 			ObjectBehaviour *objectBehaviour = createFunction();
 			return objectBehaviour;
+		}
+
+	private:
+		static void closeInstance(void *instance)
+		{
+#if defined(_WIN32) || defined(_WIN64)
+			// TODO implement for windows
+#else
+			dlclose(instance);
+#endif
+		}
+
+		static void *getFunctionAddress(void *instance, const char *name)
+		{
+#if defined(_WIN32) || defined(_WIN64)
+			// TODO implement for windows
+			return nullptr;
+#else
+			return dlsym(instance, name);
+#endif
+		}
+
+		static void *openLibrary(const std::string &filename)
+		{
+#if defined(_WIN32) || defined(_WIN64)
+			// TODO implement for windows
+			return nullptr;
+#else
+			return dlopen(filename.c_str(), RTLD_LAZY);
+#endif
 		}
 	};
 }
