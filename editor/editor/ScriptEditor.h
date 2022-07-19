@@ -31,6 +31,7 @@ namespace Survive
 		bool m_SKeyWasPressed{};
 		bool m_WindowHasFocus{};
 		int m_SelectedTab{-1};
+		int m_CurrentTab{-1};
 
 	public:
 		void render();
@@ -38,6 +39,8 @@ namespace Survive
 		void handleKeyEvents(const EventHandler &eventHandler);
 
 		void createScript(const std::filesystem::path &path);
+
+		[[nodiscard]] bool isUsingKeyEvents() const;
 
 		ScriptEditor(const ScriptEditor &) = delete;
 

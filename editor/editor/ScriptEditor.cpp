@@ -3,7 +3,6 @@
 //
 
 #include <fstream>
-#include <iostream>
 
 #include "ScriptEditor.h"
 
@@ -15,7 +14,7 @@ void Survive::ScriptEditor::render()
 	{
 		if (ImGui::Begin("Script Editor", &m_DrawScriptEditor) && validFile)
 		{
-			m_WindowHasFocus = ImGui::IsWindowFocused();
+			m_WindowHasFocus = ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows);
 
 			const ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_AutoSelectNewTabs;
 			if (ImGui::BeginTabBar("Script Filename tab", tabBarFlags))
@@ -56,15 +55,21 @@ void Survive::ScriptEditor::createScript(const std::filesystem::path &path)
 void Survive::ScriptEditor::handleKeyEvents(const EventHandler &eventHandler)
 {
 	bool sKeyReleased = m_SKeyWasPressed && !eventHandler.isKeyPressed(Key::S);
+	bool selectedTabValid = m_CurrentTab >= 0 && m_CurrentTab < m_Scripts.size();
 
-	if (m_WindowHasFocus && eventHandler.isKeyControlPressed() && sKeyReleased)
+	if (m_WindowHasFocus && eventHandler.isKeyControlPressed() && sKeyReleased && selectedTabValid)
 	{
-		std::ofstream writer(m_CurrentFile.string());
+		const TextEditor &textEditor = m_Scripts[m_CurrentTab].textEditor;
 
-		if (writer)
+		if (textEditor.CanUndo())
 		{
-			// TODO save current file
-			writer.close();
+			std::ofstream writer(m_Scripts[m_CurrentTab].path.string());
+
+			if (writer)
+			{
+				writer << textEditor.GetText();
+				writer.close();
+			}
 		}
 	}
 
@@ -106,7 +111,7 @@ void Survive::ScriptEditor::drawTabs()
 		const std::string label = title + "##Script";
 
 		ImGuiTabItemFlags tabItemFlags = m_SelectedTab == i ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None;
-		if (script.textEditor.CanUndo() || script.textEditor.CanRedo())
+		if (script.textEditor.CanUndo())
 		{
 			tabItemFlags |= ImGuiTabItemFlags_UnsavedDocument;
 		}
@@ -114,9 +119,15 @@ void Survive::ScriptEditor::drawTabs()
 		if (ImGui::BeginTabItem(label.c_str(), &script.opened, tabItemFlags))
 		{
 			m_SelectedTab = -1;
+			m_CurrentTab = i;
 
 			script.textEditor.Render(title.c_str());
 			ImGui::EndTabItem();
 		}
 	}
+}
+
+bool Survive::ScriptEditor::isUsingKeyEvents() const
+{
+	return m_WindowHasFocus;
 }

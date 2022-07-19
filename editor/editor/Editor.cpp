@@ -108,9 +108,14 @@ void Survive::Editor::setColorStyle()
 
 void Survive::Editor::handleKeyEvents(const EventHandler &eventHandler)
 {
-	m_Menu.handleKeyEvents(eventHandler);
+	if (!m_ScriptEditor.isUsingKeyEvents())
+	{
+		m_Menu.handleKeyEvents(eventHandler);
+	}
 
-	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents())
+	m_ScriptEditor.handleKeyEvents(eventHandler);
+
+	if (!m_Manager.isFocused() && !m_ContentBrowser.isUsingKeyEvents() && !m_ScriptEditor.isUsingKeyEvents())
 	{
 		m_Manager.handleKeyEvents(eventHandler);
 		m_Scene.handleKeyEvents(eventHandler);
