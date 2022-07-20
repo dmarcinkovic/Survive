@@ -15,7 +15,7 @@ Survive::ScriptUtil::compileScript(const std::filesystem::path &path, const std:
 								   const std::filesystem::path &includeDirectory)
 {
 	static const std::string buildDirectoryName = "SurviveScriptBuild";
-	std::string projectName = path.filename();
+	std::string projectName = path.filename().string();
 
 	const std::string cmakeFileContent = getCmakeFileContent(projectName, libraryLocation, includeDirectory, path);
 	writeCmakeFile(destination, cmakeFileContent);
