@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "ScriptEditor.h"
+#include "Log.h"
 
 void Survive::ScriptEditor::render()
 {
@@ -104,6 +105,8 @@ bool Survive::ScriptEditor::openScriptIfAlreadyExists(const std::filesystem::pat
 
 void Survive::ScriptEditor::drawTabs()
 {
+	removeDeletedFiles();
+
 	for (int i = 0; i < m_Scripts.size(); ++i)
 	{
 		Script &script = m_Scripts[i];
@@ -131,4 +134,17 @@ void Survive::ScriptEditor::drawTabs()
 bool Survive::ScriptEditor::isUsingKeyEvents() const
 {
 	return m_WindowHasFocus;
+}
+
+void Survive::ScriptEditor::removeDeletedFiles()
+{
+	erase_if(m_Scripts, [](const Script &script) {
+		bool fileRemoved = !exists(script.path);
+		if (fileRemoved)
+		{
+			std::string message = "The file: " + script.path.string() + " is deleted or moved.";
+			Log::logMessage(LogType::INFO, message);
+		}
+		return fileRemoved;
+	});
 }

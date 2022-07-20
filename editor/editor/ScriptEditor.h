@@ -52,6 +52,8 @@ namespace Survive
 		bool openScriptIfAlreadyExists(const std::filesystem::path &path);
 
 		void drawTabs();
+
+		void removeDeletedFiles();
 	};
 }
 
