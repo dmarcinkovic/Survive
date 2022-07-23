@@ -70,7 +70,7 @@ namespace Survive
 				std::ofstream writer(path);
 				if (path.has_stem())
 				{
-					writer << getScriptTemplateText(path.stem());
+					writer << getScriptTemplateText(path.stem().string());
 				}
 				writer.close();
 			}
