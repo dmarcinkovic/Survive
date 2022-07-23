@@ -61,7 +61,7 @@ namespace Survive
 					auto *data = reinterpret_cast<std::tuple<int, int, const char *> *>(payload->Data);
 					if (std::get<0>(*data) == std::get<1>(*data))
 					{
-						Log::logMessage(LogType::ERROR, "Body A cannot be equal to body B");
+						Log::logMessage(LogType::Error, "Body A cannot be equal to body B");
 					} else
 					{
 						component.skyboxEntity = static_cast<entt::entity>(std::get<1>(*data));

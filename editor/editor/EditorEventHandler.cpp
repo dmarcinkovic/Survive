@@ -26,7 +26,7 @@ void Survive::EditorEventHandler::handleMouseDragging(entt::registry &registry, 
 			if (isScenePlaying)
 			{
 				std::string message = "Dragging to the scene is not possible while the scene is playing";
-				Log::logMessage(LogType::WARN, message);
+				Log::logMessage(LogType::Warn, message);
 			} else if (file.has_extension())
 			{
 				std::string extension = file.extension().string();
@@ -61,10 +61,10 @@ void Survive::EditorEventHandler::loadScene(entt::registry &registry, std::strin
 		m_SceneLoader.loadScene(registry, file.string());
 		savedFile = file.string();
 
-		Log::logMessage(LogType::INFO, "Scene loaded successfully");
+		Log::logMessage(LogType::Info, "Scene loaded successfully");
 	} catch (const std::exception &exception)
 	{
-		Log::logMessage(LogType::ERROR, "Failed to load the scene");
+		Log::logMessage(LogType::Error, "Failed to load the scene");
 	}
 }
 
@@ -104,7 +104,7 @@ void Survive::EditorEventHandler::loadModel(entt::registry &registry, Loader &lo
 		}
 	} catch (const std::exception &exception)
 	{
-		Log::logMessage(LogType::ERROR, "Error while parsing .obj file");
+		Log::logMessage(LogType::Error, "Error while parsing .obj file");
 	}
 }
 
@@ -172,7 +172,7 @@ void Survive::EditorEventHandler::registerListener(entt::registry &registry, Ren
 			}
 		} catch (const std::exception &exception)
 		{
-			Log::logMessage(LogType::ERROR, "Cannot load texture " + filename);
+			Log::logMessage(LogType::Error, "Cannot load texture " + filename);
 		}
 
 		renderer.popMousePickingListener();

@@ -225,11 +225,11 @@ namespace Survive
 						{
 							std::string message =
 									"Cannot load file with extension: " + selectedFile.extension().string();
-							Log::logMessage(LogType::ERROR, message);
+							Log::logMessage(LogType::Error, message);
 						}
 					} catch (const std::exception &ignorable)
 					{
-						Log::logMessage(LogType::ERROR, "Cannot load file: " + selectedFile.string());
+						Log::logMessage(LogType::Error, "Cannot load file: " + selectedFile.string());
 					}
 				}
 			}
@@ -253,7 +253,7 @@ namespace Survive
 						file = textureName;
 					} catch (const std::exception &ignorable)
 					{
-						Log::logMessage(LogType::ERROR, "Cannot load " + selectedFile.filename().string());
+						Log::logMessage(LogType::Error, "Cannot load " + selectedFile.filename().string());
 					}
 				}
 			}

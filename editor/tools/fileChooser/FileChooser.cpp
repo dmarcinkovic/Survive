@@ -111,7 +111,7 @@ void Survive::FileChooser::drawUpArrow()
 			resetSelectedFile();
 		} catch (const std::filesystem::filesystem_error &exception)
 		{
-			Log::logMessage(LogType::ERROR, "Cannot enter " + path);
+			Log::logMessage(LogType::Error, "Cannot enter " + path);
 		}
 	}
 
@@ -298,7 +298,7 @@ void Survive::FileChooser::buttonDoublePress()
 		resetSelectedFile();
 	} catch (const std::filesystem::filesystem_error &error)
 	{
-		Log::logMessage(LogType::ERROR, "Cannot enter directory: " + m_CurrentDirectory.string());
+		Log::logMessage(LogType::Error, "Cannot enter directory: " + m_CurrentDirectory.string());
 	}
 }
 

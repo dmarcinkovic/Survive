@@ -14,13 +14,13 @@ namespace Survive
 {
 	enum class LogType
 	{
-		WARN, INFO, ERROR
+		Warn, Info, Error
 	};
 
 	struct LogInfo
 	{
 		std::string message{};
-		LogType logType = LogType::ERROR;
+		LogType logType = LogType::Error;
 
 		LogInfo() = default;
 

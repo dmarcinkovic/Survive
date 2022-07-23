@@ -29,7 +29,7 @@ namespace Survive
 
 					if (bodyA == bodyB)
 					{
-						Log::logMessage(LogType::ERROR, "Body A should not be equal to body B");
+						Log::logMessage(LogType::Error, "Body A should not be equal to body B");
 					} else
 					{
 						connectedBody = static_cast<entt::entity>(bodyB);

@@ -38,7 +38,7 @@ Survive::EditorUtil::loadTexture(OpenDialog &fileChooser, Loader &loader, Textur
 				changed = true;
 			} catch (const std::exception &exception)
 			{
-				Log::logMessage(LogType::ERROR, "Could not load texture " + selectedFile);
+				Log::logMessage(LogType::Error, "Could not load texture " + selectedFile);
 			}
 		}
 	}

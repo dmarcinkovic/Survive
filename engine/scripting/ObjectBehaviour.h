@@ -104,7 +104,7 @@ namespace Survive
 			std::ostringstream ss;
 			print(ss, std::forward<T>(t), std::forward<Args>(args)...);
 
-			Log::logMessage(LogType::INFO, ss.str());
+			Log::logMessage(LogType::Info, ss.str());
 		}
 
 		template<typename T, typename... Args>
@@ -113,7 +113,7 @@ namespace Survive
 			std::ostringstream ss;
 			print(ss, std::forward<T>(t), std::forward<Args>(args)...);
 
-			Log::logMessage(LogType::WARN, ss.str());
+			Log::logMessage(LogType::Warn, ss.str());
 		}
 
 		template<typename T, typename... Args>
@@ -122,7 +122,7 @@ namespace Survive
 			std::ostringstream ss;
 			print(ss, std::forward<T>(t), std::forward<Args>(args)...);
 
-			Log::logMessage(LogType::ERROR, ss.str());
+			Log::logMessage(LogType::Error, ss.str());
 		}
 
 		[[nodiscard]] bool isKeyPressed(Key key) const;

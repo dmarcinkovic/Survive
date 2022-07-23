@@ -60,7 +60,7 @@ void Survive::Menu::renderSaveDialog(entt::registry &registry, std::string &save
 		} else
 		{
 			SceneSerializer::saveScene(registry, savedFile);
-			Log::logMessage(LogType::INFO, "Scene saved successfully");
+			Log::logMessage(LogType::Info, "Scene saved successfully");
 		}
 
 		m_SaveDialog = false;
@@ -84,7 +84,7 @@ void Survive::Menu::renderSaveAsDialog(entt::registry &registry, std::string &sa
 			if (!savedFile.empty())
 			{
 				SceneSerializer::saveScene(registry, savedFile);
-				Log::logMessage(LogType::INFO, "Scene saved successfully");
+				Log::logMessage(LogType::Info, "Scene saved successfully");
 			}
 		}
 	}
@@ -108,7 +108,7 @@ void Survive::Menu::renderOpenDialog(entt::registry &registry, EntityManager &ma
 					loadScene(registry, sceneLoader, savedFile, file);
 				} else
 				{
-					Log::logMessage(LogType::ERROR, "Cannot load scene from " + file);
+					Log::logMessage(LogType::Error, "Cannot load scene from " + file);
 				}
 			}
 		}
@@ -122,8 +122,8 @@ try
 	sceneLoader.loadScene(registry, file);
 	savedFile = file;
 
-	Log::logMessage(LogType::INFO, "Successfully loaded the scene");
+	Log::logMessage(LogType::Info, "Successfully loaded the scene");
 } catch (const std::exception &exception)
 {
-	Log::logMessage(LogType::ERROR, "Failed to load the scene");
+	Log::logMessage(LogType::Error, "Failed to load the scene");
 }

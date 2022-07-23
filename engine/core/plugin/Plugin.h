@@ -31,7 +31,7 @@ namespace Survive
 
 			if (destroyFunction == nullptr)
 			{
-				Log::logMessage(LogType::ERROR, "Error while loading \"destroy()\" function");
+				Log::logMessage(LogType::Error, "Error while loading \"destroy()\" function");
 			} else
 			{
 				destroyFunction(object);
@@ -46,7 +46,7 @@ namespace Survive
 
 			if (m_ClassInstance == nullptr)
 			{
-				Log::logMessage(LogType::ERROR, "Error while loading " + filename);
+				Log::logMessage(LogType::Error, "Error while loading " + filename);
 				return nullptr;
 			}
 
@@ -54,7 +54,7 @@ namespace Survive
 
 			if (createFunction == nullptr)
 			{
-				Log::logMessage(LogType::ERROR, "Error while loading \"create()\" function");
+				Log::logMessage(LogType::Error, "Error while loading \"create()\" function");
 				return nullptr;
 			}
 

@@ -95,13 +95,13 @@ namespace Survive
 					model = m_DaeParser.loadDae(selectedFile, m_Loader);
 				} else
 				{
-					Log::logMessage(LogType::ERROR, "Unknown file type");
+					Log::logMessage(LogType::Error, "Unknown file type");
 				}
 
 				return model.isValidModel() ? model : std::optional<Survive::Model>{};
 			} catch (const std::exception &exception)
 			{
-				Log::logMessage(LogType::ERROR, "Could not load the model from " + selectedFile);
+				Log::logMessage(LogType::Error, "Could not load the model from " + selectedFile);
 				return {};
 			}
 		}

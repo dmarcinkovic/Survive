@@ -250,7 +250,7 @@ void Survive::ContentBrowser::iconDoubleClicked(const std::filesystem::path &fil
 				m_ImageFilename = file.filename().string();
 			} catch (const std::exception &exception)
 			{
-				Log::logMessage(LogType::ERROR, "Cannot load texture " + textureName);
+				Log::logMessage(LogType::Error, "Cannot load texture " + textureName);
 			}
 		} else if (m_ImageIndex == FOLDER)
 		{

@@ -364,7 +364,7 @@ bool Survive::PhysicSystem::initConvexMeshComponent(Survive::ConvexMeshCollider3
 
 	if (2 + numberOfEdges - numberOfFaces != numberOfVertices)
 	{
-		Log::logMessage(LogType::ERROR, "Polygon vertex array in not valid");
+		Log::logMessage(LogType::Error, "Polygon vertex array in not valid");
 		return false;
 	}
 
@@ -416,7 +416,7 @@ void Survive::PhysicSystem::initFixedJoint3D(entt::registry &registry, entt::ent
 
 		if (info.body2 == nullptr)
 		{
-			Log::logMessage(LogType::ERROR, "Body 2 in fixed joint is not initialized");
+			Log::logMessage(LogType::Error, "Body 2 in fixed joint is not initialized");
 			return;
 		}
 
@@ -437,7 +437,7 @@ void Survive::PhysicSystem::initCharacterJoint3D(entt::registry &registry, entt:
 
 		if (info.body2 == nullptr)
 		{
-			Log::logMessage(LogType::ERROR, "Body 2 in character joint is not initialized");
+			Log::logMessage(LogType::Error, "Body 2 in character joint is not initialized");
 			return;
 		}
 
@@ -468,7 +468,7 @@ bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::RigidBody *body2, bool isUs
 
 	if (body2 == nullptr)
 	{
-		Log::logMessage(LogType::ERROR, "Body 2 in hinge joint is not initialized");
+		Log::logMessage(LogType::Error, "Body 2 in hinge joint is not initialized");
 		return false;
 	}
 
@@ -479,7 +479,7 @@ bool Survive::PhysicSystem::verifyHingeJoint3d(rp3d::RigidBody *body2, bool isUs
 
 	if (a2.length() <= epsilon)
 	{
-		Log::logMessage(LogType::ERROR, "Cannot initialize hinge joint.");
+		Log::logMessage(LogType::Error, "Cannot initialize hinge joint.");
 		return false;
 	}
 

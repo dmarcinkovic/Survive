@@ -49,13 +49,13 @@ void Survive::LogEditor::drawIcon(LogType logType) const
 
 	switch (logType)
 	{
-		case LogType::ERROR:
+		case LogType::Error:
 			icon = reinterpret_cast<ImTextureID>(m_ErrorIcon.textureId());
 			break;
-		case LogType::WARN:
+		case LogType::Warn:
 			icon = reinterpret_cast<ImTextureID>(m_WarnIcon.textureId());
 			break;
-		case LogType::INFO:
+		case LogType::Info:
 			icon = reinterpret_cast<ImTextureID>(m_InfoIcon.textureId());
 			break;
 	}

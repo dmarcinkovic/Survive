@@ -143,7 +143,7 @@ void Survive::ScriptEditor::removeDeletedFiles()
 		if (fileRemoved)
 		{
 			std::string message = "The file: " + script.path.string() + " is deleted or moved.";
-			Log::logMessage(LogType::INFO, message);
+			Log::logMessage(LogType::Info, message);
 		}
 		return fileRemoved;
 	});
