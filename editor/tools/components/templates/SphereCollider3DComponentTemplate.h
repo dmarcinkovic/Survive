@@ -16,7 +16,7 @@ namespace Survive
 	class ComponentTemplate<SphereCollider3DComponent>
 	{
 	private:
-		static constexpr float max = std::numeric_limits<float>::max();
+		static constexpr float maxValue = std::numeric_limits<float>::max();
 
 	public:
 		static void drawComponent(SphereCollider3DComponent &component, bool *visible)
@@ -31,7 +31,7 @@ namespace Survive
 
 				ImGui::Columns(2, nullptr, false);
 
-				EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, max, 0.1f);
+				EditorUtil::drawColumnDragFloat("Radius", "##SphereRadius", component.radius, 0, maxValue, 0.1f);
 				EditorUtil::drawColumnDragFloat3("Center", "##SphereCenter", component.offset);
 
 				ImGui::Columns();

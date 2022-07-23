@@ -80,7 +80,7 @@ void Survive::EditorUtil::drawColumnInputBool(const char *text, const char *labe
 	ImGui::NextColumn();
 }
 
-bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value, float min, float max)
+bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *label, float &value, float minValue, float maxValue)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
@@ -89,7 +89,7 @@ bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *lab
 	bool result;
 	if ((result = ImGui::InputFloat(label, &value)))
 	{
-		value = std::min(max, std::max(min, value));
+		value = std::min(maxValue, std::max(minValue, value));
 	}
 
 	ImGui::NextColumn();
@@ -98,16 +98,16 @@ bool Survive::EditorUtil::drawColumnInputFloat(const char *text, const char *lab
 }
 
 bool Survive::EditorUtil::drawColumnDragFloat(const char *text, const char *label,
-											  float &value, float min, float max, float step)
+											  float &value, float minValue, float maxValue, float step)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 
 	ImGui::SetNextItemWidth(-1.0f);
 	bool result;
-	if ((result = ImGui::DragFloat(label, &value, step, min, max)))
+	if ((result = ImGui::DragFloat(label, &value, step, minValue, maxValue)))
 	{
-		value = std::min(max, std::max(min, value));
+		value = std::min(maxValue, std::max(minValue, value));
 	}
 
 	ImGui::NextColumn();
@@ -182,12 +182,12 @@ void Survive::EditorUtil::drawColumnColorEdit3(const char *text, const char *lab
 }
 
 bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed,
-											   float min, float max)
+											   float minValue, float maxValue)
 {
 	glm::vec3 vec{value.x, value.y, value.z};
 
 	bool result{};
-	if (drawColumnDragFloat3(text, label, vec, speed, min, max))
+	if (drawColumnDragFloat3(text, label, vec, speed, minValue, maxValue))
 	{
 		value.x = vec.x;
 		value.y = vec.y;
@@ -234,13 +234,13 @@ void Survive::EditorUtil::drawTooltip(const char *text)
 }
 
 bool Survive::EditorUtil::drawColumnDragFloat3(const char *text, const char *label, glm::vec3 &value, float speed,
-											   float min, float max)
+											   float minValue, float maxValue)
 {
 	ImGui::TextUnformatted(text);
 	ImGui::NextColumn();
 	ImGui::SetNextItemWidth(-1);
 
-	bool result = ImGui::DragFloat3(label, glm::value_ptr(value), speed, min, max);
+	bool result = ImGui::DragFloat3(label, glm::value_ptr(value), speed, minValue, maxValue);
 
 	ImGui::NextColumn();
 

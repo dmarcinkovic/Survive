@@ -142,16 +142,16 @@ void Survive::Text::alignText()
 
 std::pair<float, float> Survive::Text::minMax() const
 {
-	float max = -1.0f;
-	float min = std::numeric_limits<float>::infinity();
+	float maxValue = -1.0f;
+	float minValue = std::numeric_limits<float>::infinity();
 
 	for (int i = 1; i < m_Vertices.size(); i += 2)
 	{
-		min = std::min(min, m_Vertices[i]);
-		max = std::max(max, m_Vertices[i]);
+		minValue = std::min(minValue, m_Vertices[i]);
+		maxValue = std::max(maxValue, m_Vertices[i]);
 	}
 
-	return {min, max};
+	return {minValue, maxValue};
 }
 
 void Survive::Text::addBorder(float borderWidth, const glm::vec3 &borderColor)

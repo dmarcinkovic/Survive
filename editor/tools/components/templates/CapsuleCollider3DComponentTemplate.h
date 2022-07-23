@@ -16,7 +16,7 @@ namespace Survive
 	class ComponentTemplate<CapsuleCollider3DComponent>
 	{
 	private:
-		static constexpr float max = std::numeric_limits<float>::max();
+		static constexpr float maxValue = std::numeric_limits<float>::max();
 
 	public:
 		static void drawComponent(CapsuleCollider3DComponent &component, bool *visible)
@@ -31,8 +31,8 @@ namespace Survive
 
 				ImGui::Columns(2, nullptr, false);
 
-				EditorUtil::drawColumnDragFloat("Radius", "##CapsuleRadius", component.radius, 0, max, 0.1f);
-				EditorUtil::drawColumnDragFloat("Height", "##CapsuleHeight", component.height, 0, max, 0.1f);
+				EditorUtil::drawColumnDragFloat("Radius", "##CapsuleRadius", component.radius, 0, maxValue, 0.1f);
+				EditorUtil::drawColumnDragFloat("Height", "##CapsuleHeight", component.height, 0, maxValue, 0.1f);
 				EditorUtil::drawColumnDragFloat3("Center", "##CapsuleCenter", component.center);
 
 				ImGui::Columns();

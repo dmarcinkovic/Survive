@@ -43,7 +43,7 @@ namespace Survive
 	private:
 		static void drawMotorProperties(HingeJoint2DComponent &component)
 		{
-			static constexpr float min = std::numeric_limits<float>::min();
+			static constexpr float minValue = std::numeric_limits<float>::min();
 
 			b2RevoluteJointDef &jointDef = component.jointDef;
 
@@ -53,7 +53,7 @@ namespace Survive
 
 			ImGui::Indent();
 			EditorUtil::drawColumnInputBool("Use motor", "##UseHingeMotor", jointDef.enableMotor);
-			EditorUtil::drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, min);
+			EditorUtil::drawColumnDragFloat("Motor speed", "##HingeMotorSpeed", jointDef.motorSpeed, minValue);
 			EditorUtil::drawColumnDragFloat("Max motor force", "##HingeMForce", jointDef.maxMotorTorque);
 
 			ImGui::Unindent();

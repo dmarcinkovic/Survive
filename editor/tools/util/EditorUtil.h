@@ -31,10 +31,10 @@ namespace Survive
 		static void drawColumnInputBool(const char *text, const char *label, bool &value);
 
 		static bool drawColumnInputFloat(const char *text, const char *label, float &value,
-										 float min = 0, float max = std::numeric_limits<float>::max());
+										 float minValue = 0, float maxValue = std::numeric_limits<float>::max());
 
 		static bool drawColumnDragFloat(const char *text, const char *label, float &value,
-										float min = 0, float max = std::numeric_limits<float>::max(),
+										float minValue = 0, float maxValue = std::numeric_limits<float>::max(),
 										float step = 0.1f);
 
 		static void drawColumnInputText(const char *label, const char *text, std::string &buffer,
@@ -43,10 +43,10 @@ namespace Survive
 		static bool drawColumnDragFloat2(const char *text, const char *label, b2Vec2 &value);
 
 		static bool drawColumnDragFloat3(const char *text, const char *label, rp3d::Vector3 &value, float speed = 1.0f,
-										 float min = 0.0f, float max = 0.0f);
+										 float minValue = 0.0f, float maxValue = 0.0f);
 
 		static bool drawColumnDragFloat3(const char *text, const char *label, glm::vec3 &value, float speed = 1.0f,
-										 float min = 0.0f, float max = 0.0f);
+										 float minValue = 0.0f, float maxValue = 0.0f);
 
 		static void drawColumnColorEdit3(const char *text, const char *label, glm::vec3 &color);
 

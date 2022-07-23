@@ -15,7 +15,7 @@ namespace Survive
 	class ComponentTemplate<RigidBody3DComponent>
 	{
 	private:
-		static constexpr float max = std::numeric_limits<float>::max();
+		static constexpr float maxValue = std::numeric_limits<float>::max();
 
 	public:
 		static void drawComponent(RigidBody3DComponent &component, bool *visible)
@@ -36,7 +36,7 @@ namespace Survive
 
 				ImGui::Columns(2, nullptr, false);
 
-				EditorUtil::drawColumnDragFloat("Mass", "##3D Body mass", component.mass, 0, max);
+				EditorUtil::drawColumnDragFloat("Mass", "##3D Body mass", component.mass, 0, maxValue);
 				EditorUtil::drawColumnInputFloat("Angular drag", "##3D drag", component.angularDrag);
 				EditorUtil::drawColumnInputFloat("Linear damping", "##3D linear damping", component.linearDamping);
 				EditorUtil::drawColumnInputBool("Use gravity", "##3D use gravity", component.useGravity);
