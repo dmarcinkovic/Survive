@@ -16,7 +16,7 @@ Survive::ScriptUtil::compileScript(const std::filesystem::path &path, const std:
 								   const std::filesystem::path &includeDirectory)
 {
 	static const std::string buildDirectoryName = "SurviveScriptBuild";
-	std::string projectName = path.filename().string();
+	std::string projectName = path.has_stem() ? path.stem().string() : path.filename().string();
 
 	const std::string cmakeFileContent = getCmakeFileContent(projectName, libraryLocation, includeDirectory, path);
 	writeCmakeFile(destination, cmakeFileContent);
@@ -48,9 +48,9 @@ Survive::ScriptUtil::getCmakeFileContent(const std::string &projectName, const s
 	ss << "cmake_minimum_required(VERSION 3.22)\n";
 	ss << "project(" << projectName << ")\n";
 	ss << "set(CMAKE_CXX_STANDARD 20)\n";
-	ss << "find_library(SURVIVE_LIBRARY NAMES Survive HINTS " << std::quoted(absolute(libraryLocation).string()) << ")\n";
-	ss << "add_library(" << projectName << " SHARED " << std::quoted(absolute(scriptPath).string()) << ")\n";
-	ss << "target_include_directories(" << projectName << " PRIVATE " << std::quoted(absolute(includeDirectory).string()) << ")\n";
+	ss << "find_library(SURVIVE_LIBRARY NAMES Survive HINTS " << std::quoted(absolute(libraryLocation).generic_string()) << ")\n";
+	ss << "add_library(" << projectName << " SHARED " << std::quoted(absolute(scriptPath).generic_string()) << ")\n";
+	ss << "target_include_directories(" << projectName << " PRIVATE " << std::quoted(absolute(includeDirectory).generic_string()) << ")\n";
 	ss << "target_link_libraries(" << projectName << " PRIVATE ${SURVIVE_LIBRARY})\n";
 
 	return ss.str();
