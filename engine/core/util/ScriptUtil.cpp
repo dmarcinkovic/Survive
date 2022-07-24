@@ -2,12 +2,10 @@
 // Created by david on 28.06.22..
 //
 
-#include <sstream>
 #include <fstream>
 #include <iomanip>
 
 #include "ScriptUtil.h"
-#include "FileUtil.h"
 #include "Log.h"
 
 std::string
@@ -48,9 +46,11 @@ Survive::ScriptUtil::getCmakeFileContent(const std::string &projectName, const s
 	ss << "cmake_minimum_required(VERSION 3.22)\n";
 	ss << "project(" << projectName << ")\n";
 	ss << "set(CMAKE_CXX_STANDARD 20)\n";
-	ss << "find_library(SURVIVE_LIBRARY NAMES Survive HINTS " << std::quoted(absolute(libraryLocation).generic_string()) << ")\n";
+	ss << "find_library(SURVIVE_LIBRARY NAMES Survive HINTS " << std::quoted(absolute(libraryLocation).generic_string())
+	   << ")\n";
 	ss << "add_library(" << projectName << " SHARED " << std::quoted(absolute(scriptPath).generic_string()) << ")\n";
-	ss << "target_include_directories(" << projectName << " PRIVATE " << std::quoted(absolute(includeDirectory).generic_string()) << ")\n";
+	ss << "target_include_directories(" << projectName << " PRIVATE "
+	   << std::quoted(absolute(includeDirectory).generic_string()) << ")\n";
 	ss << "target_link_libraries(" << projectName << " PRIVATE ${SURVIVE_LIBRARY})\n";
 
 	return ss.str();
@@ -72,19 +72,9 @@ bool Survive::ScriptUtil::executeCmakeCommand(const std::filesystem::path &desti
 											  const std::string &projectName, std::string &scriptPath)
 {
 	const std::string command = getCmakeCommand(destination, buildDirectory);
-	std::system(command.c_str());
+	int result = std::system(command.c_str());
 
-	std::vector<File> content = FileUtil::listDirectory(absolute(buildDirectory).string());
-	for (auto const &file: content)
-	{
-		if (file.path.filename().string().find(projectName) != std::string::npos)
-		{
-			scriptPath = absolute(file.path).string();
-			return true;
-		}
-	}
-
-	return false;
+	return result == 0;
 }
 
 std::string
