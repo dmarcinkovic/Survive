@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - plugin
 
 env:
   BUILD_TYPE: Release
