@@ -209,7 +209,7 @@ void Survive::EntityManager::renameEntity(entt::registry &registry)
 
 void Survive::EntityManager::handleKeyEvents(const EventHandler &eventHandler)
 {
-	if (eventHandler.isKeyPressed(Key::DELETE) && m_Selected != -1)
+	if (eventHandler.isKeyPressed(Key::DELETE_KEY) && m_Selected != -1)
 	{
 		m_DestroyEntity = true;
 	}
