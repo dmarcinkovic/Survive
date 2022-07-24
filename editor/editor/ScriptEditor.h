@@ -18,6 +18,7 @@ namespace Survive
 		TextEditor textEditor;
 		std::filesystem::path path;
 		bool opened{};
+		bool saved{true};
 	};
 
 	class ScriptEditor

@@ -69,7 +69,7 @@ void Survive::ScriptEditor::handleKeyEvents(const EventHandler &eventHandler)
 			if (writer)
 			{
 				writer << textEditor.GetText();
-				textEditor.SetText(textEditor.GetText());
+				m_Scripts[m_CurrentTab].saved = true;
 				writer.close();
 			}
 		}
@@ -115,7 +115,13 @@ void Survive::ScriptEditor::drawTabs()
 		const std::string label = title + "##Script";
 
 		ImGuiTabItemFlags tabItemFlags = m_SelectedTab == i ? ImGuiTabItemFlags_SetSelected : ImGuiTabItemFlags_None;
-		if (script.textEditor.CanUndo())
+
+		if (script.textEditor.IsTextChanged())
+		{
+			script.saved = !script.textEditor.CanUndo();
+		}
+
+		if (!script.saved)
 		{
 			tabItemFlags |= ImGuiTabItemFlags_UnsavedDocument;
 		}
