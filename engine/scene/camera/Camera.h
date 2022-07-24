@@ -23,8 +23,8 @@ namespace Survive
 		glm::vec3 m_Position{};
 
 	public:
-		float near = 0.1f;
-		float far = 1000.0f;
+		float nearPlane = 0.1f;
+		float farPlane = 1000.0f;
 		float fieldOfView = 50.0f;
 
 		Camera();

@@ -63,8 +63,8 @@ void Survive::CameraWindow::drawClipPlanes(Camera &camera)
 
 	ImGui::Indent();
 
-	EditorUtil::drawColumnInputFloat("Near", "##Near", camera.near);
-	EditorUtil::drawColumnInputFloat("Far", "##Far", camera.far);
+	EditorUtil::drawColumnInputFloat("Near", "##Near", camera.nearPlane);
+	EditorUtil::drawColumnInputFloat("Far", "##Far", camera.farPlane);
 
 	ImGui::Unindent();
 }
